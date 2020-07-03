@@ -75,8 +75,9 @@ while True:
 
 ## Contributions
 
-1. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
-2. John Zelle - Creating the graphics.py package which formed the basis for my library.
+1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd July 2020 - Help with creating rounded polygon corners
+2. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
+3. John Zelle - Creating the graphics.py package which formed the basis for my library.
 
 ## Version History
 
