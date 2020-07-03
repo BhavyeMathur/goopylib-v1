@@ -40,12 +40,13 @@ There are plans to create a detailed documentation for this library both in the 
 
 ### v6.11-dev
 
-#### 6.11.0 20w27a
+#### 6.11.0 - 3rd July 2020
 
 * Removed the Image_depr class which was used as a backup until the new class using the Pillow library was created
 * Removed the ToDos, Version History, and Introduction from Goop.py and moved it to the README file
 
 * Closed issue regarding adding new colour formats after adding Hex & CMYK support in v6.10
+* Fixed the GraphWin's setBackground() function to work with colours referencing a style
 
 * Warning added to warn the user if they are both calling the updateWin() function manually and the autoflush of the GraphWin is set to True
 * While resizing a rectangle, you can set the min. width & height beyond which, the rectangle cannot be resized 
