@@ -28,6 +28,7 @@ class GraphicsError(Exception):
 class GraphicsWarning(Warning):
     pass
 
+
 # For the list of cursors and thumbnails visit: https://anzeljg.github.io/rin2/book2/2405/docs/tkinter/cursors.html
 CURSORS = ["arrow", "based_arrow_down", "based_arrow_up", "boat", "bogosity", "bottom_left_corner",
            "bottom_right_corner", "bottom_side", "bottom_tee", "box_spiral", "center_ptr", "circle", "clock",
@@ -41,15 +42,11 @@ CURSORS = ["arrow", "based_arrow_down", "based_arrow_up", "boat", "bogosity", "b
            "ul_angle", "umbrella", "ur_angle", "watch", "xterm", "x_cursor"]
 RELIEF = ["flat", "groove", "raised", "ridge", "solid", "sunken"]
 
-from tkinter import font as tkfonts
-
 ##########################################################################
 # global variables and functions
 
 _root = tk.Tk()
 _root.withdraw()
-
-fonts = tkfonts.families()
 
 _update_lasttime = time.time()
 
@@ -82,27 +79,27 @@ class Colour:
 class ColourRGB(Colour):
     def __init__(self, r, g, b):
         if not (isinstance(r, int) and isinstance(g, int) and isinstance(b, int)):
-            raise GraphicsError("RGB values must be integers!")
+            raise GraphicsError("\n\nRGB values must be integers!")
         if not (256 > r > -1 and 256 > g > -1 and 256 > b > -1):
-            raise GraphicsError("RGB values must be between 0 & 255 (included), right now {}, {}, {}".format(r, g, b))
+            raise GraphicsError("\n\nRGB values must be between 0 & 255 (included), right now {}, {}, {}".format(r, g, b))
         self.colour = "#%02x%02x%02x" % (r, g, b)
 
 
 class ColourHex(Colour):
     def __init__(self, colour):
         if not isinstance(colour, str):
-            raise GraphicsError("Hex value must be a string in format: #rrggbb")
+            raise GraphicsError("\n\nHex value must be a string in format: #rrggbb")
         if len(colour) != 7:
-            raise GraphicsError("The length of the hex colour string must be 7: '#rrggbb'")
+            raise GraphicsError("\n\nThe length of the hex colour string must be 7: '#rrggbb'")
         self.colour = colour
 
 
 class ColourCMYK(Colour):
     def __init__(self, c, y, m, k):
         if not (isinstance(c, int) and isinstance(y, int) and isinstance(m, int) and isinstance(k, int)):
-            raise GraphicsError("CMYK values must be integers!")
+            raise GraphicsError("\n\nCMYK values must be integers!")
         if not (101 > c > -1 and 101 > y > -1 and 101 > m > -1 and 101 > k > -1):
-            raise GraphicsError("CMYK values must be between 0 & 100 (included), right now {}, {}, {}, {}".
+            raise GraphicsError("\n\nCMYK values must be between 0 & 100 (included), right now {}, {}, {}, {}".
                                 format(c, m, y, k))
 
         r = 255 * (1 - (c + k) / 100)
@@ -187,7 +184,8 @@ STYLES = {"pycharm darcula": {"primary fill": DARK_GREY, "secondary fill": BLUE_
 def setStyle(style="default"):
     global globalStyle
 
-    assert style in STYLES.keys(), "The style specified does not exist, must be one of {}".format(list(STYLES.keys()))
+    if style not in STYLES.keys():
+        raise GraphicsError(f"The style specified ({style}) does not exist, must be one of {list(STYLES.keys())}")
     globalStyle = style
 
 
@@ -204,58 +202,75 @@ class GraphWin(tk.Canvas):
                  cursor="arrow", borderRelief="flat", borderWidth=0):
 
         if not isinstance(title, str):
-            raise GraphicsError("The window's title must be a string")
-        if not (isinstance(icon, str) or icon is None):
-            raise GraphicsError("The window icon must be a string (path to .ico texture) or None, currently icon={}"
-                                .format(icon))
-        if not (isinstance(bkColour, Colour) or isinstance(bkColour, str) or bkColour is None):
-            raise GraphicsError("The window's background Colour (bkColour) must be a Colour or string referencing a" +
-                                "style colour")
-        if not isinstance(autoflush, bool):
-            raise GraphicsError("Auto-flush must be a boolean")
+            raise GraphicsError(f"\n\nThe window's title must be a string, not {title}")
+
         if not (isinstance(width, int) or isinstance(width, float)):
-            raise GraphicsError("The window's width must be a number (integer or float)")
+            raise GraphicsError(f"\n\nThe window's width must be a number (integer or float), not {width}")
+        if not width > 0:
+            raise GraphicsError(f"\n\nThe window's width must be greater than 0, not {width}")
         if not (isinstance(height, int) or isinstance(height, float)):
-            raise GraphicsError("The window's height must be a number (integer or float)")
-        if not isinstance(resizableWidth, bool):
-            raise GraphicsError("resizableWidth must be a boolean")
-        if not isinstance(resizableHeight, bool):
-            raise GraphicsError("resizableHeight must be a boolean")
-        if not isinstance(minWidth, int):
-            raise GraphicsError("The window's minimum width (minWidth) must be an integer")
-        if not isinstance(minHeight, int):
-            raise GraphicsError("The window's minimum height (minHeight) must be an integer")
+            raise GraphicsError(f"\n\nThe window's height must be a number (integer or float), not {height}")
+        if not height > 0:
+            raise GraphicsError(f"\n\nThe window's height must be greater than 0, not {height}")
+
         if not (isinstance(xPos, int) or isinstance(xPos, float)):
-            raise GraphicsError("The window x-position (xPos) must be an integer")
+            raise GraphicsError(f"\n\nThe window x-position (xPos) must be an integer, not {xPos}")
         if not (isinstance(yPos, int) or isinstance(yPos, float)):
-            raise GraphicsError("The window y-position (yPos) must be an integer")
+            raise GraphicsError(f"\n\nThe window y-position (yPos) must be an integer, not {yPos}")
+
+        if not (isinstance(bkColour, Colour) or isinstance(bkColour, str) or bkColour is None):
+            raise GraphicsError("The window's background Colour (bkColour) must be a Colour or string referencing a"
+                                f"style colour, not {bkColour}")
+        if icon is not None:
+            if not isinstance(icon, str):
+                raise GraphicsError("The window icon must be a string (path to .ico texture) or None, not {icon}")
+            if not os.isfile(f"textures/{icon}"):
+                raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
+                                    f"Check for spelling and make sure this is in the correct directory.")
+            if not icon.endswith(".ico"):
+                raise GraphicsError("The icon file must be a .ico type. "
+                                    "You can use an online converter to convert your file")
+
+        if not isinstance(autoflush, bool):
+            raise GraphicsError(f"\n\nAuto-flush must be a boolean, not {autoflush}")
+
+        if not isinstance(resizableWidth, bool):
+            raise GraphicsError(f"\n\nresizableWidth must be a boolean, not {resizableWidth}")
+        if not isinstance(resizableHeight, bool):
+            raise GraphicsError(f"\n\nresizableHeight must be a boolean, not {resizableHeight}")
+        if not isinstance(minWidth, int):
+            raise GraphicsError(f"\n\nThe window's minimum width (minWidth) must be an integer, not {minWidth}")
+        if not isinstance(minHeight, int):
+            raise GraphicsError(f"\n\nThe window's minimum height (minHeight) must be an integer, not {minHeight}")
+
         if not isinstance(cursor, str):
-            raise GraphicsError("The cursor must be a string")
+            raise GraphicsError(f"\n\nThe cursor must be a string, not {cursor}")
         if not cursor.lower() in CURSORS:
-            raise GraphicsError("The cursor for the window is not valid, must be one of {}".format(CURSORS))
+            raise GraphicsError(f"\n\nThe cursor for the window must be one of {CURSORS}, not {cursor}")
+
         if not isinstance(borderRelief, str):
-            raise GraphicsError("The border relief (borderRelief) must be a string")
+            raise GraphicsError(f"\n\nThe border relief (borderRelief) must be a string, not {borderRelief}")
         if not borderRelief.lower() in RELIEF:
-            raise GraphicsError("The relief for the window border is not valid, must be one of {}".format(RELIEF))
+            raise GraphicsError(f"\n\nThe relief for the window border must be one of {RELIEF}, not {borderRelief}")
         if not isinstance(borderWidth, int):
-            raise GraphicsError("The window's border Width must be an integer")
+            raise GraphicsError(f"\n\nThe window's border width must be an integer, not {borderWidth}")
 
         if style is None:
             style = globalStyle
         elif style not in STYLES.keys():
-            raise GraphicsError("The style you have specified ({}) is not valid. Must be one of {}".
-                                format(style, list(STYLES.keys())))
+            raise GraphicsError(f"\n\nThe style you have specified ({style}) is not valid. "
+                                f"Must be one of {list(STYLES.keys())}")
 
         if width < minWidth:
+            warning = f"\n\nWindow width ({width}) is less than window's minimum width ({minWidth}). " \
+                      f"Window minimum width has been set to {width}."
             minWidth = width
-            warning = "\n\nWindow width (width={}) is less than window's minimum width (minWidth={}. Window minimum width has been set to {})".format(
-                width, minWidth, width)
             warnings.warn(warning, GraphicsWarning)
 
         if height < minHeight:
+            warning = f"\n\nWindow height ({height}) is less than window's minimum height ({minHeight}). " \
+                      f"Window minimum height has been set to {height}."
             minHeight = height
-            warning = "\n\nWindow height (height={}) is less than window's minimum height (minHeight={}. Window minimum height has been set to {})".format(
-                height, minHeight, height)
             warnings.warn(warning, GraphicsWarning)
 
         master = tk.Toplevel(_root)
@@ -284,7 +299,7 @@ class GraphWin(tk.Canvas):
         self.cursor = cursor.lower()
 
         self.borderWidth = borderWidth
-        self.borderRelief = borderRelief
+        self.borderRelief = borderRelief.lower()
 
         self.setBackground(self.bkColour)
 
@@ -297,7 +312,7 @@ class GraphWin(tk.Canvas):
         self.center = Point(width / 2, height / 2)
 
         if icon is not None:
-            self.master.iconbitmap(icon)
+            self.master.iconbitmap(f"textures/{icon}")
 
         self.pack()
 
@@ -369,27 +384,37 @@ class GraphWin(tk.Canvas):
 
     def __checkOpen(self):
         if self.closed:
-            raise GraphicsError("window is closed")
+            raise GraphicsError("\n\nwindow is closed")
 
     def setMouseHandler(self, func):
         self._mouseCallback = func
 
+    # Returns the position of the window on the display of the computer
     def getPosition(self):
         return Point(self.master.winfo_rootx(), self.master.winfo_rooty())
 
+    # Sets the background colour of the window
     def setBackground(self, colour):
         """Set background Colour of the window"""
 
-        assert isinstance(colour, Colour), "The window's background Colour must be a Colour class"
+        if not isinstance(colour, Colour):
+            if colour in STYLES[self.style].keys():
+                self.bkColour = STYLES[self.style]["background"]
+            elif colour is None:
+                self.bkColour = STYLES["default"]["background"]
+        else:
+            self.bkColour = colour
 
-        self.bkColour = colour
         self.__checkOpen()
-        self.master.config(bg=colour)
+        self.master.config(bg=self.bkColour)
         self.__autoflush()
 
     def setBorderWidth(self, width):
 
-        assert isinstance(width, int), "The width argument must be an integer"
+        if not (isinstance(width, int) or isinstance(width, float)):
+            raise GraphicsError(f"\n\nThe window's border's width must be a number (integer or float), not {width}")
+        if not width > 0:
+            raise GraphicsError(f"\n\nThe window's border's width must be greater than 0, not {width}")
 
         self.borderWidth = width
         self.__checkOpen()
@@ -398,9 +423,10 @@ class GraphWin(tk.Canvas):
 
     def setBorderRelief(self, relief):
 
-        assert isinstance(relief, str), "The relief argument must be a string"
-        assert relief.lower() in RELIEF, "The relief for the window border is not valid, must be one of {}".format(
-            RELIEF)
+        if not isinstance(relief, str):
+            raise GraphicsError(f"\n\nThe border relief (relief) must be a string, not {relief}")
+        if not relief.lower() in RELIEF:
+            raise GraphicsError(f"\n\nThe relief for the window border must be one of {RELIEF}, not {relief}")
 
         self.borderRelief = relief
         self.__checkOpen()
@@ -409,8 +435,10 @@ class GraphWin(tk.Canvas):
 
     def setCursor(self, cursor):
 
-        assert isinstance(cursor, str), "The cursor argument must be a string"
-        assert cursor.lower() in CURSORS, "The cursor argument must be one of {}".format(CURSORS)
+        if not isinstance(cursor, str):
+            raise GraphicsError(f"\n\nThe cursor must be a string, not {cursor}")
+        if not cursor.lower() in CURSORS:
+            raise GraphicsError(f"\n\nThe cursor for the window must be one of {CURSORS}, not {cursor}")
 
         self.__checkOpen()
         self.cursor = cursor
@@ -419,25 +447,30 @@ class GraphWin(tk.Canvas):
 
     def setResizable(self, resizableWidth=True, resizableHeight=True):
         if not isinstance(resizableWidth, bool):
-            raise GraphicsError("resizableWidth must be a boolean")
+            raise GraphicsError(f"\n\nresizableWidth must be a boolean, not {resizableWidth}")
         if not isinstance(resizableHeight, bool):
-            raise GraphicsError("resizableHeight must be a boolean")
+            raise GraphicsError(f"\n\nresizableHeight must be a boolean, not {resizableHeight}")
 
         self.master.resizable(resizableWidth, resizableHeight)
 
     def setIcon(self, icon):
 
         if not isinstance(icon, str):
-            raise GraphicsError("Icon must be a string to the path of the .ico file")
+            raise GraphicsError("The window icon must be a string (path to .ico texture) or None, not {icon}")
+        if not os.isfile(f"textures/{icon}"):
+            raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
+                                    f"Check for spelling and make sure this is in the correct directory.")
+        if not icon.endswith(".ico"):
+            raise GraphicsError("The icon file must be a .ico type. "
+                                    "You can use an online converter to convert your file")
 
         self.__checkOpen()
         self.master.iconbitmap(icon)
         self.__autoflush()
 
     def setTitle(self, title):
-
         if not isinstance(title, str):
-            raise GraphicsError("Title argument in setTitle function must be a string")
+            raise GraphicsError(f"\n\nThe window's title must be a string, not {title}")
 
         self.title = title
         self.__checkOpen()
@@ -445,31 +478,34 @@ class GraphWin(tk.Canvas):
         self.__autoflush()
 
     def setWidth(self, width):
-
-        if not isinstance(width, int):
-            raise GraphicsError("Width argument must be an integer")
+        if not (isinstance(width, int) or isinstance(width, float)):
+            raise GraphicsError(f"\n\nThe window's width must be a number (integer or float), not {width}")
+        if not width > 0:
+            raise GraphicsError(f"\n\nThe window's width must be greater than 0, not {width}")
 
         if width < self.minWidth:
             self.minWidth = width
-            warning = "\n\nWindow width (width={}) is less than window's minimum width (minWidth={}. Window minimum width has been set to {})".format(
-                width, self.minWidth, width)
+            warning = f"\n\nWindow width ({width}) is less than window's minimum width ({self.minWidth}). " \
+                      f"Window minimum width has been set to {width}"
             warnings.warn(warning, GraphicsWarning)
 
             self.master.minsize(self.minWidth, self.minHeight)
 
         self.width = width
         self.__checkOpen()
-        self.master.config(width=width)
+        self.master.config(width=self.width)
         self.__autoflush()
 
     def setHeight(self, height):
-
-        if not isinstance(height, int):
-            raise GraphicsError("Height argument must be an integer")
+        if not (isinstance(height, int) or isinstance(height, float)):
+            raise GraphicsError(f"\n\nThe window's height must be a number (integer or float), not {height}")
+        if not height > 0:
+            raise GraphicsError(f"\n\nThe window's height must be greater than 0, not {height}")
 
         if height < self.minHeight:
             self.minHeight = height
-            warning = "\n\nWindow height (height={}) is less than window's minimum height (minHeight={}. Window minimum height has been set to {})".format(
+            warning = "\n\nWindow height (height={}) is less than window's minimum height (minHeight={}). " \
+                      "Window minimum height has been set to {}".format(
                 height, self.minHeight, height)
             warnings.warn(warning, GraphicsWarning)
 
@@ -481,9 +517,8 @@ class GraphWin(tk.Canvas):
         self.__autoflush()
 
     def setMinHeight(self, height):
-
         if not isinstance(height, int):
-            raise GraphicsError("Height argument must be an integer")
+            raise GraphicsError(f"\n\nThe window's minimum height (minHeight) must be an integer, not {height}")
 
         self.minHeight = height
         if height > self.height:
@@ -492,10 +527,11 @@ class GraphWin(tk.Canvas):
             warnings.warn(warning, GraphicsWarning)
             self.setHeight(height)
 
-    def setMinWidth(self, width):
+        self.master.minsize(self.minWidth, self.minHeight)
 
+    def setMinWidth(self, width):
         if not isinstance(width, int):
-            raise GraphicsError("Width argument must be an integer")
+            raise GraphicsError(f"\n\nThe window's minimum width (minWidth) must be an integer, not {width}")
 
         self.minWidth = width
         if width > self.width:
@@ -504,19 +540,13 @@ class GraphWin(tk.Canvas):
             warnings.warn(warning, GraphicsWarning)
             self.setWidth(width)
 
+        self.master.minsize(self.minWidth, self.minHeight)
+
     def setSize(self, width, height):
-        if not isinstance(height, int):
-            raise GraphicsError("Height argument must be an integer")
-        if not isinstance(width, int):
-            raise GraphicsError("Width argument must be an integer")
         self.setHeight(height)
         self.setWidth(width)
 
     def setMinSize(self, minWidth, minHeight):
-        if not isinstance(minHeight, int):
-            raise GraphicsError("Height argument must be an integer")
-        if not isinstance(minWidth, int):
-            raise GraphicsError("Width argument must be an integer")
         self.setMinHeight(minHeight)
         self.setMinWidth(minWidth)
 
@@ -525,7 +555,7 @@ class GraphWin(tk.Canvas):
         upper-left corner to (x2,y2) in the lower-right corner."""
         if not ((isinstance(x1, int) or isinstance(x1, float)) and (isinstance(y1, int) or isinstance(y1, float)) and
                 (isinstance(x2, int) or isinstance(x2, float)) and (isinstance(y2, int) or isinstance(y2, float))):
-            raise GraphicsError("Coordinate Arguments must be numbers (integers or floats)")
+            raise GraphicsError("\n\nCoordinate Arguments must be numbers (integers or floats)")
         self.trans = Transform(self.getWidth(), self.getHeight(), x1, y2, x2, y1)
         self.center = Point(abs((x2 - x1) / 2), abs((y2 - y1) / 2))
         self.redraw()
@@ -549,32 +579,22 @@ class GraphWin(tk.Canvas):
     def __autoflush(self):
         if self.autoflush:
             _root.update()
-            self.updateWin()
+            self.updateWin(_internalUpdating=True)
 
     def plot(self, x, y, colour=BLACK):
         """Set pixel (x,y) to the given Colour"""
 
         if not ((isinstance(x, int) or isinstance(x, float)) and (isinstance(y, int) or isinstance(y, float))):
-            raise GraphicsError("x & y position must be numbers (integers, or floats)")
-        if not (isinstance(colour, str) or isinstance(colour, Colour)):
-            raise GraphicsError("Colour argument must be either a string or Colour object type")
+            raise GraphicsError("\n\nx & y position must be numbers (integers, or floats)")
+        if not isinstance(colour, Colour):
+            if colour in STYLES[self.style].keys():
+                colour = STYLES[self.style]["background"]
+            elif colour is None:
+                colour = STYLES["default"]["background"]
 
         self.__checkOpen()
         xs, ys = self.toScreen(x, y)
         self.create_line(xs, ys, xs + 1, ys, fill=colour)
-        self.__autoflush()
-
-    def plotPixel(self, x, y, colour="black"):
-        """Set pixel raw (independent of window coordinates) pixel
-        (x,y) to Colour"""
-
-        if not (isinstance(x, int) and isinstance(y, int)):
-            raise GraphicsError("x & y position must be integers")
-        if not (isinstance(colour, str) or isinstance(colour, Colour)):
-            raise GraphicsError("Colour argument must be either a string or Colour object type")
-
-        self.__checkOpen()
-        self.create_line(x, y, x + 1, y, fill=colour)
         self.__autoflush()
 
     def flush(self):
@@ -582,7 +602,11 @@ class GraphWin(tk.Canvas):
         self.__checkOpen()
         self.update_idletasks()
 
-    def updateWin(self):
+    def updateWin(self, _internalUpdating=False):
+        if self.autoflush and not _internalUpdating:
+            warnings.warn("Updating the Graphics Object while autoflush is True might lead to issues, either let the "
+                          "window update automatically by setting autoflush to True or update it manually",
+                          GraphicsWarning)
         self.update()
 
         GraphicsObject._onUpdate(self)
@@ -932,7 +956,7 @@ class GraphWin(tk.Canvas):
     def checkKey(self, key):
         """Return last key pressed or None if no key pressed since last call"""
         if self.isClosed():
-            raise GraphicsError("checkKey in closed window")
+            raise GraphicsError("\n\ncheckKey in closed window")
 
         if keyboard.is_pressed(key):
             return True
@@ -1232,7 +1256,7 @@ class GraphicsObject:
         direction"""
 
         self._move(dx, dy)
-        if self.graphwin is not None:
+        if self.drawn:
             self.redraw()
         return self
 
@@ -1258,7 +1282,7 @@ class GraphicsObject:
 
     def glide(self, dx, dy, t, easing="Linear", args=None, frames="Frames"):
         if frames not in ["Time", "Frames"]:
-            raise GraphicsError("frames parameter must be either 'Time' or 'Frames' not '{}'".format(frames))
+            raise GraphicsError("\n\nframes parameter must be either 'Time' or 'Frames' not '{}'".format(frames))
 
         if len(self.glideQueue) == 0:
             lastT = time.time()
@@ -1304,7 +1328,7 @@ class GraphicsObject:
         # Raises an error if the option does not exist in the config
         #    dictionary for this object
         if option not in self.config:
-            raise GraphicsError(UNSUPPORTED_METHOD)
+            raise GraphicsError(f"\n\nThe config you have specified ({option}) is not valid for {self}")
         options = self.config
         options[option] = setting
         if self.graphwin and not self.graphwin.isClosed():
@@ -1536,16 +1560,25 @@ class GraphicsObject:
                                     dir1 = "right"
                                     dir2 = "left"
                                     if bound == "left":
-                                        if mousePos.x < obj.resizingAnchor.x + obj.resizingInitialSize[0] / 2:
+                                        if mousePos.x < obj.resizingAnchor.x + obj.resizingInitialSize[0] / 2 \
+                                                - obj.minWidth:
                                             w = obj.resizingAnchor.x - mousePos.x + obj.resizingInitialSize[0] / 2
+                                            obj.resizingBounds[dir2].moveToX(mousePos.x)
+                                        else:
+                                            w = obj.minWidth
+                                            obj.resizingBounds[dir2].moveToX(obj.p1.x)
 
                                     elif bound == "right":
                                         dir1, dir2 = dir2, dir1
-                                        if mousePos.x > obj.resizingAnchor.x - obj.resizingInitialSize[0] / 2:
+                                        if mousePos.x > obj.resizingAnchor.x - obj.resizingInitialSize[0] / 2 \
+                                                + obj.minWidth:
                                             w = mousePos.x - obj.resizingAnchor.x + obj.resizingInitialSize[0] / 2
+                                            obj.resizingBounds[dir2].moveToX(mousePos.x)
+                                        else:
+                                            w = obj.minWidth
+                                            obj.resizingBounds[dir2].moveToX(obj.p2.x)
 
                                     obj.setObjectWidth(w, dir1)
-                                    obj.resizingBounds[dir2].moveToX(mousePos.x)
 
                                     obj.resizingBounds["top"].setObjectWidth(w + obj.boundsThickness, dir1)
                                     obj.resizingBounds["bottom"].setObjectWidth(w + obj.boundsThickness, dir1)
@@ -1554,16 +1587,24 @@ class GraphicsObject:
                                     dir1 = "bottom"
                                     dir2 = "top"
                                     if bound == "top":
-                                        if mousePos.y < obj.resizingAnchor.y + obj.resizingInitialSize[1] / 2:
+                                        if mousePos.y < obj.resizingAnchor.y + obj.resizingInitialSize[1] / 2 \
+                                                - obj.minHeight:
                                             h = obj.resizingAnchor.y - mousePos.y + obj.resizingInitialSize[1] / 2
-
+                                            obj.resizingBounds[dir2].moveToY(mousePos.y)
+                                        else:
+                                            h = obj.minHeight
+                                            obj.resizingBounds[dir2].moveToY(obj.p1.y)
                                     else:
                                         dir1, dir2 = dir2, dir1
-                                        if mousePos.y > obj.resizingAnchor.y - obj.resizingInitialSize[1] / 2:
+                                        if mousePos.y > obj.resizingAnchor.y - obj.resizingInitialSize[1] / 2 \
+                                                + obj.minHeight:
                                             h = mousePos.y - obj.resizingAnchor.y + obj.resizingInitialSize[1] / 2
+                                            obj.resizingBounds[dir2].moveToY(mousePos.y)
+                                        else:
+                                            h = obj.minHeight
+                                            obj.resizingBounds[dir2].moveToY(obj.p2.y)
 
                                     obj.setObjectHeight(h, dir1)
-                                    obj.resizingBounds[dir2].moveToY(mousePos.y)
 
                                     obj.resizingBounds["left"].setObjectHeight(h + obj.boundsThickness, dir1)
                                     obj.resizingBounds["right"].setObjectHeight(h + obj.boundsThickness, dir1)
@@ -1588,7 +1629,7 @@ class Point:
     def __init__(self, x, y):
 
         if not ((isinstance(x, int) or isinstance(x, float)) and (isinstance(y, int) or isinstance(y, float))):
-            raise GraphicsError("x (x={}) & y (y={}) positions must be integers".format(x, y))
+            raise GraphicsError("\n\nx (x={}) & y (y={}) positions must be integers".format(x, y))
 
         self.x = float(x)
         self.y = float(y)
@@ -1615,17 +1656,17 @@ class Point:
     def distance(self, p2):
 
         if not isinstance(p2, Point):
-            raise GraphicsError("p2 argument for distance calculation must be a Point class")
+            raise GraphicsError("\n\np2 argument for distance calculation must be a Point class")
         return math.sqrt((p2.x - self.x) ** 2 + (p2.y - self.y) ** 2)
 
     def distanceX(self, p2):
         if not isinstance(p2, Point):
-            raise GraphicsError("p2 argument for distance calculation must be a Point class")
+            raise GraphicsError("\n\np2 argument for distance calculation must be a Point class")
         return p2.x - self.x
 
     def distanceY(self, p2):
         if not isinstance(p2, Point):
-            raise GraphicsError("p2 argument for distance calculation must be a Point class")
+            raise GraphicsError("\n\np2 argument for distance calculation must be a Point class")
         return p2.y - self.y
 
     def clone(self):
@@ -1672,7 +1713,7 @@ class _BBox(GraphicsObject):
                  outline=None, width=None, options=("fill", "outline", "width"), cursor="arrow", window=None):
 
         if not isinstance(bounds, _BBox) and bounds is not None:
-            raise GraphicsError("Bounds argument must be another Graphics Object (Rectangle, " +
+            raise GraphicsError("\n\nBounds argument must be another Graphics Object (Rectangle, " +
                                 "Rounded Rectangle, Circle, Line, or Oval), right now, bounds={}".format(bounds))
 
         self.p1 = p1.clone()
@@ -1711,12 +1752,12 @@ class _BBox(GraphicsObject):
             if isinstance(fill, str):
                 if fill not in STYLES[self.style]:
                     raise GraphicsError(
-                        "The fill argument (right now, fill='{}') must be inside the object's style ({}). One of: {}".
+                        "\n\nThe fill argument (right now, fill='{}') must be inside the object's style ({}). One of: {}".
                             format(fill, self.style, STYLES[self.style]))
                 self.setFill(STYLES[self.style][fill])
             else:
                 if not isinstance(fill, Colour):
-                    raise GraphicsError("The fill argument (right now, fill='{}') must either be a string or a Colour "
+                    raise GraphicsError("\n\nThe fill argument (right now, fill='{}') must either be a string or a Colour "
                                         "Class".format(fill))
 
                 self.setFill(fill)
@@ -1825,7 +1866,7 @@ class _BBox(GraphicsObject):
 
     def setObjectWidth(self, width, center="center"):
         if center not in ["center", "right", "left"]:
-            raise GraphicsError("The center argument for resizing the object (setObjectWidth) needs to be one of {}"
+            raise GraphicsError("\n\nThe center argument for resizing the object (setObjectWidth) needs to be one of {}"
                                 .format(["center", "right", "left"]))
 
         if center == "left":
@@ -1844,7 +1885,7 @@ class _BBox(GraphicsObject):
 
     def setObjectHeight(self, height, center="center"):
         if center not in ["center", "top", "bottom"]:
-            raise GraphicsError("The center argument for resizing the object (setObjectHeight) needs to be one of {}"
+            raise GraphicsError("\n\nThe center argument for resizing the object (setObjectHeight) needs to be one of {}"
                                 .format(["center", "top", "bottom"]))
 
         if center == "top":
@@ -1866,8 +1907,17 @@ class _BBox(GraphicsObject):
         self.setObjectHeight(height, heightCenter)
         return self
 
-    def setResizable(self, top=False, left=False, bottom=False, right=False, minWidth=40, minHeight=40, boundsWidth=10):
-        self._setResizable([top, bottom, left, right], thickness=boundsWidth)
+    def setResizable(self, top=False, left=False, bottom=False, right=False, minWidth=40, minHeight=40, boundsWidth=10,
+                     showBounds=False):
+
+        if minWidth < 1 or minHeight < 1:
+            raise GraphicsError(f"\n\nMinimum height and width of resizable object must be greater than or equal to 1. "
+                                f"Right now, minWidth={minWidth} & minHeight={minHeight}")
+
+        self.minWidth = minWidth
+        self.minHeight = minHeight
+
+        self._setResizable([top, bottom, left, right], thickness=boundsWidth, showBounds=showBounds)
         _BBox.resizingObjects.append(self)
         self.boundsThickness = boundsWidth
 
@@ -1898,7 +1948,7 @@ class Rectangle(_BBox):
     def __repr__(self):
         return "Rectangle({}, {})".format(str(self.p1), str(self.p2))
 
-    def _setResizable(self, resizables, thickness=10):
+    def _setResizable(self, resizables, thickness=10, showBounds=False):
         self.resizingBounds = {}
         if resizables[0]:
             self.resizingBounds["top"] = Rectangle(Point(self.p1.x - thickness / 2, self.p1.y - thickness / 2),
@@ -1919,7 +1969,8 @@ class Rectangle(_BBox):
 
         for obj in self.resizingBounds.values():
             obj.graphwin = self.graphwin
-            obj.draw(self.graphwin)
+            if showBounds:
+                obj.draw(self.graphwin)
 
     def _draw(self, canvas, options):
         p1 = self.p1
@@ -1943,6 +1994,8 @@ class Rectangle(_BBox):
             return self.equation.isClicked(mousePos)
         else:
             return self.bounds.isClicked(mousePos)
+
+    def roundRectangle(self):
 
     def _update(self):
         self.equation = VectorEquation("abs((x - {})/{} + (y - {})/{}) + abs((x - {})/{} - (y - {})/{}) < 2".
@@ -2141,7 +2194,7 @@ class Line(_BBox):
 
     def setArrow(self, option):
         if option.lower() not in ["first", "last", "both", "none"]:
-            raise GraphicsError(BAD_OPTION)
+            raise GraphicsError("\n\nArrow option for line must be one of ['first', 'last', 'both', 'none']")
         self._reconfig("arrow", option)
 
     def removeArrows(self):
@@ -2203,7 +2256,7 @@ class Polygon(GraphicsObject):
             args.append(x)
             args.append(y)
         args.append(options)
-        return GraphWin.create_polygon(*args, smooth=True)
+        return canvas.create_polygon(*args, smooth=True)
 
 
 class Text(GraphicsObject):
@@ -2333,7 +2386,7 @@ class Text(GraphicsObject):
             f, s, b = self.config['font']
             self._reconfig("font", (f, s, style))
         else:
-            raise GraphicsError(BAD_OPTION)
+            raise GraphicsError("Text stlye must be one of ['bold', 'normal', 'italic', 'bold italic']")
 
     def setTextColour(self, Colour):
         self.setFill(Colour)
@@ -2476,7 +2529,7 @@ class Entry(GraphicsObject):
 
     def setActive(self, active):
         if active not in ["normal", "disabled", "readonly"]:
-            raise GraphicsError("State must be either normal, disabled or readonly")
+            raise GraphicsError("\n\nState must be either normal, disabled or readonly")
         self.active = active
         if self.entry:
             self.entry.config(state=self.active)
@@ -2556,7 +2609,8 @@ class Entry(GraphicsObject):
 
     def setBorderType(self, border):
         if border not in ["flat", "groove", "raised", "ridge", "solid", "sunken"]:
-            raise GraphicsError("border type must be flat, groove, raised, ridge, solid, or sunken")
+            raise GraphicsError("\n\nBorder type must be one of "
+                                "['flat', 'groove', 'raised', 'ridge', 'solid', 'sunken']")
         if self.entry:
             self.borderType = border
             self.entry.config(relief=border)
@@ -2586,7 +2640,7 @@ class Image(GraphicsObject):
         self.anchor = p.clone()
 
         if align not in ["center", "bottom", "top", "left", "right"]:
-            raise GraphicsError(f"Image align must be one of center, bottom, top, left, or right, not {align}")
+            raise GraphicsError(f"\n\nImage align must be one of center, bottom, top, left, or right, not {align}")
 
         self.x = self.anchor.x
         self.y = self.anchor.y
@@ -2862,122 +2916,6 @@ class Image(GraphicsObject):
         return self
 
 
-class Image_depr(GraphicsObject):
-    idCount = 0
-    imageCache = {}  # tk photo images go here to avoid GC while drawn
-
-    def __init__(self, p, *pixmap, graphwin=None, rotation=0):
-
-        GraphicsObject.__init__(self, [])
-        self.anchor = p.clone()
-        self.imageId = Image.idCount
-        Image.idCount = Image.idCount + 1
-
-        self.texture = "textures/{}".format(pixmap[0])
-
-        self.x = p.x
-        self.y = p.y
-        self.graphwin = graphwin
-        self.pixmap = pixmap
-
-        if len(pixmap) == 1:  # file name provided
-            self.img = tk.PhotoImage(file=resource_path("textures/{}".format(pixmap[0])), master=_root)
-        else:  # width and height provided
-            width, height = pixmap
-            self.img = tk.PhotoImage(master=_root, width=width, height=height)
-
-    def __repr__(self):
-        return "Image({}, {})".format(self.anchor, self.texture)
-
-    def _draw(self, canvas, options):
-        p = self.anchor
-        self.graphwin = canvas
-        x, y = canvas.toScreen(p.x, p.y)
-        self.imageCache[self.imageId] = self.img  # save a reference
-        return canvas.create_image(x, y, image=self.img)
-
-    def _move(self, dx, dy):
-        self.anchor.x += dx
-        self.anchor.y += dy
-
-    def moveTo(self, x, y):
-        self.move(x - self.x, y - self.y)
-
-    def undraw(self):
-        try:
-            del self.imageCache[self.imageId]  # allow gc of tk photo image
-        except KeyError:
-            pass
-        GraphicsObject.undraw(self)
-
-    def getAnchor(self):
-        return self.anchor.clone()
-
-    def clone(self):
-        other = Image(Point(0, 0), 0, 0)
-        other.img = self.img.copy()
-        other.anchor = self.anchor.clone()
-        other.config = self.config.copy()
-        return other
-
-    def getWidth(self):
-        """Returns the width of the image in pixels"""
-        return self.img.width()
-
-    def getHeight(self):
-        """Returns the height of the image in pixels"""
-        return self.img.height()
-
-    def getPixel(self, x, y):
-        """Returns a list [r,g,b] with the RGB Colour values for pixel (x,y)
-        r,g,b are in range(256)
-
-        """
-
-        value = self.img.get(x, y)
-        if type(value) == type(0):
-            return [value, value, value]
-        elif type(value) == type((0, 0, 0)):
-            return list(value)
-        else:
-            return list(map(int, value.split()))
-
-    def setPixel(self, x, y, Colour):
-        """Sets pixel (x,y) to the given Colour
-
-        """
-        self.img.put("{" + Colour + "}", (x, y))
-
-    def save(self, filename):
-        """Saves the pixmap image to filename.
-        The format for the save image is determined from the filname extension.
-
-        """
-
-        path, name = os.path.split(filename)
-        ext = name.split(".")[-1]
-        self.img.write(filename, format=ext)
-
-    def isClicked(self, mousePos):
-        if mousePos is not None:
-            if (self.x - self.img.width() / 2 < mousePos.x < self.x + self.img.width() / 2) and (
-                    self.y - self.img.height() / 2 < mousePos.y < self.y + self.img.height() / 2):
-                return True
-            else:
-                return False
-
-    def resize(self, scale):
-        self.img = self.img.subsample(scale)
-        return self
-
-    def zoom(self, scale):
-        self.img = self.img.zoom(scale)
-        return self
-
-    def flip(self):
-        self.img = self.img.subsample(-1)
-
-
 class Button:
     buttons = []
 
@@ -3003,7 +2941,7 @@ class Button:
 
         if not (isinstance(self.graphicNormal, GraphicsObject) and isinstance(self.graphicClicked, GraphicsObject)
                 and isinstance(self.graphicDisabled, GraphicsObject) and isinstance(self.graphicHover, GraphicsObject)):
-            raise GraphicsError("The graphics all have to be Graphic Objects")
+            raise GraphicsError("\n\nThe graphics all have to be Graphic Objects")
 
         self.graphic = self.graphicNormal
 
@@ -3263,7 +3201,7 @@ class CycleButton:
 
         for obj in states:
             if not isinstance(obj, GraphicsObject):
-                raise GraphicsError("The states must all be Graphic Objects")
+                raise GraphicsError("\n\nThe states must all be Graphic Objects")
 
         self.graphwin = None
         self.graphic = states[state]
@@ -3278,16 +3216,16 @@ class CycleButton:
 
     def remove(self, state):
         if state not in self.states:
-            raise GraphicsError("The state to remove is not an existing state of this cycle button")
+            raise GraphicsError("\n\nThe state to remove is not an existing state of this cycle button")
 
         self.states.remove(state)
 
     def pop(self, index):
         if index < 0:
-            raise GraphicsError("The given index is a negative number")
+            raise GraphicsError("\n\nThe given index is a negative number")
 
         elif index > len(self.states) - 1:
-            raise GraphicsError("The specified index cannot be removed as it does not exist")
+            raise GraphicsError("\n\nThe specified index cannot be removed as it does not exist")
 
         self.states.pop(index)
 
@@ -3331,7 +3269,7 @@ class SlideBar:
         self.state = value - minimum
 
         if not self.range[1] > value > self.range[0]:
-            raise GraphicsError(f"Slide Bar value must between min/max values: {minimum} < value ({value}) < {maximum}")
+            raise GraphicsError(f"\n\nSlide Bar value must between min/max values: {minimum} < value ({value}) < {maximum}")
 
         self.anchor = p.clone()
 
@@ -3341,7 +3279,7 @@ class SlideBar:
         if self.minimum > self.maximum:
             self.minimum, self.maximum = self.maximum, self.minimum
         elif self.minimum == self.maximum:
-            raise GraphicsError("Minimum and Maximum value cannot be the same")
+            raise GraphicsError("\n\nMinimum and Maximum value cannot be the same")
 
         if orientation == "vertical":
             self.p1 = Point(self.anchor.x, self.anchor.y - length / 2)
@@ -3436,7 +3374,7 @@ class SlideBar:
     def setValue(self, value):
         if value < self.minimum or value > self.maximum:
             raise GraphicsError(
-                f"Value to set the Slider Bar must be within {self.minimum} and {self.maximum} not {value}")
+                f"\n\nValue to set the Slider Bar must be within {self.minimum} and {self.maximum} not {value}")
         self.state = value
         try:
             self.redraw()
