@@ -31,7 +31,7 @@ import goopy as gp
 
 There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written document, however, there is not such documentation right now.
 
-### Example
+### Examples
 
 Here are a few examples to get you started with the library: 
 
