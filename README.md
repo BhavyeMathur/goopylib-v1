@@ -131,7 +131,7 @@ draw an object with 1 line of code
 * Fixed bug with isClicked() function that didn't work when x1 > x2 or y1 > y2
 * Added more Fonts
 
-# v6-dev 15/7/2019
+### v6-dev 15/7/2019
 * added moveTo() function for all graphics objects to specify x & y variables rather than dx & dy
 * added more parameters for classes to customize them during creation rather than using multiple functions
 * Defined multiple variables containing colour information to use when colouring object
