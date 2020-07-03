@@ -38,4 +38,86 @@ There are plans to create a detailed documentation for this library both in the 
 
 ## Version History
 
+### v6.10-dev
 
+* Points are no longer graphic objects
+* Custom Support for Cursors on the GraphWin & _BBox classes
+* Added support for colour palettes and added 3 style: default, pycharm darcula, and intellij
+* Added Assertions to the graphics objects to give better error statements
+* Added Config functions for all configurations for the Graphics Window class
+* Added circular and ovular bounding boxes
+* Added setObjectWidth & Height functions as well as _BBox object resizing functions
+* Bounding boxes are now represented by graphics objects (_BBox objects)
+* Fixed bugs with using the mouseEvent functions returning None value and added the refresh argument
+* Fixed Bug with Graphics Objects resizing when resizing the window
+* Fixed bug with background not filling colour of the entire region of window (not only the seen region)
+* Tested the graphics window class
+* Organized code in the GraphWin
+* More colour definitions!
+* ColourHex, ColourCMYK, and ColourRGB classes added
+
+* Changed Version History dates from mm/dd/yyyy to dd/mm/yyyy
+
+### v6.9-dev 31/5/2020
+* Added argument assert statements to the Graphics Window class
+* Added a colour class
+* Changed all references of 'Color' to 'Colour'
+
+### v6.8 17/5/2020
+* Added a window parameter to every Graphics Class that allows the user to draw the window in the class declaration
+* Added more functions to set the Arrow of a line
+* You can now set the arrow of a line inside the __init__ function
+* Removed all the sound functions
+* Added TODOs
+
+### v6.7-dev 25/4/2020
+* The Image Object now uses the Pillow (PIL) library which gives the user far more ways to manipulate the object
+* Added the ImageGrp class to Group Images together
+* Added RadioButtons, & CycleButtons
+* New & Improved functions to the GraphWin including the ability to resize the window!
+* Added Glide & GlideTo functions with easing to animate objects!
+
+### v6.6-dev 24/11/2019
+* Added a few more colour definitions
+* Image scaling functions (zoom & resize) now return the image class & don't require the image to have been drawn
+* Added ButtonPressed attributes to the GraphWin class to have more variety in mouse events
+* Added a moveTo function for BBox classes
+* Made the CheckBox class much easier to work with
+* Various bug fixes
+
+### v6.5-dev 16/9/2019
+* Added Right, Left and Middle click events to the GraphWin class
+* Changed GraphWin getKey() and checkKey() functions to use the keyboard library instead of tkinter
+* Added checkForKeys() function to GraphWin to check for Multiple keys at once
+* Added attribute setting functions for SlideBar class
+* Fixed bug of SlideBar class not functioning when p1.(x or y) > p2.(x or y) - x or y depending on orientation
+
+* Added isClicked() function for points and lines
+* Added isSelected() function for all GraphicObject children Classes
+* Added enabled, disabled and read only states to Entry Class and added many more functions
+
+* GraphicsObject objects now return themselves when the draw() function is called to allow the user to create and
+draw an object with 1 line of code
+* Added playSound function which plays music
+
+### v6.2-dev 12/9/2019
+* Fixed Bug of Line class not drawing due to error
+* Fixed Bug of the Graphics Objects' undraw() function not undrawing
+* Added SlideBar class
+* Added a function to get the Mouse Scroll value to graphwin
+* Removed restrictions on text fonts and size allowing user to use whatever values they want
+* Added a very basic rectangular Button class
+
+### v6.1-dev 29/8/2019
+* Checkboxes added as a class
+* Button class added
+* Fixed bug with isClicked() function that didn't work when x1 > x2 or y1 > y2
+* Added more Fonts
+
+# v6-dev 15/7/2019
+* added moveTo() function for all graphics objects to specify x & y variables rather than dx & dy
+* added more parameters for classes to customize them during creation rather than using multiple functions
+* Defined multiple variables containing colour information to use when colouring object
+* added more fonts for text objects to use
+* Implemented a new error for missing values
+* Added isClicked() function for Image and BBox objects
