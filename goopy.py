@@ -1927,7 +1927,7 @@ class _BBox(GraphicsObject):
 class Rectangle(_BBox):
 
     def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, width=None,
-                 cursor="arrow", window=None):
+                 cursor="arrow", isRounded=False, cornerSharpness=5, window=None):
         _BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, width=width,
                        style=style, cursor=cursor, window=window)
 
@@ -1935,15 +1935,9 @@ class Rectangle(_BBox):
                                        format(self.anchor.x, self.width / 2, self.anchor.y, self.height / 2,
                                               self.anchor.x,
                                               self.width / 2, self.anchor.y, self.height / 2))
-
-        """
-        self.equation = VectorEquation("(abs((x - {})/{} + (y - {})/{}) + abs((x - {})/{} - (y - {})/{}) < 2) and not "
-                                       "(abs((x - {})/(0.5*{}) + (y - {})/(0.5*{})) + abs((x - {})/(0.5*{}) - (y - {})/(0.5*{})) < 2)".
-                                       format(self.anchor.x, self.width/2, self.anchor.y, self.height/2, self.anchor.x,
-                                              self.width/2, self.anchor.y, self.height/2,
-
-                                              self.anchor.x, self.width/2, self.anchor.y, self.height/2, self.anchor.x,
-                                              self.width/2, self.anchor.y, self.height/2))"""
+        self.points = [self.p1.x, self.p1.y, self.p1.x, self.p2.y, self.p2.x, self.p2.y, self.p2.x, self.p1.y]
+        self.isRounded = isRounded
+        self.sharpness = cornerSharpness  # Usually values between 2 & 10 work well.
 
     def __repr__(self):
         return "Rectangle({}, {})".format(str(self.p1), str(self.p2))
@@ -1973,16 +1967,60 @@ class Rectangle(_BBox):
                 obj.draw(self.graphwin)
 
     def _draw(self, canvas, options):
-        p1 = self.p1
-        p2 = self.p2
+        points = self.points.copy()
+        for point in range(len(self.points[::2])):
+            points[point * 2], points[point * 2 + 1] = canvas.toScreen(points[point * 2],  points[point * 2 + 1])
 
-        x1, y1 = canvas.toScreen(p1.x, p1.y)
-        x2, y2 = canvas.toScreen(p2.x, p2.y)
+        # Code modified from Francisco Gomes, https://stackoverflow.com/users/9139005/francisco-gomes
+
+        # The sharpness here is just how close the sub-points
+        # are going to be to the vertex. The more the sharpness,
+        # the more the sub-points will be closer to the vertex.
+        # (This is not normalized)
+
+        x = points[::2]
+        y = points[1::2]
+
+        # Rounding code from Francisco Gomes,
+        # https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
+        if self.isRounded:
+            if self.sharpness < 2:
+                self.sharpness = 2
+
+            ratioMultiplier = self.sharpness - 1
+            ratioDividend = self.sharpness
+
+            # Array to store the points
+            points = []
+
+            # Iterate over the x points
+            for i in range(len(x)):
+                # Set vertex
+                points.append(x[i])
+                points.append(y[i])
+
+                # If it's not the last point
+                if i != (len(x) - 1):
+                    # Insert submultiples points. The higher the sharpness, the more these points will be
+                    # closer to the vertex.
+                    points.append((ratioMultiplier * x[i] + x[i + 1]) / ratioDividend)
+                    points.append((ratioMultiplier * y[i] + y[i + 1]) / ratioDividend)
+                    points.append((ratioMultiplier * x[i + 1] + x[i]) / ratioDividend)
+                    points.append((ratioMultiplier * y[i + 1] + y[i]) / ratioDividend)
+                else:
+                    # Insert submultiples points.
+                    points.append((ratioMultiplier * x[i] + x[0]) / ratioDividend)
+                    points.append((ratioMultiplier * y[i] + y[0]) / ratioDividend)
+                    points.append((ratioMultiplier * x[0] + x[i]) / ratioDividend)
+                    points.append((ratioMultiplier * y[0] + y[i]) / ratioDividend)
+                    # Close the polygon
+                    points.append(x[0])
+                    points.append(y[0])
 
         for obj in self.resizingBounds.values():
             obj.graphwin = self.graphwin
 
-        return canvas.create_rectangle(x1, y1, x2, y2, options)
+        return canvas.create_polygon(points, options, smooth=self.isRounded)
 
     def clone(self):
         other = Rectangle(self.p1, self.p2)
@@ -1995,52 +2033,12 @@ class Rectangle(_BBox):
         else:
             return self.bounds.isClicked(mousePos)
 
-    def roundRectangle(self):
-
     def _update(self):
         self.equation = VectorEquation("abs((x - {})/{} + (y - {})/{}) + abs((x - {})/{} - (y - {})/{}) < 2".
                                        format(self.anchor.x, self.width / 2, self.anchor.y, self.height / 2,
                                               self.anchor.x,
                                               self.width / 2, self.anchor.y, self.height / 2))
-
-
-class RoundedRectangle(_BBox):
-
-    def __init__(self, p1, p2, radius, bounds=None, style=None, fill=None, outline=None,
-                 width=None, cursor="arrow", window=None):
-        self.p1 = p1
-        self.p2 = p2
-
-        self.points = [Point(p1.x + radius, p1.y),
-                       Point(p1.x + radius, p1.y),
-                       Point(p2.x - radius, p1.y),
-                       Point(p2.x - radius, p1.y),
-                       Point(p2.x, p1.y),
-                       Point(p2.x, p1.y + radius),
-                       Point(p2.x, p1.y + radius),
-                       Point(p2.x, p2.y - radius),
-                       Point(p2.x, p2.y - radius),
-                       Point(p2.x, p2.y),
-                       Point(p2.x - radius, p2.y),
-                       Point(p2.x - radius, p2.y),
-                       Point(p1.x + radius, p2.y),
-                       Point(p1.x + radius, p2.y),
-                       Point(p1.x, p2.y),
-                       Point(p1.x, p2.y - radius),
-                       Point(p1.x, p2.y - radius),
-                       Point(p1.x, p1.y + radius),
-                       Point(p1.x, p1.y + radius),
-                       Point(p1.x, p1.y)]
-        self.graphic = Polygon(self.points)
-
-        _BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, width=width, cursor=cursor,
-                       window=window)
-
-    def _draw(self, canvas, options):
-        self.graphic.draw(canvas)
-
-    def undraw(self):
-        self.graphic.undraw()
+        self.points = [self.p1.x, self.p1.y, self.p1.x, self.p2.y, self.p2.x, self.p2.y, self.p2.x, self.p1.y]
 
 
 class Oval(_BBox):
@@ -2212,13 +2210,18 @@ class Line(_BBox):
 
 class Polygon(GraphicsObject):
 
-    def __init__(self, *points, style=None, fill=None, outline=None, width=None, window=None):
+    def __init__(self, *points, style=None, fill=None, outline=None, width=None, isRounded=False, roundSharpness=5,
+                 window=None):
 
         # if points passed as a list, extract it
         if len(points) == 1 and isinstance(points[0], list):
             points = points[0]
             points = points[0]
         self.points = list(map(Point.clone, points))
+        self.isRounded = isRounded
+
+        self.sharpness = roundSharpness
+
         GraphicsObject.__init__(self, style=style, options=["outline", "width", "fill"], window=window)
 
     def __repr__(self):
@@ -2231,6 +2234,9 @@ class Polygon(GraphicsObject):
 
     def getPoints(self):
         return list(map(Point.clone, self.points))
+
+    def isClicked(self, mousePos):
+        return False
 
     def _move(self, dx, dy):
         for p in self.points:
@@ -2250,13 +2256,58 @@ class Polygon(GraphicsObject):
         return Point(x, y)
 
     def _draw(self, canvas, options):
-        args = [canvas]
+        points = []
         for p in self.points:
             x, y = canvas.toScreen(p.x, p.y)
-            args.append(x)
-            args.append(y)
-        args.append(options)
-        return canvas.create_polygon(*args, smooth=True)
+            points.append(x)
+            points.append(y)
+
+        # Code modified from Francisco Gomes, https://stackoverflow.com/users/9139005/francisco-gomes
+
+        # The sharpness here is just how close the sub-points
+        # are going to be to the vertex. The more the sharpness,
+        # the more the sub-points will be closer to the vertex.
+        # (This is not normalized)
+        x = points[::2]
+        y = points[1::2]
+
+        # Rounding code from Francisco Gomes,
+        # https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
+        if self.isRounded:
+            if self.sharpness < 2:
+                self.sharpness = 2
+
+            ratioMultiplier = self.sharpness - 1
+            ratioDividend = self.sharpness
+
+            # Array to store the points
+            points = []
+
+            # Iterate over the x points
+            for i in range(len(x)):
+                # Set vertex
+                points.append(x[i])
+                points.append(y[i])
+
+                # If it's not the last point
+                if i != (len(x) - 1):
+                    # Insert submultiples points. The higher the sharpness, the more these points will be
+                    # closer to the vertex.
+                    points.append((ratioMultiplier * x[i] + x[i + 1]) / ratioDividend)
+                    points.append((ratioMultiplier * y[i] + y[i + 1]) / ratioDividend)
+                    points.append((ratioMultiplier * x[i + 1] + x[i]) / ratioDividend)
+                    points.append((ratioMultiplier * y[i + 1] + y[i]) / ratioDividend)
+                else:
+                    # Insert submultiples points.
+                    points.append((ratioMultiplier * x[i] + x[0]) / ratioDividend)
+                    points.append((ratioMultiplier * y[i] + y[0]) / ratioDividend)
+                    points.append((ratioMultiplier * x[0] + x[i]) / ratioDividend)
+                    points.append((ratioMultiplier * y[0] + y[i]) / ratioDividend)
+                    # Close the polygon
+                    points.append(x[0])
+                    points.append(y[0])
+
+        return canvas.create_polygon(points,  options, smooth=self.isRounded)
 
 
 class Text(GraphicsObject):
