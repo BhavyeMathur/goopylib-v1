@@ -9,7 +9,33 @@ If you would want to contribute to this library by suggesting features, reportin
 
 If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com
 
-# Contributions
+### Installation
+
+This library is very simple to use, all you need is the file called 'goopy.py' and the requirements mentioned in the requirement.txt file. These include the Pillow (PIL) and the keyboard modules which you can download individually or clone this repository and in that directory execute:
+
+```sh
+python3 -m pip install -r requirements.txt
+```
+
+Now, wherever you need access to the library, simply import as so:
+
+```python
+
+from goopy import *
+# or
+import goopy as gp
+
+```
+
+### Documentation
+
+There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written document, however, there is not such documentation right now.
+
+## Contributions
 
 1. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
 2. John Zelle - Creating the graphics.py package which formed the basis for my library.
+
+## Version History
+
+
