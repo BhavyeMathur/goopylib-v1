@@ -1,9 +1,9 @@
 # Goopy
 
 ## Introduction
-A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.
+Goopy is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.
 
-This graphics library is built upon John Zelle's graphics.py package for use with his textbook "Python Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add more featurs to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case. Thus, this is a very intuitive and simple to use package with the potential of growing into one of the best Python Graphics Libraries. 
+This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add more featurs to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case. Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python Graphics Libraries. 
 
 If you would want to contribute to this library by suggesting features, reporting bugs, or adding changes yourself, please do so. I would love it if you would use this library in your projects and do make sure to tell me about them! Right now, this is very much an alpha stage - there are many bugs, many features that aren't compatible with each other, and a ton of things to do differently, but hopefully this can all be fixed with future releases. 
 
@@ -33,11 +33,12 @@ There are plans to create a detailed documentation for this library both in the 
 
 ### Example
 
+Here are a few examples to get you started with the library: 
+
 This code creates a simple window and draws an image on it. Then it checks whether the image has been clicked. 
 
 ```python
-from goopy import *
-
+# Autoflush controls whether or not the window updates automatically
 window = GraphWin(title="Example Program", width=800, height=800, autoflush=False)
 
 # The img_path should be replaced with the image name and it should be placed in a folder called 'textures'. 
@@ -52,6 +53,25 @@ while True:
   window.updateWin() # Updates the window
 
 ```
+
+The library comes built with widgets like buttons that can be entirely customized to what you want. Let's say we wanted to create a button and just to make it look good, we will slightly increase the size of the button when we hover over it. Make sure you have a window created as shown in the previous example. 
+
+```python
+
+testButton = Button(Image(Point(400, 400), "Button.png")  # The first argument is the graphic of the button, this can be any Graphics Object
+                    Image(Point(400, 400), "Button.png").resizeFactor(1.05)).draw(window)  # The second argument is the graphic to display when hovering
+                    #here, we take the same image and resize it by a factor of 105% (1.05)
+                    
+while True:
+  mousePos = window.checkLeftMouseClick() # Checks if the mouse has been clicked and gets the location of the click
+  if button.isClicked(mousePos):
+    print("Button has been clicked")
+  
+  window.updateWin()  # Updates the window   
+  update(24)  # Update at a rate of 24 FPS
+
+```
+
 
 ## Contributions
 
