@@ -36,6 +36,8 @@ There are plans to create a detailed documentation for this library both in the 
 This code creates a simple window and draws an image on it. Then it checks whether the image has been clicked. 
 
 ```python
+from goopy import *
+
 window = GraphWin(title="Example Program", width=800, height=800, autoflush=False)
 
 # The img_path should be replaced with the image name and it should be placed in a folder called 'textures'. 
