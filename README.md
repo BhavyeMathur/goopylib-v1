@@ -38,6 +38,22 @@ There are plans to create a detailed documentation for this library both in the 
 
 ## Version History
 
+### v6.11-dev
+
+#### 6.11.0 20w27a
+
+* Removed the Image_depr class which was used as a backup until the new class using the Pillow library was created
+* Removed the ToDos, Version History, and Introduction from Goop.py and moved it to the README file
+
+* Closed issue regarding adding new colour formats after adding Hex & CMYK support in v6.10
+
+* Warning added to warn the user if they are both calling the updateWin() function manually and the autoflush of the GraphWin is set to True
+* While resizing a rectangle, you can set the min. width & height beyond which, the rectangle cannot be resized 
+* A GraphicsError is now raised if the minWidth & minHeight arguments of the setResizable() function are < 1
+
+* Added Errors to the setStyle() function & GraphWin class to make sure the user has entered the correct arguments
+
+
 ### v6.10-dev
 
 * Points are no longer graphic objects
