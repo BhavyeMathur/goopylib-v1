@@ -52,6 +52,9 @@ There are plans to create a detailed documentation for this library both in the 
 * While resizing a rectangle, you can set the min. width & height beyond which, the rectangle cannot be resized 
 * A GraphicsError is now raised if the minWidth & minHeight arguments of the setResizable() function are < 1
 
+* The Rectangle class now draws a rectangle using a polygon rather than directly to allow for rounded edges
+* Removed the RoundedRectangle class and built its functionality into the Rectangle class
+
 * Added Errors to the setStyle() function & GraphWin class to make sure the user has entered the correct arguments
 
 
