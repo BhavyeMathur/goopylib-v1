@@ -31,6 +31,26 @@ import goopy as gp
 
 There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written document, however, there is not such documentation right now.
 
+### Example
+
+This code creates a simple window and draws an image on it. Then it checks whether the image has been clicked. 
+
+```python
+window = GraphWin(title="Example Program", width=800, height=800, autoflush=False)
+
+# The img_path should be replaced with the image name and it should be placed in a folder called 'textures'. 
+# If the image path is "textures/Img.png", replace img_path with "Img.png"
+img = Image(Point(400, 400), "img_path.png").draw(window)  # Drawing the Image in the center (400, 400). 
+
+while True:
+  mousePos = window.checkLeftMouseClick() # Checks if the mouse has been clicked and gets the location of the click
+  if img.isClicked(mousePos):
+    print("Image has been clicked")
+  
+  window.updateWin() # Updates the window
+
+```
+
 ## Contributions
 
 1. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
