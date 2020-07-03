@@ -28,12 +28,6 @@ class GraphicsError(Exception):
 class GraphicsWarning(Warning):
     pass
 
-
-OBJ_ALREADY_DRAWN = "Object currently drawn"
-UNSUPPORTED_METHOD = "Object doesn't support operation"
-BAD_OPTION = "Illegal option value"
-MISSING_VALUE = "Missing value required for Object"
-
 # For the list of cursors and thumbnails visit: https://anzeljg.github.io/rin2/book2/2405/docs/tkinter/cursors.html
 CURSORS = ["arrow", "based_arrow_down", "based_arrow_up", "boat", "bogosity", "bottom_left_corner",
            "bottom_right_corner", "bottom_side", "bottom_tee", "box_spiral", "center_ptr", "circle", "clock",
