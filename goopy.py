@@ -14,331 +14,11 @@ from PIL import ImageFont
 
 import sys
 
-"""
-Dependencies:
-
-keyboard (will be replaced soon for Mac OSX Support)
-PIL (pillow)
-fonts
-
-"""
-
 # Done to get rid of bug with Image PIL
 if "tkinter" not in sys.modules:
     import tkinter as tk
 
-"""Simple object oriented graphics library
-
-The library is designed to make it very easy for novice programmers to
-experiment with computer graphics in an object oriented fashion. It is
-written by John Zelle for use with the book "Python Programming: An
-Introduction to Computer Science" (Franklin, Beedle & Associates).
-
-The library was further edited by Bhavye Mathur to add more graphic types
- and more functions to allow the user to perform many more operations
- easily.
-
-LICENSE: This is open-source software released under the terms of the
-GPL (http://www.gnu.org/licenses/gpl.html).
-
-PLATFORMS: The package is a wrapper around Tkinter and should run on
-any platform where Tkinter is available.
-
-INSTALLATION: Put this file somewhere where Python can see it.
-
-OVERVIEW: There are two kinds of objects in the library. The GraphWin
-class implements a window where drawing can be done and various
-GraphicsObjects are provided that can be drawn into a GraphWin. As a
-simple example, here is a complete program to draw a circle of radius
-10 centered in a 100x100 window:
-
---------------------------------------------------------------------
-from graphics import *
-
-def main():
-    win = GraphWin("My Circle", 100, 100)
-    c = Circle(Point(50,50), 10)
-    c.draw(win)
-    win.getMouse() # Pause to view result
-    win.close()    # Close window when done
-
-main()
---------------------------------------------------------------------
-GraphWin objects support coordinate transformation through the
-setCoords method and mouse and keyboard interaction methods.
-
-The library provides the following graphical objects:
-    Point
-    Line
-    Circle
-    Oval
-    Rectangle
-    Polygon
-    Text
-    Entry (for text-based input)
-    Image
-
-These classes utilize the classes above to create easier usage for specific tasks
-Added by Bhavye Mathur:
-
-    SlideBar
-    Button
-    Checkbox
-
-Various attributes of graphical objects can be set such as
-outline-Colour, fill-Colour and line-width. Graphical objects also
-support moving and hiding for animation effects.
-
-These graphic objects also contain functions to check whether the object was clicked or not
-
-The library also provides a very simple class for pixel-based image
-manipulation, Pixmap. A pixmap can be loaded from a file and displayed
-using an Image object. Both getPixel and setPixel methods are provided
-for manipulating the image.
-
-DOCUMENTATION: For complete documentation, see Chapter 4 of "Python
-Programming: An Introduction to Computer Science" by John Zelle,
-published by Franklin, Beedle & Associates.  Also see
-http://mcsp.wartburg.edu/zelle/python for a quick reference"""
-
-# TODOs & Future Plans
-
-"""
-
-TODOs & Future Plans
-
- - Add extensive sounds & music support
- - Test glide, move, drawing, rotating, etc. for composite classes
- - Add more useful errors
- - Add Button event sounds
- - Image Tinting, Transformation, etc.
- - _BBox class rotation
- - Define more custom colours
- - Develop documentation for this library
- - Custom Ease fuctions
- - Animation Paths
- - Develop a graphical software to program using Python & the Graphics Library
- - Try adding support for server communication for multiplayer games
- - Add support for Animated GIFs and Videos
- - Add support for local & online databases
- - Add graphics window max size
- - Custom Cursor support (inside GraphWin, hovering cursor, etc.)
- - Arcs and semi-ellipses.
- - Customizable Title Bars
- - Polygonal Bounding Boxes and Transparency based for PNG images
- - Add a layering system
- - Animated width, height functions for BBox objects
- - Animated image transformation and styling functions
- - Sound, Calculations, and Graphics threading
- - Draggable Objects
- - RGBA Colour Support
- - Hex, CMYK, etc. Support
- - Grid system to divide GraphWin
- - Bind Graphics Objects to other Graphic Objects
- - Add Comments to explain the code
- - Add Support for diagonal SlideBars (any custom points p1, p2)
- - Complete Radio Button & other Composite classes
- - Add more useful error messages
- - Object transformations like skewing and relfections
- - adapt the Graphics Library for Mac OSX
- - Hide Cursor in Entry Object
- - Add an Entry Callback whenever the text is changed, Limit what letters can be typed in (alphabets, nubmeric, etc.)
- - Disable & Enable Input Widgets
- - Test Compound Graphics Classes
- - Blinking Animation
-
-"""
-
-__version__ = "8.2.2"
-
-
-# Version 8.2.2 7/6/2020
-#   * Points are no longer graphic objects
-#   * Custom Support for Cursors on the GraphWin & _BBox classes
-#   * Added support for colour palettes and added 3 style: default, pycharm darcula, and intellij
-#   * Added Assertions to the graphics objects to give better error statements
-#   * Added Config functions for all configurations for the Graphics Window class
-#   * Added circular and ovular bounding boxes
-#   * Added setObjectWidth & Height functions as well as _BBox object resizing functions
-#   * Bounding boxes are now represented by graphics objects (_BBox objects)
-#   * Fixed bugs with using the mouseEvent functions returning None value and added the refresh argument
-#   * Fixed Bug with Graphics Objects resizing when resizing the window
-#   * Fixed bug with background not filling colour of the entire region of window (not only the seen region)
-#   * Tested the graphics window class
-#   * Organized code in the GraphWin
-#   * More colour definitions!
-#   * ColourHex, ColourCMYK, and ColourRGB classes added
-
-#   * Chaned Version History dates from mm/dd/yyyy to dd/mm/yyyy
-
-# Version 8.2.1 31/5/2020
-#   * Added argument assert statements to the Graphics Window class
-#   * Added a colour class
-#   * Changed all references of 'Color' to 'Colour'
-
-# Version 8.2.0 17/5/2020
-#   * Added a window parameter to every Graphics Class that allows the user to draw the window in the class declaration
-#   * Added more functions to set the Arrow of a line
-#   * You can now set the arrow of a line inside the __init__ function
-#   * Removed all the sound functions
-#   * Added TODOs
-
-# Version 8.1 25/4/2020
-#   * The Image Object now uses the Pillow (PIL) library which gives the user far more ways to manipulate the object
-#   * Added the ImageGrp class to Group Images together
-#   * Added RadioButtons, & CycleButtons
-#   * New & Improved functions to the GraphWin including the ability to resize the window!
-#   * Added Glide & GlideTo functions with easing to animate objects!
-
-# Version 8.0 24/11/2019
-#     * Added a few more colour definitions
-#     * Image scaling functions (zoom & resize) now return the image class & don't require the image to have been drawn
-#     * Added ButtonPressed attributes to the GraphWin class to have more variety in mouse events
-#     * Added a moveTo function for BBox classes
-#     * Made the CheckBox class much easier to work with
-#     * Various bug fixes
-
-# Version 7.9 16/9/2019
-#     * Added Right, Left and Middle click events to the GraphWin class
-#     * Changed GraphWin getKey() and checkKey() functions to use the keyboard library instead of tkinter
-#     * Added checkForKeys() function to GraphWin to check for Multiple keys at once
-#     * Added attribute setting functions for SlideBar class
-#     * Fixed bug of SlideBar class not functioning when p1.(x or y) > p2.(x or y) - x or y depending on orientation
-#
-#     * Added isClicked() function for points and lines
-#     * Added isSelected() function for all GraphicObject children Classes
-#     * Added enabled, disabled and read only states to Entry Class and added many more functions
-#
-#     * GraphicsObject objects now return themselves when the draw() function is called to allow the user to create and
-#       draw an object with 1 line of code
-#     * Added playSound function which plays music
-
-# Version 7.6 12/9/2019
-#     * Fixed Bug of Line class not drawing due to error
-#     * Fixed Bug of the Graphics Objects' undraw() function not undrawing
-#     * Added SlideBar class
-#     * Added a function to get the Mouse Scroll value to graphwin
-#     * Removed restrictions on text fonts and size allowing user to use whatever values they want
-#     * Added a very basic rectangular Button class
-
-# Version 6.1 29/8/2019
-#     * Checkboxes added as a class
-#     * Button class added
-#     * Fixed bug with isClicked() function that didn't work when x1 > x2 or y1 > y2
-#     * Added more Fonts
-
-# Version 6 15/7/2019
-#     * added moveTo() function for all graphics objects to specify x & y variables rather than dx & dy
-#     * added more parameters for classes to customize them during creation rather than using multiple functions
-#     * Defined multiple variables containing colour information to use when colouring object
-#     * added more fonts for text objects to use
-#     * Implemented a new error for missing values
-#     * Added isClicked() function for Image and BBox objects
-
-# Version 5 26/8/2016
-#     * update at bottom to fix MacOS issue causing askopenfile() to hang
-#     * update takes an optional parameter specifying update rate
-#     * Entry objects get focus when drawn
-#     * __repr_ for all objects
-#     * fixed offset problem in window, made canvas borderless
-
-# Version 4.3 25/4/2014
-#     * Fixed Image getPixel to work with Python 3.4, TK 8.6 (tuple type handling)
-#     * Added interactive keyboard input (getKey and checkKey) to GraphWin
-#     * Modified setCoords to cause redraw of current objects, thus
-#       changing the view. This supports scrolling around via setCoords.
-#
-# Version 4.2 26/4/2011
-#     * Modified Image to allow multiple undraws like other GraphicsObjects
-# Version 4.1 12/29/2009
-#     * Merged Pixmap and Image class. Old Pixmap removed, use Image.
-
-# Version 4.0.1 8/10/2009
-#     * Modified the autoflush on GraphWin to default to True
-#     * Autoflush check on close, setBackground
-#     * Fixed getMouse to flush pending clicks at entry
-
-# Version 4.0 8/2009
-#     * Reverted to non-threaded version. The advantages (robustness,
-#         efficiency, ability to use with other Tk code, etc.) outweigh
-#         the disadvantage that interactive use with IDLE is slightly more
-#         cumbersome.
-#     * Modified to run in either Python 2.x or 3.x (same file).
-#     * Added Image.getPixmap()
-#     * Added update() -- stand alone function to cause any pending
-#           graphics changes to display.
-#
-# Version 3.4 16/10/2007
-#     Fixed GraphicsError to avoid "exploded" error messages.
-# Version 3.3 8/8/2006
-#     Added checkMouse method to GraphWin
-# Version 3.2.3
-#     Fixed error in Polygon init spotted by Andrew Harrington
-#     Fixed improper threading in Image constructor
-# Version 3.2.2 30/5/2005
-#     Cleaned up handling of exceptions in Tk thread. The graphics package
-#     now raises an exception if attempt is made to communicate with
-#     a dead Tk thread.
-# Version 3.2.1 22/5/2005
-#     Added shutdown function for tk thread to eliminate race-condition
-#        error "chatter" when main thread terminates
-#     Renamed various private globals with _
-# Version 3.2 5/4/2005
-#     Added Pixmap object for simple image manipulation.
-# Version 3.1 13/4/2005
-#     Improved the Tk thread communication so that most Tk calls
-#        do not have to wait for synchonization with the Tk thread.
-#        (see _tkCall and _tkExec)
-# Version 3.0 30/12/2004
-#     Implemented Tk event loop in separate thread. Should now work
-#        interactively with IDLE. Undocumented autoflush feature is
-#        no longer necessary. Its default is now False (off). It may
-#        be removed in a future version.
-#     Better handling of errors regarding operations on windows that
-#       have been closed.
-#     Addition of an isClosed method to GraphWindow class.
-
-# Version 2.2 26/8/2004
-#     Fixed cloning bug reported by Joseph Oldham.
-#     Now implements deep copy of config info.
-# Version 2.1 15/1/2004
-#     Added autoflush option to GraphWin. When True (default) updates on
-#        the window are done after each action. This makes some graphics
-#        intensive programs sluggish. Turning off autoflush causes updates
-#        to happen during idle periods or when flush is called.
-
-# Version 2.0
-#     Updated Documentation
-#     Made Polygon accept a list of Points in constructor
-#     Made all drawing functions call TK update for easier animations
-#          and to make the overall package work better with
-#          Python 2.3 and IDLE 1.0 under Windows (still some issues).
-#     Removed vestigial turtle graphics.
-#     Added ability to configure font for Entry objects (analogous to Text)
-#     Added setTextColour for Text as an alias of setFill
-#     Changed to class-style exceptions
-#     Fixed cloning of Text objects
-
-# Version 1.6
-#     Fixed Entry so StringVar uses _root as master, solves weird
-#            interaction with shell in Idle
-#     Fixed bug in setCoords. X and Y coordinates can increase in
-#           "non-intuitive" direction.
-#     Tweaked wm_protocol so window is not resizable and kill box closes.
-
-# Version 1.5
-#     Fixed bug in Entry. Can now define entry before creating a
-#     GraphWin. All GraphWins are now toplevel windows and share
-#     a fixed root (called _root).
-
-# Version 1.4
-#     Fixed Garbage collection of Tkinter images bug.
-#     Added ability to set text atttributes.
-#     Added Entry boxes.
-
-
-##########################################################################
-# Module Exceptions
+__version__ = "6.10-dev"
 
 class GraphicsError(Exception):
     """Generic error class for graphics module exceptions."""
@@ -1718,7 +1398,7 @@ class GraphicsObject:
                         for arg in obj.resizingArgs.split(","):
                             args += ", {}".format(arg)
 
-                    obj.resizeFactor(1 + obj.resizingFactor * ((t - obj.resizingStart)/obj.resizingTime),
+                    obj.resizeFactor(1 + obj.resizingFactor * ((t - obj.resizingStart) / obj.resizingTime),
                                      setInitialSize=False)
                     obj.resizingUpdate = t
 
@@ -2908,15 +2588,15 @@ class Image(GraphicsObject):
 
         self.rotationImg = self.imgPIL
         self.align = align
-        
+
         self.anchor = p.clone()
-        
+
         if align not in ["center", "bottom", "top", "left", "right"]:
             raise GraphicsError(f"Image align must be one of center, bottom, top, left, or right, not {align}")
 
         self.x = self.anchor.x
         self.y = self.anchor.y
-            
+
         GraphicsObject.__init__(self, [], window=window)
 
     def __repr__(self):
@@ -2936,13 +2616,13 @@ class Image(GraphicsObject):
         p = self.anchor.clone()
 
         if self.align == "bottom":
-            p.addY(self.initialHeight/-2)
+            p.addY(self.initialHeight / -2)
         elif self.align == "top":
-            p.addY(self.initialHeight/2)
+            p.addY(self.initialHeight / 2)
         elif self.align == "left":
-            p.addX(self.initialWidth/2)
+            p.addX(self.initialWidth / 2)
         elif self.align == "right":
-            p.addX(self.initialWidth/-2)
+            p.addX(self.initialWidth / -2)
 
         self.graphwin = canvas
         x, y = canvas.toScreen(p.x, p.y)
