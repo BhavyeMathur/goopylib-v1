@@ -49,7 +49,7 @@ The game allows 2-7 players to play together and the graphics animate the cards,
 
 Here is a screenshot of the game:
 
-![UNO Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Example/MultiplayerUNO.png)
+![UNO Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples/MultiplayerUNO.png)
 
 Avatar graphics are from freepik.com
 
@@ -59,7 +59,7 @@ My school has these weekly activity clubs where we all go to well, do activities
 
 Goopy is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it to anyone to use. Now mind you, this was made with an older version of Goopy so it did not contain lots of animations and visual feedback, but here is a screenshot:
 
-![Activity Selection App Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Example/ActivtySelectionApp.png)
+![Activity Selection App Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examplse/ActivtySelectionApp.png)
 
 ### Examples
 
@@ -69,7 +69,7 @@ These examples with the code and required textures are included in folders for y
 
 This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid input, a functional tab to change from registering to signing up, and more.
 
-![GUI Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/ModernUI-LoginPage%20Example/ExampleScreenshot.png)
+![GUI Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples//ModernUI-LoginPage%20Example/ExampleScreenshot.png)
 
 
 ## Contributions
