@@ -3,6 +3,11 @@ from goopy import *
 """
 Textures have been designed by Freepik, https://www.freepik.com/free-vector/modern-web-design-button-collection-with-flat-design_3099377.htm
 
+This is a very simple program that creates a modern, light, login page which demonstrates the 
+capabilities of using Checkboxes, Entries, and Buttons. 
+
+To run this, simply download the entire folder in which this is placed, and run the program!
+
 """
 
 # Creating a window
@@ -10,8 +15,7 @@ Textures have been designed by Freepik, https://www.freepik.com/free-vector/mode
 # We set the dimensions relative to the height of the screen because resolutions across screen can vary.
 window = GraphWin(title="Example GUI Design", width=getScreenSize()[1] * 0.8 - 200, height=getScreenSize()[1] * 0.8,
                   autoflush=False)
-window.setCoords(0, 0, 800,
-                 1000)  # Because the actual height & width might be different according to the screen size, we define these virtual coordinates (Top-Left, Bottom-Right)
+window.setCoords(0, 0, 800, 1000)  # Because the actual height & width might be different according to the screen size, we define these virtual coordinates (Top-Left, Bottom-Right)
 background = CheckBox(Image(Point(400, 500), "RegisterPage.png"),
                       Image(Point(400, 500), "LoginPage.png"), autoflush=False).draw(window)  # This is the background image
 
@@ -59,17 +63,18 @@ nextPage = "Home Page"
 # The mainloop
 while True:
     background.setState(OptionsTab.getState())
-    EnterButton.setState(
-        OptionsTab.getState())  # Updating the textures of these checkboxes to be that of the OptionsTab
+    EnterButton.setState(OptionsTab.getState())  # Updating the textures of these checkboxes to be that of the OptionsTab
     SettingsButton.setState(OptionsTab.getState())
-    OptionsTab.redraw()   Redrawing because we're also redrawing the background
+
+    OptionsTab.redraw()   # Redrawing because we're also redrawing the background
+    infoText.redraw()
 
     mousePos = window.checkLeftMouseClick()  # Getting the position of a mouse click if there was one
 
     if EnterButton.isClicked(mousePos):  # Checking if the enter button was clicked
         email = emailEntry.getText()
         password = passwordEntry.getText()
-        if email != "Email Address" and '@' in email and password != "Password":  # Checking if the details are valid.
+        if email != "Email Address" and password != "Password":  # Checking if the details are valid.
             break
         else:
             infoText.setText("Invalid Details Entered...")  # If the details are invalid, we tell the user!
@@ -83,7 +88,6 @@ while True:
 window.close()  # Closing the window
 
 if nextPage == "Home Page":
-    type = ["Registered", "Signed-In"][EnterButton.getState()]  # getState() returns the current state of the checkbox
-    print(f"User has {type} with the email: {email} and password: {password}")
+    print(f"User has {['Signed-In', 'Registered'][EnterButton.getState()]} with the email: {email} and password: {password}")
 else:
     print("Settings Page")
