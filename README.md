@@ -31,6 +31,18 @@ import goopy as gp
 
 There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written document, however, there is not such documentation right now.
 
+### Projects made using Goopy
+
+As these are entire projects, I have not supplied the code for these. If you want to look at example projects with code, skip to the next section 'Examples'. 
+
+1. A Pac-Man Recreation
+
+I worked on this as a school project and used the goopy library to fully functional Pac-Man Game! (and an arcade too)
+
+![Pac-Man Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Pac-Man.png)
+
+2. Multiplayer UNO
+
 ### Examples
 
 These examples with the code and required textures are included in folders for you to download and try out for yourselves!
@@ -39,7 +51,7 @@ These examples with the code and required textures are included in folders for y
 
 This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid input, a functional tab to change from registering to signing up, and more.
 
-![alt text](https://github.com/BhavyeMathur/goopy/blob/master/ModernUI-LoginPage%20Example/ExampleScreenshot.png)
+![GUI Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/ModernUI-LoginPage%20Example/ExampleScreenshot.png)
 
 
 ## Contributions
