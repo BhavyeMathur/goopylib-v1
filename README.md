@@ -89,6 +89,8 @@ while True:
 * Added a promptText attribute to the Entry which displays text before the user has typed and disappears when he/she starts typing
 * Added a new style key 'entry width' which deafults to 0 to make Entries look better with less manual configuration
 
+* Added a getState() function to the checkbox which returns its current state
+
 #### 6.11.0 - 3rd July 2020
 
 * Removed the Image_depr class which was used as a backup until the new class using the Pillow library was created
