@@ -7,7 +7,7 @@ This graphics library is built upon John Zelle's graphics.py package which he ma
 
 If you would want to contribute to this library by suggesting features, reporting bugs, or adding changes yourself, please do so. I would love it if you would use this library in your projects and do make sure to tell me about them! Right now, this is very much an alpha stage - there are many bugs, many features that aren't compatible with each other, and a ton of things to do differently, but hopefully this can all be fixed with future releases. 
 
-If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com
+If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
 
 ### Installation
 
