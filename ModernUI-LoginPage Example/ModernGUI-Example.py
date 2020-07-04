@@ -1,5 +1,10 @@
 from goopy import *
 
+"""
+Textures have been designed by Freepik, https://www.freepik.com/free-vector/modern-web-design-button-collection-with-flat-design_3099377.htm
+
+"""
+
 # Creating a window
 window = GraphWin(title="Example GUI Design", width=getScreenSize()[1] * 0.8 - 200, height=getScreenSize()[1] * 0.8,
                   autoflush=False)
