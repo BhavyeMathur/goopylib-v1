@@ -51,6 +51,8 @@ Here is a screenshot of the game:
 
 ![UNO Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/MultiplayerUNO.png)
 
+Avatar graphics are from freepik.com
+
 ### Examples
 
 These examples with the code and required textures are included in folders for you to download and try out for yourselves!
