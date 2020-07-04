@@ -35,13 +35,13 @@ There are plans to create a detailed documentation for this library both in the 
 
 As these are entire projects, I have not supplied the code for these. If you want to look at example projects with code, skip to the next section 'Examples'. 
 
-1. A Pac-Man Recreation
+**1. A Pac-Man Recreation**
 
 I worked on this as a school project and used the goopy library to fully functional Pac-Man Game! (and an arcade too) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and fruits to go on to the next level.
 
 ![Pac-Man Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Pac-Man.png)
 
-2. Multiplayer UNO
+**2. Multiplayer UNO**
 
 During the COVID-19 Pandemic, my friends and I often hopped on a call and played a few games together: one such, was UNO. But the app we used was very laggy and didn't really function well. So I took it upon myself to create a Multiplayer UNO game in 5 days or less - and I succeeded on day 6... *"but day indices start at 0 so it was really the fifth day..."*. 
 
