@@ -95,6 +95,8 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added a new style key 'entry width' which deafults to 0 to make Entries look better with less manual configuration
 * Entry now raises and error if you try to getText() when it is not drawn, or the GraphWin is closed
 
+* Point adding & setting functions don't mutate the point itself now, instead they return a clone of the point with the operations performed
+
 * Added a getState() function to the checkbox which returns its current state
 
 #### 6.11.0 - 3rd July 2020
