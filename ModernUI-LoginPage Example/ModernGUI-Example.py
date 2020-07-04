@@ -10,8 +10,10 @@ Textures have been designed by Freepik, https://www.freepik.com/free-vector/mode
 # We set the dimensions relative to the height of the screen because resolutions across screen can vary.
 window = GraphWin(title="Example GUI Design", width=getScreenSize()[1] * 0.8 - 200, height=getScreenSize()[1] * 0.8,
                   autoflush=False)
-window.setCoords(0, 0, 800, 1000)  # Because the actual height & width might be different according to the screen size, we define these virtual coordinates (Top-Left, Bottom-Right)
-Image(Point(400, 500), "RegisterPage.png").draw(window)  # This is the background image
+window.setCoords(0, 0, 800,
+                 1000)  # Because the actual height & width might be different according to the screen size, we define these virtual coordinates (Top-Left, Bottom-Right)
+background = CheckBox(Image(Point(400, 500), "RegisterPage.png"),
+                      Image(Point(400, 500), "LoginPage.png"), autoflush=False).draw(window)  # This is the background image
 
 # Creating the entry boxes
 emailEntry = Entry(Point(360, 465), 24, fill=WHITE, font="century gothic", justify="left", fontColour=LIGHT_GREY,
@@ -22,11 +24,11 @@ passwordEntry = Entry(Point(360, 600), 24, fill=WHITE, font="century gothic", ju
 # Creating the options tab. The Enter & Settings button are checkboxes too because we want to display different textures based on 2 states: register or signin
 # A checkbox takes 2 graphics: true & false
 
-# Here, we specify the first graphic (true) to be a button. A button also takes in a graphic to display which can be any other Graphics Object. 
+# Here, we specify the first graphic (true) to be a button. A button also takes in a graphic to display which can be any other Graphics Object.
 # The 2nd parameter of the button (optional) is the graphic to display while hovering. In this case, we take the same image and resize it to 102%
-OptionsTab = CheckBox(Button(Image(Point(415, 320), "OptionsTab-Register.png"),  
+OptionsTab = CheckBox(Button(Image(Point(415, 320), "OptionsTab-Register.png"),
                              Image(Point(415, 320), "OptionsTab-Register.png").resizeFactor(1.02)),
-                      
+
                       # The false graphic is very similar
                       Button(Image(Point(415, 320), "OptionsTab-SignIn.png"),
                              Image(Point(415, 320), "OptionsTab-SignIn.png").resizeFactor(1.02))).draw(window)
@@ -56,29 +58,32 @@ nextPage = "Home Page"
 
 # The mainloop
 while True:
-    EnterButton.setState(OptionsTab.getState())  # Updating the textures of these checkboxes to be that of the OptionsTab
+    background.setState(OptionsTab.getState())
+    EnterButton.setState(
+        OptionsTab.getState())  # Updating the textures of these checkboxes to be that of the OptionsTab
     SettingsButton.setState(OptionsTab.getState())
+    OptionsTab.redraw()   Redrawing because we're also redrawing the background
 
     mousePos = window.checkLeftMouseClick()  # Getting the position of a mouse click if there was one
 
-    if EnterButton.isClicked(mousePos): # Checking if the enter button was clicked
+    if EnterButton.isClicked(mousePos):  # Checking if the enter button was clicked
         email = emailEntry.getText()
         password = passwordEntry.getText()
         if email != "Email Address" and '@' in email and password != "Password":  # Checking if the details are valid.
             break
         else:
             infoText.setText("Invalid Details Entered...")  # If the details are invalid, we tell the user!
-            
-     elif SettingsButton.isClicked(mousePos):
-      nextPage = "Settings Page"
-      break
+
+    elif SettingsButton.isClicked(mousePos):
+        nextPage = "Settings Page"
+        break
 
     window.updateWin()  # Updating the window
 
 window.close()  # Closing the window
 
 if nextPage == "Home Page":
-  type = ["Registered", "Signed-In"][EnterButton.getState()]  # getState() returns the current state of the checkbox
-  print(f"User has {type} with the email: {email} and password: {password}")
+    type = ["Registered", "Signed-In"][EnterButton.getState()]  # getState() returns the current state of the checkbox
+    print(f"User has {type} with the email: {email} and password: {password}")
 else:
-  print("Settings Page")
+    print("Settings Page")
