@@ -83,6 +83,12 @@ while True:
 
 ### v6.11-dev
 
+#### 6.11.1 - 4th July 2020
+
+* Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
+* Added a promptText attribute to the Entry which displays text before the user has typed and disappears when he/she starts typing
+* Added a new style key 'entry width' which deafults to 0 to make Entries look better with less manual configuration
+
 #### 6.11.0 - 3rd July 2020
 
 * Removed the Image_depr class which was used as a backup until the new class using the Pillow library was created
@@ -100,11 +106,6 @@ while True:
 * Removed the RoundedRectangle class and built its functionality into the Rectangle class
 
 * Added Errors to the setStyle() function & GraphWin class to make sure the user has entered the correct arguments
-
-#### 6.11.1 - 4th July 2020
-
-* Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
-* Added a new style key 'entry width' which deafults to 0 to make Entries look better with less manual configuration
 
 
 ### v6.10-dev
