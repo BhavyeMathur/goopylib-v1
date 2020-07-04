@@ -39,7 +39,7 @@ As these are entire projects, I have not supplied the code for these. If you wan
 
 I worked on this as a school project and used the goopy library to fully functional Pac-Man Game! (and an arcade too) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and fruits to go on to the next level.
 
-![Pac-Man Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Pac-Man.png)
+![Pac-Man Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples/Pac-Man.png)
 
 **2. Multiplayer UNO**
 
@@ -49,7 +49,7 @@ The game allows 2-7 players to play together and the graphics animate the cards,
 
 Here is a screenshot of the game:
 
-![UNO Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/MultiplayerUNO.png)
+![UNO Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Example/MultiplayerUNO.png)
 
 Avatar graphics are from freepik.com
 
@@ -59,7 +59,7 @@ My school has these weekly activity clubs where we all go to well, do activities
 
 Goopy is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it to anyone to use. Now mind you, this was made with an older version of Goopy so it did not contain lots of animations and visual feedback, but here is a screenshot:
 
-![Activity Selection App Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/ActivtySelectionApp.png)
+![Activity Selection App Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Example/ActivtySelectionApp.png)
 
 ### Examples
 
