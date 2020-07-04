@@ -88,6 +88,7 @@ while True:
 * Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
 * Added a promptText attribute to the Entry which displays text before the user has typed and disappears when he/she starts typing
 * Added a new style key 'entry width' which deafults to 0 to make Entries look better with less manual configuration
+* Entry now raises and error if you try to getText() when it is not drawn, or the GraphWin is closed
 
 * Added a getState() function to the checkbox which returns its current state
 
