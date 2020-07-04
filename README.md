@@ -33,44 +33,13 @@ There are plans to create a detailed documentation for this library both in the 
 
 ### Examples
 
-Here are a few examples to get you started with the library: 
+These examples with the code and required textures are included in folders for you to download and try out for yourselves!
 
-This code creates a simple window and draws an image on it. Then it checks whether the image has been clicked. 
+1. This is a simply, modern, light Login Page that can be used for your application. It demonstrates the usage of Checkbox, Entries, and Buttons to take input from the user and was made entirely with just 60 lines of code! (excluding comments). 
 
-```python
-# Autoflush controls whether or not the window updates automatically
-window = GraphWin(title="Example Program", width=800, height=800, autoflush=False)
+This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid input, a functional tab to change from registering to signing up, and more.
 
-# The img_path should be replaced with the image name and it should be placed in a folder called 'textures'. 
-# If the image path is "textures/Img.png", replace img_path with "Img.png"
-img = Image(Point(400, 400), "img_path.png").draw(window)  # Drawing the Image in the center (400, 400). 
-
-while True:
-  mousePos = window.checkLeftMouseClick() # Checks if the mouse has been clicked and gets the location of the click
-  if img.isClicked(mousePos):
-    print("Image has been clicked")
-  
-  window.updateWin() # Updates the window
-
-```
-
-The library comes built with widgets like buttons that can be entirely customized to what you want. Let's say we wanted to create a button and just to make it look good, we will slightly increase the size of the button when we hover over it. Make sure you have a window created as shown in the previous example. 
-
-```python
-
-testButton = Button(Image(Point(400, 400), "Button.png")  # The first argument is the graphic of the button, this can be any Graphics Object
-                    Image(Point(400, 400), "Button.png").resizeFactor(1.05)).draw(window)  # The second argument is the graphic to display when hovering
-                    #here, we take the same image and resize it by a factor of 105% (1.05)
-                    
-while True:
-  mousePos = window.checkLeftMouseClick() # Checks if the mouse has been clicked and gets the location of the click
-  if button.isClicked(mousePos):
-    print("Button has been clicked")
-  
-  window.updateWin()  # Updates the window   
-  update(24)  # Update at a rate of 24 FPS
-
-```
+![alt text](https://github.com/BhavyeMathur/goopy/blob/master/ModernUI-LoginPage%20Example/ExampleScreenshot.png)
 
 
 ## Contributions
