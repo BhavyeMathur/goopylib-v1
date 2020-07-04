@@ -59,7 +59,7 @@ My school has these weekly activity clubs where we all go to well, do activities
 
 Goopy is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it to anyone to use. Now mind you, this was made with an older version of Goopy so it did not contain lots of animations and visual feedback, but here is a screenshot:
 
-![Activity Selection App Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examplse/ActivtySelectionApp.png)
+![Activity Selection App Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples/ActivtySelectionApp.png)
 
 ### Examples
 
