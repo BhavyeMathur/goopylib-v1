@@ -71,6 +71,12 @@ This includes giving the user visual feedback if they hover over a button, makin
 
 ![GUI Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples//ModernUI-LoginPage%20Example/ExampleScreenshot.png)
 
+2. Also provided is a very simple animation of Pac-Man being chased by some ghosts and it was created with just 40 lines of code! This really is an example of how simple animations such as these can help make a really good game or project. 
+
+Goopy also has functionality for other animations such as moving to locations, rotating animations, and a lot to come soon. I am planning to include animations for almost every attribute of a Graphics Object like size, colour, outline thickness, transformation (skewing, fliping, etc.) and more. It also contains easy-to-use easing functions like those you would find in a professional animator.
+
+![Pac-Man Animation Example](https://github.com/BhavyeMathur/goopy/blob/master/Examples/Pac-Man-Animation%20Example/Pac-ManAnimation.png)
+
 
 ## Contributions
 
