@@ -53,6 +53,14 @@ Here is a screenshot of the game:
 
 Avatar graphics are from freepik.com
 
+**3. Activity Club Selection App**
+
+My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort through hundreds of entries and assign everybody a club - but not this year. This year I made an activity club selection app using the goopy library that would automatically do all this work for you! 
+
+Goopy is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it to anyone to use. Now mind you, this was made with an older version of Goopy so it did not contain lots of animations and visual feedback, but here is a screenshot:
+
+![Activity Selection App Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/ActivtySelectionApp.png)
+
 ### Examples
 
 These examples with the code and required textures are included in folders for you to download and try out for yourselves!
