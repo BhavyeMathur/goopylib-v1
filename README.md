@@ -101,6 +101,11 @@ while True:
 
 * Added Errors to the setStyle() function & GraphWin class to make sure the user has entered the correct arguments
 
+#### 6.11.1 - 4th July 2020
+
+* Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
+* Added a new style key 'entry width' which deafults to 0 to make Entries look better with less manual configuration
+
 
 ### v6.10-dev
 
