@@ -108,6 +108,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Fixed Bug with an error being caused if you rotated more than 180 deg. (Any angle (deg) whose sin < 0)
 * Fixed os.isfile() reference to os.path.isfile()
 * Fixed GraphWin self.Closed() references to self.isClosed()
+* Fixed Misc Bugs & Naming Issues
 
 * Split Goopy into multiple files! 
 * Renamed everything to follow Python Convention! (These 2 things took a lot of time...)
