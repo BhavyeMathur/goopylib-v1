@@ -89,7 +89,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v6.11-dev
 
-#### 6.11.1 - 4th-5th July 2020
+#### 6.11.11 to 6.11.19 - 4th-5th July 2020
 
 * Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
 * Added a promptText attribute to the Entry which displays text before the user has typed and disappears when he/she starts typing
@@ -103,7 +103,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added Open & Closed Uniform B-Spline curve functions
 * Added a Rational Bezier Curve Function for weighted Curves
 
-#### 6.11.0 - 3rd July 2020
+#### 6.11.0 to 6.11.10 - 3rd July 2020
 
 * Removed the Image_depr class which was used as a backup until the new class using the Pillow library was created
 * Removed the ToDos, Version History, and Introduction from Goop.py and moved it to the README file
