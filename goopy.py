@@ -20,6 +20,7 @@ if "tkinter" not in sys.modules:
 
 __version__ = "6.10-dev"
 
+
 class GraphicsError(Exception):
     """Generic error class for graphics module exceptions."""
     pass
@@ -81,7 +82,8 @@ class ColourRGB(Colour):
         if not (isinstance(r, int) and isinstance(g, int) and isinstance(b, int)):
             raise GraphicsError("\n\nRGB values must be integers!")
         if not (256 > r > -1 and 256 > g > -1 and 256 > b > -1):
-            raise GraphicsError("\n\nRGB values must be between 0 & 255 (included), right now {}, {}, {}".format(r, g, b))
+            raise GraphicsError(
+                "\n\nRGB values must be between 0 & 255 (included), right now {}, {}, {}".format(r, g, b))
         self.colour = "#%02x%02x%02x" % (r, g, b)
 
 
@@ -176,7 +178,8 @@ STYLES = {"pycharm darcula": {"primary fill": DARK_GREY, "secondary fill": BLUE_
 
                       "width": "2", "arrow": "none", "entry width": 0,
                       "textColour": BLACK, "text": "Lorem Ipsum", "justify": "center",
-                      "font": "calibri", "fontSize": 5, "fontStyle": "normal", "fontColour": BLACK, "selectColour": BLUE},
+                      "font": "calibri", "fontSize": 5, "fontStyle": "normal", "fontColour": BLACK,
+                      "selectColour": BLUE},
           }
 
 
@@ -466,10 +469,10 @@ class GraphWin(tk.Canvas):
             raise GraphicsError("The window icon must be a string (path to .ico texture) or None, not {icon}")
         if not os.isfile(f"textures/{icon}"):
             raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
-                                    f"Check for spelling and make sure this is in the correct directory.")
+                                f"Check for spelling and make sure this is in the correct directory.")
         if not icon.endswith(".ico"):
             raise GraphicsError("The icon file must be a .ico type. "
-                                    "You can use an online converter to convert your file")
+                                "You can use an online converter to convert your file")
 
         self.__checkOpen()
         self.master.iconbitmap(icon)
@@ -1927,8 +1930,9 @@ class _BBox(GraphicsObject):
 
     def setObjectHeight(self, height, center="center"):
         if center not in ["center", "top", "bottom"]:
-            raise GraphicsError("\n\nThe center argument for resizing the object (setObjectHeight) needs to be one of {}"
-                                .format(["center", "top", "bottom"]))
+            raise GraphicsError(
+                "\n\nThe center argument for resizing the object (setObjectHeight) needs to be one of {}"
+                .format(["center", "top", "bottom"]))
 
         if center == "top":
             _, heightScale = self.setCoords(self.p1, self.p2.addY(height - self.height))
@@ -1973,7 +1977,7 @@ class Rectangle(_BBox):
         _BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, width=width,
                        style=style, cursor=cursor, window=window)
 
-        self.equation = VectorEquation(f"abs((x - {self.anchor.x})/{self.width/2} + (y - {self.anchor.y})/"
+        self.equation = VectorEquation(f"abs((x - {self.anchor.x})/{self.width / 2} + (y - {self.anchor.y})/"
                                        f"{self.height / 2}) + abs((x - {self.anchor.x})/{self.width / 2} - "
                                        f"(y - {self.anchor.y})/{self.height / 2}) < 2")
 
@@ -2061,7 +2065,7 @@ class Rectangle(_BBox):
     def _draw(self, canvas, options):
         points = self.points.copy()
         for point in range(len(self.points[::2])):
-            points[point * 2], points[point * 2 + 1] = canvas.toScreen(points[point * 2],  points[point * 2 + 1])
+            points[point * 2], points[point * 2 + 1] = canvas.toScreen(points[point * 2], points[point * 2 + 1])
 
         # Code modified from Francisco Gomes, https://stackoverflow.com/users/9139005/francisco-gomes
 
@@ -2112,11 +2116,13 @@ class Rectangle(_BBox):
         for obj in self.resizingBounds.values():
             obj.graphwin = self.graphwin
 
-        #return canvas.create_rectangle(self.p1.x, self.p1.y, self.p2.x, self.p2.y, options)
+        # return canvas.create_rectangle(self.p1.x, self.p1.y, self.p2.x, self.p2.y, options)
 
         # This is done due to an internal bug in Tkinter where it does not set the width of the polygon..
+
         if options["width"] == 0:
             options["outline"] = options["fill"]
+
         return canvas.create_polygon(points, options, smooth=self.isRounded)
 
     def clone(self):
@@ -2407,7 +2413,10 @@ class Polygon(GraphicsObject):
                     points.append(x[0])
                     points.append(y[0])
 
-        return canvas.create_polygon(points,  options, smooth=True)#self.isRounded)
+        if options["width"] == 0:
+            options["outline"] = options["fill"]
+
+        return canvas.create_polygon(points, options, smooth=self.isRounded)
 
 
 class Text(GraphicsObject):
@@ -2666,7 +2675,7 @@ class Entry(GraphicsObject):
 
             if self.textType == "*":
                 self.entry.config(show="*")
-        
+
     def _onEnter(self, e):
         pass
 
@@ -3325,7 +3334,7 @@ class CheckBox(Button):
         else:
             self.changeGraphic(self.falseGraphic, self.falseGraphicHover, self.falseGraphicClicked,
                                self.graphicDisabled)
-            
+
     def getState(self):
         return self.state
 
@@ -3441,7 +3450,8 @@ class SlideBar:
         self.state = value - minimum
 
         if not self.range[1] > value > self.range[0]:
-            raise GraphicsError(f"\n\nSlide Bar value must between min/max values: {minimum} < value ({value}) < {maximum}")
+            raise GraphicsError(
+                f"\n\nSlide Bar value must between min/max values: {minimum} < value ({value}) < {maximum}")
 
         self.anchor = p.clone()
 
@@ -3636,8 +3646,10 @@ def easeLinear(t):
 def easePolyIn(t, power=2):
     return t ** power
 
+
 def easePolyOut(t, power=2):
     return 1 - (t ** power)
+
 
 def easePoly(t, power=2):
     t *= 2
@@ -3650,8 +3662,10 @@ def easePoly(t, power=2):
 def easeSinIn(t):
     return 1 - math.cos(t * math.pi * 0.5)
 
+
 def easeSinOut(t):
     return math.sin(t * math.pi * 0.5)
+
 
 def easeSin(t):
     return 1 - math.cos(math.pi * t) / 2
@@ -3660,8 +3674,10 @@ def easeSin(t):
 def easeCircleIn(t, factor=0.5):
     return 1 - (1 - t * t) ** factor
 
+
 def easeCircleOut(t, factor=0.5):
     return 1 - easeCircleIn(1 - t, factor)
+
 
 def easeCircle(t, factorIn=0.5, factorOut=0.5):
     t *= 2
@@ -3674,8 +3690,10 @@ def easeCircle(t, factorIn=0.5, factorOut=0.5):
 def easeBackIn(t, factor=1.70158):
     return t * t * ((factor + 1) * t - factor)
 
+
 def easeBackOut(t, factor=1.70158):
     return 1 - (1 - t) ** 2 * ((factor + 1) * (1 - t) - factor)
+
 
 def easeBack(t, factorIn=1.70158, factorOut=1.70158):
     t *= 2
@@ -3687,6 +3705,7 @@ def easeBack(t, factorIn=1.70158, factorOut=1.70158):
 
 def easeBounceIn(t, bounces=None):
     return 1 - easeBounceOut(1 - t, bounces)
+
 
 def easeBounceOut(t, bounces=None):
     if bounces is None:
@@ -3703,6 +3722,8 @@ def easeBounceOut(t, bounces=None):
 
     t -= bounces[len(bounces) - 2]
     return bounces[0] * t * t + bounces[len(bounces) - 1]
+
+
 def easeBounce(t, bouncesIn=None, bouncesOut=None):
     t *= 2
     if t <= 1:
@@ -3719,8 +3740,10 @@ def easeElasticIn(t, period=0.2, amplitude=1):
 
     return a * (2 ** (10 * (t - 1))) * math.sin((s - t) / period)
 
+
 def easeElasticOut(t, period=0.2, amplitude=1):
     return 1 - easeElasticIn(1 - t, period, amplitude)
+
 
 def easeElastic(t, periodIn=0.2, amplitudeIn=1, periodOut=0.2, amplitudeOut=1):
     t = t * 2 - 1
@@ -3743,8 +3766,10 @@ def easeElastic(t, periodIn=0.2, amplitudeIn=1, periodOut=0.2, amplitudeOut=1):
 def easeExponentialIn(t, base=2):
     return base ** (10 * t - 10)
 
+
 def easeExponentialOut(t, base=2):
     return 1 - (base ** (-10 * t))
+
 
 def easeExponential(t, baseIn=2, baseOut=2):
     t *= 2
@@ -3752,6 +3777,7 @@ def easeExponential(t, baseIn=2, baseOut=2):
         return (baseIn ** (10 * t - 10)) / 2
     else:
         return (2 - baseOut ** (10 - 10 * t)) / 2
+
 
 # References for this: https://www.youtube.com/watch?v=qhQrRCJ-mVg
 def BezierCurve(t, controlPoints):
@@ -3768,6 +3794,7 @@ def BezierCurve(t, controlPoints):
         bezierPoints[i].append((BernsteinPolynomial(i, len(controlPoints) - 1, t)))
 
     return Point(sumX, sumY)
+
 
 def RationalBezierCurve(t, weights, controlPoints):
     global bezierPoints
@@ -3787,14 +3814,15 @@ def RationalBezierCurve(t, weights, controlPoints):
 
         bezierPoints[i].append((BernsteinPolynomial(i, len(controlPoints) - 1, t)))
 
-    return Point(sumXNumerator/sumX, sumYNumerator/sumY)
+    return Point(sumXNumerator / sumX, sumYNumerator / sumY)
 
 
 def BernsteinPolynomial(i, n, t):
     return Combination(n, i) * (t ** i) * ((1 - t) ** (n - i))
 
+
 def Combination(n, k):
-    return math.factorial(n)/(math.factorial(k) * math.factorial(n - k))
+    return math.factorial(n) / (math.factorial(k) * math.factorial(n - k))
 
 
 def UniformBSpline(t, controlPoints, open=False):
@@ -3821,9 +3849,10 @@ def UniformBSpline(t, controlPoints, open=False):
 
     return Point(sumX, sumY)
 
+
 def CoxDeBoorRecursion(i, j, t, knotVector):
     if j == 0:
-        return 1 if knotVector[i] <= t < knotVector[i+1] else 0
+        return 1 if knotVector[i] <= t < knotVector[i + 1] else 0
 
     d1 = (knotVector[i + j] - knotVector[i])
     a = ((t - knotVector[i]) / d1 * CoxDeBoorRecursion(i, j - 1, t, knotVector)) if d1 > 0 else 0
