@@ -126,7 +126,8 @@ WHITE = ColourRGB(255, 255, 255)
 # Blue-Greys
 DARK_BLUE_GREY = ColourRGB(49, 51, 53)
 BLUE_GREY = ColourRGB(60, 63, 65)
-LIGHT_BLUE_GREY = ColourRGB(173, 175, 177)
+LIGHT_BLUE_GREY = ColourRGB(83, 95, 106)
+LIGHTEST_BLUE_GREY = ColourRGB(173, 175, 177)
 
 # Warm Colours
 DARK_RED = ColourRGB(120, 0, 0)
@@ -142,9 +143,12 @@ GREEN = ColourRGB(0, 123, 45)
 LIGHT_GREEN = ColourRGB(51, 187, 15)
 
 # Blues
-DARK_BLUE = None
+DARK_NAVY_BLUE = ColourRGB(38, 45, 56)
+NAVY_BLUE = ColourRGB(45, 57, 68)
 BLUE = ColourRGB(0, 153, 255)
 CYAN = None
+
+TURQOISE = ColourRGB(79, 227, 194)
 
 # Purples & Pinks
 DARK_PURPLE = None
@@ -170,9 +174,9 @@ STYLES = {"pycharm darcula": {"primary fill": DARK_GREY, "secondary fill": BLUE_
           "default": {"primary fill": CHROME_YELLOW, "secondary fill": RED, "fill": CHROME_YELLOW, "background": WHITE,
                       "primary outline": BLACK, "secondary outline": GREY, "outline": BLACK,
 
-                      "width": "2", "arrow": "none",
+                      "width": "2", "arrow": "none", "entry width": 0,
                       "textColour": BLACK, "text": "Lorem Ipsum", "justify": "center",
-                      "font": "calibri", "fontSize": 5, "fontStyle": "normal", "selectColour": BLUE}
+                      "font": "calibri", "fontSize": 5, "fontStyle": "normal", "fontColour": BLACK, "selectColour": BLUE},
           }
 
 
@@ -278,9 +282,12 @@ class GraphWin(tk.Canvas):
 
         if not isinstance(bkColour, Colour):
             if bkColour in STYLES[style].keys():
-                self.bkColour = STYLES[style]["background"]
+                self.bkColour = STYLES[style][bkColour]
             elif bkColour is None:
-                self.bkColour = STYLES["default"]["background"]
+                if "background" in STYLES[style].keys():
+                    self.bkColour = STYLES[style]["background"]
+                else:
+                    self.bkColour = STYLES["default"]["background"]
         else:
             self.bkColour = bkColour
 
@@ -1451,7 +1458,7 @@ class GraphicsObject:
                 obj.draw(obj.graphwin)
 
         for obj in CheckBox.checkBoxes:
-            if obj.graphwin == graphwin:
+            if obj.graphwin == graphwin and obj.autoflush:
                 if obj.isClicked(mousePos):
                     obj.click()
 
@@ -1683,24 +1690,52 @@ class Point:
     def getY(self):
         return self.y
 
-    def addY(self, dy):
+    def moveY(self, dy):
         self.y += dy
         return self
 
-    def addX(self, dx):
+    def moveX(self, dx):
         self.x += dx
         return self
 
-    def setX(self, x):
+    def move(self, dx, dy):
+        self.y += dy
+        self.x += dx
+        return self
+
+    def moveTo(self, x, y):
+        self.x = x
+        self.y = y
+        return self
+
+    def add(self, dx, dy):
+        return self.clone().move(dx, dy)
+
+    def set(self, x, y):
+        return self.clone().moveTo(x, y)
+
+    def moveToX(self, x):
         self.x = x
         return self
 
-    def setY(self, y):
+    def moveToY(self, y):
         self.y = y
         return self
 
     def getAnchor(self):
         return self
+
+    def addY(self, dy):
+        return self.clone().moveY(dy)
+
+    def addX(self, dx):
+        return self.clone().moveX(dx)
+
+    def setX(self, x):
+        return self.clone().moveToX(x)
+
+    def setY(self, y):
+        return self.clone().moveToY(y)
 
 
 class _BBox(GraphicsObject):
@@ -1748,31 +1783,38 @@ class _BBox(GraphicsObject):
         self.isResizing = {}
         self.boundsThickness = 0
 
-        if fill is not None:
-            if isinstance(fill, str):
-                if fill not in STYLES[self.style]:
-                    raise GraphicsError(
-                        "\n\nThe fill argument (right now, fill='{}') must be inside the object's style ({}). One of: {}".
-                            format(fill, self.style, STYLES[self.style]))
-                self.setFill(STYLES[self.style][fill])
+        if isinstance(fill, Colour):
+            self.fill = fill
+        elif fill in STYLES[self.style].keys():
+            self.fill = STYLES[self.style][fill]
+        else:
+            if "fill" in STYLES[self.style].keys():
+                self.fill = STYLES[self.style]["fill"]
             else:
-                if not isinstance(fill, Colour):
-                    raise GraphicsError("\n\nThe fill argument (right now, fill='{}') must either be a string or a Colour "
-                                        "Class".format(fill))
+                self.fill = STYLES["default"]["fill"]
+        self.setFill(self.fill)
 
-                self.setFill(fill)
-
-        if outline is not None:
-            if isinstance(outline, str):
-                self.setOutline(STYLES[self.style][outline])
+        if isinstance(outline, Colour):
+            self.outline = outline
+        elif outline in STYLES[self.style].keys():
+            self.outline = STYLES[self.style][outline]
+        else:
+            if "outline" in STYLES[self.style].keys():
+                self.outline = STYLES[self.style]["outline"]
             else:
-                self.setOutline(outline)
+                self.outline = STYLES["default"]["outline"]
+        self.setOutline(self.outline)
 
-        if width is not None:
-            if isinstance(width, str):
-                self.setWidth(STYLES[self.style][width])
+        if isinstance(width, int):
+            self.outlineWidth = width
+        elif width in STYLES[self.style].keys():
+            self.outlineWidth = STYLES[self.style][width]
+        else:
+            if "width" in STYLES[self.style].keys():
+                self.outlineWidth = STYLES[self.style]["width"]
             else:
-                self.setWidth(width)
+                self.outlineWidth = STYLES["default"]["width"]
+        self.setWidth(self.outlineWidth)
 
     def __repr__(self):
         return "BBox"
@@ -1931,10 +1973,10 @@ class Rectangle(_BBox):
         _BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, width=width,
                        style=style, cursor=cursor, window=window)
 
-        self.equation = VectorEquation("abs((x - {})/{} + (y - {})/{}) + abs((x - {})/{} - (y - {})/{}) < 2".
-                                       format(self.anchor.x, self.width / 2, self.anchor.y, self.height / 2,
-                                              self.anchor.x,
-                                              self.width / 2, self.anchor.y, self.height / 2))
+        self.equation = VectorEquation(f"abs((x - {self.anchor.x})/{self.width/2} + (y - {self.anchor.y})/"
+                                       f"{self.height / 2}) + abs((x - {self.anchor.x})/{self.width / 2} - "
+                                       f"(y - {self.anchor.y})/{self.height / 2}) < 2")
+
         self.points = [self.p1.x, self.p1.y, self.p1.x, self.p2.y, self.p2.x, self.p2.y, self.p2.x, self.p1.y]
         self.isRounded = isRounded
         self.sharpness = cornerSharpness  # Usually values between 2 & 10 work well.
@@ -1965,6 +2007,56 @@ class Rectangle(_BBox):
             obj.graphwin = self.graphwin
             if showBounds:
                 obj.draw(self.graphwin)
+
+    def roundCornersRect(self, canvas, ratio=0.1, npts=12):
+
+        # Code courtesy of Reblochon Masque,
+        # https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python
+
+        x0, x1 = self.p1.x, self.p2.x
+        y0, y1 = self.p1.y, self.p1.y
+
+        r = min(x1 - x0, y1 - y0) * ratio
+
+        items = []
+
+        tld = x0, y0 + r
+        tlr = x0 + r, y0
+        item = canvas.create_arc(x0, y0, x0 + 2 * r, y0 + 2 * r, start=90, extent=90, fill=self.config["fill"],
+                                 outline=self.config["fill"], style=tk.ARC)
+        items.append(item)
+
+        trl = x1 - r, y0
+        trd = x1, y0 + r
+        item = canvas.create_line(*tlr, *trl, fill=self.config["fill"])
+        items.append(item)
+        item = canvas.create_arc(x1 - 2 * r, y0, x1, y0 + 2 * r, start=0, extent=90, fill=self.config["fill"],
+                                 outline=self.config["fill"], style=tk.ARC)
+        items.append(item)
+
+        bru = x1, y1 - r
+        brl = x1 - r, y1
+        item = canvas.create_line(*trd, *bru, fill=self.config["fill"])
+        items.append(item)
+        item = canvas.create_arc(x1 - 2 * r, y1 - 2 * r, x1, y1, start=270, extent=90, fill=self.config["fill"],
+                                 outline=self.config["fill"], style=tk.ARC)
+        items.append(item)
+
+        blr = x0 + r, y1
+        blu = x0, y1 - r
+        item = canvas.create_line(*brl, *blr, fill=self.config["fill"])
+        items.append(item)
+        item = canvas.create_arc(x0, y1 - 2 * r, x0 + 2 * r, y1, start=180, extent=90, fill=self.config["fill"],
+                                 outline=self.config["outline"], style=tk.ARC)
+        items.append(item)
+        item = canvas.create_line(*blu, *tld, fill=self.config["fill"])
+        items.append(item)
+
+        for item_ in items:
+            for _item in items:
+                canvas.addtag_withtag(item_, _item)
+
+        return items
 
     def _draw(self, canvas, options):
         points = self.points.copy()
@@ -2020,6 +2112,11 @@ class Rectangle(_BBox):
         for obj in self.resizingBounds.values():
             obj.graphwin = self.graphwin
 
+        #return canvas.create_rectangle(self.p1.x, self.p1.y, self.p2.x, self.p2.y, options)
+
+        # This is done due to an internal bug in Tkinter where it does not set the width of the polygon..
+        if options["width"] == 0:
+            options["outline"] = options["fill"]
         return canvas.create_polygon(points, options, smooth=self.isRounded)
 
     def clone(self):
@@ -2133,7 +2230,7 @@ class Circle(Oval):
         return self.radius
 
     def _update(self):
-        self.equation = VectorEquation("(x-{})**2 + (y-{})**2 < {}**2".format(self.center.x, self.center.y,
+        self.equation = VectorEquation("(x-{})**2 + (y-{})**2 < {}**2".format(self.anchor.x, self.anchor.y,
                                                                               self.radius))
 
 
@@ -2188,6 +2285,7 @@ class Line(_BBox):
         x1, y1 = canvas.toScreen(p1.x, p1.y)
         x2, y2 = canvas.toScreen(p2.x, p2.y)
         self.graphwin = canvas
+
         return canvas.create_line(x1, y1, x2, y2, options)
 
     def setArrow(self, option):
@@ -2210,14 +2308,15 @@ class Line(_BBox):
 
 class Polygon(GraphicsObject):
 
-    def __init__(self, *points, style=None, fill=None, outline=None, width=None, isRounded=False, roundSharpness=5,
+    def __init__(self, points, style=None, fill=None, outline=None, width=None, isRounded=False, roundSharpness=5,
                  window=None):
 
         # if points passed as a list, extract it
         if len(points) == 1 and isinstance(points[0], list):
             points = points[0]
             points = points[0]
-        self.points = list(map(Point.clone, points))
+        print(points)
+        self.points = points
         self.isRounded = isRounded
 
         self.sharpness = roundSharpness
@@ -2246,6 +2345,7 @@ class Polygon(GraphicsObject):
         x = 0
         y = 0
 
+        print(self.points)
         for point in self.points:
             x += point.x
             y += point.y
@@ -2307,7 +2407,7 @@ class Polygon(GraphicsObject):
                     points.append(x[0])
                     points.append(y[0])
 
-        return canvas.create_polygon(points,  options, smooth=self.isRounded)
+        return canvas.create_polygon(points,  options, smooth=True)#self.isRounded)
 
 
 class Text(GraphicsObject):
@@ -2447,10 +2547,11 @@ class Entry(GraphicsObject):
 
     def __init__(self, p, textWidth=10, style=None, fill=None, fontColour=None, entry=None, font=None, fontSize=None,
                  outline=None, fontStyle=None, width=None, borderType="flat", password=False, active="NORMAL",
-                 window=None, justify="center", cursor="xterm", selectColour=None, defaultText=""):
+                 window=None, justify="center", cursor="xterm", selectColour=None, promptText=""):
 
         self.anchor = p.clone()
         self.textWidth = textWidth
+
         self.text = tk.StringVar(_root)
         self.text.set("")
 
@@ -2495,9 +2596,9 @@ class Entry(GraphicsObject):
             self.width = STYLES[self.style][width]
         else:
             if "width" in STYLES[self.style].keys():
-                self.width = STYLES[self.style]["width"]
+                self.width = STYLES[self.style]["entry width"]
             else:
-                self.width = STYLES["default"]["width"]
+                self.width = STYLES["default"]["entry width"]
 
         if isinstance(fontSize, int):
             self.fontSize = fontSize
@@ -2543,21 +2644,30 @@ class Entry(GraphicsObject):
         self.entry = entry
         self.borderType = borderType
         if password:
-            self.text = "*"
+            self.textType = "*"
         else:
-            self.text = ""
+            self.textType = ""
         self.active = "normal"
-        self.defaultText = defaultText
         self.cursor = cursor
+        self.promptText = promptText
 
         self.initialSize = self.fontSize
+        self.edited = False
 
         GraphicsObject.__init__(self, style=style, options=["fill", "outline"], window=window)
 
     def __repr__(self):
         return "Entry({}, {})".format(self.anchor, self.textWidth)
 
-    def _onEdit(self):
+    def _onEdit(self, e):
+        if not self.edited:
+            self.edited = True
+            self.setText(self.getText().replace(self.promptText, "", 1))
+
+            if self.textType == "*":
+                self.entry.config(show="*")
+        
+    def _onEnter(self, e):
         pass
 
     def isClicked(self, mousePos):
@@ -2599,17 +2709,27 @@ class Entry(GraphicsObject):
 
         self.entry = tk.Entry(frm,
                               width=self.textWidth, textvariable=self.text, bg=self.fill, fg=self.fontColour,
-                              bd=self.width, font=self.fontConfig, insertbackground=self.fontColour, show=self.text,
-                              state=self.active, justify="center", cursor="xterm", exportselection=0,
+                              bd=self.width, font=self.fontConfig, insertbackground=self.fontColour, show=self.textType,
+                              state=self.active, justify=self.justify, cursor="xterm", exportselection=0,
                               selectbackground=self.selectColour)
-        self.entry.insert(0, self.defaultText)
 
+        if not self.edited:
+            self.entry.insert(0, self.promptText)
+            self.entry.config(show="")
         self.entry.pack()
         self.entry.focus_set()
+
+        self.entry.bind("<Return>", self._onEnter)
+        self.entry.bind("<Key>", self._onEdit)
+
         return canvas.create_window(x, y, window=frm)
 
     def getText(self):
-        return self.entry.get()
+        if self.drawn and self.graphwin.isOpen():
+            return self.entry.get()
+        else:
+            raise GraphicsError(f"\n\nEntry can only return text when it is drawn and the window is open. Window Open"
+                                f"? {self.graphwin.isOpen()}, Drawn? {self.drawn}")
 
     def _move(self, dx, dy):
         self.anchor.changeDir(dx, dy)
@@ -2626,6 +2746,7 @@ class Entry(GraphicsObject):
         return other
 
     def setText(self, t):
+        self.entry.delete(0, tk.END)
         self.entry.insert(0, t)
 
     def setFill(self, Colour):
@@ -2990,10 +3111,6 @@ class Button:
         else:
             self.graphicDisabled = graphic
 
-        if not (isinstance(self.graphicNormal, GraphicsObject) and isinstance(self.graphicClicked, GraphicsObject)
-                and isinstance(self.graphicDisabled, GraphicsObject) and isinstance(self.graphicHover, GraphicsObject)):
-            raise GraphicsError("\n\nThe graphics all have to be Graphic Objects")
-
         self.graphic = self.graphicNormal
 
         self.label = label
@@ -3132,10 +3249,11 @@ class Button:
 class CheckBox(Button):
     checkBoxes = []
 
-    def __init__(self, trueGraphic, falseGraphic, trueGraphicHover=None, falseGraphicHover=None,
+    def __init__(self, trueGraphic, falseGraphic, trueGraphicHover=None, falseGraphicHover=None, autoflush=True,
                  trueGraphicClicked=None, falseGraphicClicked=None, graphicDisabled=None, state=True, window=None):
 
         self.state = state
+        self.autoflush = autoflush
 
         #
 
@@ -3207,6 +3325,9 @@ class CheckBox(Button):
         else:
             self.changeGraphic(self.falseGraphic, self.falseGraphicHover, self.falseGraphicClicked,
                                self.graphicDisabled)
+            
+    def getState(self):
+        return self.state
 
     def getAnchor(self):
         return self.graphic.anchor
@@ -3391,7 +3512,6 @@ class SlideBar:
         return self.anchor
 
     def reload(self):
-
         self.line = Line(self.p1, self.p2, style=self.style, outline=self.outline, width=self.width)
 
         if self.text is not None:
@@ -3516,10 +3636,8 @@ def easeLinear(t):
 def easePolyIn(t, power=2):
     return t ** power
 
-
 def easePolyOut(t, power=2):
     return 1 - (t ** power)
-
 
 def easePoly(t, power=2):
     t *= 2
@@ -3532,10 +3650,8 @@ def easePoly(t, power=2):
 def easeSinIn(t):
     return 1 - math.cos(t * math.pi * 0.5)
 
-
 def easeSinOut(t):
     return math.sin(t * math.pi * 0.5)
-
 
 def easeSin(t):
     return 1 - math.cos(math.pi * t) / 2
@@ -3544,10 +3660,8 @@ def easeSin(t):
 def easeCircleIn(t, factor=0.5):
     return 1 - (1 - t * t) ** factor
 
-
 def easeCircleOut(t, factor=0.5):
     return 1 - easeCircleIn(1 - t, factor)
-
 
 def easeCircle(t, factorIn=0.5, factorOut=0.5):
     t *= 2
@@ -3560,10 +3674,8 @@ def easeCircle(t, factorIn=0.5, factorOut=0.5):
 def easeBackIn(t, factor=1.70158):
     return t * t * ((factor + 1) * t - factor)
 
-
 def easeBackOut(t, factor=1.70158):
     return 1 - (1 - t) ** 2 * ((factor + 1) * (1 - t) - factor)
-
 
 def easeBack(t, factorIn=1.70158, factorOut=1.70158):
     t *= 2
@@ -3575,7 +3687,6 @@ def easeBack(t, factorIn=1.70158, factorOut=1.70158):
 
 def easeBounceIn(t, bounces=None):
     return 1 - easeBounceOut(1 - t, bounces)
-
 
 def easeBounceOut(t, bounces=None):
     if bounces is None:
@@ -3592,8 +3703,6 @@ def easeBounceOut(t, bounces=None):
 
     t -= bounces[len(bounces) - 2]
     return bounces[0] * t * t + bounces[len(bounces) - 1]
-
-
 def easeBounce(t, bouncesIn=None, bouncesOut=None):
     t *= 2
     if t <= 1:
@@ -3610,10 +3719,8 @@ def easeElasticIn(t, period=0.2, amplitude=1):
 
     return a * (2 ** (10 * (t - 1))) * math.sin((s - t) / period)
 
-
 def easeElasticOut(t, period=0.2, amplitude=1):
     return 1 - easeElasticIn(1 - t, period, amplitude)
-
 
 def easeElastic(t, periodIn=0.2, amplitudeIn=1, periodOut=0.2, amplitudeOut=1):
     t = t * 2 - 1
@@ -3636,10 +3743,8 @@ def easeElastic(t, periodIn=0.2, amplitudeIn=1, periodOut=0.2, amplitudeOut=1):
 def easeExponentialIn(t, base=2):
     return base ** (10 * t - 10)
 
-
 def easeExponentialOut(t, base=2):
     return 1 - (base ** (-10 * t))
-
 
 def easeExponential(t, baseIn=2, baseOut=2):
     t *= 2
@@ -3647,3 +3752,82 @@ def easeExponential(t, baseIn=2, baseOut=2):
         return (baseIn ** (10 * t - 10)) / 2
     else:
         return (2 - baseOut ** (10 - 10 * t)) / 2
+
+# References for this: https://www.youtube.com/watch?v=qhQrRCJ-mVg
+def BezierCurve(t, controlPoints):
+    global bezierPoints
+
+    sumX, sumY = 0, 0
+
+    if len(bezierPoints) == 0:
+        bezierPoints = [[] for _ in range(len(controlPoints))]
+
+    for i in range(0, len(controlPoints)):
+        sumY += BernsteinPolynomial(i, len(controlPoints) - 1, t) * controlPoints[i].y
+        sumX += BernsteinPolynomial(i, len(controlPoints) - 1, t) * controlPoints[i].x
+        bezierPoints[i].append((BernsteinPolynomial(i, len(controlPoints) - 1, t)))
+
+    return Point(sumX, sumY)
+
+def RationalBezierCurve(t, weights, controlPoints):
+    global bezierPoints
+
+    sumXNumerator, sumYNumerator = 0, 0
+    sumX, sumY = 0, 0
+
+    if len(bezierPoints) == 0:
+        bezierPoints = [[] for _ in range(len(controlPoints))]
+
+    for i in range(0, len(controlPoints)):
+        sumXNumerator += (BernsteinPolynomial(i, len(controlPoints) - 1, t) * controlPoints[i].x * weights[i])
+        sumX += BernsteinPolynomial(i, len(controlPoints) - 1, t) * weights[i]
+
+        sumYNumerator += (BernsteinPolynomial(i, len(controlPoints) - 1, t) * controlPoints[i].y * weights[i])
+        sumY += BernsteinPolynomial(i, len(controlPoints) - 1, t) * weights[i]
+
+        bezierPoints[i].append((BernsteinPolynomial(i, len(controlPoints) - 1, t)))
+
+    return Point(sumXNumerator/sumX, sumYNumerator/sumY)
+
+
+def BernsteinPolynomial(i, n, t):
+    return Combination(n, i) * (t ** i) * ((1 - t) ** (n - i))
+
+def Combination(n, k):
+    return math.factorial(n)/(math.factorial(k) * math.factorial(n - k))
+
+
+def UniformBSpline(t, controlPoints, open=False):
+    global splinePoints
+
+    sumX, sumY = 0, 0
+    degree = 2
+    knotVector = [x for x in range(len(controlPoints) + 2 + degree)]
+
+    if len(splinePoints) == 0:
+        splinePoints = [[] for _ in range(len(controlPoints))]
+
+    if open:
+        knotVector = [x for x in range(len(controlPoints) - degree + 1)]
+        for _ in range(degree):
+            knotVector.insert(0, knotVector[0])
+            knotVector.insert(-1, knotVector[-1])
+
+    for i in range(len(controlPoints)):
+        sumX += CoxDeBoorRecursion(i, degree, t, knotVector) * controlPoints[i].x
+        sumY += CoxDeBoorRecursion(i, degree, t, knotVector) * controlPoints[i].y
+
+        splinePoints[i].append(CoxDeBoorRecursion(i, degree, t, knotVector))
+
+    return Point(sumX, sumY)
+
+def CoxDeBoorRecursion(i, j, t, knotVector):
+    if j == 0:
+        return 1 if knotVector[i] <= t < knotVector[i+1] else 0
+
+    d1 = (knotVector[i + j] - knotVector[i])
+    a = ((t - knotVector[i]) / d1 * CoxDeBoorRecursion(i, j - 1, t, knotVector)) if d1 > 0 else 0
+
+    d2 = (knotVector[i + j + 1] - knotVector[i + 1])
+    b = (((knotVector[i + j + 1] - t) / d2) * CoxDeBoorRecursion(i + 1, j - 1, t, knotVector)) if d2 > 0 else 0
+    return a + b
