@@ -107,9 +107,13 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Fixed Bug with Polygon drawing outline even though the width is specified to be 0
 * Fixed Bug with an error being caused if you rotated more than 180 deg. (Any angle (deg) whose sin < 0)
 * Fixed os.isfile() reference to os.path.isfile()
+* Fixed GraphWin self.Closed() references to self.isClosed()
 
 * Split Goopy into multiple files! 
 * Renamed everything to follow Python Convention! (These 2 things took a lot of time...)
+
+* Renamed the GraphicsObject update functions to be non-protected 
+* Made everything in Goopy abide by the PEP 8 standard
 
 #### 6.11.0 to 6.11.10 - 3rd July 2020
 
