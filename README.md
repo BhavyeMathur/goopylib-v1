@@ -83,12 +83,14 @@ Goopy also has functionality for other animations such as moving to locations, r
 1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd July 2020 - Help with creating rounded polygon corners
 2. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
 3. John Zelle - Creating the graphics.py package which formed the basis for my library.
+4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve - 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
 
 ## Version History
 
 ### v6.11-dev
 
-#### 6.11.1 - 4th July 2020
+
+#### 6.11.1 - 4th-5th July 2020
 
 * Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
 * Added a promptText attribute to the Entry which displays text before the user has typed and disappears when he/she starts typing
@@ -99,6 +101,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added a getState() function to the checkbox which returns its current state
 
 * Added functions for finding Bezier Curves, Bernstein Polynomials, & 'nCk' (combinations) to create better curves
+* Added Open & Closed Uniform B-Spline curve functions
 
 #### 6.11.0 - 3rd July 2020
 
