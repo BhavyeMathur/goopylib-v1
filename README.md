@@ -89,7 +89,6 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v6.11-dev
 
-
 #### 6.11.1 - 4th-5th July 2020
 
 * Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
@@ -102,6 +101,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 * Added functions for finding Bezier Curves, Bernstein Polynomials, & 'nCk' (combinations) to create better curves
 * Added Open & Closed Uniform B-Spline curve functions
+* Added a Rational Bezier Curve Function for weighted Curves
 
 #### 6.11.0 - 3rd July 2020
 
