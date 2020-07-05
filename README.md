@@ -84,6 +84,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 2. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
 3. John Zelle - Creating the graphics.py package which formed the basis for my library.
 4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve - 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
+5. Bryan Oakle, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width is 0 
 
 ## Version History
 
@@ -102,6 +103,8 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added functions for finding Bezier Curves, Bernstein Polynomials, & 'nCk' (combinations) to create better curves
 * Added Open & Closed Uniform B-Spline curve functions
 * Added a Rational Bezier Curve Function for weighted Curves
+
+* Fixed Bug with Polygon drawing outline even though the width is specified to be 0
 
 #### 6.11.0 to 6.11.10 - 3rd July 2020
 
