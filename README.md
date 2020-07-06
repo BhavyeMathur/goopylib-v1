@@ -33,10 +33,19 @@ The first allows you to import everything that is part of the library, but if yo
 
 Goopy is organized into a few different files and depending on what you want to do, you can import these files. There are 2 subfolders in goopy: math & objects. The objects folder contains all of the graphics objects you might want to use like Images, Rectangles, Buttons, etc. To import these, type:
 
-```
+```python
 from goopy.math.BezierCurve import BezierCurve # The other sub-packages are 'Interpolation', & 'BSpline'
 # or
 from goopy.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
+```
+
+To access elements of Goopy like the Point & GraphWin classes, Colours, etc. use this:
+
+```python
+from goopy.colours import *
+
+from goopy.GraphWin import GraphWin
+from goopy.Point import Point
 ```
 
 ### Documentation
