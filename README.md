@@ -106,9 +106,10 @@ Goopy also has functionality for other animations such as moving to locations, r
 1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd July 2020 - Help with creating rounded polygon corners
 2. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
 3. John Zelle - Creating the graphics.py package which formed the basis for my library.
+
 4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve - 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
 5. Bryan Oakle, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width is 0 
-6. 
+6. Atlast435, https://stackoverflow.com/questions/62751626/tkinter-rotated-resizing-cursor - 6th July 2020 - Helped expand the list of supported cursors by refering me to a documentation.
 
 ## Version History
 
