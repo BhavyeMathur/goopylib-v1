@@ -11,7 +11,7 @@ If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com o
 
 ### Installation
 
-This library is very simple to use, all you need is the file called 'goopy.py' and the requirements mentioned in the requirement.txt file. These include the Pillow (PIL) and the keyboard modules which you can download individually or clone this repository and in that directory execute:
+This library is very simple to use, all you need is the folder called 'goopy.py' and the requirements mentioned in the requirement.txt file. These include the Pillow (PIL) and the keyboard modules which you can download individually or clone this repository and in that directory execute:
 
 ```sh
 python3 -m pip install -r requirements.txt
@@ -21,10 +21,22 @@ Now, wherever you need access to the library, simply import as so:
 
 ```python
 
-from goopy import *
+from goopy.imports import *
 # or
 import goopy as gp
 
+```
+
+The first allows you to import everything that is part of the library, but if you want only specific classes & functions, read on. 
+
+### Organization
+
+Goopy is organized into a few different files and depending on what you want to do, you can import these files. There are 2 subfolders in goopy: math & objects. The objects folder contains all of the graphics objects you might want to use like Images, Rectangles, Buttons, etc. To import these, type:
+
+```
+from goopy.math.BezierCurve import BezierCurve # The other sub-packages are 'Interpolation', & 'BSpline'
+# or
+from goopy.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
 ```
 
 ### Documentation
