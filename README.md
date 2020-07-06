@@ -109,6 +109,12 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ## Version History
 
+### v1.0
+
+#### 1.0.0-alpha to 1.0.1-alpha - 6th July 2020
+
+* Added move_to(), move_to_x(), move_to_y(), move(), move_x(), and move_y() functions to the GraphWin class to move a window on the screen
+
 ### v6.11-dev
 
 #### 6.11.11 to 6.11.29 to 1.0.0-alpha - 4th-5th July 2020
