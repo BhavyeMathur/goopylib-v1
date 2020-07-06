@@ -111,7 +111,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v6.11-dev
 
-#### 6.11.11 to 6.11.30 - 4th-5th July 2020
+#### 6.11.11 to 6.11.29 to 7.0.0 - 4th-5th July 2020
 
 * Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
 * Added a promptText attribute to the Entry which displays text before the user has typed and disappears when he/she starts typing
