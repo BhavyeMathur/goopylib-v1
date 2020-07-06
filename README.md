@@ -106,6 +106,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 3. John Zelle - Creating the graphics.py package which formed the basis for my library.
 4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve - 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
 5. Bryan Oakle, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width is 0 
+6. 
 
 ## Version History
 
@@ -115,8 +116,10 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 * Added move_to(), move_to_x(), move_to_y(), move(), move_x(), and move_y() functions to the GraphWin class to move a window on the screen
 * Added seperate Cursor Lists for All, Windows, & Mac OSx 
-* Expanded Cursor List to include all available cursors
+* Expanded the Cursor List to include all available cursors
 * Added a Cursor Dictionary to reference the Cursors with more intuitive names like 'up-down arrow' rather than 'sb_h_double_arrow'
+
+* Added Closure functions for all the interpolations so that the user can 1. Get a value of the interpolation, or 2. Get the function with predifined parameters other than time for use in animations internally
 
 ### v6.11-dev
 
