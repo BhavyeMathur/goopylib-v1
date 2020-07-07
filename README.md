@@ -130,6 +130,9 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Released Version 1.0.7a6 as a PyPi package for everyone to install!
 * Updated README to include new installation method
 
+* Added Double & Triple Mouse Click Functions to the GraphWin
+* Added Double & Triple Mouse Click Event Functions to the GraphicsObject class
+
 #### 1.0.0-alpha to 1.0.6-alpha - 6th July 2020
 
 * Added move_to(), move_to_x(), move_to_y(), move(), move_x(), and move_y() functions to the GraphWin class to move a window on the screen
