@@ -10,7 +10,7 @@ from time import sleep as timesleep
 
 from goopylib.styles import *
 from goopylib.util import GraphicsError, GraphicsWarning
-from goopylib.constants import _root, RELIEF, CURSORS, INTERPOLATIONS
+from goopylib.constants import _root, RELIEF, CURSORS
 from goopylib.math.Interpolations import *
 
 from goopylib.objects.GraphicsObject import GraphicsObject
@@ -742,8 +742,10 @@ class GraphWin(tkCanvas):
 
             # Check if the window should still be gliding
             if t - self.glide_queue[0]["Start"] >= self.glide_queue[0]["Time"]:
+                self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x,
+                             self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y)
+
                 self.glide_queue.pop(0)  # Remove the object from the gliding queue
-                print(self.glide_queue)
                 if len(self.glide_queue) == 0:
                     self.is_gliding = False
             else:

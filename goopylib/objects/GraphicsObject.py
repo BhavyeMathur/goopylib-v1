@@ -1,5 +1,3 @@
-from time import time as timetime
-
 from goopylib.Point import Point
 
 from goopylib.styles import *
@@ -240,7 +238,7 @@ class GraphicsObject:
         self.glide_x(time=time, dx=dx, easing=easing_x, _internal_call=True)
         self.glide_y(time=time, dy=dy, easing=easing_y, _internal_call=True)
 
-        self.glide_queue.append({"Time": time, "Start": timetime(), "Update": timetime(), "Initial": self.anchor.copy(),
+        self.glide_queue.append({"Time": time, "Start": timetime(), "Update": timetime(), "Initial": self.anchor.clone(),
                                  "Dist": Point(dx, dy), "EasingX": easing_x, "EasingY": easing_y})
 
         return self
@@ -259,7 +257,7 @@ class GraphicsObject:
         self.is_gliding = True
         if not _internal_call:
             start = timetime()
-            initial_pos = self.anchor.copy()
+            initial_pos = self.anchor.clone()
 
             for glide in self.glide_queue:
                 start += glide["Time"]
@@ -287,7 +285,7 @@ class GraphicsObject:
         self.is_gliding = True
         if not _internal_call:
             start = timetime()
-            initial_pos = Point(self.x_pos, self.y_pos)
+            initial_pos = self.anchor.clone()
 
             for glide in self.glide_queue:
                 start += glide["Time"]
@@ -312,7 +310,7 @@ class GraphicsObject:
         self.glide_y(time=time, dy=y - self.anchor.y, easing=easing_y, _internal_call=True)
 
         start = timetime()
-        initial_pos = self.anchor.copy()
+        initial_pos = self.anchor.clone()
         for glide in self.glide_queue:
             start += glide["Time"]
             initial_pos = glide["Initial"] + glide["Dist"]
@@ -323,11 +321,11 @@ class GraphicsObject:
         return self
 
     def glide_to_x(self, x, time=1, easing=ease_linear()):
-        self.glide_x(time=time, dx=x - self.x_pos, easing=easing)
+        self.glide_x(time=time, dx=x - self.anchor.x, easing=easing)
         return self
 
     def glide_to_y(self, y, time=1, easing=ease_linear()):
-        self.glide_y(time=time, dy=y - self.y_pos, easing=easing)
+        self.glide_y(time=time, dy=y - self.anchor.y, easing=easing)
         return self
 
     def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
@@ -385,18 +383,20 @@ class GraphicsObject:
         for obj in GraphicsObject.gliding_objects:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.glide_queue[0]["Start"] >= obj.glide_queue[0]["Time"]:
+                    obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Dist"].x,
+                                obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Dist"].y)
+
                     obj.glide_queue.pop(0)  # Remove the object from the gliding queue
                     if len(obj.glide_queue) == 0:
                         obj.is_gliding = False
                         GraphicsObject.gliding_objects.remove(obj)
                 else:
 
-                    per = obj.glide_queue[0]["Easing"]((t - obj.glide_queue[0]['Start'])
-                                                       / obj.glide_queue[0]['Time'])
-                    per = min([1, per])
+                    perX = obj.glide_queue[0]["EasingX"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
+                    perY = obj.glide_queue[0]["EasingY"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
 
-                    obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Dist"].x * per,
-                                obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Dist"].y * per)
+                    obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Dist"].x * perX,
+                                obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Dist"].y * perY)
 
                     obj.glide_queue[0]["Update"] = timetime()
 

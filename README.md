@@ -125,7 +125,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.15-alpha - 7th July 2020
+#### 1.0.16-alpha - 7th July 2020
 
 * Released Version 1.0.7a6 as a PyPi package for everyone to install!
 * Updated README to include new installation method
@@ -143,6 +143,11 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Removed keyboard module dependency
 * Added a subtract function for the Point class
 * Fixed Bug with glide functions in queue and different easing for x & y
+
+* Added a RandomColour() function that returns a random colour
+* Added Mangling Functions to the Colour classes
+* Added a Colour Gradient function that returns a list of colours to create a smooth gradient
+* Added a 2D Colour Gradient function that returns a 2D Gradient
 
 #### 1.0.0-alpha to 1.0.6-alpha - 6th July 2020
 
