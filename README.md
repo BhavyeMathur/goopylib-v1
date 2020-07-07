@@ -13,13 +13,22 @@ If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com o
 
 ### Installation
 
-This library is very simple to use, all you need is the folder called 'goopy.py' and the requirements mentioned in the requirement.txt file. These include the Pillow (PIL) and the keyboard modules which you can download individually or clone this repository and in that directory execute:
+The Primary method to install this library is from [PyPi](https://pypi.org/project/goopylib/1.0.7a6/) via pip:
 
-```sh
-python3 -m pip install -r requirements.txt
+```terminal
+pip install goopylib
 ```
+ or 
+ 
+ ```terminal
+ pip3 install goopylib
+ ```
+ 
+ This will install Goopy and all the requirements for it to run. You can then import the library as shown next.
 
-Now, wherever you need access to the library, simply import as so:
+An alternative method to use this library is very simple to use especially if you want access to the source code, all you need is the folder called 'goopylib' and the requirements. These include the [Pillow](https://pypi.org/project/Pillow/) (PIL) and the [keyboard](https://pypi.org/project/keyboard/) modules which you can download individually. Download the folder and place it wherever you want access to the library. 
+
+Then, simply import as so:
 
 ```python
 
@@ -36,7 +45,7 @@ The first allows you to import everything that is part of the library, but if yo
 Goopy is organized into a few different files and depending on what you want to do, you can import these files. There are 2 subfolders in goopy: math & objects. The objects folder contains all of the graphics objects you might want to use like Images, Rectangles, Buttons, etc. To import these, type:
 
 ```python
-from goopy.math.BezierCurve import BezierCurve # The other sub-packages are 'Interpolation', & 'BSpline'
+from goopy.math.BezierCurve import BezierCurve # The other modules are 'Interpolation', & 'BSpline'
 # or
 from goopy.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
 ```
@@ -110,12 +119,16 @@ Goopy also has functionality for other animations such as moving to locations, r
 4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve - 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
 5. Bryan Oakle, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width is 0 
 6. Atlast435, https://stackoverflow.com/questions/62751626/tkinter-rotated-resizing-cursor - 6th July 2020 - Helped expand the list of supported cursors by refering me to a documentation.
+7. Sinoroc, https://stackoverflow.com/questions/62772377/python-package-does-not-get-created-in-site-packages-folder?noredirect=1#comment111007135_62772377 - 7th July 2020 - Helped fix bug with Packaging
 
 ## Version History
 
 ### v1.0
 
 #### 1.0.7-alpha - 7th July 2020
+
+* Released Version 1.0.7a6 as a PyPi package for everyone to install!
+* Updated README to include new installation method
 
 #### 1.0.0-alpha to 1.0.6-alpha - 6th July 2020
 
