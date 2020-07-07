@@ -1,11 +1,17 @@
-from distutils.core import setup
+from setuptools import setup
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
     name='goopylib',
-    packages=['goopylib', 'goopylib.math', 'goopylib.objects'],
+    package_dir={'': 'goopylib'},
+    py_modules=['imports', 'colours', 'constants', 'GraphWin', 'Point', 'styles', 'util',
+                'math/BezierCurve', 'math/BSpline', 'math/Interpolations',
+                'objects/_BBox', 'objects/Arc', 'objects/Button', 'objects/Checkbox', 'objects/Circle',
+                'objects/CycleButton', 'objects/Entry', 'objects/GraphicsObject', 'objects/Image',
+                'objects/Line', 'objects/Oval', 'objects/Polygon', 'objects/RadioButton',
+                'objects/Rectangle', 'objects/Slider', 'objects/Text'],
     version='1.0a6',
     license='MIT License',
 
