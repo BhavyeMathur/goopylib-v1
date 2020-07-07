@@ -115,7 +115,9 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.0-alpha to 1.0.1-alpha - 6th July 2020
+#### 1.0.7-alpha - 7th July 2020
+
+#### 1.0.0-alpha to 1.0.6-alpha - 6th July 2020
 
 * Added move_to(), move_to_x(), move_to_y(), move(), move_x(), and move_y() functions to the GraphWin class to move a window on the screen
 * Added seperate Cursor Lists for All, Windows, & Mac OSx 
@@ -123,6 +125,9 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added a Cursor Dictionary to reference the Cursors with more intuitive names like 'up-down arrow' rather than 'sb_h_double_arrow'
 
 * Added Closure functions for all the interpolations so that the user can 1. Get a value of the interpolation, or 2. Get the function with predifined parameters other than time for use in animations internally
+* Created the Cursors Wiki Page
+
+* Various Bug Fixes from changing the naming convenction & splitting files
 
 ### v6.11-dev
 
