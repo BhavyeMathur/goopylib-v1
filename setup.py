@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setup(
     name='goopylib',
     packages=['goopylib', 'goopylib.math', 'goopylib.objects'],
-    version='1.0.6',
+    version='1.0a6',
     license='MIT License',
 
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.',
