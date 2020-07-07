@@ -62,7 +62,7 @@ As these are entire projects, I have not supplied the code for these. If you wan
 
 I worked on this as a school project and used the goopy library to fully functional Pac-Man Game! (and an arcade too) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and fruits to go on to the next level.
 
-![Pac-Man Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples/Pac-Man.png)
+![Pac-Man Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man.png)
 
 **2. Multiplayer UNO**
 
@@ -72,7 +72,7 @@ The game allows 2-7 players to play together and the graphics animate the cards,
 
 Here is a screenshot of the game:
 
-![UNO Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples/MultiplayerUNO.png)
+![UNO Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/MultiplayerUNO.png)
 
 Avatar graphics are from freepik.com
 
@@ -82,7 +82,7 @@ My school has these weekly activity clubs where we all go to well, do activities
 
 Goopy is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it to anyone to use. Now mind you, this was made with an older version of Goopy so it did not contain lots of animations and visual feedback, but here is a screenshot:
 
-![Activity Selection App Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples/ActivtySelectionApp.png)
+![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
 
 ### Examples
 
@@ -92,13 +92,13 @@ These examples with the code and required textures are included in folders for y
 
 This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid input, a functional tab to change from registering to signing up, and more.
 
-![GUI Screenshot](https://github.com/BhavyeMathur/goopy/blob/master/Examples//ModernUI-LoginPage%20Example/ExampleScreenshot.png)
+![GUI Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ModernUI-LoginPage%20Example/ExampleScreenshot.png)
 
 2. Also provided is a very simple animation of Pac-Man being chased by some ghosts and it was created with just 40 lines of code! This really is an example of how simple animations such as these can help make a really good game or project. 
 
 Goopy also has functionality for other animations such as moving to locations, rotating animations, and a lot to come soon. I am planning to include animations for almost every attribute of a Graphics Object like size, colour, outline thickness, transformation (skewing, fliping, etc.) and more. It also contains easy-to-use easing functions like those you would find in a professional animator.
 
-![Pac-Man Animation Example](https://github.com/BhavyeMathur/goopy/blob/master/Examples/Pac-Man-Animation%20Example/Pac-ManAnimation.png)
+![Pac-Man Animation Example](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man-Animation%20Example/Pac-ManAnimation.png)
 
 
 ## Contributions
