@@ -125,7 +125,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.13-alpha - 7th July 2020
+#### 1.0.15-alpha - 7th July 2020
 
 * Released Version 1.0.7a6 as a PyPi package for everyone to install!
 * Updated README to include new installation method
@@ -141,6 +141,8 @@ Goopy also has functionality for other animations such as moving to locations, r
 * You can now supply different easings for the y & x gliding
 
 * Removed keyboard module dependency
+* Added a subtract function for the Point class
+* Fixed Bug with glide functions in queue and different easing for x & y
 
 #### 1.0.0-alpha to 1.0.6-alpha - 6th July 2020
 

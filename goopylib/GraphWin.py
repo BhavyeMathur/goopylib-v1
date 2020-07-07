@@ -17,6 +17,7 @@ from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.Point import Point
 from goopylib._internal_classes import Transform
 
+
 class GraphWin(tkCanvas):
     """A GraphWin is a toplevel window for displaying graphics."""
     instances = []  # a list of all instances of this class
@@ -27,10 +28,10 @@ class GraphWin(tkCanvas):
     # Autoflush: The window will update automatically if True
     # Style: The colour styles have attributes called 'background-colour' which the window will use if bk_colour=None
     def __init__(self, title="Graphics Window", width=800, height=600, min_width=0, min_height=0, max_width=1000,
-                 max_height=1000,  x_pos=70, y_pos=80, resizable_width=False, resizable_height=False,
+                 max_height=1000, x_pos=0, y_pos=0, resizable_width=False, resizable_height=False,
                  style=None, bk_colour=None, icon=None, autoflush=True, cursor="arrow", border_relief="flat",
                  border_width=0):
-        
+
         # Making sure all the arguments are valid and raising erros if not
 
         if not isinstance(title, str):
@@ -271,7 +272,7 @@ class GraphWin(tkCanvas):
 
         self.last_key_pressed = ""
 
-        self.bind("<Key>", self._on_key_press)
+        self.bind("<KeyPress>", self._on_key_press)
 
         # Animation Variables
 
@@ -362,12 +363,16 @@ class GraphWin(tkCanvas):
         if easing_y is None:
             easing_y = easing_x
 
-        self.glide_x(time, dx, easing=easing_x)
-        self.glide_y(time, dy, easing=easing_y)
+        self.glide_x(time=time, dx=dx, easing=easing_x, _internal_call=True)
+        self.glide_y(time=time, dy=dy, easing=easing_y, _internal_call=True)
+
+        self.glide_queue.append({"Time": time, "Start": timetime(),
+                                 "Update": timetime(), "Initial": Point(self.x_pos, self.y_pos),
+                                 "Dist": Point(dx, dy), "EasingX": easing_x, "EasingY": easing_y})
 
         return self
 
-    def glide_x(self, dx, time=1, easing=ease_linear()):
+    def glide_x(self, dx, time=1, easing=ease_linear(), _internal_call=False):
         if not (isinstance(dx, int) or isinstance(dx, float)):
             raise GraphicsError("\n\nThe x amount to glide the window by (dx) must be a number "
                                 f"(integer or float), not {dx}")
@@ -379,13 +384,20 @@ class GraphWin(tkCanvas):
             raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
 
         self.is_gliding = True
-        self.glide_queue.append({"Time": time, "Start": timetime(),
-                                 "Update": timetime(), "Initial": Point(self.x_pos, self.y_pos), "Dist": Point(dx, 0),
-                                 "Easing": easing})
+        if not _internal_call:
+            start = timetime()
+            initial_pos = Point(self.x_pos, self.y_pos)
+
+            for glide in self.glide_queue:
+                start += glide["Time"]
+                initial_pos = glide["Initial"] + glide["Dist"]
+
+            self.glide_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
+                                     "Dist": Point(dx, 0), "EasingX": easing, "EasingY": easing})
 
         return self
 
-    def glide_y(self, dy, time=1, easing=ease_linear()):
+    def glide_y(self, dy, time=1, easing=ease_linear(), _internal_call=False):
         if not (isinstance(dy, int) or isinstance(dy, float)):
             raise GraphicsError("\n\nThe y amount to glide the window by (dy) must be a number "
                                 f"(integer or float), not {dy}")
@@ -397,9 +409,17 @@ class GraphWin(tkCanvas):
             raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
 
         self.is_gliding = True
-        self.glide_queue.append({"Time": time, "Start": timetime(),
-                                 "Update": timetime(), "Initial": Point(self.x_pos, self.y_pos), "Dist": Point(0, dy),
-                                 "Easing": easing})
+        if not _internal_call:
+            start = timetime()
+            initial_pos = Point(self.x_pos, self.y_pos)
+
+            for glide in self.glide_queue:
+                start += glide["Time"]
+                initial_pos = glide["Initial"] + glide["Dist"]
+
+            self.glide_queue.append({"Time": time, "Start": start,
+                                     "Update": timetime(), "Initial": initial_pos,
+                                     "Dist": Point(0, dy), "EasingX": easing, "EasingY": easing})
 
         return self
 
@@ -409,21 +429,30 @@ class GraphWin(tkCanvas):
         if easing_y is None:
             easing_y = easing_x
 
-        self.glide_to_x(time, x, easing=easing_x)
-        self.glide_to_y(time, y, easing=easing_y)
+        self.glide_x(time=time, dx=x - self.x_pos, easing=easing_x, _internal_call=True)
+        self.glide_y(time=time, dy=y - self.y_pos, easing=easing_y, _internal_call=True)
+
+        start = timetime()
+        initial_pos = Point(self.x_pos, self.y_pos)
+        for glide in self.glide_queue:
+            start += glide["Time"]
+            initial_pos = glide["Initial"] + glide["Dist"]
+
+        self.glide_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
+                                 "Dist": Point(x, y) - initial_pos, "EasingX": easing_x, "EasingY": easing_y})
 
         return self
 
     def glide_to_x(self, x, time=1, easing=ease_linear()):
-        self.glide_x(time, x - self.x_pos, easing=easing)
+        self.glide_x(time=time, dx=x - self.x_pos, easing=easing)
         return self
 
     def glide_to_y(self, y, time=1, easing=ease_linear()):
-        self.glide_y(time, y - self.y_pos, easing=easing)
+        self.glide_y(time=time, dy=y - self.y_pos, easing=easing)
         return self
 
     def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
-        self.glide_to(p.x, p.y, time=time, easing_x=easing_x, easing_y=easing_y)
+        self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
         return self
 
     # Sets the background colour of the window
@@ -490,7 +519,7 @@ class GraphWin(tkCanvas):
         self.master.resizable(self.is_resizable[0], resizable_height)
         self.is_resizable[1] = resizable_height
         return self
-    
+
     def set_resizable_width(self, resizable_width=True):
         if not isinstance(resizable_width, bool):
             raise GraphicsError(f"\n\nresizable_height must be a boolean, not {resizable_width}")
@@ -714,16 +743,16 @@ class GraphWin(tkCanvas):
             # Check if the window should still be gliding
             if t - self.glide_queue[0]["Start"] >= self.glide_queue[0]["Time"]:
                 self.glide_queue.pop(0)  # Remove the object from the gliding queue
+                print(self.glide_queue)
                 if len(self.glide_queue) == 0:
                     self.is_gliding = False
             else:
 
-                per = self.glide_queue[0]["Easing"]((t - self.glide_queue[0]['Start'])
-                                                    / self.glide_queue[0]['Time'])
-                per = min([1, per])
+                perX = self.glide_queue[0]["EasingX"]((t - self.glide_queue[0]['Start']) / self.glide_queue[0]['Time'])
+                perY = self.glide_queue[0]["EasingY"]((t - self.glide_queue[0]['Start']) / self.glide_queue[0]['Time'])
 
-                self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x * per,
-                             self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y * per)
+                self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x * perX,
+                             self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y * perY)
 
                 self.glide_queue[0]["Update"] = timetime()
 
@@ -787,7 +816,7 @@ class GraphWin(tkCanvas):
             GraphicsObject.on_double_right_click(self)
 
     # Triple Mouse Trigger Functions
-        
+
     def _on_left_triple_click(self, e):
         if self.is_open():
             self.mouse_triple_left_click = e.x, e.y
@@ -1011,9 +1040,9 @@ class GraphWin(tkCanvas):
                 break
 
         return mouse_pos
-    
+
     # GET DOUBLE MOUSE CLICK
-    
+
     def get_double_left_mouse_click(self):
         mouse_pos = None
 
@@ -1049,9 +1078,9 @@ class GraphWin(tkCanvas):
                 break
 
         return mouse_pos
-    
+
     # GET TRIPLE MOUSE CLICK
-    
+
     def get_triple_left_mouse_click(self):
         mouse_pos = None
 
@@ -1128,7 +1157,7 @@ class GraphWin(tkCanvas):
             return None
 
     # DOUBLE MOUSE CLICKS
-    
+
     def check_double_left_mouse_click(self, refresh=True):
         if self.is_closed():
             return None
@@ -1164,9 +1193,9 @@ class GraphWin(tkCanvas):
             return Point(x, y)
         else:
             return None
-        
+
     # TRIPLE MOUSE CLICKS
-        
+
     def check_triple_left_mouse_click(self, refresh=True):
         if self.is_closed():
             return None

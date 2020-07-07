@@ -25,6 +25,9 @@ class Point:
         except AttributeError:
             return Point(self.x + other, self.y + other)
 
+    def __sub__(self, other):
+        return self + -other
+
     def _move(self, dx, dy):
         self.x = self.x + dx
         self.y = self.y + dy

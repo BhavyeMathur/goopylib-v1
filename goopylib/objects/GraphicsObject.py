@@ -237,12 +237,15 @@ class GraphicsObject:
         if easing_y is None:
             easing_y = easing_x
 
-        self.glide_x(time, dx, easing=easing_x)
-        self.glide_y(time, dy, easing=easing_y)
+        self.glide_x(time=time, dx=dx, easing=easing_x, _internal_call=True)
+        self.glide_y(time=time, dy=dy, easing=easing_y, _internal_call=True)
+
+        self.glide_queue.append({"Time": time, "Start": timetime(), "Update": timetime(), "Initial": self.anchor.copy(),
+                                 "Dist": Point(dx, dy), "EasingX": easing_x, "EasingY": easing_y})
 
         return self
 
-    def glide_x(self, dx, time=1, easing=ease_linear()):
+    def glide_x(self, dx, time=1, easing=ease_linear(), _internal_call=False):
         if not (isinstance(dx, int) or isinstance(dx, float)):
             raise GraphicsError("\n\nThe x amount to glide the window by (dx) must be a number "
                                 f"(integer or float), not {dx}")
@@ -254,16 +257,23 @@ class GraphicsObject:
             raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
 
         self.is_gliding = True
-        self.glide_queue.append({"Time": time, "Start": timetime(),
-                                 "Update": timetime(), "Initial": Point(self.anchor.x, self.anchor.y),
-                                 "Dist": Point(dx, 0), "Easing": easing})
+        if not _internal_call:
+            start = timetime()
+            initial_pos = self.anchor.copy()
+
+            for glide in self.glide_queue:
+                start += glide["Time"]
+                initial_pos = glide["Initial"] + glide["Dist"]
+
+            self.glide_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
+                                     "Dist": Point(dx, 0), "EasingX": easing, "EasingY": easing})
 
         if self not in GraphicsObject.gliding_objects:
             GraphicsObject.gliding_objects.append(self)
 
         return self
 
-    def glide_y(self, dy, time=1, easing=ease_linear()):
+    def glide_y(self, dy, time=1, easing=ease_linear(), _internal_call=False):
         if not (isinstance(dy, int) or isinstance(dy, float)):
             raise GraphicsError("\n\nThe y amount to glide the window by (dy) must be a number "
                                 f"(integer or float), not {dy}")
@@ -275,9 +285,18 @@ class GraphicsObject:
             raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
 
         self.is_gliding = True
-        self.glide_queue.append({"Time": time, "Start": timetime(),
-                                 "Update": timetime(), "Initial": Point(self.anchor.x, self.anchor.y),
-                                 "Dist": Point(0, dy), "Easing": easing})
+        if not _internal_call:
+            start = timetime()
+            initial_pos = Point(self.x_pos, self.y_pos)
+
+            for glide in self.glide_queue:
+                start += glide["Time"]
+                initial_pos = glide["Initial"] + glide["Dist"]
+
+            self.glide_queue.append({"Time": time, "Start": start,
+                                     "Update": timetime(), "Initial": initial_pos,
+                                     "Dist": Point(0, dy), "EasingX": easing, "EasingY": easing})
+
         if self not in GraphicsObject.gliding_objects:
             GraphicsObject.gliding_objects.append(self)
 
@@ -289,21 +308,30 @@ class GraphicsObject:
         if easing_y is None:
             easing_y = easing_x
 
-        self.glide_to_x(time, x, easing=easing_x)
-        self.glide_to_y(time, y, easing=easing_y)
+        self.glide_x(time=time, dx=x - self.anchor.x, easing=easing_x, _internal_call=True)
+        self.glide_y(time=time, dy=y - self.anchor.y, easing=easing_y, _internal_call=True)
+
+        start = timetime()
+        initial_pos = self.anchor.copy()
+        for glide in self.glide_queue:
+            start += glide["Time"]
+            initial_pos = glide["Initial"] + glide["Dist"]
+
+        self.glide_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
+                                 "Dist": Point(x, y) - initial_pos, "EasingX": easing_x, "EasingY": easing_y})
 
         return self
 
     def glide_to_x(self, x, time=1, easing=ease_linear()):
-        self.glide_x(time, x - self.anchor.x, easing=easing)
+        self.glide_x(time=time, dx=x - self.x_pos, easing=easing)
         return self
 
     def glide_to_y(self, y, time=1, easing=ease_linear()):
-        self.glide_y(time, y - self.anchor.y, easing=easing)
+        self.glide_y(time=time, dy=y - self.y_pos, easing=easing)
         return self
 
     def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
-        self.glide_to(p.x, p.y, time=time, easing_x=easing_x, easing_y=easing_y)
+        self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
         return self
 
     def animate_rotate(self, dr, t, easing=ease_linear()):
