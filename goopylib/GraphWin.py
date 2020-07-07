@@ -1,6 +1,5 @@
 from tkinter import Canvas as tkCanvas
 from tkinter import Toplevel as tkToplevel
-import keyboard
 
 from PIL import ImageGrab
 
@@ -147,7 +146,7 @@ class GraphWin(tkCanvas):
                           highlightthickness=0, bd=border_width,
                           bg=self.bk_colour, cursor=CURSORS[cursor.lower()], relief=border_relief)
         self.master.config(width=width, height=height)
-        
+
         self.master.title(title)
         self.title = title
 
@@ -189,12 +188,20 @@ class GraphWin(tkCanvas):
         self.imgs = 0
 
         self.items = []
-        
+
         # Mouse Related Variables
 
         self.mouse_left_click = None
         self.mouse_middle_click = None
         self.mouse_right_click = None
+
+        self.mouse_double_left_click = None
+        self.mouse_double_middle_click = None
+        self.mouse_double_right_click = None
+
+        self.mouse_triple_left_click = None
+        self.mouse_triple_middle_click = None
+        self.mouse_triple_right_click = None
 
         self.mouse_left_press = None
         self.mouse_right_press = None
@@ -228,14 +235,28 @@ class GraphWin(tkCanvas):
         self.bind_all("<MouseWheel>", self._on_mouse_scroll)
         self.bind("<Enter>", self._on_mouse_in)
         self.bind("<Leave>", self._on_mouse_out)
+
+        self.bind("<Double-Button-1>", self._on_left_double_click)
+        self.bind("<Double-Button-2>", self._on_middle_double_click)
+        self.bind("<Double-Button-3>", self._on_right_double_click)
+
+        self.bind("<Triple-Button-1>", self._on_left_triple_click)
+        self.bind("<Triple-Button-2>", self._on_middle_triple_click)
+        self.bind("<Triple-Button-3>", self._on_right_triple_click)
+
         self._mouse_callback = None
 
         self.mouse_wheel_pos = 0
         self.mouse_scroll_amount = 0
+
+        # Keyboard Variables
+
         self.last_key_pressed = ""
-        
+
+        self.bind("<Key>", self._on_key_press)
+
         # Animation Variables
-        
+
         self.is_gliding = False
         self.glide_queue = []
 
@@ -316,57 +337,55 @@ class GraphWin(tkCanvas):
 
     # Window Gliding Functions
 
-    def glide(self, time, dx, dy, easing="linear", args=(), interval_type="frames"):
-        self.glide_x(time, dx, easing=easing, args=args, interval_type=interval_type)
-        self.glide_y(time, dy, easing=easing, args=args, interval_type=interval_type)
+    def glide(self, time, dx, dy, easing=ease_linear()):
+        self.glide_x(time, dx, easing=easing)
+        self.glide_y(time, dy, easing=easing)
 
-    def glide_x(self, time, dx, easing="linear", args=(), interval_type="frames"):
+    def glide_x(self, time, dx, easing=ease_linear()):
         if not (isinstance(dx, int) or isinstance(dx, float)):
             raise GraphicsError("\n\nThe x amount to glide the window by (dx) must be a number "
                                 f"(integer or float), not {dx}")
         if not (isinstance(time, int) or isinstance(time, float)):
             raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
                                 f"(integer or float), not {time}")
-        if easing not in INTERPOLATIONS:
-            raise GraphicsError(f"\n\nThe easing must be one of {INTERPOLATIONS}, not {easing}")
 
-        self.glide_queue.append({"Interval Type": interval_type, "Time": time, "Start": timetime(),
+        self.is_gliding = True
+        self.glide_queue.append({"Time": time, "Start": timetime(),
                                  "Update": timetime(), "Initial": Point(self.x_pos, self.y_pos), "Dist": Point(dx, 0),
                                  "Easing": easing})
 
-    def glide_y(self, time, dy, easing="linear", args=(), interval_type="frames"):
+    def glide_y(self, time, dy, easing=ease_linear()):
         if not (isinstance(dy, int) or isinstance(dy, float)):
             raise GraphicsError("\n\nThe y amount to glide the window by (dy) must be a number "
                                 f"(integer or float), not {dy}")
         if not (isinstance(time, int) or isinstance(time, float)):
             raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
                                 f"(integer or float), not {time}")
-        if easing not in INTERPOLATIONS:
-            raise GraphicsError(f"\n\nThe easing must be one of {INTERPOLATIONS}, not {easing}")
 
-    def glide_to(self, time, x, y, easing="linear", args=(), interval_type="frames"):
-        self.glide_to_x(time, x, easing=easing, args=args, interval_type=interval_type)
-        self.glide_to_y(time, y, easing=easing, args=args, interval_type=interval_type)
+        self.is_gliding = True
+        self.glide_queue.append({"Time": time, "Start": timetime(),
+                                 "Update": timetime(), "Initial": Point(self.x_pos, self.y_pos), "Dist": Point(0, dy),
+                                 "Easing": easing})
 
-    def glide_to_x(self, time, x, easing="linear", interval_type="frames"):
+    def glide_to(self, time, x, y, easing=ease_linear()):
+        self.glide_to_x(time, x, easing=easing)
+        self.glide_to_y(time, y, easing=easing)
+
+    def glide_to_x(self, time, x, easing=ease_linear()):
         if not (isinstance(x, int) or isinstance(x, float)):
             raise GraphicsError("\n\nThe x location to glide the window to (x) must be a number "
                                 f"(integer or float), not {x}")
         if not (isinstance(time, int) or isinstance(time, float)):
             raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
                                 f"(integer or float), not {time}")
-        if easing not in INTERPOLATIONS:
-            raise GraphicsError(f"\n\nThe easing must be one of {INTERPOLATIONS}, not {easing}")
 
-    def glide_to_y(self, time, y, easing="linear", args=(), interval_type="frames"):
+    def glide_to_y(self, time, y, easing=ease_linear()):
         if not (isinstance(y, int) or isinstance(y, float)):
             raise GraphicsError("\n\nThe y location to glide the window to (y) must be a number "
                                 f"(integer or float), not {y}")
         if not (isinstance(time, int) or isinstance(time, float)):
             raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
                                 f"(integer or float), not {time}")
-        if easing not in INTERPOLATIONS:
-            raise GraphicsError(f"\n\nThe easing must be one of {INTERPOLATIONS}, not {easing}")
 
     # Sets the background colour of the window
     def set_background(self, colour):
@@ -649,10 +668,9 @@ class GraphWin(tkCanvas):
 
         t = timetime()
         if self.is_gliding:
+
             # Check if the window is gliding for every interval of time or every frame
             # To cope with lag, you might use time to glide irrespective of how many frames passed
-            if not self.glide_queue[0]["Interval Type"] == "Time":
-                t = self.glide_queue[0]["Update"] + 0.05
 
             # Check if the window should still be gliding
             if t - self.glide_queue[0]["Start"] >= self.glide_queue[0]["Time"]:
@@ -660,21 +678,15 @@ class GraphWin(tkCanvas):
                 if len(self.glide_queue) == 0:
                     self.is_gliding = False
             else:
-                args = ""
-                if self.glide_queue[0]["Args"] is not None:
-                    args = ", {}".format(self.glide_queue[0]["Args"])
 
-                per = eval("ease{}((self.glide_queue[0]['Update'] - self.glide_queue[0]['Start'])/"
-                           "self.glide_queue[0]['Time']{})".format(self.glide_queue[0]["Easing"], args))
+                per = self.glide_queue[0]["Easing"]((t - self.glide_queue[0]['Start'])
+                                                    / self.glide_queue[0]['Time'])
                 per = min([1, per])
 
                 self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x * per,
                              self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y * per)
 
-                if self.glide_queue[0]["Interval Type"] == "Time":
-                    self.glide_queue[0]["Update"] = timetime()
-                else:
-                    self.glide_queue[0]["Update"] += 0.05
+                self.glide_queue[0]["Update"] = timetime()
 
         GraphicsObject.on_update(self)
 
@@ -697,6 +709,75 @@ class GraphWin(tkCanvas):
 
     def get_size(self):
         return self.get_width(), self.get_height()
+
+    # Keyboard Trigger Functions
+
+    def _on_key_press(self, e):
+        print("Key Pressed", e)
+
+    # Other Mouse Trigger FUNCTIONS
+
+    def _on_left_double_click(self, e):
+        if self.is_open():
+            self.mouse_double_left_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_double_left_click(self)
+
+    def _on_middle_double_click(self, e):
+        if self.is_open():
+            self.mouse_double_middle_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_double_middle_click(self)
+
+    def _on_right_double_click(self, e):
+        if self.is_open():
+            self.mouse_double_right_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_double_right_click(self)
+
+    # Triple Mouse Trigger Functions
+        
+    def _on_left_triple_click(self, e):
+        if self.is_open():
+            self.mouse_triple_left_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_triple_left_click(self)
+
+    def _on_middle_triple_click(self, e):
+        if self.is_open():
+            self.mouse_triple_middle_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_triple_middle_click(self)
+
+    def _on_right_triple_click(self, e):
+        if self.is_open():
+            self.mouse_triple_right_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_triple_right_click(self)
 
     # TRIGGER MOUSE CLICK FUNCTIONS
     # -------------------------------------------------------------------------
@@ -723,7 +804,7 @@ class GraphWin(tkCanvas):
             if self._mouse_callback:
                 self._mouse_callback(Point(e.x, e.y))
 
-            GraphicsObject.on_middle_click()
+            GraphicsObject.on_middle_click(self)
 
     def _on_right_click(self, e):
         if self.is_open():
@@ -735,7 +816,7 @@ class GraphWin(tkCanvas):
             if self._mouse_callback:
                 self._mouse_callback(Point(e.x, e.y))
 
-            GraphicsObject.on_right_click()
+            GraphicsObject.on_right_click(self)
 
     # TRIGGER MOUSE RELEASE FUNCTIONS
     # -------------------------------------------------------------------------
@@ -773,12 +854,16 @@ class GraphWin(tkCanvas):
             self.mouse_middle_press = e.x, e.y
             self.last_mouse_event = self.mouse_middle_press
 
+            GraphicsObject.on_middle_press(self)
+
     def _on_right_press(self, e):
         if self.is_open():
             self.right_mouse_down = True
 
             self.mouse_right_press = e.x, e.y
             self.last_mouse_event = self.mouse_right_press
+
+            GraphicsObject.on_right_press(self)
 
     # OTHER TRIGGER MOUSE FUNCTIONS
     # -------------------------------------------------------------------------
@@ -853,9 +938,6 @@ class GraphWin(tkCanvas):
     # -------------------------------------------------------------------------
 
     def get_left_mouse_click(self):
-        """Wait for mouse click and return Point object representing
-        the click"""
-
         mouse_pos = None
 
         while mouse_pos is None:
@@ -868,9 +950,6 @@ class GraphWin(tkCanvas):
         return mouse_pos
 
     def get_middle_mouse_click(self):
-        """Wait for mouse click and return Point object representing
-        the click"""
-
         mouse_pos = None
 
         while mouse_pos is None:
@@ -883,13 +962,86 @@ class GraphWin(tkCanvas):
         return mouse_pos
 
     def get_right_mouse_click(self):
-        """Wait for mouse click and return Point object representing
-        the click"""
-
         mouse_pos = None
 
         while mouse_pos is None:
             mouse_pos = self.check_right_mouse_click()
+            self.update()
+
+            if self.is_closed():
+                break
+
+        return mouse_pos
+    
+    # GET DOUBLE MOUSE CLICK
+    
+    def get_double_left_mouse_click(self):
+        mouse_pos = None
+
+        while mouse_pos is None:
+            mouse_pos = self.check_double_left_mouse_click()
+            self.update()
+
+            if self.is_closed():
+                break
+
+        return mouse_pos
+
+    def get_double_middle_mouse_click(self):
+        mouse_pos = None
+
+        while mouse_pos is None:
+            mouse_pos = self.check_double_middle_mouse_click()
+            self.update()
+
+            if self.is_closed():
+                break
+
+        return mouse_pos
+
+    def get_double_right_mouse_click(self):
+        mouse_pos = None
+
+        while mouse_pos is None:
+            mouse_pos = self.check_double_right_mouse_click()
+            self.update()
+
+            if self.is_closed():
+                break
+
+        return mouse_pos
+    
+    # GET TRIPLE MOUSE CLICK
+    
+    def get_triple_left_mouse_click(self):
+        mouse_pos = None
+
+        while mouse_pos is None:
+            mouse_pos = self.check_triple_left_mouse_click()
+            self.update()
+
+            if self.is_closed():
+                break
+
+        return mouse_pos
+
+    def get_triple_middle_mouse_click(self):
+        mouse_pos = None
+
+        while mouse_pos is None:
+            mouse_pos = self.check_triple_middle_mouse_click()
+            self.update()
+
+            if self.is_closed():
+                break
+
+        return mouse_pos
+
+    def get_triple_right_mouse_click(self):
+        mouse_pos = None
+
+        while mouse_pos is None:
+            mouse_pos = self.check_triple_right_mouse_click()
             self.update()
 
             if self.is_closed():
@@ -901,9 +1053,8 @@ class GraphWin(tkCanvas):
     # -------------------------------------------------------------------------
 
     def check_left_mouse_click(self, refresh=True):
-
         if self.is_closed():
-            pass
+            return None
         if self.mouse_left_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_left_click[0], self.mouse_left_click[1])
 
@@ -914,9 +1065,8 @@ class GraphWin(tkCanvas):
             return None
 
     def check_middle_mouse_click(self, refresh=True):
-
         if self.is_closed():
-            pass
+            return None
         if self.mouse_middle_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_middle_click[0], self.mouse_middle_click[1])
 
@@ -927,14 +1077,89 @@ class GraphWin(tkCanvas):
             return None
 
     def check_right_mouse_click(self, refresh=True):
-
         if self.is_closed():
-            pass
+            return None
         if self.mouse_right_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_right_click[0], self.mouse_right_click[1])
 
             if refresh:
                 self.mouse_right_click = None
+            return Point(x, y)
+        else:
+            return None
+
+    # DOUBLE MOUSE CLICKS
+    
+    def check_double_left_mouse_click(self, refresh=True):
+        if self.is_closed():
+            return None
+        if self.mouse_double_left_click is not None and not self.is_closed():
+            x, y = self.to_world(self.mouse_double_left_click[0], self.mouse_double_left_click[1])
+
+            if refresh:
+                self.mouse_double_left_click = None
+            return Point(x, y)
+        else:
+            return None
+
+    def check_double_middle_mouse_click(self, refresh=True):
+        if self.is_closed():
+            return None
+        if self.mouse_double_middle_click is not None and not self.is_closed():
+            x, y = self.to_world(self.mouse_double_middle_click[0], self.mouse_double_middle_click[1])
+
+            if refresh:
+                self.mouse_double_middle_click = None
+            return Point(x, y)
+        else:
+            return None
+
+    def check_double_right_mouse_click(self, refresh=True):
+        if self.is_closed():
+            return None
+        if self.mouse_double_right_click is not None and not self.is_closed():
+            x, y = self.to_world(self.mouse_double_right_click[0], self.mouse_double_right_click[1])
+
+            if refresh:
+                self.mouse_double_right_click = None
+            return Point(x, y)
+        else:
+            return None
+        
+    # TRIPLE MOUSE CLICKS
+        
+    def check_triple_left_mouse_click(self, refresh=True):
+        if self.is_closed():
+            return None
+        if self.mouse_triple_left_click is not None and not self.is_closed():
+            x, y = self.to_world(self.mouse_triple_left_click[0], self.mouse_triple_left_click[1])
+
+            if refresh:
+                self.mouse_triple_left_click = None
+            return Point(x, y)
+        else:
+            return None
+
+    def check_triple_middle_mouse_click(self, refresh=True):
+        if self.is_closed():
+            return None
+        if self.mouse_triple_middle_click is not None and not self.is_closed():
+            x, y = self.to_world(self.mouse_triple_middle_click[0], self.mouse_triple_middle_click[1])
+
+            if refresh:
+                self.mouse_triple_middle_click = None
+            return Point(x, y)
+        else:
+            return None
+
+    def check_triple_right_mouse_click(self, refresh=True):
+        if self.is_closed():
+            return None
+        if self.mouse_triple_right_click is not None and not self.is_closed():
+            x, y = self.to_world(self.mouse_triple_right_click[0], self.mouse_triple_right_click[1])
+
+            if refresh:
+                self.mouse_triple_right_click = None
             return Point(x, y)
         else:
             return None

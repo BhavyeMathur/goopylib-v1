@@ -5,6 +5,8 @@ from goopylib.Point import Point
 from goopylib.styles import *
 from goopylib.constants import *
 from goopylib.constants import _root
+from goopylib.math.Interpolations import *
+
 
 class GraphicsObject:
     """Generic base class for all of the drawable objects"""
@@ -227,49 +229,59 @@ class GraphicsObject:
         self.move(x - self.get_anchor().x, 0)
         return self
 
-    def glide(self, dx, dy, t, easing="Linear", args=None, frames="Frames"):
-        if frames not in ["Time", "Frames"]:
-            raise GraphicsError("\n\nframes parameter must be either 'Time' or 'Frames' not '{}'".format(frames))
+    def glide(self, time, dx, dy, easing=ease_linear()):
+        self.glide_x(time, dx, easing=easing)
+        self.glide_y(time, dy, easing=easing)
 
-        if len(self.glide_queue) == 0:
-            last_t = time.time()
-            last_dest = self.get_anchor().clone()
-        else:
-            last_t = self.glide_queue[len(self.glide_queue) - 1]["Start"] + self.glide_queue[len(self.glide_queue) - 1][
-                "Time"]
-            last_dest = self.glide_queue[len(self.glide_queue) - 1]["Dest"]
+        return self
 
-        self.glide_queue.append({"Dest": last_dest + Point(dx, dy),
-                                "Initial": last_dest,
-                                "Dist": Point(dx, dy),
-                                "Easing": easing,
-                                "Time": t,
-                                "Update": last_t,
-                                "Start": last_t,
-                                "Args": args,
-                                "Frames": frames})
+    def glide_x(self, time, dx, easing=ease_linear()):
+        if not (isinstance(dx, int) or isinstance(dx, float)):
+            raise GraphicsError("\n\nThe x amount to glide the window by (dx) must be a number "
+                                f"(integer or float), not {dx}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
+                                f"(integer or float), not {time}")
+
         self.is_gliding = True
-
+        self.glide_queue.append({"Time": time, "Start": timetime(),
+                                 "Update": timetime(), "Initial": Point(self.anchor.x, self.anchor.y),
+                                 "Dist": Point(dx, 0), "Easing": easing})
         if self not in GraphicsObject.gliding_objects:
             GraphicsObject.gliding_objects.append(self)
+
         return self
 
-    def glide_to(self, x, y, t, easing="Linear", args=None, frames="Frames"):
-        if len(self.glide_queue) == 0:
-            last_dest = self.get_anchor().clone()
-        else:
-            last_dest = self.glide_queue[len(self.glide_queue) - 1]["Dest"]
+    def glide_y(self, time, dy, easing=ease_linear()):
+        if not (isinstance(dy, int) or isinstance(dy, float)):
+            raise GraphicsError("\n\nThe y amount to glide the window by (dy) must be a number "
+                                f"(integer or float), not {dy}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
+                                f"(integer or float), not {time}")
 
-        self.glide(x - last_dest.x, y - last_dest.y, t, easing, args, frames)
+        self.is_gliding = True
+        self.glide_queue.append({"Time": time, "Start": timetime(),
+                                 "Update": timetime(), "Initial": Point(self.anchor.x, self.anchor.y),
+                                 "Dist": Point(0, dy), "Easing": easing})
+        if self not in GraphicsObject.gliding_objects:
+            GraphicsObject.gliding_objects.append(self)
+
         return self
 
-    def glide_to_point(self, p, t, easing="Linear", args=None, frames="Frames"):
-        self.glide_to(p.x, p.y, t, easing, args, frames)
+    def glide_to(self, time, x, y, easing=ease_linear()):
+        self.glide_to_x(time, x, easing=easing)
+        self.glide_to_y(time, y, easing=easing)
 
-    def animate_rotate(self, dr, t, easing="Linear", args=None, frames="Frames"):
+        return self
+
+    def glide_to_point(self, p, t, easing=ease_linear()):
+        self.glide_to(p.x, p.y, t, easing=easing)
+
+    def animate_rotate(self, dr, t, easing=ease_linear()):
         pass
 
-    def animate_set_rotation(self, r, t, easing="Linear", args=None, frames="Frames"):
+    def animate_set_rotation(self, r, t, easing=ease_linear()):
         self.animate_rotate(r - self.rotation, t, easing, args, frames)
         return self
 
@@ -316,30 +328,21 @@ class GraphicsObject:
         t = time.time()
         for obj in GraphicsObject.gliding_objects:
             if obj.graphwin == graphwin and obj.drawn:
-                if not obj.glide_queue[0]["Frames"] == "Time":
-                    t = obj.glide_queue[0]["Update"] + 0.05
-
                 if t - obj.glide_queue[0]["Start"] >= obj.glide_queue[0]["Time"]:
-                    obj.is_gliding = False
-                    obj.glide_queue.pop(0)
+                    obj.glide_queue.pop(0)  # Remove the object from the gliding queue
                     if len(obj.glide_queue) == 0:
+                        obj.is_gliding = False
                         GraphicsObject.gliding_objects.remove(obj)
                 else:
-                    args = ""
-                    if obj.glide_queue[0]["Args"] is not None:
-                        args = ", {}".format(obj.glide_queue[0]["Args"])
 
-                    per = eval("ease{}((obj.glide_queue[0]['Update'] - obj.glide_queue[0]['Start'])/"
-                               "obj.glide_queue[0]['Time']{})".format(obj.glide_queue[0]["Easing"], args))
+                    per = obj.glide_queue[0]["Easing"]((t - obj.glide_queue[0]['Start'])
+                                                       / obj.glide_queue[0]['Time'])
                     per = min([1, per])
 
                     obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Dist"].x * per,
                                 obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Dist"].y * per)
 
-                    if obj.glide_queue[0]["Frames"] == "Time":
-                        obj.glide_queue[0]["Update"] = time.time()
-                    else:
-                        obj.glide_queue[0]["Update"] += 0.05
+                    obj.glide_queue[0]["Update"] = timetime()
 
         t = time.time()
         for obj in GraphicsObject.rotating_objects:
@@ -394,6 +397,14 @@ class GraphicsObject:
                     obj.click()
 
     @staticmethod
+    def on_middle_click(graphwin):
+        pass
+
+    @staticmethod
+    def on_right_click(graphwin):
+        pass
+
+    @staticmethod
     def on_left_press(graphwin):
         mouse_pos = graphwin.check_left_mouse_press(refresh=False)
 
@@ -418,6 +429,14 @@ class GraphicsObject:
                         obj.resizing_initial_size = obj.width, obj.height
                     else:
                         obj.is_resizing[bound] = False
+
+    @staticmethod
+    def on_middle_press(graphwin):
+        pass
+
+    @staticmethod
+    def on_right_press(graphwin):
+        pass
 
     @staticmethod
     def on_mouse_motion(graphwin):
@@ -528,11 +547,27 @@ class GraphicsObject:
                                     obj.resizing_bounds["right"].set_height(h + obj.bounds_thickness, dir1)
 
     @staticmethod
-    def on_middle_click():
+    def on_double_left_click(graphwin):
         pass
 
     @staticmethod
-    def on_right_click():
+    def on_double_middle_click(graphwin):
+        pass
+
+    @staticmethod
+    def on_double_right_click(graphwin):
+        pass
+
+    @staticmethod
+    def on_triple_left_click(graphwin):
+        pass
+
+    @staticmethod
+    def on_triple_middle_click(graphwin):
+        pass
+
+    @staticmethod
+    def on_triple_right_click(graphwin):
         pass
 
     @staticmethod
