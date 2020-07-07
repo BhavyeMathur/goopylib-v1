@@ -1,5 +1,4 @@
 README.md
-setup.cfg
 setup.py
 goopylib/GraphWin.py
 goopylib/Point.py
@@ -16,3 +15,19 @@ goopylib/goopylib.egg-info/top_level.txt
 goopylib/math/BSpline.py
 goopylib/math/BezierCurve.py
 goopylib/math/Interpolations.py
+goopylib/objects/Arc.py
+goopylib/objects/Button.py
+goopylib/objects/Checkbox.py
+goopylib/objects/Circle.py
+goopylib/objects/CycleButton.py
+goopylib/objects/Entry.py
+goopylib/objects/GraphicsObject.py
+goopylib/objects/Image.py
+goopylib/objects/Line.py
+goopylib/objects/Oval.py
+goopylib/objects/Polygon.py
+goopylib/objects/RadioButton.py
+goopylib/objects/Rectangle.py
+goopylib/objects/Slider.py
+goopylib/objects/Text.py
+goopylib/objects/_BBox.py
