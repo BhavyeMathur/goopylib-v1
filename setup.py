@@ -1,11 +1,18 @@
 from distutils.core import setup
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='goopylib',
-    packages=['goopylib'],
-    version='1.0.0',
+    packages=['goopylib', 'goopylib.math', 'goopylib.objects'],
+    version='1.0.6',
     license='MIT License',
+
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+
     author='Bhavye Mathur',
     author_email='bhavyemathur@gmail.com',
     url='https://github.com/BhavyeMathur/goopylib',
