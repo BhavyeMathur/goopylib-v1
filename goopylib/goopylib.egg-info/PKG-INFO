@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: goopylib
-Version: 1.0a7
+Version: 1.0.7a1
 Summary: A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.
 Home-page: https://github.com/BhavyeMathur/goopylib
 Author: Bhavye Mathur
 Author-email: bhavyemathur@gmail.com
 License: MIT License
-Download-URL: https://github.com/BhavyeMathur/goopylib/archive/v1.0.6-alpha.tar.gz
+Download-URL: https://github.com/BhavyeMathur/goopylib/archive/v1.0.7-alpha0.tar.gz
 Description: # Goopy
         
         ## Introduction

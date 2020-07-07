@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setup(
     name='goopylib',
-    package_dir={'': 'goopylib', 'math': 'goopylib/math', "objects": 'goopylib/objects'},
+    package_dir={'': 'goopylib', ':math': 'goopylib/math', ":objects": 'goopylib/objects'},
     py_modules=['imports', 'colours', 'constants', 'GraphWin', 'Point', 'styles', 'util',
                 'math/BezierCurve', 'math/BSpline', 'math/Interpolations',
                 'objects/_BBox', 'objects/Arc', 'objects/Button', 'objects/Checkbox', 'objects/Circle',
                 'objects/CycleButton', 'objects/Entry', 'objects/GraphicsObject', 'objects/Image',
                 'objects/Line', 'objects/Oval', 'objects/Polygon', 'objects/RadioButton',
                 'objects/Rectangle', 'objects/Slider', 'objects/Text'],
-    version='1.0.7a0',
+    version='1.0.7a2',
     license='MIT License',
 
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.',
@@ -22,7 +22,7 @@ setup(
     author='Bhavye Mathur',
     author_email='bhavyemathur@gmail.com',
     url='https://github.com/BhavyeMathur/goopylib',
-    download_url='',
+    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.7-alpha0.tar.gz',
     keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
     install_requires=[
         'keyboard',
@@ -30,9 +30,9 @@ setup(
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',  # Define that your audience are developers
+        'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
-        'License :: OSI Approved :: MIT License',  # Again, pick a license
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
