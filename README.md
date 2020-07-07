@@ -125,7 +125,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.9-alpha - 7th July 2020
+#### 1.0.13-alpha - 7th July 2020
 
 * Released Version 1.0.7a6 as a PyPi package for everyone to install!
 * Updated README to include new installation method
@@ -135,6 +135,12 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 * Added glide(), glide_x(), glide_y(), glide_to(), glide_to_x(), and glide_to_y() functions to the graphwin
 * Fixed GraphicsObject gliding functions to work with the new easing.
+* Added a check to make sure the easing provided is a function
+* Added glide_to_point() easing function for the GraphWin
+* You can now not supply a value for y or dy for the glide() & glide_to() functions to make the object glide equally in both directions
+* You can now supply different easings for the y & x gliding
+
+* Removed keyboard module dependency
 
 #### 1.0.0-alpha to 1.0.6-alpha - 6th July 2020
 

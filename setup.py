@@ -19,10 +19,7 @@ setup(
     url='https://github.com/BhavyeMathur/goopylib',
     download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.7-alpha0.tar.gz',
     keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
-    install_requires=[
-        'keyboard',
-        'pillow',
-    ],
+    install_requires=['pillow', ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

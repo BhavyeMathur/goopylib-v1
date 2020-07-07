@@ -3,6 +3,8 @@ __version__ = "6.10-dev"
 from tkinter import Tk as tkTk
 from time import time as timetime
 
+from goopylib.math.Interpolations import *
+
 import platform
 
 # platform.system() gives Linux for Linux, Windows for Windows, and Darwin for MacOS

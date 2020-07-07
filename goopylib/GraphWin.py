@@ -1,7 +1,7 @@
 from tkinter import Canvas as tkCanvas
 from tkinter import Toplevel as tkToplevel
 
-from PIL import ImageGrab
+from PIL import ImageGrab  # Required to take snapshots of the GraphWin to save as an Image
 
 import warnings
 import os
@@ -21,12 +21,17 @@ class GraphWin(tkCanvas):
     """A GraphWin is a toplevel window for displaying graphics."""
     instances = []  # a list of all instances of this class
 
+    # Most of the parameters are self explanatory, but for those that might not be:
+
+    # Resizable Height & Width: Whether you can resize the window by pulling its sides
+    # Autoflush: The window will update automatically if True
+    # Style: The colour styles have attributes called 'background-colour' which the window will use if bk_colour=None
     def __init__(self, title="Graphics Window", width=800, height=600, min_width=0, min_height=0, max_width=1000,
                  max_height=1000,  x_pos=70, y_pos=80, resizable_width=False, resizable_height=False,
                  style=None, bk_colour=None, icon=None, autoflush=True, cursor="arrow", border_relief="flat",
                  border_width=0):
         
-        # Making sure all the arguments are valid
+        # Making sure all the arguments are valid and raising erros if not
 
         if not isinstance(title, str):
             raise GraphicsError(f"\n\nThe window's title must be a string, not {title}")
@@ -98,11 +103,15 @@ class GraphWin(tkCanvas):
         if not isinstance(border_width, int):
             raise GraphicsError(f"\n\nThe window's border width must be an integer, not {border_width}")
 
+        # Assigning the default style if none is provided
         if style is None:
             style = global_style
-        elif style not in STYLES.keys():
+        elif style not in STYLES.keys():  # If the style provided is not valid
             raise GraphicsError(f"\n\nThe style you have specified ({style}) is not valid. "
                                 f"Must be one of {list(STYLES.keys())}")
+
+        # Making sure that the parameters provided for the dimensions of the window don't contradict with each other.
+        # If they do, this raises a warning and sets the dimensions to the correct value
 
         if width < min_width:
             warning = f"\n\nWindow width ({width}) is less than window's minimum width ({min_width}). " \
@@ -128,9 +137,14 @@ class GraphWin(tkCanvas):
             max_height = height
             warnings.warn(warning, GraphicsWarning)
 
-        master = tkToplevel(_root)
-        master.protocol("WM_DELETE_WINDOW", self.close)
+        master = tkToplevel(_root)  # Actually creating the window
+        master.protocol("WM_DELETE_WINDOW", self.close)  # Close the window if the X button is pressed
 
+        # Assigning a background colour, this goes through multiple checks to assign a possible value:
+        #   1. The user has directly provided a colour
+        #   2. The colour provided is a colour tag in the window's style
+        #   3. If not, choose the background colour tag of the window's style
+        #   4. If this does not exist, choose the default background colour
         if not isinstance(bk_colour, Colour):
             if bk_colour in STYLES[style].keys():
                 self.bk_colour = STYLES[style][bk_colour]
@@ -142,15 +156,18 @@ class GraphWin(tkCanvas):
         else:
             self.bk_colour = bk_colour
 
+        # Setting most of the attributes of the window
+        # We set the width & height of the window to be the screen size to get rid of a bug with resizing,
+        # then setting the window coordinates
         tkCanvas.__init__(self, master, width=_root.winfo_screenwidth(), height=_root.winfo_screenheight(),
                           highlightthickness=0, bd=border_width,
                           bg=self.bk_colour, cursor=CURSORS[cursor.lower()], relief=border_relief)
-        self.master.config(width=width, height=height)
+        self.master.config(width=width, height=height)  # Changing the dimensions to be correct
 
-        self.master.title(title)
+        self.master.title(title)  # Setting the title of the widow
         self.title = title
 
-        self.master.geometry('%dx%d+%d+%d' % (width, height, x_pos, y_pos))
+        self.master.geometry('%dx%d+%d+%d' % (width, height, x_pos, y_pos))  # Setting the X & Y position of the window
         self.height = height
         self.width = width
         self.center = Point(width / 2, height / 2)
@@ -158,17 +175,19 @@ class GraphWin(tkCanvas):
         self.x_pos = x_pos
         self.y_pos = y_pos
 
-        self.master.minsize(min_width, min_height)
+        self.master.minsize(min_width, min_height)  # Minimum size of the window
         self.min_width = min_width
         self.min_height = min_height
 
-        self.master.maxsize(max_width, max_height)
+        self.master.maxsize(max_width, max_height)  # Maximum size of the window
         self.max_width = max_width
         self.max_height = max_height
 
-        self.master.resizable(resizable_width, resizable_height)
+        self.master.resizable(resizable_width, resizable_height)  # Is the window resizable?
         self.is_resizable = [resizable_width, resizable_height]
 
+        # The Transform Class for the window
+        # This helps transform any coordinates into window coordinates (world) or absolute coords (screen)
         self.trans = None
         self.closed = False
         self.autoflush = autoflush
@@ -180,18 +199,17 @@ class GraphWin(tkCanvas):
 
         self.set_background(self.bk_colour)
 
-        if icon is not None:
+        if icon is not None:  # Setting the Icon of the Window
             self.master.iconbitmap(f"textures/{icon}")
 
         self.pack()
 
-        self.imgs = 0
-
-        self.items = []
+        self.imgs = 0  # Number of Images in this window
+        self.items = []  # All the Graphics Objects in this window
 
         # Mouse Related Variables
 
-        self.mouse_left_click = None
+        self.mouse_left_click = None  # These are all coordinates of these events
         self.mouse_middle_click = None
         self.mouse_right_click = None
 
@@ -219,7 +237,7 @@ class GraphWin(tkCanvas):
         self.middle_mouse_down = False
         self.mouse_in_window = False
 
-        self.bind("<Button-1>", self._on_left_click)
+        self.bind("<Button-1>", self._on_left_click)  # These functions are called whenever these events happen
         self.bind("<Button-2>", self._on_middle_click)
         self.bind("<Button-3>", self._on_right_click)
 
@@ -257,18 +275,18 @@ class GraphWin(tkCanvas):
 
         # Animation Variables
 
-        self.is_gliding = False
-        self.glide_queue = []
+        self.is_gliding = False  # Is the window gliding?
+        self.glide_queue = []  # The next locations for the window to glide to
 
         self.style = style
 
-        master.lift()
-
-        if autoflush:
-            _root.update()
+        master.lift()  # No idea what this does, does anyone know?
         self.instances.append(self)
 
         self.set_coords(0, 0, width, height)
+
+        if autoflush:
+            _root.update()
 
     def __repr__(self):
         if self.is_closed():
@@ -283,6 +301,7 @@ class GraphWin(tkCanvas):
         if self.closed:
             raise GraphicsError("\n\nwindow is closed")
 
+    # This is called automatically whenever the window needs to update
     def __autoflush(self):
         if self.autoflush:
             _root.update()
@@ -295,7 +314,7 @@ class GraphWin(tkCanvas):
     def get_window_pos(self):
         return Point(self.master.winfo_rootx(), self.master.winfo_rooty())
 
-    # Window Moving Functions
+    # WINDOW MOVING FUNCTIONS
 
     # Change position by amount
     def move(self, dx, dy):
@@ -335,13 +354,20 @@ class GraphWin(tkCanvas):
         self.y_pos = y
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, self.x_pos, self.y_pos))
 
-    # Window Gliding Functions
+    # WINDOW GLIDING FUNCTIONS
 
-    def glide(self, time, dx, dy, easing=ease_linear()):
-        self.glide_x(time, dx, easing=easing)
-        self.glide_y(time, dy, easing=easing)
+    def glide(self, dx, dy=None, time=1, easing_x=ease_linear(), easing_y=None):
+        if dy is None:
+            dy = dx
+        if easing_y is None:
+            easing_y = easing_x
 
-    def glide_x(self, time, dx, easing=ease_linear()):
+        self.glide_x(time, dx, easing=easing_x)
+        self.glide_y(time, dy, easing=easing_y)
+
+        return self
+
+    def glide_x(self, dx, time=1, easing=ease_linear()):
         if not (isinstance(dx, int) or isinstance(dx, float)):
             raise GraphicsError("\n\nThe x amount to glide the window by (dx) must be a number "
                                 f"(integer or float), not {dx}")
@@ -349,12 +375,17 @@ class GraphWin(tkCanvas):
             raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
                                 f"(integer or float), not {time}")
 
+        if not callable(easing):
+            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
+
         self.is_gliding = True
         self.glide_queue.append({"Time": time, "Start": timetime(),
                                  "Update": timetime(), "Initial": Point(self.x_pos, self.y_pos), "Dist": Point(dx, 0),
                                  "Easing": easing})
 
-    def glide_y(self, time, dy, easing=ease_linear()):
+        return self
+
+    def glide_y(self, dy, time=1, easing=ease_linear()):
         if not (isinstance(dy, int) or isinstance(dy, float)):
             raise GraphicsError("\n\nThe y amount to glide the window by (dy) must be a number "
                                 f"(integer or float), not {dy}")
@@ -362,30 +393,38 @@ class GraphWin(tkCanvas):
             raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
                                 f"(integer or float), not {time}")
 
+        if not callable(easing):
+            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
+
         self.is_gliding = True
         self.glide_queue.append({"Time": time, "Start": timetime(),
                                  "Update": timetime(), "Initial": Point(self.x_pos, self.y_pos), "Dist": Point(0, dy),
                                  "Easing": easing})
 
-    def glide_to(self, time, x, y, easing=ease_linear()):
-        self.glide_to_x(time, x, easing=easing)
-        self.glide_to_y(time, y, easing=easing)
+        return self
 
-    def glide_to_x(self, time, x, easing=ease_linear()):
-        if not (isinstance(x, int) or isinstance(x, float)):
-            raise GraphicsError("\n\nThe x location to glide the window to (x) must be a number "
-                                f"(integer or float), not {x}")
-        if not (isinstance(time, int) or isinstance(time, float)):
-            raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
-                                f"(integer or float), not {time}")
+    def glide_to(self, x, y=None, time=1, easing_x=ease_linear(), easing_y=None):
+        if y is None:
+            y = x
+        if easing_y is None:
+            easing_y = easing_x
 
-    def glide_to_y(self, time, y, easing=ease_linear()):
-        if not (isinstance(y, int) or isinstance(y, float)):
-            raise GraphicsError("\n\nThe y location to glide the window to (y) must be a number "
-                                f"(integer or float), not {y}")
-        if not (isinstance(time, int) or isinstance(time, float)):
-            raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
-                                f"(integer or float), not {time}")
+        self.glide_to_x(time, x, easing=easing_x)
+        self.glide_to_y(time, y, easing=easing_y)
+
+        return self
+
+    def glide_to_x(self, x, time=1, easing=ease_linear()):
+        self.glide_x(time, x - self.x_pos, easing=easing)
+        return self
+
+    def glide_to_y(self, y, time=1, easing=ease_linear()):
+        self.glide_y(time, y - self.y_pos, easing=easing)
+        return self
+
+    def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
+        self.glide_to(p.x, p.y, time=time, easing_x=easing_x, easing_y=easing_y)
+        return self
 
     # Sets the background colour of the window
     def set_background(self, colour):
@@ -1307,12 +1346,14 @@ class GraphWin(tkCanvas):
     def del_item(self, item):
         self.items.remove(item)
 
+    # Redraw everything on this window
     def redraw(self):
         for item in self.items[:]:
             item.undraw()
             item.draw(self)
         self.update()
 
+    # Undraw everything on this window
     def clear(self):
         for item in self.items[:]:
             item.undraw()

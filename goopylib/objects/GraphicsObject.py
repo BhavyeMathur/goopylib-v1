@@ -1,4 +1,4 @@
-import time
+from time import time as timetime
 
 from goopylib.Point import Point
 
@@ -153,7 +153,7 @@ class GraphicsObject:
     def animate_blinking(self, interval, animate=True):
         self.is_blinking = animate
         self.blinking_interval = interval
-        self.last_blink_time = time.time()
+        self.last_blink_time = timetime()
 
         if animate and self not in GraphicsObject.blinking_objects:
             GraphicsObject.blinking_objects.append(self)
@@ -229,13 +229,20 @@ class GraphicsObject:
         self.move(x - self.get_anchor().x, 0)
         return self
 
-    def glide(self, time, dx, dy, easing=ease_linear()):
-        self.glide_x(time, dx, easing=easing)
-        self.glide_y(time, dy, easing=easing)
+    # Object Gliding Functions
+
+    def glide(self, dx, dy=None, time=1, easing_x=ease_linear(), easing_y=None):
+        if dy is None:
+            dy = dx
+        if easing_y is None:
+            easing_y = easing_x
+
+        self.glide_x(time, dx, easing=easing_x)
+        self.glide_y(time, dy, easing=easing_y)
 
         return self
 
-    def glide_x(self, time, dx, easing=ease_linear()):
+    def glide_x(self, dx, time=1, easing=ease_linear()):
         if not (isinstance(dx, int) or isinstance(dx, float)):
             raise GraphicsError("\n\nThe x amount to glide the window by (dx) must be a number "
                                 f"(integer or float), not {dx}")
@@ -243,22 +250,29 @@ class GraphicsObject:
             raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
                                 f"(integer or float), not {time}")
 
+        if not callable(easing):
+            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
+
         self.is_gliding = True
         self.glide_queue.append({"Time": time, "Start": timetime(),
                                  "Update": timetime(), "Initial": Point(self.anchor.x, self.anchor.y),
                                  "Dist": Point(dx, 0), "Easing": easing})
+
         if self not in GraphicsObject.gliding_objects:
             GraphicsObject.gliding_objects.append(self)
 
         return self
 
-    def glide_y(self, time, dy, easing=ease_linear()):
+    def glide_y(self, dy, time=1, easing=ease_linear()):
         if not (isinstance(dy, int) or isinstance(dy, float)):
             raise GraphicsError("\n\nThe y amount to glide the window by (dy) must be a number "
                                 f"(integer or float), not {dy}")
         if not (isinstance(time, int) or isinstance(time, float)):
             raise GraphicsError("\n\nThe time to glide the window for (time) must be a number "
                                 f"(integer or float), not {time}")
+
+        if not callable(easing):
+            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
 
         self.is_gliding = True
         self.glide_queue.append({"Time": time, "Start": timetime(),
@@ -269,20 +283,34 @@ class GraphicsObject:
 
         return self
 
-    def glide_to(self, time, x, y, easing=ease_linear()):
-        self.glide_to_x(time, x, easing=easing)
-        self.glide_to_y(time, y, easing=easing)
+    def glide_to(self, x, y=None, time=1, easing_x=ease_linear(), easing_y=None):
+        if y is None:
+            y = x
+        if easing_y is None:
+            easing_y = easing_x
+
+        self.glide_to_x(time, x, easing=easing_x)
+        self.glide_to_y(time, y, easing=easing_y)
 
         return self
 
-    def glide_to_point(self, p, t, easing=ease_linear()):
-        self.glide_to(p.x, p.y, t, easing=easing)
+    def glide_to_x(self, x, time=1, easing=ease_linear()):
+        self.glide_x(time, x - self.anchor.x, easing=easing)
+        return self
+
+    def glide_to_y(self, y, time=1, easing=ease_linear()):
+        self.glide_y(time, y - self.anchor.y, easing=easing)
+        return self
+
+    def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
+        self.glide_to(p.x, p.y, time=time, easing_x=easing_x, easing_y=easing_y)
+        return self
 
     def animate_rotate(self, dr, t, easing=ease_linear()):
         pass
 
     def animate_set_rotation(self, r, t, easing=ease_linear()):
-        self.animate_rotate(r - self.rotation, t, easing, args, frames)
+        self.animate_rotate(r - self.rotation, t, easing)
         return self
 
     def _reconfig(self, option, setting):
@@ -325,7 +353,7 @@ class GraphicsObject:
 
     @staticmethod
     def on_update(graphwin):
-        t = time.time()
+        t = timetime()
         for obj in GraphicsObject.gliding_objects:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.glide_queue[0]["Start"] >= obj.glide_queue[0]["Time"]:
@@ -344,7 +372,7 @@ class GraphicsObject:
 
                     obj.glide_queue[0]["Update"] = timetime()
 
-        t = time.time()
+        t = timetime()
         for obj in GraphicsObject.rotating_objects:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.rotating_start >= obj.rotating_time:
