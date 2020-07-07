@@ -1,18 +1,13 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
     name='goopylib',
-    package_dir={'': 'goopylib', ':math': 'goopylib/math', ":objects": 'goopylib/objects'},
-    py_modules=['imports', 'colours', 'constants', 'GraphWin', 'Point', 'styles', 'util',
-                'math/BezierCurve', 'math/BSpline', 'math/Interpolations',
-                'objects/_BBox', 'objects/Arc', 'objects/Button', 'objects/Checkbox', 'objects/Circle',
-                'objects/CycleButton', 'objects/Entry', 'objects/GraphicsObject', 'objects/Image',
-                'objects/Line', 'objects/Oval', 'objects/Polygon', 'objects/RadioButton',
-                'objects/Rectangle', 'objects/Slider', 'objects/Text'],
-    version='1.0.7a2',
+    package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects'},
+    packages={"goopylib": "goopylib", "goopylib/math": "goopylib/math", "goopylib/objects": "goopylib/objects"},
+    version='1.0.7a6',
     license='MIT License',
 
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.',
