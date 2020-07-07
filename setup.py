@@ -22,7 +22,7 @@ setup(
     author='Bhavye Mathur',
     author_email='bhavyemathur@gmail.com',
     url='https://github.com/BhavyeMathur/goopylib',
-    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.6-alpha.tar.gz',
+    download_url='',
     keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
     install_requires=[
         'keyboard',
