@@ -446,9 +446,15 @@ DARK_OLIVE_GREEN = ColourHex("#74923a")
 DARKER_OLIVE_GREEN = ColourHex("#617b30")
 DARKEST_OLIVE_GREEN = ColourHex("#42541f")
 
-DARK_GREEN = ColourRGB(0, 104, 60)
-GREEN = ColourRGB(0, 123, 45)
-LIGHT_GREEN = ColourRGB(51, 187, 15)
+LIGHTEST_GREEN = ColourHex("#c8e6c9")
+LIGHTER_GREEN = ColourHex("#a5d6a7")
+LIGHT_GREEN = ColourHex("#81c784")
+LIGHTISH_GREEN = ColourHex("#66bb6a")
+GREEN = ColourHex("#4caf50")
+DARKISH_GREEN = ColourHex("#43a047")
+DARK_GREEN = ColourHex("#388e3c")
+DARKER_GREEN = ColourHex("#2e7d32")
+DARKEST_GREEN = ColourHex("#1b5e20")
 
 ABSOLUTE_GREEN = ColourRGB(0, 255, 0)
 
@@ -473,9 +479,6 @@ DARKER_BLUE = ColourHex("#1565c0")
 DARKEST_BLUE = ColourHex("#0c46a0")
 
 ABSOLUTE_BLUE = ColourRGB(0, 0, 255)
-
-
-CYAN = None
 
 DARKEST_TURQUOISE = ColourRGB(0, 56, 41)
 DARKER_TURQUOISE = ColourHex("#006a4e")
