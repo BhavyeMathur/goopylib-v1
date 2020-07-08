@@ -111,8 +111,8 @@ class GraphicsObject:
         return self
 
     def set_outline(self, colour):
-        """Set outline colour to colour"""
-        self._reconfig("outline", colour)
+        """Set font_colour colour to colour"""
+        self._reconfig("font_colour", colour)
         return self
 
     def set_outline_width(self, width):

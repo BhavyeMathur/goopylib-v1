@@ -11,7 +11,7 @@ class BBox(GraphicsObject):
     resizing_objects = []
 
     def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None,
-                 options=("fill", "outline", "width"), cursor="arrow", window=None):
+                 options=("fill", "font_colour", "width"), cursor="arrow", window=None):
 
         if not isinstance(bounds, BBox) and bounds is not None:
             raise GraphicsError("\n\nBounds argument must be another Graphics Object (Rectangle, " +
@@ -65,10 +65,10 @@ class BBox(GraphicsObject):
         elif outline in STYLES[self.style].keys():
             self.outline = STYLES[self.style][outline]
         else:
-            if "outline" in STYLES[self.style].keys():
-                self.outline = STYLES[self.style]["outline"]
+            if "font_colour" in STYLES[self.style].keys():
+                self.outline = STYLES[self.style]["font_colour"]
             else:
-                self.outline = STYLES["default"]["outline"]
+                self.outline = STYLES["default"]["font_colour"]
         self.set_outline(self.outline)
 
         if isinstance(outline_width, int):

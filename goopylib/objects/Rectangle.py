@@ -8,7 +8,7 @@ class Rectangle(gpBBox.BBox):
     def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None,
                  cursor="arrow", is_rounded=False, roundness=5, window=None):
         gpBBox.BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width,
-                              style=style, cursor=cursor, window=window)
+                             style=style, cursor=cursor, window=window)
 
         self.equation = VectorEquation(f"abs((x - {self.anchor.x})/{self.width / 2} + (y - {self.anchor.y})/"
                                        f"{self.height / 2}) + abs((x - {self.anchor.x})/{self.width / 2} - "

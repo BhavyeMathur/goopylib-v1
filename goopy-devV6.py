@@ -161,24 +161,24 @@ PINK = None
 globalStyle = "default"
 
 STYLES = {"pycharm darcula": {"primary fill": DARK_GREY, "secondary fill": BLUE_GREY, "background": DARK_GREY,
-                              "primary outline": None, "secondary outline": DARK_BLUE_GREY, "accent": LIGHT_BLUE_GREY,
+                              "primary font_colour": None, "secondary font_colour": DARK_BLUE_GREY, "accent": LIGHT_BLUE_GREY,
 
                               "width": 1,
-                              "fontColour": LIGHTER_GREY, "justify": "center", "font": "century gothic", "fontSize": 20,
+                              "fontColour": LIGHTER_GREY, "justify": "center", "font_face": "century gothic", "fontSize": 20,
                               "fontStyle": "normal"},
 
           "intellij": {"primary fill": DARK_GREY, "secondary fill": DARK_WHITE, "background": WHITE,
-                       "primary outline": None, "secondary outline": LIGHTER_GREY, "accent": LIGHT_BLUE_GREY,
+                       "primary font_colour": None, "secondary font_colour": LIGHTER_GREY, "accent": LIGHT_BLUE_GREY,
 
                        "width": 1,
-                       "textColour": LIGHTER_GREY, "justify": "left", "font": ("century gothic", 20, "normal")},
+                       "textColour": LIGHTER_GREY, "justify": "left", "font_face": ("century gothic", 20, "normal")},
 
           "default": {"primary fill": CHROME_YELLOW, "secondary fill": RED, "fill": CHROME_YELLOW, "background": WHITE,
-                      "primary outline": BLACK, "secondary outline": GREY, "outline": BLACK,
+                      "primary font_colour": BLACK, "secondary font_colour": GREY, "font_colour": BLACK,
 
                       "width": "2", "arrow": "none", "entry width": 0,
                       "textColour": BLACK, "text": "Lorem Ipsum", "justify": "center",
-                      "font": "calibri", "fontSize": 5, "fontStyle": "normal", "fontColour": BLACK,
+                      "font_face": "calibri", "fontSize": 5, "fontStyle": "normal", "fontColour": BLACK,
                       "selectColour": BLUE},
           }
 
@@ -1174,8 +1174,8 @@ class GraphicsObject:
         return self
 
     def setOutline(self, colour):
-        """Set outline Colour to Colour"""
-        self._reconfig("outline", colour)
+        """Set font_colour Colour to Colour"""
+        self._reconfig("font_colour", colour)
         return self
 
     def setWidth(self, width):
@@ -1748,7 +1748,7 @@ class _BBox(GraphicsObject):
     resizingObjects = []
 
     def __init__(self, p1, p2, bounds=None, style=None, fill=None,
-                 outline=None, width=None, options=("fill", "outline", "width"), cursor="arrow", window=None):
+                 outline=None, width=None, options=("fill", "font_colour", "width"), cursor="arrow", window=None):
 
         if not isinstance(bounds, _BBox) and bounds is not None:
             raise GraphicsError("\n\nBounds argument must be another Graphics Object (Rectangle, " +
@@ -1802,10 +1802,10 @@ class _BBox(GraphicsObject):
         elif outline in STYLES[self.style].keys():
             self.outline = STYLES[self.style][outline]
         else:
-            if "outline" in STYLES[self.style].keys():
-                self.outline = STYLES[self.style]["outline"]
+            if "font_colour" in STYLES[self.style].keys():
+                self.outline = STYLES[self.style]["font_colour"]
             else:
-                self.outline = STYLES["default"]["outline"]
+                self.outline = STYLES["default"]["font_colour"]
         self.setOutline(self.outline)
 
         if isinstance(width, int):
@@ -2051,7 +2051,7 @@ class Rectangle(_BBox):
         item = canvas.create_line(*brl, *blr, fill=self.config["fill"])
         items.append(item)
         item = canvas.create_arc(x0, y1 - 2 * r, x0 + 2 * r, y1, start=180, extent=90, fill=self.config["fill"],
-                                 outline=self.config["outline"], style=tk.ARC)
+                                 outline=self.config["font_colour"], style=tk.ARC)
         items.append(item)
         item = canvas.create_line(*blu, *tld, fill=self.config["fill"])
         items.append(item)
@@ -2121,7 +2121,7 @@ class Rectangle(_BBox):
         # This is done due to an internal bug in Tkinter where it does not set the width of the polygon..
 
         if options["width"] == 0:
-            options["outline"] = options["fill"]
+            options["font_colour"] = options["fill"]
 
         return canvas.create_polygon(points, options, smooth=self.isRounded)
 
@@ -2245,7 +2245,7 @@ class Arc(GraphicsObject):
                  window=None):
         self.angle = angle
 
-        GraphicsObject.__init__(self, style=style, options=["fill", "outline", "width"], cursor=cursor, window=window)
+        GraphicsObject.__init__(self, style=style, options=["fill", "font_colour", "width"], cursor=cursor, window=window)
 
         self.anchor = p1
 
@@ -2327,7 +2327,7 @@ class Polygon(GraphicsObject):
 
         self.sharpness = roundSharpness
 
-        GraphicsObject.__init__(self, style=style, options=["outline", "width", "fill"], window=window)
+        GraphicsObject.__init__(self, style=style, options=["font_colour", "width", "fill"], window=window)
 
     def __repr__(self):
         return "Polygon" + str(tuple(p for p in self.points))
@@ -2414,7 +2414,7 @@ class Polygon(GraphicsObject):
                     points.append(y[0])
 
         if options["width"] == 0:
-            options["outline"] = options["fill"]
+            options["font_colour"] = options["fill"]
 
         return canvas.create_polygon(points, options, smooth=self.isRounded)
 
@@ -2425,7 +2425,7 @@ class Text(GraphicsObject):
                  window=None):
 
         self.anchor = p.clone()
-        GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font"],
+        GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font_face"],
                                 window=window)
 
         if style is None:
@@ -2438,10 +2438,10 @@ class Text(GraphicsObject):
         elif outline in STYLES[self.style].keys():
             self.outline = STYLES[self.style][outline]
         else:
-            if "outline" in STYLES[self.style].keys():
-                self.outline = STYLES[self.style]["outline"]
+            if "font_colour" in STYLES[self.style].keys():
+                self.outline = STYLES[self.style]["font_colour"]
             else:
-                self.outline = STYLES["default"]["outline"]
+                self.outline = STYLES["default"]["font_colour"]
 
         if isinstance(fontSize, int):
             self.fontSize = fontSize
@@ -2468,10 +2468,10 @@ class Text(GraphicsObject):
         elif isinstance(font, str):
             self.font = font
         else:
-            if "font" in STYLES[self.style].keys():
-                self.font = STYLES[self.style]["font"]
+            if "font_face" in STYLES[self.style].keys():
+                self.font = STYLES[self.style]["font_face"]
             else:
-                self.font = STYLES["default"]["font"]
+                self.font = STYLES["default"]["font_face"]
 
         if justify in STYLES[self.style].keys():
             self.justify = STYLES[self.style][justify]
@@ -2527,8 +2527,8 @@ class Text(GraphicsObject):
         return self.anchor.clone()
 
     def setFace(self, face):
-        f, s, b = self.config['font']
-        self._reconfig("font", (face, s, b))
+        f, s, b = self.config['font_face']
+        self._reconfig("font_face", (face, s, b))
 
     def setJustify(self, justify):
         self._reconfig("justify", justify)
@@ -2539,12 +2539,12 @@ class Text(GraphicsObject):
 
         if updateInit:
             self.initialFontSize = size
-        self._reconfig("font", (f, size, b))
+        self._reconfig("font_face", (f, size, b))
 
     def setStyle(self, style):
         if style in ['bold', 'normal', 'italic', 'bold italic']:
-            f, s, b = self.config['font']
-            self._reconfig("font", (f, s, style))
+            f, s, b = self.config['font_face']
+            self._reconfig("font_face", (f, s, style))
         else:
             raise GraphicsError("Text stlye must be one of ['bold', 'normal', 'italic', 'bold italic']")
 
@@ -2634,10 +2634,10 @@ class Entry(GraphicsObject):
         elif isinstance(font, str):
             self.font = font
         else:
-            if "font" in STYLES[self.style].keys():
-                self.font = STYLES[self.style]["font"]
+            if "font_face" in STYLES[self.style].keys():
+                self.font = STYLES[self.style]["font_face"]
             else:
-                self.font = STYLES["default"]["font"]
+                self.font = STYLES["default"]["font_face"]
 
         if justify in STYLES[self.style].keys():
             self.justify = STYLES[self.style][justify]
@@ -2663,7 +2663,7 @@ class Entry(GraphicsObject):
         self.initialSize = self.fontSize
         self.edited = False
 
-        GraphicsObject.__init__(self, style=style, options=["fill", "outline"], window=window)
+        GraphicsObject.__init__(self, style=style, options=["fill", "font_colour"], window=window)
 
     def __repr__(self):
         return "Entry({}, {})".format(self.anchor, self.textWidth)

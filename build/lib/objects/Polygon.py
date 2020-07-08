@@ -15,7 +15,7 @@ class Polygon(GraphicsObject):
 
         self.sharpness = roundness
 
-        GraphicsObject.__init__(self, style=style, options=["outline", "width", "fill"], window=window)
+        GraphicsObject.__init__(self, style=style, options=["font_colour", "width", "fill"], window=window)
 
     def __repr__(self):
         return "Polygon" + str(tuple(p for p in self.points))
@@ -100,6 +100,6 @@ class Polygon(GraphicsObject):
                     points.append(y[0])
 
         if options["width"] == 0:
-            options["outline"] = options["fill"]
+            options["font_colour"] = options["fill"]
 
         return canvas.create_polygon(points, options, smooth=self.is_rounded)

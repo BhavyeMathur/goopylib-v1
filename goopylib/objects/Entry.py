@@ -50,10 +50,10 @@ class Entry(GraphicsObject):
         elif font_colour in STYLES[self.style].keys():
             self.font_colour = STYLES[self.style][font_colour]
         else:
-            if "font colour" in STYLES[self.style].keys():
-                self.font_colour = STYLES[self.style]["font colour"]
+            if "font_face colour" in STYLES[self.style].keys():
+                self.font_colour = STYLES[self.style]["font_face colour"]
             else:
-                self.font_colour = STYLES["default"]["font colour"]
+                self.font_colour = STYLES["default"]["font_face colour"]
 
         if isinstance(outline_width, int):
             self.outline_width = outline_width
@@ -70,30 +70,30 @@ class Entry(GraphicsObject):
         elif font_size in STYLES[self.style].keys():
             self.font_size = STYLES[self.style][font_size]
         else:
-            if "font size" in STYLES[self.style].keys():
-                self.font_size = STYLES[self.style]["font size"]
+            if "font_face size" in STYLES[self.style].keys():
+                self.font_size = STYLES[self.style]["font_face size"]
             else:
-                self.font_size = STYLES["default"]["font size"]
+                self.font_size = STYLES["default"]["font_face size"]
 
         if font_style in STYLES[self.style].keys():
             self.font_style = STYLES[self.style][font_style]
         elif isinstance(font_style, str):
             self.font_style = font_style
         else:
-            if "font style" in STYLES[self.style].keys():
-                self.font_style = STYLES[self.style]["font style"]
+            if "font_face style" in STYLES[self.style].keys():
+                self.font_style = STYLES[self.style]["font_face style"]
             else:
-                self.font_style = STYLES["default"]["font style"]
+                self.font_style = STYLES["default"]["font_face style"]
 
         if font in STYLES[self.style].keys():
             self.font = STYLES[self.style][font]
         elif isinstance(font, str):
             self.font = font
         else:
-            if "font" in STYLES[self.style].keys():
-                self.font = STYLES[self.style]["font"]
+            if "font_face" in STYLES[self.style].keys():
+                self.font = STYLES[self.style]["font_face"]
             else:
-                self.font = STYLES["default"]["font"]
+                self.font = STYLES["default"]["font_face"]
 
         if justify in STYLES[self.style].keys():
             self.justify = STYLES[self.style][justify]
@@ -119,7 +119,7 @@ class Entry(GraphicsObject):
         self.initial_font_size = self.font_size
         self.edited = False
 
-        GraphicsObject.__init__(self, style=style, options=["fill", "outline"], window=window)
+        GraphicsObject.__init__(self, style=style, options=["fill", "font_colour"], window=window)
 
     def __repr__(self):
         return "Entry({}, {})".format(self.anchor, self.text_width)

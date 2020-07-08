@@ -125,7 +125,9 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.17-alpha - 7th July 2020
+#### 1.0.18-beta 8th July 2020
+
+#### 1.0.17-beta - 7th July 2020
 
 * Released Version 1.0.7a6 as a PyPi package for everyone to install!
 * Updated README to include new installation method

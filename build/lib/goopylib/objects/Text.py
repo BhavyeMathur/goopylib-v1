@@ -7,7 +7,7 @@ class Text(GraphicsObject):
                  window=None):
 
         self.anchor = p.clone()
-        GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font"],
+        GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font_face"],
                                 window=window)
 
         if style is None:
@@ -20,10 +20,10 @@ class Text(GraphicsObject):
         elif outline in STYLES[self.style].keys():
             self.outline = STYLES[self.style][outline]
         else:
-            if "outline" in STYLES[self.style].keys():
-                self.outline = STYLES[self.style]["outline"]
+            if "font_colour" in STYLES[self.style].keys():
+                self.outline = STYLES[self.style]["font_colour"]
             else:
-                self.outline = STYLES["default"]["outline"]
+                self.outline = STYLES["default"]["font_colour"]
 
         if isinstance(font_size, int):
             self.font_size = font_size
@@ -31,9 +31,9 @@ class Text(GraphicsObject):
             self.font_size = STYLES[self.style][font_size]
         else:
             if "font_size" in STYLES[self.style].keys():
-                self.font_size = STYLES[self.style]["font size"]
+                self.font_size = STYLES[self.style]["font_face size"]
             else:
-                self.font_size = STYLES["default"]["font size"]
+                self.font_size = STYLES["default"]["font_face size"]
 
         if font_style in STYLES[self.style].keys():
             self.font_style = STYLES[self.style][font_style]
@@ -41,19 +41,19 @@ class Text(GraphicsObject):
             self.font_style = font_style
         else:
             if "font_style" in STYLES[self.style].keys():
-                self.font_style = STYLES[self.style]["font style"]
+                self.font_style = STYLES[self.style]["font_face style"]
             else:
-                self.font_style = STYLES["default"]["font style"]
+                self.font_style = STYLES["default"]["font_face style"]
 
         if font in STYLES[self.style].keys():
             self.font = STYLES[self.style][font]
         elif isinstance(font, str):
             self.font = font
         else:
-            if "font" in STYLES[self.style].keys():
-                self.font = STYLES[self.style]["font"]
+            if "font_face" in STYLES[self.style].keys():
+                self.font = STYLES[self.style]["font_face"]
             else:
-                self.font = STYLES["default"]["font"]
+                self.font = STYLES["default"]["font_face"]
 
         if justify in STYLES[self.style].keys():
             self.justify = STYLES[self.style][justify]
@@ -109,8 +109,8 @@ class Text(GraphicsObject):
         return self.anchor.clone()
 
     def set_face(self, face):
-        f, s, b = self.config['font']
-        self._reconfig("font", (face, s, b))
+        f, s, b = self.config['font_face']
+        self._reconfig("font_face", (face, s, b))
 
     def set_justify(self, justify):
         self._reconfig("justify", justify)
@@ -121,12 +121,12 @@ class Text(GraphicsObject):
 
         if _update_init:
             self._initial_font_size = size
-        self._reconfig("font", (f, size, b))
+        self._reconfig("font_face", (f, size, b))
 
     def set_style(self, style):
         if style in ['bold', 'normal', 'italic', 'bold italic']:
-            f, s, b = self.config['font']
-            self._reconfig("font", (f, s, style))
+            f, s, b = self.config['font_face']
+            self._reconfig("font_face", (f, s, style))
         else:
             raise GraphicsError("Text stlye must be one of ['bold', 'normal', 'italic', 'bold italic']")
 

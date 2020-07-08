@@ -3,8 +3,8 @@ from goopylib.styles import *
 
 class Text(GraphicsObject):
 
-    def __init__(self, p, text, style=None, font_size=None, font=None, font_style=None, outline=None, justify="center",
-                 window=None):
+    def __init__(self, p, text, style=None, font_size=None, font_face=None, font_style=None, font_colour=None,
+                 justify="center", window=None):
 
         self.anchor = p.clone()
         GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font"],
@@ -15,10 +15,10 @@ class Text(GraphicsObject):
         else:
             self.style = style
 
-        if isinstance(outline, Colour):
-            self.outline = outline
-        elif outline in STYLES[self.style].keys():
-            self.outline = STYLES[self.style][outline]
+        if isinstance(font_colour, Colour):
+            self.outline = font_colour
+        elif font_colour in STYLES[self.style].keys():
+            self.outline = STYLES[self.style][font_colour]
         else:
             if "outline" in STYLES[self.style].keys():
                 self.outline = STYLES[self.style]["outline"]
@@ -30,7 +30,7 @@ class Text(GraphicsObject):
         elif font_size in STYLES[self.style].keys():
             self.font_size = STYLES[self.style][font_size]
         else:
-            if "font_size" in STYLES[self.style].keys():
+            if "font size" in STYLES[self.style].keys():
                 self.font_size = STYLES[self.style]["font size"]
             else:
                 self.font_size = STYLES["default"]["font size"]
@@ -40,20 +40,20 @@ class Text(GraphicsObject):
         elif isinstance(font_style, str):
             self.font_style = font_style
         else:
-            if "font_style" in STYLES[self.style].keys():
+            if "font style" in STYLES[self.style].keys():
                 self.font_style = STYLES[self.style]["font style"]
             else:
                 self.font_style = STYLES["default"]["font style"]
 
-        if font in STYLES[self.style].keys():
-            self.font = STYLES[self.style][font]
-        elif isinstance(font, str):
-            self.font = font
+        if font_face in STYLES[self.style].keys():
+            self.font = STYLES[self.style][font_face]
+        elif isinstance(font_face, str):
+            self.font = font_face
         else:
             if "font" in STYLES[self.style].keys():
-                self.font = STYLES[self.style]["font"]
+                self.font = STYLES[self.style]["font face"]
             else:
-                self.font = STYLES["default"]["font"]
+                self.font = STYLES["default"]["font face"]
 
         if justify in STYLES[self.style].keys():
             self.justify = STYLES[self.style][justify]

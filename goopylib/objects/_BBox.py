@@ -68,7 +68,7 @@ class BBox(GraphicsObject):
             if "outline" in STYLES[self.style].keys():
                 self.outline = STYLES[self.style]["outline"]
             else:
-                self.outline = STYLES["default"]["outline"]
+                self.outline = STYLES["default"]["outlien"]
         self.set_outline(self.outline)
 
         if isinstance(outline_width, int):

@@ -102,7 +102,7 @@ class Rectangle(gpBBox.BBox):
         # This is done due to an internal bug in Tkinter where it does not set the width of the polygon..
 
         if options["width"] == 0:
-            options["outline"] = options["fill"]
+            options["font_colour"] = options["fill"]
 
         return canvas.create_polygon(points, options, smooth=self.is_rounded)
 

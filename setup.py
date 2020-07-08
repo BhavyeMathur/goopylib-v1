@@ -7,7 +7,7 @@ setup(
     name='goopylib',
     package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects'},
     packages={"goopylib": "goopylib", "goopylib/math": "goopylib/math", "goopylib/objects": "goopylib/objects"},
-    version='1.0.7',
+    version='1.0.17b0',
     license='MIT License',
 
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.',
@@ -17,7 +17,7 @@ setup(
     author='Bhavye Mathur',
     author_email='bhavyemathur@gmail.com',
     url='https://github.com/BhavyeMathur/goopylib',
-    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.7-alpha0.tar.gz',
+    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.17-alpha.tar.gz',
     keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
     install_requires=['pillow', ],
     classifiers=[

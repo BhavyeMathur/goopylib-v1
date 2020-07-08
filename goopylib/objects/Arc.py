@@ -5,7 +5,7 @@ class Arc(GraphicsObject):
                  window=None):
         self.angle = angle
 
-        GraphicsObject.__init__(self, style=style, options=["fill", "outline", "width"], cursor=cursor, window=window)
+        GraphicsObject.__init__(self, style=style, options=["fill", "font_colour", "width"], cursor=cursor, window=window)
 
         self.anchor = p1
 
