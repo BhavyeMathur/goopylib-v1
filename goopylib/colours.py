@@ -13,7 +13,7 @@ class Colour:
         cls.blue = 0
 
     def __str__(self):
-        return self.string
+        return self.colour
 
     def __repr__(self):
         return self.string
@@ -204,6 +204,9 @@ class Colour:
     def __ne__(self, other):
         return self.colour != other.colour
 
+    def rgb(self):
+        return f"rgb {self.red}, {self.blue}, {self.green}"
+
 
 class ColourRGB(Colour):
     def __init__(self, r, g, b):
@@ -363,11 +366,15 @@ DARK_ORANGE = ColourRGB(255, 102, 0)
 ORANGE = ColourRGB(255, 153, 0)
 CHROME_YELLOW = ColourRGB(255, 204, 0)
 
+ABSOLUTE_RED = ColourRGB(255, 0, 0)
+
 # Greens
 DARK_GREEN = ColourRGB(0, 104, 60)
 OLIVE_GREEN = ColourRGB(0, 100, 5)
 GREEN = ColourRGB(0, 123, 45)
 LIGHT_GREEN = ColourRGB(51, 187, 15)
+
+ABSOLUTE_GREEN = ColourRGB(0, 255, 0)
 
 # Blues
 DARKEST_NAVY_BLUE = ColourRGB(20, 27, 34)
@@ -378,6 +385,8 @@ BLUE = ColourRGB(0, 153, 255)
 CYAN = None
 
 TURQUOISE = ColourRGB(79, 227, 194)
+
+ABSOLUTE_BLUE = ColourRGB(0, 0, 255)
 
 # Purples & Pinks
 DARK_PURPLE = None
