@@ -2,7 +2,7 @@ from goopylib.objects.imports import *
 from goopylib.colours import *
 
 
-window = GraphWin("Test Window", width=110, height=110, autoflush=False, bk_colour=LIGHT_BROWN)
+window = GraphWin("Test Window", width=110, height=110, autoflush=False, bk_colour=ABSOLUTE_YELLOW)
 
 """
 number_of_divisions = 17
@@ -28,7 +28,7 @@ for i, y_pos in enumerate(range(30, 770, (gap + rect_size) * 2)):
 
 """
 
-Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
+Text(Point(55, 55), text=window.get_bk_colour(), font_colour=BLACK, font_size=12, font_style="bold").draw(window)
 
 while True:
     window.update_win()
