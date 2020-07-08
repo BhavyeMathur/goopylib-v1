@@ -6,16 +6,17 @@ from random import randint as randomrandint
 class Colour:
     def __init_subclass__(cls, **kwargs):
         cls.colour = None
+        cls.string = "colour"
 
         cls.red = 0
         cls.green = 0
         cls.blue = 0
 
     def __str__(self):
-        return self.colour
+        return self.string
 
     def __repr__(self):
-        return self.colour
+        return self.string
 
     def __abs__(self):
         c_value = (self.red + self.green + self.blue) / 3
@@ -212,6 +213,7 @@ class ColourRGB(Colour):
             raise GraphicsError(
                 "\n\nRGB values must be between 0 & 255 (included), right now {}, {}, {}".format(r, g, b))
         self.colour = "#%02x%02x%02x" % (r, g, b)
+        self.string = f"rgb {r}, {g}, {b}"
 
         self.red = +r
         self.green = +g
@@ -228,6 +230,7 @@ class ColourHex(Colour):
         if len(colour) == 6:
             self.colour = f"#{self.colour}"
         self.colour = colour
+        self.string = self.colour
 
         colour = colour[1:]
         rgb = [int(colour[i:i+2], 16) for i in (0, 2, 4)]
@@ -243,19 +246,56 @@ class ColourCMYK(Colour):
         if not (101 > c > -1 and 101 > y > -1 and 101 > m > -1 and 101 > k > -1):
             raise GraphicsError(f"\n\nCMYK values must be between 0 & 100 (included), right now {c}, {m}, {y}, {k}")
 
-        r = 255 * (1 - (c + k) / 100)
-        g = 255 * (1 - (m + k) / 100)
-        b = 255 * (1 - (y + k) / 100)
+        r = 255 * (1 - (c + k) // 100)
+        g = 255 * (1 - (m + k) // 100)
+        b = 255 * (1 - (y + k) // 100)
 
         self.colour = "#%02x%02x%02x" % (r, g, b)
+        self.string = f"cmyk {c}, {m}, {y}, {k}"
 
         self.red = r
         self.green = g
         self.blue = b
 
 
-def RandomColour():
-    return ColourRGB(randomrandint(0, 255), randomrandint(0, 255), randomrandint(0, 255))
+def RandomColourRGB(red=None, green=None, blue=None):
+    if red is None:
+        red = randomrandint(0, 255)
+    if green is None:
+        green = randomrandint(0, 255)
+    if blue is None:
+        blue = randomrandint(0, 255)
+    return ColourRGB(red, green, blue)
+
+def RandomColourCMYK(c=None, m=None, y=None, k=None):
+    if c is None:
+        c = randomrandint(0, 100)
+    if m is None:
+        m = randomrandint(0, 100)
+    if y is None:
+        y = randomrandint(0, 100)
+    if k is None:
+        k = randomrandint(0, 100)
+    return ColourCMYK(c, m, y, k)
+
+def RandomColourHex(red=None, green=None, blue=None):
+    if red is None:
+        red = randomrandint(0, 255)
+    else:
+        red = int(red, 16)
+    if green is None:
+        green = randomrandint(0, 255)
+    else:
+        green = int(green, 16)
+    if blue is None:
+        blue = randomrandint(0, 255)
+    else:
+        blue = int(blue, 16)
+    return ColourHex("#%02x%02x%02x" % (red, green, blue))
+
+def RandomGreyscale(start=0, end=255):
+    grey = randomrandint(start, end)
+    return ColourRGB(grey, grey, grey)
 
 
 def ColourGradient(colour_start=ColourRGB(255, 255, 255), colour_end=ColourRGB(0, 0, 0), divisions=10):

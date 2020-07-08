@@ -125,7 +125,13 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.18-beta 8th July 2020
+#### 1.0.21-beta 8th July 2020
+
+* Added a imports file for the objects & math sub-packages
+* Fixed bug with Text config raising errors
+* Added RandomColourCMYK() & RandomColourHex() functions and renamed RandomColour() to RandomColourRGB()
+
+* Changed Goopy to only work with Python > 3.6 because of the use of f-strings
 
 #### 1.0.17-beta - 7th July 2020
 
