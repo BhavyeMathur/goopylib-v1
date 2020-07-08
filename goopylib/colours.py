@@ -386,7 +386,8 @@ LIGHTEST_PINK = ColourRGB(255, 224, 222)
 ABSOLUTE_RED = ColourRGB(255, 0, 0)
 
 
-# Orange Shades from: https://graf1x.com/shades-of-orange-color-palette/
+# Orange & Brown Shades from: https://graf1x.com/shades-of-orange-color-palette/
+# ORANGES
 MELON_ORANGE = ColourRGB(247, 152, 98)
 SALAMANDER_ORANGE = ColourRGB(240, 94, 35)
 SANDSTONE_ORANGE = ColourRGB(215, 144, 44)
@@ -403,13 +404,21 @@ CARROT_ORANGE = ColourRGB(239, 114, 21)
 PUMPKIN_ORANGE = ColourRGB(255, 116, 23)
 HONEY_ORANGE = ColourRGB(235, 150, 5)
 
-RUST_BROWN = ColourRGB(139, 64, 0)
+# BROWNS
+
 DARK_AMBER_BROWN = ColourRGB(136, 48, 0)
-CIDER_BROWN = ColourRGB(179, 103, 43)
 BRONZE_BROWN = ColourRGB(177, 86, 15)
 CLAY_BROWN = ColourRGB(129, 63, 11)
 BURNT_BROWN = ColourRGB(150, 64, 0)
-SPICE_BROWN = ColourRGB(121, 56, 2)
+
+LIGHTEST_BROWN = ColourRGB(168, 145, 113)
+LIGHTER_BROWN = ColourRGB(145, 119, 83)
+LIGHT_BROWN = ColourRGB(122, 91, 47)
+BROWN = ColourRGB(156, 91, 0)
+DARKER_BROWN = ColourRGB(94, 62, 18)
+DARKEST_BROWN = ColourRGB(64, 38, 3)
+
+# YELLOW
 
 GOLD = ColourRGB(249, 166, 2)
 GOLDENROD_YELLOW = (218, 165, 32)
