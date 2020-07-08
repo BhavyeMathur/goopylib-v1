@@ -437,8 +437,16 @@ TROMBONE_YELLOW = ColourRGB(210, 181, 91)
 ABSOLUTE_YELLOW = ColourRGB(255, 255, 0)
 
 # Greens
+
+LIGHTEST_OLIVE_GREEN = ColourHex("#d2e190")
+LIGHTER_OLIVE_GREEN = ColourHex("#b5cf49")
+LIGHT_OLIVE_GREEN = ColourHex("#a3bf45")
+OLIVE_GREEN = ColourHex("#81a140")
+DARK_OLIVE_GREEN = ColourHex("#74923a")
+DARKER_OLIVE_GREEN = ColourHex("#617b30")
+DARKEST_OLIVE_GREEN = ColourHex("#42541f")
+
 DARK_GREEN = ColourRGB(0, 104, 60)
-OLIVE_GREEN = ColourRGB(0, 100, 5)
 GREEN = ColourRGB(0, 123, 45)
 LIGHT_GREEN = ColourRGB(51, 187, 15)
 
@@ -449,12 +457,32 @@ DARKEST_NAVY_BLUE = ColourRGB(20, 27, 34)
 DARKER_NAVY_BLUE = ColourRGB(30, 37, 44)
 DARK_NAVY_BLUE = ColourRGB(38, 45, 56)
 NAVY_BLUE = ColourRGB(45, 57, 68)
-BLUE = ColourRGB(0, 153, 255)
-CYAN = None
+LIGHTISH_NAVY_BLUE = ColourHex("#23395d")
+LIGHT_NAVY_BLUE = ColourRGB(45, 67, 103)
+LIGHTER_NAVY_BLUE = ColourRGB(65, 87, 123)
+LIGHTEST_NAVY_BLUE = ColourRGB(85, 107, 143)
 
-TURQUOISE = ColourRGB(79, 227, 194)
+LIGHTEST_BLUE = ColourHex("#e3f2fd")
+LIGHTER_BLUE = ColourHex("#bbdefb")
+LIGHT_BLUE = ColourHex("#90caf9")
+LIGHTISH_BLUE = ColourHex("#64b5f6")
+BLUE = ColourHex("#21a5f5")
+DARKISH_BLUE = ColourHex("#1e88e5")
+DARK_BLUE = ColourHex("#1976d2")
+DARKER_BLUE = ColourHex("#1565c0")
+DARKEST_BLUE = ColourHex("#0c46a0")
 
 ABSOLUTE_BLUE = ColourRGB(0, 0, 255)
+
+
+CYAN = None
+
+DARKEST_TURQUOISE = ColourRGB(0, 56, 41)
+DARKER_TURQUOISE = ColourHex("#006a4e")
+DARK_TURQUOISE = ColourHex("#2e856e")
+TURQUOISE = ColourHex("#5ca08e")
+LIGHT_TURQUOISE = ColourHex("#8abaae")
+LIGHTER_TURQUOISE = ColourHex("#b8d5cd")
 
 # Purples & Pinks
 DARK_PURPLE = None
