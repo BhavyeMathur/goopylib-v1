@@ -119,6 +119,8 @@ class Entry(GraphicsObject):
         self.initial_font_size = self.font_size
         self.edited = False
 
+        self.allowed_symbols = [""]
+
         GraphicsObject.__init__(self, style=style, options=["fill", "font"], window=window)
 
     def __repr__(self):
@@ -137,6 +139,15 @@ class Entry(GraphicsObject):
 
     def is_clicked(self, mouse_pos):
         return False
+
+    def allow_only_numeric(self, allow=True):
+        pass
+
+    def allow_only_alpha(self, allow=True):
+        pass
+
+    def allow_only_custom(self, custom):
+        pass
 
     def disable(self):
         self.enabled = "disabled"
