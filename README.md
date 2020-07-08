@@ -132,7 +132,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added RandomColourCMYK() & RandomColourHex() functions and renamed RandomColour() to RandomColourRGB()
 
 * Changed Goopy to only work with Python > 3.6 because of the use of f-strings
-* Created the Colours wiki (this was deleted later today by mistake... AHHHH!!)
+* Created the Colours wiki
 * Added ABSOLUTE_ RED, GREEN, & BLUE as Colours
 * Lshift (<<) and Rshift (>>) operators on Colours with Integers now shifts the RGB values to be GBR, BRG, etc.
 
