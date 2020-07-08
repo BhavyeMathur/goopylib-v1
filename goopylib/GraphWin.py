@@ -315,6 +315,9 @@ class GraphWin(tkCanvas):
     def get_window_pos(self):
         return Point(self.master.winfo_rootx(), self.master.winfo_rooty())
 
+    def get_bk_colour(self):
+        return self.bk_colour
+
     # WINDOW MOVING FUNCTIONS
 
     # Change position by amount

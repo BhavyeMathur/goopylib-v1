@@ -32,7 +32,7 @@ class Colour:
             green = self.green - other
             blue = self.blue - other
 
-        return ColourRGB(abs(red), abs(green), abs(blue))
+        return ColourRGB(max([red, 0]), max([green, 0]), max([blue, 0]))
 
     def __add__(self, other):
         try:
@@ -44,7 +44,7 @@ class Colour:
             green = self.green + other
             blue = self.blue + other
 
-        return ColourRGB(red, green, blue)
+        return ColourRGB(min([red, 255]), min([green, 255]), min([blue, 255]))
 
     def __mul__(self, other):
         try:
@@ -109,9 +109,9 @@ class Colour:
             green = self.green << other.green
             blue = self.blue << other.blue
         except AttributeError:
-            red = self.red << other
-            green = self.green << other
-            blue = self.blue << other
+            red, green, blue = self.red, self.green, self.blue
+            for _ in range(other):
+                red, green, blue = green, blue, red
 
         return ColourRGB(red, green, blue)
 
@@ -121,9 +121,9 @@ class Colour:
             green = self.green >> other.green
             blue = self.blue >> other.blue
         except AttributeError:
-            red = self.red >> other
-            green = self.green >> other
-            blue = self.blue >> other
+            red, green, blue = self.red, self.green, self.blue
+            for _ in range(other):
+                red, green, blue = blue, red, green
 
         return ColourRGB(red, green, blue)
 
@@ -333,7 +333,7 @@ def ColourGradient2D(colour_start1=ColourRGB(0, 0, 0), colour_end1=ColourRGB(255
         gradient[col][0] = top_gradient[col]
         gradient[col][-1] = bottom_gradient[col]
 
-    for col in range(len(gradient) - 70, len(gradient)):
+    for col in range(0, len(gradient)):
         gradient[col] = ColourGradient(gradient[col][0], gradient[col][-1], divisions_y)
 
     return gradient
@@ -341,32 +341,53 @@ def ColourGradient2D(colour_start1=ColourRGB(0, 0, 0), colour_end1=ColourRGB(255
 
 # The Blacks, Greys, and Whites
 BLACK = ColourRGB(0, 0, 0)
-DARKEST_GREY = ColourRGB(37, 37, 37)
+DARKEST_GREY = ColourRGB(30, 30, 30)
 DARKER_GREY = ColourRGB(40, 40, 40)
 DARK_GREY = ColourRGB(45, 45, 45)
 
 DARKISH_GREY = ColourRGB(60, 60, 60)
 GREY = ColourRGB(100, 100, 100)
+LIGHTISH_GREY = ColourRGB(130, 130, 130)
 LIGHT_GREY = ColourRGB(160, 160, 160)
 LIGHTER_GREY = ColourRGB(187, 187, 187)
+LIGHTEST_GREY = ColourRGB(210, 210, 210)
 
 DARK_WHITE = ColourRGB(240, 240, 240)
 WHITE = ColourRGB(255, 255, 255)
 
 # Blue-Greys
+DARKEST_BLUE_GREY = ColourRGB(30, 32, 34)
+DARKER_BLUE_GREY = ColourRGB(40, 42, 44)
 DARK_BLUE_GREY = ColourRGB(49, 51, 53)
-BLUE_GREY = ColourRGB(60, 63, 65)
-LIGHT_BLUE_GREY = ColourRGB(83, 95, 106)
-LIGHTEST_BLUE_GREY = ColourRGB(173, 175, 177)
+
+DARKISH_BLUE_GREY = ColourRGB(55, 57, 59)
+BLUE_GREY = ColourRGB(63, 75, 86)
+LIGHTISH_BLUE_GREY = ColourRGB(83, 95, 106)
+LIGHT_BLUE_GREY = ColourRGB(103, 115, 126)
+LIGHTER_BLUE_GREY = ColourRGB(133, 145, 156)
+LIGHTEST_BLUE_GREY = ColourRGB(173, 185, 196)
 
 # Warm Colours
-DARK_RED = ColourRGB(120, 0, 0)
-RED = ColourRGB(175, 0, 0)
+DARKEST_RED = ColourRGB(48, 11, 8)
+DARKER_RED = ColourRGB(64, 13, 9)
+DARK_RED = ColourRGB(99, 18, 12)
+
+DARKISH_RED = ColourRGB(143, 23, 12)
+RED = ColourRGB(194, 22, 6)
+LIGHTISH_RED = ColourRGB(224, 66, 52)
+LIGHT_RED = ColourRGB(255, 94, 79)
+
+PINK = ColourRGB(255, 122, 110)
+LIGHTISH_PINK = ColourRGB(255, 133, 122)
+LIGHT_PINK = ColourRGB(255, 161, 153)
+LIGHTER_PINK = ColourRGB(255, 194, 189)
+LIGHTEST_PINK = ColourRGB(255, 224, 222)
+
+ABSOLUTE_RED = ColourRGB(255, 0, 0)
+
 DARK_ORANGE = ColourRGB(255, 102, 0)
 ORANGE = ColourRGB(255, 153, 0)
 CHROME_YELLOW = ColourRGB(255, 204, 0)
-
-ABSOLUTE_RED = ColourRGB(255, 0, 0)
 
 # Greens
 DARK_GREEN = ColourRGB(0, 104, 60)
@@ -392,4 +413,3 @@ ABSOLUTE_BLUE = ColourRGB(0, 0, 255)
 DARK_PURPLE = None
 PURPLE = None
 LIGHT_PURPLE = None
-PINK = None

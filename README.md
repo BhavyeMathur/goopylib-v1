@@ -134,6 +134,10 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Changed Goopy to only work with Python > 3.6 because of the use of f-strings
 * Created the Colours wiki
 * Added ABSOLUTE_ RED, GREEN, & BLUE as Colours
+* Lshift (<<) and Rshift (>>) operators on Colours with Integers now shifts the RGB values to be GBR, BRG, etc.
+
+* Added a get_bk_colour() function to the GraphWin
+* Added a lot more Colours
 
 #### 1.0.17-beta - 7th July 2020
 
