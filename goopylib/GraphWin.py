@@ -176,13 +176,13 @@ class GraphWin(tkCanvas):
         self.x_pos = x_pos
         self.y_pos = y_pos
 
-        self.master.minsize(min_width, min_height)  # Minimum size of the window
-        self.min_width = min_width
-        self.min_height = min_height
+        self.min_width = int(min_width)
+        self.min_height = int(min_height)
+        self.master.minsize(self.min_width, self.min_height)  # Minimum size of the window
 
-        self.master.maxsize(max_width, max_height)  # Maximum size of the window
-        self.max_width = max_width
-        self.max_height = max_height
+        self.max_width = int(max_width)
+        self.max_height = int(max_height)
+        self.master.maxsize(self.max_width, self.max_height)  # Maximum size of the window
 
         self.master.resizable(resizable_width, resizable_height)  # Is the window resizable?
         self.is_resizable = [resizable_width, resizable_height]

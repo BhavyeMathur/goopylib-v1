@@ -45,5 +45,5 @@ def update(rate=None):
     _root.update()
 
 
-def getScreenSize():
+def get_screen_size():
     return _root.winfo_screenwidth(), _root.winfo_screenheight()

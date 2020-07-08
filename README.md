@@ -125,19 +125,23 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.22-beta 8th July 2020
+#### 1.0.25-beta 8th July 2020
 
 * Added a imports file for the objects & math sub-packages
 * Fixed bug with Text config raising errors
 * Added RandomColourCMYK() & RandomColourHex() functions and renamed RandomColour() to RandomColourRGB()
 
 * Changed Goopy to only work with Python > 3.6 because of the use of f-strings
-* Created the Colours wiki
+* Created the Colours wiki (this was deleted later today by mistake... AHHHH!!)
 * Added ABSOLUTE_ RED, GREEN, & BLUE as Colours
 * Lshift (<<) and Rshift (>>) operators on Colours with Integers now shifts the RGB values to be GBR, BRG, etc.
 
 * Added a get_bk_colour() function to the GraphWin
 * Added a lot more Colours
+* Fixed the 2 examples to work with the Library and made them match the Python Convention
+* Renamed the getScreenSize() function with Python Convention
+
+* GraphWins now convert their min & max size args to integers
 
 #### 1.0.17-beta - 7th July 2020
 
