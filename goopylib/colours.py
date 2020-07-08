@@ -487,7 +487,23 @@ TURQUOISE = ColourHex("#5ca08e")
 LIGHT_TURQUOISE = ColourHex("#8abaae")
 LIGHTER_TURQUOISE = ColourHex("#b8d5cd")
 
-# Purples & Pinks
-DARK_PURPLE = None
-PURPLE = None
-LIGHT_PURPLE = None
+# Purples & Violets
+LIGHTEST_PURPLE = ColourHex("#e1bee7")
+LIGHTER_PURPLE = ColourHex("#ce93d8")
+LIGHT_PURPLE = ColourHex("#ba68c8")
+LIGHTISH_PURPLE = ColourHex("#ab47bc")
+PURPLE = ColourHex("#9c27b0")
+DARKISH_PURPLE = ColourHex("#8e24aa")
+DARK_PURPLE = ColourHex("#7b1fa2")
+DARKER_PURPLE = ColourHex("#6a1b9a")
+DARKEST_PURPLE = ColourHex("#4a148c")
+
+LIGHTEST_VIOLET = ColourHex("#d1c4e9")
+LIGHTER_VIOLET = ColourHex("#b39ddb")
+LIGHT_VIOLET = ColourHex("#9575cd")
+LIGHTISH_VIOLET = ColourHex("#7e57c2")
+VIOLET = ColourHex("#673ab7")
+DARKISH_VIOLET = ColourHex("#5e35b1")
+DARK_VIOLET = ColourHex("#512da8")
+DARKER_VIOLET = ColourHex("#4527a0")
+DARKEST_VIOLET = ColourHex("#311b92")
