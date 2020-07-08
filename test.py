@@ -2,7 +2,7 @@ from goopylib.objects.imports import *
 from goopylib.colours import *
 
 
-window = GraphWin("Test Window", width=110, height=110, autoflush=False, bk_colour=ABSOLUTE_RED)
+window = GraphWin("Test Window", width=110, height=110, autoflush=False, bk_colour=GOLD)
 
 """
 number_of_divisions = 17
