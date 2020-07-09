@@ -4,9 +4,74 @@
     <list default="true" id="442b5543-b561-4ddf-8aa5-06f800e9a1f7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/GraphWin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/Point.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/colours.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/constants.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/GraphWin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/Point.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/_internal_classes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/colours.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/constants.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/imports.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/math/BSpline.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/math/BezierCurve.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/math/Interpolations.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/math/Easing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/math/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/applications/custom_ease.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Arc.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Button.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Checkbox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Circle.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/CycleButton.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Entry.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/GraphicsObject.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Image.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Line.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Oval.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Polygon.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/RadioButton.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Rectangle.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Slider.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Text.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/_BBox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/styles.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/util.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/imports.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/math/BSpline.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/math/BezierCurve.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/math/Interpolations.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Arc.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Button.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Checkbox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Circle.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/CycleButton.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Entry.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/GraphicsObject.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Image.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Line.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Oval.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Polygon.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/RadioButton.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Rectangle.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Slider.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/Text.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/objects/_BBox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/styles.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/util.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/GraphWin.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/GraphWin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/goopylib.egg-info/PKG-INFO" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/goopylib.egg-info/SOURCES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/goopylib.egg-info/dependency_links.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/goopylib.egg-info/requires.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/goopylib.egg-info/top_level.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/imports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/math/Interpolations.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/math/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/math/imports.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/objects/Entry.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/Entry.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/objects/GraphicsObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/GraphicsObject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/objects/Image.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/Image.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -221,22 +286,22 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="750" y="304" key="CommitChangelistDialog2/0.0.2189.1419@0.0.2189.1419" timestamp="1594276086225" />
-    <state width="2168" height="469" key="GridCell.Tab.0.bottom" timestamp="1594288093766">
+    <state width="2168" height="469" key="GridCell.Tab.0.bottom" timestamp="1594306338067">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="469" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594288093766" />
-    <state width="2168" height="469" key="GridCell.Tab.0.center" timestamp="1594288093765">
+    <state width="2168" height="469" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594306338067" />
+    <state width="2168" height="469" key="GridCell.Tab.0.center" timestamp="1594306338067">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="469" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594288093765" />
-    <state width="2168" height="469" key="GridCell.Tab.0.left" timestamp="1594288093765">
+    <state width="2168" height="469" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594306338067" />
+    <state width="2168" height="469" key="GridCell.Tab.0.left" timestamp="1594306338066">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="469" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594288093765" />
-    <state width="2168" height="469" key="GridCell.Tab.0.right" timestamp="1594288093765">
+    <state width="2168" height="469" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594306338066" />
+    <state width="2168" height="469" key="GridCell.Tab.0.right" timestamp="1594306338067">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="469" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594288093765" />
+    <state width="2168" height="469" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594306338067" />
     <state width="1259" height="495" key="GridCell.Tab.1.bottom" timestamp="1594212506746">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>

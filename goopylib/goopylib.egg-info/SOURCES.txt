@@ -1,7 +1,0 @@
-README.md
-setup.py
-goopylib/goopylib.egg-info/PKG-INFO
-goopylib/goopylib.egg-info/SOURCES.txt
-goopylib/goopylib.egg-info/dependency_links.txt
-goopylib/goopylib.egg-info/requires.txt
-goopylib/goopylib.egg-info/top_level.txt

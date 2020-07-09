@@ -143,7 +143,12 @@ class Entry(GraphicsObject):
         pass
 
     def is_clicked(self, mouse_pos):
-        return False
+        if mouse_pos is not None:
+            width, height = self.get_width(), self.get_height()
+            if (self.anchor.x - width / 2 > mouse_pos.x > self.anchor.x + width / 2) and \
+               (self.anchor.y - height / 2 > mouse_pos.y > self.anchor.y + height / 2):
+                return True
+            return False
 
     def allow_character(self, character):
         if character not in self.allowed_symbols and character in ALL_CHARACTERS:
@@ -229,8 +234,7 @@ class Entry(GraphicsObject):
             self.entry.config(show="")
         self.entry.pack()
 
-        #self.entry.bind("<Return>", self._on_enter)
-        #self.entry.bind("<Key>", self._on_edit)
+        self.entry.bind("<Return>", self._on_enter)
 
         self.text.trace('w', self._on_edit)
 

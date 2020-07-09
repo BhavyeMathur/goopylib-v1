@@ -120,12 +120,13 @@ Goopy also has functionality for other animations such as moving to locations, r
 5. Bryan Oakle, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width is 0 
 6. Atlast435, https://stackoverflow.com/questions/62751626/tkinter-rotated-resizing-cursor - 6th July 2020 - Helped expand the list of supported cursors by refering me to a documentation.
 7. Sinoroc, https://stackoverflow.com/questions/62772377/python-package-does-not-get-created-in-site-packages-folder? - 7th July 2020 - Helped fix bug with Packaging
+8. Cool Cloud, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with hiding & showing the Entry cursor
 
 ## Version History
 
 ### v1.0
 
-#### 1.0.31-beta 9th July 2020
+#### 1.0.33-beta 9th July 2020 (1.0.31)
 
 * Added a few functions to the Entry widget through which the user can only allow certain characters to be entered
 * If the texture of an image is not in a textures folder, the Image class will search in the local folder
@@ -133,8 +134,13 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Fixed bug with Image shrinking when rotating over 90 degrees
 * Fixed bug with Image vibrating when animating rotate
 
+* Fixed bug with is_gliding causing an AttributeError when creating graphwin
+* Renamed Interpolations.py to Easing.py
+
 * The Entry does not set the focus to itself when it is drawn
 * Added get_width() & get_height() functions to the Entry
+
+* Added a GraphWin Wiki! (mainly cause I felt guilty that the people who liked Goopy (4 stars!) wouldn't be able to use it)
 
 #### 1.0.25-beta 8th July 2020
 

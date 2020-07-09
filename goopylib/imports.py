@@ -22,7 +22,9 @@ from goopylib.objects.Text import Text
 
 from goopylib.math.BezierCurve import *
 from goopylib.math.BSpline import *
-from goopylib.math.Interpolations import *
+from goopylib.math.Easing import *
+
+from goopylib.applications.custom_ease import  *
 
 import math
 import time

@@ -3,7 +3,7 @@ from goopylib.Point import Point
 from goopylib.styles import *
 from goopylib.constants import *
 from goopylib.constants import _root
-from goopylib.math.Interpolations import *
+from goopylib.math.Easing import *
 
 
 class GraphicsObject:
@@ -198,6 +198,8 @@ class GraphicsObject:
 
         self._move(dx, dy)
         if self.drawn:
+            if self.graphwin.autoflush:
+                self.graphwin.flush()
             self.redraw()
         return self
 

@@ -3,7 +3,7 @@ __version__ = "6.10-dev"
 from tkinter import Tk as tkTk
 from time import time as timetime
 
-from goopylib.math.Interpolations import *
+from goopylib.math.Easing import *
 
 import platform
 

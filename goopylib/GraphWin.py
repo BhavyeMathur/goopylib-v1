@@ -11,7 +11,7 @@ from time import sleep as timesleep
 from goopylib.styles import *
 from goopylib.util import GraphicsError, GraphicsWarning
 from goopylib.constants import _root, RELIEF, CURSORS
-from goopylib.math.Interpolations import *
+from goopylib.math.Easing import *
 
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.Point import Point
@@ -27,8 +27,8 @@ class GraphWin(tkCanvas):
     # Resizable Height & Width: Whether you can resize the window by pulling its sides
     # Autoflush: The window will update automatically if True
     # Style: The colour styles have attributes called 'background-colour' which the window will use if bk_colour=None
-    def __init__(self, title="Graphics Window", width=800, height=600, min_width=0, min_height=0, max_width=1000,
-                 max_height=1000, x_pos=0, y_pos=0, resizable_width=False, resizable_height=False,
+    def __init__(self, title="Graphics Window", width=800, height=600, min_width=0, min_height=0, max_width=2000,
+                 max_height=2000, x_pos=0, y_pos=0, resizable_width=False, resizable_height=False,
                  style=None, bk_colour=None, icon=None, autoflush=True, cursor="arrow", border_relief="flat",
                  border_width=0):
 
@@ -187,6 +187,8 @@ class GraphWin(tkCanvas):
         self.master.resizable(resizable_width, resizable_height)  # Is the window resizable?
         self.is_resizable = [resizable_width, resizable_height]
 
+        self.is_gliding = False
+
         # The Transform Class for the window
         # This helps transform any coordinates into window coordinates (world) or absolute coords (screen)
         self.trans = None
@@ -238,6 +240,7 @@ class GraphWin(tkCanvas):
         self.middle_mouse_down = False
         self.mouse_in_window = False
 
+        self.master.bind("<1>", lambda event: event.widget.focus_set())
         self.bind("<Button-1>", self._on_left_click)  # These functions are called whenever these events happen
         self.bind("<Button-2>", self._on_middle_click)
         self.bind("<Button-3>", self._on_right_click)
