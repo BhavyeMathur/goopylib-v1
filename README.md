@@ -125,6 +125,8 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.26-beta 9th July 2020
+
 #### 1.0.25-beta 8th July 2020
 
 * Added a imports file for the objects & math sub-packages
