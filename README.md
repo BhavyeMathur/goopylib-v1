@@ -113,7 +113,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 ## Contributions
 
 1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd July 2020 - Help with creating rounded polygon corners
-2. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
+2. Spectral Doy - 3rd July 2020 - Helpin~~~~g me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
 3. John Zelle - Creating the graphics.py package which formed the basis for my library.
 
 4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve - 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
@@ -125,9 +125,16 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.26-beta 9th July 2020
+#### 1.0.31-beta 9th July 2020
 
 * Added a few functions to the Entry widget through which the user can only allow certain characters to be entered
+* If the texture of an image is not in a textures folder, the Image class will search in the local folder
+* Image resizing now takes the ceiling of the width & height and not the floor (int() gives floor)
+* Fixed bug with Image shrinking when rotating over 90 degrees
+* Fixed bug with Image vibrating when animating rotate
+
+* The Entry does not set the focus to itself when it is drawn
+* Added get_width() & get_height() functions to the Entry
 
 #### 1.0.25-beta 8th July 2020
 

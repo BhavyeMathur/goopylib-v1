@@ -222,13 +222,12 @@ class Entry(GraphicsObject):
         self.entry = tkEntry(frm, width=self.text_width, textvariable=self.text, bg=self.fill, fg=self.font_colour,
                              bd=self.outline_width, font=self.font_config, insertbackground=self.font_colour,
                              show=self.text_type, state=self.enabled, justify=self.justify, cursor="xterm",
-                             exportselection=0, selectbackground=self.select_colour)
+                             exportselection=0, selectbackground=self.select_colour, insertborderwidth=0)
 
         if not self.edited:
             self.entry.insert(0, self.prompt_text)
             self.entry.config(show="")
         self.entry.pack()
-        self.entry.focus_set()
 
         #self.entry.bind("<Return>", self._on_enter)
         #self.entry.bind("<Key>", self._on_edit)
@@ -247,8 +246,20 @@ class Entry(GraphicsObject):
     def _move(self, dx, dy):
         self.anchor.changeDir(dx, dy)
 
+    def hide_cursor(self):
+        self.entry.config(insertontime=0)
+
+    def show_cursor(self):
+        self.entry.config(insertontime=1)
+
     def get_anchor(self):
         return self.anchor.clone()
+
+    def get_width(self):
+        return self.entry.winfo_width()
+
+    def get_height(self):
+        return self.entry.winfo_height()
 
     def clone(self):
         other = Entry(self.anchor, self.text_width)
