@@ -127,7 +127,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.34-beta 9th July 2020 (1.0.33)
+#### 1.0.36-beta 9th July 2020 (1.0.34)
 
 * Added a few functions to the Entry widget through which the user can only allow certain characters to be entered
 * If the texture of an image is not in a textures folder, the Image class will search in the local folder
@@ -139,10 +139,12 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Renamed Interpolations.py to Easing.py
 
 * The Entry does not set the focus to itself when it is drawn
-* Added get_width() & get_height() functions to the Entry
+* Added `get_width()` & `get_height()` functions to the Entry
 * The Entry Widget unfocuses itself when the user clicks somewhere else
 
 * Added a GraphWin Wiki! (mainly cause I felt guilty that the people who liked Goopy (4 stars!) wouldn't be able to use it)
+* The GraphWin returns itself for functions where it didn't (unless it is returning something else)
+* Added a `move_to_point()` function for the GraphWin
 
 #### 1.0.25-beta 8th July 2020
 

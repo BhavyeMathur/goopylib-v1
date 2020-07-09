@@ -327,6 +327,7 @@ class GraphWin(tkCanvas):
     def move(self, dx, dy):
         self.move_x(dx)
         self.move_y(dy)
+        return self
 
     def move_x(self, dx):
         if not (isinstance(dx, int) or isinstance(dx, float)):
@@ -334,6 +335,7 @@ class GraphWin(tkCanvas):
                                 f"(integer or float), not {dx}")
         self.x_pos += dx
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, self.x_pos, self.y_pos))
+        return self
 
     def move_y(self, dy):
         if not (isinstance(dy, int) or isinstance(dy, float)):
@@ -341,11 +343,13 @@ class GraphWin(tkCanvas):
                                 f"(integer or float), not {dy}")
         self.y_pos += dy
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, self.x_pos, self.y_pos))
+        return self
 
     # Set position to
     def move_to(self, x, y):
         self.move_to_x(x)
         self.move_to_y(y)
+        return self
 
     def move_to_x(self, x):
         if not (isinstance(x, int) or isinstance(x, float)):
@@ -353,6 +357,7 @@ class GraphWin(tkCanvas):
                                 f"(integer or float), not {x}")
         self.x_pos = x
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, self.x_pos, self.y_pos))
+        return self
 
     def move_to_y(self, y):
         if not (isinstance(y, int) or isinstance(y, float)):
@@ -360,6 +365,10 @@ class GraphWin(tkCanvas):
                                 f"(integer or float), not {y}")
         self.y_pos = y
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, self.x_pos, self.y_pos))
+        return self
+
+    def move_to_point(self, p):
+        self.move_to(p.x, p.y)
 
     # WINDOW GLIDING FUNCTIONS
 
