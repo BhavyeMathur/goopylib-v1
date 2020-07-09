@@ -1,12 +1,11 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.styles import *
-from goopylib.constants import _root
+from goopylib.constants import _root, ALL_CHARACTERS
 
 from tkinter import StringVar as tkStringVar
 from tkinter import Entry as tkEntry
 from tkinter import Frame as tkFrame
 from tkinter import END as tkEND
-
 
 class Entry(GraphicsObject):
 
@@ -119,17 +118,23 @@ class Entry(GraphicsObject):
         self.initial_font_size = self.font_size
         self.edited = False
 
-        self.allowed_symbols = [""]
+        self.allowed_symbols = ALL_CHARACTERS
 
         GraphicsObject.__init__(self, style=style, options=["fill", "font"], window=window)
 
     def __repr__(self):
         return "Entry({}, {})".format(self.anchor, self.text_width)
 
-    def _on_edit(self, e):
+    def _in_allowed(self, c):
+        return c in self.allowed_symbols
+
+    def _on_edit(self, *args):
+        corrected = ''.join(filter(self._in_allowed, self.text.get()))
+        self.text.set(corrected)
+
         if not self.edited:
             self.edited = True
-            self.set_text(self.get_text().replace(self.prompt_text, "", 1))
+            self.set_text(corrected.replace(self.prompt_text, "", 1))
 
             if self.text_type == "*":
                 self.entry.config(show="*")
@@ -140,14 +145,45 @@ class Entry(GraphicsObject):
     def is_clicked(self, mouse_pos):
         return False
 
+    def allow_character(self, character):
+        if character not in self.allowed_symbols and character in ALL_CHARACTERS:
+            self.allowed_symbols.append(character)
+        return self
+
     def allow_only_numeric(self, allow=True):
-        pass
+        if allow:
+            self.allowed_symbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        else:
+            self.allowed_symbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+                                    'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                                    'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+                                    'Z', '!', '"', '#', '$', '%', '&', '\\', "'", '(', ')', '*', '+', ',', '-', '.',
+                                    '/', ':', ';', '<', '=', '>', '?', '@', '[', '\'', '"', ']', '^', '_', '`', '{',
+                                    '|', '}', '~', ':', " "]
+        return self
+
+    def allow_all_characters(self):
+        self.allowed_symbols = ALL_CHARACTERS
 
     def allow_only_alpha(self, allow=True):
-        pass
+        if allow:
+            self.allowed_symbols = self.allowed_symbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+                                                           'm','n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+                                                           'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+                                                           'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+                                                           'W', 'X', 'Y', 'Z', " "]
+        else:
+            self.allowed_symbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '"', '#', '$', '%', '&',
+                                    '\\', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?',
+                                    '@', '[', '\'', '"', ']', '^', '_', '`', '{', '|', '}', '~', ':', " "]
+        return self
 
     def allow_only_custom(self, custom):
-        pass
+        if not set(custom).issubset(set(ALL_CHARACTERS)):
+            raise GraphicsError("The Custom list of character contains invalid characters!")
+
+        self.allowed_symbols = custom.copy()
+        return self
 
     def disable(self):
         self.enabled = "disabled"
@@ -194,8 +230,10 @@ class Entry(GraphicsObject):
         self.entry.pack()
         self.entry.focus_set()
 
-        self.entry.bind("<Return>", self._on_enter)
-        self.entry.bind("<Key>", self._on_edit)
+        #self.entry.bind("<Return>", self._on_enter)
+        #self.entry.bind("<Key>", self._on_edit)
+
+        self.text.trace('w', self._on_edit)
 
         return canvas.create_window(x, y, window=frm)
 

@@ -49,7 +49,8 @@ CURSORS = {"x": "x_cursor", "arrow": "arrow", "based-down-arrow": "based_arrow_d
            "vertical-resizing-arrow": "sb_v_double_arrow", "shuttle": "shuttle", "sizing": "sizing", "spider": "spider",
            "spraycan": "spraycan", "star": "star", "target": "target", "t-cross": "tcross",
            "flipped-pointer": "top_left_arrow", "top-left-corner-arrow": "top_left_corner",
-           "top-right-corner-arrow": "top_right_corner", "top-download": "top_side", "top-t": "top_tee", "virus": "trek",
+           "top-right-corner-arrow": "top_right_corner", "top-download": "top_side", "top-t": "top_tee",
+           "virus": "trek",
            "top-left-corner": "ul_angle", "umbrella": "umbrella", "top-right-corner": "ur_angle", "loading": "watch",
            "text-cursor": "xterm"}
 CURSORS_WINDOWS = {"cancel": "no"}
@@ -60,6 +61,12 @@ RELIEF = ["flat"]
 INTERPOLATIONS = ["linear", "poly", "poly_in", "poly_out", "sin", "sin_in", "sin_out", "circle", "circle_in",
                   "circle_out", "back", "back_in", "back_out", "bounce", "bounce_in", "bounce_out", "elastic",
                   "elastic_in", "elastic_out", "exponential", "exponential_in", "exponential_out"]
+
+ALL_CHARACTERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+                  'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+                  'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                  'Y', 'Z', '!', '"', '#', '$', '%', '&', '\\', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';',
+                  '<', '=', '>', '?', '@', '[', '\'', '"', ']', '^', '_', '`', '{', '|', '}', '~', ':', " "]
 
 ##########################################################################
 # global variables and functions

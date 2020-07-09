@@ -127,6 +127,8 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 #### 1.0.26-beta 9th July 2020
 
+* Added a few functions to the Entry widget through which the user can only allow certain characters to be entered
+
 #### 1.0.25-beta 8th July 2020
 
 * Added a imports file for the objects & math sub-packages
