@@ -5,7 +5,7 @@ import math
 from time import time as timetime
 from os.path import isfile as osisfile
 
-from goopylib.util import GraphicsError
+from goopylib.util import GraphicsError, resource_path
 
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.Point import Point
@@ -23,6 +23,7 @@ class Image(GraphicsObject):
             self.texture = "textures/{}".format(filepath)
         else:
             self.texture = filepath
+        self.texture = resource_path(self.texture)
         self.rotation = rotation
 
         self.img_PIL = Img.open(self.texture).rotate(self.rotation)
@@ -50,12 +51,6 @@ class Image(GraphicsObject):
     def _draw(self, canvas, options):
         self.image_cache[self.image_id] = self.img  # save a reference
 
-        init_width = abs(self.initial_width / canvas.trans.x_scale)
-        init_height = abs(self.initial_height / canvas.trans.y_scale)
-
-        width = abs((math.cos(math.radians(self.rotation)) * init_height)) + abs((init_width * math.sin(math.radians(self.rotation))))
-        height = abs((math.cos(math.radians(self.rotation)) * init_width)) + abs((init_height * math.sin(math.radians(self.rotation))))
-
         p = self.anchor.clone()
 
         if self.align == "bottom":
@@ -67,10 +62,16 @@ class Image(GraphicsObject):
         elif self.align == "right":
             p.add_x(self.initial_width / -2)
 
-        self.graphwin = canvas
-        x, y = canvas.to_screen(p.x, p.y)
+        if canvas != self.graphwin:
+            init_width = abs(self.initial_width / canvas.trans.x_scale)
+            init_height = abs(self.initial_height / canvas.trans.y_scale)
 
-        #self.resize(width, height, set_initial_size=False)
+            self.rotation_img = self.rotation_img.resize((math.ceil(init_width), math.ceil(init_height)), Img.BICUBIC)
+            self.resize(math.ceil(init_width), math.ceil(init_height))
+
+        x, y = canvas.to_screen(p.x, p.y)
+        self.update()
+
         return canvas.create_image(x, y, image=self.img)
 
     def _move(self, dx, dy):
@@ -118,6 +119,7 @@ class Image(GraphicsObject):
         return self
 
     def _rotate(self, dr, sampling=Img.BICUBIC, center=None):
+
         self.rotation += dr
         if center is not None:
             self.img_PIL = self.img_PIL.rotate(angle=self.rotation, resample=sampling, expand=True,
@@ -209,7 +211,6 @@ class Image(GraphicsObject):
 
     def resize(self, width, height, sampling=Img.BICUBIC, set_initial_size=True):
         self.img_PIL = self.img_PIL.resize((math.ceil(width), math.ceil(height)), sampling)
-        print(math.ceil(width), math.ceil(height))
 
         if set_initial_size:
             self.initial_width = width

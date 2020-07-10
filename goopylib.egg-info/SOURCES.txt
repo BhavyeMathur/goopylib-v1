@@ -16,8 +16,9 @@ goopylib.egg-info/requires.txt
 goopylib.egg-info/top_level.txt
 goopylib/math/BSpline.py
 goopylib/math/BezierCurve.py
-goopylib/math/Interpolations.py
+goopylib/math/Easing.py
 goopylib/math/__init__.py
+goopylib/math/imports.py
 goopylib/objects/Arc.py
 goopylib/objects/Button.py
 goopylib/objects/Checkbox.py
@@ -35,10 +36,12 @@ goopylib/objects/Slider.py
 goopylib/objects/Text.py
 goopylib/objects/_BBox.py
 goopylib/objects/__init__.py
+goopylib/objects/imports.py
 goopylib/math/BSpline.py
 goopylib/math/BezierCurve.py
-goopylib/math/Interpolations.py
+goopylib/math/Easing.py
 goopylib/math/__init__.py
+goopylib/math/imports.py
 goopylib/objects/Arc.py
 goopylib/objects/Button.py
 goopylib/objects/Checkbox.py
@@ -56,3 +59,4 @@ goopylib/objects/Slider.py
 goopylib/objects/Text.py
 goopylib/objects/_BBox.py
 goopylib/objects/__init__.py
+goopylib/objects/imports.py

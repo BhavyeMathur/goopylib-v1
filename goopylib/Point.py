@@ -28,6 +28,12 @@ class Point:
     def __sub__(self, other):
         return self + -other
 
+    def __truediv__(self, other):
+        try:
+            return Point(self.x / other.x, self.y / other.y)
+        except AttributeError:
+            return Point(self.x / other, self.y / other)
+
     def _move(self, dx, dy):
         self.x = self.x + dx
         self.y = self.y + dy

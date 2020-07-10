@@ -4,7 +4,19 @@
     <list default="true" id="442b5543-b561-4ddf-8aa5-06f800e9a1f7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/GraphWin.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/GraphWin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/goopylib-1.0.17b0-py3-none-any.whl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib.egg-info/PKG-INFO" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib.egg-info/PKG-INFO" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib.egg-info/SOURCES.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/Point.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/Point.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/applications/CustomEase.fla" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/applications/CustomEase.fla" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/applications/RECOVER_CustomEase.fla" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/applications/custom_ease.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/applications/custom_ease.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/objects/CycleButton.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/CycleButton.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/objects/GraphicsObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/GraphicsObject.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/objects/Image.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/Image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,19 +168,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.ModernGUI-Example" />
+      <item itemvalue="Python.Pac-ManAnimation" />
+      <item itemvalue="Python.newtest" />
       <item itemvalue="Python.setup" />
       <item itemvalue="Python.test" />
-      <item itemvalue="Python.Pac-ManAnimation" />
-      <item itemvalue="Python.ModernGUI-Example" />
-      <item itemvalue="Python.newtest" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.setup" />
         <item itemvalue="Python.newtest" />
         <item itemvalue="Python.ModernGUI-Example" />
         <item itemvalue="Python.Pac-ManAnimation" />
-        <item itemvalue="Python.setup" />
       </list>
     </recent_temporary>
   </component>
@@ -218,46 +230,46 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="750" y="304" key="CommitChangelistDialog2/0.0.2189.1419@0.0.2189.1419" timestamp="1594276086225" />
-    <state width="1071" height="469" key="GridCell.Tab.0.bottom" timestamp="1594310194529">
+    <state width="2168" height="499" key="GridCell.Tab.0.bottom" timestamp="1594328570004">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1071" height="469" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594310194529" />
-    <state width="1071" height="469" key="GridCell.Tab.0.center" timestamp="1594310194529">
+    <state width="2168" height="499" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594328570004" />
+    <state width="2168" height="499" key="GridCell.Tab.0.center" timestamp="1594328570004">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1071" height="469" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594310194529" />
-    <state width="1071" height="469" key="GridCell.Tab.0.left" timestamp="1594310194528">
+    <state width="2168" height="499" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594328570004" />
+    <state width="2168" height="499" key="GridCell.Tab.0.left" timestamp="1594328570003">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1071" height="469" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594310194528" />
-    <state width="1071" height="469" key="GridCell.Tab.0.right" timestamp="1594310194529">
+    <state width="2168" height="499" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594328570003" />
+    <state width="2168" height="499" key="GridCell.Tab.0.right" timestamp="1594328570004">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1071" height="469" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594310194529" />
-    <state width="1259" height="495" key="GridCell.Tab.1.bottom" timestamp="1594212506746">
+    <state width="2168" height="499" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594328570004" />
+    <state width="2168" height="499" key="GridCell.Tab.1.bottom" timestamp="1594328570005">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1259" height="495" key="GridCell.Tab.1.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594212506746" />
-    <state width="1259" height="495" key="GridCell.Tab.1.center" timestamp="1594212506746">
+    <state width="2168" height="499" key="GridCell.Tab.1.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594328570005" />
+    <state width="2168" height="499" key="GridCell.Tab.1.center" timestamp="1594328570004">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1259" height="495" key="GridCell.Tab.1.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594212506746" />
-    <state width="1259" height="495" key="GridCell.Tab.1.left" timestamp="1594212506746">
+    <state width="2168" height="499" key="GridCell.Tab.1.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594328570004" />
+    <state width="2168" height="499" key="GridCell.Tab.1.left" timestamp="1594328570004">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1259" height="495" key="GridCell.Tab.1.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594212506746" />
-    <state width="1259" height="495" key="GridCell.Tab.1.right" timestamp="1594212506746">
+    <state width="2168" height="499" key="GridCell.Tab.1.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594328570004" />
+    <state width="2168" height="499" key="GridCell.Tab.1.right" timestamp="1594328570005">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1259" height="495" key="GridCell.Tab.1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594212506746" />
+    <state width="2168" height="499" key="GridCell.Tab.1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594328570005" />
     <state x="803" y="407" key="SettingsEditor" timestamp="1594150161435">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="803" y="407" key="SettingsEditor/0.0.2189.1419@0.0.2189.1419" timestamp="1594150161435" />
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1594275908824">
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1594353321541">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594275908824" />
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594353321541" />
     <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1594277400087">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>

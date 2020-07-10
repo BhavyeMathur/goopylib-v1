@@ -18,6 +18,7 @@ class GraphicsObject:
     slider_instances = []
     slider_instances_bound = []
     checkbox_instances = []
+    cyclebutton_instances = []
     entry_instances = []
 
     def __init__(self, options=(), style=None, cursor="arrow", window=None):
@@ -53,9 +54,14 @@ class GraphicsObject:
         self.is_gliding = False
         self.glide_queue = []
 
+        self.callbacks = {}
+
         self.rotating_queue = []
         self.is_rotating = False
         self.rotation = 0
+
+        self.is_draggable = False
+        self.is_dragging = False
 
         self.resizing_factor = None
         self.resizing_easing = None
@@ -96,6 +102,10 @@ class GraphicsObject:
 
         return self
 
+    def set_draggable(self, draggable=True, callback=None):
+        self.is_draggable = draggable
+        self.callbacks["Dragging"] = callback
+
     def set_selected(self, selected=True):
         self.selected = selected
 
@@ -128,9 +138,8 @@ class GraphicsObject:
         if self.drawn:
             return self
 
-        self.graphwin = graphwin
-
         self.id = self._draw(graphwin, self.config)
+        self.graphwin = graphwin
         graphwin.add_item(self)
         if graphwin.autoflush:
             _root.update()
@@ -221,6 +230,10 @@ class GraphicsObject:
 
     def move_to_x(self, x):
         self.move(x - self.get_anchor().x, 0)
+        return self
+
+    def move_to_point(self, p):
+        self.move_to(p.x, p.y)
         return self
 
     # Object Gliding Functions
@@ -468,6 +481,11 @@ class GraphicsObject:
                 if obj.is_clicked(mouse_pos):
                     obj.click()
 
+        for obj in GraphicsObject.cyclebutton_instances:
+            if obj.graphwin == graphwin and obj.autoflush:
+                if obj.is_clicked(mouse_pos):
+                    obj.click()
+
     @staticmethod
     def on_middle_click(graphwin):
         pass
@@ -501,6 +519,11 @@ class GraphicsObject:
                         obj.resizing_initial_size = obj.width, obj.height
                     else:
                         obj.is_resizing[bound] = False
+
+        for obj in GraphicsObject.objects:
+            if obj.graphwin == graphwin:
+                if obj.is_draggable:
+                    obj.is_dragging = True
 
     @staticmethod
     def on_middle_press(graphwin):
@@ -548,6 +571,12 @@ class GraphicsObject:
                     if obj.is_clicked(mouse_pos):
                         graphwin.config(cursor=CURSORS[obj.cursor])
                         hover_count += 1
+                    if obj.is_dragging:
+                        if graphwin.left_mouse_down:
+                            obj.move_to_point(mouse_pos)
+                            obj.callbacks["Dragging"]()
+                        else:
+                            obj.is_dragging = False
 
             if hover_count == 0:
                 graphwin.set_cursor(graphwin.cursor)

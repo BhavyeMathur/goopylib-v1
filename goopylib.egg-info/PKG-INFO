@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: goopylib
-Version: 1.0.17b0
+Version: 1.0.36b0
 Summary: A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.
 Home-page: https://github.com/BhavyeMathur/goopylib
 Author: Bhavye Mathur
 Author-email: bhavyemathur@gmail.com
 License: MIT License
-Download-URL: https://github.com/BhavyeMathur/goopylib/archive/v1.0.17-alpha.tar.gz
+Download-URL: https://github.com/BhavyeMathur/goopylib/archive/v1.0.36-beta.tar.gz
 Description: # Goopy
         
         ## Introduction
@@ -41,9 +41,9 @@ Description: # Goopy
         
         ```python
         
-        from goopy.imports import *
+        from goopylib.imports import *
         # or
-        import goopy as gp
+        import goopylib as gp
         
         ```
         
@@ -54,18 +54,18 @@ Description: # Goopy
         Goopy is organized into a few different files and depending on what you want to do, you can import these files. There are 2 subfolders in goopy: math & objects. The objects folder contains all of the graphics objects you might want to use like Images, Rectangles, Buttons, etc. To import these, type:
         
         ```python
-        from goopy.math.BezierCurve import BezierCurve # The other modules are 'Interpolation', & 'BSpline'
+        from goopylib.math.BezierCurve import BezierCurve # The other modules are 'Interpolation', & 'BSpline'
         # or
-        from goopy.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
+        from goopylib.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
         ```
         
         To access elements of Goopy like the Point & GraphWin classes, Colours, etc. use this:
         
         ```python
-        from goopy.colours import *
+        from goopylib.colours import *
         
-        from goopy.GraphWin import GraphWin
-        from goopy.Point import Point
+        from goopylib.GraphWin import GraphWin
+        from goopylib.Point import Point
         ```
         
         ### Documentation
@@ -122,19 +122,56 @@ Description: # Goopy
         ## Contributions
         
         1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd July 2020 - Help with creating rounded polygon corners
-        2. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
+        2. Spectral Doy - 3rd July 2020 - Helpin~~~~g me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
         3. John Zelle - Creating the graphics.py package which formed the basis for my library.
         
         4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve - 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
-        5. Bryan Oakle, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width is 0 
+        5. Bryan Oakley, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width is 0 
         6. Atlast435, https://stackoverflow.com/questions/62751626/tkinter-rotated-resizing-cursor - 6th July 2020 - Helped expand the list of supported cursors by refering me to a documentation.
-        7. Sinoroc, https://stackoverflow.com/questions/62772377/python-package-does-not-get-created-in-site-packages-folder?noredirect=1#comment111007135_62772377 - 7th July 2020 - Helped fix bug with Packaging
+        7. Sinoroc, https://stackoverflow.com/questions/62772377/python-package-does-not-get-created-in-site-packages-folder? - 7th July 2020 - Helped fix bug with Packaging
+        8. Cool Cloud, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with hiding & showing the Entry cursor
+        9. Bryan Oakley, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with Unfocusing the Entry widget when the user clicks elsewhere
         
         ## Version History
         
         ### v1.0
         
-        #### 1.0.18-beta 8th July 2020
+        #### 1.0.36-beta 9th July 2020
+        
+        * Added a few functions to the Entry widget through which the user can only allow certain characters to be entered
+        * If the texture of an image is not in a textures folder, the Image class will search in the local folder
+        * Image resizing now takes the ceiling of the width & height and not the floor (int() gives floor)
+        * Fixed bug with Image shrinking when rotating over 90 degrees
+        * Fixed bug with Image vibrating when animating rotate
+        
+        * Fixed bug with is_gliding causing an AttributeError when creating graphwin
+        * Renamed Interpolations.py to Easing.py
+        
+        * The Entry does not set the focus to itself when it is drawn
+        * Added `get_width()` & `get_height()` functions to the Entry
+        * The Entry Widget unfocuses itself when the user clicks somewhere else
+        
+        * Added a GraphWin Wiki! (mainly cause I felt guilty that the people who liked Goopy (4 stars!) wouldn't be able to use it)
+        * The GraphWin returns itself for functions where it didn't (unless it is returning something else)
+        * Added a `move_to_point()` function for the GraphWin
+        
+        #### 1.0.25-beta 8th July 2020
+        
+        * Added a imports file for the objects & math sub-packages
+        * Fixed bug with Text config raising errors
+        * Added RandomColourCMYK() & RandomColourHex() functions and renamed RandomColour() to RandomColourRGB()
+        
+        * Changed Goopy to only work with Python > 3.6 because of the use of f-strings
+        * Created the Colours wiki
+        * Added ABSOLUTE_ RED, GREEN, & BLUE as Colours
+        * Lshift (<<) and Rshift (>>) operators on Colours with Integers now shifts the RGB values to be GBR, BRG, etc.
+        
+        * Added a get_bk_colour() function to the GraphWin
+        * Added a lot more Colours
+        * Fixed the 2 examples to work with the Library and made them match the Python Convention
+        * Renamed the getScreenSize() function with Python Convention
+        
+        * GraphWins now convert their min & max size args to integers
         
         #### 1.0.17-beta - 7th July 2020
         
@@ -308,13 +345,9 @@ Description: # Goopy
         
 Keywords: Tkinter,2D Graphics,Python GUI,Game Creator,Graphics Library
 Platform: UNKNOWN
-Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
 Classifier: Topic :: Software Development :: Build Tools
 Classifier: License :: OSI Approved :: MIT License
-Classifier: Programming Language :: Python :: 3
-Classifier: Programming Language :: Python :: 3.4
-Classifier: Programming Language :: Python :: 3.5
 Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: 3.7
 Classifier: Programming Language :: Python :: 3.8

@@ -1,8 +1,5 @@
 from goopylib.imports import *
 
-window = GraphWin("Test Window", width=110, height=110, autoflush=False, bk_colour=WHITE)
-e = Entry(Point(55, 55), text_width=10).draw(window)
-
 create_custom_ease()
 
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
@@ -16,7 +13,3 @@ while True:
         print(1)
     
     window.update_win()"""
-
-"""
-from tkinter.filedialog import askopenfilename
-filename = askopenfilename()"""

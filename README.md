@@ -127,7 +127,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.36-beta 9th July 2020 (1.0.34)
+#### 1.0.39-beta 9th July 2020 (1.0.36)
 
 * Added a few functions to the Entry widget through which the user can only allow certain characters to be entered
 * If the texture of an image is not in a textures folder, the Image class will search in the local folder
@@ -145,6 +145,12 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added a GraphWin Wiki! (mainly cause I felt guilty that the people who liked Goopy (4 stars!) wouldn't be able to use it)
 * The GraphWin returns itself for functions where it didn't (unless it is returning something else)
 * Added a `move_to_point()` function for the GraphWin
+
+* Fixed bug with Image not resizing to canvas scaling
+* Made CycleButtons semi-functional by adding draw(), undraw(), click(), and is_clicked() functions
+* Added a file browsing window to get the name of a file
+
+* You can now drag objects!
 
 #### 1.0.25-beta 8th July 2020
 
