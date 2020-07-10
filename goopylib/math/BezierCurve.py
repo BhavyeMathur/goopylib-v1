@@ -2,8 +2,9 @@ from goopylib.Point import Point
 import math
 import numpy as np
 
-BezierMatrices = [np.array([[-1, 1], [1, 0]]), np.array([[1, 0, 0], [-2, 2, 0], [1, -2, 1]]),
-                  np.array([[1, 0, 0, 0], [-3, 3, 0, 0], [3, -6, 3, 0], [-1, 3, -3, 1]])]
+BezierMatrices = [np.array([[-1, 1], [1, 0]]), np.array([[1, -2, 1], [-2, 2, 0], [1, 0, 0]]),
+                  np.array([[-1, 3, -3, 1], [3, -6, 3, 0], [-3, 3, 0, 0], [1, 0, 0, 0]]),
+                  np.array([[1, -4, 6, -4, 1], [-4, 12, -12, 4, 0], [6, -12, 6, 0, 0], [-4, 4, 0, 0, 0], [1, 0, 0, 0, 0]])]
 
 # References for this: https://www.youtube.com/watch?v=qhQrRCJ-mVg
 
@@ -16,8 +17,6 @@ def BezierCurve(t, control_points):
 
         t_matrix = np.array([t ** (len(control_points) - n - 1) for n in range(len(control_points))])
         M = BezierMatrices[len(control_points) - 2]
-
-        #print(f"t: {t_matrix}\nx: {x_matrix}\ny: {y_matrix}\nM: {M}")
 
         return Point(x_matrix.dot(M).dot(t_matrix), y_matrix.dot(M).dot(t_matrix))
 

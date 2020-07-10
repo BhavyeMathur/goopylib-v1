@@ -127,7 +127,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.47 10th July 2020
+#### 1.0.52 10th July 2020 (47)
 
 * Changed the Circle class `__repr__` function
 * Added an align parameter to the GraphicsObject move function to move an object 'left-aligned' or right, top, bottom, etc.
@@ -139,6 +139,14 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Button is_clicked() function returns False if the button hasn't been drawn
 
 * Renamed the `BezierCurve()` function to `RawBezierCurve()` and created a faster `BezierCurve()` function that uses matrices
+* Added Linear & Cosine Interpolation Functions
+* Worked on a graphical application to allow users to create their own custom ease functions
+
+* The Line Object is no longer a subclass of _BBox but rather it's own object
+* Added a Curved Line Object
+
+* Added Mangling Functions to the `Point` class and added more to the `Colour` class
+* Changed the `__pow__` function for colours and Points to use `pow(a, b, m)` and not `a ** b % m`
 
 #### 1.0.39-beta 9th July 2020
 

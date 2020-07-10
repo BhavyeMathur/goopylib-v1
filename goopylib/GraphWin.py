@@ -212,6 +212,8 @@ class GraphWin(tkCanvas):
 
         # Mouse Related Variables
 
+        self.update_mouse = True
+
         self.mouse_left_click = None  # These are all coordinates of these events
         self.mouse_middle_click = None
         self.mouse_right_click = None
@@ -309,7 +311,6 @@ class GraphWin(tkCanvas):
     def __autoflush(self):
         if self.autoflush:
             _root.update()
-            self.update_win(_internal_updating=True)
 
     def __set_mouse_handler(self, func):
         self._mouse_callback = func
@@ -773,6 +774,7 @@ class GraphWin(tkCanvas):
 
                 self.glide_queue[0]["Update"] = timetime()
 
+        self.update_mouse = True
         GraphicsObject.on_update(self)
 
     def save_canvas(self, height=None, width=None):
@@ -929,7 +931,6 @@ class GraphWin(tkCanvas):
             self.mouse_left_press = e.x, e.y
             self.last_mouse_event = self.mouse_left_press
             self.left_mouse_down = True
-
             GraphicsObject.on_left_press(self)
 
     def _on_middle_press(self, e):
@@ -957,8 +958,9 @@ class GraphWin(tkCanvas):
         if self.is_open():
             self.mouse_pos = self.trans.world(e.x, e.y)
 
-            if self.mouse_in_window:
+            if self.mouse_in_window and self.update_mouse:
                 GraphicsObject.on_mouse_motion(self)
+                self.update_mouse = False
 
     def _on_mouse_scroll(self, e):
         if self.is_open():

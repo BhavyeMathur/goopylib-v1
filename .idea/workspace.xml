@@ -2,16 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="442b5543-b561-4ddf-8aa5-06f800e9a1f7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/goopylib/math/Interpolations.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/goopylib/objects/CurvedLine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopy-devV6.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopy-devV6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/GraphWin.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/GraphWin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/Point.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/Point.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/applications/CustomEase.fla" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/applications/CustomEase.fla" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/applications/custom_ease.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/applications/custom_ease.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/colours.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/colours.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/imports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/math/BSpline.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/math/BSpline.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/math/BezierCurve.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/math/BezierCurve.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/objects/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/Button.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/objects/Circle.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/Circle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/objects/CycleButton.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/CycleButton.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/objects/GraphicsObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/GraphicsObject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/objects/_BBox.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/_BBox.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/objects/Line.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/Line.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,19 +42,25 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1eLchuc4QjN6TOmC2yXAHVcVAX7" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/goopylib/objects" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
@@ -213,6 +224,7 @@
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Trying out commit from Pycharm" />
     <option name="LAST_COMMIT_MESSAGE" value="Trying out commit from Pycharm" />
   </component>
@@ -225,38 +237,38 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="750" y="304" key="CommitChangelistDialog2/0.0.2189.1419@0.0.2189.1419" timestamp="1594276086225" />
-    <state width="1250" height="339" key="GridCell.Tab.0.bottom" timestamp="1594362451497">
+    <state width="2168" height="336" key="GridCell.Tab.0.bottom" timestamp="1594401135800">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1250" height="339" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594362451497" />
-    <state width="1250" height="339" key="GridCell.Tab.0.center" timestamp="1594362451496">
+    <state width="2168" height="336" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594401135800" />
+    <state width="2168" height="336" key="GridCell.Tab.0.center" timestamp="1594401135800">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1250" height="339" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594362451496" />
-    <state width="1250" height="339" key="GridCell.Tab.0.left" timestamp="1594362451496">
+    <state width="2168" height="336" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594401135800" />
+    <state width="2168" height="336" key="GridCell.Tab.0.left" timestamp="1594401135800">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1250" height="339" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594362451496" />
-    <state width="1250" height="339" key="GridCell.Tab.0.right" timestamp="1594362451496">
+    <state width="2168" height="336" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594401135800" />
+    <state width="2168" height="336" key="GridCell.Tab.0.right" timestamp="1594401135800">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1250" height="339" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594362451496" />
-    <state width="1250" height="401" key="GridCell.Tab.1.bottom" timestamp="1594362032235">
+    <state width="2168" height="336" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594401135800" />
+    <state width="2168" height="498" key="GridCell.Tab.1.bottom" timestamp="1594381775027">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1250" height="401" key="GridCell.Tab.1.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594362032235" />
-    <state width="1250" height="401" key="GridCell.Tab.1.center" timestamp="1594362032235">
+    <state width="2168" height="498" key="GridCell.Tab.1.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594381775027" />
+    <state width="2168" height="498" key="GridCell.Tab.1.center" timestamp="1594381775027">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1250" height="401" key="GridCell.Tab.1.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594362032235" />
-    <state width="1250" height="401" key="GridCell.Tab.1.left" timestamp="1594362032235">
+    <state width="2168" height="498" key="GridCell.Tab.1.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594381775027" />
+    <state width="2168" height="498" key="GridCell.Tab.1.left" timestamp="1594381775027">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1250" height="401" key="GridCell.Tab.1.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594362032235" />
-    <state width="1250" height="401" key="GridCell.Tab.1.right" timestamp="1594362032235">
+    <state width="2168" height="498" key="GridCell.Tab.1.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594381775027" />
+    <state width="2168" height="498" key="GridCell.Tab.1.right" timestamp="1594381775027">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1250" height="401" key="GridCell.Tab.1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594362032235" />
+    <state width="2168" height="498" key="GridCell.Tab.1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594381775027" />
     <state x="803" y="407" key="SettingsEditor" timestamp="1594150161435">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -265,13 +277,17 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594353321541" />
+    <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1594374809325">
+      <screen x="0" y="0" width="2189" height="1419" />
+    </state>
+    <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2189.1419@0.0.2189.1419" timestamp="1594374809325" />
     <state x="837" y="353" key="refactoring.ChangeSignatureDialog" timestamp="1594356066856">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="837" y="353" key="refactoring.ChangeSignatureDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594356066856" />
-    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1594361215298">
+    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1594397869649">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup/0.0.2189.1419@0.0.2189.1419" timestamp="1594361215298" />
+    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup/0.0.2189.1419@0.0.2189.1419" timestamp="1594397869649" />
   </component>
 </project>

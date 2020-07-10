@@ -92,6 +92,32 @@ class GraphicsObject:
     def __repr__(self):
         return "Graphics Object"
 
+    def _reconfig(self, option, setting):
+        # Internal method for changing configuration of the object
+        # Raises an error if the option does not exist in the config
+        #    dictionary for this object
+        if option not in self.config:
+            raise GraphicsError(f"\n\nThe config you have specified ({option}) is not valid for {self}")
+        options = self.config
+        options[option] = setting
+        if self.graphwin and not self.graphwin.is_closed():
+            self.graphwin.itemconfig(self.id, options)
+            if self.graphwin.autoflush:
+                _root.update()
+
+    def _draw(self, canvas, options):
+        """draws appropriate figure on canvas with options provided
+        Returns Tk id of item drawn"""
+        pass  # must override in subclass
+
+    def _move(self, dx, dy):
+        """updates internal state of object to move it dx,dy units"""
+        pass  # must override in subclass
+
+    def _rotate(self, dr):
+        """updates internal state of object to rotate it r degrees CCW"""
+        pass  # must override in subclass
+
     def set_clickable(self, clickable=True):
         if clickable:
             if self not in GraphicsObject.objects:
@@ -149,25 +175,6 @@ class GraphicsObject:
 
         return self
 
-    def get_width(self):
-        return 0
-
-    def get_height(self):
-        return 0
-
-    def set_cursor(self, cursor="arrow"):
-        self.cursor = cursor
-
-    def animate_blinking(self, interval, animate=True):
-        self.is_blinking = animate
-        self.blinking_interval = interval
-        self.last_blink_time = timetime()
-
-        if animate and self not in GraphicsObject.blinking_objects:
-            GraphicsObject.blinking_objects.append(self)
-        elif not animate and self in GraphicsObject.blinking_objects:
-            GraphicsObject.blinking_objects.remove(self)
-
     def undraw(self, set_blinking=True):
 
         """Undraw the object (i.e. hide it). Returns silently if the
@@ -176,7 +183,6 @@ class GraphicsObject:
             try:
                 if not self.graphwin.is_closed():
                     self.graphwin.delete(self.id)
-
                     self.graphwin.del_item(self)
                     if self.graphwin.autoflush:
                         _root.update()
@@ -189,23 +195,27 @@ class GraphicsObject:
                 self.animate_blinking(0, animate=False)
         return self
 
-    def set_rotation(self, r):
-        self.rotate(r - self.rotation)
-        return self
+    def get_width(self):
+        return 0
+
+    def get_height(self):
+        return 0
+
+    def set_cursor(self, cursor="arrow"):
+        self.cursor = cursor
 
     def get_anchor(self):
         pass
 
-    def rotate(self, dr):
-        self._rotate(dr)
-        if self.graphwin is not None:
-            self.redraw()
+    def animate_blinking(self, interval, animate=True):
+        self.is_blinking = animate
+        self.blinking_interval = interval
+        self.last_blink_time = timetime()
 
-        return self
-
-    def _rotate(self, dr):
-        """updates internal state of object to rotate it r degrees CCW"""
-        pass  # must override in subclass
+        if animate and self not in GraphicsObject.blinking_objects:
+            GraphicsObject.blinking_objects.append(self)
+        elif not animate and self in GraphicsObject.blinking_objects:
+            GraphicsObject.blinking_objects.remove(self)
 
     def move(self, dx, dy, align="center"):
 
@@ -283,7 +293,6 @@ class GraphicsObject:
         if not (isinstance(time, int) or isinstance(time, float)):
             raise GraphicsError("\n\nThe time to glide the object for (time) must be a number "
                                 f"(integer or float), not {time}")
-
         if not callable(easing):
             raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
 
@@ -393,27 +402,16 @@ class GraphicsObject:
         self.animate_rotate(r - self.rotation, time=time, easing=easing)
         return self
 
-    def _reconfig(self, option, setting):
-        # Internal method for changing configuration of the object
-        # Raises an error if the option does not exist in the config
-        #    dictionary for this object
-        if option not in self.config:
-            raise GraphicsError(f"\n\nThe config you have specified ({option}) is not valid for {self}")
-        options = self.config
-        options[option] = setting
-        if self.graphwin and not self.graphwin.is_closed():
-            self.graphwin.itemconfig(self.id, options)
-            if self.graphwin.autoflush:
-                _root.update()
+    def rotate(self, dr):
+        self._rotate(dr)
+        if self.graphwin is not None:
+            self.redraw()
 
-    def _draw(self, canvas, options):
-        """draws appropriate figure on canvas with options provided
-        Returns Tk id of item drawn"""
-        pass  # must override in subclass
+        return self
 
-    def _move(self, dx, dy):
-        """updates internal state of object to move it dx,dy units"""
-        pass  # must override in subclass
+    def set_rotation(self, r):
+        self.rotate(r - self.rotation)
+        return self
 
     def redraw(self):
         if self.graphwin.is_open():
@@ -445,13 +443,11 @@ class GraphicsObject:
                         obj.is_gliding = False
                         GraphicsObject.gliding_objects.remove(obj)
                 else:
-
                     perX = obj.glide_queue[0]["EasingX"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
                     perY = obj.glide_queue[0]["EasingY"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
 
                     obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Dist"].x * perX,
                                 obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Dist"].y * perY)
-
                     obj.glide_queue[0]["Update"] = timetime()
 
         t = timetime()
@@ -592,13 +588,17 @@ class GraphicsObject:
             hover_count = 0
             for obj in GraphicsObject.objects:
                 if obj.graphwin == graphwin and graphwin.is_open():
+                    #print(obj)
                     if obj.is_clicked(mouse_pos):
                         graphwin.config(cursor=CURSORS[obj.cursor])
                         hover_count += 1
                     if obj.is_dragging:
                         if graphwin.left_mouse_down:
                             obj.move_to_point(mouse_pos)
-                            obj.callbacks["Dragging"]()
+                            try:
+                                obj.callbacks["Dragging"]()
+                            except TypeError:
+                                pass
                         else:
                             obj.is_dragging = False
 
