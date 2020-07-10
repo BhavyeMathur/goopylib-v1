@@ -105,6 +105,7 @@ class GraphicsObject:
     def set_draggable(self, draggable=True, callback=None):
         self.is_draggable = draggable
         self.callbacks["Dragging"] = callback
+        return self
 
     def set_selected(self, selected=True):
         self.selected = selected
@@ -147,6 +148,12 @@ class GraphicsObject:
         self.drawn = True
 
         return self
+
+    def get_width(self):
+        return 0
+
+    def get_height(self):
+        return 0
 
     def set_cursor(self, cursor="arrow"):
         self.cursor = cursor
@@ -200,40 +207,57 @@ class GraphicsObject:
         """updates internal state of object to rotate it r degrees CCW"""
         pass  # must override in subclass
 
-    def move(self, dx, dy):
+    def move(self, dx, dy, align="center"):
 
         """move object dx units in x direction and dy units in y
         direction"""
-
-        self._move(dx, dy)
+        
+        if align == "center":
+            self._move(dx, dy)
+        elif align == "left":
+            self._move(dx + self.get_width() / 2, dy)
+        elif align == "right":
+            self._move(dx - self.get_width() / 2, dy)
+        elif align == "top":
+            self._move(dx, dy + self.get_height() / 2)
+        elif align == "bottom":
+            self._move(dx, dy - self.get_height() / 2)
+        elif align == "topleft":
+            self._move(dx + self.get_width() / 2, dy + self.get_height() / 2)
+        elif align == "topright":
+            self._move(dx - self.get_width() / 2, dy + self.get_height() / 2)
+        elif align == "bottomleft":
+            self._move(dx + self.get_width() / 2, dy - self.get_height() / 2)
+        elif align == "bottomright":
+            self._move(dx - self.get_width() / 2, dy - self.get_height() / 2)
         if self.drawn:
             if self.graphwin.autoflush:
                 self.graphwin.flush()
             self.redraw()
         return self
 
-    def move_to(self, x, y):
-        self.move(x - self.get_anchor().x, y - self.get_anchor().y)
+    def move_to(self, x, y, align="center"):
+        self.move(x - self.get_anchor().x, y - self.get_anchor().y, align=align)
         return self
 
-    def move_y(self, dy):
-        self.move(0, dy)
+    def move_y(self, dy, align="center"):
+        self.move(0, dy, align=align)
         return self
 
-    def move_x(self, dx):
-        self.move(dx, 0)
+    def move_x(self, dx, align="center"):
+        self.move(dx, 0, align=align)
         return self
 
-    def move_to_y(self, y):
-        self.move(0, y - self.get_anchor().y)
+    def move_to_y(self, y, align="center"):
+        self.move(0, y - self.get_anchor().y, align=align)
         return self
 
-    def move_to_x(self, x):
-        self.move(x - self.get_anchor().x, 0)
+    def move_to_x(self, x, align="center"):
+        self.move(x - self.get_anchor().x, 0, align=align)
         return self
 
-    def move_to_point(self, p):
-        self.move_to(p.x, p.y)
+    def move_to_point(self, p, align="center"):
+        self.move_to(p.x, p.y, align=align)
         return self
 
     # Object Gliding Functions
@@ -508,7 +532,7 @@ class GraphicsObject:
                 if obj.is_clicked(mouse_pos):
                     obj.graphic.undraw()
                     obj.graphic = obj.clicked_graphic
-                    obj.draw(obj.graphwin)
+                    obj._draw(obj.graphwin, ())
 
         for obj in GraphicsObject.resizing_objects:
             if obj.graphwin == graphwin:
@@ -522,7 +546,7 @@ class GraphicsObject:
 
         for obj in GraphicsObject.objects:
             if obj.graphwin == graphwin:
-                if obj.is_draggable:
+                if obj.is_draggable and obj.is_clicked(mouse_pos):
                     obj.is_dragging = True
 
     @staticmethod

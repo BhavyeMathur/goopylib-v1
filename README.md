@@ -127,7 +127,20 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.39-beta 9th July 2020 (1.0.36)
+#### 1.0.47 10th July 2020
+
+* Changed the Circle class `__repr__` function
+* Added an align parameter to the GraphicsObject move function to move an object 'left-aligned' or right, top, bottom, etc.
+* Added `get_height()` and `get_width()` functions to _BBox
+* The Button class now inherits from the GraphicsObject class
+* Defined all the rotate functions for the button as well as `get_height()` and `get_width()` functions
+
+* Fixed bug with Button movement
+* Button is_clicked() function returns False if the button hasn't been drawn
+
+* Renamed the `BezierCurve()` function to `RawBezierCurve()` and created a faster `BezierCurve()` function that uses matrices
+
+#### 1.0.39-beta 9th July 2020
 
 * Added a few functions to the Entry widget through which the user can only allow certain characters to be entered
 * If the texture of an image is not in a textures folder, the Image class will search in the local folder
@@ -147,10 +160,10 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added a `move_to_point()` function for the GraphWin
 
 * Fixed bug with Image not resizing to canvas scaling
-* Made CycleButtons semi-functional by adding draw(), undraw(), click(), and is_clicked() functions
+* Made CycleButtons semi-functional by adding `draw()`, `undraw()`, `click()`, and `is_clicked()` functions
 * Added a file browsing window to get the name of a file
 
-* You can now drag objects!
+* You can now drag objects! The `set_draggable()` function allows for callbacks too.
 
 #### 1.0.25-beta 8th July 2020
 
