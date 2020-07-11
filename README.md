@@ -128,16 +128,23 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.60-beta 11th July 2020 (59)
+#### 1.0.65-beta 11th July 2020
 
 * Added more getter functions to the GraphWin class
-* Every function in the GraphWin class now raises a GraphicsError if the user hasn't provided the correct argument
+* Every function in the GraphWin class now raises a GraphicsError if the user hasn't provided the correct arguments
 * GraphWin get mouse functions now call `update_win()` rather than `update()`
 * Renamed the internal argument `refresh` to `_refresh` for the GraphWin
 * The GraphWin now checks if `autoflush` is True before updating when the `redraw()`function is called.
 
-* Added key click, press, and a lot more related functions to the GraphWin
+* Added key click, press, and a lot more related functions to the GraphWin (6290 lines long now!)
 * Added the Point class Wiki
+
+* Every function in the colours.py now raises a GraphicsError if the user hasn't provided the correct arguments
+* Fixed bug with line not drawing arrow
+* Proofread the Line class, fixed misc bugs with it, etc.
+
+* Added rotation functions for the Line class
+* Added a check to the GraphicsObject class to make sure the cursor argument is valid
 
 #### 1.0.54-beta 10th July 2020
 

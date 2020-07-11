@@ -86,7 +86,7 @@ class Point:
             raise TypeError(f"unsupported operand type(s) for >>: 'Point' and {type(other)}'")
 
     def __copy__(self):
-        return self
+        return Point(self.x, self.y)
 
     def __bytes__(self):
         return bytes(int(self.x)), bytes(int(self.y))
@@ -237,6 +237,9 @@ class Point:
 
     def __reversed__(self):
         return Point(self.y, self.x)
+
+    def __deepcopy__(self, memodict={}):
+        return Point(self.x, self.y)
 
     def distance(self, p2):
         if not isinstance(p2, Point):

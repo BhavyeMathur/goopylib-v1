@@ -149,11 +149,14 @@ class GraphWin(tkCanvas):
         if not isinstance(bk_colour, Colour):
             if bk_colour in STYLES[style].keys():
                 self.bk_colour = STYLES[style][bk_colour]
-            elif bk_colour is None:
+            else:
                 if "background" in STYLES[style].keys():
                     self.bk_colour = STYLES[style]["background"]
                 else:
                     self.bk_colour = STYLES["default"]["background"]
+                if bk_colour is not None:
+                    warnings.warn(f"The background colour specified ({bk_colour}) is not in the graphwin's style. "
+                                  f"The background colour was set to the default colour ({self.bk_colour})")
         else:
             self.bk_colour = bk_colour
 
@@ -343,6 +346,7 @@ class GraphWin(tkCanvas):
     def _on_key_release(self, e):
         if e.keysym in self.keys_down:
             self.keys_down.remove(e.keysym)
+            print(e)
         if e.keysym not in self.keys_clicked:
             self.keys_clicked.append(e.keysym)
 
@@ -350,15 +354,19 @@ class GraphWin(tkCanvas):
         self.last_key_pressed = e.keysym
         if e.keysym not in self.keys_down:
             self.keys_down.append(e.keysym)
+            print(e)
 
     def _on_shift_key_press(self, e):
         self.key_pressed_with_shift = e.keysym
+        print(2)
 
     def _on_alt_key_press(self, e):
         self.key_pressed_with_alt = e.keysym
+        print(1)
 
     def _on_control_key_press(self, e):
         self.key_pressed_with_control = e.keysym
+        print(3)
 
     # -------------------------------------------------------------------------
     # CALLBACK MOUSE FUNCTIONS

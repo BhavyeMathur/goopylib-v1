@@ -15,6 +15,9 @@ class Colour:
     def __str__(self):
         return self.colour
 
+    def __format__(self, format_spec):
+        return self.string
+
     def __repr__(self):
         return self.string
 
@@ -23,38 +26,44 @@ class Colour:
         return ColourRGB(c_value, c_value, c_value)
 
     def __sub__(self, other):
-        try:
+        if isinstance(other, Colour):
             red = self.red - other.red
             green = self.green - other.green
             blue = self.blue - other.blue
-        except AttributeError:
+        elif isinstance(other, int):
             red = self.red - other
             green = self.green - other
             blue = self.blue - other
+        else:
+            raise TypeError(f"unsupported operand type(s) for -: 'Colour' and {type(other)}'. Must be a Colour or int")
 
         return ColourRGB(max([red, 0]), max([green, 0]), max([blue, 0]))
 
     def __add__(self, other):
-        try:
+        if isinstance(other, Colour):
             red = self.red + other.red
             green = self.green + other.green
             blue = self.blue + other.blue
-        except AttributeError:
+        elif isinstance(other, int):
             red = self.red + other
             green = self.green + other
             blue = self.blue + other
+        else:
+            raise TypeError(f"unsupported operand type(s) for +: 'Colour' and {type(other)}'. Must be a Colour or int")
 
         return ColourRGB(min([red, 255]), min([green, 255]), min([blue, 255]))
 
     def __mul__(self, other):
-        try:
+        if isinstance(other, Colour):
             red = self.red * other.red
             green = self.green * other.green
             blue = self.blue * other.blue
-        except AttributeError:
+        elif isinstance(other, int):
             red = self.red * other
             green = self.green * other
             blue = self.blue * other
+        else:
+            raise TypeError(f"unsupported operand type(s) for *: 'Colour' and {type(other)}'. Must be a Colour or int")
 
         return ColourRGB(red, green, blue)
 
@@ -63,10 +72,12 @@ class Colour:
             red = self.red // other.red
             green = self.green // other.green
             blue = self.blue // other.blue
-        else:
+        elif isinstance(other, int):
             red = self.red // other
             green = self.green // other
             blue = self.blue // other
+        else:
+            raise TypeError(f"unsupported operand type(s) for //: 'Colour' and {type(other)}'. Must be a Colour or int")
 
         return ColourRGB(red, green, blue)
 
@@ -74,26 +85,30 @@ class Colour:
         return self // other
 
     def __mod__(self, other):
-        try:
+        if isinstance(other, Colour):
             red = self.red % other.red
             green = self.green % other.green
             blue = self.blue % other.blue
-        except AttributeError:
+        elif isinstance(other, int):
             red = self.red % other
             green = self.green % other
             blue = self.blue % other
+        else:
+            raise TypeError(f"unsupported operand type(s) for %: 'Colour' and {type(other)}'. Must be a Colour or int")
 
         return ColourRGB(red, green, blue)
     
     def __pow__(self, power, modulo=None):
-        try:
+        if isinstance(power, Colour):
             red = pow(self.red, power.red, modulo)
             green = pow(self.green ** power.green, modulo)
             blue = pow(self.blue ** power.blue, modulo)
-        except AttributeError:
+        elif isinstance(power, int):
             red = pow(self.red ** power, modulo)
             green = pow(self.green ** power, modulo)
             blue = pow(self.blue ** power, modulo)
+        else:
+            raise TypeError(f"unsupported operand type(s) for **: 'Colour' and {type(power)}'. Must be a Colour or int")
 
         return ColourRGB(red, green, blue)
 
@@ -104,67 +119,77 @@ class Colour:
         return ColourRGB(self.red, self.green, self.blue)
 
     def __lshift__(self, other):
-        try:
+        if isinstance(other, Colour):
             red = self.red << other.red
             green = self.green << other.green
             blue = self.blue << other.blue
-        except AttributeError:
+        elif isinstance(other, int):
             red, green, blue = self.red, self.green, self.blue
             for _ in range(other):
                 red, green, blue = green, blue, red
+        else:
+            raise TypeError(f"unsupported operand type(s) for <<: 'Colour' and {type(other)}'. Must be a Colour or int")
 
         return ColourRGB(red, green, blue)
 
     def __rshift__(self, other):
-        try:
+        if isinstance(other, Colour):
             red = self.red >> other.red
             green = self.green >> other.green
             blue = self.blue >> other.blue
-        except AttributeError:
+        elif isinstance(other, int):
             red, green, blue = self.red, self.green, self.blue
             for _ in range(other):
                 red, green, blue = blue, red, green
+        else:
+            raise TypeError(f"unsupported operand type(s) for >>: 'Colour' and {type(other)}'. Must be a Colour or int")
 
         return ColourRGB(red, green, blue)
 
     def __xor__(self, other):
-        try:
+        if isinstance(other, Colour):
             red = self.red ^ other.red
             green = self.green ^ other.green
             blue = self.blue ^ other.blue
-        except AttributeError:
+        elif isinstance(other, int):
             red = self.red ^ other
             green = self.green ^ other
             blue = self.blue ^ other
+        else:
+            raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and {type(other)}'. Must be a Colour or int")
+
+        return ColourRGB(red, green, blue)
+
+    def __and__(self, other):
+        if isinstance(other, Colour):
+            red = self.red & other.red
+            green = self.green & other.green
+            blue = self.blue & other.blue
+        elif isinstance(other, int):
+            red = self.red & other
+            green = self.green & other
+            blue = self.blue & other
+        else:
+            raise TypeError(f"unsupported operand type(s) for &: 'Colour' and {type(other)}'. Must be a Colour or int")
+
+        return ColourRGB(red, green, blue)
+
+    def __or__(self, other):
+        if isinstance(other, Colour):
+            red = self.red | other.red
+            green = self.green | other.green
+            blue = self.blue | other.blue
+        elif isinstance(other, int):
+            red = self.red | other
+            green = self.green | other
+            blue = self.blue | other
+        else:
+            raise TypeError(f"unsupported operand type(s) for |: 'Colour' and {type(other)}'. Must be a Colour or int")
 
         return ColourRGB(red, green, blue)
 
     def __invert__(self):
         return -self
-
-    def __and__(self, other):
-        try:
-            red = self.red & other.red
-            green = self.green & other.green
-            blue = self.blue & other.blue
-        except AttributeError:
-            red = self.red & other
-            green = self.green & other
-            blue = self.blue & other
-
-        return ColourRGB(red, green, blue)
-    
-    def __or__(self, other):
-        try:
-            red = self.red | other.red
-            green = self.green | other.green
-            blue = self.blue | other.blue
-        except AttributeError:
-            red = self.red | other
-            green = self.green | other
-            blue = self.blue | other
-
-        return ColourRGB(red, green, blue)
 
     def __bool__(self):
         return self.colour != "#000000"
@@ -185,15 +210,23 @@ class Colour:
         return ColourRGB(self.red, self.green, self.blue)
 
     def __lt__(self, other):
+        if not isinstance(other, Colour):
+            raise TypeError(f"'<' not supported between instances of 'Colour' and '{other}'.")
         return self.red + self.green + self.blue < other.red + other.green + other.blue
 
     def __le__(self, other):
+        if not isinstance(other, Colour):
+            raise TypeError(f"'<=' not supported between instances of 'Colour' and '{other}'.")
         return self.red + self.green + self.blue <= other.red + other.green + other.blue
 
     def __gt__(self, other):
+        if not isinstance(other, Colour):
+            raise TypeError(f"'>' not supported between instances of 'Colour' and '{other}'.")
         return self.red + self.green + self.blue > other.red + other.green + other.blue
 
     def __ge__(self, other):
+        if not isinstance(other, Colour):
+            raise TypeError(f"'>=' not supported between instances of 'Colour' and '{other}'.")
         return self.red + self.green + self.blue >= other.red + other.green + other.blue
 
     def __eq__(self, other):
@@ -272,6 +305,8 @@ class Colour:
         return 3
 
     def __getitem__(self, item):
+        if item > 2:
+            raise IndexError(f"\n\nColour index must be less than 3, not {item}")
         return (self.red, self.green, self.blue)[item]
 
     def __iter__(self):
@@ -297,8 +332,7 @@ class ColourRGB(Colour):
         if not (isinstance(r, int) and isinstance(g, int) and isinstance(b, int)):
             raise GraphicsError("\n\nRGB values must be integers!")
         if not (256 > r > -1 and 256 > g > -1 and 256 > b > -1):
-            raise GraphicsError(
-                "\n\nRGB values must be between 0 & 255 (included), right now {}, {}, {}".format(r, g, b))
+            raise GraphicsError(f"\n\nRGB values must be between 0 & 255 (included), right now {r}, {g}, {b}")
         self.colour = "#%02x%02x%02x" % (r, g, b)
         self.string = f"rgb {r}, {g}, {b}"
 
@@ -311,11 +345,14 @@ class ColourHex(Colour):
     def __init__(self, colour):
         if not isinstance(colour, str):
             raise GraphicsError("\n\nHex value must be a string in format: #rrggbb")
-        if not 6 <= len(colour) <= 7:
-            raise GraphicsError("\n\nThe length of the hex colour string must be 6: 'rrggbb'")
+        if len(colour) != 7:
+            raise GraphicsError("\n\nThe length of the hex colour string must be 7: '#rrggbb'")
+        try:
+            if int(colour[1:], 16) > 16777215 or int(colour[1:], 16) < 0:
+                raise GraphicsError(f"\n\nThe colour value must be between #000000 and #ffffff, not {colour}")
+        except ValueError:
+            raise GraphicsError(f"\n\nThe colour value must be a hexadecimal string, not {colour}")
 
-        if len(colour) == 6:
-            self.colour = f"#{self.colour}"
         self.colour = colour
         self.string = self.colour
 
@@ -329,9 +366,9 @@ class ColourHex(Colour):
 class ColourCMYK(Colour):
     def __init__(self, c, y, m, k):
         if not (isinstance(c, int) and isinstance(y, int) and isinstance(m, int) and isinstance(k, int)):
-            raise GraphicsError("\n\nCMYK values must be integers!")
+            raise GraphicsError(f"\n\nCMYK values must be integers! not {c}, {m}, {y}, {k}")
         if not (101 > c > -1 and 101 > y > -1 and 101 > m > -1 and 101 > k > -1):
-            raise GraphicsError(f"\n\nCMYK values must be between 0 & 100 (included), right now {c}, {m}, {y}, {k}")
+            raise GraphicsError(f"\n\nCMYK values must be between 0 & 100 (included), not {c}, {m}, {y}, {k}")
 
         r = 255 * (1 - (c + k) // 100)
         g = 255 * (1 - (m + k) // 100)
@@ -346,6 +383,20 @@ class ColourCMYK(Colour):
 
 
 def RandomColourRGB(red=None, green=None, blue=None):
+    if not isinstance(red, int):
+        raise GraphicsError(f"\n\nThe red value must be an integer, not {red}")
+    if not isinstance(green, int):
+        raise GraphicsError(f"\n\nThe green value must be an integer, not {green}")
+    if not isinstance(blue, int):
+        raise GraphicsError(f"\n\nThe blue value must be an integer, not {blue}")
+
+    if red > 255 or red < 0:
+        raise GraphicsError(f"\n\nThe red value must be between 0 & 255 inclusive, not {red}")
+    if green > 255 or green < 0:
+        raise GraphicsError(f"\n\nThe green value must be between 0 & 255 inclusive, not {green}")
+    if blue > 255 or blue < 0:
+        raise GraphicsError(f"\n\nThe blue value must be between 0 & 255 inclusive, not {blue}")
+
     if red is None:
         red = randomrandint(0, 255)
     if green is None:
@@ -355,37 +406,109 @@ def RandomColourRGB(red=None, green=None, blue=None):
     return ColourRGB(red, green, blue)
 
 def RandomColourCMYK(c=None, m=None, y=None, k=None):
-    if c is None:
+    if c is not None:
+        if not isinstance(c, int):
+            raise GraphicsError(f"\n\nThe c value must be an integer, not {c}")
+        if c > 100 or c < 0:
+            raise GraphicsError(f"\n\nThe c value must be between 0 & 100 inclusive, not {c}")
+    else:
         c = randomrandint(0, 100)
-    if m is None:
+
+    if m is not None:
+        if not isinstance(m, int):
+            raise GraphicsError(f"\n\nThe m value must be an integer, not {m}")
+        if m > 100 or m < 0:
+            raise GraphicsError(f"\n\nThe m value must be between 0 & 100 inclusive, not {m}")
+    else:
         m = randomrandint(0, 100)
-    if y is None:
+
+    if y is not None:
+        if not isinstance(y, int):
+            raise GraphicsError(f"\n\nThe y value must be an integer, not {y}")
+        if y > 100 or y < 0:
+            raise GraphicsError(f"\n\nThe y value must be between 0 & 100 inclusive, not {y}")
+    else:
         y = randomrandint(0, 100)
-    if k is None:
+
+    if k is not None:
+        if not isinstance(k, int):
+            raise GraphicsError(f"\n\nThe k value must be an integer, not {k}")
+        if k > 100 or k < 0:
+            raise GraphicsError(f"\n\nThe k value must be between 0 & 100 inclusive, not {k}")
+    else:
         k = randomrandint(0, 100)
+
     return ColourCMYK(c, m, y, k)
 
 def RandomColourHex(red=None, green=None, blue=None):
-    if red is None:
+    if red is not None:
+        if not isinstance(red, str):
+            raise GraphicsError(f"\n\nThe red value must be an string, not {red}")
+        if len(red) != 2:
+            raise GraphicsError(f"\n\nThe red value must have a length of 2 #rr, not {red}")
+        try:
+            red = int(red, 16)
+        except ValueError:
+            raise GraphicsError(f"\n\nThe red value must be a base 16 value, not {red}")
+    else:
         red = randomrandint(0, 255)
+
+    if green is not None:
+        if not isinstance(green, str):
+            raise GraphicsError(f"\n\nThe green value must be an string, not {green}")
+        if len(green) != 2:
+            raise GraphicsError(f"\n\nThe green value must have a length of 2 #gg, not {green}")
+        try:
+            green = int(green, 16)
+        except ValueError:
+            raise GraphicsError(f"\n\nThe green value must be a base 16 value, not {green}")
     else:
-        red = int(red, 16)
-    if green is None:
         green = randomrandint(0, 255)
+
+    if blue is not None:
+        if not isinstance(blue, str):
+            raise GraphicsError(f"\n\nThe blue value must be an string, not {blue}")
+        if len(blue) != 2:
+            raise GraphicsError(f"\n\nThe blue value must have a length of 2 #bb, not {blue}")
+        try:
+            blue = int(blue, 16)
+        except ValueError:
+            raise GraphicsError(f"\n\nThe blue value must be a base 16 value, not {blue}")
     else:
-        green = int(green, 16)
-    if blue is None:
         blue = randomrandint(0, 255)
-    else:
-        blue = int(blue, 16)
+
+    if red > 255 or red < 0:
+        raise GraphicsError(f"\n\nThe red value must be between 0 & 255 inclusive, not {red}")
+    if green > 255 or green < 0:
+        raise GraphicsError(f"\n\nThe green value must be between 0 & 255 inclusive, not {green}")
+    if blue > 255 or blue < 0:
+        raise GraphicsError(f"\n\nThe blue value must be between 0 & 255 inclusive, not {blue}")
+
     return ColourHex("#%02x%02x%02x" % (red, green, blue))
 
 def RandomGreyscale(start=0, end=255):
+    if not isinstance(start, int):
+        raise GraphicsError(f"\n\nThe start value must be an integer, not {start}")
+    if not isinstance(end, int):
+        raise GraphicsError(f"\n\nThe end value must be an integer, not {end}")
+    if start < 0 or start > end:
+        raise GraphicsError(f"\n\nThe start value must be between 0 & end, 0 <= start <= {end}, not {start}")
+    if end > 255 or end < start:
+        raise GraphicsError(f"\n\nThe end value must be between start & 255, {start} <= end <= 255, not {end}")
+
     grey = randomrandint(start, end)
     return ColourRGB(grey, grey, grey)
 
 
 def ColourGradient(colour_start=ColourRGB(255, 255, 255), colour_end=ColourRGB(0, 0, 0), divisions=10):
+
+    if not isinstance(colour_start, Colour):
+        raise GraphicsError(f"\n\nThe start colour (colour_start) must be a Colour object, not {colour_start}")
+    if not isinstance(colour_end, Colour):
+        raise GraphicsError(f"\n\nThe end colour (colour_end) must be a Colour object, not {colour_end}")
+    if not isinstance(divisions, int):
+        raise GraphicsError(f"\n\nThe number of divisions must be an integer, not {divisions}")
+
     red_dist = colour_end.red - colour_start.red
     green_dist = colour_end.green - colour_start.green
     blue_dist = colour_end.blue - colour_start.blue
@@ -405,6 +528,20 @@ def ColourGradient(colour_start=ColourRGB(255, 255, 255), colour_end=ColourRGB(0
 def ColourGradient2D(colour_start1=ColourRGB(0, 0, 0), colour_end1=ColourRGB(255, 0, 0),
                      colour_start2=ColourRGB(255, 255, 255), colour_end2=ColourRGB(0, 255, 0),
                      divisions_x=10, divisions_y=10):
+
+    if not isinstance(colour_start1, Colour):
+        raise GraphicsError(f"\n\nThe start colour (colour_start1) must be a Colour object, not {colour_start1}")
+    if not isinstance(colour_start2, Colour):
+        raise GraphicsError(f"\n\nThe start colour (colour_start2) must be a Colour object, not {colour_start2}")
+    if not isinstance(colour_end1, Colour):
+        raise GraphicsError(f"\n\nThe end colour (colour_end1) must be a Colour object, not {colour_end1}")
+    if not isinstance(colour_end2, Colour):
+        raise GraphicsError(f"\n\nThe end colour (colour_end2) must be a Colour object, not {colour_end2}")
+
+    if not isinstance(divisions_x, int):
+        raise GraphicsError(f"\n\nThe X divisions (divisions_x) must be an integer, not {divisions_x}")
+    if not isinstance(divisions_y, int):
+        raise GraphicsError(f"\n\nThe Y divisions (divisions_y) must be an integer, not {divisions_y}")
 
     top_gradient = ColourGradient(colour_start1, colour_end1, divisions=divisions_x)
     bottom_gradient = ColourGradient(colour_start2, colour_end2, divisions=divisions_x)
