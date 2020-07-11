@@ -92,4 +92,3 @@ class Line(GraphicsObject):
 
     def get_fill(self):
         return self.config["fill"]
-

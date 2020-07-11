@@ -10,5 +10,8 @@ Line(Point(100, 400), Point(700, 400)).draw(window)
 
 while True:
     mouse_pos = window.check_left_mouse_click()
+    key = window.check_key_press()
+    if key is not None:
+        print(key)
 
     window.update_win()

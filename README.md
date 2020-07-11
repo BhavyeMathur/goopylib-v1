@@ -128,13 +128,16 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.59-beta 11th July 2020 (59)
+#### 1.0.60-beta 11th July 2020 (59)
 
 * Added more getter functions to the GraphWin class
 * Every function in the GraphWin class now raises a GraphicsError if the user hasn't provided the correct argument
 * GraphWin get mouse functions now call `update_win()` rather than `update()`
 * Renamed the internal argument `refresh` to `_refresh` for the GraphWin
-* The GraphWin now checks if autoflush is True before updating when the `redraw()`function is called.
+* The GraphWin now checks if `autoflush` is True before updating when the `redraw()`function is called.
+
+* Added key click, press, and a lot more related functions to the GraphWin
+* Added the Point class Wiki
 
 #### 1.0.54-beta 10th July 2020
 
