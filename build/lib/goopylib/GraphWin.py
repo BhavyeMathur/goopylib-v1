@@ -4,7 +4,7 @@ from tkinter import Toplevel as tkToplevel
 from PIL import ImageGrab  # Required to take snapshots of the GraphWin to save as an Image
 
 import warnings
-import os
+from os.path import isfile as osisfile
 from time import time as timetime
 from time import sleep as timesleep
 
@@ -57,7 +57,7 @@ class GraphWin(tkCanvas):
         if icon is not None:
             if not isinstance(icon, str):
                 raise GraphicsError(f"The window icon must be a string (path to .ico texture) or None, not {icon}")
-            if not os.path.isfile(f"textures/{icon}"):
+            if not osisfile(f"textures/{icon}") and not osisfile(f"{icon}"):
                 raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
                                     f"Check for spelling and make sure this is in the correct directory.")
             if not icon.endswith(".ico"):
@@ -203,7 +203,10 @@ class GraphWin(tkCanvas):
         self.set_background(self.bk_colour)
 
         if icon is not None:  # Setting the Icon of the Window
-            self.master.iconbitmap(f"textures/{icon}")
+            if osisfile(f"textures/{icon}"):
+                self.master.iconbitmap(f"textures/{icon}")
+            else:
+                self.master.iconbitmap(f"{icon}")
 
         self.pack()
 
@@ -211,6 +214,8 @@ class GraphWin(tkCanvas):
         self.items = []  # All the Graphics Objects in this window
 
         # Mouse Related Variables
+
+        self.update_mouse = True
 
         self.mouse_left_click = None  # These are all coordinates of these events
         self.mouse_middle_click = None
@@ -305,21 +310,19 @@ class GraphWin(tkCanvas):
         if self.closed:
             raise GraphicsError("\n\nwindow is closed")
 
+    def is_closed(self):
+        return self.closed
+
+    def is_open(self):
+        return not self.closed
+
     # This is called automatically whenever the window needs to update
     def __autoflush(self):
         if self.autoflush:
             _root.update()
-            self.update_win(_internal_updating=True)
 
     def __set_mouse_handler(self, func):
         self._mouse_callback = func
-
-    # Returns the position of the window on the display of the computer
-    def get_window_pos(self):
-        return Point(self.master.winfo_rootx(), self.master.winfo_rooty())
-
-    def get_bk_colour(self):
-        return self.bk_colour
 
     # WINDOW MOVING FUNCTIONS
 
@@ -470,6 +473,30 @@ class GraphWin(tkCanvas):
         self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
         return self
 
+    # GETTER FUNCTIONS
+
+    # Returns the position of the window on the display of the computer
+    def get_window_pos(self):
+        return Point(self.master.winfo_rootx(), self.master.winfo_rooty())
+
+    def get_bk_colour(self):
+        return self.bk_colour
+
+    def get_size(self):
+        return self.get_width(), self.get_height()
+
+    def get_height(self):
+        """Return the height of the window"""
+        self.height = self.master.winfo_height()
+        return self.height
+
+    def get_width(self):
+        """Return the width of the window"""
+        self.width = self.master.winfo_width()
+        return self.width
+
+    # SETTER FUNCTIONS
+
     # Sets the background colour of the window
     def set_background(self, colour):
         """Set background colour of the window"""
@@ -505,7 +532,7 @@ class GraphWin(tkCanvas):
         if not relief.lower() in RELIEF:
             raise GraphicsError(f"\n\nThe relief for the window border must be one of {RELIEF}, not {relief}")
 
-        self.border_relief = relief
+        self.border_relief = relief.lower()
         self.__check_open()
         self.master.config(relief=relief)
         self.__autoflush()
@@ -546,7 +573,7 @@ class GraphWin(tkCanvas):
     def set_icon(self, icon):
         if not isinstance(icon, str):
             raise GraphicsError(f"The window icon must be a string (path to .ico texture) or None, not {icon}")
-        if not os.path.isfile(f"textures/{icon}"):
+        if not osisfile(f"textures/{icon}"):
             raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
                                 f"Check for spelling and make sure this is in the correct directory.")
         if not icon.endswith(".ico"):
@@ -715,12 +742,6 @@ class GraphWin(tkCanvas):
         GraphWin.instances.remove(self)
         self.__autoflush()
 
-    def is_closed(self):
-        return self.closed
-
-    def is_open(self):
-        return not self.closed
-
     def plot(self, x, y, colour=BLACK):
         """Set pixel (x,y) to the given colour"""
 
@@ -728,9 +749,9 @@ class GraphWin(tkCanvas):
             raise GraphicsError("\n\nx & y position must be numbers (integers, or floats)")
         if not isinstance(colour, Colour):
             if colour in STYLES[self.style].keys():
-                colour = STYLES[self.style]["background"]
-            elif colour is None:
-                colour = STYLES["default"]["background"]
+                colour = STYLES[self.style][colour]
+            else:
+                raise GraphicsError(f"Colour Argument must be a Colour or string referencing a style, not {colour}")
 
         self.__check_open()
         xs, ys = self.to_screen(x, y)
@@ -773,6 +794,7 @@ class GraphWin(tkCanvas):
 
                 self.glide_queue[0]["Update"] = timetime()
 
+        self.update_mouse = True
         GraphicsObject.on_update(self)
 
     def save_canvas(self, height=None, width=None):
@@ -792,15 +814,12 @@ class GraphWin(tkCanvas):
         self.imgs += 1
         return ImageGrab.grab().crop((x, y, x1, y1)).save("{}{}.png".format(self.title, self.imgs - 1))
 
-    def get_size(self):
-        return self.get_width(), self.get_height()
-
-    # Keyboard Trigger Functions
+    # TRIGGER KEYBOARD FUNCTIONS
 
     def _on_key_press(self, e):
         print("Key Pressed", e)
 
-    # Other Mouse Trigger FUNCTIONS
+    # TRIGGER MOUSE DOUBLE CLICK FUNCTIONS
 
     def _on_left_double_click(self, e):
         if self.is_open():
@@ -832,7 +851,7 @@ class GraphWin(tkCanvas):
 
             GraphicsObject.on_double_right_click(self)
 
-    # Triple Mouse Trigger Functions
+    # TRIGGER MOUSE TRIPLE CLICK FUNCTIONS
 
     def _on_left_triple_click(self, e):
         if self.is_open():
@@ -929,7 +948,6 @@ class GraphWin(tkCanvas):
             self.mouse_left_press = e.x, e.y
             self.last_mouse_event = self.mouse_left_press
             self.left_mouse_down = True
-
             GraphicsObject.on_left_press(self)
 
     def _on_middle_press(self, e):
@@ -957,8 +975,9 @@ class GraphWin(tkCanvas):
         if self.is_open():
             self.mouse_pos = self.trans.world(e.x, e.y)
 
-            if self.mouse_in_window:
+            if self.mouse_in_window and self.update_mouse:
                 GraphicsObject.on_mouse_motion(self)
+                self.update_mouse = False
 
     def _on_mouse_scroll(self, e):
         if self.is_open():
@@ -1361,16 +1380,6 @@ class GraphWin(tkCanvas):
                 return True
 
         return False
-
-    def get_height(self):
-        """Return the height of the window"""
-        self.height = self.master.winfo_height()
-        return self.height
-
-    def get_width(self):
-        """Return the width of the window"""
-        self.width = self.master.winfo_width()
-        return self.width
 
     def to_screen(self, x, y):
         trans = self.trans

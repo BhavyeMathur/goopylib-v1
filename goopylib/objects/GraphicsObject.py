@@ -516,7 +516,7 @@ class GraphicsObject:
 
     @staticmethod
     def on_left_press(graphwin):
-        mouse_pos = graphwin.check_left_mouse_press(refresh=False)
+        mouse_pos = graphwin.check_left_mouse_press(_refresh=False)
 
         for obj in GraphicsObject.slider_instances:
             if obj.graphwin == graphwin:
@@ -556,7 +556,7 @@ class GraphicsObject:
     @staticmethod
     def on_mouse_motion(graphwin):
         if graphwin.is_open():
-            mouse_pos = graphwin.check_mouse_motion(refresh=False)
+            mouse_pos = graphwin.check_mouse_motion(_refresh=False)
 
             for obj in GraphicsObject.button_instances:
                 if obj.graphwin == graphwin and obj.drawn:

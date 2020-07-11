@@ -59,11 +59,11 @@ class Colour:
         return ColourRGB(red, green, blue)
 
     def __floordiv__(self, other):
-        try:
+        if isinstance(other, Colour):
             red = self.red // other.red
             green = self.green // other.green
             blue = self.blue // other.blue
-        except AttributeError:
+        else:
             red = self.red // other
             green = self.green // other
             blue = self.blue // other
@@ -87,15 +87,15 @@ class Colour:
     
     def __pow__(self, power, modulo=None):
         try:
-            red = self.red ** power.red
-            green = self.green ** power.green
-            blue = self.blue ** power.blue
+            red = pow(self.red, power.red, modulo)
+            green = pow(self.green ** power.green, modulo)
+            blue = pow(self.blue ** power.blue, modulo)
         except AttributeError:
-            red = self.red ** power
-            green = self.green ** power
-            blue = self.blue ** power
+            red = pow(self.red ** power, modulo)
+            green = pow(self.green ** power, modulo)
+            blue = pow(self.blue ** power, modulo)
 
-        return ColourRGB(red, green, blue) % modulo
+        return ColourRGB(red, green, blue)
 
     def __neg__(self):
         return ColourRGB(255 - self.red, 255 - self.green, 255 - self.blue)
@@ -167,9 +167,7 @@ class Colour:
         return ColourRGB(red, green, blue)
 
     def __bool__(self):
-        if self.colour != "#000000":
-            return True
-        return False
+        return self.colour != "#000000"
 
     def __bytes__(self):
         return bytes(self.colour)
@@ -203,6 +201,92 @@ class Colour:
 
     def __ne__(self, other):
         return self.colour != other.colour
+
+    def __ceil__(self):
+        return -(-self // 1)
+
+    def __floor__(self):
+        return self // 1
+
+    def __divmod__(self, other):
+        return self // other, self % other
+
+    def __iadd__(self, other):
+        self.red, self.green, self.blue = self + other
+        return self
+
+    def __hex__(self):
+        return hex(self.red), hex(self.green), hex(self.blue)
+
+    def __ilshift__(self, other):
+        self.red, self.green, self.blue = self << other
+        return self
+
+    def __irshift__(self, other):
+        self.red, self.green, self.blue = self >> other
+        return self
+
+    def __imod__(self, other):
+        self.red, self.green, self.blue = self % other
+        return self
+
+    def __imul__(self, other):
+        self.red, self.green, self.blue = self * other
+        return self
+
+    def __ior__(self, other):
+        self.red, self.green, self.blue = self | other
+        return self
+
+    def __ipow__(self, other):
+        self.red, self.green, self.blue = self ** other
+        return self
+
+    def __isub__(self, other):
+        self.red, self.green, self.blue = self - other
+        return self
+
+    def __iand__(self, other):
+        self.red, self.green, self.blue = self & other
+        return self
+
+    def __ifloordiv__(self, other):
+        self.red, self.green, self.blue = self // other
+        return self
+
+    def __dir__(self):
+        return "see https://github.com/BhavyeMathur/goopylib/wiki/Colours-in-Goopy!"
+
+    def __ixor__(self, other):
+        self.red, self.green, self.blue = self ^ other
+        return self
+
+    def __round__(self, n=None):
+        red = 255 if self.red > 128 else 0
+        green = 255 if self.green > 128 else 0
+        blue = 255 if self.blue > 128 else 0
+
+        return ColourRGB(red, green, blue)
+
+    def __len__(self):
+        return 3
+
+    def __getitem__(self, item):
+        return (self.red, self.green, self.blue)[item]
+
+    def __iter__(self):
+        for c in (self.red, self.green, self.blue):
+            yield c
+
+    def __itruediv__(self, other):
+        self.red, self.green, self.blue = self / other
+        return self
+
+    def __oct__(self):
+        return oct(self.red), oct(self.green), oct(self.blue)
+
+    def __reversed__(self):
+        return ColourRGB(self.blue, self.green, self.red)
 
     def rgb(self):
         return f"rgb {self.red}, {self.blue}, {self.green}"

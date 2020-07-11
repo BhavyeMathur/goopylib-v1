@@ -1,36 +1,81 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.util import GraphicsError
 
-import time
-
-class CycleButton:
-    def __init__(self, state, *states, window):
+class CycleButton(GraphicsObject):
+    def __init__(self, state, *states, disabled_graphic=None, autoflush=True):
         self.states = list(states)
         self.state = state
 
         self.label = None
 
-        for obj in states:
-            if not isinstance(obj, GraphicsObject):
-                raise GraphicsError("\n\nThe states must all be Graphic Objects")
+        self.is_disabled = False
+        self.disabled_graphic = disabled_graphic
 
-        self.rotating_dest = None
-        self.rotating_initial = None
-        self.rotating_dist = None
-        self.rotating_easing = None
-
-        self.is_rotating = True
-        self.rotation = 0
-
-        self.rotating_time = None
-        self.rotating_update = 0
-        self.rotating_start = None
-        self.rotating_args = None
-
-        self.graphwin = None
-        self.drawn = False
+        self.autoflush = autoflush
 
         self.graphic = states[state]
+
+        GraphicsObject.__init__(self, ())
+        GraphicsObject.cyclebutton_instances.append(self)
+
+    def __repr__(self):
+        return f"CycleButton({self.graphic} and {len(self.states)} other states)"
+
+    def _rotate(self, dr):
+        for graphic in self.states:
+            graphic.rotate(dr)
+        if self.disabled_graphic is not None:
+            self.disabled_graphic.rotate(dr)
+
+    def _move(self, dx, dy):
+        for graphic in self.states:
+            graphic.move(dx, dy)
+        if self.disabled_graphic is not None:
+            self.disabled_graphic.move(dx, dy)
+
+    def enable(self):
+        self.is_disabled = False
+        self.undraw()
+        self.graphic = self.states[self.state]
+        self._draw(self.graphwin)
+
+    def disable(self):
+        self.is_disabled = True
+        self.undraw()
+        self.graphic = self.disabled_graphic
+        self._draw(self.graphwin)
+
+    def toggle_enabled(self):
+        self.is_disabled = not self.is_disabled
+        self.undraw()
+        if self.is_disabled:
+            self.graphic = self.disabled_graphic
+        self.draw(self.graphwin)
+
+    def _draw(self, canvas, options=()):
+        self.graphic.draw(canvas)
+        for graphic in self.states:
+            graphic.graphwin = canvas
+        if self.disabled_graphic is not None:
+            self.disabled_graphic.graphwin = canvas
+        return self
+
+    def is_clicked(self, mouse_pos):
+        return self.graphic.is_clicked(mouse_pos)
+
+    def undraw(self, set_blinking=True):
+        self.graphic.undraw()
+        self.drawn = False
+        return self
+
+    def click(self):
+        if not self.is_disabled:
+            self.undraw()
+            self.state += 1
+            self.state %= len(self.states)
+            self.graphic = self.states[self.state]
+            self.draw(self.graphwin)
+        return self
 
     def change_Graphic(self, element, value):
         self.states[element] = value
@@ -56,27 +101,11 @@ class CycleButton:
     def get_anchor(self):
         return self.graphic.anchor
 
-    def rotate(self, dr):
-        for graphic in self.states:
-            graphic.rotate(dr)
+    def set_state(self, state):
+        self.undraw()
+        self.state = state
+        self.graphic = self.states[state]
+        self.draw(self.graphwin)
 
-    def set_rotation(self, r):
-        for graphic in self.states:
-            graphic.set_rotation(r)
-
-    def animate_rotate(self, dr, t, easing="Linear", args=None):
-
-        self.rotating_dest = self.rotation + dr
-        self.rotating_initial = self.rotation
-        self.rotating_dist = dr
-        self.rotating_easing = easing
-
-        self.is_rotating = True
-
-        self.rotating_time = t
-        self.rotating_update = time.time()
-        self.rotating_start = self.rotating_update
-        self.rotating_args = args
-
-        GraphicsObject.rotating_objects.append(self)
-        return self
+    def get_state(self):
+        return self.state

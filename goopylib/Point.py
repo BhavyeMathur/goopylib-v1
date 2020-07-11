@@ -1,5 +1,4 @@
 from goopylib.util import GraphicsError
-import math
 
 class Point:
     def __init__(self, x, y):
@@ -14,55 +13,77 @@ class Point:
         return "Point({}, {})".format(self.x, self.y)
 
     def __mul__(self, other):
-        try:
+        if isinstance(other, Point):
             return Point(self.x * other.x, self.y * other.y)
-        except AttributeError:
+        elif isinstance(other, int) or isinstance(other, float):
             return Point(self.x * other, self.y * other)
+        else:
+            raise TypeError(f"unsupported operand type(s) for *: 'Point' and {type(other)}'")
 
     def __add__(self, other):
-        try:
+        if isinstance(other, Point):
             return Point(self.x + other.x, self.y + other.y)
-        except AttributeError:
+        elif isinstance(other, int) or isinstance(other, float):
             return Point(self.x + other, self.y + other)
+        else:
+            raise TypeError(f"unsupported operand type(s) for +: 'Point' and {type(other)}'")
 
     def __sub__(self, other):
-        return self + -other
+        if isinstance(other, Point):
+            return Point(self.x + other.x, self.y + other.y)
+        elif isinstance(other, int) or isinstance(other, float):
+            return Point(self.x + other, self.y + other)
+        else:
+            raise TypeError(f"unsupported operand type(s) for -: 'Point' and {type(other)}'")
 
     def __truediv__(self, other):
         if isinstance(other, Point):
             return Point(self.x / other.x, self.y / other.y)
-        else:
+        elif isinstance(other, int) or isinstance(other, float):
             return Point(self.x / other, self.y / other)
+        else:
+            raise TypeError(f"unsupported operand type(s) for /: 'Point' and {type(other)}'")
         
     def __floordiv__(self, other):
         if isinstance(other, Point):
             return Point(self.x // other.x, self.y // other.y)
-        else:
+        elif isinstance(other, int) or isinstance(other, float):
             return Point(self.x // other, self.y // other)
+        else:
+            raise TypeError(f"unsupported operand type(s) for //: 'Point' and {type(other)}'")
         
     def __pow__(self, power, modulo=None):
-        try:
+        if isinstance(power, Point):
             return Point(pow(self.x, power.x, modulo), pow(self.y, power.y, modulo))
-        except AttributeError:
+        elif isinstance(power, int) or isinstance(power, float):
             return Point(pow(self.x, power, modulo), pow(self.y, power, modulo))
+        else:
+            raise TypeError(f"unsupported operand type(s) for **: 'Point' and {type(power)}'")
 
     def __lt__(self, other):
-        return abs(self.distance(Point(0, 0))) < abs(other.distance(Point(0, 0)))
+        if isinstance(other, Point):
+            return abs(self.distance(Point(0, 0))) < abs(other.distance(Point(0, 0)))
+        else:
+            raise TypeError(f"'<' not supported between instances of 'Point' and '{type(other)}'")
 
     def __pos__(self):
         return Point(abs(self.x), abs(self.y))
 
     def __lshift__(self, other):
-        try:
+        if isinstance(other, Point):
             return Point(int(self.x) << int(other.x), int(self.y) << int(other.y))
-        except AttributeError:
+        elif isinstance(other, int) or isinstance(other, float):
             return self.clone() if other % 2 == 0 else Point(self.y, self.x)
+        else:
+            raise TypeError(f"unsupported operand type(s) for <<: 'Point' and {type(other)}'")
 
     def __rshift__(self, other):
-        try:
+        if isinstance(other, Point):
             return Point(int(self.x) >> int(other.x), int(self.y) >> int(other.y))
-        except AttributeError:
+        elif isinstance(other, int) or isinstance(other, float):
             return self << other
+        else:
+            raise TypeError(f"unsupported operand type(s) for >>: 'Point' and {type(other)}'")
 
     def __copy__(self):
         return self
@@ -76,7 +97,10 @@ class Point:
     def __and__(self, other):
         if isinstance(other, Point):
             return Point(int(self.x) & int(other.x), int(self.y) & int(other.y))
-        return Point(int(self.x) & int(other), int(self.y) & int(other))
+        elif isinstance(other, int) or isinstance(other, float):
+            return Point(int(self.x) & int(other), int(self.y) & int(other))
+        else:
+            raise TypeError(f"unsupported operand type(s) for &: 'Point' and {type(other)}'")
 
     def __abs__(self):
         return Point(abs(self.x), abs(self.y))
@@ -93,8 +117,10 @@ class Point:
     def __mod__(self, other):
         if isinstance(other, Point):
             return Point(self.x % other.x, self.y % other.y)
-        else:
+        elif isinstance(other, int) or isinstance(other, float):
             return Point(self.x % other, self.y % other)
+        else:
+            raise TypeError(f"unsupported operand type(s) for %: 'Point' and {type(other)}'")
 
     def __divmod__(self, other):
         return self // other, self % other
@@ -143,7 +169,10 @@ class Point:
     def __or__(self, other):
         if isinstance(other, Point):
             return Point(int(self.x) | int(other.x), int(self.y) | int(other.y))
-        return Point(int(self.x) | int(other), int(self.y) | int(other))
+        elif isinstance(other, int) or isinstance(other, float):
+            return Point(int(self.x) | int(other), int(self.y) | int(other))
+        else:
+            raise TypeError(f"unsupported operand type(s) for |: 'Point' and {type(other)}'")
 
     def __ior__(self, other):
         self.x, self.y = self | other
@@ -178,7 +207,10 @@ class Point:
     def __xor__(self, other):
         if isinstance(other, Point):
             return Point(int(self.x) ^ int(other.x), int(self.y) ^ int(other.y))
-        return Point(int(self.x) ^ int(other), int(self.y) ^ int(other))
+        elif isinstance(other, int) or isinstance(other, float):
+            return Point(int(self.x) ^ int(other), int(self.y) ^ int(other))
+        else:
+            raise TypeError(f"unsupported operand type(s) for ^: 'Point' and {type(other)}'")
 
     def __round__(self, n=None):
         return Point(round(self.x, n), round(self.y, n))
@@ -206,24 +238,19 @@ class Point:
     def __reversed__(self):
         return Point(self.y, self.x)
 
-    def _move(self, dx, dy):
-        self.x = self.x + dx
-        self.y = self.y + dy
-
     def distance(self, p2):
-
         if not isinstance(p2, Point):
-            raise GraphicsError("\n\np2 argument for distance calculation must be a Point class")
-        return math.sqrt((p2.x - self.x) ** 2 + (p2.y - self.y) ** 2)
+            raise GraphicsError(f"\n\np2 argument for distance calculation must be a Point class, not {p2}")
+        return ((p2.x - self.x) ** 2 + (p2.y - self.y) ** 2) ** 0.5
 
     def distance_x(self, p2):
         if not isinstance(p2, Point):
-            raise GraphicsError("\n\np2 argument for distance calculation must be a Point class")
+            raise GraphicsError(f"\n\np2 argument for distance calculation must be a Point class, not {p2}")
         return p2.x - self.x
 
     def distance_y(self, p2):
         if not isinstance(p2, Point):
-            raise GraphicsError("\n\np2 argument for distance calculation must be a Point class")
+            raise GraphicsError(f"\n\np2 argument for distance calculation must be a Point class, not {p2}")
         return p2.y - self.y
 
     def clone(self):
@@ -239,20 +266,38 @@ class Point:
         return self.y
 
     def move_y(self, dy):
+        if not (isinstance(dy, int) or isinstance(dy, float)):
+            raise GraphicsError("\n\nThe value to move the point by (dy) must be a number (integer or float), "
+                                f"not {dy}")
         self.y += dy
         return self
 
     def move_x(self, dx):
+        if not (isinstance(dx, int) or isinstance(dx, float)):
+            raise GraphicsError("\n\nThe value to move the point by (dx) must be a number (integer or float), "
+                                f"not {dx}")
         self.x += dx
         return self
 
     def move(self, dx, dy):
-        self.y += dy
-        self.x += dx
+        self.move_y(dy)
+        self.move_x(dx)
         return self
 
     def move_to(self, x, y):
+        self.move_to_x(x)
+        self.move_to_y(y)
+        return self
+
+    def move_to_x(self, x):
+        if not (isinstance(x, int) or isinstance(x, float)):
+            raise GraphicsError(f"\n\nThe value to move the point by (x) must be a number (integer or float), not {x}")
         self.x = x
+        return self
+
+    def move_to_y(self, y):
+        if not (isinstance(y, int) or isinstance(y, float)):
+            raise GraphicsError(f"\n\nThe value to move the point by (y) must be a number (integer or float), not {y}")
         self.y = y
         return self
 
@@ -261,14 +306,6 @@ class Point:
 
     def set(self, x, y):
         return self.clone().move_to(x, y)
-
-    def move_to_x(self, x):
-        self.x = x
-        return self
-
-    def move_to_y(self, y):
-        self.y = y
-        return self
 
     def get_anchor(self):
         return self

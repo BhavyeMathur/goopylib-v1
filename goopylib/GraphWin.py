@@ -4,7 +4,7 @@ from tkinter import Toplevel as tkToplevel
 from PIL import ImageGrab  # Required to take snapshots of the GraphWin to save as an Image
 
 import warnings
-import os
+from os.path import isfile as osisfile
 from time import time as timetime
 from time import sleep as timesleep
 
@@ -57,7 +57,7 @@ class GraphWin(tkCanvas):
         if icon is not None:
             if not isinstance(icon, str):
                 raise GraphicsError(f"The window icon must be a string (path to .ico texture) or None, not {icon}")
-            if not os.path.isfile(f"textures/{icon}"):
+            if not osisfile(f"textures/{icon}") and not osisfile(f"{icon}"):
                 raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
                                     f"Check for spelling and make sure this is in the correct directory.")
             if not icon.endswith(".ico"):
@@ -203,7 +203,10 @@ class GraphWin(tkCanvas):
         self.set_background(self.bk_colour)
 
         if icon is not None:  # Setting the Icon of the Window
-            self.master.iconbitmap(f"textures/{icon}")
+            if osisfile(f"textures/{icon}"):
+                self.master.iconbitmap(f"textures/{icon}")
+            else:
+                self.master.iconbitmap(f"{icon}")
 
         self.pack()
 
@@ -307,6 +310,12 @@ class GraphWin(tkCanvas):
         if self.closed:
             raise GraphicsError("\n\nwindow is closed")
 
+    def is_closed(self):
+        return self.closed
+
+    def is_open(self):
+        return not self.closed
+
     # This is called automatically whenever the window needs to update
     def __autoflush(self):
         if self.autoflush:
@@ -314,13 +323,6 @@ class GraphWin(tkCanvas):
 
     def __set_mouse_handler(self, func):
         self._mouse_callback = func
-
-    # Returns the position of the window on the display of the computer
-    def get_window_pos(self):
-        return Point(self.master.winfo_rootx(), self.master.winfo_rooty())
-
-    def get_bk_colour(self):
-        return self.bk_colour
 
     # WINDOW MOVING FUNCTIONS
 
@@ -471,6 +473,72 @@ class GraphWin(tkCanvas):
         self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
         return self
 
+    # GETTER FUNCTIONS
+
+    # Returns the position of the window on the display of the computer
+    def get_window_pos(self):
+        return Point(self.master.winfo_rootx(), self.master.winfo_rooty())
+
+    def get_bk_colour(self):
+        return self.bk_colour
+
+    def get_border_width(self):
+        return self.border_width
+
+    def get_border_relief(self):
+        return self.border_relief
+
+    def get_cursor(self):
+        return self.cursor
+
+    def is_resizable(self):
+        return self.is_resizable.copy()
+
+    def is_width_resizable(self):
+        return self.is_resizable[0]
+
+    def is_height_resizable(self):
+        return self.is_resizable[1]
+
+    def get_size(self):
+        return self.get_width(), self.get_height()
+
+    def get_width(self):
+        """Return the width of the window"""
+        self.width = self.master.winfo_width()
+        return self.width
+
+    def get_height(self):
+        """Return the height of the window"""
+        self.height = self.master.winfo_height()
+        return self.height
+
+    def get_min_size(self):
+        return self.min_width, self.min_height
+
+    def get_min_width(self):
+        return self.min_width
+
+    def get_min_height(self):
+        return self.min_height
+
+    def get_max_size(self):
+        return self.max_width, self.max_height
+
+    def get_max_width(self):
+        return self.max_width
+
+    def get_max_height(self):
+        return self.max_height
+
+    def get_title(self):
+        return self.title
+
+    def get_coords(self):
+        return Point(self.trans.x_low, self.trans.y_high), Point(self.trans.x_high, self.trans.y_low)
+
+    # SETTER FUNCTIONS
+
     # Sets the background colour of the window
     def set_background(self, colour):
         """Set background colour of the window"""
@@ -506,7 +574,7 @@ class GraphWin(tkCanvas):
         if not relief.lower() in RELIEF:
             raise GraphicsError(f"\n\nThe relief for the window border must be one of {RELIEF}, not {relief}")
 
-        self.border_relief = relief
+        self.border_relief = relief.lower()
         self.__check_open()
         self.master.config(relief=relief)
         self.__autoflush()
@@ -547,7 +615,7 @@ class GraphWin(tkCanvas):
     def set_icon(self, icon):
         if not isinstance(icon, str):
             raise GraphicsError(f"The window icon must be a string (path to .ico texture) or None, not {icon}")
-        if not os.path.isfile(f"textures/{icon}"):
+        if not osisfile(f"textures/{icon}"):
             raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
                                 f"Check for spelling and make sure this is in the correct directory.")
         if not icon.endswith(".ico"):
@@ -706,6 +774,8 @@ class GraphWin(tkCanvas):
         self.center = Point(abs((x2 - x1) / 2), abs((y2 - y1) / 2))
         self.redraw()
 
+    # OTHER WINDOW FUNCTIONS
+
     def close(self):
         """Close the window"""
 
@@ -716,12 +786,6 @@ class GraphWin(tkCanvas):
         GraphWin.instances.remove(self)
         self.__autoflush()
 
-    def is_closed(self):
-        return self.closed
-
-    def is_open(self):
-        return not self.closed
-
     def plot(self, x, y, colour=BLACK):
         """Set pixel (x,y) to the given colour"""
 
@@ -729,9 +793,9 @@ class GraphWin(tkCanvas):
             raise GraphicsError("\n\nx & y position must be numbers (integers, or floats)")
         if not isinstance(colour, Colour):
             if colour in STYLES[self.style].keys():
-                colour = STYLES[self.style]["background"]
-            elif colour is None:
-                colour = STYLES["default"]["background"]
+                colour = STYLES[self.style][colour]
+            else:
+                raise GraphicsError(f"Colour Argument must be a Colour or string referencing a style, not {colour}")
 
         self.__check_open()
         xs, ys = self.to_screen(x, y)
@@ -794,15 +858,13 @@ class GraphWin(tkCanvas):
         self.imgs += 1
         return ImageGrab.grab().crop((x, y, x1, y1)).save("{}{}.png".format(self.title, self.imgs - 1))
 
-    def get_size(self):
-        return self.get_width(), self.get_height()
-
-    # Keyboard Trigger Functions
+    # -------------------------------------------------------------------------
+    # TRIGGER KEYBOARD FUNCTIONS
 
     def _on_key_press(self, e):
         print("Key Pressed", e)
 
-    # Other Mouse Trigger FUNCTIONS
+    # TRIGGER MOUSE DOUBLE CLICK FUNCTIONS
 
     def _on_left_double_click(self, e):
         if self.is_open():
@@ -834,7 +896,7 @@ class GraphWin(tkCanvas):
 
             GraphicsObject.on_double_right_click(self)
 
-    # Triple Mouse Trigger Functions
+    # TRIGGER MOUSE TRIPLE CLICK FUNCTIONS
 
     def _on_left_triple_click(self, e):
         if self.is_open():
@@ -867,7 +929,6 @@ class GraphWin(tkCanvas):
             GraphicsObject.on_triple_right_click(self)
 
     # TRIGGER MOUSE CLICK FUNCTIONS
-    # -------------------------------------------------------------------------
 
     def _on_left_click(self, e):
         if self.is_open():
@@ -906,7 +967,6 @@ class GraphWin(tkCanvas):
             GraphicsObject.on_right_click(self)
 
     # TRIGGER MOUSE RELEASE FUNCTIONS
-    # -------------------------------------------------------------------------
 
     def _on_left_release(self, e):
         if self.is_open():
@@ -924,7 +984,6 @@ class GraphWin(tkCanvas):
             self._on_right_click(e)
 
     # TRIGGER MOUSE PRESS FUNCTIONS
-    # -------------------------------------------------------------------------
 
     def _on_left_press(self, e):
         if self.is_open():
@@ -952,7 +1011,6 @@ class GraphWin(tkCanvas):
             GraphicsObject.on_right_press(self)
 
     # OTHER TRIGGER MOUSE FUNCTIONS
-    # -------------------------------------------------------------------------
 
     def _on_mouse_motion(self, e):
         if self.is_open():
@@ -984,7 +1042,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_left_mouse_press()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1029,7 +1087,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_left_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1041,7 +1099,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_middle_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1053,7 +1111,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_right_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1067,7 +1125,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_double_left_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1079,7 +1137,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_double_middle_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1091,7 +1149,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_double_right_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1105,7 +1163,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_triple_left_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1117,7 +1175,7 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_triple_middle_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
@@ -1129,159 +1187,158 @@ class GraphWin(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_triple_right_mouse_click()
-            self.update()
+            self.update_win()
 
             if self.is_closed():
                 break
 
         return mouse_pos
 
-    # MOUSE CLICK FUNCTIONS
+    # CHECK MOUSE FUNCTIONS
     # -------------------------------------------------------------------------
 
-    def check_left_mouse_click(self, refresh=True):
+    def check_left_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_left_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_left_click[0], self.mouse_left_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_left_click = None
             return Point(x, y)
         else:
             return None
 
-    def check_middle_mouse_click(self, refresh=True):
+    def check_middle_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_middle_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_middle_click[0], self.mouse_middle_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_middle_click = None
             return Point(x, y)
         else:
             return None
 
-    def check_right_mouse_click(self, refresh=True):
+    def check_right_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_right_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_right_click[0], self.mouse_right_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_right_click = None
             return Point(x, y)
         else:
             return None
 
-    # DOUBLE MOUSE CLICKS
+    # Double Mouse Clicks
 
-    def check_double_left_mouse_click(self, refresh=True):
+    def check_double_left_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_double_left_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_double_left_click[0], self.mouse_double_left_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_double_left_click = None
             return Point(x, y)
         else:
             return None
 
-    def check_double_middle_mouse_click(self, refresh=True):
+    def check_double_middle_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_double_middle_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_double_middle_click[0], self.mouse_double_middle_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_double_middle_click = None
             return Point(x, y)
         else:
             return None
 
-    def check_double_right_mouse_click(self, refresh=True):
+    def check_double_right_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_double_right_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_double_right_click[0], self.mouse_double_right_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_double_right_click = None
             return Point(x, y)
         else:
             return None
 
-    # TRIPLE MOUSE CLICKS
+    # Triple Mouse Clicks
 
-    def check_triple_left_mouse_click(self, refresh=True):
+    def check_triple_left_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_triple_left_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_triple_left_click[0], self.mouse_triple_left_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_triple_left_click = None
             return Point(x, y)
         else:
             return None
 
-    def check_triple_middle_mouse_click(self, refresh=True):
+    def check_triple_middle_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_triple_middle_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_triple_middle_click[0], self.mouse_triple_middle_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_triple_middle_click = None
             return Point(x, y)
         else:
             return None
 
-    def check_triple_right_mouse_click(self, refresh=True):
+    def check_triple_right_mouse_click(self, _refresh=True):
         if self.is_closed():
             return None
         if self.mouse_triple_right_click is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_triple_right_click[0], self.mouse_triple_right_click[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_triple_right_click = None
             return Point(x, y)
         else:
             return None
 
-    # MOUSE PRESS FUNCTIONS
-    # -------------------------------------------------------------------------
+    # Mouse Press
 
-    def check_left_mouse_press(self, refresh=True):
+    def check_left_mouse_press(self, _refresh=True):
         if self.is_closed():
             pass
         if self.mouse_left_press is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_left_press[0], self.mouse_left_press[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_left_press = None
             return Point(x, y)
         else:
             return None
 
-    def check_middle_mouse_press(self, refresh=True):
+    def check_middle_mouse_press(self, _refresh=True):
         if self.mouse_middle_press is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_middle_press[0], self.mouse_middle_press[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_middle_press = None
 
             return Point(x, y)
         else:
             return None
 
-    def check_right_mouse_press(self, refresh=True):
+    def check_right_mouse_press(self, _refresh=True):
         if self.mouse_right_press is not None and not self.is_closed():
             x, y = self.to_world(self.mouse_right_press[0], self.mouse_right_press[1])
 
-            if refresh:
+            if _refresh:
                 self.mouse_right_press = None
 
             return Point(x, y)
@@ -1295,7 +1352,7 @@ class GraphWin(tkCanvas):
         if self.is_closed():
             return None
         else:
-            self.update()
+            self.update_win()
             self.mouse_scroll_amount += self.mouse_wheel_pos / 120
             self.mouse_wheel_pos = 0
 
@@ -1307,11 +1364,11 @@ class GraphWin(tkCanvas):
         else:
             return
 
-    def check_mouse_motion(self, refresh=True):
+    def check_mouse_motion(self, _refresh=True):
         if self.mouse_pos is not None:
             x, y = self.mouse_pos
 
-            if refresh:
+            if _refresh:
                 self.mouse_pos = None
 
             return Point(x, y)
@@ -1364,16 +1421,6 @@ class GraphWin(tkCanvas):
 
         return False
 
-    def get_height(self):
-        """Return the height of the window"""
-        self.height = self.master.winfo_height()
-        return self.height
-
-    def get_width(self):
-        """Return the width of the window"""
-        self.width = self.master.winfo_width()
-        return self.width
-
     def to_screen(self, x, y):
         trans = self.trans
         if trans:
@@ -1399,7 +1446,8 @@ class GraphWin(tkCanvas):
         for item in self.items[:]:
             item.undraw()
             item.draw(self)
-        self.update()
+        if self.autoflush:
+            self.update_win()
 
     # Undraw everything on this window
     def clear(self):
@@ -1407,4 +1455,4 @@ class GraphWin(tkCanvas):
             item.undraw()
 
         if self.autoflush:
-            self.update()
+            self.update_win()

@@ -2,21 +2,40 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="442b5543-b561-4ddf-8aa5-06f800e9a1f7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/goopylib/math/Interpolations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/goopylib/objects/CurvedLine.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/lib/goopylib/applications/custom_ease.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/lib/goopylib/math/Interpolations.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/lib/goopylib/objects/CurvedLine.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/goopylib-1.0.54b0-py3-none-any.whl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/GraphWin.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/GraphWin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/Point.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/Point.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/colours.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/colours.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/imports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/math/BSpline.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/math/BSpline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/math/BezierCurve.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/math/BezierCurve.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/objects/Button.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Circle.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/objects/Circle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/CycleButton.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/objects/CycleButton.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/GraphicsObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/objects/GraphicsObject.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Image.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/objects/Image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/Line.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/objects/Line.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/objects/_BBox.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/objects/_BBox.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/goopylib/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/goopylib/util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/goopylib-1.0.36b0-py3-none-any.whl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopy-devV6.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib.egg-info/PKG-INFO" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib.egg-info/PKG-INFO" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib.egg-info/SOURCES.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib.egg-info/top_level.txt" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib.egg-info/top_level.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/GraphWin.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/GraphWin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/Point.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/Point.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/applications/CustomEase.fla" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/applications/CustomEase.fla" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/applications/custom_ease.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/applications/custom_ease.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/colours.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/colours.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/imports.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/math/BSpline.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/math/BSpline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/math/BezierCurve.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/math/BezierCurve.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/goopylib/objects/CycleButton.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/CycleButton.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/objects/GraphicsObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/GraphicsObject.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/goopylib/objects/Line.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/Line.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +86,7 @@
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.setup">
     <configuration name="ModernGUI-Example" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="goopylib" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -182,8 +201,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.setup" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.newtest" />
         <item itemvalue="Python.ModernGUI-Example" />
         <item itemvalue="Python.Pac-ManAnimation" />
@@ -237,22 +256,22 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="750" y="304" key="CommitChangelistDialog2/0.0.2189.1419@0.0.2189.1419" timestamp="1594276086225" />
-    <state width="2168" height="336" key="GridCell.Tab.0.bottom" timestamp="1594401135800">
+    <state width="2168" height="336" key="GridCell.Tab.0.bottom" timestamp="1594445433604">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="336" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594401135800" />
-    <state width="2168" height="336" key="GridCell.Tab.0.center" timestamp="1594401135800">
+    <state width="2168" height="336" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594445433604" />
+    <state width="2168" height="336" key="GridCell.Tab.0.center" timestamp="1594445433603">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="336" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594401135800" />
-    <state width="2168" height="336" key="GridCell.Tab.0.left" timestamp="1594401135800">
+    <state width="2168" height="336" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594445433603" />
+    <state width="2168" height="336" key="GridCell.Tab.0.left" timestamp="1594445433603">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="336" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594401135800" />
-    <state width="2168" height="336" key="GridCell.Tab.0.right" timestamp="1594401135800">
+    <state width="2168" height="336" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594445433603" />
+    <state width="2168" height="336" key="GridCell.Tab.0.right" timestamp="1594445433604">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="336" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594401135800" />
+    <state width="2168" height="336" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594445433604" />
     <state width="2168" height="498" key="GridCell.Tab.1.bottom" timestamp="1594381775027">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>

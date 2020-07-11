@@ -1,9 +1,5 @@
-__version__ = "6.10-dev"
-
 from tkinter import Tk as tkTk
 from time import time as timetime
-
-from goopylib.math.Easing import *
 
 import platform
 
@@ -56,7 +52,7 @@ CURSORS = {"x": "x_cursor", "arrow": "arrow", "based-down-arrow": "based_arrow_d
 CURSORS_WINDOWS = {"cancel": "no"}
 CURSORS_MACOSX = {}
 
-RELIEF = ["flat"]
+RELIEF = ["flat", "sunken", "raised", "groove", "ridge"]
 
 INTERPOLATIONS = ["linear", "poly", "poly_in", "poly_out", "sin", "sin_in", "sin_out", "circle", "circle_in",
                   "circle_out", "back", "back_in", "back_out", "bounce", "bounce_in", "bounce_out", "elastic",

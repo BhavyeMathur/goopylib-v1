@@ -18,7 +18,7 @@ class Circle(Oval):
         self.equation = VectorEquation("(x-{})**2 + (y-{})**2 < {}**2".format(self.center.x, self.center.y, radius))
 
     def __repr__(self):
-        return super().__repr__()
+        return f"Circle({self.anchor}, {self.radius})"
 
     def clone(self):
         other = Circle(self.get_anchor(), self.radius)

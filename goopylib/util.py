@@ -27,10 +27,6 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-def wait(t):
-    time.sleep(t)
-
-
 # Time Related Functions
 
 def update(rate=None):

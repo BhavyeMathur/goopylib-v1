@@ -2,6 +2,8 @@ import time
 import os
 import sys
 
+from tkinter.filedialog import askopenfilename
+
 from goopylib.constants import _root, _update_lasttime
 
 class GraphicsError(Exception):
@@ -25,10 +27,6 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-def wait(t):
-    time.sleep(t)
-
-
 # Time Related Functions
 
 def update(rate=None):
@@ -47,3 +45,6 @@ def update(rate=None):
 
 def get_screen_size():
     return _root.winfo_screenwidth(), _root.winfo_screenheight()
+
+def openfilebrowser():
+    return askopenfilename()

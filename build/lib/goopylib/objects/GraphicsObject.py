@@ -18,6 +18,7 @@ class GraphicsObject:
     slider_instances = []
     slider_instances_bound = []
     checkbox_instances = []
+    cyclebutton_instances = []
     entry_instances = []
 
     def __init__(self, options=(), style=None, cursor="arrow", window=None):
@@ -53,9 +54,14 @@ class GraphicsObject:
         self.is_gliding = False
         self.glide_queue = []
 
+        self.callbacks = {}
+
         self.rotating_queue = []
         self.is_rotating = False
         self.rotation = 0
+
+        self.is_draggable = False
+        self.is_dragging = False
 
         self.resizing_factor = None
         self.resizing_easing = None
@@ -86,6 +92,32 @@ class GraphicsObject:
     def __repr__(self):
         return "Graphics Object"
 
+    def _reconfig(self, option, setting):
+        # Internal method for changing configuration of the object
+        # Raises an error if the option does not exist in the config
+        #    dictionary for this object
+        if option not in self.config:
+            raise GraphicsError(f"\n\nThe config you have specified ({option}) is not valid for {self}")
+        options = self.config
+        options[option] = setting
+        if self.graphwin and not self.graphwin.is_closed():
+            self.graphwin.itemconfig(self.id, options)
+            if self.graphwin.autoflush:
+                _root.update()
+
+    def _draw(self, canvas, options):
+        """draws appropriate figure on canvas with options provided
+        Returns Tk id of item drawn"""
+        pass  # must override in subclass
+
+    def _move(self, dx, dy):
+        """updates internal state of object to move it dx,dy units"""
+        pass  # must override in subclass
+
+    def _rotate(self, dr):
+        """updates internal state of object to rotate it r degrees CCW"""
+        pass  # must override in subclass
+
     def set_clickable(self, clickable=True):
         if clickable:
             if self not in GraphicsObject.objects:
@@ -94,6 +126,11 @@ class GraphicsObject:
             if self in GraphicsObject.objects:
                 GraphicsObject.objects.remove(self)
 
+        return self
+
+    def set_draggable(self, draggable=True, callback=None):
+        self.is_draggable = draggable
+        self.callbacks["Dragging"] = callback
         return self
 
     def set_selected(self, selected=True):
@@ -128,9 +165,8 @@ class GraphicsObject:
         if self.drawn:
             return self
 
-        self.graphwin = graphwin
-
         self.id = self._draw(graphwin, self.config)
+        self.graphwin = graphwin
         graphwin.add_item(self)
         if graphwin.autoflush:
             _root.update()
@@ -138,19 +174,6 @@ class GraphicsObject:
         self.drawn = True
 
         return self
-
-    def set_cursor(self, cursor="arrow"):
-        self.cursor = cursor
-
-    def animate_blinking(self, interval, animate=True):
-        self.is_blinking = animate
-        self.blinking_interval = interval
-        self.last_blink_time = timetime()
-
-        if animate and self not in GraphicsObject.blinking_objects:
-            GraphicsObject.blinking_objects.append(self)
-        elif not animate and self in GraphicsObject.blinking_objects:
-            GraphicsObject.blinking_objects.remove(self)
 
     def undraw(self, set_blinking=True):
 
@@ -160,7 +183,6 @@ class GraphicsObject:
             try:
                 if not self.graphwin.is_closed():
                     self.graphwin.delete(self.id)
-
                     self.graphwin.del_item(self)
                     if self.graphwin.autoflush:
                         _root.update()
@@ -173,54 +195,79 @@ class GraphicsObject:
                 self.animate_blinking(0, animate=False)
         return self
 
-    def set_rotation(self, r):
-        self.rotate(r - self.rotation)
-        return self
+    def get_width(self):
+        return 0
+
+    def get_height(self):
+        return 0
+
+    def set_cursor(self, cursor="arrow"):
+        self.cursor = cursor
 
     def get_anchor(self):
         pass
 
-    def rotate(self, dr):
-        self._rotate(dr)
-        if self.graphwin is not None:
-            self.redraw()
+    def animate_blinking(self, interval, animate=True):
+        self.is_blinking = animate
+        self.blinking_interval = interval
+        self.last_blink_time = timetime()
 
-        return self
+        if animate and self not in GraphicsObject.blinking_objects:
+            GraphicsObject.blinking_objects.append(self)
+        elif not animate and self in GraphicsObject.blinking_objects:
+            GraphicsObject.blinking_objects.remove(self)
 
-    def _rotate(self, dr):
-        """updates internal state of object to rotate it r degrees CCW"""
-        pass  # must override in subclass
-
-    def move(self, dx, dy):
+    def move(self, dx, dy, align="center"):
 
         """move object dx units in x direction and dy units in y
         direction"""
-
-        self._move(dx, dy)
+        
+        if align == "center":
+            self._move(dx, dy)
+        elif align == "left":
+            self._move(dx + self.get_width() / 2, dy)
+        elif align == "right":
+            self._move(dx - self.get_width() / 2, dy)
+        elif align == "top":
+            self._move(dx, dy + self.get_height() / 2)
+        elif align == "bottom":
+            self._move(dx, dy - self.get_height() / 2)
+        elif align == "topleft":
+            self._move(dx + self.get_width() / 2, dy + self.get_height() / 2)
+        elif align == "topright":
+            self._move(dx - self.get_width() / 2, dy + self.get_height() / 2)
+        elif align == "bottomleft":
+            self._move(dx + self.get_width() / 2, dy - self.get_height() / 2)
+        elif align == "bottomright":
+            self._move(dx - self.get_width() / 2, dy - self.get_height() / 2)
         if self.drawn:
             if self.graphwin.autoflush:
                 self.graphwin.flush()
             self.redraw()
         return self
 
-    def move_to(self, x, y):
-        self.move(x - self.get_anchor().x, y - self.get_anchor().y)
+    def move_to(self, x, y, align="center"):
+        self.move(x - self.get_anchor().x, y - self.get_anchor().y, align=align)
         return self
 
-    def move_y(self, dy):
-        self.move(0, dy)
+    def move_y(self, dy, align="center"):
+        self.move(0, dy, align=align)
         return self
 
-    def move_x(self, dx):
-        self.move(dx, 0)
+    def move_x(self, dx, align="center"):
+        self.move(dx, 0, align=align)
         return self
 
-    def move_to_y(self, y):
-        self.move(0, y - self.get_anchor().y)
+    def move_to_y(self, y, align="center"):
+        self.move(0, y - self.get_anchor().y, align=align)
         return self
 
-    def move_to_x(self, x):
-        self.move(x - self.get_anchor().x, 0)
+    def move_to_x(self, x, align="center"):
+        self.move(x - self.get_anchor().x, 0, align=align)
+        return self
+
+    def move_to_point(self, p, align="center"):
+        self.move_to(p.x, p.y, align=align)
         return self
 
     # Object Gliding Functions
@@ -246,7 +293,6 @@ class GraphicsObject:
         if not (isinstance(time, int) or isinstance(time, float)):
             raise GraphicsError("\n\nThe time to glide the object for (time) must be a number "
                                 f"(integer or float), not {time}")
-
         if not callable(easing):
             raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
 
@@ -356,27 +402,16 @@ class GraphicsObject:
         self.animate_rotate(r - self.rotation, time=time, easing=easing)
         return self
 
-    def _reconfig(self, option, setting):
-        # Internal method for changing configuration of the object
-        # Raises an error if the option does not exist in the config
-        #    dictionary for this object
-        if option not in self.config:
-            raise GraphicsError(f"\n\nThe config you have specified ({option}) is not valid for {self}")
-        options = self.config
-        options[option] = setting
-        if self.graphwin and not self.graphwin.is_closed():
-            self.graphwin.itemconfig(self.id, options)
-            if self.graphwin.autoflush:
-                _root.update()
+    def rotate(self, dr):
+        self._rotate(dr)
+        if self.graphwin is not None:
+            self.redraw()
 
-    def _draw(self, canvas, options):
-        """draws appropriate figure on canvas with options provided
-        Returns Tk id of item drawn"""
-        pass  # must override in subclass
+        return self
 
-    def _move(self, dx, dy):
-        """updates internal state of object to move it dx,dy units"""
-        pass  # must override in subclass
+    def set_rotation(self, r):
+        self.rotate(r - self.rotation)
+        return self
 
     def redraw(self):
         if self.graphwin.is_open():
@@ -408,13 +443,11 @@ class GraphicsObject:
                         obj.is_gliding = False
                         GraphicsObject.gliding_objects.remove(obj)
                 else:
-
                     perX = obj.glide_queue[0]["EasingX"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
                     perY = obj.glide_queue[0]["EasingY"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
 
                     obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Dist"].x * perX,
                                 obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Dist"].y * perY)
-
                     obj.glide_queue[0]["Update"] = timetime()
 
         t = timetime()
@@ -468,6 +501,11 @@ class GraphicsObject:
                 if obj.is_clicked(mouse_pos):
                     obj.click()
 
+        for obj in GraphicsObject.cyclebutton_instances:
+            if obj.graphwin == graphwin and obj.autoflush:
+                if obj.is_clicked(mouse_pos):
+                    obj.click()
+
     @staticmethod
     def on_middle_click(graphwin):
         pass
@@ -478,7 +516,7 @@ class GraphicsObject:
 
     @staticmethod
     def on_left_press(graphwin):
-        mouse_pos = graphwin.check_left_mouse_press(refresh=False)
+        mouse_pos = graphwin.check_left_mouse_press(_refresh=False)
 
         for obj in GraphicsObject.slider_instances:
             if obj.graphwin == graphwin:
@@ -490,7 +528,7 @@ class GraphicsObject:
                 if obj.is_clicked(mouse_pos):
                     obj.graphic.undraw()
                     obj.graphic = obj.clicked_graphic
-                    obj.draw(obj.graphwin)
+                    obj._draw(obj.graphwin, ())
 
         for obj in GraphicsObject.resizing_objects:
             if obj.graphwin == graphwin:
@@ -501,6 +539,11 @@ class GraphicsObject:
                         obj.resizing_initial_size = obj.width, obj.height
                     else:
                         obj.is_resizing[bound] = False
+
+        for obj in GraphicsObject.objects:
+            if obj.graphwin == graphwin:
+                if obj.is_draggable and obj.is_clicked(mouse_pos):
+                    obj.is_dragging = True
 
     @staticmethod
     def on_middle_press(graphwin):
@@ -513,7 +556,7 @@ class GraphicsObject:
     @staticmethod
     def on_mouse_motion(graphwin):
         if graphwin.is_open():
-            mouse_pos = graphwin.check_mouse_motion(refresh=False)
+            mouse_pos = graphwin.check_mouse_motion(_refresh=False)
 
             for obj in GraphicsObject.button_instances:
                 if obj.graphwin == graphwin and obj.drawn:
@@ -545,9 +588,19 @@ class GraphicsObject:
             hover_count = 0
             for obj in GraphicsObject.objects:
                 if obj.graphwin == graphwin and graphwin.is_open():
+                    #print(obj)
                     if obj.is_clicked(mouse_pos):
                         graphwin.config(cursor=CURSORS[obj.cursor])
                         hover_count += 1
+                    if obj.is_dragging:
+                        if graphwin.left_mouse_down:
+                            obj.move_to_point(mouse_pos)
+                            try:
+                                obj.callbacks["Dragging"]()
+                            except TypeError:
+                                pass
+                        else:
+                            obj.is_dragging = False
 
             if hover_count == 0:
                 graphwin.set_cursor(graphwin.cursor)

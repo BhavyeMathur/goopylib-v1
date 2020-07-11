@@ -1,9 +1,11 @@
 from goopylib.Point import Point
 
-def UniformBSpline(t, control_points, open=False):
+def UniformBSpline(t, control_points, degree=3, open=True):
     sum_x, sum_y = 0, 0
-    degree = 2
-    knot_vector = [x for x in range(len(control_points) + 2 + degree)]
+    knot_vector = [x for x in range(len(control_points) + 2 + degree)]\
+
+    if degree > len(control_points) - 1:
+        degree = len(control_points) - 1
 
     if open:
         knot_vector = [x for x in range(len(control_points) - degree + 1)]

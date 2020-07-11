@@ -208,6 +208,12 @@ class BBox(GraphicsObject):
 
         return self
 
+    def get_width(self):
+        return self.width
+
+    def get_height(self):
+        return self.height
+
     def set_dimensions(self, width, height, horizontal_align="center", vertical_align="center"):
         self.set_width(width, horizontal_align)
         self.set_height(height, vertical_align)
@@ -230,6 +236,9 @@ class BBox(GraphicsObject):
         self.bounds_thickness = bounds_width
 
         return self
+
+    def get_fill(self):
+        return self.config["fill"]
 
 
 import goopylib.objects.Rectangle as gpRect

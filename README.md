@@ -122,12 +122,21 @@ Goopy also has functionality for other animations such as moving to locations, r
 7. Sinoroc, https://stackoverflow.com/questions/62772377/python-package-does-not-get-created-in-site-packages-folder? - 7th July 2020 - Helped fix bug with Packaging
 8. Cool Cloud, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with hiding & showing the Entry cursor
 9. Bryan Oakley, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with Unfocusing the Entry widget when the user clicks elsewhere
+10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th July 2020 - Helped with answering a question about smoothing in Tkinter
 
 ## Version History
 
 ### v1.0
 
-#### 1.0.52 10th July 2020 (47)
+#### 1.0.59-beta 11th July 2020 (59)
+
+* Added more getter functions to the GraphWin class
+* Every function in the GraphWin class now raises a GraphicsError if the user hasn't provided the correct argument
+* GraphWin get mouse functions now call `update_win()` rather than `update()`
+* Renamed the internal argument `refresh` to `_refresh` for the GraphWin
+* The GraphWin now checks if autoflush is True before updating when the `redraw()`function is called.
+
+#### 1.0.54-beta 10th July 2020
 
 * Changed the Circle class `__repr__` function
 * Added an align parameter to the GraphicsObject move function to move an object 'left-aligned' or right, top, bottom, etc.
@@ -147,6 +156,11 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 * Added Mangling Functions to the `Point` class and added more to the `Colour` class
 * Changed the `__pow__` function for colours and Points to use `pow(a, b, m)` and not `a ** b % m`
+* Removed the `_move()` function from the Point class because it is no longer a GraphicsObject (v6.10-dev)
+
+* Every function in the Point class now raises a GraphicsError if the user hasn't provided the correct argument
+* The GraphWin checks for the icon texture in the local directory if it does not exist in the textures/ folder
+
 
 #### 1.0.39-beta 9th July 2020
 

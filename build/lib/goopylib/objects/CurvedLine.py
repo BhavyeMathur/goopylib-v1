@@ -7,20 +7,17 @@ class Line(GraphicsObject):
 
     def __init__(self, *p, bounds=None, style=None, outline=None, outline_width=None, arrow=None, cursor="arrow"):
 
-        if style is None:
-            self.style = "default"
-        else:
-            self.style = style
+        GraphicsObject.__init__(self, options=["arrow", "width", "fill"], cursor=cursor)
 
         if arrow in STYLES[self.style].keys():
             self.arrow = STYLES[self.style][arrow]
         elif isinstance(arrow, str):
             self.arrow = arrow
         else:
-            if "arrow" in STYLES[self.style].keys():
-                self.arrow = STYLES[self.style]["arrow"]
+            if "arrow face" in STYLES[self.style].keys():
+                self.arrow = STYLES[self.style]["arrow face"]
             else:
-                self.arrow = STYLES["default"]["arrow"]
+                self.arrow = STYLES["default"]["arrow face"]
 
         self.points = p
 
@@ -38,11 +35,9 @@ class Line(GraphicsObject):
                 self.high_y = point.y
             self.anchor += point
 
-        self.width = (self.low_x ** 2 + self.high_x ** 2) ** 0.5
-        self.height = (self.low_y ** 2 + self.high_y ** 2) ** 0.5
+        self.width = abs(self.low_x.distance_x(self.high_x))
+        self.height = abs(self.low_y.distance_y(self.high_y))
         self.anchor /= len(self.points)
-
-        GraphicsObject.__init__(self, options=["arrow", "width", "fill"], cursor=cursor)
 
         self.set_outline = self.set_fill
 
@@ -77,12 +72,13 @@ class Line(GraphicsObject):
             self.points[i] += Point(dx, dy)
 
         self.anchor = self.get_anchor()
+        self._update()
 
     def is_clicked(self, mouse_pos):
         return False
 
     def get_anchor(self):
-        return self.anchor
+        return Point((self.p1.x + self.p2.x) / 2, (self.p1.y + self.p2.y) / 2)
 
     def get_width(self):
         return self.width

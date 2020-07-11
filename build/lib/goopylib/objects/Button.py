@@ -1,54 +1,81 @@
 from goopylib.objects.Checkbox import Checkbox
 from goopylib.objects.GraphicsObject import GraphicsObject
 
-class Button:
+class Button(GraphicsObject):
     def __init__(self, graphic, hover_graphic=None, clicked_graphic=None, disabled_graphic=None,
                  disable=False, autoflush=True, label=None, sound=None, window=None):
 
-        self.normal_graphic = graphic
+        self.disabled_graphic_given = True
+        self.clicked_graphic_given = True
+        self.hover_graphic_given = True
 
+        self.normal_graphic = graphic
         if hover_graphic is not None:
             self.hover_graphic = hover_graphic
         else:
             self.hover_graphic = graphic
+            self.hover_graphic_given = False
 
         if clicked_graphic is not None:
             self.clicked_graphic = clicked_graphic
         else:
             self.clicked_graphic = graphic
+            self.clicked_graphic_given = False
 
         if disabled_graphic is not None:
             self.disabled_graphic = disabled_graphic
         else:
             self.disabled_graphic = graphic
+            self.disabled_graphic_given = False
 
         self.graphic = self.normal_graphic
 
         self.label = label
         self.is_disabled = disable
 
-        self.graphwin = None
-        self.drawn = False
-
-        self.is_rotating = False
-
         if not isinstance(self, Checkbox):
             GraphicsObject.button_instances.append(self)
+
+        GraphicsObject.__init__(self, options=())
 
     def __repr__(self):
         return "Button({})".format(self.graphic)
 
-    def draw(self, canvas):
+    def _draw(self, canvas, options):
         self.graphic.draw(canvas)
+        self.normal_graphic.graphwin = canvas
+        self.disabled_graphic.graphwin = canvas
+        self.hover_graphic.graphwin = canvas
+        self.clicked_graphic.graphwin = canvas
+
+        self.anchor = self.graphic.anchor
 
         if self.label is not None:
             self.label.draw(canvas)
-        self.graphwin = canvas
 
-        self.drawn = True
-        return self
+    def _move(self, dx, dy):
+        if self.hover_graphic_given:
+            self.hover_graphic.move(dx, dy)
+        self.normal_graphic.move(dx, dy)
+        if self.clicked_graphic_given:
+            self.clicked_graphic.move(dx, dy)
+        if self.disabled_graphic_given:
+            self.disabled_graphic.move(dx, dy)
 
-    def undraw(self):
+        if self.label is not None:
+            self.label.move(dx, dy)
+
+        print(dx, dy, self.anchor)
+
+    def _rotate(self, dr):
+        self.disabled_graphic.rotate(dr)
+        self.normal_graphic.rotate(dr)
+        self.hover_graphic.rotate(dr)
+        self.clicked_graphic.rotate(dr)
+        if self.label is not None:
+            self.label.rotate(dr)
+
+    def undraw(self, set_blinking=False):
         self.graphic.undraw()
         if self.label is not None:
             self.label.undraw()
@@ -68,6 +95,12 @@ class Button:
 
         return self
 
+    def get_width(self):
+        return self.graphic.get_width()
+
+    def get_height(self):
+        return self.graphic.get_height()
+
     def set_graphic(self, graphic):
         self.undraw()
         if graphic == "Normal":
@@ -81,43 +114,11 @@ class Button:
 
         self.draw(self.graphwin)
 
-    def animate_rotate(self, dr, t, easing="Linear", args=None):
-        self.hover_graphic.animate_rotate(dr, t, easing, args)
-        self.normal_graphic.animate_rotate(dr, t, easing, args)
-        self.clicked_graphic.animate_rotate(dr, t, easing, args)
-        self.disabled_graphic.animate_rotate(dr, t, easing, args)
-
-        self.is_rotating = True
-
-        if self.label is not None:
-            self.label.animate_rotate(dr, t, easing, args)
-
-        return self
-
-    def move(self, dx, dy):
-        self.hover_graphic.move(dx, dy)
-        self.normal_graphic.move(dx, dy)
-        self.clicked_graphic.move(dx, dy)
-        self.disabled_graphic.move(dx, dy)
-
-        if self.label is not None:
-            self.label.move(dx, dy)
-
-        return self
-
-    def move_to(self, x, y):
-        self.hover_graphic.move_to(x, y)
-        self.normal_graphic.move_to(x, y)
-        self.clicked_graphic.move_to(x, y)
-        self.disabled_graphic.move_to(x, y)
-
-        if self.label is not None:
-            self.label.move_to(x, y)
-
-        return self
-
     def is_clicked(self, mouse_pos):
-        return self.graphic.is_clicked(mouse_pos) and not self.is_disabled
+        if self.drawn:
+            return self.graphic.is_clicked(mouse_pos) and not self.is_disabled
+        else:
+            return False
 
     def get_anchor(self):
         return self.graphic.anchor

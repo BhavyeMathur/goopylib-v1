@@ -1,13 +1,14 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
     name='goopylib',
-    package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects'},
-    packages={"goopylib": "goopylib", "goopylib/math": "goopylib/math", "goopylib/objects": "goopylib/objects"},
-    version='1.0.36b',
+    package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects', ":applications": 'goopylib/applications'},
+    packages={"goopylib": "goopylib", "goopylib/math": "goopylib/math", "goopylib/objects": "goopylib/objects",
+              "goopylib/applications": "goopylib/applications"},
+    version='1.0.54b',
     license='MIT License',
 
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.',
@@ -17,7 +18,7 @@ setup(
     author='Bhavye Mathur',
     author_email='bhavyemathur@gmail.com',
     url='https://github.com/BhavyeMathur/goopylib',
-    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.36-beta.tar.gz',
+    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.54-beta.tar.gz',
     keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
     install_requires=['pillow', ],
     classifiers=[
