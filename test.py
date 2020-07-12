@@ -49,14 +49,13 @@ for i in range(x):
     CurvedLine(*points, interpolation="cosine", resolution=i, outline=colour_grad1[i]).draw(window)
 """
 
-res = 10
-CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=res, outline=BLUE).draw(window)
-line = CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), smooth=False, resolution=res, bounds_width=20, outline=GREEN).draw(window)
+CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=10, outline=GREEN, interpolation="spline").draw(window)
+CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=10, outline=BLUE, interpolation="cosine").draw(window)
+CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=10, outline=VIOLET, interpolation="cubic").draw(window)
+CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=10, outline=RED, interpolation="linear").draw(window)
 
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
 
 while True:
     mouse_pos = window.check_left_mouse_click()
-    if line.is_clicked(mouse_pos):
-        print(1)
     window.update_win()

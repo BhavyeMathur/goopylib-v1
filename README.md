@@ -128,7 +128,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.80-beta 12th July 2020 (73)
+#### 1.0.81-beta 12th July 2020 (80)
 
 * Added a `slope()` function to the Point class to calculate the slope of a line between 2 points
 * Added an `is_clicked()` function to the Line Object
@@ -143,7 +143,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added Line dashing with a few definitions of dashes already provided
 
 * Created the Line Wiki
-* Added a try-except clause to the Line Vector Equation definition to handle verticle lines (undefined slope)
+* Added a try-except clause to the Line Vector Equation definition to handle vertical lines (undefined slope)
 * Fixed bug with Polygon not filling itself the specified colour
 
 * Renamed the Linear & Cosine Interpolation function to `Linear/CosineCurve()` functions
@@ -153,6 +153,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 * Added cosine, linear, and cubic interpolation to the Curved Line class - it's actually a curved line now!
 * Added a `bounds_width` argument to the Line classes that determines how close a mouse click has to be to be considered clicking the line
+* Added getter & setter function for the `bounds_width` argument of the Line classes
 
 #### 1.0.65-beta 11th July 2020
 

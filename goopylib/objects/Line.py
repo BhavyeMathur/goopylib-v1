@@ -45,10 +45,8 @@ class Line(GraphicsObject):
         self.set_joinstyle(joinstyle)
         self.set_arrow_shape(arrow_shape, scale=bool(arrow_scale))
 
-        if bounds_width is None:
-            self.bounds_width = self.get_outline_width()
-        else:
-            self.bounds_width = bounds_width
+        self.bounds_width = None
+        self.set_bounds_width(bounds_width)
 
         self.segments = None  # These 2 variables are defined in the _update() method
         self.equations = None
@@ -195,6 +193,9 @@ class Line(GraphicsObject):
     def get_arrow_shape(self):
         return self.config["arrowshape"]
 
+    def get_bounds_width(self):
+        return self.bounds_width
+
     # -------------------------------------------------------------------------
     # SETTER FUNCTIONS
 
@@ -331,6 +332,15 @@ class Line(GraphicsObject):
             else:
                 raise GraphicsError(f"\n\nLine dash must be a tuple or a string referencing a dash "
                                     f"(one of {DASHES.keys()}) or a style (or None for no dash), not {dash}")
+
+    def set_bounds_width(self, width):
+        if width is None:
+            self.bounds_width = self.get_outline_width()
+        else:
+            if not (isinstance(width, float) or isinstance(width, int)):
+                raise GraphicsError("\n\nGraphicsError: The bounds width for the line must be an integer or float, "
+                                    f"not {width}")
+            self.bounds_width = width
 
     # -------------------------------------------------------------------------
     # OTHER FUNCTIONS
