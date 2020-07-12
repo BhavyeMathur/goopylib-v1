@@ -30,6 +30,8 @@ class CurvedLine(Line):
                                 f"not {tension}")
 
         self.is_smooth = smooth
+        if interpolation == "linear":
+            self.is_smooth = False
 
         self.points = list(p)
         self.points_copy = self.points.copy()
