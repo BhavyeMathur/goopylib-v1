@@ -29,5 +29,4 @@ class Circle(Oval):
         return self.radius
 
     def _update(self):
-        self.equation = VectorEquation("(x-{})**2 + (y-{})**2 < {}**2".format(self.anchor.x, self.anchor.y,
-                                                                              self.radius))
+        self.equation = VectorEquation("(x-{})**2 + (y-{})**2 < {}**2".format(self.anchor.x, self.anchor.y,                                                                              self.radius))

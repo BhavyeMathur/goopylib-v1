@@ -241,5 +241,4 @@ class BBox(GraphicsObject):
         return self.config["fill"]
 
 
-import goopylib.objects.Rectangle as gpRect
 import goopylib.objects.Line as gpLine

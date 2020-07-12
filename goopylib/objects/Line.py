@@ -1,9 +1,10 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
+from goopylib._internal_classes import VectorEquation
 from goopylib.Point import Point
 from goopylib.styles import *
 from goopylib.constants import ARROWS
 
-from math import sin, cos, radians
+from math import sin, cos, radians, atan, degrees
 
 
 class Line(GraphicsObject):
@@ -28,6 +29,20 @@ class Line(GraphicsObject):
         self.set_arrow(arrow)
         self.set_outline(outline)
         self.set_outline_width(outline_width)
+
+        self.segments = [(self.points[i], self.points[i + 1]) for i in range(len(self.points) - 1)]
+        self.equations = []
+        for line in self.segments:
+            slope = line[0].slope(line[1])
+            shift = - line[0].y / slope
+            width = self.get_outline_width() / (cos(atan(slope)))
+
+            smaller = min([line[0].x, line[1].x])
+            larger = max([line[0].x, line[1].x])
+
+            self.equations.append(VectorEquation(
+                f"({slope} * (x - {shift} - {line[0].x}) + {width}/2 > y > "
+                f"{slope} * (x - {shift} - {line[0].x}) - {width}/2) and ({smaller} < x < {larger})"))
 
         self.set_fill = self.set_outline
 
@@ -78,8 +93,8 @@ class Line(GraphicsObject):
 
         return self.anchor
 
-    def get_width(self):
-        return self.width
+    def get_outline_width(self):
+        return self.config["width"]
 
     def get_height(self):
         return self.height
@@ -134,13 +149,12 @@ class Line(GraphicsObject):
 
     def set_outline_width(self, outline_width):
         if outline_width is not None:
-            if isinstance(outline_width, Colour):
+            if isinstance(outline_width, int):
                 self._reconfig("width", outline_width)
             elif outline_width in STYLES[self.style].keys():
                 self._reconfig("width", STYLES[self.style][outline_width])
             else:
-                raise GraphicsError("\n\nGraphicsError: The line width must be either a Colour or a string referencing "
-                                    "a style, not {outline_width}")
+                raise GraphicsError(f"\n\nGraphicsError: The line width must be an integer, not {outline_width}")
         else:
             self._reconfig("width", STYLES[self.style]["line width"])
 
@@ -148,4 +162,7 @@ class Line(GraphicsObject):
     # OTHER FUNCTIONS
 
     def is_clicked(self, mouse_pos):
+        for eq in self.equations:
+            if eq.is_clicked(mouse_pos):
+                return True
         return False

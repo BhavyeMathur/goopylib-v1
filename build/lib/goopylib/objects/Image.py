@@ -129,10 +129,6 @@ class Image(GraphicsObject):
         self.update()
         return self
 
-    def set_rotation(self, r, sampling=Img.BICUBIC, center=None):
-        self.rotate(r - self.rotation)
-        return self
-
     def animate_resize_factor(self, f, t, easing="Linear", args=None):
         self.resizing_factor = f
         self.resizing_easing = easing

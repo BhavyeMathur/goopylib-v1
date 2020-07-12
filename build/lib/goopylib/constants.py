@@ -53,6 +53,7 @@ CURSORS_WINDOWS = {"cancel": "no"}
 CURSORS_MACOSX = {}
 
 RELIEF = ["flat", "sunken", "raised", "groove", "ridge"]
+ARROWS = ["both", "none", "first", "last"]
 
 INTERPOLATIONS = ["linear", "poly", "poly_in", "poly_out", "sin", "sin_in", "sin_out", "circle", "circle_in",
                   "circle_out", "back", "back_in", "back_out", "bounce", "bounce_in", "bounce_out", "elastic",

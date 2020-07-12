@@ -29,12 +29,20 @@ class GraphicsObject:
         #    object where it is drawn and id is the TK identifier of the
         #    drawn shape.
 
+        if not isinstance(cursor, str):
+            raise GraphicsError(f"\n\nThe cursor must be a string, not {cursor}")
+        if not cursor.lower() in CURSORS.keys():
+            raise GraphicsError(f"\n\nThe cursor for the window must be one of {list(CURSORS.keys())}, not {cursor}")
+
         self.id = None
 
-        if style is not None:
-            self.style = style
-        else:
+        if style is None:
             self.style = global_style
+        else:
+            if style in STYLES.keys():
+                self.style = style
+            else:
+                raise GraphicsError(f"\n\nStyle argument must be one of {STYLES.keys()}, not {style}")
 
         # config is the dictionary of configuration options for the widget.
         self.config = {}
@@ -77,9 +85,6 @@ class GraphicsObject:
         self.last_blink_time = 0
 
         self.bounds = None
-
-        assert isinstance(cursor, str), "The cursor argument must be a string"
-        assert cursor.lower() in CURSORS, "The cursor argument must be one of {}".format(CURSORS)
         self.cursor = cursor
 
         self.graphwin = None
@@ -161,7 +166,6 @@ class GraphicsObject:
 
         if graphwin.is_closed():
             return self
-
         if self.drawn:
             return self
 
@@ -216,6 +220,11 @@ class GraphicsObject:
             GraphicsObject.blinking_objects.append(self)
         elif not animate and self in GraphicsObject.blinking_objects:
             GraphicsObject.blinking_objects.remove(self)
+
+    # -------------------------------------------------------------------------
+    # MOVEMENT & GLIDING FUNCTIONS
+
+    # Object Moving Functions
 
     def move(self, dx, dy, align="center"):
 
@@ -403,6 +412,7 @@ class GraphicsObject:
         return self
 
     def rotate(self, dr):
+        self.rotation += dr
         self._rotate(dr)
         if self.graphwin is not None:
             self.redraw()

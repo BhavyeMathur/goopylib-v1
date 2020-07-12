@@ -149,11 +149,14 @@ class GraphWin(tkCanvas):
         if not isinstance(bk_colour, Colour):
             if bk_colour in STYLES[style].keys():
                 self.bk_colour = STYLES[style][bk_colour]
-            elif bk_colour is None:
+            else:
                 if "background" in STYLES[style].keys():
                     self.bk_colour = STYLES[style]["background"]
                 else:
                     self.bk_colour = STYLES["default"]["background"]
+                if bk_colour is not None:
+                    warnings.warn(f"The background colour specified ({bk_colour}) is not in the graphwin's style. "
+                                  f"The background colour was set to the default colour ({self.bk_colour})")
         else:
             self.bk_colour = bk_colour
 
@@ -278,9 +281,22 @@ class GraphWin(tkCanvas):
 
         # Keyboard Variables
 
-        self.last_key_pressed = ""
+        self.last_key_pressed = None
+        self.last_key_clicked = None
+
+        self.key_pressed_with_shift = None
+        self.key_pressed_with_alt = None
+        self.key_pressed_with_control = None
+
+        self.keys_down = []
+        self.keys_clicked = []
 
         self.bind("<KeyPress>", self._on_key_press)
+        self.bind("<Shift-KeyPress>", self._on_shift_key_press)
+        self.bind("<Alt-KeyPress>", self._on_alt_key_press)
+        self.bind("<Control-KeyPress>", self._on_control_key_press)
+
+        self.bind("<KeyRelease>", self._on_key_release)
 
         # Animation Variables
 
@@ -322,9 +338,207 @@ class GraphWin(tkCanvas):
             _root.update()
 
     def __set_mouse_handler(self, func):
-        self._mouse_callback = func
+        self._mouse_callback = func\
+        
+    # -------------------------------------------------------------------------
+    # CALLBACK KEYBOARD FUNCTIONS
 
-    # WINDOW MOVING FUNCTIONS
+    def _on_key_release(self, e):
+        if e.keysym in self.keys_down:
+            self.keys_down.remove(e.keysym)
+            print(e)
+        if e.keysym not in self.keys_clicked:
+            self.keys_clicked.append(e.keysym)
+
+    def _on_key_press(self, e):
+        self.last_key_pressed = e.keysym
+        if e.keysym not in self.keys_down:
+            self.keys_down.append(e.keysym)
+            print(e)
+
+    def _on_shift_key_press(self, e):
+        self.key_pressed_with_shift = e.keysym
+        print(2)
+
+    def _on_alt_key_press(self, e):
+        self.key_pressed_with_alt = e.keysym
+        print(1)
+
+    def _on_control_key_press(self, e):
+        self.key_pressed_with_control = e.keysym
+        print(3)
+
+    # -------------------------------------------------------------------------
+    # CALLBACK MOUSE FUNCTIONS
+
+    # Double Click
+    def _on_left_double_click(self, e):
+        if self.is_open():
+            self.mouse_double_left_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_double_left_click(self)
+
+    def _on_middle_double_click(self, e):
+        if self.is_open():
+            self.mouse_double_middle_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_double_middle_click(self)
+
+    def _on_right_double_click(self, e):
+        if self.is_open():
+            self.mouse_double_right_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_double_right_click(self)
+
+    # Triple Click
+
+    def _on_left_triple_click(self, e):
+        if self.is_open():
+            self.mouse_triple_left_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_triple_left_click(self)
+
+    def _on_middle_triple_click(self, e):
+        if self.is_open():
+            self.mouse_triple_middle_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_triple_middle_click(self)
+
+    def _on_right_triple_click(self, e):
+        if self.is_open():
+            self.mouse_triple_right_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_triple_right_click(self)
+
+    # Single Click
+
+    def _on_left_click(self, e):
+        if self.is_open():
+            self.mouse_left_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            self.total_left_mouse_clicks += 1
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_left_click(self)
+
+    def _on_middle_click(self, e):
+        if self.is_open():
+            self.mouse_middle_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            self.total_middle_mouse_clicks += 1
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_middle_click(self)
+
+    def _on_right_click(self, e):
+        if self.is_open():
+            self.mouse_right_click = e.x, e.y
+            self.last_mouse_event = self.trans.world(e.x, e.y)
+
+            self.total_right_mouse_clicks += 1
+
+            if self._mouse_callback:
+                self._mouse_callback(Point(e.x, e.y))
+
+            GraphicsObject.on_right_click(self)
+
+    # Mouse Release
+
+    def _on_left_release(self, e):
+        if self.is_open():
+            self.left_mouse_down = False
+            self._on_left_click(e)
+
+    def _on_middle_release(self, e):
+        if self.is_open():
+            self.middle_mouse_down = False
+            self._on_middle_click(e)
+
+    def _on_right_release(self, e):
+        if self.is_open():
+            self.right_mouse_down = False
+            self._on_right_click(e)
+
+    #  Mouse Press
+
+    def _on_left_press(self, e):
+        if self.is_open():
+            self.mouse_left_press = e.x, e.y
+            self.last_mouse_event = self.mouse_left_press
+            self.left_mouse_down = True
+            GraphicsObject.on_left_press(self)
+
+    def _on_middle_press(self, e):
+        if self.is_open():
+            self.middle_mouse_down = True
+
+            self.mouse_middle_press = e.x, e.y
+            self.last_mouse_event = self.mouse_middle_press
+
+            GraphicsObject.on_middle_press(self)
+
+    def _on_right_press(self, e):
+        if self.is_open():
+            self.right_mouse_down = True
+
+            self.mouse_right_press = e.x, e.y
+            self.last_mouse_event = self.mouse_right_press
+
+            GraphicsObject.on_right_press(self)
+
+    # Other Mouse Functions
+
+    def _on_mouse_motion(self, e):
+        if self.is_open():
+            self.mouse_pos = self.trans.world(e.x, e.y)
+
+            if self.mouse_in_window and self.update_mouse:
+                GraphicsObject.on_mouse_motion(self)
+                self.update_mouse = False
+
+    def _on_mouse_scroll(self, e):
+        if self.is_open():
+            self.mouse_wheel_pos = e.delta
+            GraphicsObject.on_mouse_scroll(e.delta / 120, self)
+
+    def _on_mouse_in(self, e):
+        self.mouse_in_window = True
+
+    def _on_mouse_out(self, e):
+        self.mouse_in_window = False
+
+    # WINDOW MOVING & GLIDING FUNCTIONS
+    # -------------------------------------------------------------------------
 
     # Change position by amount
     def move(self, dx, dy):
@@ -373,7 +587,7 @@ class GraphWin(tkCanvas):
     def move_to_point(self, p):
         self.move_to(p.x, p.y)
 
-    # WINDOW GLIDING FUNCTIONS
+    # Gliding Functions
 
     def glide(self, dx, dy=None, time=1, easing_x=ease_linear(), easing_y=None):
         if dy is None:
@@ -474,6 +688,7 @@ class GraphWin(tkCanvas):
         return self
 
     # GETTER FUNCTIONS
+    # -------------------------------------------------------------------------
 
     # Returns the position of the window on the display of the computer
     def get_window_pos(self):
@@ -538,6 +753,7 @@ class GraphWin(tkCanvas):
         return Point(self.trans.x_low, self.trans.y_high), Point(self.trans.x_high, self.trans.y_low)
 
     # SETTER FUNCTIONS
+    # -------------------------------------------------------------------------
 
     # Sets the background colour of the window
     def set_background(self, colour):
@@ -591,27 +807,6 @@ class GraphWin(tkCanvas):
         self.config(cursor=CURSORS[cursor])
         self.__autoflush()
 
-    def set_resizable(self, resizable_width=True, resizable_height=True):
-        self.set_resizable_height(resizable_height)
-        self.set_resizable_width(resizable_width)
-        return self
-
-    def set_resizable_height(self, resizable_height=True):
-        if not isinstance(resizable_height, bool):
-            raise GraphicsError(f"\n\nresizable_height must be a boolean, not {resizable_height}")
-
-        self.master.resizable(self.is_resizable[0], resizable_height)
-        self.is_resizable[1] = resizable_height
-        return self
-
-    def set_resizable_width(self, resizable_width=True):
-        if not isinstance(resizable_width, bool):
-            raise GraphicsError(f"\n\nresizable_height must be a boolean, not {resizable_width}")
-
-        self.master.resizable(resizable_width, self.is_resizable[1])
-        self.is_resizable[0] = resizable_width
-        return self
-
     def set_icon(self, icon):
         if not isinstance(icon, str):
             raise GraphicsError(f"The window icon must be a string (path to .ico texture) or None, not {icon}")
@@ -634,6 +829,8 @@ class GraphWin(tkCanvas):
         self.__check_open()
         self.master.title(title)
         self.__autoflush()
+
+    # Dimensions Related
 
     def set_width(self, width):
         if not (isinstance(width, int) or isinstance(width, float)):
@@ -764,6 +961,27 @@ class GraphWin(tkCanvas):
         self.max_height = max_height
         self.master.maxsize(self.max_width, self.max_height)
 
+    def set_resizable(self, resizable_width=True, resizable_height=True):
+        self.set_resizable_height(resizable_height)
+        self.set_resizable_width(resizable_width)
+        return self
+
+    def set_resizable_height(self, resizable_height=True):
+        if not isinstance(resizable_height, bool):
+            raise GraphicsError(f"\n\nresizable_height must be a boolean, not {resizable_height}")
+
+        self.master.resizable(self.is_resizable[0], resizable_height)
+        self.is_resizable[1] = resizable_height
+        return self
+
+    def set_resizable_width(self, resizable_width=True):
+        if not isinstance(resizable_width, bool):
+            raise GraphicsError(f"\n\nresizable_height must be a boolean, not {resizable_width}")
+
+        self.master.resizable(resizable_width, self.is_resizable[1])
+        self.is_resizable[0] = resizable_width
+        return self
+
     def set_coords(self, x1, y1, x2, y2):
         """Set coordinates of window to run from (x1,y1) in the
         upper-left corner to (x2,y2) in the lower-right corner."""
@@ -775,6 +993,7 @@ class GraphWin(tkCanvas):
         self.redraw()
 
     # OTHER WINDOW FUNCTIONS
+    # -------------------------------------------------------------------------
 
     def close(self):
         """Close the window"""
@@ -857,179 +1076,6 @@ class GraphWin(tkCanvas):
 
         self.imgs += 1
         return ImageGrab.grab().crop((x, y, x1, y1)).save("{}{}.png".format(self.title, self.imgs - 1))
-
-    # -------------------------------------------------------------------------
-    # TRIGGER KEYBOARD FUNCTIONS
-
-    def _on_key_press(self, e):
-        print("Key Pressed", e)
-
-    # TRIGGER MOUSE DOUBLE CLICK FUNCTIONS
-
-    def _on_left_double_click(self, e):
-        if self.is_open():
-            self.mouse_double_left_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_double_left_click(self)
-
-    def _on_middle_double_click(self, e):
-        if self.is_open():
-            self.mouse_double_middle_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_double_middle_click(self)
-
-    def _on_right_double_click(self, e):
-        if self.is_open():
-            self.mouse_double_right_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_double_right_click(self)
-
-    # TRIGGER MOUSE TRIPLE CLICK FUNCTIONS
-
-    def _on_left_triple_click(self, e):
-        if self.is_open():
-            self.mouse_triple_left_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_triple_left_click(self)
-
-    def _on_middle_triple_click(self, e):
-        if self.is_open():
-            self.mouse_triple_middle_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_triple_middle_click(self)
-
-    def _on_right_triple_click(self, e):
-        if self.is_open():
-            self.mouse_triple_right_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_triple_right_click(self)
-
-    # TRIGGER MOUSE CLICK FUNCTIONS
-
-    def _on_left_click(self, e):
-        if self.is_open():
-            self.mouse_left_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            self.total_left_mouse_clicks += 1
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_left_click(self)
-
-    def _on_middle_click(self, e):
-        if self.is_open():
-            self.mouse_middle_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            self.total_middle_mouse_clicks += 1
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_middle_click(self)
-
-    def _on_right_click(self, e):
-        if self.is_open():
-            self.mouse_right_click = e.x, e.y
-            self.last_mouse_event = self.trans.world(e.x, e.y)
-
-            self.total_right_mouse_clicks += 1
-
-            if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
-
-            GraphicsObject.on_right_click(self)
-
-    # TRIGGER MOUSE RELEASE FUNCTIONS
-
-    def _on_left_release(self, e):
-        if self.is_open():
-            self.left_mouse_down = False
-            self._on_left_click(e)
-
-    def _on_middle_release(self, e):
-        if self.is_open():
-            self.middle_mouse_down = False
-            self._on_middle_click(e)
-
-    def _on_right_release(self, e):
-        if self.is_open():
-            self.right_mouse_down = False
-            self._on_right_click(e)
-
-    # TRIGGER MOUSE PRESS FUNCTIONS
-
-    def _on_left_press(self, e):
-        if self.is_open():
-            self.mouse_left_press = e.x, e.y
-            self.last_mouse_event = self.mouse_left_press
-            self.left_mouse_down = True
-            GraphicsObject.on_left_press(self)
-
-    def _on_middle_press(self, e):
-        if self.is_open():
-            self.middle_mouse_down = True
-
-            self.mouse_middle_press = e.x, e.y
-            self.last_mouse_event = self.mouse_middle_press
-
-            GraphicsObject.on_middle_press(self)
-
-    def _on_right_press(self, e):
-        if self.is_open():
-            self.right_mouse_down = True
-
-            self.mouse_right_press = e.x, e.y
-            self.last_mouse_event = self.mouse_right_press
-
-            GraphicsObject.on_right_press(self)
-
-    # OTHER TRIGGER MOUSE FUNCTIONS
-
-    def _on_mouse_motion(self, e):
-        if self.is_open():
-            self.mouse_pos = self.trans.world(e.x, e.y)
-
-            if self.mouse_in_window and self.update_mouse:
-                GraphicsObject.on_mouse_motion(self)
-                self.update_mouse = False
-
-    def _on_mouse_scroll(self, e):
-        if self.is_open():
-            self.mouse_wheel_pos = e.delta
-            GraphicsObject.on_mouse_scroll(e.delta / 120, self)
-
-    def _on_mouse_in(self, e):
-        self.mouse_in_window = True
-
-    def _on_mouse_out(self, e):
-        self.mouse_in_window = False
 
     # GET MOUSE CLICK FUNCTIONS
     # -------------------------------------------------------------------------
@@ -1118,7 +1164,7 @@ class GraphWin(tkCanvas):
 
         return mouse_pos
 
-    # GET DOUBLE MOUSE CLICK
+    # Double Mouse Click
 
     def get_double_left_mouse_click(self):
         mouse_pos = None
@@ -1156,7 +1202,7 @@ class GraphWin(tkCanvas):
 
         return mouse_pos
 
-    # GET TRIPLE MOUSE CLICK
+    # Triple Mouse Click
 
     def get_triple_left_mouse_click(self):
         mouse_pos = None
@@ -1387,39 +1433,87 @@ class GraphWin(tkCanvas):
     # KEYBOARD FUNCTIONS
     # -------------------------------------------------------------------------
 
-    def get_key(self, key):
+    def get_key_press(self):
         """Wait for user to press a key and return it as a string."""
-        while not self.check_key(key):
-            timesleep(.1)  # give up thread
+        while self.check_key_press(_refresh=False) is None:
+            self.update_win()
+        return self.check_key_press()
 
-        return True
+    def get_key_click(self):
+        """Wait for user to press a key and return it as a string."""
+        while not self.check_key_click(_refresh=False):
+            self.update_win()
+        return self.check_key_click()
 
-    def check_key(self, key):
+    def get_key_with_shift_pressed(self):
+        while self.check_key_with_shift_pressed(_refresh=False) is None:
+            self.update_win()
+        return self.check_key_with_shift_pressed()
+
+    def get_key_with_alt_pressed(self):
+        while self.check_key_with_alt_pressed(_refresh=False) is None:
+            self.update_win()
+        return self.check_key_with_alt_pressed()
+    
+    def get_key_with_control_pressed(self):
+        while self.check_key_with_control_pressed(_refresh=False) is None:
+            self.update_win()
+        return self.check_key_with_control_pressed()
+
+    def check_key_press(self, _refresh=True):
         """Return last key pressed or None if no key pressed since last call"""
-        if self.is_closed():
-            raise GraphicsError("\n\ncheck_key in closed window")
+        key = self.last_key_pressed
+        if _refresh:
+            self.last_key_pressed = None
+        return key
 
-        if keyboard.is_pressed(key):
-            return True
+    def check_key_click(self, _refresh=True):
+        key = self.last_key_clicked
+        if _refresh:
+            self.last_key_clicked = None
+        return key
+
+    def check_key_with_shift_pressed(self, _refresh=True):
+        key = self.key_pressed_with_shift
+        if _refresh:
+            self.key_pressed_with_shift = None
+        return key
+
+    def check_key_with_alt_pressed(self, _refresh=True):
+        key = self.key_pressed_with_alt
+        if _refresh:
+            self.key_pressed_with_alt = None
+        return key
+
+    def check_key_with_control_pressed(self, _refresh=True):
+        key = self.key_pressed_with_control
+        if _refresh:
+            self.key_pressed_with_control = None
+        return key
+
+    def check_for_keys_pressed(self, *keys, _refresh=True):
+        if len(keys) == 1:
+            return self.check_key_press(_refresh) == keys[0]
         else:
-            return False
+            for key in keys:
+                if key not in self.keys_down:
+                    return False
+            return True
 
-    def check_all_keys(self, *keys):
-        key_down = True
-        for key in keys:
-            if key_down:
-                key_down = self.check_key(key)
-            else:
-                return False
+    def check_for_keys_clicked(self, *keys, _refresh=True):
+        if len(keys) == 1:
+            return self.check_key_click(_refresh) == keys[0]
+        else:
+            for key in keys:
+                if key not in self.keys_clicked:
+                    return False
+                else:
+                    pass
+                    #self.keys_clicked.remove(key)
+            return True
 
-        return True
-
-    def check_keys(self, *keys):
-        for key in keys:
-            if self.check_key(key):
-                return True
-
-        return False
+    # INTERNAL FUNCTIONS
+    # -------------------------------------------------------------------------
 
     def to_screen(self, x, y):
         if not (isinstance(x, int) or isinstance(x, float)):
