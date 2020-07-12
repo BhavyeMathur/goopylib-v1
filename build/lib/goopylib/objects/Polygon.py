@@ -17,6 +17,8 @@ class Polygon(GraphicsObject):
 
         GraphicsObject.__init__(self, style=style, options=["outline", "width", "fill"], window=window)
 
+        self.set_fill(fill)
+
     def __repr__(self):
         return "Polygon" + str(tuple(p for p in self.points))
 

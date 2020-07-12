@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: goopylib
-Version: 1.0.65b0
+Version: 1.0.81b0
 Summary: A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.
 Home-page: https://github.com/BhavyeMathur/goopylib
 Author: Bhavye Mathur
 Author-email: bhavyemathur@gmail.com
 License: MIT License
-Download-URL: https://github.com/BhavyeMathur/goopylib/archive/v1.0.65-beta.tar.gz
+Download-URL: https://github.com/BhavyeMathur/goopylib/archive/v1.0.81-beta.tar.gz
 Description: # Goopy
         
         ## Introduction
@@ -137,9 +137,32 @@ Description: # Goopy
         
         ### v1.0
         
-        #### 1.0.66-beta 12th July 2020
+        #### 1.0.81-beta 12th July 2020
         
+        * Added a `slope()` function to the Point class to calculate the slope of a line between 2 points
+        * Added an `is_clicked()` function to the Line Object
+        * The GraphicsObject class now calls the `_update()` function for all the GraphicsObject when they are moved or rotated
+        * Added `get_size()`, `get_width()`, and `get_height()` functions to the Line Object
         
+        * Fixed bug with the mouse cursor not changing when the mouse is still, but the GraphicsObject is moving
+        * The Line object now checks if the arrow option specified is a key in its style
+        * Added Comments to the Line Class
+        * Added `arrowshape`, `capstyle` & `joinstyle` arguments to the Line class
+        * Added a `arrow_scale` argument to the line class that scales the arrow based on its based
+        * Added Line dashing with a few definitions of dashes already provided
+        
+        * Created the Line Wiki
+        * Added a try-except clause to the Line Vector Equation definition to handle vertical lines (undefined slope)
+        * Fixed bug with Polygon not filling itself the specified colour
+        
+        * Renamed the Linear & Cosine Interpolation function to `Linear/CosineCurve()` functions
+        * Added new Linear, Cosine, Cubic, and Hermite Interpolation functions that interpolate between 2 points
+        * The Goopy `imports.py` files now import the CurvedLine class too
+        * Added a `CURVE_INTERPOLATIONS` variable to the `constants.py` file
+        
+        * Added cosine, linear, and cubic interpolation to the Curved Line class - it's actually a curved line now!
+        * Added a `bounds_width` argument to the Line classes that determines how close a mouse click has to be to be considered clicking the line
+        * Added getter & setter function for the `bounds_width` argument of the Line classes
         
         #### 1.0.65-beta 11th July 2020
         
@@ -151,6 +174,7 @@ Description: # Goopy
         
         * Added key click, press, and a lot more related functions to the GraphWin (6290 lines long now!)
         * Added the Point class Wiki
+        * The Line class can now have multiple points as the input
         
         * Every function in the colours.py now raises a GraphicsError if the user hasn't provided the correct arguments
         * Fixed bug with line not drawing arrow

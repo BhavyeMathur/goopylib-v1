@@ -128,7 +128,9 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.81-beta 12th July 2020 (80)
+#### 13th July 2020 - Sorry! No update today because I am doing a Lord of the Rings Marathon! Unfortunately, not the extended editions, but oh well.
+
+#### 1.0.81-beta 12th July 2020
 
 * Added a `slope()` function to the Point class to calculate the slope of a line between 2 points
 * Added an `is_clicked()` function to the Line Object

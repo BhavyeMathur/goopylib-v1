@@ -123,6 +123,9 @@ class GraphicsObject:
         """updates internal state of object to rotate it r degrees CCW"""
         pass  # must override in subclass
 
+    def _update(self):
+        pass  # must override in subclass
+
     def set_clickable(self, clickable=True):
         if clickable:
             if self not in GraphicsObject.objects:
@@ -253,6 +256,7 @@ class GraphicsObject:
             if self.graphwin.autoflush:
                 self.graphwin.flush()
             self.redraw()
+        self._update()
         return self
 
     def move_to(self, x, y, align="center"):
@@ -414,6 +418,7 @@ class GraphicsObject:
     def rotate(self, dr):
         self.rotation += dr
         self._rotate(dr)
+        self._update()
         if self.graphwin is not None:
             self.redraw()
 
@@ -438,6 +443,10 @@ class GraphicsObject:
 
     def is_clicked(self, mouse_pos):
         return False
+
+    # -------------------------------------------------------------------------
+    # STATIC METHODS
+    # These are called by the GraphWin to update the GraphicsObjects
 
     @staticmethod
     def on_update(graphwin):
@@ -484,6 +493,8 @@ class GraphicsObject:
                     else:
                         obj.draw(graphwin)
                     obj.last_blink = t
+
+        GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
     @staticmethod
     def on_left_click(graphwin):

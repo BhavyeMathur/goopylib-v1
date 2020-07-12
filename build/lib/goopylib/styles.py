@@ -4,12 +4,19 @@ from goopylib.util import GraphicsError
 global_style = "default"
 
 STYLES = {"default": {"fill": CHROME_YELLOW, "background": WHITE,
-                      "outline": BLACK, "line outline": GREY,
+                      "outline": BLACK, "line outline": GREY, "width": 2,
 
-                      "width": 2, "line width": 3, "arrow": "none", "entry width": 0,
-                      "text colour": BLACK, "text": "Lorem Ipsum", "justify": "center",
-                      "font face": "calibri", "font size": 10, "font style": "normal", "font colour": BLACK,
-                      "select colour": BLUE, "font": (10, "calibri", "normal")},
+                      # Config for the Line Class
+                      "line width": 3, "capstyle": "round", "joinstyle": "round", "arrow": "none",
+                      "arrowshape": (8, 10, 3), "dash": None,
+
+                      # Config for the Entry class
+                      "entry width": 0, "select colour": BLUE,
+
+                      # Config for Font & Text
+                      "text": "Lorem Ipsum", "justify": "center", "font face": "calibri",
+                      "font size": 10, "font style": "normal", "font colour": BLACK,
+                      "font": (10, "calibri", "normal")},
           }
 
 

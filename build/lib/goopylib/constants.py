@@ -55,6 +55,13 @@ CURSORS_MACOSX = {}
 RELIEF = ["flat", "sunken", "raised", "groove", "ridge"]
 ARROWS = ["both", "none", "first", "last"]
 
+CAPSTYLES = ["round", "butt", "projecting"]
+JOINSTYLES = ["bevel", "round", "miter"]
+DASHES = {"solid": None, "dash": (5, ), "long dash": (8, ), "dot": (1, 3), "dashdot": (5, 1, 1, 1),
+          "long dashdot": (8, 1, 1, 1)}
+
+CURVE_INTERPOLATIONS = ["linear", "cosine", "cubic", "hermite", "spline"]
+
 INTERPOLATIONS = ["linear", "poly", "poly_in", "poly_out", "sin", "sin_in", "sin_out", "circle", "circle_in",
                   "circle_out", "back", "back_in", "back_out", "bounce", "bounce_in", "bounce_out", "elastic",
                   "elastic_in", "elastic_out", "exponential", "exponential_in", "exponential_out"]

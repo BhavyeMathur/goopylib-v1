@@ -1,46 +1,81 @@
 from goopylib.Point import Point
 from goopylib.util import GraphicsError
+
 import math
 
-def LinearInterpolation(t, control_points):
-    if not len(control_points) > 2:
-        raise GraphicsError("Length of Control Points must be greater than 2")
+class Interpolations:
+    pass
 
-    total_distance = control_points[-1].x - control_points[0].x
-    time_x = t * total_distance + control_points[0].x
+def LinearInterpolation(p0, p1, t):
+    if not isinstance(p0, Point):
+        raise GraphicsError(f"\n\nGraphicsError: p0 Point to Interpolate between must be a Point object, not {p0}")
+    if not isinstance(p1, Point):
+        raise GraphicsError(f"\n\nGraphicsError: p1 Point to Interpolate between must be a Point object, not {p1}")
+    if not (isinstance(t, int) or isinstance(t, float)):
+        raise GraphicsError(f"\n\nGraphicsError: t parameter for interpolation must be an int or float, not {t}")
+    if not 0 <= t <= 1:
+        raise GraphicsError(f"\n\nGraphicsError: t parameter must be between 0 & 1, 0 <= t <= 1, not {t}")
 
-    for i, point in enumerate(control_points):
-        if time_x < point.x:
-            lower_point = i - 1
-            break
+    return (1 - t) * p0.y + t * p1.y
 
-    upper_point = lower_point + 1
-    points_distance = control_points[lower_point].distance_x(control_points[upper_point])
+# References for these from http://paulbourke.net/miscellaneous/interpolation/
 
-    x = (1 - t) * control_points[lower_point].x + t * control_points[upper_point].x
-    proportion_done = (time_x - control_points[lower_point].x) / points_distance
+def CosineInterpolation(p0, p1, t):
+    if not isinstance(p0, Point):
+        raise GraphicsError(f"\n\nGraphicsError: p0 Point to Interpolate between must be a Point object, not {p0}")
+    if not isinstance(p1, Point):
+        raise GraphicsError(f"\n\nGraphicsError: p1 Point to Interpolate between must be a Point object, not {p1}")
+    if not (isinstance(t, int) or isinstance(t, float)):
+        raise GraphicsError(f"\n\nGraphicsError: t parameter for interpolation must be an int or float, not {t}")
+    if not 0 <= t <= 1:
+        raise GraphicsError(f"\n\nGraphicsError: t parameter must be between 0 & 1, 0 <= t <= 1, not {t}")
 
-    return Point(x, (1 - proportion_done) * control_points[lower_point].y + proportion_done * control_points[upper_point].y)
+    t = (1 - math.cos(t * math.pi)) / 2
+    return (1 - t) * p0.y + t * p1.y
 
-def CosineInterpolation(t, control_points):
-    if not len(control_points) > 2:
-        raise GraphicsError("Length of Control Points must be greater than 2")
+def CubicInterpolation(p0, p1, p2, p3, t):
+    for i, p in enumerate([p0, p1, p2, p3]):
+        if not isinstance(p, Point):
+            raise GraphicsError(f"\n\nGraphicsError: p{i} Point to Interpolate between must be a Point object, not {p}")
 
-    total_distance = control_points[-1].x - control_points[0].x
-    time_x = t * total_distance + control_points[0].x
+    if not (isinstance(t, int) or isinstance(t, float)):
+        raise GraphicsError(f"\n\nGraphicsError: t parameter for interpolation must be an int or float, not {t}")
+    if not 0 <= t <= 1:
+        raise GraphicsError(f"\n\nGraphicsError: t parameter must be between 0 & 1, 0 <= t <= 1, not {t}")
+    
+    a0 = p3.y - p2.y - p0.y + p1.y
+    a1 = p0.y - p1.y - a0
+    a2 = p2.y - p0.y
+    a3 = p1.y
+    
+    return (a0 * t ** 3) + (a1 * t ** 2) + (a2 * t) + a3
 
-    for i, point in enumerate(control_points):
-        if time_x < point.x:
-            lower_point = i - 1
-            break
+def HermiteInterpolation(p0, p1, p2, p3, t, tension, bias):
+    for i, p in enumerate([p0, p1, p2, p3]):
+        if not isinstance(p, Point):
+            raise GraphicsError(f"\n\nGraphicsError: p{i} Point to Interpolate between must be a Point object, not {p}")
 
-    upper_point = lower_point + 1
-    points_distance = control_points[lower_point].distance_x(control_points[upper_point])
+    if not (isinstance(t, int) or isinstance(t, float)):
+        raise GraphicsError(f"\n\nGraphicsError: t parameter for interpolation must be an int or float, not {t}")
+    if not 0 <= t <= 1:
+        raise GraphicsError(f"\n\nGraphicsError: t parameter must be between 0 & 1, 0 <= t <= 1, not {t}")
 
-    x = (1 - t) * control_points[lower_point].x + t * control_points[upper_point].x
-    proportion_done = (time_x - control_points[lower_point].x) / points_distance
+    if not (isinstance(tension, int) or isinstance(tension, float)):
+        raise GraphicsError(f"\n\nGraphicsError: tension for interpolation must be an int or float, not {tension}")
+    if not (isinstance(bias, int) or isinstance(bias, float)):
+        raise GraphicsError(f"\n\nGraphicsError: bias for interpolation must be an int or float, not {bias}")
 
-    ft = t * math.pi
-    f = (1 - math.cos(ft)) / 2
+    t2 = t ** 2
+    t3 = t ** 3
 
-    return Point(x, lower_point*(1-f) + upper_point*f)
+    m0 = (p1.y - p0.y) * (1 + bias) * (1 - tension) / 2
+    m0 += (p2.y - p1.y) * (1 - bias) * (1 - tension) / 2
+    m1 = (p2.y - p1.y) * (1 + bias) * (1 - tension) / 2
+    m1 += (p3.y - p2.y) * (1 - bias) * (1 - tension) / 2
+
+    a0 = 2 * t3 - 3 * t2 + 1
+    a1 = t3 - 2 * t2 + t
+    a2 = t3 - t2
+    a3 = -2 * t3 + 3 * t2
+
+    return a0 * p1.y + a1 * m0 + a2 * m1 + a3 * p2.y

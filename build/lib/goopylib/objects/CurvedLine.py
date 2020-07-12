@@ -1,91 +1,88 @@
-from goopylib.objects.GraphicsObject import GraphicsObject
-from goopylib.Point import Point
-from goopylib.styles import *
+from goopylib.objects.Line import Line
+from goopylib.math.Interpolations import *
+from goopylib.constants import CURVE_INTERPOLATIONS
 
+# The Curved Line class is used for drawing curved lines segments between 2 or more points
+# The Curved line class is really just a line split into multiple segments and smoothed to give the illusion of a curve
 
-class Line(GraphicsObject):
+class CurvedLine(Line):
 
-    def __init__(self, *p, bounds=None, style=None, outline=None, outline_width=None, arrow=None, cursor="arrow"):
+    def __init__(self, *p, style=None, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
+                 cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, interpolation="cosine", resolution=5,
+                 smooth=True, bounds_width=None,
+                 bias=0, tension=1):  # These last two are only required for hermite interpolation
 
-        GraphicsObject.__init__(self, options=["arrow", "width", "fill"], cursor=cursor)
+        if not isinstance(resolution, int):
+            raise GraphicsError(f"\n\nGraphicsError: The Resolution for the curved line must be an integer, "
+                                f"not {resolution}")
+        if resolution < 0:
+            raise GraphicsError(f"\n\nGraphicsError: The Resolution for the curved line must be a non-negative integer, "
+                                f"not {resolution}")
+        if interpolation not in CURVE_INTERPOLATIONS:
+            raise GraphicsError("\n\nGraphicsError: The Interpolation for the curved line must be one of "
+                                f"{CURVE_INTERPOLATIONS}, not {interpolation}")
 
-        if arrow in STYLES[self.style].keys():
-            self.arrow = STYLES[self.style][arrow]
-        elif isinstance(arrow, str):
-            self.arrow = arrow
-        else:
-            if "arrow face" in STYLES[self.style].keys():
-                self.arrow = STYLES[self.style]["arrow face"]
-            else:
-                self.arrow = STYLES["default"]["arrow face"]
+        if not (isinstance(bias, float) or isinstance(bias, int)):
+            raise GraphicsError(f"\n\nGraphicsError: The bias for the curved line must be an integer or float, "
+                                f"not {bias}")
+        if not (isinstance(tension, float) or isinstance(tension, int)):
+            raise GraphicsError(f"\n\nGraphicsError: The tension for the curved line must be an integer or float, "
+                                f"not {tension}")
 
-        self.points = p
+        self.is_smooth = smooth
+        if interpolation == "linear":
+            self.is_smooth = False
 
-        self.low_x, self.low_y = self.points[0].x, self.points[0].y
-        self.high_x, self.high_y = self.low_x, self.low_y
-        self.anchor = Point(0, 0)
-        for point in self.points:
-            if point.x < self.low_x:
-                self.low_x = point.x
-            elif point.x > self.high_x:
-                self.high_x = point.x
-            if point.y < self.low_y:
-                self.low_y = point.y
-            elif point.y > self.high_y:
-                self.high_y = point.y
-            self.anchor += point
+        self.points = list(p)
+        self.points_copy = self.points.copy()
 
-        self.width = abs(self.low_x.distance_x(self.high_x))
-        self.height = abs(self.low_y.distance_y(self.high_y))
-        self.anchor /= len(self.points)
+        if interpolation in ["cosine", "linear"]:
+            for point in range(len(p) - 1):
+                for t in range(1, resolution + 1):
+                    tn = t / (resolution + 1)
+                    x = self.points[point].x + tn * (self.points[point + 1].x - self.points[point].x)
 
-        self.set_outline = self.set_fill
+                    if interpolation == "cosine":
+                        new_point = Point(x, CosineInterpolation(self.points[point], self.points[point + 1], tn))
+                    else:
+                        new_point = Point(x, LinearInterpolation(self.points[point], self.points[point + 1], tn))
+
+                    self.points_copy.insert((point * (resolution + 1)) + t, new_point)
+
+        elif interpolation in ["hermite", "cubic"]:
+            self.points.insert(0, self.points[0])
+            self.points.insert(-1, self.points[-1])
+            self.points_copy = self.points.copy()
+
+            for point in range(1, len(self.points) - 2):
+                for t in range(1, resolution + 1):
+                    tn = t / (resolution + 1)
+                    x = self.points[point].x + tn * (self.points[point + 1].x - self.points[point].x)
+
+                    if interpolation == "cubic":
+                        new_point = Point(x, CubicInterpolation(self.points[point - 1], self.points[point],
+                                                                self.points[point + 1], self.points[point + 2], tn))
+                    else:
+                        new_point = Point(x, HermiteInterpolation(self.points[point - 1], self.points[point],
+                                                                  self.points[point + 1], self.points[point + 2], tn,
+                                                                  tension, bias))
+
+                    self.points_copy.insert((point * (resolution + 1)) + t - resolution, new_point)
+
+            self.points_copy = self.points_copy[1:-1]
+
+        Line.__init__(self, *self.points_copy, style=style, outline=outline, outline_width=outline_width, arrow=arrow,
+                      capstyle=capstyle, joinstyle=joinstyle, cursor=cursor, arrow_shape=arrow_shape,
+                      arrow_scale=arrow_scale, dash=dash, bounds_width=bounds_width)
 
     def __repr__(self):
-        return f"Line({self.points})"
+        return f"Curved Line({self.points})"
+
+    def __dir__(self):
+        return "see https://github.com/BhavyeMathur/goopylib/wiki/Lines-&-Curved-Lines!"
 
     def _draw(self, canvas, options):
+        # Converting all the coordinates to Window coordinates to account for stretching, changed coords, etc.
         points = [canvas.to_screen(point.x, point.y) for point in self.points]
-        self.graphwin = canvas
 
-        return canvas.create_line(points, options)
-
-    def set_arrow(self, option):
-        if option.lower() not in ["first", "last", "both", "none"]:
-            raise GraphicsError("\n\nArrow option for line must be one of ['first', 'last', 'both', 'none']")
-        self._reconfig("arrow", option)
-
-    def remove_arrows(self):
-        self.set_arrow("none")
-
-    def set_arrow_both(self):
-        self.set_arrow("none")
-
-    def set_arrow_first(self):
-        self.set_arrow("none")
-
-    def set_arrow_last(self):
-        self.set_arrow("none")
-
-    def _move(self, dx, dy):
-        for i in range(len(self.points)):
-            self.points[i] += Point(dx, dy)
-
-        self.anchor = self.get_anchor()
-        self._update()
-
-    def is_clicked(self, mouse_pos):
-        return False
-
-    def get_anchor(self):
-        return Point((self.p1.x + self.p2.x) / 2, (self.p1.y + self.p2.y) / 2)
-
-    def get_width(self):
-        return self.width
-
-    def get_height(self):
-        return self.height
-
-    def get_fill(self):
-        return self.config["fill"]
-
+        return canvas.create_line(points, options, smooth=self.is_smooth)  # Creating the line!

@@ -256,6 +256,13 @@ class Point:
             raise GraphicsError(f"\n\np2 argument for distance calculation must be a Point class, not {p2}")
         return p2.y - self.y
 
+    def slope(self, p2):
+        if not isinstance(p2, Point):
+            raise GraphicsError(f"\n\np2 argument for slope calculation must be a Point class, not {p2}")
+        if self.x == p2.x:
+            raise GraphicsError(f"\n\nThe two points have the same x value, cannot calculate slope!")
+        return (self.y - p2.y) / (self.x - p2.x)
+
     def clone(self):
         return Point(self.x, self.y)
 
