@@ -61,7 +61,7 @@ from goopylib.Point import Point
 
 ### Documentation
 
-There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written document, however, there is not such documentation right now.
+There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written document and the creation of the documentation has begun at: https://github.com/BhavyeMathur/goopylib/wiki
 
 ### Projects made using Goopy
 
