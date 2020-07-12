@@ -128,10 +128,19 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.67-beta 12th July 2020
+#### 1.0.73-beta 12th July 2020 (67)
 
 * Added a `slope()` function to the Point class to calculate the slope of a line between 2 points
 * Added an `is_clicked()` function to the Line Object
+* The GraphicsObject class now calls the `_update()` function for all the GraphicsObject when they are moved or rotated
+* Added `get_size()`, `get_width()`, and `get_height()` functions to the Line Object
+
+* Fixed bug with the mouse cursor not changing when the mouse is still, but the GraphicsObject is moving
+* The Line object now checks if the arrow option specified is a key in its style
+* Added Comments to the Line Class
+* Added `arrowshape`, `capstyle` & `joinstyle` arguments to the Line class
+* Added a `arrow_scale` argument to the line class that scales the arrow based on its based
+* Added Line dashing with a few definitions of dashes preprovided
 
 #### 1.0.65-beta 11th July 2020
 
@@ -143,6 +152,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 * Added key click, press, and a lot more related functions to the GraphWin (6290 lines long now!)
 * Added the Point class Wiki
+* The Line class can now have multiple points as the input
 
 * Every function in the colours.py now raises a GraphicsError if the user hasn't provided the correct arguments
 * Fixed bug with line not drawing arrow

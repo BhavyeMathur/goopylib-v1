@@ -1,10 +1,13 @@
-from goopylib.imports import *
+from goopylib.GraphWin import GraphWin
+from goopylib.objects.Line import Line
+from goopylib.Point import Point
 
 #create_custom_ease()
 
 window = GraphWin("Test Window", width=800, height=800, autoflush=False)
 
-l = Line(Point(100, 400), Point(300, 200), Point(700, 400), outline_width=200, cursor="x").draw(window)
+l = Line(Point(100, 400), Point(300, 200), Point(700, 400), outline_width=5, dash="dot", arrow="both", cursor="x").draw(window)
+l.animate_rotate(360, 60)
 
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
 
