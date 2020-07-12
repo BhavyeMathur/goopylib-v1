@@ -87,18 +87,37 @@ class Line(GraphicsObject):
         for line in self.segments:
             # For more information about these steps, see https://www.desmos.com/calculator/esn97hdwbe
 
-            slope = line[0].slope(line[1])  # Finding the slope of the line segment
-            shift = - line[0].y / slope  # Finding the x-shift
+            try:
+                slope = line[0].slope(line[1])  # Finding the slope of the line segment
+                shift = - line[0].y / slope  # Finding the x-shift
 
-            # The height of the line to get it to be the correct amount of wide when rotated
-            width = self.get_outline_width() / (cos(atan(slope)))
+                # The height of the line to get it to be the correct amount of wide when rotated
+                width = self.get_outline_width() / (cos(atan(slope)))
 
-            smaller = min([line[0].x, line[1].x])  # Which point has a smaller/larger x value?
-            larger = max([line[0].x, line[1].x])
+                smaller = min([line[0].x, line[1].x])  # Which point has a smaller/larger x value?
+                larger = max([line[0].x, line[1].x])
 
-            self.equations.append(VectorEquation(  # Creating the Vector Equation of this line segment
-                f"({slope} * (x - {shift} - {line[0].x}) + {width}/2 > y > "
-                f"{slope} * (x - {shift} - {line[0].x}) - {width}/2) and ({smaller} < x < {larger})"))
+                self.equations.append(VectorEquation(  # Creating the Vector Equation of this line segment
+                    f"({slope} * (x - {shift} - {line[0].x}) + {width}/2 > y > "
+                    f"{slope} * (x - {shift} - {line[0].x}) - {width}/2) and ({smaller} < x < {larger})"))
+            except GraphicsError:  # The Line is Vertical
+
+                smaller = min([line[0].y, line[1].y])  # Which point has a smaller/larger y value?
+                larger = max([line[0].y, line[1].y])
+
+                self.equations.append(VectorEquation(
+                    f"({line[0].x + self.get_outline_width()/2} > x > {line[1].x - self.get_outline_width()/2}) and"
+                    f"({larger} > y > {smaller})"))
+
+            except ZeroDivisionError:  # The Line is Horizontal
+
+                smaller = min([line[0].x, line[1].x])  # Which point has a smaller/larger x value?
+                larger = max([line[0].x, line[1].x])
+
+                self.equations.append(VectorEquation(
+                    f"({line[0].y + self.get_outline_width()/2}> y > {line[0].y - self.get_outline_width()/2}) "
+                    f"and ({smaller} < x < {larger})"))
+
         self.get_anchor()
 
     # -------------------------------------------------------------------------

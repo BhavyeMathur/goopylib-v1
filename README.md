@@ -128,7 +128,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.73-beta 12th July 2020 (67)
+#### 1.0.75-beta 12th July 2020 (73)
 
 * Added a `slope()` function to the Point class to calculate the slope of a line between 2 points
 * Added an `is_clicked()` function to the Line Object
@@ -143,6 +143,8 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added Line dashing with a few definitions of dashes already provided
 
 * Created the Line Wiki
+* Added a try-except clause to the Line Vector Equation definition to handle verticle lines (undefined slope)
+* Fixed bug with Polygon not filling itself the specified colour
 
 #### 1.0.65-beta 11th July 2020
 
