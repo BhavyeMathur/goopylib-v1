@@ -8,7 +8,7 @@ from goopylib.constants import CURVE_INTERPOLATIONS
 class CurvedLine(Line):
 
     def __init__(self, *p, style=None, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
-                 cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, interpolation="cosine", resolution=1,
+                 cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, interpolation="cosine", resolution=5,
                  smooth=True, bounds_width=None,
                  bias=0, tension=1):  # These last two are only required for hermite interpolation
 
