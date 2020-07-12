@@ -10,7 +10,7 @@ from math import sin, cos, radians, atan
 class Line(GraphicsObject):
 
     def __init__(self, *p, style=None, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
-                 cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None):
+                 cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, bounds_width=None):
 
         self.points = list(p)  # The list of points that define the line segment
         for i, p in enumerate(self.points):
@@ -44,6 +44,11 @@ class Line(GraphicsObject):
         self.set_capstyle(capstyle)  # Setting the cap & join styles of the line
         self.set_joinstyle(joinstyle)
         self.set_arrow_shape(arrow_shape, scale=bool(arrow_scale))
+
+        if bounds_width is None:
+            self.bounds_width = self.get_outline_width()
+        else:
+            self.bounds_width = bounds_width
 
         self.segments = None  # These 2 variables are defined in the _update() method
         self.equations = None
@@ -92,7 +97,7 @@ class Line(GraphicsObject):
                 shift = - line[0].y / slope  # Finding the x-shift
 
                 # The height of the line to get it to be the correct amount of wide when rotated
-                width = self.get_outline_width() / (cos(atan(slope)))
+                width = self.bounds_width / (cos(atan(slope)))
 
                 smaller = min([line[0].x, line[1].x])  # Which point has a smaller/larger x value?
                 larger = max([line[0].x, line[1].x])
@@ -100,13 +105,14 @@ class Line(GraphicsObject):
                 self.equations.append(VectorEquation(  # Creating the Vector Equation of this line segment
                     f"({slope} * (x - {shift} - {line[0].x}) + {width}/2 > y > "
                     f"{slope} * (x - {shift} - {line[0].x}) - {width}/2) and ({smaller} < x < {larger})"))
+
             except GraphicsError:  # The Line is Vertical
 
                 smaller = min([line[0].y, line[1].y])  # Which point has a smaller/larger y value?
                 larger = max([line[0].y, line[1].y])
 
                 self.equations.append(VectorEquation(
-                    f"({line[0].x + self.get_outline_width()/2} > x > {line[1].x - self.get_outline_width()/2}) and"
+                    f"({line[0].x + self.bounds_width/2} > x > {line[1].x - self.bounds_width/2}) and"
                     f"({larger} > y > {smaller})"))
 
             except ZeroDivisionError:  # The Line is Horizontal
@@ -115,7 +121,7 @@ class Line(GraphicsObject):
                 larger = max([line[0].x, line[1].x])
 
                 self.equations.append(VectorEquation(
-                    f"({line[0].y + self.get_outline_width()/2}> y > {line[0].y - self.get_outline_width()/2}) "
+                    f"({line[0].y + self.bounds_width/2}> y > {line[0].y - self.bounds_width/2}) "
                     f"and ({smaller} < x < {larger})"))
 
         self.get_anchor()
