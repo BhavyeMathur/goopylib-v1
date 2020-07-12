@@ -18,15 +18,15 @@ Text(Point(290, 340), "d3", font_size=15).draw(window)
 Polygon(Point(505, 404), Point(340, 300), Point(340, 404), fill=BLACK).draw(window)
 """
 
-Line(Point(100, 100), Point(400, 100), outline=BLACK).draw(window)
-Line(Point(100, 150), Point(400, 150), outline=BLACK, arrow="first").draw(window)
-Line(Point(100, 200), Point(400, 200), outline=BLACK, arrow="last").draw(window)
-Line(Point(100, 250), Point(400, 250), outline=BLACK, arrow="both").draw(window)
+Line(Point(400, 250), Point(400, 50), Point(100, 250), outline=BLACK, outline_width=30).draw(window)
+Line(Point(400, 500), Point(400, 300), Point(100, 500), outline=BLACK, outline_width=30,
+     capstyle="butt", joinstyle="bevel").draw(window)
+Line(Point(400, 750), Point(400, 550), Point(100, 750), outline=BLACK, outline_width=30,
+     capstyle="projecting", joinstyle="miter").draw(window)
 
-Text(Point(250, 115), "No Arrow - 'none'", font_size=10).draw(window)
-Text(Point(250, 165), "No Arrow - 'first'", font_size=10).draw(window)
-Text(Point(250, 215), "No Arrow - 'last'", font_size=10).draw(window)
-Text(Point(250, 265), "No Arrow - 'both'", font_size=10).draw(window)
+Text(Point(170, 80), "'round' Capstyle\n& Joinstyle", font_size=15, font_face="Century Gothic").draw(window)
+Text(Point(170, 330), "'butt' Capstyle\n& 'bevel' Joinstyle", font_size=15, font_face="Century Gothic").draw(window)
+Text(Point(170, 580), "'projecting' Capstyle\n& 'miter' Joinstyle", font_size=15, font_face="Century Gothic").draw(window)
 
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
 

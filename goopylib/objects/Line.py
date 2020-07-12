@@ -243,7 +243,7 @@ class Line(GraphicsObject):
             
     def set_capstyle(self, style):
         if style is not None:  # If the Option is None, set the capstyle to default capstyle
-            if style.lower() not in ARROWS:  # Check if the Arrow specified is valid
+            if style.lower() not in CAPSTYLES:  # Check if the Arrow specified is valid
                 raise GraphicsError(f"\n\nGraphicsError: capstyle for line must be one of {CAPSTYLES}, not {style}")
             elif style in STYLES[self.style].keys():  # Checking if the style is a key referencing the object's style
                 self._reconfig("capstyle", STYLES[self.style][style])
@@ -254,7 +254,7 @@ class Line(GraphicsObject):
     
     def set_joinstyle(self, style):
         if style is not None:  # If the Option is None, set the joinstyle to default joinstyle
-            if style.lower() not in ARROWS:  # Check if the Arrow specified is valid
+            if style.lower() not in JOINSTYLES:  # Check if the Arrow specified is valid
                 raise GraphicsError(f"\n\nGraphicsError: joinstyle for line must be one of {JOINSTYLES}, not {style}")
             elif style in STYLES[self.style].keys():  # Checking if the style is a key referencing the object's style
                 self._reconfig("joinstyle", STYLES[self.style][style])
