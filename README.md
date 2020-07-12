@@ -140,7 +140,9 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added Comments to the Line Class
 * Added `arrowshape`, `capstyle` & `joinstyle` arguments to the Line class
 * Added a `arrow_scale` argument to the line class that scales the arrow based on its based
-* Added Line dashing with a few definitions of dashes preprovided
+* Added Line dashing with a few definitions of dashes already provided
+
+* Created the Line Wiki
 
 #### 1.0.65-beta 11th July 2020
 
