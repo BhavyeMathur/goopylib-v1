@@ -6,8 +6,7 @@ from goopylib.Point import Point
 
 window = GraphWin("Test Window", width=800, height=800, autoflush=False)
 
-l = Line(Point(100, 400), Point(300, 200), Point(700, 400), outline_width=5, dash="dot", arrow="both", cursor="x").draw(window)
-l.animate_rotate(360, 60)
+l = Line(Point(100, 400), Point(300, 200), Point(700, 400)).draw(window)
 
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
 
