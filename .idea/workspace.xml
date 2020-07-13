@@ -40,21 +40,22 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/goopylib/objects" />
+    <property name="last_opened_file_path" value="$USER_HOME$/OneDrive/Python/Minecraft" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Minecraft" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.generator">
     <configuration name="ModernGUI-Example" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="goopylib" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -76,19 +77,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Pac-ManAnimation" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="goopylib" />
+    <configuration name="generator" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Minecraft" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Examples/Pac-Man-Animation Example" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/Minecraft" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Examples/Pac-Man-Animation Example/Pac-ManAnimation.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/Minecraft/generator.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -163,17 +164,17 @@
     <list>
       <item itemvalue="Python.setup" />
       <item itemvalue="Python.test" />
-      <item itemvalue="Python.Pac-ManAnimation" />
       <item itemvalue="Python.ModernGUI-Example" />
       <item itemvalue="Python.newtest" />
+      <item itemvalue="Python.generator" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.generator" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.setup" />
         <item itemvalue="Python.newtest" />
         <item itemvalue="Python.ModernGUI-Example" />
-        <item itemvalue="Python.Pac-ManAnimation" />
       </list>
     </recent_temporary>
   </component>
@@ -224,22 +225,26 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="750" y="304" key="CommitChangelistDialog2/0.0.2189.1419@0.0.2189.1419" timestamp="1594276086225" />
-    <state width="1402" height="428" key="GridCell.Tab.0.bottom" timestamp="1594651232968">
+    <state x="93" y="93" width="2003" height="1234" key="DiffContextDialog" timestamp="1594658162667">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1402" height="428" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594651232968" />
-    <state width="1402" height="428" key="GridCell.Tab.0.center" timestamp="1594651232968">
+    <state x="93" y="93" width="2003" height="1234" key="DiffContextDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594658162667" />
+    <state width="2168" height="428" key="GridCell.Tab.0.bottom" timestamp="1594659393425">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1402" height="428" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594651232968" />
-    <state width="1402" height="428" key="GridCell.Tab.0.left" timestamp="1594651232968">
+    <state width="2168" height="428" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594659393425" />
+    <state width="2168" height="428" key="GridCell.Tab.0.center" timestamp="1594659393423">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1402" height="428" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594651232968" />
-    <state width="1402" height="428" key="GridCell.Tab.0.right" timestamp="1594651232968">
+    <state width="2168" height="428" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594659393423" />
+    <state width="2168" height="428" key="GridCell.Tab.0.left" timestamp="1594659393422">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1402" height="428" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594651232968" />
+    <state width="2168" height="428" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594659393422" />
+    <state width="2168" height="428" key="GridCell.Tab.0.right" timestamp="1594659393424">
+      <screen x="0" y="0" width="2189" height="1419" />
+    </state>
+    <state width="2168" height="428" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594659393424" />
     <state width="1402" height="494" key="GridCell.Tab.1.bottom" timestamp="1594648512869">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>

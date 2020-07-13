@@ -49,9 +49,7 @@ class Arc(CurvedLine):
         x_change = self.radius1 / 2 / x_coeff
         y_change = self.radius2 / 2 / y_coeff
 
-        start_x = self.radius1 * math.cos(math.radians(self.start_angle))
-        p.x = x_change/2 + start_x
-        self.points = [p - Point(0, self.radius2 / 2)]
+        self.points = [p - Point(x_change/2, self.radius2 / 2)]
 
         for i in range(resolution):
             cur_angle = (i * angle_change) + start_angle

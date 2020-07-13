@@ -18,6 +18,7 @@ Text(Point(290, 340), "d3", font_size=15).draw(window)
 Polygon(Point(505, 404), Point(340, 300), Point(340, 404), fill=BLACK).draw(window)
 """
 
+
 """
 
 Line(Point(400, 250), Point(400, 50), Point(100, 250), outline=BLACK, outline_width=30).draw(window)
@@ -34,7 +35,7 @@ Text(Point(170, 580), "'projecting' Capstyle\n& 'miter' Joinstyle", font_size=15
 
 radius1 = 700
 radius2 = 700
-example_arc = Arc(Point(400, 400), start_angle=45, end_angle=360 + 45, radius=700, resolution=10).draw(window)
+example_arc = Arc(Point(400, 400), start_angle=0, end_angle=360, radius=700, resolution=20).draw(window)
 
 Line(Point(400, 400 - radius2/2), Point(400, 400 + radius2/2)).draw(window)
 Line(Point(400 - radius1/2, 400), Point(400 + radius1/2, 400)).draw(window)
