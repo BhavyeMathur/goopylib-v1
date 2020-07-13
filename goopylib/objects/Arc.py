@@ -7,6 +7,9 @@ import math
 class Arc(CurvedLine):
     def __init__(self, p, start_angle, end_angle, radius, radius2=None, style=None, outline=None, outline_width=None,
                  cursor="arrow", arrow=None, resolution=10, smooth=True, bounds_width=10):
+
+        if not isinstance(p, Point):
+            raise GraphicsError(f"\n\nGraphicsError: Anchor Point (p) for Arc must be a Point Object, not {p}")
         
         if not (isinstance(start_angle, int) or isinstance(start_angle, float)):
             raise GraphicsError(f"\n\nGraphicsError: start_angle must be an integer or float, not {start_angle}")
@@ -28,16 +31,12 @@ class Arc(CurvedLine):
         if radius2 is None:
             self.radius2 = radius
         else:
-            self.radius2 = radius2
-
-        #resolution *= abs((end_angle - start_angle) // 90)
+            self.radius2 = radius
 
         angle_change = (end_angle - start_angle) / resolution
 
         range_end = 90 / angle_change
         decimal_points = min([len(str(range_end).split('.')[1]), 3])
-
-        print(range_end, decimal_points)
 
         x_coeff = sum([abs(math.cos(math.radians(i * angle_change + start_angle))) for i in range(int(range_end * 10 ** decimal_points))])
         y_coeff = sum([abs(math.sin(math.radians(i * angle_change + start_angle))) for i in range(int(range_end * 10 ** decimal_points))])
@@ -59,5 +58,3 @@ class Arc(CurvedLine):
 
         CurvedLine.__init__(self, *self.points, style=style, outline=outline, outline_width=outline_width, arrow=arrow,
                             resolution=2, interpolation="spline", smooth=smooth, bounds_width=bounds_width)
-
-        # self.equation = VectorEquation()
