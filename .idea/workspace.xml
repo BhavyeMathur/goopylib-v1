@@ -2,7 +2,59 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="442b5543-b561-4ddf-8aa5-06f800e9a1f7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib-1.0.81b0-py3.7.egg-info/PKG-INFO" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib-1.0.81b0-py3.7.egg-info/SOURCES.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib-1.0.81b0-py3.7.egg-info/dependency_links.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib-1.0.81b0-py3.7.egg-info/requires.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib-1.0.81b0-py3.7.egg-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib-1.0.81b0.dist-info/dependency_links.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib-1.0.81b0.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/GraphWin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/Point.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/_internal_classes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/applications/custom_ease.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/colours.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/imports.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/math/BSpline.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/math/BezierCurve.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/math/Curves.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/math/Easing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/math/Interpolations.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/math/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/math/imports.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Arc.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Button.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Checkbox.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Circle.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/CurvedLine.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/CycleButton.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Entry.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/GraphicsObject.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Image.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Line.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Oval.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Polygon.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/RadioButton.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Rectangle.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Slider.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/Text.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/_BBox.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/objects/imports.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/styles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/bdist.win-amd64/wheel/goopylib/util.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/goopylib/objects/SolidArc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib.egg-info/PKG-INFO" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib.egg-info/PKG-INFO" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib.egg-info/SOURCES.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/Point.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/Point.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/math/Interpolations.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/math/Interpolations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/goopylib/objects/Arc.py" beforeDir="false" afterPath="$PROJECT_DIR$/goopylib/objects/Arc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +105,7 @@
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.setup">
+  <component name="RunManager" selected="Python.test">
     <configuration name="ModernGUI-Example" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="goopylib" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -168,8 +220,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.setup" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.setup" />
         <item itemvalue="Python.newtest" />
         <item itemvalue="Python.ModernGUI-Example" />
         <item itemvalue="Python.Pac-ManAnimation" />
@@ -223,46 +275,46 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="750" y="304" key="CommitChangelistDialog2/0.0.2189.1419@0.0.2189.1419" timestamp="1594276086225" />
-    <state width="2168" height="432" key="GridCell.Tab.0.bottom" timestamp="1594584976379">
+    <state width="1402" height="428" key="GridCell.Tab.0.bottom" timestamp="1594646536085">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="432" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594584976379" />
-    <state width="2168" height="432" key="GridCell.Tab.0.center" timestamp="1594584976379">
+    <state width="1402" height="428" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594646536085" />
+    <state width="1402" height="428" key="GridCell.Tab.0.center" timestamp="1594646536085">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="432" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594584976379" />
-    <state width="2168" height="432" key="GridCell.Tab.0.left" timestamp="1594584976379">
+    <state width="1402" height="428" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594646536085" />
+    <state width="1402" height="428" key="GridCell.Tab.0.left" timestamp="1594646536084">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="432" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594584976379" />
-    <state width="2168" height="432" key="GridCell.Tab.0.right" timestamp="1594584976379">
+    <state width="1402" height="428" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594646536084" />
+    <state width="1402" height="428" key="GridCell.Tab.0.right" timestamp="1594646536085">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="432" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594584976379" />
-    <state width="2168" height="497" key="GridCell.Tab.1.bottom" timestamp="1594579707353">
+    <state width="1402" height="428" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594646536085" />
+    <state width="1402" height="494" key="GridCell.Tab.1.bottom" timestamp="1594637667221">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="497" key="GridCell.Tab.1.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594579707353" />
-    <state width="2168" height="497" key="GridCell.Tab.1.center" timestamp="1594579707353">
+    <state width="1402" height="494" key="GridCell.Tab.1.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1594637667221" />
+    <state width="1402" height="494" key="GridCell.Tab.1.center" timestamp="1594637667221">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="497" key="GridCell.Tab.1.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594579707353" />
-    <state width="2168" height="497" key="GridCell.Tab.1.left" timestamp="1594579707353">
+    <state width="1402" height="494" key="GridCell.Tab.1.center/0.0.2189.1419@0.0.2189.1419" timestamp="1594637667221" />
+    <state width="1402" height="494" key="GridCell.Tab.1.left" timestamp="1594637667221">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="497" key="GridCell.Tab.1.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594579707353" />
-    <state width="2168" height="497" key="GridCell.Tab.1.right" timestamp="1594579707353">
+    <state width="1402" height="494" key="GridCell.Tab.1.left/0.0.2189.1419@0.0.2189.1419" timestamp="1594637667221" />
+    <state width="1402" height="494" key="GridCell.Tab.1.right" timestamp="1594637667221">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="2168" height="497" key="GridCell.Tab.1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594579707353" />
+    <state width="1402" height="494" key="GridCell.Tab.1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594637667221" />
     <state x="803" y="407" key="SettingsEditor" timestamp="1594150161435">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="803" y="407" key="SettingsEditor/0.0.2189.1419@0.0.2189.1419" timestamp="1594150161435" />
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1594542244161">
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1594626658834">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594542244161" />
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594626658834" />
     <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1594447595972">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -271,9 +323,9 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="837" y="353" key="refactoring.ChangeSignatureDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594356066856" />
-    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1594566786828">
+    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1594639333002">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup/0.0.2189.1419@0.0.2189.1419" timestamp="1594566786828" />
+    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup/0.0.2189.1419@0.0.2189.1419" timestamp="1594639333002" />
   </component>
 </project>

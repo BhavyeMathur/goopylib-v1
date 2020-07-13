@@ -32,26 +32,12 @@ Text(Point(170, 580), "'projecting' Capstyle\n& 'miter' Joinstyle", font_size=15
 
 """
 
-x = 10
-colour_grad1 = ColourGradient(LIGHTER_GREEN, DARKEST_GREEN, x)
-colour_grad2 = ColourGradient(LIGHTER_BLUE, DARKEST_BLUE, x)
-colour_grad3 = ColourGradient(LIGHTER_PURPLE, DARKEST_PURPLE, x)
-points = [Point(50, 400), Point(150, 200), Point(200, 600), Point(400, 100), Point(500, 200), Point(700, 700), ]
+radius1 = 700
+radius2 = 500
+arc = Arc(Point(400, 400), start_angle=0, end_angle=360, radius=radius1, radius2=radius2).draw(window)
 
-for p in points:
-    Circle(p, 5, fill=VIOLET, outline_width=0).draw(window)
-
-for i in range(x):
-    CurvedLine(*points, interpolation="spline", resolution=i, outline=colour_grad1[i]).draw(window)
-    CurvedLine(*points, interpolation="cosine", resolution=i, outline=colour_grad2[i]).draw(window)
-    CurvedLine(*points, interpolation="cubic", resolution=i, outline=colour_grad3[i]).draw(window)
-
-"""
-CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=10, outline=GREEN, interpolation="spline").draw(window)
-CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=10, outline=BLUE, interpolation="cosine").draw(window)
-CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=10, outline=VIOLET, interpolation="cubic").draw(window)
-CurvedLine(Point(100, 400), Point(400, 100), Point(700, 400), resolution=10, outline=RED, interpolation="linear").draw(window)
-"""
+Line(Point(400, 400 - radius2/2), Point(400, 400 + radius2/2)).draw(window)
+Line(Point(400 - radius1/2, 400), Point(400 + radius1/2, 400)).draw(window)
 
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
 

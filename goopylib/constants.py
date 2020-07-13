@@ -61,6 +61,7 @@ DASHES = {"solid": None, "dash": (5, ), "long dash": (8, ), "dot": (1, 3), "dash
           "long dashdot": (8, 1, 1, 1)}
 
 CURVE_INTERPOLATIONS = ["linear", "cosine", "cubic", "hermite", "spline"]
+ARC_TYPES = ["arc", "pieslice", "chord"]
 
 INTERPOLATIONS = ["linear", "poly", "poly_in", "poly_out", "sin", "sin_in", "sin_out", "circle", "circle_in",
                   "circle_out", "back", "back_in", "back_out", "bounce", "bounce_in", "bounce_out", "elastic",

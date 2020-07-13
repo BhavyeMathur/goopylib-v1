@@ -30,9 +30,9 @@ class Point:
 
     def __sub__(self, other):
         if isinstance(other, Point):
-            return Point(self.x + other.x, self.y + other.y)
+            return Point(self.x - other.x, self.y - other.y)
         elif isinstance(other, int) or isinstance(other, float):
-            return Point(self.x + other, self.y + other)
+            return Point(self.x - other, self.y - other)
         else:
             raise TypeError(f"unsupported operand type(s) for -: 'Point' and {type(other)}'")
 
