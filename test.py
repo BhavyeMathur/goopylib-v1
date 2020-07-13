@@ -33,11 +33,11 @@ Text(Point(170, 580), "'projecting' Capstyle\n& 'miter' Joinstyle", font_size=15
 """
 
 radius1 = 700
-radius2 = 500
-arc = Arc(Point(400, 400), start_angle=0, end_angle=150, radius=radius1).draw(window)
+radius2 = 700
+example_arc = Arc(Point(400, 400), start_angle=45, end_angle=360 + 45, radius=700, resolution=10).draw(window)
 
-#Line(Point(400, 400 - radius2/2), Point(400, 400 + radius2/2)).draw(window)
-#Line(Point(400 - radius1/2, 400), Point(400 + radius1/2, 400)).draw(window)
+Line(Point(400, 400 - radius2/2), Point(400, 400 + radius2/2)).draw(window)
+Line(Point(400 - radius1/2, 400), Point(400 + radius1/2, 400)).draw(window)
 
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
 
