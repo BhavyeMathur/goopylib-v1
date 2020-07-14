@@ -19,7 +19,7 @@ class Image(GraphicsObject):
 
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: Image anchor point (p) must be a Point object, not {p}")
-        if align in ALIGN_OPTIONS:
+        if align not in ALIGN_OPTIONS:
             raise GraphicsError(f"\n\nGraphicsError: Image align must be one of {ALIGN_OPTIONS}, not {align}")
 
         if osisfile(f"textures/{filepath}"):
