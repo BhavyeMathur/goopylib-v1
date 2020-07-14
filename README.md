@@ -65,11 +65,11 @@ There are plans to create a detailed documentation for this library both in the 
 
 ### Projects made using Goopy
 
-As these are entire projects, I have not supplied the code for these. If you want to look at example projects with code, skip to the next section 'Examples'. 
+As these are entire projects with a lot of code and non-goopy elements, I have not supplied the code. But, if you want to look at example projects with code, skip to the next section 'Examples'. 
 
 **1. A Pac-Man Recreation**
 
-I worked on this as a school project and used the goopy library to fully functional Pac-Man Game! (and an arcade too) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and fruits to go on to the next level.
+I worked on this as a school project and used the goopy library to create fully functional Pac-Man Game! (and an arcade too!) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and fruits to go on to the next level.
 
 ![Pac-Man Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man.png)
 
