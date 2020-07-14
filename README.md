@@ -128,7 +128,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.86-beta 13th-14th July 2020 (85)
+#### 1.0.97-beta 13th-14th July 2020
 
 * Added functionality to the Arc class which now inherits from the Curved Line class which means it has all the functionality of the line class too!
 * Added an empty Solid Arc class
@@ -137,6 +137,19 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Performance upgrade to the Image class when drawing it. It no longer updates itself (because it's not required) causing image drawing to be much faster
 * Added `move_forward()`, `move_backward()`, `move_left()`, `move_right()` functions to the GraphicsObject class
 * Added `get_screen_width()` and  `get_screen_height()` function to util.py
+* Added `get_cursor()` & `get_config_options()` functions to the GraphicsObject class
+
+* All GraphicsObject animation function return themselves
+* Added new animation functions! `animate_change_fill()` and `animate_set_fill()`
+* Added a `blend_colour()` function to colours.py to allow for Interpolating between Colours
+* Added compatibility for Colours to be performed operations on with floats
+* Fixed bug with the `ease_bounce()` function raising an `TypeError`
+* Added even more animation functions! `animate_change_outline()` and `animate_set_outline()`
+
+* Added `get_mouse_pos()` and `check_keys_down` functions to the GraphWin
+* The user can now specify if they want duplicate animations and they can give a duplicates metric to specify what a duplicate is
+* Renamed all the arguments for animations such as `Rotation`, `Distance`, `Colour Change`, etc. to just `Change`
+* Added a `check_animation_exists()` function to the GraphWin to check if an animation already exists
  
 #### 1.0.81-beta 12th July 2020
 

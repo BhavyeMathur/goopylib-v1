@@ -214,6 +214,9 @@ class BBox(GraphicsObject):
     def get_height(self):
         return self.height
 
+    def get_outline(self):
+        return self.config["outline"]
+
     def set_dimensions(self, width, height, horizontal_align="center", vertical_align="center"):
         self.set_width(width, horizontal_align)
         self.set_height(height, vertical_align)

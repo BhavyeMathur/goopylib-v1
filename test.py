@@ -1,7 +1,5 @@
 from goopylib.imports import *
 
-#create_custom_ease()
-
 window = GraphWin("Test Window", width=800, height=800, autoflush=False)
 
 """
@@ -18,7 +16,6 @@ Text(Point(290, 340), "d3", font_size=15).draw(window)
 Polygon(Point(505, 404), Point(340, 300), Point(340, 404), fill=BLACK).draw(window)
 """
 
-
 """
 
 Line(Point(400, 250), Point(400, 50), Point(100, 250), outline=BLACK, outline_width=30).draw(window)
@@ -33,15 +30,28 @@ Text(Point(170, 580), "'projecting' Capstyle\n& 'miter' Joinstyle", font_size=15
 
 """
 
+"""
 radius1 = 700
 radius2 = 700
 example_arc = Arc(Point(400, 400), start_angle=0, end_angle=360, radius=700, resolution=20).draw(window)
 
 Line(Point(400, 400 - radius2/2), Point(400, 400 + radius2/2)).draw(window)
 Line(Point(400 - radius1/2, 400), Point(400 + radius1/2, 400)).draw(window)
+"""
+
+rect = Rectangle(Point(100, 100), Point(500, 500), fill=DARKER_GREY, outline=DARK_WHITE).draw(window)
 
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
 
 while True:
-    mouse_pos = window.check_left_mouse_click()
+    mouse_pos = window.get_mouse_position()
+    if rect.is_clicked(mouse_pos):
+        rect.animate_set_fill(DARK_WHITE, time=0.1, allow_duplicate=False)
+        rect.animate_set_outline(DARKER_GREY, time=0.1, allow_duplicate=False)
+        rect.glide_to_x(340, time=0.1, allow_duplicate=False)
+    else:
+        rect.animate_set_fill(DARKER_GREY, time=0.1, allow_duplicate=False)
+        rect.animate_set_outline(DARK_WHITE, time=0.1, allow_duplicate=False)
+        rect.glide_to_x(300, time=0.1, allow_duplicate=False)
+
     window.update_win()

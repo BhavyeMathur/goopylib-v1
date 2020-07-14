@@ -14,6 +14,9 @@ class GraphicsObject:
     rotating_objects = []
     resizing_objects = []
     blinking_objects = []
+    animating_fill_objects = []
+    animating_outline_objects = []
+    animating_width_objects = []
 
     objects = []
     button_instances = []
@@ -46,7 +49,7 @@ class GraphicsObject:
             else:
                 raise GraphicsError(f"\n\nStyle argument must be one of {STYLES.keys()}, not {style}")
 
-        # config is the dictionary of configuration options for the widget.
+        # Config is the dictionary of configuration options for the widget.
         self.config = {}
         for option in options:
             if option not in STYLES[self.style].keys():
@@ -61,33 +64,39 @@ class GraphicsObject:
         self.selected = False
         self.anchor = self.get_anchor()
 
-        self.is_gliding = False
-        self.glide_queue = []
-
         self.callbacks = {}
 
+        # -------------------------------------------------------------------------
+        # Animation Variables
+
+        self.fill_queue = []
+        self.outline_queue = []
+        self.width_queue = []
+        self.resizing_queue = []
+        self.glide_queue = []
         self.rotating_queue = []
+
+        self.is_animating_width = False
+        self.is_resizing = False
+        self.is_gliding = False
         self.is_rotating = False
-        self.rotation = 0
-
-        self.is_draggable = False
-        self.is_dragging = False
-
-        self.resizing_factor = None
-        self.resizing_easing = None
-        self.is_resizing = None
-
-        self.resizing_time = None
-        self.resizing_update = None
-        self.resizing_start = None
-        self.resizing_args = None
+        self.is_animating_fill = False
+        self.is_animating_outline = False
 
         self.is_blinking = False
         self.blinking_interval = None
         self.last_blink_time = 0
 
+        # -------------------------------------------------------------------------
+        # Other Variables
+
         self.bounds = None
         self.cursor = cursor
+
+        self.is_draggable = False
+        self.is_dragging = False
+
+        self.rotation = 0
 
         self.graphwin = None
         self.drawn = False
@@ -127,40 +136,6 @@ class GraphicsObject:
 
     def _update(self):
         pass  # must override in subclass
-
-    def set_clickable(self, clickable=True):
-        if clickable:
-            if self not in GraphicsObject.objects:
-                GraphicsObject.objects.append(self)
-        else:
-            if self in GraphicsObject.objects:
-                GraphicsObject.objects.remove(self)
-
-        return self
-
-    def set_draggable(self, draggable=True, callback=None):
-        self.is_draggable = draggable
-        self.callbacks["Dragging"] = callback
-        return self
-
-    def set_selected(self, selected=True):
-        self.selected = selected
-
-    def set_fill(self, colour):
-        """Set interior colour to colour"""
-        self._reconfig("fill", colour)
-        return self
-
-    def set_outline(self, colour):
-        """Set outline colour to colour"""
-        self._reconfig("outline", colour)
-        return self
-
-    def set_outline_width(self, width):
-        """Set line weight to width"""
-        self._reconfig("width", width)
-        self.text_width = width
-        return self
 
     def draw(self, graphwin):
 
@@ -204,30 +179,84 @@ class GraphicsObject:
                 self.animate_blinking(0, animate=False)
         return self
 
+    def redraw(self):
+        if self.graphwin.is_open():
+            self.undraw()
+            self.draw(self.graphwin)
+        return self
+
+    # -------------------------------------------------------------------------
+    # SETTER FUNCTIONS
+
+    def set_clickable(self, clickable=True):
+        if clickable:
+            if self not in GraphicsObject.objects:
+                GraphicsObject.objects.append(self)
+        else:
+            if self in GraphicsObject.objects:
+                GraphicsObject.objects.remove(self)
+
+        return self
+
+    def set_draggable(self, draggable=True, callback=None):
+        self.is_draggable = draggable
+        self.callbacks["Dragging"] = callback
+        return self
+
+    def set_selected(self, selected=True):
+        self.selected = selected
+
+    def set_fill(self, colour):
+        """Set interior colour to colour"""
+        self._reconfig("fill", colour)
+        return self
+
+    def set_outline(self, colour):
+        """Set outline colour to colour"""
+        self._reconfig("outline", colour)
+        return self
+
+    def set_outline_width(self, width):
+        """Set line weight to width"""
+        self._reconfig("width", width)
+        self.text_width = width
+        return self
+
+    def set_cursor(self, cursor="arrow"):
+        self.cursor = cursor
+
+    # -------------------------------------------------------------------------
+    # GETTER FUNCTIONS
+
     def get_width(self):
         return 0
 
     def get_height(self):
         return 0
 
-    def set_cursor(self, cursor="arrow"):
-        self.cursor = cursor
-
     def get_anchor(self):
         pass
 
-    def animate_blinking(self, interval, animate=True):
-        self.is_blinking = animate
-        self.blinking_interval = interval
-        self.last_blink_time = timetime()
+    def get_cursor(self):
+        return self.cursor
 
-        if animate and self not in GraphicsObject.blinking_objects:
-            GraphicsObject.blinking_objects.append(self)
-        elif not animate and self in GraphicsObject.blinking_objects:
-            GraphicsObject.blinking_objects.remove(self)
+    def get_config_options(self):
+        return self.config.keys()
+
+    def get_fill(self):
+        """Override in GraphicsObject subclasses if fill is a valid config for them"""
+        pass
+
+    def get_outline(self):
+        """Override in GraphicsObject subclasses if outline is a valid config for them"""
+        pass
+
+    def get_outline_width(self):
+        """Override in GraphicsObject subclasses if outline is a valid config for them"""
+        pass
 
     # -------------------------------------------------------------------------
-    # MOVEMENT & GLIDING FUNCTIONS
+    # OBJECT TRANSFORMATION FUNCTIONS
 
     # Object Moving Functions
 
@@ -235,7 +264,7 @@ class GraphicsObject:
 
         """move object dx units in x direction and dy units in y
         direction"""
-        
+
         if align == "center":
             self._move(dx, dy)
         elif align == "left":
@@ -297,138 +326,7 @@ class GraphicsObject:
     def move_right(self, d):
         self.move_left(-d)
 
-    # Object Gliding Functions
-
-    def glide(self, dx, dy=None, time=1, easing_x=ease_linear(), easing_y=None):
-        if dy is None:
-            dy = dx
-        if easing_y is None:
-            easing_y = easing_x
-
-        self.glide_x(time=time, dx=dx, easing=easing_x, _internal_call=True)
-        self.glide_y(time=time, dy=dy, easing=easing_y, _internal_call=True)
-
-        self.glide_queue.append({"Time": time, "Start": timetime(), "Update": timetime(), "Initial": self.anchor.clone(),
-                                 "Dist": Point(dx, dy), "EasingX": easing_x, "EasingY": easing_y})
-
-        return self
-
-    def glide_x(self, dx, time=1, easing=ease_linear(), _internal_call=False):
-        if not (isinstance(dx, int) or isinstance(dx, float)):
-            raise GraphicsError("\n\nThe x amount to glide the object by (dx) must be a number "
-                                f"(integer or float), not {dx}")
-        if not (isinstance(time, int) or isinstance(time, float)):
-            raise GraphicsError("\n\nThe time to glide the object for (time) must be a number "
-                                f"(integer or float), not {time}")
-        if not callable(easing):
-            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
-
-        self.is_gliding = True
-        if not _internal_call:
-            start = timetime()
-            initial_pos = self.anchor.clone()
-
-            for glide in self.glide_queue:
-                start += glide["Time"]
-                initial_pos = glide["Initial"] + glide["Dist"]
-
-            self.glide_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
-                                     "Dist": Point(dx, 0), "EasingX": easing, "EasingY": easing})
-
-        if self not in GraphicsObject.gliding_objects:
-            GraphicsObject.gliding_objects.append(self)
-
-        return self
-
-    def glide_y(self, dy, time=1, easing=ease_linear(), _internal_call=False):
-        if not (isinstance(dy, int) or isinstance(dy, float)):
-            raise GraphicsError("\n\nThe y amount to glide the object by (dy) must be a number "
-                                f"(integer or float), not {dy}")
-        if not (isinstance(time, int) or isinstance(time, float)):
-            raise GraphicsError("\n\nThe time to glide the object for (time) must be a number "
-                                f"(integer or float), not {time}")
-
-        if not callable(easing):
-            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
-
-        self.is_gliding = True
-        if not _internal_call:
-            start = timetime()
-            initial_pos = self.anchor.clone()
-
-            for glide in self.glide_queue:
-                start += glide["Time"]
-                initial_pos = glide["Initial"] + glide["Dist"]
-
-            self.glide_queue.append({"Time": time, "Start": start,
-                                     "Update": timetime(), "Initial": initial_pos,
-                                     "Dist": Point(0, dy), "EasingX": easing, "EasingY": easing})
-
-        if self not in GraphicsObject.gliding_objects:
-            GraphicsObject.gliding_objects.append(self)
-
-        return self
-
-    def glide_to(self, x, y=None, time=1, easing_x=ease_linear(), easing_y=None):
-        if y is None:
-            y = x
-        if easing_y is None:
-            easing_y = easing_x
-
-        self.glide_x(time=time, dx=x - self.anchor.x, easing=easing_x, _internal_call=True)
-        self.glide_y(time=time, dy=y - self.anchor.y, easing=easing_y, _internal_call=True)
-
-        start = timetime()
-        initial_pos = self.anchor.clone()
-        for glide in self.glide_queue:
-            start += glide["Time"]
-            initial_pos = glide["Initial"] + glide["Dist"]
-
-        self.glide_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
-                                 "Dist": Point(x, y) - initial_pos, "EasingX": easing_x, "EasingY": easing_y})
-
-        return self
-
-    def glide_to_x(self, x, time=1, easing=ease_linear()):
-        self.glide_x(time=time, dx=x - self.anchor.x, easing=easing)
-        return self
-
-    def glide_to_y(self, y, time=1, easing=ease_linear()):
-        self.glide_y(time=time, dy=y - self.anchor.y, easing=easing)
-        return self
-
-    def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
-        self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
-        return self
-
-    def animate_rotate(self, dr, time=1, easing=ease_linear()):
-        if not (isinstance(dr, int) or isinstance(dr, float)):
-            raise GraphicsError("\n\nThe amount to rotate the object by (dr) must be a number "
-                                f"(integer or float), not {dr}")
-        if not (isinstance(time, int) or isinstance(time, float)):
-            raise GraphicsError("\n\nThe time to rotate the object for (time) must be a number "
-                                f"(integer or float), not {time}")
-        if not callable(easing):
-            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
-
-        self.is_rotating = True
-        start = timetime()
-        initial_rotation = self.rotation
-
-        for rotation in self.rotating_queue:
-            start += rotation["Time"]
-            initial_pos = rotation["Initial"] + rotation["Rotation"]
-
-        self.rotating_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_rotation,
-                                    "Rotation": dr, "Easing": easing})
-
-        if self not in GraphicsObject.rotating_objects:
-            GraphicsObject.rotating_objects.append(self)
-
-    def animate_set_rotation(self, r, time=1, easing=ease_linear()):
-        self.animate_rotate(r - self.rotation, time=time, easing=easing)
-        return self
-
+    # Rotation Transformations
     def rotate(self, dr):
         self.rotation += dr
         self._rotate(dr)
@@ -442,11 +340,395 @@ class GraphicsObject:
         self.rotate(r - self.rotation)
         return self
 
-    def redraw(self):
-        if self.graphwin.is_open():
-            self.undraw()
-            self.draw(self.graphwin)
+    # -------------------------------------------------------------------------
+    # OBJECT ANIMATING FUNCTION
+
+    @staticmethod
+    def check_animation_exists(animations, check_animation, duplicates_metric=("Time", "Initial", "Change")):
+        duplicate_exists = False
+        for animation in animations:
+            duplicate_exists = False
+            for metric in duplicates_metric:
+                if animation[metric] == animation[metric]:
+                    duplicate_exists = True
+                else:
+                    duplicate_exists = False
+
+            if duplicate_exists:
+                return True
+        return False
+
+    def animate_blinking(self, interval, animate=True):
+        self.is_blinking = animate
+        self.blinking_interval = interval
+        self.last_blink_time = timetime()
+
+        if animate and self not in GraphicsObject.blinking_objects:
+            GraphicsObject.blinking_objects.append(self)
+        elif not animate and self in GraphicsObject.blinking_objects:
+            GraphicsObject.blinking_objects.remove(self)
         return self
+
+    # Object Gliding Functions
+    def glide(self, dx, dy=None, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
+              duplicates_metric=("Time", "Initial", "Change")):
+        for metric in duplicates_metric:
+            if metric not in DUPLICATES_METRICS["2D Animation"]:
+                raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                    f"{DUPLICATES_METRICS}, not {metric}")
+        if dy is None:
+            dy = dx
+        if easing_y is None:
+            easing_y = easing_x
+
+        self.glide_x(time=time, dx=dx, easing=easing_x, _internal_call=True, allow_duplicate=allow_duplicate,
+                     duplicates_metric=duplicates_metric)
+        self.glide_y(time=time, dy=dy, easing=easing_y, _internal_call=True, allow_duplicate=allow_duplicate,
+                     duplicates_metric=duplicates_metric)
+
+        animation_data = {"Time": time, "Start": timetime(), "Update": timetime(), "Initial": self.anchor.clone(),
+                          "Change": Point(dx, dy), "EasingX": easing_x, "EasingY": easing_y}
+
+        if not allow_duplicate:
+            if not self.check_animation_exists(self.glide_queue, animation_data, duplicates_metric):
+                self.glide_queue.append(animation_data)
+        else:
+            self.glide_queue.append(animation_data)
+
+        return self
+
+    def glide_x(self, dx, time=1, easing=ease_linear(), _internal_call=False, allow_duplicate=True,
+                duplicates_metric=("Time", "Initial", "Change")):
+        if not (isinstance(dx, int) or isinstance(dx, float)):
+            raise GraphicsError("\n\nThe x amount to glide the object by (dx) must be a number "
+                                f"(integer or float), not {dx}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nThe time to glide the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+        if not callable(easing):
+            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
+
+        if not _internal_call:
+            for metric in duplicates_metric:
+                if metric not in DUPLICATES_METRICS["1D Animation"]:
+                    raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                        f"{DUPLICATES_METRICS}, not {metric}")
+
+            start = timetime()
+            initial_pos = self.anchor.clone()
+
+            for glide in self.glide_queue:
+                start += glide["Time"]
+                initial_pos = glide["Initial"] + glide["Change"]
+
+            animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
+                              "Change": Point(dx, 0), "EasingX": easing, "EasingY": easing}
+
+            if not allow_duplicate:
+                if not self.check_animation_exists(self.glide_queue, animation_data, duplicates_metric):
+                    self.glide_queue.append(animation_data)
+            else:
+                self.glide_queue.append(animation_data)
+
+        if self not in GraphicsObject.gliding_objects:
+            self.is_gliding = True
+            GraphicsObject.gliding_objects.append(self)
+
+        return self
+
+    def glide_y(self, dy, time=1, easing=ease_linear(), _internal_call=False, allow_duplicate=True,
+                duplicates_metric=("Time", "Initial", "Change")):
+        if not (isinstance(dy, int) or isinstance(dy, float)):
+            raise GraphicsError("\n\nThe y amount to glide the object by (dy) must be a number "
+                                f"(integer or float), not {dy}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nThe time to glide the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+
+        if not callable(easing):
+            raise GraphicsError(f"\n\nThe Easing Function Provided ({easing}) is not a valid Function")
+
+        if not _internal_call:
+            for metric in duplicates_metric:
+                if metric not in DUPLICATES_METRICS["1D Animation"]:
+                    raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                        f"{DUPLICATES_METRICS}, not {metric}")
+
+            start = timetime()
+            initial_pos = self.anchor.clone()
+
+            for glide in self.glide_queue:
+                start += glide["Time"]
+                initial_pos = glide["Initial"] + glide["Change"]
+
+            animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
+                              "Change": Point(0, dy), "EasingX": easing, "EasingY": easing}
+
+            if not allow_duplicate:
+                if not self.check_animation_exists(self.glide_queue, animation_data, duplicates_metric):
+                    self.glide_queue.append(animation_data)
+            else:
+                self.glide_queue.append(animation_data)
+
+        if self not in GraphicsObject.gliding_objects:
+            self.is_gliding = True
+            GraphicsObject.gliding_objects.append(self)
+
+        return self
+
+    def glide_to(self, x, y=None, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
+                 duplicates_metric=("Time", "Initial", "Change")):
+        for metric in duplicates_metric:
+            if metric not in DUPLICATES_METRICS["2D Animation"]:
+                raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                    f"{DUPLICATES_METRICS}, not {metric}")
+
+        if y is None:
+            y = x
+        if easing_y is None:
+            easing_y = easing_x
+
+        self.glide_x(time=time, dx=x - self.anchor.x, easing=easing_x, _internal_call=True,
+                     allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
+        self.glide_y(time=time, dy=y - self.anchor.y, easing=easing_y, _internal_call=True,
+                     allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
+
+        start = timetime()
+        initial_pos = self.anchor.clone()
+        for glide in self.glide_queue:
+            start += glide["Time"]
+            initial_pos = glide["Initial"] + glide["Change"]
+
+        animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
+                          "Change": Point(x, y) - initial_pos, "EasingX": easing_x, "EasingY": easing_y}
+
+        if not allow_duplicate:
+            if not self.check_animation_exists(self.glide_queue, animation_data, duplicates_metric):
+                self.glide_queue.append(animation_data)
+        else:
+            self.glide_queue.append(animation_data)
+
+        return self
+
+    def glide_to_x(self, x, time=1, easing=ease_linear(), allow_duplicate=True,
+                   duplicates_metric=("Time", "Initial", "Change")):
+        self.glide_x(time=time, dx=x - self.anchor.x, easing=easing, allow_duplicate=allow_duplicate,
+                     duplicates_metric=duplicates_metric)
+        return self
+
+    def glide_to_y(self, y, time=1, easing=ease_linear(), allow_duplicate=True,
+                   duplicates_metric=("Time", "Initial", "Change")):
+        self.glide_y(time=time, dy=y - self.anchor.y, easing=easing, allow_duplicate=allow_duplicate,
+                     duplicates_metric=duplicates_metric)
+        return self
+
+    def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
+                       duplicates_metric=("Time", "Initial", "Change")):
+        self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y, allow_duplicate=allow_duplicate,
+                      duplicates_metric=duplicates_metric)
+        return self
+
+    # Rotating Animations
+    def animate_rotate(self, dr, time=1, easing=ease_linear(), allow_duplicate=True,
+                       duplicates_metric=("Time", "Initial", "Change")):
+        if not (isinstance(dr, int) or isinstance(dr, float)):
+            raise GraphicsError("\n\nGraphicsError: The amount to rotate the object by (dr) must be a number "
+                                f"(integer or float), not {dr}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nGraphicsError: The time to rotate the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+        if not callable(easing):
+            raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing}) is not a valid Function")
+        for metric in duplicates_metric:
+            if metric not in DUPLICATES_METRICS["1D Animation"]:
+                raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                    f"{DUPLICATES_METRICS}, not {metric}")
+
+        start = timetime()
+        initial_rotation = self.rotation
+
+        for rotation in self.rotating_queue:
+            start += rotation["Time"]
+            initial_pos = rotation["Initial"] + rotation["Change"]
+
+        animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_rotation,
+                          "Change": dr, "Easing": easing}
+
+        if not allow_duplicate:
+            if not self.check_animation_exists(self.rotating_queue, animation_data, duplicates_metric):
+                self.rotating_queue.append(animation_data)
+        else:
+            self.rotating_queue.append(animation_data)
+
+        if self not in GraphicsObject.rotating_objects:
+            GraphicsObject.rotating_objects.append(self)
+            self.is_rotating = True
+        return self
+
+    def animate_set_rotation(self, r, time=1, easing=ease_linear(), allow_duplicate=True,
+                             duplicates_metric=("Time", "Initial", "Change")):
+        self.animate_rotate(r - self.rotation, time=time, easing=easing, allow_duplicate=allow_duplicate,
+                            duplicates_metric=duplicates_metric)
+        return self
+
+    # Colour Animations
+    def animate_change_fill(self, colour_change, time=1, easing=ease_linear(), allow_duplicate=True,
+                            duplicates_metric=("Time", "Initial", "Change")):
+        if "fill" in self.config.keys():
+            if not isinstance(colour_change, tuple):
+                raise GraphicsError("\n\nGraphicsError: The colour change for the animation (colour_change) must be a "
+                                    f"tuple of length 3 (r, g, b), not {colour_change}")
+            if not (isinstance(time, int) or isinstance(time, float)):
+                raise GraphicsError("\n\nGraphicsError: The time to rotate the object for (time) must be a number "
+                                    f"(integer or float), not {time}")
+            if not callable(easing):
+                raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing}) is not a valid "
+                                    f"function")
+            for metric in duplicates_metric:
+                if metric not in DUPLICATES_METRICS["Colour Animation"]:
+                    raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                        f"{DUPLICATES_METRICS}, not {metric}")
+
+            start = timetime()
+            initial_fill = self.get_fill()
+
+            for animation in self.fill_queue:
+                start += animation["Time"]
+                initial_fill = ColourRGB(animation["Initial"][0] + animation["Change"][0],
+                                         animation["Initial"][1] + animation["Change"][1],
+                                         animation["Initial"][2] + animation["Change"][2], )
+
+            animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_fill,
+                              "Change": colour_change, "Easing": easing}
+
+            if not allow_duplicate:
+                if not self.check_animation_exists(self.fill_queue, animation_data, duplicates_metric):
+                    self.fill_queue.append(animation_data)
+            else:
+                self.fill_queue.append(animation_data)
+
+            if self not in GraphicsObject.animating_fill_objects:
+                GraphicsObject.animating_fill_objects.append(self)
+                self.is_animating_fill = True
+            return self
+
+        else:
+            raise GraphicsError("\n\nGraphicsError: This object doesn't support colour fill animations")
+
+    def animate_set_fill(self, end_colour, time=1, easing=ease_linear(), allow_duplicate=True,
+                         duplicates_metric=("Time", "Initial", "Change")):
+        if "fill" in self.config.keys():
+
+            initial_fill = self.get_fill()
+            for animation in self.fill_queue:
+                initial_fill = ColourRGB(animation["Initial"][0] + animation["Change"][0],
+                                         animation["Initial"][1] + animation["Change"][1],
+                                         animation["Initial"][2] + animation["Change"][2], )
+
+            self.animate_change_fill((end_colour[0] - initial_fill[0],
+                                      end_colour[1] - initial_fill[1],
+                                      end_colour[2] - initial_fill[2],), time=time, easing=easing,
+                                     allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
+            return self
+        else:
+            raise GraphicsError("\n\nGraphicsError: This object doesn't support colour fill animations")
+
+    def animate_change_outline(self, colour_change, time=1, easing=ease_linear(), allow_duplicate=True,
+                               duplicates_metric=("Time", "Initial", "Change")):
+        if "outline" in self.config.keys():
+            if not isinstance(colour_change, tuple):
+                raise GraphicsError("\n\nGraphicsError: The colour change for the animation (colour_change) must be a "
+                                    f"tuple of length 3 (r, g, b), not {colour_change}")
+            if not (isinstance(time, int) or isinstance(time, float)):
+                raise GraphicsError("\n\nGraphicsError: The time to rotate the object for (time) must be a number "
+                                    f"(integer or float), not {time}")
+            if not callable(easing):
+                raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing}) is not a valid "
+                                    f"function")
+            for metric in duplicates_metric:
+                if metric not in DUPLICATES_METRICS["Colour Animation"]:
+                    raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                        f"{DUPLICATES_METRICS}, not {metric}")
+
+            start = timetime()
+            initial_outline = self.get_outline()
+
+            for animation in self.outline_queue:
+                start += animation["Time"]
+                initial_outline = ColourRGB(animation["Initial"][0] + animation["Change"][0],
+                                            animation["Initial"][1] + animation["Change"][1],
+                                            animation["Initial"][2] + animation["Change"][2], )
+
+            animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_outline,
+                              "Change": colour_change, "Easing": easing}
+
+            if not allow_duplicate:
+                if not self.check_animation_exists(self.outline_queue, animation_data, duplicates_metric):
+                    self.outline_queue.append(animation_data)
+            else:
+                self.outline_queue.append(animation_data)
+
+            if self not in GraphicsObject.animating_outline_objects:
+                GraphicsObject.animating_outline_objects.append(self)
+                self.is_animating_outline = True
+
+            return self
+
+        else:
+            raise GraphicsError("\n\nGraphicsError: This object doesn't support colour outline animations")
+
+    def animate_set_outline(self, end_colour, time=1, easing=ease_linear(), allow_duplicate=True,
+                            duplicates_metric=("Time", "Initial", "Change")):
+        if "outline" in self.config.keys():
+
+            initial_outline = self.get_outline()
+            for animation in self.outline_queue:
+                initial_outline = ColourRGB(animation["Initial"][0] + animation["Change"][0],
+                                            animation["Initial"][1] + animation["Change"][1],
+                                            animation["Initial"][2] + animation["Change"][2])
+
+            self.animate_change_outline((end_colour[0] - initial_outline[0],
+                                         end_colour[1] - initial_outline[1],
+                                         end_colour[2] - initial_outline[2],), time=time, easing=easing,
+                                        allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
+            return self
+        else:
+            raise GraphicsError("\n\nGraphicsError: This object doesn't support colour outline animations")
+
+    def animate_outline_width(self, width_change, time=1, easing=ease_linear(), allow_duplicate=True,
+                              duplicates_metric=("Time", "Initial", "Change")):
+        if not (isinstance(width_change, int) or isinstance(width_change, float)):
+            raise GraphicsError("\n\nGraphicsError: The amount to change the outline width by (width_change) must be a "
+                                f"number (integer or float), not {width_change}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nGraphicsError: The time to outline_width the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+        if not callable(easing):
+            raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing}) is not a valid Function")
+
+        self.is_animating_width = True
+        start = timetime()
+        initial_width = self.get_outline_width()
+
+        for rotation in self.rotating_queue:
+            start += rotation["Time"]
+            initial_pos = rotation["Initial"] + rotation["Width Change"]
+        self.rotating_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_width,
+                                    "Width Change": width_change, "Easing": easing})
+
+        if self not in GraphicsObject.animating_width_objects:
+            GraphicsObject.animating_width_objects.append(self)
+        return self
+
+    def animate_set_outline_width(self, width_change, time=1, easing=ease_linear(), allow_duplicate=True,
+                                  duplicates_metric=("Time", "Initial", "Change")):
+        self.animate_outline_width(width_change - self.get_outline_width(), time=time, easing=easing,
+                                   allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
+        return self
+
+    # Object Outline Width Animations
+    # -------------------------------------------------------------------------
+    # OTHER FUNCTIONS
 
     def is_selected(self):
         selected = self.is_clicked(self.graphwin.get_last_mouse())
@@ -468,8 +750,8 @@ class GraphicsObject:
         for obj in GraphicsObject.gliding_objects:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.glide_queue[0]["Start"] >= obj.glide_queue[0]["Time"]:
-                    obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Dist"].x,
-                                obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Dist"].y)
+                    obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Change"].x,
+                                obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Change"].y)
 
                     obj.glide_queue.pop(0)  # Remove the object from the gliding queue
                     if len(obj.glide_queue) == 0:
@@ -479,15 +761,14 @@ class GraphicsObject:
                     perX = obj.glide_queue[0]["EasingX"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
                     perY = obj.glide_queue[0]["EasingY"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
 
-                    obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Dist"].x * perX,
-                                obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Dist"].y * perY)
+                    obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Change"].x * perX,
+                                obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Change"].y * perY)
                     obj.glide_queue[0]["Update"] = timetime()
 
-        t = timetime()
         for obj in GraphicsObject.rotating_objects:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.rotating_queue[0]["Start"] >= obj.rotating_queue[0]["Time"]:
-                    obj.set_rotation(obj.rotating_queue[0]["Initial"] + obj.rotating_queue[0]["Rotation"])
+                    obj.set_rotation(obj.rotating_queue[0]["Initial"] + obj.rotating_queue[0]["Change"])
                     obj.rotating_queue.pop(0)
 
                     if len(obj.rotating_queue) == 0:
@@ -496,7 +777,7 @@ class GraphicsObject:
                 else:
                     per = obj.rotating_queue[0]["Easing"]((t - obj.rotating_queue[0]["Start"])
                                                           / obj.rotating_queue[0]["Time"])
-                    obj.set_rotation(obj.rotating_queue[0]["Initial"] + obj.rotating_queue[0]["Rotation"] * per)
+                    obj.set_rotation(obj.rotating_queue[0]["Initial"] + obj.rotating_queue[0]["Change"] * per)
                     obj.rotating_queue[0]["Update"] = timetime()
 
         for obj in GraphicsObject.blinking_objects:
@@ -507,6 +788,58 @@ class GraphicsObject:
                     else:
                         obj.draw(graphwin)
                     obj.last_blink = t
+
+        for obj in GraphicsObject.animating_fill_objects:
+            if obj.graphwin == graphwin and obj.drawn:
+                if t - obj.fill_queue[0]["Start"] >= obj.fill_queue[0]["Time"]:
+
+                    obj.set_fill(ColourRGB(
+                        max([min([obj.fill_queue[0]["Initial"][0] + obj.fill_queue[0]["Change"][0], 255]), 0]),
+                        max([min([obj.fill_queue[0]["Initial"][1] + obj.fill_queue[0]["Change"][1], 255]), 0]),
+                        max([min([obj.fill_queue[0]["Initial"][2] + obj.fill_queue[0]["Change"][2], 255]), 0])))
+                    obj.fill_queue.pop(0)
+
+                    if len(obj.fill_queue) == 0:
+                        obj.is_animating_fill = False
+                        GraphicsObject.animating_fill_objects.remove(obj)
+                else:
+                    per = obj.fill_queue[0]["Easing"]((t - obj.fill_queue[0]["Start"])
+                                                      / obj.fill_queue[0]["Time"])
+
+                    red_change = int(obj.fill_queue[0]["Change"][0] * per)
+                    blue_change = int(obj.fill_queue[0]["Change"][1] * per)
+                    green_change = int(obj.fill_queue[0]["Change"][2] * per)
+
+                    obj.set_fill(ColourRGB(max([min([obj.fill_queue[0]["Initial"][0] + red_change, 255]), 0]),
+                                           max([min([obj.fill_queue[0]["Initial"][1] + blue_change, 255]), 0]),
+                                           max([min([obj.fill_queue[0]["Initial"][2] + green_change, 255]), 0])))
+                    obj.fill_queue[0]["Update"] = timetime()
+
+        for obj in GraphicsObject.animating_outline_objects:
+            if obj.graphwin == graphwin and obj.drawn:
+                if t - obj.outline_queue[0]["Start"] >= obj.outline_queue[0]["Time"]:
+
+                    obj.set_outline(ColourRGB(
+                        max([min([obj.outline_queue[0]["Initial"][0] + obj.outline_queue[0]["Change"][0], 255]), 0]),
+                        max([min([obj.outline_queue[0]["Initial"][1] + obj.outline_queue[0]["Change"][1], 255]), 0]),
+                        max([min([obj.outline_queue[0]["Initial"][2] + obj.outline_queue[0]["Change"][2], 255]), 0])))
+                    obj.outline_queue.pop(0)
+
+                    if len(obj.outline_queue) == 0:
+                        obj.is_animating_outline = False
+                        GraphicsObject.animating_outline_objects.remove(obj)
+                else:
+                    per = obj.outline_queue[0]["Easing"]((t - obj.outline_queue[0]["Start"])
+                                                         / obj.outline_queue[0]["Time"])
+
+                    red_change = int(obj.outline_queue[0]["Change"][0] * per)
+                    blue_change = int(obj.outline_queue[0]["Change"][1] * per)
+                    green_change = int(obj.outline_queue[0]["Change"][2] * per)
+
+                    obj.set_outline(ColourRGB(max([min([obj.outline_queue[0]["Initial"][0] + red_change, 255]), 0]),
+                                              max([min([obj.outline_queue[0]["Initial"][1] + blue_change, 255]), 0]),
+                                              max([min([obj.outline_queue[0]["Initial"][2] + green_change, 255]), 0])))
+                    obj.outline_queue[0]["Update"] = timetime()
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
@@ -623,7 +956,7 @@ class GraphicsObject:
             hover_count = 0
             for obj in GraphicsObject.objects:
                 if obj.graphwin == graphwin and graphwin.is_open():
-                    #print(obj)
+                    # print(obj)
                     if obj.is_clicked(mouse_pos):
                         graphwin.config(cursor=CURSORS[obj.cursor])
                         hover_count += 1

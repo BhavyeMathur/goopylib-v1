@@ -1421,6 +1421,13 @@ class GraphWin(tkCanvas):
         else:
             return
 
+    def get_mouse_position(self):
+        if self.mouse_pos is not None:
+            x, y = self.mouse_pos
+            return Point(x, y)
+        else:
+            return
+
     def check_left_mouse_down(self):
         return self.left_mouse_down
 
@@ -1472,6 +1479,9 @@ class GraphWin(tkCanvas):
         if _refresh:
             self.last_key_clicked = None
         return key
+
+    def check_keys_down(self):
+        return self.keys_down
 
     def check_key_with_shift_pressed(self, _refresh=True):
         key = self.key_pressed_with_shift

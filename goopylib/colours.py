@@ -1,7 +1,8 @@
 from goopylib.util import GraphicsError
 from random import randint as randomrandint
 
-# Defining Custom  & colour Functions
+# -------------------------------------------------------------------------
+# COLOUR CLASSES
 
 class Colour:
     def __init_subclass__(cls, **kwargs):
@@ -30,12 +31,12 @@ class Colour:
             red = self.red - other.red
             green = self.green - other.green
             blue = self.blue - other.blue
-        elif isinstance(other, int):
+        elif isinstance(other, int) or isinstance(other, float):
             red = self.red - other
             green = self.green - other
             blue = self.blue - other
         else:
-            raise TypeError(f"unsupported operand type(s) for -: 'Colour' and {type(other)}'. Must be a Colour or int")
+            raise TypeError(f"unsupported operand type(s) for -: 'Colour' and {type(other)}'. Must be a Colour or int or float")
 
         return ColourRGB(max([red, 0]), max([green, 0]), max([blue, 0]))
 
@@ -44,12 +45,12 @@ class Colour:
             red = self.red + other.red
             green = self.green + other.green
             blue = self.blue + other.blue
-        elif isinstance(other, int):
-            red = self.red + other
-            green = self.green + other
-            blue = self.blue + other
+        elif isinstance(other, int) or isinstance(other, float):
+            red = int(self.red + other)
+            green = int(self.green + other)
+            blue = int(self.blue + other)
         else:
-            raise TypeError(f"unsupported operand type(s) for +: 'Colour' and {type(other)}'. Must be a Colour or int")
+            raise TypeError(f"unsupported operand type(s) for +: 'Colour' and {type(other)}'. Must be a Colour or int or float")
 
         return ColourRGB(min([red, 255]), min([green, 255]), min([blue, 255]))
 
@@ -58,12 +59,13 @@ class Colour:
             red = self.red * other.red
             green = self.green * other.green
             blue = self.blue * other.blue
-        elif isinstance(other, int):
-            red = self.red * other
-            green = self.green * other
-            blue = self.blue * other
+        elif isinstance(other, int) or isinstance(other, float):
+            red = int(self.red * other)
+            green = int(self.green * other)
+            blue = int(self.blue * other)
         else:
-            raise TypeError(f"unsupported operand type(s) for *: 'Colour' and {type(other)}'. Must be a Colour or int")
+            raise TypeError(f"unsupported operand type(s) for *: 'Colour' and {type(other)}'. "
+                            f"Must be a Colour or int or float")
 
         return ColourRGB(red, green, blue)
 
@@ -72,12 +74,12 @@ class Colour:
             red = self.red // other.red
             green = self.green // other.green
             blue = self.blue // other.blue
-        elif isinstance(other, int):
-            red = self.red // other
-            green = self.green // other
-            blue = self.blue // other
+        elif isinstance(other, int) or isinstance(other, float):
+            red = int(self.red // other)
+            green = int(self.green // other)
+            blue = int(self.blue // other)
         else:
-            raise TypeError(f"unsupported operand type(s) for //: 'Colour' and {type(other)}'. Must be a Colour or int")
+            raise TypeError(f"unsupported operand type(s) for //: 'Colour' and {type(other)}'. Must be a Colour or int or float")
 
         return ColourRGB(red, green, blue)
 
@@ -89,12 +91,12 @@ class Colour:
             red = self.red % other.red
             green = self.green % other.green
             blue = self.blue % other.blue
-        elif isinstance(other, int):
-            red = self.red % other
-            green = self.green % other
-            blue = self.blue % other
+        elif isinstance(other, int) or isinstance(other, float):
+            red = int(self.red % other)
+            green = int(self.green % other)
+            blue = int(self.blue % other)
         else:
-            raise TypeError(f"unsupported operand type(s) for %: 'Colour' and {type(other)}'. Must be a Colour or int")
+            raise TypeError(f"unsupported operand type(s) for %: 'Colour' and {type(other)}'. Must be a Colour or int or float")
 
         return ColourRGB(red, green, blue)
     
@@ -103,12 +105,12 @@ class Colour:
             red = pow(self.red, power.red, modulo)
             green = pow(self.green ** power.green, modulo)
             blue = pow(self.blue ** power.blue, modulo)
-        elif isinstance(power, int):
-            red = pow(self.red ** power, modulo)
-            green = pow(self.green ** power, modulo)
-            blue = pow(self.blue ** power, modulo)
+        elif isinstance(power, int) or isinstance(power, float):
+            red = int(pow(self.red ** power, modulo))
+            green = int(pow(self.green ** power, modulo))
+            blue = int(pow(self.blue ** power, modulo))
         else:
-            raise TypeError(f"unsupported operand type(s) for **: 'Colour' and {type(power)}'. Must be a Colour or int")
+            raise TypeError(f"unsupported operand type(s) for **: 'Colour' and {type(power)}'. Must be a Colour or int or float")
 
         return ColourRGB(red, green, blue)
 
@@ -382,6 +384,9 @@ class ColourCMYK(Colour):
         self.blue = b
 
 
+# -------------------------------------------------------------------------
+# RANDOM COLOUR FUNCTIONS
+
 def RandomColourRGB(red=None, green=None, blue=None):
     if not isinstance(red, int):
         raise GraphicsError(f"\n\nThe red value must be an integer, not {red}")
@@ -499,7 +504,10 @@ def RandomGreyscale(start=0, end=255):
     grey = randomrandint(start, end)
     return ColourRGB(grey, grey, grey)
 
+# -------------------------------------------------------------------------
+# COLOUR GRADIENT & INTERPOLATION FUNCTIONS
 
+# Colour Gradients
 def ColourGradient(colour_start=ColourRGB(255, 255, 255), colour_end=ColourRGB(0, 0, 0), divisions=10):
 
     if not isinstance(colour_start, Colour):
@@ -559,6 +567,13 @@ def ColourGradient2D(colour_start1=ColourRGB(0, 0, 0), colour_end1=ColourRGB(255
 
     return gradient
 
+# Colour Blending
+def BlendLinear(colour_start, colour_end, t):
+    pass
+
+
+# -------------------------------------------------------------------------
+# COLOUR DEFINITIONS
 
 # The Blacks, Greys, and Whites
 BLACK = ColourRGB(0, 0, 0)

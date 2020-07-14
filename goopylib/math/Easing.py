@@ -173,8 +173,6 @@ def _ease_bounce_in(t, bounces):
     return 1 - _ease_bounce_out(1 - t, bounces)
 
 def ease_bounce_in(t=None, bounces=None):
-    if bounces is None:
-        bounces = [4 / 11, 6 / 11, 8 / 11, 3 / 4, 9 / 11, 10 / 11, 15 / 16, 21 / 22, 63 / 64]
     if t is not None:
         return _ease_bounce_in(t, bounces)
     else:
@@ -184,6 +182,8 @@ def ease_bounce_in(t=None, bounces=None):
 
 
 def _ease_bounce_out(t, bounces):
+    if bounces is None:
+        bounces = [4 / 11, 6 / 11, 8 / 11, 3 / 4, 9 / 11, 10 / 11, 15 / 16, 21 / 22, 63 / 64]
     if t < bounces[1]:
         return bounces[0] * t ** 2
     else:
@@ -210,7 +210,7 @@ def ease_bounce_out(t=None, bounces=None):
 def _ease_bounce(t, bounces_in, bounces_out):
     t *= 2
     if t <= 1:
-        return (1 - _ease_bounce_out(1 - t, bounces_in)) / 2
+        return (1 - _ease_bounce_in(1 - t, bounces=bounces_in)) / 2
     else:
         return (_ease_bounce_out(t - 1, bounces_out) + 1) / 2
 

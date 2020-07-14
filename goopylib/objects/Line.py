@@ -181,9 +181,6 @@ class Line(GraphicsObject):
     def get_outline(self):
         return self.config["fill"]
 
-    def get_cursor(self):
-        return self.cursor
-
     def get_capstyle(self):
         return self.config["capstyle"]
 
