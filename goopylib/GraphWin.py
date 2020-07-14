@@ -1428,6 +1428,8 @@ class GraphWin(tkCanvas):
         else:
             return
 
+    # Mouse Down Functions
+
     def check_left_mouse_down(self):
         return self.left_mouse_down
 

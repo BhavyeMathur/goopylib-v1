@@ -39,19 +39,30 @@ Line(Point(400, 400 - radius2/2), Point(400, 400 + radius2/2)).draw(window)
 Line(Point(400 - radius1/2, 400), Point(400 + radius1/2, 400)).draw(window)
 """
 
-rect = Rectangle(Point(100, 100), Point(500, 500), fill=DARKER_GREY, outline=DARK_WHITE).draw(window)
-
 #Text(Point(55, 55), text=window.get_bk_colour(), font_colour=WHITE, font_size=12, font_style="bold").draw(window)
+
+""""
+rect = Rectangle(Point(100, 100), Point(500, 500), fill=DARKER_GREY, outline=LIGHT_GREY, outline_width=4).draw(window)
+rect.set_draggable_y()"""
+
+img = Image(Point(400, 400), "Palm Trees.png").resize_to_fit_height(window, preserve_aspect_ratio=True).draw(window)
+img.crop(0, 0, 500, 500, align="topleft")
 
 while True:
     mouse_pos = window.get_mouse_position()
-    if rect.is_clicked(mouse_pos):
-        rect.animate_set_fill(DARK_WHITE, time=0.1, allow_duplicate=False)
-        rect.animate_set_outline(DARKER_GREY, time=0.1, allow_duplicate=False)
-        rect.glide_to_x(340, time=0.1, allow_duplicate=False)
-    else:
-        rect.animate_set_fill(DARKER_GREY, time=0.1, allow_duplicate=False)
-        rect.animate_set_outline(DARK_WHITE, time=0.1, allow_duplicate=False)
-        rect.glide_to_x(300, time=0.1, allow_duplicate=False)
+
+    """
+    if not window.check_left_mouse_down():
+        if rect.is_clicked(mouse_pos):
+            rect.animate_set_fill(DARK_WHITE, time=0.2, allow_duplicate=False)
+            rect.animate_set_outline(DARKER_GREY, time=0.2, allow_duplicate=False)
+            rect.animate_set_outline_width(8, time=0.2, allow_duplicate=False)
+            rect.glide_to_x(340, time=0.2, allow_duplicate=False)
+        else:
+            rect.animate_set_fill(DARKER_GREY, time=0.2, allow_duplicate=False)
+            rect.animate_set_outline(LIGHT_GREY, time=0.2, allow_duplicate=False)
+            rect.animate_set_outline_width(4, time=0.2, allow_duplicate=False)
+            rect.glide_to_x(300, time=0.2, allow_duplicate=False)
+    """
 
     window.update_win()

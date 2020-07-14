@@ -67,6 +67,8 @@ DUPLICATES_METRICS = {"Colour Animation": ["Change", "Start", "Time", "Update", 
 CURVE_INTERPOLATIONS = ["linear", "cosine", "cubic", "hermite", "spline"]
 ARC_TYPES = ["arc", "pieslice", "chord"]
 
+ALIGN_OPTIONS = ["top", "left", "right", "bottom", "center", "topleft", "topright", "bottomleft", "bottomright"]
+
 INTERPOLATIONS = ["linear", "poly", "poly_in", "poly_out", "sin", "sin_in", "sin_out", "circle", "circle_in",
                   "circle_out", "back", "back_in", "back_out", "bounce", "bounce_in", "bounce_out", "elastic",
                   "elastic_in", "elastic_out", "exponential", "exponential_in", "exponential_out"]

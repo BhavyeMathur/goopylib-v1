@@ -5,7 +5,7 @@ from goopylib.constants import *
 from goopylib.constants import _root
 from goopylib.math.Easing import *
 
-from math import cos, sin, radians
+from math import cos, sin, radians, gcd
 
 
 class GraphicsObject:
@@ -93,7 +93,7 @@ class GraphicsObject:
         self.bounds = None
         self.cursor = cursor
 
-        self.is_draggable = False
+        self.is_draggable = (False, False)
         self.is_dragging = False
 
         self.rotation = 0
@@ -198,14 +198,45 @@ class GraphicsObject:
 
         return self
 
-    def set_draggable(self, draggable=True, callback=None):
-        self.is_draggable = draggable
-        self.callbacks["Dragging"] = callback
+    def set_draggable(self, draggable_x=True, draggable_y=None, callback_x=None, callback_y=None):
+        if not isinstance(draggable_x, bool):
+            raise GraphicsError(f"\n\nGraphicsError: Draggable X value must be a boolean, not {draggable_x}")
+        if not (isinstance(draggable_y, bool) or draggable_y is None):
+            raise GraphicsError(f"\n\nGraphicsError: Draggable Y value must be a boolean or None, not {draggable_y}")
+        if not (callable(callback_x) or callback_x is None):
+            raise GraphicsError(f"\n\nGraphicsError: Callback for x drag must be None or a function, not {callback_x}")
+        if not (callable(callback_y) or callback_y is None):
+            raise GraphicsError(f"\n\nGraphicsError: Callback for y drag must be None or a function, not {callback_y}")
+
+        self.is_draggable = (draggable_x, draggable_x if draggable_y is None else draggable_y)
+        self.callbacks["DraggingX"] = callback_x
+        self.callbacks["DraggingY"] = callback_x if callback_y is None else callback_y
+        return self
+
+    def set_draggable_x(self, draggable=True, callback=None):
+        if not isinstance(draggable, bool):
+            raise GraphicsError(f"\n\nGraphicsError: Draggable value must be a boolean, not {draggable}")
+        if not (callable(callback) or callback is None):
+            raise GraphicsError(f"\n\nGraphicsError: Callback for drag must be None or a function, not {callback}")
+
+        self.is_draggable = (draggable, self.is_draggable[1])
+        self.callbacks["DraggingX"] = callback
+        return self
+
+    def set_draggable_y(self, draggable=True, callback=None):
+        if not isinstance(draggable, bool):
+            raise GraphicsError(f"\n\nGraphicsError: Draggable value must be a boolean, not {draggable}")
+        if not (callable(callback) or callback is None):
+            raise GraphicsError(f"\n\nGraphicsError: Callback for drag must be None or a function, not {callback}")
+
+        self.is_draggable = (self.is_draggable[0], draggable)
+        self.callbacks["DraggingY"] = callback
         return self
 
     def set_selected(self, selected=True):
         self.selected = selected
 
+    # Config Setter Functions
     def set_fill(self, colour):
         """Set interior colour to colour"""
         self._reconfig("fill", colour)
@@ -695,8 +726,8 @@ class GraphicsObject:
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support colour outline animations")
 
-    def animate_outline_width(self, width_change, time=1, easing=ease_linear(), allow_duplicate=True,
-                              duplicates_metric=("Time", "Initial", "Change")):
+    def animate_change_outline_width(self, width_change, time=1, easing=ease_linear(), allow_duplicate=True,
+                                     duplicates_metric=("Time", "Initial", "Change")):
         if not (isinstance(width_change, int) or isinstance(width_change, float)):
             raise GraphicsError("\n\nGraphicsError: The amount to change the outline width by (width_change) must be a "
                                 f"number (integer or float), not {width_change}")
@@ -706,24 +737,31 @@ class GraphicsObject:
         if not callable(easing):
             raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing}) is not a valid Function")
 
-        self.is_animating_width = True
         start = timetime()
         initial_width = self.get_outline_width()
 
-        for rotation in self.rotating_queue:
-            start += rotation["Time"]
-            initial_pos = rotation["Initial"] + rotation["Width Change"]
-        self.rotating_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_width,
-                                    "Width Change": width_change, "Easing": easing})
+        for animation in self.width_queue:
+            start += animation["Time"]
+            initial_pos = animation["Initial"] + animation["Change"]
+
+        animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_width,
+                          "Change": width_change, "Easing": easing}
+
+        if not allow_duplicate:
+            if not self.check_animation_exists(self.width_queue, animation_data, duplicates_metric):
+                self.width_queue.append(animation_data)
+        else:
+            self.width_queue.append(animation_data)
 
         if self not in GraphicsObject.animating_width_objects:
             GraphicsObject.animating_width_objects.append(self)
+            self.is_animating_width = True
         return self
 
     def animate_set_outline_width(self, width_change, time=1, easing=ease_linear(), allow_duplicate=True,
                                   duplicates_metric=("Time", "Initial", "Change")):
-        self.animate_outline_width(width_change - self.get_outline_width(), time=time, easing=easing,
-                                   allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
+        self.animate_change_outline_width(width_change - self.get_outline_width(), time=time, easing=easing,
+                                          allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
         return self
 
     # Object Outline Width Animations
@@ -841,6 +879,21 @@ class GraphicsObject:
                                               max([min([obj.outline_queue[0]["Initial"][2] + green_change, 255]), 0])))
                     obj.outline_queue[0]["Update"] = timetime()
 
+        for obj in GraphicsObject.animating_width_objects:
+            if obj.graphwin == graphwin and obj.drawn:
+                if t - obj.width_queue[0]["Start"] >= obj.width_queue[0]["Time"]:
+                    obj.set_outline_width(obj.width_queue[0]["Initial"] + obj.width_queue[0]["Change"])
+                    obj.width_queue.pop(0)
+
+                    if len(obj.width_queue) == 0:
+                        obj.is_width = False
+                        GraphicsObject.animating_width_objects.remove(obj)
+                else:
+                    per = obj.width_queue[0]["Easing"]((t - obj.width_queue[0]["Start"])
+                                                          / obj.width_queue[0]["Time"])
+                    obj.set_outline_width(obj.width_queue[0]["Initial"] + obj.width_queue[0]["Change"] * per)
+                    obj.width_queue[0]["Update"] = timetime()
+
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
     @staticmethod
@@ -956,17 +1009,20 @@ class GraphicsObject:
             hover_count = 0
             for obj in GraphicsObject.objects:
                 if obj.graphwin == graphwin and graphwin.is_open():
-                    # print(obj)
                     if obj.is_clicked(mouse_pos):
                         graphwin.config(cursor=CURSORS[obj.cursor])
                         hover_count += 1
+
                     if obj.is_dragging:
                         if graphwin.left_mouse_down:
-                            obj.move_to_point(mouse_pos)
-                            try:
-                                obj.callbacks["Dragging"]()
-                            except TypeError:
-                                pass
+                            if obj.is_draggable[0]:
+                                obj.move_to_x(mouse_pos.x)
+                                if obj.callbacks["DraggingX"] is not None:
+                                    obj.callbacks["DraggingX"]()
+                            if obj.is_draggable[1]:
+                                obj.move_to_y(mouse_pos.y)
+                                if obj.callbacks["DraggingY"] is not None:
+                                    obj.callbacks["DraggingY"]()
                         else:
                             obj.is_dragging = False
 

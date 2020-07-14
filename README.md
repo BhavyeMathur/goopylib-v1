@@ -128,7 +128,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.97-beta 13th-14th July 2020
+#### 1.0.107-beta 13th-14th July 2020 - 6632 lines of code
 
 * Added functionality to the Arc class which now inherits from the Curved Line class which means it has all the functionality of the line class too!
 * Added an empty Solid Arc class
@@ -150,6 +150,18 @@ Goopy also has functionality for other animations such as moving to locations, r
 * The user can now specify if they want duplicate animations and they can give a duplicates metric to specify what a duplicate is
 * Renamed all the arguments for animations such as `Rotation`, `Distance`, `Colour Change`, etc. to just `Change`
 * Added a `check_animation_exists()` function to the GraphWin to check if an animation already exists
+* Animation functions for changing width: `animate_change_outline_width()` and `animate_set_outline_width()`
+
+* Added axis-based dragging functions with callbacks: `set_draggable_x()` and `set_draggable_y()`
+* Added `resize_to_fit()`, `resize_to_fit_width()`, & `resize_to_height()` functions to the image class to resize itself to the size of another object
+* Added `resize_width()` and `resize_height()` to resize only 1 dimension of the image
+
+* Added a `get_aspect_ratio()` function to the Image class
+* Fixed bug in Image class with the image undrawing when resized or the internal `img_PIL` changed.
+* Added an option to preserve the aspect ratio of an image while resizing
+* Added an align to image croping to align the image to a certain side/corner
+
+* Added Errors to the Image class `__init__` function
  
 #### 1.0.81-beta 12th July 2020
 
@@ -178,7 +190,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added a `bounds_width` argument to the Line classes that determines how close a mouse click has to be to be considered clicking the line
 * Added getter & setter function for the `bounds_width` argument of the Line classes
 
-#### 1.0.65-beta 11th July 2020
+#### 1.0.65-beta 11th July 2020 - 6290 lines of code
 
 * Added more getter functions to the GraphWin class
 * Every function in the GraphWin class now raises a GraphicsError if the user hasn't provided the correct arguments
@@ -186,7 +198,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Renamed the internal argument `refresh` to `_refresh` for the GraphWin
 * The GraphWin now checks if `autoflush` is True before updating when the `redraw()`function is called.
 
-* Added key click, press, and a lot more related functions to the GraphWin (6290 lines long now!)
+* Added key click, press, and a lot more related functions to the GraphWin
 * Added the Point class Wiki
 * The Line class can now have multiple points as the input
 

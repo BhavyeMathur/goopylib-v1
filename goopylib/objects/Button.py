@@ -62,10 +62,11 @@ class Button(GraphicsObject):
         if self.disabled_graphic_given:
             self.disabled_graphic.move(dx, dy)
 
+        self.anchor.x += dx
+        self.anchor.y += dy
+
         if self.label is not None:
             self.label.move(dx, dy)
-
-        print(dx, dy, self.anchor)
 
     def _rotate(self, dr):
         self.disabled_graphic.rotate(dr)

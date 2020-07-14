@@ -1,4 +1,6 @@
 from goopylib.util import GraphicsError
+from goopylib.math.Interpolations import *
+
 from random import randint as randomrandint
 
 # -------------------------------------------------------------------------
@@ -569,7 +571,27 @@ def ColourGradient2D(colour_start1=ColourRGB(0, 0, 0), colour_end1=ColourRGB(255
 
 # Colour Blending
 def BlendLinear(colour_start, colour_end, t):
-    pass
+    return ColourRGB(int(LinearInterpolation(colour_start.red, colour_end.red, t)),
+                     int(LinearInterpolation(colour_start.green, colour_end.green, t)),
+                     int(LinearInterpolation(colour_start.blue, colour_end.blue, t)))
+
+def BlendCosine(colour_start, colour_end, t):
+    return ColourRGB(int(CosineInterpolation(colour_start.red, colour_end.red, t)),
+                     int(CosineInterpolation(colour_start.green, colour_end.green, t)),
+                     int(CosineInterpolation(colour_start.blue, colour_end.blue, t)))
+
+def BlendCubic(colour_start, colour_end, t):
+    return ColourRGB(int(CubicInterpolation(colour_start.red, colour_start.red, colour_end.red, colour_end.red, t)),
+                     int(CubicInterpolation(colour_start.green, colour_start.green, colour_end.green, colour_end.green, t)),
+                     int(CubicInterpolation(colour_start.blue, colour_start.blue, colour_end.blue, colour_end.blue, t)))
+
+def BlendHermite(colour_start, colour_end, t, tension=1, bias=0):
+    return ColourRGB(int(HermiteInterpolation(colour_start.red, colour_start.red, colour_end.red, colour_end.red, t,
+                                              tension=tension, bias=bias)),
+                     int(HermiteInterpolation(colour_start.green, colour_start.green, colour_end.green,
+                                              colour_end.green, t, tension=tension, bias=bias)),
+                     int(HermiteInterpolation(colour_start.blue, colour_start.blue, colour_end.blue, colour_end.blue, t,
+                                              tension=tension, bias=bias)))
 
 
 # -------------------------------------------------------------------------
