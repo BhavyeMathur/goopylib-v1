@@ -26,7 +26,11 @@ pip install goopylib
  
  This will install Goopy and all the requirements for it to run. You can then import the library as shown next.
 
-An alternative method to use this library is very simple to use especially if you want access to the source code, all you need is the folder called 'goopylib' and the requirements. These include the [Pillow](https://pypi.org/project/Pillow/) (PIL) and the [keyboard](https://pypi.org/project/keyboard/) modules which you can download individually. Download the folder and place it wherever you want access to the library. 
+An alternative method to use this library is very simple to use especially if you want access to the source code, all 
+you need is the folder called 'goopylib' and the requirements. This just includes the 
+[Pillow](https://pypi.org/project/Pillow/) (PIL) module which you can download individually. 
+
+Download the folder and place it wherever you want access to the library. 
 
 Then, simply import as so:
 
