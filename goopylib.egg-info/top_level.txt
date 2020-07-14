@@ -1,4 +1,0 @@
-goopylib
-goopylib/applications
-goopylib/math
-goopylib/objects

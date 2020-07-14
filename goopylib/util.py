@@ -46,5 +46,11 @@ def update(rate=None):
 def get_screen_size():
     return _root.winfo_screenwidth(), _root.winfo_screenheight()
 
+def get_screen_height():
+    return _root.winfo_screenheight()
+
+def get_screen_width():
+    return _root.winfo_screenwidth()
+
 def openfilebrowser():
     return askopenfilename()
