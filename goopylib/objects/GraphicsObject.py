@@ -5,6 +5,8 @@ from goopylib.constants import *
 from goopylib.constants import _root
 from goopylib.math.Easing import *
 
+from math import cos, sin, radians
+
 
 class GraphicsObject:
     """Generic base class for all of the drawable objects"""
@@ -282,6 +284,18 @@ class GraphicsObject:
     def move_to_point(self, p, align="center"):
         self.move_to(p.x, p.y, align=align)
         return self
+
+    def move_forward(self, d):
+        self.move(d * sin(radians(self.rotation)), d * cos(radians(self.rotation)))
+
+    def move_backward(self, d):
+        self.move_forward(-d)
+
+    def move_left(self, d):
+        self.move(d * cos(radians(self.rotation)), d * sin(radians(self.rotation)))
+
+    def move_right(self, d):
+        self.move_left(-d)
 
     # Object Gliding Functions
 

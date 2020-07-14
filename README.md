@@ -128,11 +128,14 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.83-beta 13th July 2020 
+#### 1.0.85-beta 13th-14th July 2020 (83)
 
 * Added functionality to the Arc class which now inherits from the Curved Line class which means it has all the functionality of the line class too!
 * Added an empty Solid Arc class
 * Added the Arc Wiki
+
+* Performance upgrade to the Image class when drawing it. It no longer updates itself (because it's not required) causing image drawing to be much faster
+* Added `move_forward()`, `move_backward()`, `move_left()`, `move_right()` functions to the GraphicsObject class
 
 #### 1.0.81-beta 12th July 2020
 

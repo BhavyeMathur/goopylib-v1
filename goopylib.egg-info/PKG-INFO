@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: goopylib
-Version: 1.0.81b0
+Version: 1.0.83b1
 Summary: A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.
 Home-page: https://github.com/BhavyeMathur/goopylib
 Author: Bhavye Mathur
 Author-email: bhavyemathur@gmail.com
 License: MIT License
-Download-URL: https://github.com/BhavyeMathur/goopylib/archive/v1.0.81-beta.tar.gz
+Download-URL: https://github.com/BhavyeMathur/goopylib/archive/v1.0.83-beta.tar.gz
 Description: # Goopy
         
         ## Introduction
@@ -137,7 +137,11 @@ Description: # Goopy
         
         ### v1.0
         
-        #### 13th July 2020 - Sorry! No update today because I am doing a Lord of the Rings Marathon! Unfortunately, not the extended editions, but oh well.
+        #### 1.0.83-beta 13th July 2020 
+        
+        * Added functionality to the Arc class which now inherits from the Curved Line class which means it has all the functionality of the line class too!
+        * Added an empty Solid Arc class
+        * Added the Arc Wiki
         
         #### 1.0.81-beta 12th July 2020
         

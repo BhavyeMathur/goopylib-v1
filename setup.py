@@ -8,7 +8,7 @@ setup(
     package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects', ":applications": 'goopylib/applications'},
     packages={"goopylib": "goopylib", "goopylib/math": "goopylib/math", "goopylib/objects": "goopylib/objects",
               "goopylib/applications": "goopylib/applications"},
-    version='1.0.83b',
+    version='1.0.83b1',
     license='MIT License',
 
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.',

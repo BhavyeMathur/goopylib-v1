@@ -70,7 +70,6 @@ class Image(GraphicsObject):
             self.resize(math.ceil(init_width), math.ceil(init_height))
 
         x, y = canvas.to_screen(p.x, p.y)
-        self.update()
 
         return canvas.create_image(x, y, image=self.img)
 
