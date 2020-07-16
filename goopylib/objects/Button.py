@@ -43,10 +43,6 @@ class Button(GraphicsObject):
 
     def _draw(self, canvas, options):
         self.graphic.draw(canvas)
-        self.normal_graphic.graphwin = canvas
-        self.disabled_graphic.graphwin = canvas
-        self.hover_graphic.graphwin = canvas
-        self.clicked_graphic.graphwin = canvas
 
         self.anchor = self.graphic.anchor
 

@@ -1,6 +1,8 @@
 from tkinter import Tk as tkTk
 from time import time as timetime
 
+from PIL.Image import LANCZOS, BOX, BICUBIC, BILINEAR, NEAREST, HAMMING
+
 import platform
 
 # platform.system() gives Linux for Linux, Windows for Windows, and Darwin for MacOS
@@ -65,6 +67,9 @@ DUPLICATES_METRICS = {"Colour Animation": ["Change", "Start", "Time", "Update", 
                       "1D Animation": ["Change", "Start", "Time", "Update", "Initial", "Easing"]}
 
 CURVE_INTERPOLATIONS = ["linear", "cosine", "cubic", "hermite", "spline"]
+IMAGE_INTERPOLATIONS = {"bicubic": BICUBIC, "bilinear": BILINEAR, "box": BOX, "nearest": NEAREST, "hamming": HAMMING,
+                        "lanczos": LANCZOS}
+
 ARC_TYPES = ["arc", "pieslice", "chord"]
 
 ALIGN_OPTIONS = ["top", "left", "right", "bottom", "center", "topleft", "topright", "bottomleft", "bottomright"]

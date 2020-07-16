@@ -265,6 +265,9 @@ class GraphicsObject:
     def get_height(self):
         return 0
 
+    def get_size(self):
+        return self.get_width(), self.get_height()
+
     def get_anchor(self):
         pass
 

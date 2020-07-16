@@ -45,8 +45,11 @@ Line(Point(400 - radius1/2, 400), Point(400 + radius1/2, 400)).draw(window)
 rect = Rectangle(Point(100, 100), Point(500, 500), fill=DARKER_GREY, outline=LIGHT_GREY, outline_width=4).draw(window)
 rect.set_draggable_y()"""
 
-img = Image(Point(400, 400), "Palm Trees.png").resize_to_fit_height(window, preserve_aspect_ratio=True).draw(window)
-img.crop(0, 0, 500, 500, align="topleft")
+img = Image(Point(400, 400), "Examples/Pac-Man-Animation Example/textures/PacMan1.png").resize_factor(1).draw(window)
+
+img.set_contrast(0)
+img.skew_x(0.5)
+img.animate_rotate(360, 10)
 
 while True:
     mouse_pos = window.get_mouse_position()
@@ -64,5 +67,10 @@ while True:
             rect.animate_set_outline_width(4, time=0.2, allow_duplicate=False)
             rect.glide_to_x(300, time=0.2, allow_duplicate=False)
     """
-
+    img.skew_x(0.5)
     window.update_win()
+    time.sleep(0.5)
+
+    img.skew(0)
+    window.update_win()
+    time.sleep(0.5)

@@ -1,7 +1,7 @@
 # Goopy
 
 ## Introduction
-Goopy is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and simple animations.
+Goopy is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and animations.
 
 This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add more featurs to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case. Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python Graphics Libraries. 
 
@@ -132,6 +132,19 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.114-beta 15th July 2020
+
+* Fixed bug with Images as Button graphics not scaling to fit the Window's Coordinates
+* Removed the `get_size()` function from the Image class and added it to the GraphicsObject class
+* Added Errors to the Image class to make sure the user has specified the correct arguments
+* Added flipping functions to the Image class: `flip()`, `flip_xy()`, `flip_x()`, `flip_y()`, `transpose()`, & `transverse()`
+
+* Added `get_mode()` and `get_format()` methods to the Image class
+* Fixed the image get size functions to return the size of the PIL image rather than itself (useful for transformations & stuff)
+* Added skewing function to the Image class: `skew()`, `skew_x()`, `skew_y()`, and `scew_xy()` (This was so confusing to implement...)
+* Added `set_contrast()`, `change_contrast()`, `reset_contrast()`, and `get_contrast()` functions to the Image object
+* The Image now keeps its contrast settings while rotating after the contrast has been changed
+
 #### 1.0.107-beta 13th-14th July 2020 - 6632 lines of code
 
 * Added functionality to the Arc class which now inherits from the Curved Line class which means it has all the functionality of the line class too!
@@ -163,7 +176,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added a `get_aspect_ratio()` function to the Image class
 * Fixed bug in Image class with the image undrawing when resized or the internal `img_PIL` changed.
 * Added an option to preserve the aspect ratio of an image while resizing
-* Added an align to image croping to align the image to a certain side/corner
+* Added an align to image cropping to align the image to a certain side/corner
 
 * Added Errors to the Image class `__init__` function
  
