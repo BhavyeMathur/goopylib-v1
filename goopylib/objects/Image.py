@@ -1,6 +1,5 @@
 from PIL import ImageTk
 from PIL import ImageFilter
-from PIL import ImageEnhance
 from PIL import Image as Img
 
 from math import gcd, ceil
@@ -11,21 +10,6 @@ from goopylib.util import GraphicsError, resource_path
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.Point import Point
 from goopylib.constants import ALIGN_OPTIONS, IMAGE_INTERPOLATIONS
-
-
-import numpy
-
-def find_coeffs(pa, pb):
-    matrix = []
-    for p1, p2 in zip(pa, pb):
-        matrix.append([p1[0], p1[1], 1, 0, 0, 0, -p2[0]*p1[0], -p2[0]*p1[1]])
-        matrix.append([0, 0, 0, p1[0], p1[1], 1, -p2[1]*p1[0], -p2[1]*p1[1]])
-
-    A = numpy.matrix(matrix, dtype=numpy.float)
-    B = numpy.array(pb).reshape(8)
-
-    res = numpy.dot(numpy.linalg.inv(A.T * A) * A.T, B)
-    return numpy.array(res).reshape(8)
 
 
 class Image(GraphicsObject):
@@ -51,7 +35,7 @@ class Image(GraphicsObject):
 
         self.img_PIL = Img.open(self.texture, )
         self.img = ImageTk.PhotoImage(self.img_PIL)
-        self.rotating_img = self.img_PIL.copy()
+        self.original_img = self.img_PIL.copy()
         self.transforming_img = self.img_PIL.copy()
 
         self.align = align
@@ -63,8 +47,6 @@ class Image(GraphicsObject):
         self.initial_height = self.get_height()
 
         self.contrast = 0
-        self.x_skew = 0
-        self.y_skew = 0
 
         GraphicsObject.__init__(self, [], cursor=cursor)
 
@@ -105,16 +87,13 @@ class Image(GraphicsObject):
         self.anchor.y += dy
 
     def _rotate(self, dr, sampling=Img.BICUBIC, center=None):
-
         self.rotation += dr
         if center is not None:
-            self.img_PIL = self.rotating_img.rotate(angle=self.rotation, resample=sampling, expand=True,
-                                                    center=(center.x, center.y))
-            self.transforming_img = self.img_PIL.copy()
+            self.transforming_img = self.original_img.rotate(angle=self.rotation, resample=sampling, expand=True,
+                                                             center=(center.x, center.y))
         else:
-            self.img_PIL = self.rotating_img.rotate(angle=self.rotation, resample=sampling, expand=True)
-            self.transforming_img = self.img_PIL.copy()
-
+            self.transforming_img = self.original_img.rotate(angle=self.rotation, resample=sampling, expand=True)
+        self.img_PIL = self.transforming_img.copy()
         self.update()
         return self
 
@@ -189,8 +168,8 @@ class Image(GraphicsObject):
         def contrast(c):
             return 128 + factor * (c - 128)
 
+        self.original_img = self.original_img.point(contrast)
         self.img_PIL = self.img_PIL.point(contrast)
-        self.rotating_img = self.rotating_img.point(contrast)
         self.update()
         return self
 
@@ -201,7 +180,7 @@ class Image(GraphicsObject):
     # IMAGE MANIPULATION FUNCTIONS
 
     def crop(self, left=0, top=0, right=500, down=500, align="center"):
-        
+
         if not (isinstance(left, float) or isinstance(left, int)):
             raise GraphicsError(f"\n\nGraphicsError: The crop left argument must be an integer or float, not {left}")
         if not (isinstance(right, float) or isinstance(right, int)):
@@ -341,13 +320,12 @@ class Image(GraphicsObject):
             self.x_skew = scale
 
             # Code (modified) from https://stackoverflow.com/questions/14177744/how-does-perspective-transformation-work-in-pil
-            width, height = self.rotating_img.width, self.rotating_img.height
+            width, height = self.transforming_img.width, self.transforming_img.height
             new_width = round((1 + abs(scale)) * width)
-            size_factor = width/height
-            self.img_PIL = self.rotating_img.transform((new_width, height), Img.AFFINE, (1, scale * size_factor,
+            size_factor = width / height
+            self.img_PIL = self.transforming_img.transform((new_width, height), Img.AFFINE, (1, scale * size_factor,
                                                   (abs(scale) * -width) if scale > 0 else 0, 0, 1, 0),
                                                   IMAGE_INTERPOLATIONS[sampling])
-            self.rotating_img = self.img_PIL.copy()
             self.update()
         return self
 
@@ -367,12 +345,13 @@ class Image(GraphicsObject):
                     raise GraphicsError(f"\n\)nGraphicsError: Skew align must be one of ['center', 'top', 'bottom'], "
                                         f"not {align}")
 
-            self.skew_y = scale
+            self.y_skew = scale
 
-            width, height = self.rotating_img.width, self.rotating_img.height
+            width, height = self.transforming_img.width, self.transforming_img.height
             new_height = round(height * (abs(scale) + 1))
-            size_factor = height/width
-            self.img_PIL = self.rotating_img.transform((width, new_height), Img.AFFINE, (1, 0, 0, scale * size_factor, 1,
+            size_factor = height / width
+            self.img_PIL = self.transforming_img.transform((width, new_height), Img.AFFINE,
+                                                  (1, 0, 0, scale * size_factor, 1,
                                                   (abs(scale) * -height) if scale > 0 else 0),
                                                   IMAGE_INTERPOLATIONS[sampling])
 
@@ -392,7 +371,7 @@ class Image(GraphicsObject):
             raise GraphicsError(f"\n\nThe skew x_scale must be an integer or float, not {x_scale}")
         if not (isinstance(y_scale, int) or isinstance(y_scale, float)):
             raise GraphicsError(f"\n\nThe skew y_scale must be an integer or float, not {y_scale}")
-        
+
         if y_align != "center":
             valid = False
             if y_align == "top" or y_align == "bottom":
@@ -409,7 +388,7 @@ class Image(GraphicsObject):
                                     f"not {x_align}")
 
         self.x_skew = x_scale
-        self.skew_y = y_scale
+        self.y_skew = y_scale
 
         width, height = self.transforming_img.width, self.transforming_img.height
         new_height = round(height * (y_scale + 1))
@@ -420,15 +399,10 @@ class Image(GraphicsObject):
         self.img_PIL = self.transforming_img.transform((new_width, new_height), Img.AFFINE, (
             1, x_scale * size_factor_w, (abs(x_scale) * -width) if x_scale > 0 else 0,
             y_scale * size_factor_h, 1, (abs(y_scale) * -height) if y_scale > 0 else 0),
-            IMAGE_INTERPOLATIONS[sampling])
+                                                       IMAGE_INTERPOLATIONS[sampling])
 
         self.update()
         return self
-
-    def skew(self, scale=0.3, sampling="bicubic", align="center", skew_x=True, skew_y=True):
-        self.skew_xy(x_scale=scale if skew_x else 0, y_scale=scale if skew_y else 0,
-                     x_align=align if skew_x else "center", y_align=align if skew_y else "center",
-                     sampling=sampling)
 
     # ----------------------------------
     # Resizing Functions
@@ -457,7 +431,7 @@ class Image(GraphicsObject):
             raise GraphicsError("\n\nGraphicsError: Resizing Preserve Aspect Ratio argument must be a boolean, not "
                                 f"{preserve_aspect_ratio}")
 
-        width = height * (self.get_width()/self.get_height()) if preserve_aspect_ratio else self.get_width()
+        width = height * (self.get_width() / self.get_height()) if preserve_aspect_ratio else self.get_width()
         self.resize(width, height, sampling=sampling, _external_call=_external_call)
         return self
 
@@ -467,7 +441,7 @@ class Image(GraphicsObject):
             raise GraphicsError("\n\nGraphicsError: Resizing Preserve Aspect Ratio argument must be a boolean, not "
                                 f"{preserve_aspect_ratio}")
 
-        height = width * (self.get_height()/self.get_width()) if preserve_aspect_ratio else self.get_height()
+        height = width * (self.get_height() / self.get_width()) if preserve_aspect_ratio else self.get_height()
         self.resize(width, height, sampling=sampling, _external_call=_external_call)
         return self
 
@@ -483,7 +457,7 @@ class Image(GraphicsObject):
     def resize_height_factor(self, factor, sampling="bicubic", _external_call=True):
         self.resize(self.get_width(), int(self.get_height() * factor), sampling, _external_call)
         return self
-    
+
     def resize_to_fit(self, obj, sampling="bicubic", _external_call=True):
         self.resize(obj.get_width(), obj.get_height(), sampling=sampling, _external_call=_external_call)
         return self
@@ -584,9 +558,6 @@ class Image(GraphicsObject):
         return self
 
     # -------------------------------------------------------------------------
-    # IMAGE SPECIFIC ANIMATION FUNCTIONS
-
-    # -------------------------------------------------------------------------
     # GETTER FUNCTIONS
 
     def get_anchor(self):
@@ -602,7 +573,7 @@ class Image(GraphicsObject):
 
     def get_aspect_ratio(self):
         divisor = gcd(self.get_width(), self.get_height())
-        return self.get_width()/divisor, self.get_height()/divisor
+        return self.get_width() / divisor, self.get_height() / divisor
 
     def get_pixel(self, x, y):
         """Returns a list [r,g,b] with the RGB colour values for pixel (x,y)
@@ -616,6 +587,9 @@ class Image(GraphicsObject):
 
     def get_mode(self):
         return self.img_PIL.mode
+
+    def get_contrast(self):
+        return self.contrast
 
     # -------------------------------------------------------------------------
     # SETTER FUNCTIONS

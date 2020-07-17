@@ -1,22 +1,18 @@
-from goopylib.Point import Point
-
 from goopylib.styles import *
 from goopylib.constants import *
 from goopylib.constants import _root
 from goopylib.math.Easing import *
 
-from math import cos, sin, radians, gcd
+from math import cos, sin, radians
 
 
 class GraphicsObject:
     """Generic base class for all of the drawable objects"""
-    gliding_objects = []
-    rotating_objects = []
-    resizing_objects = []
+
     blinking_objects = []
-    animating_fill_objects = []
-    animating_outline_objects = []
-    animating_width_objects = []
+    resizing_objects = []
+    animating_objects = {"gliding": [], "rotating": [], "fill": [], "outline": [], "width": [],
+                         "skew": [], "contrast": []}
 
     objects = []
     button_instances = []
@@ -75,6 +71,8 @@ class GraphicsObject:
         self.resizing_queue = []
         self.glide_queue = []
         self.rotating_queue = []
+        self.skew_queue = []
+        self.contrast_queue = []
 
         self.is_animating_width = False
         self.is_resizing = False
@@ -82,6 +80,8 @@ class GraphicsObject:
         self.is_rotating = False
         self.is_animating_fill = False
         self.is_animating_outline = False
+        self.is_animating_skew = False
+        self.is_animating_contrast = False
 
         self.is_blinking = False
         self.blinking_interval = None
@@ -97,6 +97,8 @@ class GraphicsObject:
         self.is_dragging = False
 
         self.rotation = 0
+        self.x_skew = 0
+        self.y_skew = 0
 
         self.graphwin = None
         self.drawn = False
@@ -289,6 +291,18 @@ class GraphicsObject:
         """Override in GraphicsObject subclasses if outline is a valid config for them"""
         pass
 
+    def get_x_skew(self):
+        return self.x_skew
+
+    def get_y_skew(self):
+        return self.y_skew
+
+    def get_skew(self):
+        return self.x_skew, self.y_skew
+
+    def get_rotation(self):
+        return self.rotation
+
     # -------------------------------------------------------------------------
     # OBJECT TRANSFORMATION FUNCTIONS
 
@@ -373,6 +387,22 @@ class GraphicsObject:
     def set_rotation(self, r):
         self.rotate(r - self.rotation)
         return self
+
+    # Skewing transformations - these must be overriden in classes that support skewing
+
+    def skew_x(self, scale=0.3, sampling="bicubic", align="center"):
+        pass
+
+    def skew_y(self, scale=0.3, sampling="bicubic", align="center"):
+        pass
+
+    def skew_xy(self, x_scale=0.3, y_scale=None, sampling="bicubic", x_align="center", y_align=None):
+        pass
+
+    def skew(self, scale=0.3, sampling="bicubic", align="center", skew_x=True, skew_y=True):
+        self.skew_xy(x_scale=scale if skew_x else 0, y_scale=scale if skew_y else 0,
+                     x_align=align if skew_x else "center", y_align=align if skew_y else "center",
+                     sampling=sampling)
 
     # -------------------------------------------------------------------------
     # OBJECT ANIMATING FUNCTION
@@ -464,9 +494,9 @@ class GraphicsObject:
             else:
                 self.glide_queue.append(animation_data)
 
-        if self not in GraphicsObject.gliding_objects:
+        if self not in GraphicsObject.animating_objects["gliding"]:
             self.is_gliding = True
-            GraphicsObject.gliding_objects.append(self)
+            GraphicsObject.animating_objects["gliding"].append(self)
 
         return self
 
@@ -504,9 +534,9 @@ class GraphicsObject:
             else:
                 self.glide_queue.append(animation_data)
 
-        if self not in GraphicsObject.gliding_objects:
+        if self not in GraphicsObject.animating_objects["gliding"]:
             self.is_gliding = True
-            GraphicsObject.gliding_objects.append(self)
+            GraphicsObject.animating_objects["gliding"].append(self)
 
         return self
 
@@ -594,8 +624,8 @@ class GraphicsObject:
         else:
             self.rotating_queue.append(animation_data)
 
-        if self not in GraphicsObject.rotating_objects:
-            GraphicsObject.rotating_objects.append(self)
+        if self not in GraphicsObject.animating_objects["rotating"]:
+            GraphicsObject.animating_objects["rotating"].append(self)
             self.is_rotating = True
         return self
 
@@ -641,8 +671,8 @@ class GraphicsObject:
             else:
                 self.fill_queue.append(animation_data)
 
-            if self not in GraphicsObject.animating_fill_objects:
-                GraphicsObject.animating_fill_objects.append(self)
+            if self not in GraphicsObject.animating_objects["fill"]:
+                GraphicsObject.animating_objects["fill"].append(self)
                 self.is_animating_fill = True
             return self
 
@@ -702,8 +732,8 @@ class GraphicsObject:
             else:
                 self.outline_queue.append(animation_data)
 
-            if self not in GraphicsObject.animating_outline_objects:
-                GraphicsObject.animating_outline_objects.append(self)
+            if self not in GraphicsObject.animating_objects["outline"]:
+                GraphicsObject.animating_objects["outline"].append(self)
                 self.is_animating_outline = True
 
             return self
@@ -729,6 +759,7 @@ class GraphicsObject:
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support colour outline animations")
 
+    # Outline Width Animations
     def animate_change_outline_width(self, width_change, time=1, easing=ease_linear(), allow_duplicate=True,
                                      duplicates_metric=("Time", "Initial", "Change")):
         if not (isinstance(width_change, int) or isinstance(width_change, float)):
@@ -756,8 +787,8 @@ class GraphicsObject:
         else:
             self.width_queue.append(animation_data)
 
-        if self not in GraphicsObject.animating_width_objects:
-            GraphicsObject.animating_width_objects.append(self)
+        if self not in GraphicsObject.animating_objects["width"]:
+            GraphicsObject.animating_objects["width"].append(self)
             self.is_animating_width = True
         return self
 
@@ -766,6 +797,184 @@ class GraphicsObject:
         self.animate_change_outline_width(width_change - self.get_outline_width(), time=time, easing=easing,
                                           allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
         return self
+
+    # Skew Animations
+    def animate_skew_x(self, skew_change, time=1, easing=ease_linear(), allow_duplicate=True,
+                       duplicates_metric=("Time", "Initial", "Change"), _internal_call=False):
+        if not (isinstance(skew_change, int) or isinstance(skew_change, float)):
+            raise GraphicsError("\n\nGraphicsError: The amount to change the skew by (skew_change) must be a "
+                                f"number (integer or float), not {skew_change}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nGraphicsError: The time to skew the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+        if not callable(easing):
+            raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing}) is not a valid Function")
+
+        if not _internal_call:
+            for metric in duplicates_metric:
+                if metric not in DUPLICATES_METRICS["1D Animation"]:
+                    raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                        f"{DUPLICATES_METRICS}, not {metric}")
+
+            start = timetime()
+            initial_skew = [self.y_skew, self.x_skew]
+
+            for animation in self.skew_queue:
+                start += animation["Time"]
+                initial_skew[1] = animation["Initial"][1] + animation["Change"][1]
+                initial_skew[0] = animation["Initial"][0] + animation["Change"][0]
+
+            animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_skew,
+                              "Change": (skew_change, 0), "EasingX": easing, "EasingY": easing}
+
+            if not allow_duplicate:
+                if not self.check_animation_exists(self.skew_queue, animation_data, duplicates_metric):
+                    self.skew_queue.append(animation_data)
+            else:
+                self.skew_queue.append(animation_data)
+
+        if self not in GraphicsObject.animating_objects["skew"]:
+            self.is_animating_skew = True
+            GraphicsObject.animating_objects["skew"].append(self)
+
+        return self
+
+    def animate_skew_y(self, skew_change, time=1, easing=ease_linear(), allow_duplicate=True,
+                       duplicates_metric=("Time", "Initial", "Change"), _internal_call=False):
+        if not (isinstance(skew_change, int) or isinstance(skew_change, float)):
+            raise GraphicsError("\n\nGraphicsError: The amount to change the skew by (skew_change) must be a "
+                                f"number (integer or float), not {skew_change}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nGraphicsError: The time to skew the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+        if not callable(easing):
+            raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing}) is not a valid Function")
+
+        if not _internal_call:
+            for metric in duplicates_metric:
+                if metric not in DUPLICATES_METRICS["1D Animation"]:
+                    raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                        f"{DUPLICATES_METRICS}, not {metric}")
+
+            start = timetime()
+            initial_skew = [self.y_skew, self.x_skew]
+
+            for animation in self.skew_queue:
+                start += animation["Time"]
+                initial_skew[1] = animation["Initial"][1] + animation["Change"][1]
+                initial_skew[0] = animation["Initial"][0] + animation["Change"][0]
+
+            animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_skew,
+                              "Change": (0, skew_change), "EasingX": easing, "EasingY": easing}
+
+            if not allow_duplicate:
+                if not self.check_animation_exists(self.skew_queue, animation_data, duplicates_metric):
+                    self.skew_queue.append(animation_data)
+            else:
+                self.skew_queue.append(animation_data)
+
+        if self not in GraphicsObject.animating_objects["skew"]:
+            self.is_animating_skew = True
+            GraphicsObject.animating_objects["skew"].append(self)
+
+        return self
+
+    def animate_skew(self, skew_change_x, skew_change_y, time=1, easing_x=ease_linear(), easing_y=ease_linear(),
+                     allow_duplicate=True, duplicates_metric=("Time", "Initial", "Change"), _internal_call=False):
+        if not (isinstance(skew_change_x, int) or isinstance(skew_change_x, float)):
+            raise GraphicsError("\n\nGraphicsError: The amount to skew in the x direction (skew_change_x) must be a "
+                                f"number (integer or float), not {skew_change_x}")
+        if not (isinstance(skew_change_y, int) or isinstance(skew_change_y, float)):
+            raise GraphicsError("\n\nGraphicsError: The amount to skew in the y direction (skew_change_y) must be a "
+                                f"number (integer or float), not {skew_change_y}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nGraphicsError: The time to skew the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+        if not callable(easing_x):
+            raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing_x}) is not a valid Function")
+        if not callable(easing_y):
+            raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing_y}) is not a valid Function")
+
+        if not _internal_call:
+            for metric in duplicates_metric:
+                if metric not in DUPLICATES_METRICS["2D Animation"]:
+                    raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                        f"{DUPLICATES_METRICS}, not {metric}")
+
+            start = timetime()
+            initial_skew = [self.y_skew, self.x_skew]
+
+            for animation in self.skew_queue:
+                start += animation["Time"]
+                initial_skew[1] = animation["Initial"][1] + animation["Change"][1]
+                initial_skew[0] = animation["Initial"][0] + animation["Change"][0]
+
+            animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_skew,
+                              "Change": (skew_change_x, skew_change_y), "EasingX": easing_x, "EasingY": easing_y}
+
+            if not allow_duplicate:
+                if not self.check_animation_exists(self.skew_queue, animation_data, duplicates_metric):
+                    self.skew_queue.append(animation_data)
+            else:
+                self.skew_queue.append(animation_data)
+
+        if self not in GraphicsObject.animating_objects["skew"]:
+            self.is_animating_skew = True
+            GraphicsObject.animating_objects["skew"].append(self)
+
+        return self
+
+    # Image Specific Functions
+    def animate_change_contrast(self, contrast_change, time=1, easing=ease_linear(), allow_duplicate=True,
+                                duplicates_metric=("Time", "Initial", "Change")):
+        if isinstance(self, Image):
+            if not (isinstance(contrast_change, int) or isinstance(contrast_change, float)):
+                raise GraphicsError("\n\nGraphicsError: The contrast change for the animation (contrast_change) must be"
+                                    f" an integer or float not {contrast_change}")
+            if not (isinstance(time, int) or isinstance(time, float)):
+                raise GraphicsError("\n\nGraphicsError: The time to change the contrast of the object for (time) must "
+                                    f"be a number (integer or float), not {time}")
+            if not callable(easing):
+                raise GraphicsError(f"\n\nGraphicsError: The Easing Function Provided ({easing}) is not a valid "
+                                    f"function")
+            for metric in duplicates_metric:
+                if metric not in DUPLICATES_METRICS["1D Animation"]:
+                    raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                        f"{DUPLICATES_METRICS}, not {metric}")
+
+            start = timetime()
+            initial_fill = self.get_contrast()
+
+            for animation in self.fill_queue:
+                start += animation["Time"]
+                initial_fill = ColourRGB(animation["Initial"][0] + animation["Change"][0],
+                                         animation["Initial"][1] + animation["Change"][1],
+                                         animation["Initial"][2] + animation["Change"][2], )
+
+            animation_data = {"Time": time, "Start": start, "Update": timetime(), "Initial": initial_fill,
+                              "Change": contrast_change, "Easing": easing}
+
+            if not allow_duplicate:
+                if not self.check_animation_exists(self.contrast_queue, animation_data, duplicates_metric):
+                    self.contrast_queue.append(animation_data)
+            else:
+                self.contrast_queue.append(animation_data)
+
+            if self not in GraphicsObject.animating_objects["contrast"]:
+                GraphicsObject.animating_objects["contrast"].append(self)
+                self.is_animating_contrast = True
+            return self
+        else:
+            raise GraphicsError("\n\nGraphicsError: This object doesn't support the contrast animation")
+
+    def animate_set_contrast(self, contrast, time=1, easing=ease_linear(), allow_duplicate=True,
+                             duplicates_metric=("Time", "Initial", "Change")):
+        if isinstance(self, Image):
+            self.animate_change_contrast(contrast - self.contrast, time=time, easing=easing, allow_duplicate=allow_duplicate,
+                                         duplicates_metric=duplicates_metric)
+            return self
+        else:
+            raise GraphicsError("\n\nGraphicsError: This object doesn't support the contrast animation")
 
     # Object Outline Width Animations
     # -------------------------------------------------------------------------
@@ -788,7 +997,7 @@ class GraphicsObject:
     @staticmethod
     def on_update(graphwin):
         t = timetime()
-        for obj in GraphicsObject.gliding_objects:
+        for obj in GraphicsObject.animating_objects["gliding"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.glide_queue[0]["Start"] >= obj.glide_queue[0]["Time"]:
                     obj.move_to(obj.glide_queue[0]["Initial"].x + obj.glide_queue[0]["Change"].x,
@@ -797,7 +1006,7 @@ class GraphicsObject:
                     obj.glide_queue.pop(0)  # Remove the object from the gliding queue
                     if len(obj.glide_queue) == 0:
                         obj.is_gliding = False
-                        GraphicsObject.gliding_objects.remove(obj)
+                        GraphicsObject.animating_objects["gliding"].remove(obj)
                 else:
                     perX = obj.glide_queue[0]["EasingX"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
                     perY = obj.glide_queue[0]["EasingY"]((t - obj.glide_queue[0]['Start']) / obj.glide_queue[0]['Time'])
@@ -806,7 +1015,7 @@ class GraphicsObject:
                                 obj.glide_queue[0]["Initial"].y + obj.glide_queue[0]["Change"].y * perY)
                     obj.glide_queue[0]["Update"] = timetime()
 
-        for obj in GraphicsObject.rotating_objects:
+        for obj in GraphicsObject.animating_objects["rotating"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.rotating_queue[0]["Start"] >= obj.rotating_queue[0]["Time"]:
                     obj.set_rotation(obj.rotating_queue[0]["Initial"] + obj.rotating_queue[0]["Change"])
@@ -814,7 +1023,7 @@ class GraphicsObject:
 
                     if len(obj.rotating_queue) == 0:
                         obj.is_rotating = False
-                        GraphicsObject.rotating_objects.remove(obj)
+                        GraphicsObject.animating_objects["rotating"].remove(obj)
                 else:
                     per = obj.rotating_queue[0]["Easing"]((t - obj.rotating_queue[0]["Start"])
                                                           / obj.rotating_queue[0]["Time"])
@@ -830,7 +1039,7 @@ class GraphicsObject:
                         obj.draw(graphwin)
                     obj.last_blink = t
 
-        for obj in GraphicsObject.animating_fill_objects:
+        for obj in GraphicsObject.animating_objects["fill"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.fill_queue[0]["Start"] >= obj.fill_queue[0]["Time"]:
 
@@ -842,7 +1051,7 @@ class GraphicsObject:
 
                     if len(obj.fill_queue) == 0:
                         obj.is_animating_fill = False
-                        GraphicsObject.animating_fill_objects.remove(obj)
+                        GraphicsObject.animating_objects["fill"].remove(obj)
                 else:
                     per = obj.fill_queue[0]["Easing"]((t - obj.fill_queue[0]["Start"])
                                                       / obj.fill_queue[0]["Time"])
@@ -856,7 +1065,7 @@ class GraphicsObject:
                                            max([min([obj.fill_queue[0]["Initial"][2] + green_change, 255]), 0])))
                     obj.fill_queue[0]["Update"] = timetime()
 
-        for obj in GraphicsObject.animating_outline_objects:
+        for obj in GraphicsObject.animating_objects["outline"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.outline_queue[0]["Start"] >= obj.outline_queue[0]["Time"]:
 
@@ -868,7 +1077,7 @@ class GraphicsObject:
 
                     if len(obj.outline_queue) == 0:
                         obj.is_animating_outline = False
-                        GraphicsObject.animating_outline_objects.remove(obj)
+                        GraphicsObject.animating_objects["outline"].remove(obj)
                 else:
                     per = obj.outline_queue[0]["Easing"]((t - obj.outline_queue[0]["Start"])
                                                          / obj.outline_queue[0]["Time"])
@@ -882,7 +1091,7 @@ class GraphicsObject:
                                               max([min([obj.outline_queue[0]["Initial"][2] + green_change, 255]), 0])))
                     obj.outline_queue[0]["Update"] = timetime()
 
-        for obj in GraphicsObject.animating_width_objects:
+        for obj in GraphicsObject.animating_objects["width"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.width_queue[0]["Start"] >= obj.width_queue[0]["Time"]:
                     obj.set_outline_width(obj.width_queue[0]["Initial"] + obj.width_queue[0]["Change"])
@@ -890,12 +1099,45 @@ class GraphicsObject:
 
                     if len(obj.width_queue) == 0:
                         obj.is_width = False
-                        GraphicsObject.animating_width_objects.remove(obj)
+                        GraphicsObject.animating_objects["width"].remove(obj)
                 else:
                     per = obj.width_queue[0]["Easing"]((t - obj.width_queue[0]["Start"])
                                                           / obj.width_queue[0]["Time"])
                     obj.set_outline_width(obj.width_queue[0]["Initial"] + obj.width_queue[0]["Change"] * per)
                     obj.width_queue[0]["Update"] = timetime()
+
+        for obj in GraphicsObject.animating_objects["skew"]:
+            if obj.graphwin == graphwin and obj.drawn:
+                if t - obj.skew_queue[0]["Start"] >= obj.skew_queue[0]["Time"]:
+                    obj.skew_xy(obj.skew_queue[0]["Initial"][0] + obj.skew_queue[0]["Change"][0],
+                                obj.skew_queue[0]["Initial"][1] + obj.skew_queue[0]["Change"][1])
+
+                    obj.skew_queue.pop(0)  # Remove the object from the skewing queue
+                    if len(obj.skew_queue) == 0:
+                        obj.is_animating_skew = False
+                        GraphicsObject.animating_objects["skew"].remove(obj)
+                else:
+                    perX = obj.skew_queue[0]["EasingX"]((t - obj.skew_queue[0]['Start']) / obj.skew_queue[0]['Time'])
+                    perY = obj.skew_queue[0]["EasingY"]((t - obj.skew_queue[0]['Start']) / obj.skew_queue[0]['Time'])
+
+                    obj.skew_xy(obj.skew_queue[0]["Initial"][0] + obj.skew_queue[0]["Change"][0] * perX,
+                                obj.skew_queue[0]["Initial"][1] + obj.skew_queue[0]["Change"][1] * perY)
+                    obj.skew_queue[0]["Update"] = timetime()
+                    
+        for obj in GraphicsObject.animating_objects["contrast"]:
+            if obj.graphwin == graphwin and obj.drawn:
+                if t - obj.contrast_queue[0]["Start"] >= obj.contrast_queue[0]["Time"]:
+                    obj.set_contrast(obj.contrast_queue[0]["Initial"] + obj.contrast_queue[0]["Change"])
+                    obj.contrast_queue.pop(0)
+
+                    if len(obj.contrast_queue) == 0:
+                        obj.is_animating_contrast = False
+                        GraphicsObject.animating_objects["contrast"].remove(obj)
+                else:
+                    per = obj.contrast_queue[0]["Easing"]((t - obj.contrast_queue[0]["Start"])
+                                                          / obj.contrast_queue[0]["Time"])
+                    obj.set_contrast(obj.contrast_queue[0]["Initial"] + obj.contrast_queue[0]["Change"] * per)
+                    obj.contrast_queue[0]["Update"] = timetime()
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
@@ -1128,3 +1370,5 @@ class GraphicsObject:
             if obj.graphwin == graphwin:
                 if obj.range[0] < int(obj.get_value() + e) < obj.range[1]:
                     obj.set_value(int(obj.get_value() + e))
+
+from goopylib.objects.Image import Image

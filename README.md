@@ -132,6 +132,17 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.121-beta 16th July 2020
+
+* Fixed flashing image bug when rotating and skewing the image at the same time
+* Fixed bug with Image skewing oddly when it is not rotating
+* Added empty skewing functions to the GraphicsObject class to be overriden by subclasses that support it
+
+* Added Animate Skew functions to the GraphicsObject class
+* Added a `get_contrast()` function to the Image class, and a `get_rotation()` function for the GraphicsObject class
+* Fixed error strings in the Image class to display the correct error
+* Added animation functions for changing & setting the contrast of Images
+
 #### 1.0.114-beta 15th July 2020
 
 * Fixed bug with Images as Button graphics not scaling to fit the Window's Coordinates
