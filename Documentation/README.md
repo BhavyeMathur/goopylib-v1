@@ -1,0 +1,1 @@
+The Documentation for Goopylib is available at [Goopylib DocumentationvWiki](https://github.com/BhavyeMathur/goopylib/wiki). This folder just contains images and other assets that are used in the documentation
