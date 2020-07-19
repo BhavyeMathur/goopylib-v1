@@ -84,10 +84,8 @@ class GraphicsObject:
         self.is_animating_skew = False
         self.is_animating_contrast = False
 
+        self.blinking_data = {}
         self.is_blinking = False
-        self.blinking_interval = None
-        self.last_blink_time = 0
-        self.blink_graphic = None
 
         # -------------------------------------------------------------------------
         # Other Variables
@@ -177,12 +175,12 @@ class GraphicsObject:
                     if self.graphwin.autoflush:
                         _root.update()
             except ValueError:
-                return
+                pass
 
             self.drawn = False
             self.id = None
-            if self.is_blinking and set_blinking:
-                self.animate_blinking(0, animate=False)
+        if self.is_blinking and set_blinking:
+            self.animate_blinking(0, animate=False)
         return self
 
     def redraw(self):
@@ -276,6 +274,12 @@ class GraphicsObject:
 
     def get_anchor(self):
         pass
+
+    def get_x_pos(self):
+        return self.get_anchor().x
+
+    def get_y_pos(self):
+        return self.get_anchor().y
 
     def get_cursor(self):
         return self.cursor
@@ -380,11 +384,12 @@ class GraphicsObject:
 
     # Rotation Transformations
     def rotate(self, dr):
-        self.rotation += dr
-        self._rotate(dr)
-        self._update()
-        if self.graphwin is not None:
-            self.redraw()
+        if dr != 0:
+            self.rotation += dr
+            self._rotate(dr)
+            self._update()
+            if self.graphwin is not None:
+                self.redraw()
 
         return self
 
@@ -426,11 +431,10 @@ class GraphicsObject:
                 return True
         return False
 
-    def animate_blinking(self, interval, animate=True, blink_graphic=None):
+    def animate_blinking(self, interval=None, animate=True, blink_graphic=None, number_of_blinks=None):
         self.is_blinking = animate
-        self.blinking_interval = interval
-        self.last_blink_time = timetime()
-        self.blink_graphic = blink_graphic
+        self.blinking_data = {"interval": interval, "blink graphic": blink_graphic, "last blink": timetime(),
+                              "total blinks": 0, "max blinks": number_of_blinks}
 
         if animate and self not in GraphicsObject.blinking_objects:
             GraphicsObject.blinking_objects.append(self)
@@ -975,13 +979,89 @@ class GraphicsObject:
     def animate_set_contrast(self, contrast, time=1, easing=ease_linear(), allow_duplicate=True,
                              duplicates_metric=("Time", "Initial", "Change")):
         if isinstance(self, Image):
-            self.animate_change_contrast(contrast - self.contrast, time=time, easing=easing, allow_duplicate=allow_duplicate,
+            self.animate_change_contrast(contrast - self.contrast, time=time, easing=easing,
+                                         allow_duplicate=allow_duplicate,
                                          duplicates_metric=duplicates_metric)
             return self
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support the contrast animation")
 
-    # Object Outline Width Animations
+    # -------------------------------------------------------------------------
+    # CHECKING ANIMATION FUNCTIONS
+
+    def check_is_gliding(self):
+        return self.is_gliding
+
+    def check_is_rotating(self):
+        return self.is_rotating
+
+    def check_is_animating_fill(self):
+        return self.is_animating_fill
+
+    def check_is_animating_outline(self):
+        return self.is_animating_outline
+
+    def check_is_animating_outline_width(self):
+        return self.is_animating_width
+
+    def check_is_skewing(self):
+        return self.is_animating_skew
+
+    def check_is_animating_contrast(self):
+        return self.is_animating_contrast
+
+    def check_is_blinking(self):
+        return self.is_blinking
+
+    def check_is_animating(self):
+        return self.is_gliding or self.is_rotating or self.is_animating_fill or self.is_animating_outline \
+               or self.is_animating_width or self.is_animating_skew or self.is_animating_contrast
+
+    # -------------------------------------------------------------------------
+    # TIME LEFT FOR ANIMATION FUNCTIONS
+
+    def gliding_time_left(self):
+        if self.is_gliding:
+            return (self.glide_queue[-1]["Initial"] + self.glide_queue[-1]["Time"]) - timetime()
+        else:
+            return 0
+
+    def rotating_time_left(self):
+        if self.is_gliding:
+            return (self.rotating_queue[-1]["Initial"] + self.rotating_queue[-1]["Time"]) - timetime()
+        else:
+            return 0
+
+    def animating_fill_time_left(self):
+        if self.is_gliding:
+            return (self.fill_queue[-1]["Initial"] + self.fill_queue[-1]["Time"]) - timetime()
+        else:
+            return 0
+
+    def animating_outline_time_left(self):
+        if self.is_gliding:
+            return (self.outline_queue[-1]["Initial"] + self.outline_queue[-1]["Time"]) - timetime()
+        else:
+            return 0
+
+    def animating_outline_width_time_left(self):
+        if self.is_gliding:
+            return (self.width_queue[-1]["Initial"] + self.width_queue[-1]["Time"]) - timetime()
+        else:
+            return 0
+
+    def skewing_time_left(self):
+        if self.is_gliding:
+            return (self.skew_queue[-1]["Initial"] + self.skew_queue[-1]["Time"]) - timetime()
+        else:
+            return 0
+
+    def animating_contrast_time_left(self):
+        if self.is_gliding:
+            return (self.contrast_queue[-1]["Initial"] + self.contrast_queue[-1]["Time"]) - timetime()
+        else:
+            return 0
+
     # -------------------------------------------------------------------------
     # OTHER FUNCTIONS
 
@@ -1034,19 +1114,6 @@ class GraphicsObject:
                                                           / obj.rotating_queue[0]["Time"])
                     obj.set_rotation(obj.rotating_queue[0]["Initial"] + obj.rotating_queue[0]["Change"] * per)
                     obj.rotating_queue[0]["Update"] = timetime()
-
-        for obj in GraphicsObject.blinking_objects:
-            if obj.graphwin == graphwin:
-                if t - obj.last_blink_time > obj.blinking_interval:
-                    if obj.drawn:
-                        obj.undraw(set_blinking=False)
-                        if obj.blink_graphic is not None:
-                            obj.blink_graphic.draw(graphwin)
-                    else:
-                        obj.draw(graphwin)
-                        if obj.blink_graphic is not None:
-                            obj.blink_graphic.undraw()
-                    obj.last_blink_time = t
 
         for obj in GraphicsObject.animating_objects["fill"]:
             if obj.graphwin == graphwin and obj.drawn:
@@ -1111,7 +1178,7 @@ class GraphicsObject:
                         GraphicsObject.animating_objects["width"].remove(obj)
                 else:
                     per = obj.width_queue[0]["Easing"]((t - obj.width_queue[0]["Start"])
-                                                          / obj.width_queue[0]["Time"])
+                                                       / obj.width_queue[0]["Time"])
                     obj.set_outline_width(obj.width_queue[0]["Initial"] + obj.width_queue[0]["Change"] * per)
                     obj.width_queue[0]["Update"] = timetime()
 
@@ -1132,7 +1199,7 @@ class GraphicsObject:
                     obj.skew_xy(obj.skew_queue[0]["Initial"][0] + obj.skew_queue[0]["Change"][0] * perX,
                                 obj.skew_queue[0]["Initial"][1] + obj.skew_queue[0]["Change"][1] * perY)
                     obj.skew_queue[0]["Update"] = timetime()
-                    
+
         for obj in GraphicsObject.animating_objects["contrast"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.contrast_queue[0]["Start"] >= obj.contrast_queue[0]["Time"]:
@@ -1148,9 +1215,28 @@ class GraphicsObject:
                     obj.set_contrast(obj.contrast_queue[0]["Initial"] + obj.contrast_queue[0]["Change"] * per)
                     obj.contrast_queue[0]["Update"] = timetime()
 
+        for obj in GraphicsObject.blinking_objects:
+            if obj.graphwin == graphwin and obj.is_blinking:
+                if t - obj.blinking_data["last blink"] > obj.blinking_data["interval"]:
+                    if obj.drawn:
+                        obj.undraw(set_blinking=False)
+                        if obj.blinking_data["blink graphic"] is not None:
+                            obj.blinking_data["blink graphic"].draw(graphwin)
+                    else:
+                        obj.draw(graphwin)
+                        if obj.blinking_data["blink graphic"] is not None:
+                            obj.blinking_data["blink graphic"].undraw()
+                    obj.blinking_data["last blink"] = t
+
+                    if obj.blinking_data["max blinks"] is not None:
+                        obj.blinking_data["total blinks"] += 1
+                        if obj.blinking_data["total blinks"] > (obj.blinking_data["max blinks"] * 2) - 2:
+                            obj.animate_blinking(0, animate=False)
+
         for obj in GraphicsObject.animated_image_instances:
-            if t - obj.last_update_time >= obj.update_time:
-                obj.increment_frame(_time=t)
+            if obj.graphwin == graphwin and obj.drawn:
+                if t - obj.last_update_time >= obj.update_time:
+                    obj.increment_frame(_time=t)
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 

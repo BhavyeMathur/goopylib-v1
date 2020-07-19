@@ -132,6 +132,22 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.144-beta 19th July 2020
+
+* Fixed Bug with AnimatedImages with not incrementing the frame when being drawn repeatedly 
+* An object no longer rotates if the amount to rotate by is 0 (or if the rotation is already the amount specified)
+* Fixed bug with AnimatedImage redrawing after being undrawn by the user
+* Fixed bug with GraphicsObjects continuing to blink after being undrawn
+
+* Added some getter functions to the AnimatedImage class: `get_current_frame()`, `get_all_frames()`, `get_frame()`, `get_number_of_frames()`
+* Added `decrement_frame()` and `set_frame()` functions to the AnimatedImage class
+* Added `get_x_pos()` and `get_y_pos()` functions to the GraphicsObject class
+
+* Added functions to check if a GraphicsObject is animating or blinking
+* Added functions to check the time left for GraphicsObject animations
+* Replaced the variables for GraphicsObject blinking with a dictionary
+* Added a `number_of_blinks` argument for the `animate_blinking()` function to stop the blinking after some time
+
 #### 1.0.133-beta 18th July 2020
 
 * Removed the window parameter from all the GraphicsObjects. To draw, the `draw()` function must be called separately.

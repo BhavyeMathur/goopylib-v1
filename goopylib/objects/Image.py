@@ -28,7 +28,7 @@ class Image(GraphicsObject):
         elif osisfile(filepath):
             self.texture = filepath
         else:
-            raise GraphicsError("\n\nGraphicdError: Image filepath is not valid. No such file or directory as "
+            raise GraphicsError("\n\nGraphicsError: Image filepath is not valid. No such file or directory as "
                                 f"{filepath}")
 
         self.texture = resource_path(self.texture)

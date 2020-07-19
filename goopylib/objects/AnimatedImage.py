@@ -1,15 +1,14 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.objects.Image import Image
+from goopylib.util import GraphicsError
 
 from os import listdir as oslistdir
 from os.path import dirname as osdirname
 from time import time as timetime
 
-class AnimatedImage(GraphicsObject):
-    id_count = 0
-    image_cache = {}  # tk photo images go here to avoid GC while drawn
 
-    def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/30):
+class AnimatedImage(GraphicsObject):
+    def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24):
         filepath = filepath.replace('\\', '/')
         self.filepath = filepath.split('.')
 
@@ -47,7 +46,6 @@ class AnimatedImage(GraphicsObject):
 
     def _draw(self, canvas, options):
         self.imgs[self.frame].draw(canvas)
-        self.last_update_time = timetime()
 
     def _move(self, dx, dy):
         for img in self.imgs:
@@ -55,7 +53,7 @@ class AnimatedImage(GraphicsObject):
 
     def _rotate(self, dr, sampling="bicubic", center=None):
         for img in self.imgs:
-            img.rotate(dr, sampling=sampling)
+            img.rotate(dr)
 
     def increment_frame(self, _time=None):
         self.undraw()
@@ -71,12 +69,43 @@ class AnimatedImage(GraphicsObject):
             self.last_update_time = _time
         return self
 
+    def decrement_frame(self, _time=None):
+        self.undraw()
+        self.frame -= 1
+        if self.frame == -1:
+            self.frame = self.number_of_frames - 1
+        if self.graphwin is not None:
+            self.draw(self.graphwin)
+
+        if _time is None:
+            self.last_update_time = timetime()
+        else:
+            self.last_update_time = _time
+        return self
+
+    def set_frame(self, frame, _time=None):
+
+        if not (0 <= frame < self.number_of_frames):
+            raise GraphicsError("\n\nGraphicsError: Frame to set the Animated Image to must be between (inclusive) 0 & "
+                                f"{self.number_of_frames - 1}, not {frame}")
+
+        self.undraw()
+        self.frame = frame
+        if self.graphwin is not None:
+            self.draw(self.graphwin)
+
+        if _time is None:
+            self.last_update_time = timetime()
+        else:
+            self.last_update_time = _time
+        return self
+
     # -------------------------------------------------------------------------
     # OTHER & IMPORTANT FUNCTIONS
 
     def undraw(self, set_blinking=True):
         self.drawn = False
-        self.imgs[self.frame].undraw()
+        self.imgs[self.frame].undraw(set_blinking=set_blinking)
 
     def is_clicked(self, mouse_pos):
         return self.imgs[self.frame].is_clicked(mouse_pos)
@@ -184,7 +213,7 @@ class AnimatedImage(GraphicsObject):
 
     def skew_xy(self, x_scale=0.3, y_scale=None, sampling="bicubic", x_align="center", y_align=None):
         for img in self.imgs:
-            img.skew_xy(x_scale=scale, y_scale=y_scale, sampling=sampling, x_align=align, y_align=y_align)
+            img.skew_xy(x_scale=x_scale, y_scale=y_scale, sampling=sampling, x_align=x_align, y_align=y_align)
         return self
 
     # ----------------------------------
@@ -197,14 +226,14 @@ class AnimatedImage(GraphicsObject):
 
     def resize_height(self, height, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
         for img in self.imgs:
-            img.resize_height(height, preserve_aspect_ratio=preserve_aspect_ration, sampling=sampling,
+            img.resize_height(height, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
                               _external_call=_external_call)
         return self
 
     def resize_width(self, width, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
         for img in self.imgs:
-            img.resize_width(width, preserve_aspect_ratio=preserve_aspect_ration, sampling=sampling,
-                              _external_call=_external_call)
+            img.resize_width(width, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
+                             _external_call=_external_call)
         return self
 
     def resize_factor(self, factor, sampling="bicubic", _external_call=True):
@@ -266,7 +295,7 @@ class AnimatedImage(GraphicsObject):
 
     def filter_contour(self):
         for img in self.imgs:
-            img.filter_contour
+            img.filter_contour()
         return self
 
     def filter_detail(self):
@@ -316,10 +345,10 @@ class AnimatedImage(GraphicsObject):
         return self.imgs[0].get_anchor()
 
     def get_width(self):
-        return self.imgs[0].width
+        return self.imgs[0].get_width()
 
     def get_height(self):
-        return self.imgs[0].height
+        return self.imgs[0].get_height()
 
     def get_aspect_ratio(self):
         return self.imgs[0].get_aspect_ratio()
@@ -335,6 +364,18 @@ class AnimatedImage(GraphicsObject):
 
     def get_contrast(self):
         return self.imgs[0].get_contrast()
+
+    def get_frame(self):
+        return self.frame
+
+    def get_number_of_frames(self):
+        return len(self.imgs)
+
+    def get_current_frame(self):
+        return self.imgs[self.frame]
+
+    def get_all_frames(self):
+        return self.imgs
 
     # -------------------------------------------------------------------------
     # SETTER FUNCTIONS
