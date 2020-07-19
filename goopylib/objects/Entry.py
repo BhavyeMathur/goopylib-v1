@@ -248,7 +248,7 @@ class Entry(GraphicsObject):
                                 f"? {self.graphwin.is_open()}, Drawn? {self.drawn}")
 
     def _move(self, dx, dy):
-        self.anchor.changeDir(dx, dy)
+        self.anchor.change_direction(dx, dy)
 
     def hide_cursor(self):
         self.entry.config(insertontime=0)

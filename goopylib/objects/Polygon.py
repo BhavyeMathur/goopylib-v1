@@ -3,8 +3,7 @@ from goopylib.Point import Point
 
 class Polygon(GraphicsObject):
 
-    def __init__(self, *points, style=None, fill=None, outline=None, width=None, is_rounded=False, roundness=5,
-                 window=None):
+    def __init__(self, *points, style=None, fill=None, outline=None, width=None, is_rounded=False, roundness=5):
 
         # if points passed as a list, extract it
         if len(points) == 1 and isinstance(points[0], list):
@@ -14,40 +13,10 @@ class Polygon(GraphicsObject):
         self.is_rounded = is_rounded
 
         self.sharpness = roundness
-
-        GraphicsObject.__init__(self, style=style, options=["outline", "width", "fill"], window=window)
-
         self.set_fill(fill)
 
     def __repr__(self):
         return "Polygon" + str(tuple(p for p in self.points))
-
-    def clone(self):
-        other = Polygon(*self.points)
-        other.config = self.config.copy()
-        return other
-
-    def get_points(self):
-        return list(map(Point.clone, self.points))
-
-    def is_clicked(self, mouse_pos):
-        return False
-
-    def _move(self, dx, dy):
-        for p in self.points:
-            p.move(dx, dy)
-
-    def get_anchor(self):
-        x = 0
-        y = 0
-        for point in self.points:
-            x += point.x
-            y += point.y
-
-        x /= len(self.points)
-        y /= len(self.points)
-
-        return Point(x, y)
 
     def _draw(self, canvas, options):
         points = []
@@ -105,3 +74,30 @@ class Polygon(GraphicsObject):
             options["font_colour"] = options["fill"]
 
         return canvas.create_polygon(points, options, smooth=self.is_rounded)
+
+    def clone(self):
+        other = Polygon(*self.points)
+        other.config = self.config.copy()
+        return other
+
+    def get_points(self):
+        return list(map(Point.clone, self.points))
+
+    def is_clicked(self, mouse_pos):
+        return False
+
+    def _move(self, dx, dy):
+        for p in self.points:
+            p.move(dx, dy)
+
+    def get_anchor(self):
+        x = 0
+        y = 0
+        for point in self.points:
+            x += point.x
+            y += point.y
+
+        x /= len(self.points)
+        y /= len(self.points)
+
+        return Point(x, y)

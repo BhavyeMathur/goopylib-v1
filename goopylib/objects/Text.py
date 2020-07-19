@@ -4,11 +4,10 @@ from goopylib.styles import *
 class Text(GraphicsObject):
 
     def __init__(self, p, text, style=None, font_size=None, font_face=None, font_style=None, font_colour=None,
-                 justify="center", window=None):
+                 justify="center"):
 
         self.anchor = p.clone()
-        GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font"],
-                                window=window)
+        GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font"])
 
         if style is None:
             self.style = global_style
@@ -89,7 +88,7 @@ class Text(GraphicsObject):
         return canvas.create_text(x, y, options)
 
     def _move(self, dx, dy):
-        self.anchor.changeDir(dx, dy)
+        self.anchor.change_direction(dx, dy)
 
     def is_clicked(self, mouse_pos):
         return False

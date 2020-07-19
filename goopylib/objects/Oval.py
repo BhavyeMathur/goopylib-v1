@@ -17,8 +17,7 @@ class Oval(gpBBox.BBox):
         self.radius2 = radius2
 
         gpBBox.BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width,
-                             style=style, cursor=cursor,
-                             window=window)
+                             style=style, cursor=cursor)
 
         self.equation = VectorEquation("(((x-{})**2)/({}**2))+(((y-{})**2)/({}**2)) < 1".format(center.x, radius1,
                                                                                                 center.y, radius2))

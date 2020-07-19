@@ -199,6 +199,7 @@ class GraphWin(tkCanvas):
         self.autoflush = autoflush
 
         self.cursor = cursor.lower()
+        self.current_cursor = self.cursor
 
         self.border_width = border_width
         self.border_relief = border_relief.lower()
@@ -346,7 +347,6 @@ class GraphWin(tkCanvas):
     def _on_key_release(self, e):
         if e.keysym in self.keys_down:
             self.keys_down.remove(e.keysym)
-            print(e)
         if e.keysym not in self.keys_clicked:
             self.keys_clicked.append(e.keysym)
 
@@ -354,19 +354,15 @@ class GraphWin(tkCanvas):
         self.last_key_pressed = e.keysym
         if e.keysym not in self.keys_down:
             self.keys_down.append(e.keysym)
-            print(e)
 
     def _on_shift_key_press(self, e):
         self.key_pressed_with_shift = e.keysym
-        print(2)
 
     def _on_alt_key_press(self, e):
         self.key_pressed_with_alt = e.keysym
-        print(1)
 
     def _on_control_key_press(self, e):
         self.key_pressed_with_control = e.keysym
-        print(3)
 
     # -------------------------------------------------------------------------
     # CALLBACK MOUSE FUNCTIONS
@@ -523,7 +519,6 @@ class GraphWin(tkCanvas):
             self.mouse_pos = self.trans.world(e.x, e.y)
 
             if self.mouse_in_window and self.update_mouse:
-                GraphicsObject.on_mouse_motion(self)
                 self.update_mouse = False
 
     def _on_mouse_scroll(self, e):
@@ -703,8 +698,11 @@ class GraphWin(tkCanvas):
     def get_border_relief(self):
         return self.border_relief
 
-    def get_cursor(self):
+    def get_window_cursor(self):
         return self.cursor
+
+    def get_current_cursor(self):
+        return self.current_cursor
 
     def is_resizable(self):
         return self.is_resizable.copy()
@@ -769,7 +767,8 @@ class GraphWin(tkCanvas):
 
         self.__check_open()
         self.master.config(bg=self.bk_colour)
-        self.__autoflush()
+        if self.autoflush:
+            self.__autoflush()
 
     def set_border_width(self, width):
 
@@ -781,7 +780,8 @@ class GraphWin(tkCanvas):
         self.border_width = width
         self.__check_open()
         self.master.config(bd=width)
-        self.__autoflush()
+        if self.autoflush:
+            self.__autoflush()
 
     def set_border_relief(self, relief):
 
@@ -793,19 +793,24 @@ class GraphWin(tkCanvas):
         self.border_relief = relief.lower()
         self.__check_open()
         self.master.config(relief=relief)
-        self.__autoflush()
+        if self.autoflush:
+            self.__autoflush()
 
-    def set_cursor(self, cursor):
-
+    def set_cursor(self, cursor, _internal_call=False):
         if not isinstance(cursor, str):
             raise GraphicsError(f"\n\nThe cursor must be a string, not {cursor}")
         if not cursor.lower() in CURSORS.keys():
             raise GraphicsError(f"\n\nThe cursor for the window must be one of {list(CURSORS.keys())}, not {cursor}")
 
         self.__check_open()
-        self.cursor = cursor.lower()
+        if _internal_call:
+            self.current_cursor = cursor.lower()
+        else:
+            self.cursor = cursor.lower()
+
         self.config(cursor=CURSORS[cursor])
-        self.__autoflush()
+        if self.autoflush:
+            self.__autoflush()
 
     def set_icon(self, icon):
         if not isinstance(icon, str):
@@ -819,7 +824,8 @@ class GraphWin(tkCanvas):
 
         self.__check_open()
         self.master.iconbitmap(icon)
-        self.__autoflush()
+        if self.autoflush:
+            self.__autoflush()
 
     def set_title(self, title):
         if not isinstance(title, str):
@@ -828,7 +834,8 @@ class GraphWin(tkCanvas):
         self.title = title
         self.__check_open()
         self.master.title(title)
-        self.__autoflush()
+        if self.autoflush:
+            self.__autoflush()
 
     # Dimensions Related
 
@@ -853,7 +860,8 @@ class GraphWin(tkCanvas):
         self.width = width
         self.__check_open()
         self.master.config(width=self.width)
-        self.__autoflush()
+        if self.autoflush:
+            self.__autoflush()
 
     def set_height(self, height):
         if not (isinstance(height, int) or isinstance(height, float)):
@@ -876,7 +884,8 @@ class GraphWin(tkCanvas):
         self.height = height
         self.__check_open()
         self.master.config(height=height)
-        self.__autoflush()
+        if self.autoflush:
+            self.__autoflush()
 
     def set_min_height(self, min_height):
         if not (isinstance(min_height, int) or isinstance(min_height, float)):
@@ -1033,8 +1042,8 @@ class GraphWin(tkCanvas):
                           GraphicsWarning)
         self.update()
 
-        t = timetime()
         if self.is_gliding:
+            t = timetime()
 
             # Check if the window is gliding for every interval of time or every frame
             # To cope with lag, you might use time to glide irrespective of how many frames passed
@@ -1503,7 +1512,7 @@ class GraphWin(tkCanvas):
             self.key_pressed_with_control = None
         return key
 
-    def check_for_keys_pressed(self, *keys, _refresh=True):
+    def check_for_all_keys_pressed(self, *keys, _refresh=True):
         if len(keys) == 1:
             return self.check_key_press(_refresh) == keys[0]
         else:
@@ -1512,7 +1521,7 @@ class GraphWin(tkCanvas):
                     return False
             return True
 
-    def check_for_keys_clicked(self, *keys, _refresh=True):
+    def check_for_all_keys_clicked(self, *keys, _refresh=True):
         if len(keys) == 1:
             return self.check_key_click(_refresh) == keys[0]
         else:
@@ -1523,6 +1532,24 @@ class GraphWin(tkCanvas):
                     pass
                     #self.keys_clicked.remove(key)
             return True
+
+    def check_for_keys_pressed(self, *keys, _refresh=True):
+        if len(keys) == 1:
+            return self.check_key_press(_refresh) == keys[0]
+        else:
+            for key in keys:
+                if key in self.keys_down:
+                    return True
+            return False
+
+    def check_for_keys_clicked(self, *keys, _refresh=True):
+        if len(keys) == 1:
+            return self.check_key_click(_refresh) == keys[0]
+        else:
+            for key in keys:
+                if key in self.keys_clicked:
+                    return True
+            return False
 
     # INTERNAL FUNCTIONS
     # -------------------------------------------------------------------------

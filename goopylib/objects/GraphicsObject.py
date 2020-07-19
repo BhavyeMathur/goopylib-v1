@@ -21,8 +21,9 @@ class GraphicsObject:
     checkbox_instances = []
     cyclebutton_instances = []
     entry_instances = []
+    animated_image_instances = []
 
-    def __init__(self, options=(), style=None, cursor="arrow", window=None):
+    def __init__(self, options=(), style=None, cursor="arrow"):
         # options is a list of strings indicating which options are
         # legal for this object.
 
@@ -86,6 +87,7 @@ class GraphicsObject:
         self.is_blinking = False
         self.blinking_interval = None
         self.last_blink_time = 0
+        self.blink_graphic = None
 
         # -------------------------------------------------------------------------
         # Other Variables
@@ -102,8 +104,6 @@ class GraphicsObject:
 
         self.graphwin = None
         self.drawn = False
-        if window is not None:
-            self.draw(window)
 
         GraphicsObject.objects.append(self)
 
@@ -158,6 +158,10 @@ class GraphicsObject:
             _root.update()
 
         self.drawn = True
+
+        if self in GraphicsObject.objects:
+            if self.get_cursor() == graphwin.get_window_cursor():
+                GraphicsObject.objects.remove(self)
 
         return self
 
@@ -422,10 +426,11 @@ class GraphicsObject:
                 return True
         return False
 
-    def animate_blinking(self, interval, animate=True):
+    def animate_blinking(self, interval, animate=True, blink_graphic=None):
         self.is_blinking = animate
         self.blinking_interval = interval
         self.last_blink_time = timetime()
+        self.blink_graphic = blink_graphic
 
         if animate and self not in GraphicsObject.blinking_objects:
             GraphicsObject.blinking_objects.append(self)
@@ -1032,12 +1037,16 @@ class GraphicsObject:
 
         for obj in GraphicsObject.blinking_objects:
             if obj.graphwin == graphwin:
-                if t - obj.last_blink > obj.blinking_interval:
+                if t - obj.last_blink_time > obj.blinking_interval:
                     if obj.drawn:
                         obj.undraw(set_blinking=False)
+                        if obj.blink_graphic is not None:
+                            obj.blink_graphic.draw(graphwin)
                     else:
                         obj.draw(graphwin)
-                    obj.last_blink = t
+                        if obj.blink_graphic is not None:
+                            obj.blink_graphic.undraw()
+                    obj.last_blink_time = t
 
         for obj in GraphicsObject.animating_objects["fill"]:
             if obj.graphwin == graphwin and obj.drawn:
@@ -1138,6 +1147,10 @@ class GraphicsObject:
                                                           / obj.contrast_queue[0]["Time"])
                     obj.set_contrast(obj.contrast_queue[0]["Initial"] + obj.contrast_queue[0]["Change"] * per)
                     obj.contrast_queue[0]["Update"] = timetime()
+
+        for obj in GraphicsObject.animated_image_instances:
+            if t - obj.last_update_time >= obj.update_time:
+                obj.increment_frame(_time=t)
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
@@ -1253,9 +1266,9 @@ class GraphicsObject:
 
             hover_count = 0
             for obj in GraphicsObject.objects:
-                if obj.graphwin == graphwin and graphwin.is_open():
+                if obj.graphwin == graphwin:
                     if obj.is_clicked(mouse_pos):
-                        graphwin.config(cursor=CURSORS[obj.cursor])
+                        graphwin.set_cursor(CURSORS[obj.cursor], _internal_call=True)
                         hover_count += 1
 
                     if obj.is_dragging:
@@ -1271,8 +1284,8 @@ class GraphicsObject:
                         else:
                             obj.is_dragging = False
 
-            if hover_count == 0:
-                graphwin.set_cursor(graphwin.cursor)
+            if hover_count == 0 and graphwin.get_current_cursor() != graphwin.cursor:
+                graphwin.set_cursor(graphwin.cursor, _internal_call=True)
 
             if graphwin.left_mouse_down:
                 for obj in GraphicsObject.slider_instances:
@@ -1370,5 +1383,6 @@ class GraphicsObject:
             if obj.graphwin == graphwin:
                 if obj.range[0] < int(obj.get_value() + e) < obj.range[1]:
                     obj.set_value(int(obj.get_value() + e))
+
 
 from goopylib.objects.Image import Image

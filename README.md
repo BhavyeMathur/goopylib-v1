@@ -132,6 +132,23 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.133-beta 18th July 2020
+
+* Removed the window parameter from all the GraphicsObjects. To draw, the `draw()` function must be called separately.
+* Added the SolidArc class to the imports.py imports
+* Added an `_draw()` function to the SolidArc class
+* Fixed the blinking function to work with the Circle GraphicsObject
+* Added functions to the GraphWin check if at least 1 of the keys provided was pressed
+
+* Performance upgrade for Goopylib when many objects are drawn on the GraphWin
+* GraphWin setter functions only update the window if the window's `autoflush` is `True`
+* The GraphWin doesn't call the `time.time()` function inside the `update_win()` if it is not gliding
+* More Performance Upgrades for the `_on_mouse_motion()` static method for the GraphicsObject (from ~0.05 secs/call to ~0.0 secs)
+* Added an AnimationImage GraphicsObject to create Images which go through multiple frames
+* Improved Performance for Animating Images (tested on my Pac-Man game, brought down time for 1 loop cycle from ~0.13 secs to ~0.05 secs)
+
+* Added a `blink_graphic` to the `animate_blinking()` function to set a specific graphic when blinking rather than just undrawing it (which happens when it is set to None)
+
 #### 1.0.121-beta 16th July 2020
 
 * Fixed flashing image bug when rotating and skewing the image at the same time
@@ -191,6 +208,7 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 * Added Errors to the Image class `__init__` function
  
+
 #### 1.0.81-beta 12th July 2020
 
 * Added a `slope()` function to the Point class to calculate the slope of a line between 2 points

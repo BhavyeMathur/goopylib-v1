@@ -45,10 +45,10 @@ Line(Point(400 - radius1/2, 400), Point(400 + radius1/2, 400)).draw(window)
 rect = Rectangle(Point(100, 100), Point(500, 500), fill=DARKER_GREY, outline=LIGHT_GREY, outline_width=4).draw(window)
 rect.set_draggable_y()"""
 
-img = Image(Point(400, 400), "Examples/Pac-Man-Animation Example/textures/PacMan1.png").draw(window)
+#img = Image(Point(400, 400), "Examples/Pac-Man-Animation Example/textures/PacMan1.png").draw(window)
 
 #img.animate_skew_x(2, time=1, allow_duplicate=False)
-img.animate_change_contrast(200, time=5, allow_duplicate=False)
+#img.animate_change_contrast(200, time=5, allow_duplicate=False)
 #img.set_contrast(200)
 #img.animate_change_skew_y(-2, time=1, allow_duplicate=False)
 

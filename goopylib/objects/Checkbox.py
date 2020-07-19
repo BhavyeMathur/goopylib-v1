@@ -1,7 +1,7 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 
 class Checkbox:
-    def __init__(self, true_graphic, false_graphic, disabled_graphic=None, autoflush=True, state=True, window=None):
+    def __init__(self, true_graphic, false_graphic, disabled_graphic=None, autoflush=True, state=True):
 
         self.state = state
         self.autoflush = autoflush
@@ -22,9 +22,6 @@ class Checkbox:
         self.drawn = False
 
         GraphicsObject.checkbox_instances.append(self)
-
-        if window is not None:
-            self.draw(window)
 
     def __repr__(self):
         return "Checkbox({}, {})".format(self.true_graphic, self.false_graphic)
