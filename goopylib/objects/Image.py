@@ -16,7 +16,7 @@ class Image(GraphicsObject):
     id_count = 0
     image_cache = {}  # tk photo images go here to avoid GC while drawn
 
-    def __init__(self, p, filepath, align="center", cursor="arrow"):
+    def __init__(self, p, filepath, align="center", cursor="arrow", layer=0):
 
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: Image anchor point (p) must be a Point object, not {p}")
@@ -47,8 +47,9 @@ class Image(GraphicsObject):
         self.initial_height = self.get_height()
 
         self.contrast = 0
+        self.blur_amount = 0
 
-        GraphicsObject.__init__(self, [], cursor=cursor)
+        GraphicsObject.__init__(self, [], cursor=cursor, layer=layer)
 
         self.image_id = Image.id_count
         Image.id_count = Image.id_count + 1
@@ -87,7 +88,6 @@ class Image(GraphicsObject):
         self.anchor.y += dy
 
     def _rotate(self, dr, sampling=Img.BICUBIC, center=None):
-        self.rotation += dr
         if center is not None:
             self.transforming_img = self.original_img.rotate(angle=self.rotation, resample=sampling, expand=True,
                                                              center=(center.x, center.y))
@@ -476,7 +476,7 @@ class Image(GraphicsObject):
     # Blurring & Sharpening Functions
 
     def blur(self):
-        self.img_PIL = self.img_PIL.filter(filter=ImageFilter.BLUR)
+        self.img_PIL = self.original_img.filter(filter=ImageFilter.BLUR)
         self.update()
         return self
 
@@ -485,7 +485,7 @@ class Image(GraphicsObject):
         if not (isinstance(radius, int) or isinstance(radius, float)):
             raise GraphicsError(f"\n\nGraphicsError: Radius for Blur must be an integer or float, not {radius}")
 
-        self.img_PIL = self.img_PIL.filter(filter=ImageFilter.BoxBlur(radius))
+        self.img_PIL = self.original_img.filter(filter=ImageFilter.BoxBlur(radius))
         self.update()
         return self
 
@@ -494,7 +494,8 @@ class Image(GraphicsObject):
         if not (isinstance(radius, int) or isinstance(radius, float)):
             raise GraphicsError(f"\n\nGraphicsError: Radius for Blur must be an integer or float, not {radius}")
 
-        self.img_PIL = self.img_PIL.filter(filter=ImageFilter.GaussianBlur(radius))
+        self.img_PIL = self.original_img.filter(filter=ImageFilter.GaussianBlur(radius))
+        self.blur_amount = radius
         self.update()
         return self
 

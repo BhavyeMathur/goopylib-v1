@@ -6,7 +6,7 @@ import math
 
 class Arc(CurvedLine):
     def __init__(self, p, start_angle, end_angle, radius, radius2=None, style=None, outline=None, outline_width=None,
-                 cursor="arrow", arrow=None, resolution=10, smooth=True, bounds_width=10):
+                 cursor="arrow", arrow=None, resolution=10, smooth=True, bounds_width=10, layer=0):
 
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: Anchor Point (p) for Arc must be a Point Object, not {p}")
@@ -57,4 +57,4 @@ class Arc(CurvedLine):
                                                        y_change * math.sin(math.radians(cur_angle))))
 
         CurvedLine.__init__(self, *self.points, style=style, outline=outline, outline_width=outline_width, arrow=arrow,
-                            resolution=0, interpolation="spline", smooth=smooth, bounds_width=bounds_width)
+                            resolution=0, interpolation="spline", smooth=smooth, bounds_width=bounds_width, layer=layer)

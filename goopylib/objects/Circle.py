@@ -4,16 +4,16 @@ from goopylib._internal_classes import VectorEquation
 
 class Circle(Oval):
 
-    def __init__(self, center, radius, bounds=None, style=None, fill=None, outline=None,
-                 outline_width=None, cursor="arrow", window=None):
+    def __init__(self, center, radius, bounds=None, style=None, fill=None, outline=None, layer=0,
+                 outline_width=None, cursor="arrow"):
         p1 = Point(center.x - radius, center.y - radius)
         p2 = Point(center.x + radius, center.y + radius)
 
         self.center = center
 
         self.radius = radius
-        Oval.__init__(self, center, radius, radius, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width, style=style,
-                      cursor=cursor, window=window)
+        Oval.__init__(self, center, radius, radius, bounds=bounds, fill=fill, outline=outline, style=style,
+                      cursor=cursor, outline_width=outline_width, layer=layer)
 
         self.equation = VectorEquation("(x-{})**2 + (y-{})**2 < {}**2".format(self.center.x, self.center.y, radius))
 

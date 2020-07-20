@@ -10,7 +10,7 @@ from math import sin, cos, radians, atan
 class Line(GraphicsObject):
 
     def __init__(self, *p, style=None, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
-                 cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, bounds_width=None):
+                 cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, bounds_width=None, layer=0):
 
         self.points = list(p)  # The list of points that define the line segment
         for i, p in enumerate(self.points):
@@ -30,7 +30,7 @@ class Line(GraphicsObject):
         self.get_anchor()  # It is calculated as the averages of all the points in the line
 
         GraphicsObject.__init__(self, options=["arrow", "width", "fill", "capstyle", "joinstyle", "arrowshape", "dash"],
-                                cursor=cursor)
+                                cursor=cursor, layer=0)
 
         self.arrow_scale_coeff = arrow_scale
 

@@ -8,7 +8,7 @@ from time import time as timetime
 
 
 class AnimatedImage(GraphicsObject):
-    def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24):
+    def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24, layer=0):
         filepath = filepath.replace('\\', '/')
         self.filepath = filepath.split('.')
 
@@ -36,7 +36,7 @@ class AnimatedImage(GraphicsObject):
         self.last_update_time = timetime()
         self.update_time = update_time
 
-        GraphicsObject.__init__(self, [], cursor=cursor)
+        GraphicsObject.__init__(self, [], cursor=cursor, layer=layer)
         GraphicsObject.animated_image_instances.append(self)
     # -------------------------------------------------------------------------
     # INTERNAL FUNCTIONS

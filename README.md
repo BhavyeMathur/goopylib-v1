@@ -128,13 +128,27 @@ Goopy also has functionality for other animations such as moving to locations, r
 9. Bryan Oakley, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with Unfocusing the Entry widget when the user clicks elsewhere
 10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th July 2020 - Helped with answering a question about smoothing in Tkinter
 
+
 ## Version History
 
 ### v1.0
 
+#### 1.0.153-beta 20th July 2020 - 7852 lines of code
+
+* Fixed bug with Images rotating twice the amount than they should be
+* The GraphicsObject class now uses a dictionary to store the animation queues 
+* Fixed the contrast animation for images to work properly after it wasn't due to an internal bug
+* Added animation functions for Images to change the blur of the image
+
+* Image blurring & filter functions now work correctly with rotation and other transformations
+* Fixed bug with Image blurring animation functions not using easing correctly
+* Added a layering system to draw graphics in front of and behind others!
+* Added functions for the layering system: `move_up_layer()`, `move_down_layer()`, `set_layer()`, and `get_layer_objects()`
+* Added errors to the GraphicsObject class and fixed some errors in the GraphWin class
+
 #### 1.0.144-beta 19th July 2020
 
-* Fixed Bug with AnimatedImages with not incrementing the frame when being drawn repeatedly 
+* Fixed Bug with AnimatedImages with not incrementing the frame when being drawn r epeatedly 
 * An object no longer rotates if the amount to rotate by is 0 (or if the rotation is already the amount specified)
 * Fixed bug with AnimatedImage redrawing after being undrawn by the user
 * Fixed bug with GraphicsObjects continuing to blink after being undrawn
@@ -296,7 +310,6 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Every function in the Point class now raises a GraphicsError if the user hasn't provided the correct argument
 * The GraphWin checks for the icon texture in the local directory if it does not exist in the textures/ folder
 
-
 #### 1.0.39-beta 9th July 2020
 
 * Added a few functions to the Entry widget through which the user can only allow certain characters to be entered
@@ -374,7 +387,8 @@ Goopy also has functionality for other animations such as moving to locations, r
 * Added Closure functions for all the interpolations so that the user can 1. Get a value of the interpolation, or 2. Get the function with predifined parameters other than time for use in animations internally
 * Created the Cursors Wiki Page
 
-* Various Bug Fixes from changing the naming convenction & splitting files
+* Various Bug Fixes from changing the naming convention & splitting files
+
 
 ### v6.11-dev
 

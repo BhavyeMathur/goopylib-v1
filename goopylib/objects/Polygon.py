@@ -3,7 +3,8 @@ from goopylib.Point import Point
 
 class Polygon(GraphicsObject):
 
-    def __init__(self, *points, style=None, fill=None, outline=None, width=None, is_rounded=False, roundness=5):
+    def __init__(self, *points, style=None, fill=None, outline=None, width=None, is_rounded=False, roundness=5,
+                 layer=0):
 
         # if points passed as a list, extract it
         if len(points) == 1 and isinstance(points[0], list):
@@ -14,6 +15,8 @@ class Polygon(GraphicsObject):
 
         self.sharpness = roundness
         self.set_fill(fill)
+
+        GraphicsObject.__init__(self, options=("fill", "outline", "width"), layer=layer)
 
     def __repr__(self):
         return "Polygon" + str(tuple(p for p in self.points))

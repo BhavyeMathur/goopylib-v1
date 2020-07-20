@@ -5,7 +5,7 @@ import math
 
 class SolidArc(GraphicsObject):
     def __init__(self, p, start_angle, end_angle, radius, radius2=None, style=None, outline=None, outline_width=None,
-                 cursor="arrow", arrow=None, resolution=10, smooth=True):
+                 cursor="arrow", arrow=None, resolution=10, smooth=True, layer=0):
 
         self.start_angle = start_angle
         self.end_angle = end_angle

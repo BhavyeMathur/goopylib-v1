@@ -4,10 +4,10 @@ from goopylib.styles import *
 class Text(GraphicsObject):
 
     def __init__(self, p, text, style=None, font_size=None, font_face=None, font_style=None, font_colour=None,
-                 justify="center"):
+                 justify="center", layer=0):
 
         self.anchor = p.clone()
-        GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font"])
+        GraphicsObject.__init__(self, style=style, options=["justify", "fill", "text", "font"], layer=layer)
 
         if style is None:
             self.style = global_style

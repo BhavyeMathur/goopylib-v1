@@ -5,10 +5,10 @@ from goopylib._internal_classes import VectorEquation
 
 class Rectangle(gpBBox.BBox):
 
-    def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None,
-                 cursor="arrow", is_rounded=False, roundness=5, window=None):
+    def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None, layer=0,
+                 cursor="arrow", is_rounded=False, roundness=5):
         gpBBox.BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width,
-                             style=style, cursor=cursor)
+                             style=style, cursor=cursor, layer=layer)
 
         self.equation = VectorEquation(f"abs((x - {self.anchor.x})/{self.width / 2} + (y - {self.anchor.y})/"
                                        f"{self.height / 2}) + abs((x - {self.anchor.x})/{self.width / 2} - "

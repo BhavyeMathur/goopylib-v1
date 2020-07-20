@@ -10,8 +10,8 @@ from tkinter import END as tkEND
 class Entry(GraphicsObject):
 
     def __init__(self, p, text_width=10, style=None, fill=None, font_colour=None, entry=None, font=None, font_size=None,
-                 outline=None, font_style=None, outline_width=None, border_relief="flat", password=False,
-                 active="NORMAL", window=None, justify="center", cursor="xterm", select_colour=None, prompt_text=""):
+                 outline=None, font_style=None, outline_width=None, border_relief="flat", password=False, layer=0,
+                 active="NORMAL", justify="center", cursor="xterm", select_colour=None, prompt_text=""):
 
         self.anchor = p.clone()
         self.text_width = text_width
@@ -120,7 +120,7 @@ class Entry(GraphicsObject):
 
         self.allowed_symbols = ALL_CHARACTERS
 
-        GraphicsObject.__init__(self, style=style, options=["fill", "font"], window=window)
+        GraphicsObject.__init__(self, style=style, options=["fill", "font"], layer=layer)
 
     def __repr__(self):
         return "Entry({}, {})".format(self.anchor, self.text_width)

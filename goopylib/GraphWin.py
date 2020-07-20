@@ -580,6 +580,8 @@ class GraphWin(tkCanvas):
         return self
 
     def move_to_point(self, p):
+        if not isinstance(p, Point):
+            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
         self.move_to(p.x, p.y)
 
     # Gliding Functions
@@ -679,6 +681,8 @@ class GraphWin(tkCanvas):
         return self
 
     def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
+        if not isinstance(p, Point):
+            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
         self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
         return self
 

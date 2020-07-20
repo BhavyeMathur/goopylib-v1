@@ -8,7 +8,7 @@ from goopylib._internal_classes import VectorEquation
 class Oval(gpBBox.BBox):
 
     def __init__(self, center, radius1, radius2, bounds=None, style=None, fill=None, outline=None, outline_width=None,
-                 cursor="arrow", window=None):
+                 cursor="arrow", layer=0):
 
         p1 = Point(center.x - radius1, center.y - radius2)
         p2 = Point(center.x + radius1, center.y + radius2)
@@ -17,7 +17,7 @@ class Oval(gpBBox.BBox):
         self.radius2 = radius2
 
         gpBBox.BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width,
-                             style=style, cursor=cursor)
+                             style=style, cursor=cursor, layer=layer)
 
         self.equation = VectorEquation("(((x-{})**2)/({}**2))+(((y-{})**2)/({}**2)) < 1".format(center.x, radius1,
                                                                                                 center.y, radius2))

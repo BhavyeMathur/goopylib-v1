@@ -11,7 +11,7 @@ class BBox(GraphicsObject):
     resizing_objects = []
 
     def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None,
-                 options=("fill", "outline", "width"), cursor="arrow"):
+                 options=("fill", "outline", "width"), cursor="arrow", layer=0):
 
         if not isinstance(bounds, BBox) and bounds is not None:
             raise GraphicsError("\n\nBounds argument must be another Graphics Object (Rectangle, " +
@@ -34,7 +34,7 @@ class BBox(GraphicsObject):
                 self.p1.y = y2
                 self.p2.y = y1
 
-        GraphicsObject.__init__(self, style=style, options=options, cursor=cursor)
+        GraphicsObject.__init__(self, style=style, options=options, cursor=cursor, layer=layer)
 
         # abs(p2.x - p1.x) is not required because the p2 value is always greater than or equal to the p1 value
         self.width = self.p2.x - self.p1.x
