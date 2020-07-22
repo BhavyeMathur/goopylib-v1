@@ -32,6 +32,7 @@ class Image(GraphicsObject):
                                 f"{filepath}")
 
         self.texture = resource_path(self.texture)
+        self.reprpath = filepath
 
         self.img_PIL = Img.open(self.texture, )
         self.img = ImageTk.PhotoImage(self.img_PIL)
@@ -58,7 +59,7 @@ class Image(GraphicsObject):
     # INTERNAL FUNCTIONS
 
     def __repr__(self):
-        return "Image({}, {})".format(self.anchor, self.texture)
+        return f"Image({self.anchor}, {self.reprpath})"
 
     def _draw(self, canvas, options):
         self.image_cache[self.image_id] = self.img  # save a reference

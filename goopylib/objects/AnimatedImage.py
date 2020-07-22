@@ -9,6 +9,7 @@ from time import time as timetime
 
 class AnimatedImage(GraphicsObject):
     def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24, layer=0):
+        self.reprpath = filepath
         filepath = filepath.replace('\\', '/')
         self.filepath = filepath.split('.')
 
@@ -42,7 +43,7 @@ class AnimatedImage(GraphicsObject):
     # INTERNAL FUNCTIONS
 
     def __repr__(self):
-        return f"AnimatedImage({self.anchor}, {self.imgs[self.frame]} and {len(self.imgs) - 1} others.)"
+        return f"AnimatedImage({self.anchor}, {self.reprpath} and {len(self.imgs) - 1} others.)"
 
     def _draw(self, canvas, options):
         self.imgs[self.frame].draw(canvas)

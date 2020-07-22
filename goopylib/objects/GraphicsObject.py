@@ -169,7 +169,7 @@ class GraphicsObject:
         for layer_index, layer in enumerate(GraphicsObject.object_layers):
             if layer_index > self.layer:
                 for obj in layer:
-                    if obj.graphwin == graphwin:
+                    if obj.graphwin == graphwin and obj != self and obj.drawn:
                         obj.draw(graphwin)
 
         self.drawn = True
@@ -258,6 +258,8 @@ class GraphicsObject:
         while layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append([])
         GraphicsObject.object_layers[layer].append(self)
+
+        self.layer = layer
 
         return self
 

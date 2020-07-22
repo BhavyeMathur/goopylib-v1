@@ -145,6 +145,17 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.158-beta 21st July 2020
+
+Sorry, but I haven't been able to get out as many changes today. I've been working on creating YouTube videos for goopy
+which should come out soon!
+
+* Added a `set_enabled()` function to the CycleButton class
+* Added layering functions to the CycleButton class to override the behaviour of state objects
+* The Image & Animated Image `__repr__()` functions now return a shorter string with the smallest filepath
+* Fixed code to change the value of the object layer when the `set_layer()` function is called
+* The layering system now checks if an object has been drawn before drawing it on top
+
 #### 1.0.153-beta 20th July 2020 - 7852 lines of code
 
 * Fixed bug with Images rotating twice the amount than they should be
