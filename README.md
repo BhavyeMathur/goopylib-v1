@@ -145,6 +145,45 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.183-beta 24th July 2020
+
+* Fixed bug with Polygon Triangulation where the last triangle wasn't added to the list of triangles
+* Added a `copy_obstacles_from()` function to copy the obstacles of another object
+* Added object tagging which allows the user to access a GraphicsObject through tags (can be strings, ints, etc.)
+* Objects now store their instances in sets to make the code faster
+* The Animated Image class now calls the `_move()` function of the Image objects and not the `move()` function
+* Performance Upgrades! tested 2400 frames on test game with cProfile:
+ 
+      FPS increased from ~650 FPS to ~3040 FPS
+      
+      BEFORE:--------------------------
+      
+      Trial 1: 4.025 secs, 596.273 FPS
+      Trial 2: 3.959 secs, 606.214 FPS
+      Trial 3: 3.663 secs, 655.201 FPS
+      Trial 4: 3.013 secs, 796.548 FPS
+      Trial 5: 3.864 secs, 621.118 FPS
+      
+      Average: 3.705 secs, 647.808 FPS
+      
+      AFTER: --------------------------
+      
+      Trial 1: 0.871 secs, 2755.454 FPS
+      Trial 2: 0.686 secs, 3498.542 FPS
+      Trial 3: 0.749 secs, 3204.272 FPS
+      Trial 4: 0.928 secs, 2586.207 FPS
+      Trial 5: 0.712 secs, 3370.787 FPS
+            
+      Average: 0.789 secs, 3041.054 FPS
+      
+* The _BBox objects' `is_clicked()` functions run about 2841.3% (~285x) faster faster!
+* Added `get_height()` and `get_width()` functions to the Polygon class
+* The Polygon `get_height()` and `get_width()` functions no longer recalculate the height & width 
+
+* Reorganized the if statement arguments to reduce processing time in the `_on_mouse_motion()` function
+* Transform class `screen()` function now returns a float object
+* The GraphicsObject doesn't iterate through all the objects now, only the ones that are required to improve performance
+
 #### 1.0.172-beta 23rd July 2020
 
 * Added the ear clipping triangulation algorithm to goopylib.math 

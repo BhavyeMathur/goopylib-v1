@@ -35,11 +35,11 @@ class CycleButton(GraphicsObject):
         self.drawn = False
         return self
 
-    def _rotate(self, dr):
+    def _rotate(self, dr, sampling="bicubic", center=None):
         for graphic in self.states:
-            graphic.rotate(dr)
+            graphic.rotate(dr, sampling=sampling, center=center)
         if self.disabled_graphic is not None:
-            self.disabled_graphic.rotate(dr)
+            self.disabled_graphic.rotate(dr, sampling=sampling, center=center)
 
     def _move(self, dx, dy):
         for graphic in self.states:

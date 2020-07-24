@@ -1577,8 +1577,8 @@ class GraphWin(tkCanvas):
             raise GraphicsError(f"X coord to convert to screen coordinate must be a number (int or float), not {x}")
         if not (isinstance(y, int) or isinstance(y, float)):
             raise GraphicsError(f"Y coord to convert to screen coordinate must be a number (int or float), not {y}")
-        trans = self.trans
-        if trans:
+
+        if self.trans:
             return self.trans.screen(x, y)
         else:
             return x, y
