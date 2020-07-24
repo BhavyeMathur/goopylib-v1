@@ -145,7 +145,18 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
-#### 1.0.158-beta 21st July 2020
+#### 1.0.172-beta 23rd July 2020
+
+* Added the ear clipping triangulation algorithm to goopylib.math 
+* The GraphWin functions that don't return anything now return self
+* The GraphWin's `set_coords()` function no longer redraws the window if autoflush is False
+* Added destroy and undraw all instance functions to destroy all of specific GraphicsObjects
+
+* Fixed the bounds argument to work correctly with the Circle's `is_clicked()` function
+* Every GraphicsObject moves & rotates its bounds when the transformation is performed on the object
+* Added Simple Polygonal Bounding Boxes
+
+#### 1.0.166-beta 21st-22nd July 2020
 
 Sorry, but I haven't been able to get out as many changes today. I've been working on creating YouTube videos for goopy
 which should come out soon!
@@ -155,6 +166,16 @@ which should come out soon!
 * The Image & Animated Image `__repr__()` functions now return a shorter string with the smallest filepath
 * Fixed code to change the value of the object layer when the `set_layer()` function is called
 * The layering system now checks if an object has been drawn before drawing it on top
+
+* Performance upgrades (on test code, update time from 0.0008 secs to 0.0003) to the layering system
+* More Performance upgrades to stop the unnecessary redrawing of Graphics Objects (on test code, update time from 0.0003 secs to .00013 secs)
+* Changed all lists in constants.py to be sets to increase performance ([wiki.python.org](https://wiki.python.org/moin/PythonSpeed))
+* Changed the directional move functions to correctly align with intuitive axes (forward being up, not down)
+* Image rotation now happens clockwise instead of anticlockwise
+
+* Added a `set_movement_bounds()` method to the GraphicsObject class to confine the movement of an object
+* Added a `destroy()` function to the GraphicsObject class to completely remove an object
+* Added object rotation for Polygons
 
 #### 1.0.153-beta 20th July 2020 - 7852 lines of code
 

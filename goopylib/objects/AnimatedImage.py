@@ -32,6 +32,7 @@ class AnimatedImage(GraphicsObject):
                         self.number_of_frames += 1
 
         self.frame = 0
+        self.drawn_frame = 0
         self.imgs = [Image(p, f"{self.filepath[0]}{i}.{self.filepath[1]}", align=align, cursor=cursor)
                      for i in range(self.number_of_frames)]
         self.last_update_time = timetime()
@@ -39,6 +40,7 @@ class AnimatedImage(GraphicsObject):
 
         GraphicsObject.__init__(self, [], cursor=cursor, layer=layer)
         GraphicsObject.animated_image_instances.append(self)
+
     # -------------------------------------------------------------------------
     # INTERNAL FUNCTIONS
 
@@ -47,22 +49,29 @@ class AnimatedImage(GraphicsObject):
 
     def _draw(self, canvas, options):
         self.imgs[self.frame].draw(canvas)
+        self.drawn_frame = self.frame
 
     def _move(self, dx, dy):
         for img in self.imgs:
             img.move(dx, dy)
+        self.anchor.x += dx
+        self.anchor.y += dy
 
     def _rotate(self, dr, sampling="bicubic", center=None):
         for img in self.imgs:
             img.rotate(dr)
 
-    def increment_frame(self, _time=None):
-        self.undraw()
+    def increment_frame(self, _time=None, _internal_call=False):
         self.frame += 1
         if self.frame == self.number_of_frames:
             self.frame = 0
-        if self.graphwin is not None:
-            self.draw(self.graphwin)
+        if self.drawn:
+            if self.graphwin.autoflush:
+                self.undraw()
+                self.draw(self.graphwin)
+            else:
+                if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                    GraphicsObject.redraw_on_frame[self.layer].append(self)
 
         if _time is None:
             self.last_update_time = timetime()
@@ -70,13 +79,17 @@ class AnimatedImage(GraphicsObject):
             self.last_update_time = _time
         return self
 
-    def decrement_frame(self, _time=None):
-        self.undraw()
+    def decrement_frame(self, _time=None, _internal_call=False):
         self.frame -= 1
         if self.frame == -1:
             self.frame = self.number_of_frames - 1
-        if self.graphwin is not None:
-            self.draw(self.graphwin)
+        if self.drawn:
+            if self.graphwin.autoflush:
+                self.undraw()
+                self.draw(self.graphwin)
+            else:
+                if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                    GraphicsObject.redraw_on_frame[self.layer].append(self)
 
         if _time is None:
             self.last_update_time = timetime()
@@ -84,16 +97,20 @@ class AnimatedImage(GraphicsObject):
             self.last_update_time = _time
         return self
 
-    def set_frame(self, frame, _time=None):
+    def set_frame(self, frame, _time=None, _internal_call=False):
 
         if not (0 <= frame < self.number_of_frames):
             raise GraphicsError("\n\nGraphicsError: Frame to set the Animated Image to must be between (inclusive) 0 & "
                                 f"{self.number_of_frames - 1}, not {frame}")
 
-        self.undraw()
         self.frame = frame
-        if self.graphwin is not None:
-            self.draw(self.graphwin)
+        if self.drawn:
+            if self.graphwin.autoflush:
+                self.undraw()
+                self.draw(self.graphwin)
+            else:
+                if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                    GraphicsObject.redraw_on_frame[self.layer].append(self)
 
         if _time is None:
             self.last_update_time = timetime()
@@ -106,7 +123,7 @@ class AnimatedImage(GraphicsObject):
 
     def undraw(self, set_blinking=True):
         self.drawn = False
-        self.imgs[self.frame].undraw(set_blinking=set_blinking)
+        self.imgs[self.drawn_frame].undraw(set_blinking=set_blinking)
 
     def is_clicked(self, mouse_pos):
         return self.imgs[self.frame].is_clicked(mouse_pos)

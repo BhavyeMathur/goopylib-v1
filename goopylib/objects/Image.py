@@ -88,12 +88,14 @@ class Image(GraphicsObject):
         self.anchor.x += dx
         self.anchor.y += dy
 
-    def _rotate(self, dr, sampling=Img.BICUBIC, center=None):
+    def _rotate(self, dr, sampling="bicubic", center=None):
         if center is not None:
-            self.transforming_img = self.original_img.rotate(angle=self.rotation, resample=sampling, expand=True,
+            self.transforming_img = self.original_img.rotate(angle=-self.rotation, expand=True,
+                                                             resample=IMAGE_INTERPOLATIONS[sampling],
                                                              center=(center.x, center.y))
         else:
-            self.transforming_img = self.original_img.rotate(angle=self.rotation, resample=sampling, expand=True)
+            self.transforming_img = self.original_img.rotate(angle=-self.rotation, expand=True,
+                                                             resample=IMAGE_INTERPOLATIONS[sampling])
         self.img_PIL = self.transforming_img.copy()
         self.update()
         return self
@@ -104,10 +106,13 @@ class Image(GraphicsObject):
         except AttributeError:
             self.img = ImageTk.PhotoImage(self.img_PIL)
 
-        if self.graphwin is not None:
+        if self.drawn:
             if self.graphwin.autoflush:
-                self.graphwin.update()
-            self.redraw()
+                self.redraw()
+                self.graphwin.flush()
+            else:
+                if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                    GraphicsObject.redraw_on_frame[self.layer].append(self)
 
     # -------------------------------------------------------------------------
     # OTHER & IMPORTANT FUNCTIONS
@@ -596,10 +601,11 @@ class Image(GraphicsObject):
     # -------------------------------------------------------------------------
     # SETTER FUNCTIONS
 
-    def set_pixel(self, x, y, Colour):
+    def set_pixel(self, x, y, colour):
         """Sets pixel (x,y) to the given colour
 
         """
-        self.img_PIL = self.img_PIL.putpixel((x, y), Colour)
-        self.img = ImageTk.PhotoImage(self.img_PIL)
+        self.original_img = self.original_img.putpixel((x, y), colour)
+        self.img_PIL = self.img_PIL.putpixel((x, y), colour)
+        self.update()
         return self

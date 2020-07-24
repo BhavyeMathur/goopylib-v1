@@ -32,7 +32,14 @@ class VectorEquation:
     def __repr__(self):
         return self.equation
 
-    def is_clicked(self, mouse_pos):
-        if mouse_pos is not None:
-            x, y = mouse_pos.x, mouse_pos.y
+    def is_clicked(self, pos):
+        if pos is not None:
+            x = pos.x
+            y = pos.y
             return eval(self.equation)
+    
+    def check_on_edge(self, pos):
+        return False
+
+    def check_overlapping(self, other):
+        return False

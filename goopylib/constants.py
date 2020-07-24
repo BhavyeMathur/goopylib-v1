@@ -10,7 +10,7 @@ import platform
 OS = platform.system()
 
 # For the list of cursors visit:
-CURSORS_RAW = ["x_cursor", "arrow", "based_arrow_down", "based_arrow_up", "boat", "bogosity", "bottom_left_corner",
+CURSORS_RAW = {"x_cursor", "arrow", "based_arrow_down", "based_arrow_up", "boat", "bogosity", "bottom_left_corner",
                "bottom_right_corner", "bottom_side", "bottom_tee", "box_spiral", "center_ptr", "circle", "clock",
                "coffee_mug", "cross", "cross_reverse", "crosshair", "diamond_cross", "dot", "dotbox", "double_arrow",
                "draft_large", "draft_small", "draped_box", "exchange", "fleur", "gobbler", "gumby", "hand1", "hand2",
@@ -19,13 +19,13 @@ CURSORS_RAW = ["x_cursor", "arrow", "based_arrow_down", "based_arrow_up", "boat"
                "right_tee", "rightbutton", "rtl_logo", "sailboat", "sb_down_arrow", "sb_h_double_arrow",
                "sb_left_arrow", "sb_right_arrow", "sb_up_arrow", "sb_v_double_arrow", "shuttle", "sizing", "spider",
                "spraycan", "star", "target", "tcross", "top_left_arrow", "top_left_corner", "top_right_corner",
-               "top_side", "top_tee", "trek", "ul_angle", "umbrella", "ur_angle", "watch", "xterm"]
+               "top_side", "top_tee", "trek", "ul_angle", "umbrella", "ur_angle", "watch", "xterm"}
 
-CURSORS_WINDOWS_RAW = ["no", "starting", "size", "size_ne_sw", "size_ns", "size_nw_se", "size_we", "uparrow", "wait"]
-CURSORS_MACOSX_RAW = ["copyarrow", "aliasarrow", "contextualmenuarrow", "text", "cross-hair", "closedhand", "openhand",
+CURSORS_WINDOWS_RAW = {"no", "starting", "size", "size_ne_sw", "size_ns", "size_nw_se", "size_we", "uparrow", "wait"}
+CURSORS_MACOSX_RAW = {"copyarrow", "aliasarrow", "contextualmenuarrow", "text", "cross-hair", "closedhand", "openhand",
                       "pointinghand", "resizeleft", "resizeright", "resizeleftright", "resizeup", "resizedown",
                       "resizeupdown", "none", "notallowed", "poof", "countinguphand", "countingdownhand",
-                      "countingupanddownhand", "spinning"]
+                      "countingupanddownhand", "spinning"}
 
 CURSORS = {"x": "x_cursor", "arrow": "arrow", "based-down-arrow": "based_arrow_down",
            "based-up-arrow": "based_arrow_up", "boat": "boat", "maze_symbol": "bogosity",
@@ -54,35 +54,35 @@ CURSORS = {"x": "x_cursor", "arrow": "arrow", "based-down-arrow": "based_arrow_d
 CURSORS_WINDOWS = {"cancel": "no"}
 CURSORS_MACOSX = {}
 
-RELIEF = ["flat", "sunken", "raised", "groove", "ridge"]
-ARROWS = ["both", "none", "first", "last"]
+RELIEF = {"flat", "sunken", "raised", "groove", "ridge"}
+ARROWS = {"both", "none", "first", "last"}
 
-CAPSTYLES = ["round", "butt", "projecting"]
-JOINSTYLES = ["bevel", "round", "miter"]
+CAPSTYLES = {"round", "butt", "projecting"}
+JOINSTYLES = {"bevel", "round", "miter"}
 DASHES = {"solid": None, "dash": (5, ), "long dash": (8, ), "dot": (1, 3), "dashdot": (5, 1, 1, 1),
           "long dashdot": (8, 1, 1, 1)}
 
-DUPLICATES_METRICS = {"Colour Animation": ["Change", "Start", "Time", "Update", "Initial", "Easing"],
-                      "2D Animation": ["Change", "Start", "Time", "Update", "Initial", "EasingX", "EasingY"],
-                      "1D Animation": ["Change", "Start", "Time", "Update", "Initial", "Easing"]}
+DUPLICATES_METRICS = {"Colour Animation": {"Change", "Start", "Time", "Update", "Initial", "Easing"},
+                      "2D Animation": {"Change", "Start", "Time", "Update", "Initial", "EasingX", "EasingY"},
+                      "1D Animation": {"Change", "Start", "Time", "Update", "Initial", "Easing"}}
 
-CURVE_INTERPOLATIONS = ["linear", "cosine", "cubic", "hermite", "spline"]
+CURVE_INTERPOLATIONS = {"linear", "cosine", "cubic", "hermite", "spline"}
 IMAGE_INTERPOLATIONS = {"bicubic": BICUBIC, "bilinear": BILINEAR, "box": BOX, "nearest": NEAREST, "hamming": HAMMING,
                         "lanczos": LANCZOS}
 
-ARC_TYPES = ["arc", "pieslice", "chord"]
+ARC_TYPES = {"arc", "pieslice", "chord"}
 
-ALIGN_OPTIONS = ["top", "left", "right", "bottom", "center", "topleft", "topright", "bottomleft", "bottomright"]
+ALIGN_OPTIONS = {"top", "left", "right", "bottom", "center", "topleft", "topright", "bottomleft", "bottomright"}
 
-INTERPOLATIONS = ["linear", "poly", "poly_in", "poly_out", "sin", "sin_in", "sin_out", "circle", "circle_in",
+INTERPOLATIONS = {"linear", "poly", "poly_in", "poly_out", "sin", "sin_in", "sin_out", "circle", "circle_in",
                   "circle_out", "back", "back_in", "back_out", "bounce", "bounce_in", "bounce_out", "elastic",
-                  "elastic_in", "elastic_out", "exponential", "exponential_in", "exponential_out"]
+                  "elastic_in", "elastic_out", "exponential", "exponential_in", "exponential_out"}
 
-ALL_CHARACTERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+ALL_CHARACTERS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
                   'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
                   'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
                   'Y', 'Z', '!', '"', '#', '$', '%', '&', '\\', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';',
-                  '<', '=', '>', '?', '@', '[', '\'', '"', ']', '^', '_', '`', '{', '|', '}', '~', ':', " "]
+                  '<', '=', '>', '?', '@', '{', '\'', '"', '}', '^', '_', '`', '{', '|', '}', '~', ':', " "}
 
 ##########################################################################
 # global variables and functions

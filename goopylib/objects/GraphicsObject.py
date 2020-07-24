@@ -1,8 +1,8 @@
 from goopylib.styles import *
 from goopylib.constants import *
 from goopylib.constants import _root
-from goopylib.math.Easing import *
 
+from goopylib.math.Easing import *
 from math import cos, sin, radians
 
 
@@ -23,9 +23,11 @@ class GraphicsObject:
     entry_instances = []
     animated_image_instances = []
 
-    object_layers = []
+    object_layers = [[]]
+    cursor_objects = []
+    redraw_on_frame = [[]]
 
-    def __init__(self, options=(), style=None, cursor="arrow", layer=0):
+    def __init__(self, options=(), style=None, cursor="arrow", layer=0, bounds=None):
         # options is a list of strings indicating which options are
         # legal for this object.
 
@@ -43,6 +45,8 @@ class GraphicsObject:
                                 f"not {layer}")
         if layer < 0:
             raise GraphicsError(f"\n\nGraphicsError: object layer must be greater than (or equal to) 0, not {layer}")
+        if not (isinstance(bounds, GraphicsObject) or bounds is None):
+            raise GraphicsError(f"\n\nGraphicsError: bounds argument must be a GraphicsObject, not {bounds}")
 
         self.id = None
 
@@ -73,7 +77,7 @@ class GraphicsObject:
 
         # -------------------------------------------------------------------------
         # Animation Variables
-        
+
         self.animation_queues = {"fill": [], "outline": [], "width": [], "resize": [], "glide": [], "rotate": [],
                                  "skew": [], "contrast": [], "blur": []}
 
@@ -93,7 +97,8 @@ class GraphicsObject:
         # -------------------------------------------------------------------------
         # Other Variables
 
-        self.bounds = None
+        self.obstacles = []
+
         self.cursor = cursor
 
         self.is_draggable = (False, False)
@@ -105,10 +110,15 @@ class GraphicsObject:
 
         self.graphwin = None
         self.drawn = False
+        self.bounds = bounds
         self.layer = layer
+
+        self.movement_bounds = None
+        self.allow_looping = (False, False)
 
         while layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append([])
+            GraphicsObject.redraw_on_frame.append([])
 
         GraphicsObject.object_layers[layer].append(self)
         GraphicsObject.objects.append(self)
@@ -138,14 +148,14 @@ class GraphicsObject:
         """updates internal state of object to move it dx,dy units"""
         pass  # must override in subclass
 
-    def _rotate(self, dr):
+    def _rotate(self, dr, sampling="bicubic", center=None):
         """updates internal state of object to rotate it r degrees CCW"""
         pass  # must override in subclass
 
     def _update(self):
         pass  # must override in subclass
 
-    def draw(self, graphwin):
+    def draw(self, graphwin, _internal_call=False):
 
         """Draw the object in graphwin, which should be a GraphWin
         object.  A GraphicsObject may only be drawn into one
@@ -153,7 +163,8 @@ class GraphicsObject:
         is already visible."""
 
         if "GraphWin" not in graphwin.__repr__():
-            raise GraphicsError(f"\n\nGraphicsError: draw() function argument must be a GraphWin object, not {graphwin}")
+            raise GraphicsError(
+                f"\n\nGraphicsError: draw() function argument must be a GraphWin object, not {graphwin}")
         if graphwin.is_closed():
             return self
 
@@ -163,20 +174,21 @@ class GraphicsObject:
         self.id = self._draw(graphwin, self.config)
         self.graphwin = graphwin
         graphwin.add_item(self)
+
+        if not _internal_call:
+            for layer_index, layer in enumerate(GraphicsObject.object_layers):
+                if layer_index > self.layer:
+                    for obj in layer:
+                        if obj.graphwin == graphwin and obj != self and obj.drawn:
+                            obj.draw(graphwin, _internal_call=True)
+
         if graphwin.autoflush:
             _root.update()
-
-        for layer_index, layer in enumerate(GraphicsObject.object_layers):
-            if layer_index > self.layer:
-                for obj in layer:
-                    if obj.graphwin == graphwin and obj != self and obj.drawn:
-                        obj.draw(graphwin)
-
         self.drawn = True
 
-        if self in GraphicsObject.objects:
-            if self.get_cursor() == graphwin.get_window_cursor():
-                GraphicsObject.objects.remove(self)
+        if self not in GraphicsObject.cursor_objects:
+            if self.get_cursor() != graphwin.get_window_cursor():
+                GraphicsObject.cursor_objects.append(self)
 
         return self
 
@@ -186,7 +198,8 @@ class GraphicsObject:
         object is not currently drawn."""
 
         if not isinstance(set_blinking, bool):
-            raise GraphicsError(f"\n\nGraphicsError: set_blinking argument for undraw() must be a boolean, not {set_blinking}")
+            raise GraphicsError(
+                f"\n\nGraphicsError: set_blinking argument for undraw() must be a boolean, not {set_blinking}")
 
         if self.drawn:
             try:
@@ -205,10 +218,15 @@ class GraphicsObject:
         return self
 
     def redraw(self):
-        if self.graphwin.is_open():
-            self.undraw()
-            self.draw(self.graphwin)
+        if self.drawn:
+            if self.graphwin.is_open():
+                self.undraw()
+                self.draw(self.graphwin)
         return self
+
+    def destroy(self):
+        if self.graphwin is not None:
+            self.graphwin.destroy_item(self.id)
 
     # -------------------------------------------------------------------------
     # LAYERING SYSTEM FUNCTIONS
@@ -225,6 +243,7 @@ class GraphicsObject:
 
         while self.layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append([])
+            GraphicsObject.redraw_on_frame.append([])
         GraphicsObject.object_layers[self.layer].append(self)
 
         return self
@@ -243,6 +262,7 @@ class GraphicsObject:
 
         while self.layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append([])
+            GraphicsObject.redraw_on_frame.append([])
         GraphicsObject.object_layers[self.layer].append(self)
 
         return self
@@ -257,6 +277,7 @@ class GraphicsObject:
         GraphicsObject.object_layers[self.layer].remove(self)
         while layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append([])
+            GraphicsObject.redraw_on_frame.append([])
         GraphicsObject.object_layers[layer].append(self)
 
         self.layer = layer
@@ -423,6 +444,61 @@ class GraphicsObject:
         return self.layer
 
     # -------------------------------------------------------------------------
+    # OBSTACLE & BOUNDS FUNCTIONS
+
+    def get_movement_looping(self):
+        return self.allow_looping
+
+    def get_obstacles(self):
+        return self.obstacles
+
+    def get_movement_bounds(self):
+        return self.movement_bounds
+
+    def set_movement_bounds(self, obj, allow_looping_x=False, allow_looping_y=False):
+        from goopylib.objects.Rectangle import Rectangle
+
+        if not (isinstance(obj, Rectangle) or isinstance(obj, Image)):
+            raise GraphicsError(f"\n\nGraphicsError: obj argument must be a Rectangle or Image, not {obj}")
+        if not isinstance(allow_looping_x, bool):
+            raise GraphicsError(f"\n\nGraphicsError: allow_looping_x argument must be a boolean, not {allow_looping_x}")
+        if not isinstance(allow_looping_y, bool):
+            raise GraphicsError(f"\n\nGraphicsError: allow_looping_y argument must be a boolean, not {allow_looping_y}")
+
+        self.movement_bounds = obj
+        self.allow_looping = (allow_looping_x, allow_looping_y)
+
+        return self
+
+    def add_obstacle(self, obj):
+        if not isinstance(obj, GraphicsObject):
+            raise GraphicsError(f"\n\nGraphicsError: object to add as obstacle must be a GraphicsObject, not {obj}")
+        self.obstacles.append(obj)
+        return self
+
+    def remove_obstacle(self, obj):
+        if obj not in self.obstacles:
+            raise GraphicsError(f"\n\nGraphicsError: object to remove as obstacle is not in the object's obstacles")
+        self.obstacles.remove(obj)
+        return self
+
+    def pop_obstacle(self, index):
+        self.obstacles.pop(index)
+        return self
+
+    def clear_obstacles(self):
+        for obj in self.obstacles:
+            obj.destroy()
+            self.obstacles.remove(obj)
+        return self
+
+    def is_x_looping_allowed(self):
+        return self.allow_looping[0]
+
+    def is_y_looping_allowed(self):
+        return self.allow_looping[1]
+
+    # -------------------------------------------------------------------------
     # OBJECT TRANSFORMATION FUNCTIONS
 
     # Object Moving Functions
@@ -441,6 +517,28 @@ class GraphicsObject:
         if align not in ALIGN_OPTIONS:
             raise GraphicsError(f"\n\nGraphicsError: align for object must be one of {ALIGN_OPTIONS}, not {align}")
 
+        if self.movement_bounds is not None:
+            if not self.movement_bounds.is_clicked(Point(self.anchor.x + dx, self.anchor.y + dy)):
+                if self.allow_looping[0]:
+                    if self.anchor.x + dx <= self.movement_bounds.anchor.x - self.movement_bounds.get_width()/2:
+                        dx = self.movement_bounds.get_width() - self.get_width() / 2
+                    elif self.anchor.x + dx >= self.movement_bounds.anchor.x + self.movement_bounds.get_width()/2:
+                        dx = -self.movement_bounds.get_width() + self.get_width() / 2
+                    else:
+                        return self
+                    
+                if self.allow_looping[1]:
+                    if self.anchor.y + dy <= self.movement_bounds.anchor.y - self.movement_bounds.get_height()/2:
+                        dy = self.movement_bounds.get_height() - self.get_height() / 2
+                    elif self.anchor.y + dy >= self.movement_bounds.anchor.y + self.movement_bounds.get_height()/2:
+                        dy = -self.movement_bounds.get_height() + self.get_height() / 2
+                    else:
+                        return self
+
+        for obstacle in self.obstacles:
+            if obstacle.is_clicked(Point(self.anchor.x + dx, self.anchor.y + dy)):
+                return self
+                    
         if align == "center":
             self._move(dx, dy)
         elif align == "left":
@@ -462,12 +560,24 @@ class GraphicsObject:
 
         if self.drawn:
             if self.graphwin.autoflush:
+                self.redraw()
                 self.graphwin.flush()
-            self.redraw()
+            else:
+                if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                    GraphicsObject.redraw_on_frame[self.layer].append(self)
         self._update()
+        if self.bounds is not None:
+            self.bounds.move(dx, dy, align=align)
         return self
 
     def move_to(self, x, y, align="center"):
+        if not (isinstance(x, int) or isinstance(x, float)):
+            raise GraphicsError("\n\nGraphicsObject: the x location to move the object to must be an integer or float, "
+                                f"not {x}")
+        if not (isinstance(y, int) or isinstance(y, float)):
+            raise GraphicsError("\n\nGraphicsObject: the y location to move the object to must be an integer or float, "
+                                f"not {y}")
+
         self.move(x - self.get_anchor().x, y - self.get_anchor().y, align=align)
         return self
 
@@ -503,43 +613,48 @@ class GraphicsObject:
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        self.move(d * sin(radians(self.rotation)), d * cos(radians(self.rotation)))
+        self.move_backward(-d)
 
     def move_backward(self, d):
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        self.move_forward(-d)
+        self.move(d * sin(radians(self.rotation)), d * cos(radians(self.rotation)))
 
     def move_left(self, d):
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        self.move(d * cos(radians(self.rotation)), d * sin(radians(self.rotation)))
+        self.move_right(-d)
 
     def move_right(self, d):
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        self.move_left(-d)
+        self.move(d * cos(radians(self.rotation)), d * sin(radians(self.rotation)))
 
     # Rotation Transformations
-    def rotate(self, dr):
+    def rotate(self, dr, sampling="bicubic", center=None):
         if not (isinstance(dr, int) or isinstance(dr, float)):
             raise GraphicsError(f"\n\nGraphicsError: object rotation amount must be an integer or float, not {dr}")
         if dr != 0:
             self.rotation += dr
-            self._rotate(dr)
+            self._rotate(dr, sampling=sampling, center=center)
+            if self.drawn:
+                if self.graphwin.autoflush:
+                    self.redraw()
+                    self.graphwin.flush()
+                else:
+                    if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                        GraphicsObject.redraw_on_frame[self.layer].append(self)
             self._update()
-            if self.graphwin is not None:
-                self.redraw()
 
         return self
 
-    def set_rotation(self, r):
+    def set_rotation(self, r, sampling="bicubic", center=None):
         if not (isinstance(r, int) or isinstance(r, float)):
             raise GraphicsError(f"\n\nGraphicsError: object rotation must be an integer or float, not {r}")
-        self.rotate(r - self.rotation)
+        self.rotate(r - self.rotation, sampling=sampling, center=center)
         return self
 
     # Skewing transformations - these must be overriden in classes that support skewing
@@ -707,7 +822,7 @@ class GraphicsObject:
         if not (isinstance(y, int) or isinstance(y, float)):
             raise GraphicsError("\n\nThe y amount to glide the object by (y) must be a number "
                                 f"(integer or float), not {y}")
-        
+
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["2D Animation"]:
                 raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
@@ -1106,8 +1221,9 @@ class GraphicsObject:
                                 duplicates_metric=("Time", "Initial", "Change")):
         if isinstance(self, Image):
             if not (isinstance(contrast_change, int) or isinstance(contrast_change, float)):
-                raise GraphicsError("\n\nGraphicsError: The amount to contrast the object by (contrast_change) must be a number "
-                                    f"(integer or float), not {contrast_change}")
+                raise GraphicsError(
+                    "\n\nGraphicsError: The amount to contrast the object by (contrast_change) must be a number "
+                    f"(integer or float), not {contrast_change}")
             if not (isinstance(time, int) or isinstance(time, float)):
                 raise GraphicsError("\n\nGraphicsError: The time to contrast the object for (time) must be a number "
                                     f"(integer or float), not {time}")
@@ -1130,7 +1246,8 @@ class GraphicsObject:
                               "Change": contrast_change, "Easing": easing}
 
             if not allow_duplicate:
-                if not self.check_animation_exists(self.animation_queues["contrast"], animation_data, duplicates_metric):
+                if not self.check_animation_exists(self.animation_queues["contrast"], animation_data,
+                                                   duplicates_metric):
                     self.animation_queues["contrast"].append(animation_data)
             else:
                 self.animation_queues["contrast"].append(animation_data)
@@ -1151,13 +1268,14 @@ class GraphicsObject:
             return self
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support the contrast animation")
-        
+
     def animate_change_blur(self, blur_change, time=1, easing=ease_linear(), allow_duplicate=True,
                             duplicates_metric=("Time", "Initial", "Change")):
         if isinstance(self, Image):
             if not (isinstance(blur_change, int) or isinstance(blur_change, float)):
-                raise GraphicsError("\n\nGraphicsError: The amount to blur the object by (blur_change) must be a number "
-                                    f"(integer or float), not {blur_change}")
+                raise GraphicsError(
+                    "\n\nGraphicsError: The amount to blur the object by (blur_change) must be a number "
+                    f"(integer or float), not {blur_change}")
             if not (isinstance(time, int) or isinstance(time, float)):
                 raise GraphicsError("\n\nGraphicsError: The time to blur the object for (time) must be a number "
                                     f"(integer or float), not {time}")
@@ -1238,43 +1356,50 @@ class GraphicsObject:
 
     def gliding_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Time"]) - timetime()
+            return (self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1][
+                "Time"]) - timetime()
         else:
             return 0
 
     def rotating_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["rotate"][-1]["Initial"] + self.animation_queues["rotate"][-1]["Time"]) - timetime()
+            return (self.animation_queues["rotate"][-1]["Initial"] + self.animation_queues["rotate"][-1][
+                "Time"]) - timetime()
         else:
             return 0
 
     def animating_fill_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["fill"][-1]["Initial"] + self.animation_queues["fill"][-1]["Time"]) - timetime()
+            return (self.animation_queues["fill"][-1]["Initial"] + self.animation_queues["fill"][-1][
+                "Time"]) - timetime()
         else:
             return 0
 
     def animating_outline_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["outline"][-1]["Initial"] + self.animation_queues["outline"][-1]["Time"]) - timetime()
+            return (self.animation_queues["outline"][-1]["Initial"] + self.animation_queues["outline"][-1][
+                "Time"]) - timetime()
         else:
             return 0
 
     def animating_outline_width_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["width"][-1]["Initial"] + self.animation_queues["width"][-1]["Time"]) - timetime()
+            return (self.animation_queues["width"][-1]["Initial"] + self.animation_queues["width"][-1][
+                "Time"]) - timetime()
         else:
             return 0
 
     def skewing_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["skew"][-1]["Initial"] + self.animation_queues["skew"][-1]["Time"]) - timetime()
+            return (self.animation_queues["skew"][-1]["Initial"] + self.animation_queues["skew"][-1][
+                "Time"]) - timetime()
         else:
             return 0
 
     def animating_contrast_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["contrast"][-1]["Initial"] + self.animation_queues["contrast"][-1]["Time"]) - timetime()
+            return (self.animation_queues["contrast"][-1]["Initial"] + self.animation_queues["contrast"][-1][
+                "Time"]) - timetime()
         else:
             return 0
 
@@ -1301,25 +1426,31 @@ class GraphicsObject:
         for obj in GraphicsObject.animating_objects["gliding"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.animation_queues["glide"][0]["Start"] >= obj.animation_queues["glide"][0]["Time"]:
-                    obj.move_to(obj.animation_queues["glide"][0]["Initial"].x + obj.animation_queues["glide"][0]["Change"].x,
-                                obj.animation_queues["glide"][0]["Initial"].y + obj.animation_queues["glide"][0]["Change"].y)
+                    obj.move_to(
+                        obj.animation_queues["glide"][0]["Initial"].x + obj.animation_queues["glide"][0]["Change"].x,
+                        obj.animation_queues["glide"][0]["Initial"].y + obj.animation_queues["glide"][0]["Change"].y)
 
                     obj.animation_queues["glide"].pop(0)  # Remove the object from the gliding queue
                     if len(obj.animation_queues["glide"]) == 0:
                         obj.is_gliding = False
                         GraphicsObject.animating_objects["gliding"].remove(obj)
                 else:
-                    perX = obj.animation_queues["glide"][0]["EasingX"]((t - obj.animation_queues["glide"][0]['Start']) / obj.animation_queues["glide"][0]['Time'])
-                    perY = obj.animation_queues["glide"][0]["EasingY"]((t - obj.animation_queues["glide"][0]['Start']) / obj.animation_queues["glide"][0]['Time'])
+                    perX = obj.animation_queues["glide"][0]["EasingX"](
+                        (t - obj.animation_queues["glide"][0]['Start']) / obj.animation_queues["glide"][0]['Time'])
+                    perY = obj.animation_queues["glide"][0]["EasingY"](
+                        (t - obj.animation_queues["glide"][0]['Start']) / obj.animation_queues["glide"][0]['Time'])
 
-                    obj.move_to(obj.animation_queues["glide"][0]["Initial"].x + obj.animation_queues["glide"][0]["Change"].x * perX,
-                                obj.animation_queues["glide"][0]["Initial"].y + obj.animation_queues["glide"][0]["Change"].y * perY)
+                    obj.move_to(obj.animation_queues["glide"][0]["Initial"].x + obj.animation_queues["glide"][0][
+                        "Change"].x * perX,
+                                obj.animation_queues["glide"][0]["Initial"].y + obj.animation_queues["glide"][0][
+                                    "Change"].y * perY)
                     obj.animation_queues["glide"][0]["Update"] = timetime()
 
         for obj in GraphicsObject.animating_objects["rotating"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.animation_queues["rotate"][0]["Start"] >= obj.animation_queues["rotate"][0]["Time"]:
-                    obj.set_rotation(obj.animation_queues["rotate"][0]["Initial"] + obj.animation_queues["rotate"][0]["Change"])
+                    obj.set_rotation(
+                        obj.animation_queues["rotate"][0]["Initial"] + obj.animation_queues["rotate"][0]["Change"])
                     obj.animation_queues["rotate"].pop(0)
 
                     if len(obj.animation_queues["rotate"]) == 0:
@@ -1327,8 +1458,9 @@ class GraphicsObject:
                         GraphicsObject.animating_objects["rotating"].remove(obj)
                 else:
                     per = obj.animation_queues["rotate"][0]["Easing"]((t - obj.animation_queues["rotate"][0]["Start"])
-                                                          / obj.animation_queues["rotate"][0]["Time"])
-                    obj.set_rotation(obj.animation_queues["rotate"][0]["Initial"] + obj.animation_queues["rotate"][0]["Change"] * per)
+                                                                      / obj.animation_queues["rotate"][0]["Time"])
+                    obj.set_rotation(obj.animation_queues["rotate"][0]["Initial"] + obj.animation_queues["rotate"][0][
+                        "Change"] * per)
                     obj.animation_queues["rotate"][0]["Update"] = timetime()
 
         for obj in GraphicsObject.animating_objects["fill"]:
@@ -1336,9 +1468,12 @@ class GraphicsObject:
                 if t - obj.animation_queues["fill"][0]["Start"] >= obj.animation_queues["fill"][0]["Time"]:
 
                     obj.set_fill(ColourRGB(
-                        max([min([obj.animation_queues["fill"][0]["Initial"][0] + obj.animation_queues["fill"][0]["Change"][0], 255]), 0]),
-                        max([min([obj.animation_queues["fill"][0]["Initial"][1] + obj.animation_queues["fill"][0]["Change"][1], 255]), 0]),
-                        max([min([obj.animation_queues["fill"][0]["Initial"][2] + obj.animation_queues["fill"][0]["Change"][2], 255]), 0])))
+                        max([min([obj.animation_queues["fill"][0]["Initial"][0] +
+                                  obj.animation_queues["fill"][0]["Change"][0], 255]), 0]),
+                        max([min([obj.animation_queues["fill"][0]["Initial"][1] +
+                                  obj.animation_queues["fill"][0]["Change"][1], 255]), 0]),
+                        max([min([obj.animation_queues["fill"][0]["Initial"][2] +
+                                  obj.animation_queues["fill"][0]["Change"][2], 255]), 0])))
                     obj.animation_queues["fill"].pop(0)
 
                     if len(obj.animation_queues["fill"]) == 0:
@@ -1346,15 +1481,16 @@ class GraphicsObject:
                         GraphicsObject.animating_objects["fill"].remove(obj)
                 else:
                     per = obj.animation_queues["fill"][0]["Easing"]((t - obj.animation_queues["fill"][0]["Start"])
-                                                      / obj.animation_queues["fill"][0]["Time"])
+                                                                    / obj.animation_queues["fill"][0]["Time"])
 
                     red_change = int(obj.animation_queues["fill"][0]["Change"][0] * per)
                     blue_change = int(obj.animation_queues["fill"][0]["Change"][1] * per)
                     green_change = int(obj.animation_queues["fill"][0]["Change"][2] * per)
 
-                    obj.set_fill(ColourRGB(max([min([obj.animation_queues["fill"][0]["Initial"][0] + red_change, 255]), 0]),
-                                           max([min([obj.animation_queues["fill"][0]["Initial"][1] + blue_change, 255]), 0]),
-                                           max([min([obj.animation_queues["fill"][0]["Initial"][2] + green_change, 255]), 0])))
+                    obj.set_fill(
+                        ColourRGB(max([min([obj.animation_queues["fill"][0]["Initial"][0] + red_change, 255]), 0]),
+                                  max([min([obj.animation_queues["fill"][0]["Initial"][1] + blue_change, 255]), 0]),
+                                  max([min([obj.animation_queues["fill"][0]["Initial"][2] + green_change, 255]), 0])))
                     obj.animation_queues["fill"][0]["Update"] = timetime()
 
         for obj in GraphicsObject.animating_objects["outline"]:
@@ -1362,9 +1498,12 @@ class GraphicsObject:
                 if t - obj.animation_queues["outline"][0]["Start"] >= obj.animation_queues["outline"][0]["Time"]:
 
                     obj.set_outline(ColourRGB(
-                        max([min([obj.animation_queues["outline"][0]["Initial"][0] + obj.animation_queues["outline"][0]["Change"][0], 255]), 0]),
-                        max([min([obj.animation_queues["outline"][0]["Initial"][1] + obj.animation_queues["outline"][0]["Change"][1], 255]), 0]),
-                        max([min([obj.animation_queues["outline"][0]["Initial"][2] + obj.animation_queues["outline"][0]["Change"][2], 255]), 0])))
+                        max([min([obj.animation_queues["outline"][0]["Initial"][0] +
+                                  obj.animation_queues["outline"][0]["Change"][0], 255]), 0]),
+                        max([min([obj.animation_queues["outline"][0]["Initial"][1] +
+                                  obj.animation_queues["outline"][0]["Change"][1], 255]), 0]),
+                        max([min([obj.animation_queues["outline"][0]["Initial"][2] +
+                                  obj.animation_queues["outline"][0]["Change"][2], 255]), 0])))
                     obj.animation_queues["outline"].pop(0)
 
                     if len(obj.animation_queues["outline"]) == 0:
@@ -1372,21 +1511,24 @@ class GraphicsObject:
                         GraphicsObject.animating_objects["outline"].remove(obj)
                 else:
                     per = obj.animation_queues["outline"][0]["Easing"]((t - obj.animation_queues["outline"][0]["Start"])
-                                                         / obj.animation_queues["outline"][0]["Time"])
+                                                                       / obj.animation_queues["outline"][0]["Time"])
 
                     red_change = int(obj.animation_queues["outline"][0]["Change"][0] * per)
                     blue_change = int(obj.animation_queues["outline"][0]["Change"][1] * per)
                     green_change = int(obj.animation_queues["outline"][0]["Change"][2] * per)
 
-                    obj.set_outline(ColourRGB(max([min([obj.animation_queues["outline"][0]["Initial"][0] + red_change, 255]), 0]),
-                                              max([min([obj.animation_queues["outline"][0]["Initial"][1] + blue_change, 255]), 0]),
-                                              max([min([obj.animation_queues["outline"][0]["Initial"][2] + green_change, 255]), 0])))
+                    obj.set_outline(
+                        ColourRGB(max([min([obj.animation_queues["outline"][0]["Initial"][0] + red_change, 255]), 0]),
+                                  max([min([obj.animation_queues["outline"][0]["Initial"][1] + blue_change, 255]), 0]),
+                                  max([min([obj.animation_queues["outline"][0]["Initial"][2] + green_change, 255]),
+                                       0])))
                     obj.animation_queues["outline"][0]["Update"] = timetime()
 
         for obj in GraphicsObject.animating_objects["width"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.animation_queues["width"][0]["Start"] >= obj.animation_queues["width"][0]["Time"]:
-                    obj.set_outline_width(obj.animation_queues["width"][0]["Initial"] + obj.animation_queues["width"][0]["Change"])
+                    obj.set_outline_width(
+                        obj.animation_queues["width"][0]["Initial"] + obj.animation_queues["width"][0]["Change"])
                     obj.animation_queues["width"].pop(0)
 
                     if len(obj.animation_queues["width"]) == 0:
@@ -1394,32 +1536,40 @@ class GraphicsObject:
                         GraphicsObject.animating_objects["width"].remove(obj)
                 else:
                     per = obj.animation_queues["width"][0]["Easing"]((t - obj.animation_queues["width"][0]["Start"])
-                                                       / obj.animation_queues["width"][0]["Time"])
-                    obj.set_outline_width(obj.animation_queues["width"][0]["Initial"] + obj.animation_queues["width"][0]["Change"] * per)
+                                                                     / obj.animation_queues["width"][0]["Time"])
+                    obj.set_outline_width(
+                        obj.animation_queues["width"][0]["Initial"] + obj.animation_queues["width"][0]["Change"] * per)
                     obj.animation_queues["width"][0]["Update"] = timetime()
 
         for obj in GraphicsObject.animating_objects["skew"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.animation_queues["skew"][0]["Start"] >= obj.animation_queues["skew"][0]["Time"]:
-                    obj.skew_xy(obj.animation_queues["skew"][0]["Initial"][0] + obj.animation_queues["skew"][0]["Change"][0],
-                                obj.animation_queues["skew"][0]["Initial"][1] + obj.animation_queues["skew"][0]["Change"][1])
+                    obj.skew_xy(
+                        obj.animation_queues["skew"][0]["Initial"][0] + obj.animation_queues["skew"][0]["Change"][0],
+                        obj.animation_queues["skew"][0]["Initial"][1] + obj.animation_queues["skew"][0]["Change"][1])
 
                     obj.animation_queues["skew"].pop(0)  # Remove the object from the skewing queue
                     if len(obj.animation_queues["skew"]) == 0:
                         obj.is_animating_skew = False
                         GraphicsObject.animating_objects["skew"].remove(obj)
                 else:
-                    perX = obj.animation_queues["skew"][0]["EasingX"]((t - obj.animation_queues["skew"][0]['Start']) / obj.animation_queues["skew"][0]['Time'])
-                    perY = obj.animation_queues["skew"][0]["EasingY"]((t - obj.animation_queues["skew"][0]['Start']) / obj.animation_queues["skew"][0]['Time'])
+                    perX = obj.animation_queues["skew"][0]["EasingX"](
+                        (t - obj.animation_queues["skew"][0]['Start']) / obj.animation_queues["skew"][0]['Time'])
+                    perY = obj.animation_queues["skew"][0]["EasingY"](
+                        (t - obj.animation_queues["skew"][0]['Start']) / obj.animation_queues["skew"][0]['Time'])
 
-                    obj.skew_xy(obj.animation_queues["skew"][0]["Initial"][0] + obj.animation_queues["skew"][0]["Change"][0] * perX,
-                                obj.animation_queues["skew"][0]["Initial"][1] + obj.animation_queues["skew"][0]["Change"][1] * perY)
+                    obj.skew_xy(
+                        obj.animation_queues["skew"][0]["Initial"][0] + obj.animation_queues["skew"][0]["Change"][
+                            0] * perX,
+                        obj.animation_queues["skew"][0]["Initial"][1] + obj.animation_queues["skew"][0]["Change"][
+                            1] * perY)
                     obj.animation_queues["skew"][0]["Update"] = timetime()
 
         for obj in GraphicsObject.animating_objects["blur"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.animation_queues["blur"][0]["Start"] >= obj.animation_queues["blur"][0]["Time"]:
-                    obj.blur_gaussian(obj.animation_queues["blur"][0]["Initial"] + obj.animation_queues["blur"][0]["Change"])
+                    obj.blur_gaussian(
+                        obj.animation_queues["blur"][0]["Initial"] + obj.animation_queues["blur"][0]["Change"])
                     obj.animation_queues["blur"].pop(0)
 
                     if len(obj.animation_queues["blur"]) == 0:
@@ -1427,23 +1577,28 @@ class GraphicsObject:
                         GraphicsObject.animating_objects["blur"].remove(obj)
                 else:
                     per = obj.animation_queues["blur"][0]["Easing"]((t - obj.animation_queues["blur"][0]["Start"])
-                                                          / obj.animation_queues["blur"][0]["Time"])
-                    obj.blur_gaussian(obj.animation_queues["blur"][0]["Initial"] + obj.animation_queues["blur"][0]["Change"] * per)
+                                                                    / obj.animation_queues["blur"][0]["Time"])
+                    obj.blur_gaussian(
+                        obj.animation_queues["blur"][0]["Initial"] + obj.animation_queues["blur"][0]["Change"] * per)
                     obj.animation_queues["blur"][0]["Update"] = timetime()
 
         for obj in GraphicsObject.animating_objects["contrast"]:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.animation_queues["contrast"][0]["Start"] >= obj.animation_queues["contrast"][0]["Time"]:
-                    obj.set_contrast(obj.animation_queues["contrast"][0]["Initial"] + obj.animation_queues["contrast"][0]["Change"])
+                    obj.set_contrast(
+                        obj.animation_queues["contrast"][0]["Initial"] + obj.animation_queues["contrast"][0]["Change"])
                     obj.animation_queues["contrast"].pop(0)
 
                     if len(obj.animation_queues["contrast"]) == 0:
                         obj.is_animating_contrast = False
                         GraphicsObject.animating_objects["contrast"].remove(obj)
                 else:
-                    per = obj.animation_queues["contrast"][0]["Easing"]((t - obj.animation_queues["contrast"][0]["Start"])
-                                                          / obj.animation_queues["contrast"][0]["Time"])
-                    obj.set_contrast(obj.animation_queues["contrast"][0]["Initial"] + obj.animation_queues["contrast"][0]["Change"] * per)
+                    per = obj.animation_queues["contrast"][0]["Easing"](
+                        (t - obj.animation_queues["contrast"][0]["Start"])
+                        / obj.animation_queues["contrast"][0]["Time"])
+                    obj.set_contrast(
+                        obj.animation_queues["contrast"][0]["Initial"] + obj.animation_queues["contrast"][0][
+                            "Change"] * per)
                     obj.animation_queues["contrast"][0]["Update"] = timetime()
 
         for obj in GraphicsObject.blinking_objects:
@@ -1467,9 +1622,15 @@ class GraphicsObject:
         for obj in GraphicsObject.animated_image_instances:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.last_update_time >= obj.update_time:
-                    obj.increment_frame(_time=t)
+                    obj.increment_frame(_time=t, _internal_call=True)
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
+
+        for layer in GraphicsObject.redraw_on_frame:
+            for obj in layer:
+                if obj.drawn:
+                    obj.draw(graphwin, _internal_call=True)
+                layer.remove(obj)
 
     @staticmethod
     def on_left_click(graphwin):
@@ -1584,7 +1745,7 @@ class GraphicsObject:
             hover_count = 0
             for obj in GraphicsObject.objects:
                 if obj.graphwin == graphwin:
-                    if obj.is_clicked(mouse_pos):
+                    if obj.is_clicked(mouse_pos) and obj in GraphicsObject.cursor_objects:
                         graphwin.set_cursor(CURSORS[obj.cursor], _internal_call=True)
                         hover_count += 1
 

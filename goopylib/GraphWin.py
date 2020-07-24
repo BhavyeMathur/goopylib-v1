@@ -6,7 +6,6 @@ from PIL import ImageGrab  # Required to take snapshots of the GraphWin to save 
 import warnings
 from os.path import isfile as osisfile
 from time import time as timetime
-from time import sleep as timesleep
 
 from goopylib.styles import *
 from goopylib.util import GraphicsError, GraphicsWarning
@@ -29,7 +28,7 @@ class GraphWin(tkCanvas):
     # Style: The colour styles have attributes called 'background-colour' which the window will use if bk_colour=None
     def __init__(self, title="Graphics Window", width=800, height=600, min_width=0, min_height=0, max_width=2000,
                  max_height=2000, x_pos=0, y_pos=0, resizable_width=False, resizable_height=False,
-                 style=None, bk_colour=None, icon=None, autoflush=True, cursor="arrow", border_relief="flat",
+                 style=None, bk_colour=None, icon=None, autoflush=False, cursor="arrow", border_relief="flat",
                  border_width=0):
 
         # Making sure all the arguments are valid and raising erros if not
@@ -583,6 +582,7 @@ class GraphWin(tkCanvas):
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
         self.move_to(p.x, p.y)
+        return self
 
     # Gliding Functions
 
@@ -673,18 +673,15 @@ class GraphWin(tkCanvas):
         return self
 
     def glide_to_x(self, x, time=1, easing=ease_linear()):
-        self.glide_x(time=time, dx=x - self.x_pos, easing=easing)
-        return self
+        return self.glide_x(time=time, dx=x - self.x_pos, easing=easing)
 
     def glide_to_y(self, y, time=1, easing=ease_linear()):
-        self.glide_y(time=time, dy=y - self.y_pos, easing=easing)
-        return self
+        return self.glide_y(time=time, dy=y - self.y_pos, easing=easing)
 
     def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
-        self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
-        return self
+        return self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
 
     # GETTER FUNCTIONS
     # -------------------------------------------------------------------------
@@ -773,6 +770,7 @@ class GraphWin(tkCanvas):
         self.master.config(bg=self.bk_colour)
         if self.autoflush:
             self.__autoflush()
+        return self
 
     def set_border_width(self, width):
 
@@ -786,6 +784,7 @@ class GraphWin(tkCanvas):
         self.master.config(bd=width)
         if self.autoflush:
             self.__autoflush()
+        return self
 
     def set_border_relief(self, relief):
 
@@ -799,6 +798,7 @@ class GraphWin(tkCanvas):
         self.master.config(relief=relief)
         if self.autoflush:
             self.__autoflush()
+        return self
 
     def set_cursor(self, cursor, _internal_call=False):
         if not isinstance(cursor, str):
@@ -815,6 +815,7 @@ class GraphWin(tkCanvas):
         self.config(cursor=CURSORS[cursor])
         if self.autoflush:
             self.__autoflush()
+        return self
 
     def set_icon(self, icon):
         if not isinstance(icon, str):
@@ -830,6 +831,7 @@ class GraphWin(tkCanvas):
         self.master.iconbitmap(icon)
         if self.autoflush:
             self.__autoflush()
+        return self
 
     def set_title(self, title):
         if not isinstance(title, str):
@@ -840,6 +842,7 @@ class GraphWin(tkCanvas):
         self.master.title(title)
         if self.autoflush:
             self.__autoflush()
+        return self
 
     # Dimensions Related
 
@@ -866,6 +869,7 @@ class GraphWin(tkCanvas):
         self.master.config(width=self.width)
         if self.autoflush:
             self.__autoflush()
+        return self
 
     def set_height(self, height):
         if not (isinstance(height, int) or isinstance(height, float)):
@@ -890,6 +894,7 @@ class GraphWin(tkCanvas):
         self.master.config(height=height)
         if self.autoflush:
             self.__autoflush()
+        return self
 
     def set_min_height(self, min_height):
         if not (isinstance(min_height, int) or isinstance(min_height, float)):
@@ -908,6 +913,7 @@ class GraphWin(tkCanvas):
             raise GraphicsError(warning)
 
         self.master.minsize(self.min_width, self.min_height)
+        return self
 
     def set_min_width(self, min_width):
         if not (isinstance(min_width, int) or isinstance(min_width, float)):
@@ -925,18 +931,19 @@ class GraphWin(tkCanvas):
             raise GraphicsError(warning)
 
         self.master.minsize(self.min_width, self.min_height)
+        return self
 
     def set_size(self, width, height):
         self.set_height(height)
-        self.set_width(width)
+        return self.set_width(width)
 
     def set_min_size(self, min_width, min_height):
         self.set_min_width(min_width)
-        self.set_min_height(min_height)
+        return self.set_min_height(min_height)
 
     def set_max_size(self, max_width, max_height):
         self.set_max_width(max_width)
-        self.set_max_height(max_height)
+        return self.set_max_height(max_height)
 
     def set_max_width(self, max_width):
         if not (isinstance(max_width, int) or isinstance(max_width, float)):
@@ -955,6 +962,7 @@ class GraphWin(tkCanvas):
 
         self.max_width = max_width
         self.master.maxsize(self.max_width, self.max_width)
+        return self
 
     def set_max_height(self, max_height):
         if not (isinstance(max_height, int) or isinstance(max_height, float)):
@@ -973,11 +981,11 @@ class GraphWin(tkCanvas):
 
         self.max_height = max_height
         self.master.maxsize(self.max_width, self.max_height)
+        return self
 
     def set_resizable(self, resizable_width=True, resizable_height=True):
         self.set_resizable_height(resizable_height)
-        self.set_resizable_width(resizable_width)
-        return self
+        return self.set_resizable_width(resizable_width)
 
     def set_resizable_height(self, resizable_height=True):
         if not isinstance(resizable_height, bool):
@@ -1003,7 +1011,9 @@ class GraphWin(tkCanvas):
             raise GraphicsError("\n\nCoordinate Arguments must be numbers (integers or floats)")
         self.trans = Transform(self.get_width(), self.get_height(), x1, y2, x2, y1)
         self.center = Point(abs((x2 - x1) / 2), abs((y2 - y1) / 2))
-        self.redraw()
+        if self.autoflush:
+            self.redraw()
+        return self
 
     # OTHER WINDOW FUNCTIONS
     # -------------------------------------------------------------------------
@@ -1017,6 +1027,7 @@ class GraphWin(tkCanvas):
         self.master.destroy()
         GraphWin.instances.remove(self)
         self.__autoflush()
+        return self
 
     def plot(self, x, y, colour=BLACK):
         """Set pixel (x,y) to the given colour"""
@@ -1033,11 +1044,13 @@ class GraphWin(tkCanvas):
         xs, ys = self.to_screen(x, y)
         self.create_line(xs, ys, xs + 1, ys, fill=colour)
         self.__autoflush()
+        return self
 
     def flush(self):
         """Update drawing to the window"""
         self.__check_open()
         self.update_idletasks()
+        return self
 
     def update_win(self, _internal_updating=False):
         if self.autoflush and not _internal_updating:
@@ -1072,6 +1085,7 @@ class GraphWin(tkCanvas):
 
         self.update_mouse = True
         GraphicsObject.on_update(self)
+        return self
 
     def save_canvas(self, height=None, width=None):
         x = self.master.winfo_rootx() + 20
@@ -1588,16 +1602,104 @@ class GraphWin(tkCanvas):
 
     # Redraw everything on this window
     def redraw(self):
-        for item in self.items[:]:
-            item.undraw()
-            item.draw(self)
+        for item in self.items:
+            item.redraw()
         if self.autoflush:
             self.update_win()
+        return self
 
     # Undraw everything on this window
-    def clear(self):
-        for item in self.items[:]:
+    def undraw_all(self):
+        for item in self.items:
             item.undraw()
 
         if self.autoflush:
             self.update_win()
+        return self
+
+    def undraw_all_instances(self, obj):
+        if not isinstance(obj, GraphicsObject):
+            raise GraphicsError(f"\n\nGraphicsError: obj instance to undraw must be a GraphicsObject, not {obj}")
+        for instance in GraphicsObject.objects:
+            if isinstance(instance, obj) and obj.graphwin == self:
+                obj.undraw()
+
+        return self
+    
+    def undraw_all_lines(self):
+        for instance in GraphicsObject.objects:
+            if "Line" in instance.__repr__() and instance.graphwin == self:
+                instance.undraw()
+        return self
+
+    def undraw_all_circles(self):
+        for instance in GraphicsObject.objects:
+            if "Circle" in instance.__repr__() and instance.graphwin == self:
+                instance.undraw()
+        return self
+
+    def undraw_all_rectangles(self):
+        for instance in GraphicsObject.objects:
+            if "Rectangle" in instance.__repr__() and instance.graphwin == self:
+                instance.undraw()
+        return self
+
+    def undraw_all_ovals(self):
+        for instance in GraphicsObject.objects:
+            if "Oval" in instance.__repr__() and instance.graphwin == self:
+                instance.undraw()
+        return self
+
+    def undraw_all_images(self):
+        for instance in GraphicsObject.objects:
+            if "Image" in instance.__repr__() and instance.graphwin == self:
+                instance.undraw()
+        return self
+
+    # Destroying Functions
+
+    def destroy_all(self):
+        self.delete("all")
+        return self
+
+    def destroy_item(self, item):
+        self.delete(item)
+
+    def destroy_all_instances(self, obj):
+        if not issubclass(obj, GraphicsObject):
+            raise GraphicsError(f"\n\nGraphicsError: obj instance to destroy must be a GraphicsObject, not {obj}")
+
+        for instance in GraphicsObject.objects:
+            if isinstance(instance, obj) and instance.graphwin == self:
+                instance.destroy()
+        return self
+
+    def destroy_all_lines(self):
+        for instance in GraphicsObject.objects:
+            if "Line" in instance.__repr__() and instance.graphwin == self:
+                instance.destroy()
+        return self
+
+    def destroy_all_circles(self):
+        for instance in GraphicsObject.objects:
+            if "Circle" in instance.__repr__() and instance.graphwin == self:
+                instance.destroy()
+        return self
+
+    def destroy_all_rectangles(self):
+        for instance in GraphicsObject.objects:
+            if "Rectangle" in instance.__repr__() and instance.graphwin == self:
+                instance.destroy()
+        return self
+
+    def destroy_all_ovals(self):
+        for instance in GraphicsObject.objects:
+            if "Oval" in instance.__repr__() and instance.graphwin == self:
+                instance.destroy()
+        return self
+
+    def destroy_all_images(self):
+        for instance in GraphicsObject.objects:
+            if "Image" in instance.__repr__() and instance.graphwin == self:
+                instance.destroy()
+        return self

@@ -13,28 +13,10 @@ class BBox(GraphicsObject):
     def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None,
                  options=("fill", "outline", "width"), cursor="arrow", layer=0):
 
-        if not isinstance(bounds, BBox) and bounds is not None:
-            raise GraphicsError("\n\nBounds argument must be another Graphics Object (Rectangle, " +
-                                "Circle, Line, or Oval), right now, bounds={}".format(bounds))
-
         self.p1 = p1.clone()
         self.p2 = p2.clone()
 
-        if not isinstance(self, gpLine.Line):
-            x1 = p1.x
-            x2 = p2.x
-            y1 = p1.y
-            y2 = p2.y
-
-            if x1 > x2:
-                self.p1.x = x2
-                self.p2.x = x1
-
-            if y1 > y2:
-                self.p1.y = y2
-                self.p2.y = y1
-
-        GraphicsObject.__init__(self, style=style, options=options, cursor=cursor, layer=layer)
+        GraphicsObject.__init__(self, style=style, options=options, cursor=cursor, layer=layer, bounds=bounds)
 
         # abs(p2.x - p1.x) is not required because the p2 value is always greater than or equal to the p1 value
         self.width = self.p2.x - self.p1.x
@@ -123,6 +105,7 @@ class BBox(GraphicsObject):
                 else:
                     return False
         else:
+            print(self.bounds)
             return self.bounds.is_clicked(mouse_pos)
 
     def get_anchor(self):
