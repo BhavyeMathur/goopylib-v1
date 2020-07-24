@@ -11,12 +11,12 @@ class BBox(GraphicsObject):
     resizing_objects = []
 
     def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None,
-                 options=("fill", "outline", "width"), cursor="arrow", layer=0):
+                 options=("fill", "outline", "width"), cursor="arrow", layer=0, tag=None):
 
         self.p1 = p1.clone()
         self.p2 = p2.clone()
 
-        GraphicsObject.__init__(self, style=style, options=options, cursor=cursor, layer=layer, bounds=bounds)
+        GraphicsObject.__init__(self, style=style, options=options, cursor=cursor, layer=layer, bounds=bounds, tag=tag)
 
         # abs(p2.x - p1.x) is not required because the p2 value is always greater than or equal to the p1 value
         self.width = self.p2.x - self.p1.x

@@ -2,7 +2,7 @@ from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.util import GraphicsError
 
 class CycleButton(GraphicsObject):
-    def __init__(self, *states, state=0, disabled_graphic=None, autoflush=True, layer=None):
+    def __init__(self, *states, state=0, disabled_graphic=None, autoflush=True, layer=None, tag=None):
         self.states = list(states)
         self.state = state
 
@@ -13,8 +13,8 @@ class CycleButton(GraphicsObject):
 
         self.graphic = states[state]
 
-        GraphicsObject.__init__(self, ())
-        GraphicsObject.cyclebutton_instances.append(self)
+        GraphicsObject.__init__(self, (), tag=tag)
+        GraphicsObject.cyclebutton_instances.add(self)
 
         if layer is not None:
             self.set_layer(layer)
@@ -35,11 +35,11 @@ class CycleButton(GraphicsObject):
         self.drawn = False
         return self
 
-    def _rotate(self, dr, sampling="bicubic", center=None):
+    def _rotate(self, dr):
         for graphic in self.states:
-            graphic.rotate(dr, sampling=sampling, center=center)
+            graphic.rotate(dr)
         if self.disabled_graphic is not None:
-            self.disabled_graphic.rotate(dr, sampling=sampling, center=center)
+            self.disabled_graphic.rotate(dr)
 
     def _move(self, dx, dy):
         for graphic in self.states:
@@ -77,7 +77,7 @@ class CycleButton(GraphicsObject):
 
         while self.layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append([])
-        GraphicsObject.object_layers[self.layer].append(self)
+        GraphicsObject.object_layers[self.layer].add(self)
 
         for obj in self.states:
             obj.move_up_layer(layers=layers)
@@ -99,7 +99,7 @@ class CycleButton(GraphicsObject):
 
         while self.layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append([])
-        GraphicsObject.object_layers[self.layer].append(self)
+        GraphicsObject.object_layers[self.layer].add(self)
 
         for obj in self.states:
             obj.move_down_layer(layers=layers)
@@ -121,8 +121,8 @@ class CycleButton(GraphicsObject):
 
         GraphicsObject.object_layers[self.layer].remove(self)
         while layer > len(GraphicsObject.object_layers) - 1:
-            GraphicsObject.object_layers.append([])
-        GraphicsObject.object_layers[layer].append(self)
+            GraphicsObject.object_layers.append({*()})
+        GraphicsObject.object_layers[layer].add(self)
 
         self.layer = layer
 

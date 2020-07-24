@@ -2,13 +2,11 @@ import goopylib.objects._BBox as gpBBox
 from goopylib.objects.Rectangle import Rectangle
 
 from goopylib.Point import Point
-from goopylib._internal_classes import VectorEquation
-
 
 class Oval(gpBBox.BBox):
 
     def __init__(self, center, radius1, radius2, bounds=None, style=None, fill=None, outline=None, outline_width=None,
-                 cursor="arrow", layer=0):
+                 cursor="arrow", layer=0, tag=None):
 
         p1 = Point(center.x - radius1, center.y - radius2)
         p2 = Point(center.x + radius1, center.y + radius2)
@@ -17,13 +15,10 @@ class Oval(gpBBox.BBox):
         self.radius2 = radius2
 
         gpBBox.BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width,
-                             style=style, cursor=cursor, layer=layer)
-
-        self.equation = VectorEquation("(((x-{})**2)/({}**2))+(((y-{})**2)/({}**2)) < 1".format(center.x, radius1,
-                                                                                                center.y, radius2))
+                             style=style, cursor=cursor, layer=layer, tag=tag)
 
     def __repr__(self):
-        return "Oval({}, {})".format(str(self.p1), str(self.p2))
+        return f"Oval({str(self.p1)}, {str(self.p2)})"
 
     def clone(self):
         other = Oval(self.p1, self.p2)
@@ -58,12 +53,7 @@ class Oval(gpBBox.BBox):
 
     def is_clicked(self, mouse_pos):
         if self.bounds is None:
-            return self.equation.is_clicked(mouse_pos)
+            return (((mouse_pos.x - self.anchor.x) ** 2) / self.radius1 ** 2) \
+                   + (((mouse_pos.y - self.anchor.y) ** 2) / self.radius2 ** 2) < 1
         else:
             return self.bounds.is_clicked(mouse_pos)
-
-    def _update(self):
-        self.equation = VectorEquation("(((x-{})**2)/({}**2))+(((y-{})**2)/({}**2)) < 1".format(self.anchor.x,
-                                                                                                self.radius1,
-                                                                                                self.anchor.y,
-                                                                                                self.radius2))

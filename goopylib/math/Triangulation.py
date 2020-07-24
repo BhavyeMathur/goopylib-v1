@@ -12,20 +12,23 @@ def CheckInTriangle(p1, p2, p3, pt):
     if not (isinstance(p1, Point) and isinstance(p2, Point) and isinstance(p3, Point)):
         raise GraphicsError("\n\nGraphicsError: points given for triangle must all be Point "
                             f"objects, not {p1}, {p2}, {p3}")
-    if not isinstance(pt, Point):
-        raise GraphicsError("\n\nGraphicsError: the point given to check if it is inside the triangle must be a Point"
-                            f" object, not {pt}")
+    if pt is None:
+        return False
+    else:
+        if not isinstance(pt, Point):
+            raise GraphicsError("\n\nGraphicsError: the point given to check if it is inside the triangle must be a Point"
+                                f" object, not {pt}")
 
-    # Code from https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
+        # Code from https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
 
-    def sign(v1, v2, v3):
-        return (v1.x - v3.x) * (v2.y - v3.y) - (v2.x - v3.x) * (v1.y - v3.y)
+        def sign(v1, v2, v3):
+            return (v1.x - v3.x) * (v2.y - v3.y) - (v2.x - v3.x) * (v1.y - v3.y)
 
-    d1 = sign(pt, p1, p2)
-    d2 = sign(pt, p2, p3)
-    d3 = sign(pt, p3, p1)
+        d1 = sign(pt, p1, p2)
+        d2 = sign(pt, p2, p3)
+        d3 = sign(pt, p3, p1)
 
-    return not ((d1 < 0 or d2 < 0 or d3 < 0) and (d1 > 0 or d2 > 0 or d3 > 0))
+        return not ((d1 < 0 or d2 < 0 or d3 < 0) and (d1 > 0 or d2 > 0 or d3 > 0))
 
 
 def IsClockwise(vertex_chain):
@@ -67,4 +70,5 @@ def TriangulateEarClipping(vertex_chain):
                         vertex_chain.remove(p2)
                         ear_removed = True
                         triangles.append((p1, p2, p3))
+    triangles.append(tuple(vertex_chain))
     return triangles

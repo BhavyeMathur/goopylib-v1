@@ -6,13 +6,9 @@ from goopylib._internal_classes import VectorEquation
 class Rectangle(gpBBox.BBox):
 
     def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None, layer=0,
-                 cursor="arrow", is_rounded=False, roundness=5):
+                 cursor="arrow", is_rounded=False, roundness=5, tag=None):
         gpBBox.BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width,
-                             style=style, cursor=cursor, layer=layer)
-
-        self.equation = VectorEquation(f"abs((x - {self.anchor.x})/{self.width / 2} + (y - {self.anchor.y})/"
-                                       f"{self.height / 2}) + abs((x - {self.anchor.x})/{self.width / 2} - "
-                                       f"(y - {self.anchor.y})/{self.height / 2}) < 2")
+                             style=style, cursor=cursor, layer=layer, tag=tag)
 
         self.points = [self.p1.x, self.p1.y, self.p1.x, self.p2.y, self.p2.x, self.p2.y, self.p2.x, self.p1.y]
         self.is_rounded = is_rounded
@@ -46,7 +42,7 @@ class Rectangle(gpBBox.BBox):
                 obj.draw(self.graphwin)
 
     def _draw(self, canvas, options):
-        points = self.points.copy()
+        points = [self.p1.x, self.p1.y, self.p1.x, self.p2.y, self.p2.x, self.p2.y, self.p2.x, self.p1.y]
         for point in range(len(self.points[::2])):
             points[point * 2], points[point * 2 + 1] = canvas.to_screen(points[point * 2], points[point * 2 + 1])
 
@@ -111,15 +107,11 @@ class Rectangle(gpBBox.BBox):
         other.config = self.config.copy()
         return other
 
-    def is_clicked(self, mouse_pos):
+    def is_clicked(self, pos):
         if self.bounds is None:
-            return self.equation.is_clicked(mouse_pos)
+            width = self.get_width() / 2
+            height = self.get_height() / 2
+            return self.anchor.x - width < pos.x < self.anchor.x + width and \
+                   self.anchor.y - height < pos.y < self.anchor.y + height
         else:
-            return self.bounds.is_clicked(mouse_pos)
-
-    def _update(self):
-        self.equation = VectorEquation("abs((x - {})/{} + (y - {})/{}) + abs((x - {})/{} - (y - {})/{}) < 2".
-                                       format(self.anchor.x, self.width / 2, self.anchor.y, self.height / 2,
-                                              self.anchor.x,
-                                              self.width / 2, self.anchor.y, self.height / 2))
-        self.points = [self.p1.x, self.p1.y, self.p1.x, self.p2.y, self.p2.x, self.p2.y, self.p2.x, self.p1.y]
+            return self.bounds.is_clicked(pos)

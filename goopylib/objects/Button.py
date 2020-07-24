@@ -3,7 +3,7 @@ from goopylib.objects.GraphicsObject import GraphicsObject
 
 class Button(GraphicsObject):
     def __init__(self, graphic, hover_graphic=None, clicked_graphic=None, disabled_graphic=None,
-                 disable=False, autoflush=True, label=None, layer=0):
+                 disable=False, autoflush=True, label=None, layer=0, tag=None):
 
         self.disabled_graphic_given = True
         self.clicked_graphic_given = True
@@ -34,9 +34,9 @@ class Button(GraphicsObject):
         self.is_disabled = disable
 
         if not isinstance(self, Checkbox):
-            GraphicsObject.button_instances.append(self)
+            GraphicsObject.button_instances.add(self)
 
-        GraphicsObject.__init__(self, options=(), layer=layer)
+        GraphicsObject.__init__(self, options=(), layer=layer, tag=tag)
 
     def __repr__(self):
         return "Button({})".format(self.graphic)

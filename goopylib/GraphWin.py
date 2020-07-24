@@ -317,7 +317,7 @@ class GraphWin(tkCanvas):
         if self.is_closed():
             return "<Closed GraphWin>"
         else:
-            return "GraphWin('{}', {}, {})".format(self.master.title(), self.get_width(), self.get_height())
+            return f"GraphWin('{self.master.title()}', {self.master.winfo_width()}x{self.master.winfo_height()})"
 
     def __str__(self):
         return repr(self)
@@ -1577,8 +1577,8 @@ class GraphWin(tkCanvas):
             raise GraphicsError(f"X coord to convert to screen coordinate must be a number (int or float), not {x}")
         if not (isinstance(y, int) or isinstance(y, float)):
             raise GraphicsError(f"Y coord to convert to screen coordinate must be a number (int or float), not {y}")
-
-        if self.trans:
+        trans = self.trans
+        if trans:
             return self.trans.screen(x, y)
         else:
             return x, y

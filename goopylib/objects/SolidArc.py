@@ -5,7 +5,7 @@ import math
 
 class SolidArc(GraphicsObject):
     def __init__(self, p, start_angle, end_angle, radius, radius2=None, style=None, outline=None, outline_width=None,
-                 cursor="arrow", arrow=None, resolution=10, smooth=True, layer=0):
+                 cursor="arrow", arrow=None, resolution=10, smooth=True, layer=0, tag=None):
 
         self.start_angle = start_angle
         self.end_angle = end_angle
@@ -23,8 +23,10 @@ class SolidArc(GraphicsObject):
         range_end = 90 / angle_change
         decimal_points = min([len(str(range_end).split('.')[1]), 3])
 
-        x_coeff = sum([abs(math.cos(math.radians(i * angle_change + start_angle))) for i in range(int(range_end * 10 ** decimal_points))])
-        y_coeff = sum([abs(math.sin(math.radians(i * angle_change + start_angle))) for i in range(int(range_end * 10 ** decimal_points))])
+        x_coeff = sum([abs(math.cos(math.radians(i * angle_change + start_angle)))
+                       for i in range(int(range_end * 10 ** decimal_points))])
+        y_coeff = sum([abs(math.sin(math.radians(i * angle_change + start_angle)))
+                       for i in range(int(range_end * 10 ** decimal_points))])
 
         x_coeff /= 10 ** decimal_points
         y_coeff /= 10 ** decimal_points
@@ -41,7 +43,7 @@ class SolidArc(GraphicsObject):
             self.points.append(self.points[-1] + Point(x_change * math.cos(math.radians(cur_angle)),
                                                        y_change * math.sin(math.radians(cur_angle))))
 
-        GraphicsObject.__init__(self, style=style, options=["outline", "width", "fill"])
+        GraphicsObject.__init__(self, style=style, options=["outline", "width", "fill"], tag=tag)
 
     def _draw(self, canvas, options):
-        return canvas.create_polygon(self.points, options, fill=BLACK)
+        return canvas.create_polygon(self.points, options)

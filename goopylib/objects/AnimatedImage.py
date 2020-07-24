@@ -8,7 +8,8 @@ from time import time as timetime
 
 
 class AnimatedImage(GraphicsObject):
-    def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24, layer=0):
+    def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24, layer=0,
+                 tag=None):
         self.reprpath = filepath
         filepath = filepath.replace('\\', '/')
         self.filepath = filepath.split('.')
@@ -38,8 +39,8 @@ class AnimatedImage(GraphicsObject):
         self.last_update_time = timetime()
         self.update_time = update_time
 
-        GraphicsObject.__init__(self, [], cursor=cursor, layer=layer)
-        GraphicsObject.animated_image_instances.append(self)
+        GraphicsObject.__init__(self, [], cursor=cursor, layer=layer, tag=tag)
+        GraphicsObject.animated_image_instances.add(self)
 
     # -------------------------------------------------------------------------
     # INTERNAL FUNCTIONS
@@ -51,9 +52,12 @@ class AnimatedImage(GraphicsObject):
         self.imgs[self.frame].draw(canvas)
         self.drawn_frame = self.frame
 
+        for img in self.imgs:
+            img.graphwin = canvas
+
     def _move(self, dx, dy):
         for img in self.imgs:
-            img.move(dx, dy)
+            img._move(dx, dy)
         self.anchor.x += dx
         self.anchor.y += dy
 
@@ -71,7 +75,7 @@ class AnimatedImage(GraphicsObject):
                 self.draw(self.graphwin)
             else:
                 if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                    GraphicsObject.redraw_on_frame[self.layer].append(self)
+                    GraphicsObject.redraw_on_frame[self.layer].add(self)
 
         if _time is None:
             self.last_update_time = timetime()

@@ -21,7 +21,7 @@ class Checkbox:
         self.graphwin = None
         self.drawn = False
 
-        GraphicsObject.checkbox_instances.append(self)
+        GraphicsObject.checkbox_instances.add(self)
 
     def __repr__(self):
         return "Checkbox({}, {})".format(self.true_graphic, self.false_graphic)

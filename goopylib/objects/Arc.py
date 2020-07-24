@@ -6,7 +6,7 @@ import math
 
 class Arc(CurvedLine):
     def __init__(self, p, start_angle, end_angle, radius, radius2=None, style=None, outline=None, outline_width=None,
-                 cursor="arrow", arrow=None, resolution=10, smooth=True, bounds_width=10, layer=0):
+                 cursor="arrow", arrow=None, resolution=10, smooth=True, bounds_width=10, layer=0, tag=None):
 
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: Anchor Point (p) for Arc must be a Point Object, not {p}")
@@ -38,8 +38,10 @@ class Arc(CurvedLine):
         range_end = 90 / angle_change
         decimal_points = min([len(str(range_end).split('.')[1]), 3])
 
-        x_coeff = sum([abs(math.cos(math.radians(i * angle_change + start_angle))) for i in range(int(range_end * 10 ** decimal_points))])
-        y_coeff = sum([abs(math.sin(math.radians(i * angle_change + start_angle))) for i in range(int(range_end * 10 ** decimal_points))])
+        x_coeff = sum([abs(math.cos(math.radians(i * angle_change + start_angle)))
+                       for i in range(int(range_end * 10 ** decimal_points))])
+        y_coeff = sum([abs(math.sin(math.radians(i * angle_change + start_angle)))
+                       for i in range(int(range_end * 10 ** decimal_points))])
 
         x_coeff /= 10 ** decimal_points
         y_coeff /= 10 ** decimal_points
@@ -57,4 +59,5 @@ class Arc(CurvedLine):
                                                        y_change * math.sin(math.radians(cur_angle))))
 
         CurvedLine.__init__(self, *self.points, style=style, outline=outline, outline_width=outline_width, arrow=arrow,
-                            resolution=0, interpolation="spline", smooth=smooth, bounds_width=bounds_width, layer=layer)
+                            resolution=0, interpolation="spline", smooth=smooth, bounds_width=bounds_width, layer=layer,
+                            tag=tag)

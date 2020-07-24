@@ -48,9 +48,9 @@ class Colour:
             green = self.green + other.green
             blue = self.blue + other.blue
         elif isinstance(other, int) or isinstance(other, float):
-            red = int(self.red + other)
-            green = int(self.green + other)
-            blue = int(self.blue + other)
+            red = (self.red + other) // 1
+            green = (self.green + other) // 1
+            blue = (self.blue + other) // 1
         else:
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and {type(other)}'. Must be a Colour or int or float")
 
@@ -62,9 +62,9 @@ class Colour:
             green = self.green * other.green
             blue = self.blue * other.blue
         elif isinstance(other, int) or isinstance(other, float):
-            red = int(self.red * other)
-            green = int(self.green * other)
-            blue = int(self.blue * other)
+            red = (self.red * other) // 1
+            green = (self.green * other) // 1
+            blue = (self.blue * other) // 1
         else:
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and {type(other)}'. "
                             f"Must be a Colour or int or float")
@@ -77,9 +77,9 @@ class Colour:
             green = self.green // other.green
             blue = self.blue // other.blue
         elif isinstance(other, int) or isinstance(other, float):
-            red = int(self.red // other)
-            green = int(self.green // other)
-            blue = int(self.blue // other)
+            red = (self.red // other) // 1
+            green = (self.green // other) // 1
+            blue = (self.blue // other) // 1
         else:
             raise TypeError(f"unsupported operand type(s) for //: 'Colour' and {type(other)}'. Must be a Colour or int or float")
 
@@ -94,9 +94,9 @@ class Colour:
             green = self.green % other.green
             blue = self.blue % other.blue
         elif isinstance(other, int) or isinstance(other, float):
-            red = int(self.red % other)
-            green = int(self.green % other)
-            blue = int(self.blue % other)
+            red = (self.red % other) // 1
+            green = (self.green % other) // 1
+            blue = (self.blue % other) // 1
         else:
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and {type(other)}'. Must be a Colour or int or float")
 
@@ -108,9 +108,9 @@ class Colour:
             green = pow(self.green ** power.green, modulo)
             blue = pow(self.blue ** power.blue, modulo)
         elif isinstance(power, int) or isinstance(power, float):
-            red = int(pow(self.red ** power, modulo))
-            green = int(pow(self.green ** power, modulo))
-            blue = int(pow(self.blue ** power, modulo))
+            red = (pow(self.red ** power, modulo)) // 1
+            green = (pow(self.green ** power, modulo)) // 1
+            blue = (pow(self.blue ** power, modulo)) // 1
         else:
             raise TypeError(f"unsupported operand type(s) for **: 'Colour' and {type(power)}'. Must be a Colour or int or float")
 

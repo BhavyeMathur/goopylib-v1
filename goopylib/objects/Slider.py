@@ -60,7 +60,7 @@ class Slider:
         self.set_value(value)
         self.reload()
 
-        GraphicsObject.slider_instances.append(self)
+        GraphicsObject.slider_instances.add(self)
 
     def __repr__(self):
         return "SlideBar({}, {}, {}-{})".format(self.p1, self.p2, self.minimum, self.maximum)
@@ -156,7 +156,6 @@ class Slider:
     def bind_to_mouse_wheel(self, state=True):
         if state:
             if self not in GraphicsObject.slider_instances_bound:
-                GraphicsObject.slider_instances_bound.append(self)
+                GraphicsObject.slider_instances_bound.add(self)
         else:
-            if self in GraphicsObject.slider_instances_bound:
-                GraphicsObject.slider_instances_bound.remove(self)
+            GraphicsObject.slider_instances_bound.discard(self)

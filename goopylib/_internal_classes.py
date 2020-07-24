@@ -14,11 +14,15 @@ class Transform:
 
     def screen(self, x, y):
         # Returns x,y in screen (actually window) coordinates
-        return ((x - self.x_base) / self.x_scale), ((self.y_base - y) / self.y_scale)
+        xs = (x - self.x_base) / self.x_scale
+        ys = (self.y_base - y) / self.y_scale
+        return int(xs + 0.5), int(ys + 0.5)
 
     def world(self, xs, ys):
         # Returns xs,ys in world coordinates
-        return xs * self.x_scale + self.x_base, self.y_base - ys * self.y_scale
+        x = xs * self.x_scale + self.x_base
+        y = self.y_base - ys * self.y_scale
+        return x, y
 
 
 class VectorEquation:

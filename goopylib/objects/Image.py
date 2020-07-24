@@ -16,7 +16,7 @@ class Image(GraphicsObject):
     id_count = 0
     image_cache = {}  # tk photo images go here to avoid GC while drawn
 
-    def __init__(self, p, filepath, align="center", cursor="arrow", layer=0):
+    def __init__(self, p, filepath, align="center", cursor="arrow", layer=0, tag=None):
 
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: Image anchor point (p) must be a Point object, not {p}")
@@ -50,7 +50,7 @@ class Image(GraphicsObject):
         self.contrast = 0
         self.blur_amount = 0
 
-        GraphicsObject.__init__(self, [], cursor=cursor, layer=layer)
+        GraphicsObject.__init__(self, [], cursor=cursor, layer=layer, tag=tag)
 
         self.image_id = Image.id_count
         Image.id_count = Image.id_count + 1
@@ -64,23 +64,35 @@ class Image(GraphicsObject):
     def _draw(self, canvas, options):
         self.image_cache[self.image_id] = self.img  # save a reference
 
-        p = self.anchor.clone()
+        x, y = self.anchor
 
         if self.align == "bottom":
-            p.add_y(self.initial_height / -2)
+            y += self.initial_height / -2
         elif self.align == "top":
-            p.add_y(self.initial_height / 2)
+            y += self.initial_height / 2
         elif self.align == "left":
-            p.add_x(self.initial_width / 2)
+            x += self.initial_width / 2
         elif self.align == "right":
-            p.add_x(self.initial_width / -2)
+            x += self.initial_width / -2
+        elif self.align == "bottomleft":
+            y += self.initial_height / -2
+            x += self.initial_width / 2
+        elif self.align == "bottomright":
+            y += self.initial_height / 2
+            x += self.initial_width / -2
+        elif self.align == "topleft":
+            x += self.initial_width / 2
+            y += self.initial_height / 2
+        elif self.align == "topright":
+            x += self.initial_width / -2
+            y += self.initial_height / 2
 
-        if canvas != self.graphwin:
+        if canvas != self.graphwin and canvas.trans.x_scale != 1 and canvas.trans.y_scale != 1:
             init_width = abs(self.initial_width / canvas.trans.x_scale)
             init_height = abs(self.initial_height / canvas.trans.y_scale)
             self.resize(ceil(init_width), ceil(init_height))
 
-        x, y = canvas.to_screen(p.x, p.y)
+        x, y = canvas.to_screen(x, y)
 
         return canvas.create_image(x, y, image=self.img)
 
@@ -112,7 +124,7 @@ class Image(GraphicsObject):
                 self.graphwin.flush()
             else:
                 if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                    GraphicsObject.redraw_on_frame[self.layer].append(self)
+                    GraphicsObject.redraw_on_frame[self.layer].add(self)
 
     # -------------------------------------------------------------------------
     # OTHER & IMPORTANT FUNCTIONS

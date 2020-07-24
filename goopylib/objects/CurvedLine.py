@@ -9,7 +9,7 @@ class CurvedLine(Line):
 
     def __init__(self, *p, style=None, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
                  cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, interpolation="cosine", resolution=5,
-                 smooth=True, bounds_width=None, layer=0,
+                 smooth=True, bounds_width=None, layer=0, tag=None,
                  bias=0, tension=1):  # These last two are only required for hermite interpolation
 
         if not isinstance(resolution, int):
@@ -72,7 +72,7 @@ class CurvedLine(Line):
             self.points_copy = self.points_copy[1:-1]
 
         Line.__init__(self, *self.points_copy, style=style, outline=outline, outline_width=outline_width, arrow=arrow,
-                      capstyle=capstyle, joinstyle=joinstyle, cursor=cursor, arrow_shape=arrow_shape,
+                      capstyle=capstyle, joinstyle=joinstyle, cursor=cursor, arrow_shape=arrow_shape, tag=tag,
                       arrow_scale=arrow_scale, dash=dash, bounds_width=bounds_width, layer=layer)
 
     def __repr__(self):

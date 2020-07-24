@@ -11,7 +11,7 @@ class Entry(GraphicsObject):
 
     def __init__(self, p, text_width=10, style=None, fill=None, font_colour=None, entry=None, font=None, font_size=None,
                  outline=None, font_style=None, outline_width=None, border_relief="flat", password=False, layer=0,
-                 active="NORMAL", justify="center", cursor="xterm", select_colour=None, prompt_text=""):
+                 active="NORMAL", justify="center", cursor="xterm", select_colour=None, prompt_text="", tag=None):
 
         self.anchor = p.clone()
         self.text_width = text_width
@@ -120,7 +120,7 @@ class Entry(GraphicsObject):
 
         self.allowed_symbols = ALL_CHARACTERS
 
-        GraphicsObject.__init__(self, style=style, options=["fill", "font"], layer=layer)
+        GraphicsObject.__init__(self, style=style, options=["fill", "font"], layer=layer, tag=tag)
 
     def __repr__(self):
         return "Entry({}, {})".format(self.anchor, self.text_width)

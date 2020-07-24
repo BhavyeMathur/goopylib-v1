@@ -1,10 +1,9 @@
 from goopylib.objects.Oval import Oval
 from goopylib.Point import Point
-from goopylib._internal_classes import VectorEquation
 
 class Circle(Oval):
 
-    def __init__(self, center, radius, bounds=None, style=None, fill=None, outline=None, layer=0,
+    def __init__(self, center, radius, bounds=None, style=None, fill=None, outline=None, layer=0, tag=None,
                  outline_width=None, cursor="arrow"):
         p1 = Point(center.x - radius, center.y - radius)
         p2 = Point(center.x + radius, center.y + radius)
@@ -13,8 +12,7 @@ class Circle(Oval):
 
         self.radius = radius
         Oval.__init__(self, center, radius, radius, bounds=bounds, fill=fill, outline=outline, style=style,
-                      cursor=cursor, outline_width=outline_width, layer=layer)
-        self.equation = VectorEquation("(x-{})**2 + (y-{})**2 < {}**2".format(self.center.x, self.center.y, radius))
+                      cursor=cursor, outline_width=outline_width, layer=layer, tag=tag)
 
     def __repr__(self):
         return f"Circle({self.anchor}, {self.radius})"
@@ -27,6 +25,8 @@ class Circle(Oval):
     def get_radius(self):
         return self.radius
 
-    def _update(self):
-        self.equation = VectorEquation("(x-{})**2 + (y-{})**2 < {}**2".format(self.anchor.x, self.anchor.y,
-                                                                              self.radius))
+    def is_clicked(self, mouse_pos):
+        if self.bounds is None:
+            return ((self.anchor.x - mouse_pos.x) ** 2 + (self.anchor.y - mouse_pos.y) ** 2) ** 0.5 < self.radius
+        else:
+            return self.bounds.is_clicked(mouse_pos)

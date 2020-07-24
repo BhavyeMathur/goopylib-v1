@@ -9,25 +9,28 @@ from math import cos, sin, radians
 class GraphicsObject:
     """Generic base class for all of the drawable objects"""
 
-    blinking_objects = []
-    resizing_objects = []
+    blinking_objects = {*()}
+    resizing_objects = {*()}
     animating_objects = {"gliding": [], "rotating": [], "fill": [], "outline": [], "width": [],
                          "skew": [], "contrast": [], "blur": []}
 
-    objects = []
-    button_instances = []
-    slider_instances = []
-    slider_instances_bound = []
-    checkbox_instances = []
-    cyclebutton_instances = []
-    entry_instances = []
-    animated_image_instances = []
+    objects = {*()}
+    button_instances = {*()}
+    slider_instances = {*()}
+    slider_instances_bound = {*()}
+    checkbox_instances = {*()}
+    cyclebutton_instances = {*()}
+    entry_instances = {*()}
+    animated_image_instances = {*()}
 
-    object_layers = [[]]
-    cursor_objects = []
-    redraw_on_frame = [[]]
+    object_layers = [{*()}]
+    tagged_objects = {}
+    cursor_objects = {*()}
+    draggable_objects = {*()}
 
-    def __init__(self, options=(), style=None, cursor="arrow", layer=0, bounds=None):
+    redraw_on_frame = [{*()}]
+
+    def __init__(self, options=(), style=None, cursor="arrow", layer=0, bounds=None, tag=None):
         # options is a list of strings indicating which options are
         # legal for this object.
 
@@ -97,7 +100,7 @@ class GraphicsObject:
         # -------------------------------------------------------------------------
         # Other Variables
 
-        self.obstacles = []
+        self.obstacles = {*()}
 
         self.cursor = cursor
 
@@ -117,11 +120,15 @@ class GraphicsObject:
         self.allow_looping = (False, False)
 
         while layer > len(GraphicsObject.object_layers) - 1:
-            GraphicsObject.object_layers.append([])
-            GraphicsObject.redraw_on_frame.append([])
+            GraphicsObject.object_layers.append({*()})
+            GraphicsObject.redraw_on_frame.append({*()})
 
-        GraphicsObject.object_layers[layer].append(self)
-        GraphicsObject.objects.append(self)
+        GraphicsObject.object_layers[layer].add(self)
+        GraphicsObject.objects.add(self)
+        
+        self.tag = tag
+        if tag is not None:
+            GraphicsObject.tagged_objects[tag] = self
 
     def __repr__(self):
         return "Graphics Object"
@@ -152,15 +159,19 @@ class GraphicsObject:
         """updates internal state of object to rotate it r degrees CCW"""
         pass  # must override in subclass
 
-    def _update(self):
-        pass  # must override in subclass
-
-    def draw(self, graphwin, _internal_call=False):
+    def draw(self, graphwin=None, _internal_call=False):
 
         """Draw the object in graphwin, which should be a GraphWin
         object.  A GraphicsObject may only be drawn into one
         window. Raises an error if attempt made to draw an object that
         is already visible."""
+
+        if graphwin is None:
+            from goopylib.GraphWin import GraphWin
+            if len(GraphWin.instances) == 0:
+                raise GraphicsError("\n\nGraphicsError: no open graphwin to draw object to")
+
+            graphwin = GraphWin.instances[-1]
 
         if "GraphWin" not in graphwin.__repr__():
             raise GraphicsError(
@@ -188,7 +199,7 @@ class GraphicsObject:
 
         if self not in GraphicsObject.cursor_objects:
             if self.get_cursor() != graphwin.get_window_cursor():
-                GraphicsObject.cursor_objects.append(self)
+                GraphicsObject.cursor_objects.add(self)
 
         return self
 
@@ -242,9 +253,9 @@ class GraphicsObject:
         self.layer += layers
 
         while self.layer > len(GraphicsObject.object_layers) - 1:
-            GraphicsObject.object_layers.append([])
-            GraphicsObject.redraw_on_frame.append([])
-        GraphicsObject.object_layers[self.layer].append(self)
+            GraphicsObject.object_layers.append({*()})
+            GraphicsObject.redraw_on_frame.append({*()})
+        GraphicsObject.object_layers[self.layer].add(self)
 
         return self
 
@@ -255,15 +266,11 @@ class GraphicsObject:
             raise GraphicsError("\n\nGraphicsError: layers to move down must be greater than (or equal to) 0, "
                                 f"not {layers}")
 
-        GraphicsObject.object_layers[self.layer].remove(self)
+        GraphicsObject.object_layers[self.layer].discard(self)
         self.layer += layers
         if self.layer < 0:
             self.layer = 0
-
-        while self.layer > len(GraphicsObject.object_layers) - 1:
-            GraphicsObject.object_layers.append([])
-            GraphicsObject.redraw_on_frame.append([])
-        GraphicsObject.object_layers[self.layer].append(self)
+        GraphicsObject.object_layers[self.layer].add(self)
 
         return self
 
@@ -274,11 +281,11 @@ class GraphicsObject:
             raise GraphicsError("\n\nGraphicsError: layer to set to must be greater than (or equal to) 0, "
                                 f"not {layer}")
 
-        GraphicsObject.object_layers[self.layer].remove(self)
+        GraphicsObject.object_layers[self.layer].discard(self)
         while layer > len(GraphicsObject.object_layers) - 1:
-            GraphicsObject.object_layers.append([])
-            GraphicsObject.redraw_on_frame.append([])
-        GraphicsObject.object_layers[layer].append(self)
+            GraphicsObject.object_layers.append({*()})
+            GraphicsObject.redraw_on_frame.append({*()})
+        GraphicsObject.object_layers[layer].add(self)
 
         self.layer = layer
 
@@ -306,7 +313,7 @@ class GraphicsObject:
                                 f"not {clickable}")
         if clickable:
             if self not in GraphicsObject.objects:
-                GraphicsObject.objects.append(self)
+                GraphicsObject.objects.add(self)
         else:
             if self in GraphicsObject.objects:
                 GraphicsObject.objects.remove(self)
@@ -326,6 +333,11 @@ class GraphicsObject:
         self.is_draggable = (draggable_x, draggable_x if draggable_y is None else draggable_y)
         self.callbacks["DraggingX"] = callback_x
         self.callbacks["DraggingY"] = callback_x if callback_y is None else callback_y
+
+        if self.is_draggable[0] or self.is_draggable[1]:
+            GraphicsObject.draggable_objects.add(self)
+        else:
+            GraphicsObject.draggable_objects.remove(self)
         return self
 
     def set_draggable_x(self, draggable=True, callback=None):
@@ -336,6 +348,11 @@ class GraphicsObject:
 
         self.is_draggable = (draggable, self.is_draggable[1])
         self.callbacks["DraggingX"] = callback
+
+        if draggable:
+            GraphicsObject.draggable_objects.add(self)
+        else:
+            GraphicsObject.draggable_objects.remove(self)
         return self
 
     def set_draggable_y(self, draggable=True, callback=None):
@@ -346,6 +363,11 @@ class GraphicsObject:
 
         self.is_draggable = (self.is_draggable[0], draggable)
         self.callbacks["DraggingY"] = callback
+
+        if draggable:
+            GraphicsObject.draggable_objects.add(self)
+        else:
+            GraphicsObject.draggable_objects.remove(self)
         return self
 
     def set_selected(self, selected=True):
@@ -443,17 +465,91 @@ class GraphicsObject:
     def get_layer(self):
         return self.layer
 
-    # -------------------------------------------------------------------------
-    # OBSTACLE & BOUNDS FUNCTIONS
+    def get_obstacles(self):
+        return self.obstacles
 
     def get_movement_looping(self):
         return self.allow_looping
 
-    def get_obstacles(self):
-        return self.obstacles
-
     def get_movement_bounds(self):
         return self.movement_bounds
+    
+    def get_tag(self):
+        return self.tag
+    
+    @staticmethod
+    def get_tagged_object(tag): 
+        if tag in GraphicsObject.tagged_objects:
+            return GraphicsObject.tagged_objects[tag]
+        else:
+            return None
+
+    # -------------------------------------------------------------------------
+    # OBSTACLE FUNCTIONS
+
+    def add_obstacle(self, obj):
+        if not isinstance(obj, GraphicsObject):
+            if obj in GraphicsObject.tagged_objects:
+                obj = GraphicsObject.tagged_objects[obj]
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: object to add as obstacle must be a GraphicsObject, not {obj}")
+        self.obstacles.add(obj)
+        return self
+
+    def set_obstacles(self, obstacles, destroy_previous=True):
+        if not isinstance(obstacles, set):
+            raise GraphicsError("\n\nGraphicsError: obstacles to set for the object must be a set of GraphicsObjects, "
+                                f"not {obstacles}")
+        for obj in obstacles:
+            if not isinstance(obj, GraphicsObject):
+                raise GraphicsError("\n\nGraphicsError: objects to add as obstacles must be GraphicsObjects, "
+                                    f"not {obj}")
+
+        if destroy_previous:
+            for obj in self.obstacles:
+                obj.destroy()
+        self.obstacles = obstacles
+        return self
+
+    def copy_obstacles_from(self, other, create_copy=True):
+        if not isinstance(other, GraphicsObject):
+            if other in GraphicsObject.tagged_objects:
+                other = GraphicsObject.tagged_objects[other]
+            else:
+                raise GraphicsError("\n\nGraphicsError: object to copy obstacles from must be a GraphicsObject, "
+                                    f"not {other}")
+        if create_copy:
+            self.obstacles = other.obstacles.copy()
+        else:
+            self.obstacles = other.obstacles
+        return self
+
+    def remove_obstacle(self, obj):
+        if obj not in self.obstacles:
+            if obj in GraphicsObject.tagged_objects and GraphicsObject.tagged_objects[obj] in self.obstacles:
+                obj = GraphicsObject.tagged_objects[obj]
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: object to remove as obstacle is not in the object's obstacles")
+        self.obstacles.remove(obj)
+        return self
+
+    def pop_obstacle(self, index):
+        self.obstacles.pop(index)
+        return self
+
+    def clear_obstacles(self):
+        for obj in self.obstacles:
+            obj.destroy()
+            self.obstacles.remove(obj)
+        return self
+
+    def draw_obstacles(self):
+        for obj in self.obstacles:
+            obj.draw(self.graphwin)
+        return self
+
+    # -------------------------------------------------------------------------
+    # MOVEMENT BOUNDS FUNCTIONS
 
     def set_movement_bounds(self, obj, allow_looping_x=False, allow_looping_y=False):
         from goopylib.objects.Rectangle import Rectangle
@@ -468,28 +564,6 @@ class GraphicsObject:
         self.movement_bounds = obj
         self.allow_looping = (allow_looping_x, allow_looping_y)
 
-        return self
-
-    def add_obstacle(self, obj):
-        if not isinstance(obj, GraphicsObject):
-            raise GraphicsError(f"\n\nGraphicsError: object to add as obstacle must be a GraphicsObject, not {obj}")
-        self.obstacles.append(obj)
-        return self
-
-    def remove_obstacle(self, obj):
-        if obj not in self.obstacles:
-            raise GraphicsError(f"\n\nGraphicsError: object to remove as obstacle is not in the object's obstacles")
-        self.obstacles.remove(obj)
-        return self
-
-    def pop_obstacle(self, index):
-        self.obstacles.pop(index)
-        return self
-
-    def clear_obstacles(self):
-        for obj in self.obstacles:
-            obj.destroy()
-            self.obstacles.remove(obj)
         return self
 
     def is_x_looping_allowed(self):
@@ -514,24 +588,24 @@ class GraphicsObject:
         if not (isinstance(dy, int) or isinstance(dy, float)):
             raise GraphicsError("\n\nThe amount to move the object in the y-direction (dy) must be a number "
                                 f"(integer or float), not {dy}")
-        if align not in ALIGN_OPTIONS:
-            raise GraphicsError(f"\n\nGraphicsError: align for object must be one of {ALIGN_OPTIONS}, not {align}")
 
         if self.movement_bounds is not None:
             if not self.movement_bounds.is_clicked(Point(self.anchor.x + dx, self.anchor.y + dy)):
                 if self.allow_looping[0]:
-                    if self.anchor.x + dx <= self.movement_bounds.anchor.x - self.movement_bounds.get_width()/2:
-                        dx = self.movement_bounds.get_width() - self.get_width() / 2
-                    elif self.anchor.x + dx >= self.movement_bounds.anchor.x + self.movement_bounds.get_width()/2:
-                        dx = -self.movement_bounds.get_width() + self.get_width() / 2
+                    width = self.movement_bounds.get_width()
+                    if self.anchor.x + dx <= self.movement_bounds.anchor.x - width/2:
+                        dx = width - self.get_width() / 2
+                    elif self.anchor.x + dx >= self.movement_bounds.anchor.x + width/2:
+                        dx = -width + self.get_width() / 2
                     else:
                         return self
                     
                 if self.allow_looping[1]:
-                    if self.anchor.y + dy <= self.movement_bounds.anchor.y - self.movement_bounds.get_height()/2:
-                        dy = self.movement_bounds.get_height() - self.get_height() / 2
-                    elif self.anchor.y + dy >= self.movement_bounds.anchor.y + self.movement_bounds.get_height()/2:
-                        dy = -self.movement_bounds.get_height() + self.get_height() / 2
+                    height = self.movement_bounds.get_height()
+                    if self.anchor.y + dy <= self.movement_bounds.anchor.y - height/2:
+                        dy = height - self.get_height() / 2
+                    elif self.anchor.y + dy >= self.movement_bounds.anchor.y + height/2:
+                        dy = -height + self.get_height() / 2
                     else:
                         return self
 
@@ -557,15 +631,12 @@ class GraphicsObject:
             self._move(dx + self.get_width() / 2, dy - self.get_height() / 2)
         elif align == "bottomright":
             self._move(dx - self.get_width() / 2, dy - self.get_height() / 2)
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: align for object must be one of {ALIGN_OPTIONS}, not {align}")
 
         if self.drawn:
-            if self.graphwin.autoflush:
-                self.redraw()
-                self.graphwin.flush()
-            else:
-                if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                    GraphicsObject.redraw_on_frame[self.layer].append(self)
-        self._update()
+            if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                GraphicsObject.redraw_on_frame[self.layer].add(self)
         if self.bounds is not None:
             self.bounds.move(dx, dy, align=align)
         return self
@@ -646,8 +717,7 @@ class GraphicsObject:
                     self.graphwin.flush()
                 else:
                     if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                        GraphicsObject.redraw_on_frame[self.layer].append(self)
-            self._update()
+                        GraphicsObject.redraw_on_frame[self.layer].add(self)
 
         return self
 
@@ -697,9 +767,9 @@ class GraphicsObject:
                               "total blinks": 0, "max blinks": number_of_blinks}
 
         if animate and self not in GraphicsObject.blinking_objects:
-            GraphicsObject.blinking_objects.append(self)
-        elif not animate and self in GraphicsObject.blinking_objects:
-            GraphicsObject.blinking_objects.remove(self)
+            GraphicsObject.blinking_objects.add(self)
+        elif not animate:
+            GraphicsObject.blinking_objects.discard(self)
         return self
 
     # Object Gliding Functions
@@ -1621,16 +1691,16 @@ class GraphicsObject:
 
         for obj in GraphicsObject.animated_image_instances:
             if obj.graphwin == graphwin and obj.drawn:
-                if t - obj.last_update_time >= obj.update_time:
+                if t - obj.last_update_time > obj.update_time:
                     obj.increment_frame(_time=t, _internal_call=True)
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
         for layer in GraphicsObject.redraw_on_frame:
-            for obj in layer:
+            for obj in layer.copy():
                 if obj.drawn:
                     obj.draw(graphwin, _internal_call=True)
-                layer.remove(obj)
+            layer.clear()
 
     @staticmethod
     def on_left_click(graphwin):
@@ -1743,12 +1813,14 @@ class GraphicsObject:
                             obj.mouse_value(mouse_pos.x)
 
             hover_count = 0
-            for obj in GraphicsObject.objects:
-                if obj.graphwin == graphwin:
-                    if obj.is_clicked(mouse_pos) and obj in GraphicsObject.cursor_objects:
+            for obj in GraphicsObject.cursor_objects:
+                if obj.is_clicked(mouse_pos) and obj.graphwin == graphwin:
+                    if obj.graphwin == graphwin:
                         graphwin.set_cursor(CURSORS[obj.cursor], _internal_call=True)
                         hover_count += 1
 
+            for obj in GraphicsObject.draggable_objects:
+                if obj.is_clicked(mouse_pos) and obj.graphwin == graphwin:
                     if obj.is_dragging:
                         if graphwin.left_mouse_down:
                             if obj.is_draggable[0]:
@@ -1762,7 +1834,7 @@ class GraphicsObject:
                         else:
                             obj.is_dragging = False
 
-            if hover_count == 0 and graphwin.get_current_cursor() != graphwin.cursor:
+            if graphwin.get_current_cursor() != graphwin.cursor and hover_count == 0:
                 graphwin.set_cursor(graphwin.cursor, _internal_call=True)
 
             if graphwin.left_mouse_down:
