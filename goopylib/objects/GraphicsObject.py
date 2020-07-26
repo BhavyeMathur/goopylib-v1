@@ -3,7 +3,9 @@ from goopylib.constants import *
 from goopylib.constants import _root
 
 from goopylib.math.Easing import *
-from math import cos, sin, radians
+from math import cos, sin
+
+from goopylib.GraphWin import GraphWin
 
 
 class GraphicsObject:
@@ -108,6 +110,9 @@ class GraphicsObject:
         self.is_dragging = False
 
         self.rotation = 0
+        self.cosrotation = 1
+        self.sinrotation = 0
+
         self.x_skew = 0
         self.y_skew = 0
 
@@ -167,15 +172,15 @@ class GraphicsObject:
         is already visible."""
 
         if graphwin is None:
-            from goopylib.GraphWin import GraphWin
             if len(GraphWin.instances) == 0:
                 raise GraphicsError("\n\nGraphicsError: no open graphwin to draw object to")
 
             graphwin = GraphWin.instances[-1]
 
-        if "GraphWin" not in graphwin.__repr__():
-            raise GraphicsError(
-                f"\n\nGraphicsError: draw() function argument must be a GraphWin object, not {graphwin}")
+        else:
+            if not isinstance(graphwin, GraphWin):
+                raise GraphicsError(
+                    f"\n\nGraphicsError: draw() function argument must be a GraphWin object, not {graphwin}")
         if graphwin.is_closed():
             return self
 
@@ -197,9 +202,8 @@ class GraphicsObject:
             _root.update()
         self.drawn = True
 
-        if self not in GraphicsObject.cursor_objects:
-            if self.get_cursor() != graphwin.get_window_cursor():
-                GraphicsObject.cursor_objects.add(self)
+        if self.get_cursor() != graphwin.get_window_cursor() and self not in GraphicsObject.cursor_objects:
+            GraphicsObject.cursor_objects.add(self)
 
         return self
 
@@ -226,13 +230,6 @@ class GraphicsObject:
             self.id = None
         if self.is_blinking and set_blinking:
             self.animate_blinking(0, animate=False)
-        return self
-
-    def redraw(self):
-        if self.drawn:
-            if self.graphwin.is_open():
-                self.undraw()
-                self.draw(self.graphwin)
         return self
 
     def destroy(self):
@@ -533,8 +530,8 @@ class GraphicsObject:
         self.obstacles.remove(obj)
         return self
 
-    def pop_obstacle(self, index):
-        self.obstacles.pop(index)
+    def pop_obstacle(self):
+        self.obstacles.pop()
         return self
 
     def clear_obstacles(self):
@@ -564,6 +561,26 @@ class GraphicsObject:
         self.movement_bounds = obj
         self.allow_looping = (allow_looping_x, allow_looping_y)
 
+        return self
+
+    def set_allow_movement_looping(self, allow_looping_x=False, allow_looping_y=False):
+        if not isinstance(allow_looping_x, bool):
+            raise GraphicsError(f"\n\nGraphicsError: allow_looping_x argument must be a boolean, not {allow_looping_x}")
+        if not isinstance(allow_looping_y, bool):
+            raise GraphicsError(f"\n\nGraphicsError: allow_looping_y argument must be a boolean, not {allow_looping_y}")
+
+        self.allow_looping = (allow_looping_x, allow_looping_y)
+        return self
+
+    def copy_movement_bounds_from(self, other):
+        if not isinstance(other, GraphicsObject):
+            if other in GraphicsObject.tagged_objects:
+                other = GraphicsObject.tagged_objects[other]
+            else:
+                raise GraphicsError("\n\nGraphicsError: object to copy bounds from must be a GraphicsObject, "
+                                    f"not {other}")
+        self.movement_bounds = other.movement_bounds
+        self.allow_looping = other.allow_looping
         return self
 
     def is_x_looping_allowed(self):
@@ -611,6 +628,8 @@ class GraphicsObject:
 
         for obstacle in self.obstacles:
             if obstacle.is_clicked(Point(self.anchor.x + dx, self.anchor.y + dy)):
+                if self.callbacks["collision"] is not None:
+                    self.callbacks["collision"]()
                 return self
                     
         if align == "center":
@@ -634,9 +653,8 @@ class GraphicsObject:
         else:
             raise GraphicsError(f"\n\nGraphicsError: align for object must be one of {ALIGN_OPTIONS}, not {align}")
 
-        if self.drawn:
-            if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                GraphicsObject.redraw_on_frame[self.layer].add(self)
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
+            GraphicsObject.redraw_on_frame[self.layer].add(self)
         if self.bounds is not None:
             self.bounds.move(dx, dy, align=align)
         return self
@@ -680,29 +698,47 @@ class GraphicsObject:
         self.move_to(p.x, p.y, align=align)
         return self
 
-    def move_forward(self, d):
+    def move_forward(self, d, collision_callback=None):
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        self.move_backward(-d)
+        if not callable(collision_callback):
+            raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
+                                f"not {collision_callback}")
 
-    def move_backward(self, d):
-        if not (isinstance(d, int) or isinstance(d, float)):
-            raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
-                                f"(integer or float), not {d}")
-        self.move(d * sin(radians(self.rotation)), d * cos(radians(self.rotation)))
+        self.callbacks["collision"] = collision_callback
+        self.move(-d * self.sinrotation, -d * self.cosrotation)
+        return self
 
-    def move_left(self, d):
+    def move_backward(self, d, collision_callback=None):
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        self.move_right(-d)
+        if not callable(collision_callback):
+            raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
+                                f"not {collision_callback}")
+
+        self.callbacks["collision"] = collision_callback
+        self.move(d * self.sinrotation, d * self.cosrotation)
+        return self
+
+    def move_left(self, d, collision_callback=None):
+        if not (isinstance(d, int) or isinstance(d, float)):
+            raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
+                                f"(integer or float), not {d}")
+        if not callable(collision_callback):
+            raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
+                                f"not {collision_callback}")
+
+        self.callbacks["collision"] = collision_callback
+        self.move(-d * self.cosrotation, -d * self.sinrotation)
+        return self
 
     def move_right(self, d):
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        self.move(d * cos(radians(self.rotation)), d * sin(radians(self.rotation)))
+        self.move(d * self.cosrotation, d * self.sinrotation)
 
     # Rotation Transformations
     def rotate(self, dr, sampling="bicubic", center=None):
@@ -710,11 +746,14 @@ class GraphicsObject:
             raise GraphicsError(f"\n\nGraphicsError: object rotation amount must be an integer or float, not {dr}")
         if dr != 0:
             self.rotation += dr
+            self.cosrotation = cos(self.rotation / 57.2958)
+            self.sinrotation = sin(self.rotation / 57.2958)
+
             self._rotate(dr, sampling=sampling, center=center)
             if self.drawn:
                 if self.graphwin.autoflush:
-                    self.redraw()
-                    self.graphwin.flush()
+                    self.draw(self.graphwin)
+                    self.graphwin.update_win()
                 else:
                     if self not in GraphicsObject.redraw_on_frame[self.layer]:
                         GraphicsObject.redraw_on_frame[self.layer].add(self)
@@ -1690,14 +1729,14 @@ class GraphicsObject:
                             obj.animate_blinking(0, animate=False)
 
         for obj in GraphicsObject.animated_image_instances:
-            if obj.graphwin == graphwin and obj.drawn:
+            if obj.graphwin == graphwin and obj.autoflush and obj.drawn:
                 if t - obj.last_update_time > obj.update_time:
                     obj.increment_frame(_time=t, _internal_call=True)
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
         for layer in GraphicsObject.redraw_on_frame:
-            for obj in layer.copy():
+            for obj in layer:
                 if obj.drawn:
                     obj.draw(graphwin, _internal_call=True)
             layer.clear()

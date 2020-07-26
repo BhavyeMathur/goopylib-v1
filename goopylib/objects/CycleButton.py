@@ -1,6 +1,8 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.util import GraphicsError
 
+from math import cos, sin
+
 class CycleButton(GraphicsObject):
     def __init__(self, *states, state=0, disabled_graphic=None, autoflush=True, layer=None, tag=None):
         self.states = list(states)
@@ -35,11 +37,11 @@ class CycleButton(GraphicsObject):
         self.drawn = False
         return self
 
-    def _rotate(self, dr):
+    def _rotate(self, dr, sampling="bicubic", center=None):
         for graphic in self.states:
-            graphic.rotate(dr)
+            graphic.rotate(dr, sampling=sampling, center=center)
         if self.disabled_graphic is not None:
-            self.disabled_graphic.rotate(dr)
+            self.disabled_graphic.rotate(dr, sampling=sampling, center=center)
 
     def _move(self, dx, dy):
         for graphic in self.states:
@@ -165,6 +167,11 @@ class CycleButton(GraphicsObject):
         self.graphic = self.states[state]
         self.draw(self.graphwin)
 
+        self.rotation = self.graphic.rotation
+        self.cosrotation = cos(self.rotation / 57.2958)
+        self.sinrotation = sin(self.rotation / 57.2958)
+        return self
+
     def add_state(self, state):
         self.states.append(state)
         return self
@@ -178,6 +185,25 @@ class CycleButton(GraphicsObject):
 
     def pop_state(self, index):
         return self.states.pop(index)
+
+    def set_object(self, obj):
+        if obj not in self.states:
+            if obj in GraphicsObject.tagged_objects:
+                obj = GraphicsObject.tagged_objects[obj]
+            else:
+                raise GraphicsError("The Object you have specified is not a valid state for this CycleButton")
+        self.undraw()
+        self.state = self.states.index(obj)
+        self.graphic = obj
+        self.draw(self.graphwin)
+
+        self.rotation = self.graphic.rotation
+        self.cosrotation = cos(self.rotation / 57.2958)
+        self.sinrotation = sin(self.rotation / 57.2958)
+        return self
+
+    def get_object(self):
+        return self.states[self.state]
 
     # -------------------------------------------------------------------------
     # GETTER FUNCTIONS

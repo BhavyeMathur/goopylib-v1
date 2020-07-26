@@ -46,6 +46,12 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Minecraft\textures\bedrock" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\goopylib" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
@@ -53,14 +59,8 @@
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Minecraft" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Minecraft\textures\bedrock" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
-    </key>
   </component>
-  <component name="RunManager" selected="Python.PacMan-4">
+  <component name="RunManager" selected="Python.setup">
     <configuration name="PacMan-4" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Pac-Man" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -175,9 +175,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.setup" />
         <item itemvalue="Python.PacMan-4" />
         <item itemvalue="Python.test (2)" />
-        <item itemvalue="Python.setup" />
         <item itemvalue="Python.test (1)" />
         <item itemvalue="Python.test" />
       </list>
@@ -262,22 +262,26 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="2168" height="495" key="GridCell.Tab.-1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594733814143" />
-    <state width="1071" height="312" key="GridCell.Tab.0.bottom" timestamp="1595619579267">
+    <state width="1071" height="312" key="GridCell.Tab.0.bottom" timestamp="1595692518764">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1071" height="312" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1595619579267" />
-    <state width="1071" height="312" key="GridCell.Tab.0.center" timestamp="1595619579267">
+    <state width="666" height="312" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
+    <state width="1071" height="312" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1595692518764" />
+    <state width="1071" height="312" key="GridCell.Tab.0.center" timestamp="1595692518764">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1071" height="312" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1595619579267" />
-    <state width="1071" height="312" key="GridCell.Tab.0.left" timestamp="1595619579267">
+    <state width="666" height="312" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
+    <state width="1071" height="312" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1595692518764" />
+    <state width="1071" height="312" key="GridCell.Tab.0.left" timestamp="1595692518764">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1071" height="312" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1595619579267" />
-    <state width="1071" height="312" key="GridCell.Tab.0.right" timestamp="1595619579267">
+    <state width="666" height="312" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
+    <state width="1071" height="312" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1595692518764" />
+    <state width="1071" height="312" key="GridCell.Tab.0.right" timestamp="1595692518764">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state width="1071" height="312" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1595619579267" />
+    <state width="666" height="312" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
+    <state width="1071" height="312" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1595692518764" />
     <state width="2168" height="495" key="GridCell.Tab.1.bottom" timestamp="1594733811918">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -298,18 +302,18 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="1164" y="333" key="SettingsEditor/0.0.2189.1419@0.0.2189.1419" timestamp="1595085455245" />
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1595577624867">
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1595741040192">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1595577624867" />
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1595741040192" />
     <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595604872984">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2189.1419@0.0.2189.1419" timestamp="1595604872984" />
-    <state x="837" y="353" key="refactoring.ChangeSignatureDialog" timestamp="1594356066856">
+    <state x="837" y="353" key="refactoring.ChangeSignatureDialog" timestamp="1595651941504">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="837" y="353" key="refactoring.ChangeSignatureDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594356066856" />
+    <state x="837" y="353" key="refactoring.ChangeSignatureDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1595651941504" />
     <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1595605040033">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>

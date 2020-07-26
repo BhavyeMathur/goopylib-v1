@@ -46,9 +46,12 @@ class Image(GraphicsObject):
         self.y = self.anchor.y
         self.initial_width = self.get_width()
         self.initial_height = self.get_height()
+        self.resized = False
 
         self.contrast = 0
         self.blur_amount = 0
+
+        self.update_required = False
 
         GraphicsObject.__init__(self, [], cursor=cursor, layer=layer, tag=tag)
 
@@ -62,11 +65,11 @@ class Image(GraphicsObject):
         return f"Image({self.anchor}, {self.reprpath})"
 
     def _draw(self, canvas, options):
-        self.image_cache[self.image_id] = self.img  # save a reference
-
         x, y = self.anchor
 
-        if self.align == "bottom":
+        if self.align == "center":
+            pass
+        elif self.align == "bottom":
             y += self.initial_height / -2
         elif self.align == "top":
             y += self.initial_height / 2
@@ -87,12 +90,19 @@ class Image(GraphicsObject):
             x += self.initial_width / -2
             y += self.initial_height / 2
 
-        if canvas != self.graphwin and canvas.trans.x_scale != 1 and canvas.trans.y_scale != 1:
-            init_width = abs(self.initial_width / canvas.trans.x_scale)
-            init_height = abs(self.initial_height / canvas.trans.y_scale)
-            self.resize(ceil(init_width), ceil(init_height))
+        if canvas.trans.x_scale != 1 and canvas.trans.y_scale != 1:
+            if not self.resized:
+                init_width = abs(self.initial_width / canvas.trans.x_scale)
+                init_height = abs(self.initial_height / canvas.trans.y_scale)
+                self.resize(ceil(init_width), ceil(init_height), _external_call=False)
+                self.resized = True
+            x, y = canvas.to_screen(x, y)
 
-        x, y = canvas.to_screen(x, y)
+        if self.update_required:
+            self.update()
+            self.update_required = False
+
+        self.image_cache[self.image_id] = self.img  # save a reference
 
         return canvas.create_image(x, y, image=self.img)
 
@@ -109,19 +119,20 @@ class Image(GraphicsObject):
             self.transforming_img = self.original_img.rotate(angle=-self.rotation, expand=True,
                                                              resample=IMAGE_INTERPOLATIONS[sampling])
         self.img_PIL = self.transforming_img.copy()
-        self.update()
+        self.update_required = True
         return self
 
     def update(self):
         try:
+            self.graphwin.delete(self.id)
             self.img = ImageTk.PhotoImage(self.img_PIL, master=self.graphwin.master)
         except AttributeError:
             self.img = ImageTk.PhotoImage(self.img_PIL)
 
         if self.drawn:
             if self.graphwin.autoflush:
-                self.redraw()
-                self.graphwin.flush()
+                self.draw()
+                self.graphwin.update_win()
             else:
                 if self not in GraphicsObject.redraw_on_frame[self.layer]:
                     GraphicsObject.redraw_on_frame[self.layer].add(self)
@@ -188,7 +199,7 @@ class Image(GraphicsObject):
 
         self.original_img = self.original_img.point(contrast)
         self.img_PIL = self.img_PIL.point(contrast)
-        self.update()
+        self.update_required = True
         return self
 
     def reset_contrast(self):
@@ -229,14 +240,14 @@ class Image(GraphicsObject):
 
         self.img_PIL = self.img_PIL.crop(box=(left, top, right, down))
 
-        self.update()
+        self.update_required = True
         return self
 
     # Blending & Compositing Functions
 
     def blend(self, img, alpha):
         if not isinstance(img, Image):
-            raise GraphicsError("\n\nGraphicsError: img argument for blending must be another goopylib Image Object, "
+            raise GraphicsError("\n\nGraphicsError: img argument for blending must be another goopylib_b Image Object, "
                                 f"not {img}")
         if not (isinstance(alpha, int) or isinstance(alpha, float)):
             raise GraphicsError(f"\n\nGraphicsError: Blend alpha value must be an integer or float, not {alpha}")
@@ -245,42 +256,42 @@ class Image(GraphicsObject):
 
         self.img_PIL = Img.blend(self.img_PIL, img.img_PIL, alpha)
         self.transforming_img = self.img_PIL
-        self.update()
+        self.update_required = True
         return self
 
     def alpha_composite(self, img):
         if not isinstance(img, Image):
-            raise GraphicsError("\n\nGraphicsError: img argument for composite must be another goopylib Image Object, "
+            raise GraphicsError("\n\nGraphicsError: img argument for composite must be another goopylib_b Image Object, "
                                 f"not {img}")
 
         self.img_PIL = Img.alpha_composite(self.img_PIL, img.img_PIL)
         self.transforming_img = self.img_PIL
-        self.update()
+        self.update_required = True
         return self
 
     def composite(self, img, img_mask):
         if not isinstance(img, Image):
-            raise GraphicsError("\n\nGraphicsError: img argument for composite must be another goopylib Image Object, "
+            raise GraphicsError("\n\nGraphicsError: img argument for composite must be another goopylib_b Image Object, "
                                 f"not {img}")
         if not isinstance(img_mask, Image):
-            raise GraphicsError("\n\nGraphicsError: img mask argument for composite must be another goopylib Image "
+            raise GraphicsError("\n\nGraphicsError: img mask argument for composite must be another goopylib_b Image "
                                 f"Object, not {img_mask}")
 
         self.img_PIL = Img.composite(self.img_PIL, img.img_PIL, img_mask.img_PIL)
         self.transforming_img = self.img_PIL
-        self.update()
+        self.update_required = True
         return self
 
     def convert_greyscale(self):
         self.img_PIL = self.img_PIL.convert("LA")
         self.transforming_img = self.img_PIL
-        self.update()
+        self.update_required = True
         return self
 
     def convert_binary(self):
         self.img_PIL = self.img_PIL.convert("1")
         self.transforming_img = self.img_PIL
-        self.update()
+        self.update_required = True
         return self
 
     # ----------------------------------
@@ -308,12 +319,12 @@ class Image(GraphicsObject):
 
     def transverse(self):
         self.img_PIL = self.img_PIL.transpose(Img.TRANSVERSE)
-        self.update()
+        self.update_required = True
         return self
 
     def transpose(self):
         self.img_PIL = self.img_PIL.transpose(Img.TRANSPOSE)
-        self.update()
+        self.update_required = True
         return self
 
     # ----------------------------------
@@ -344,7 +355,7 @@ class Image(GraphicsObject):
             self.img_PIL = self.transforming_img.transform((new_width, height), Img.AFFINE, (1, scale * size_factor,
                                                   (abs(scale) * -width) if scale > 0 else 0, 0, 1, 0),
                                                   IMAGE_INTERPOLATIONS[sampling])
-            self.update()
+            self.update_required = True
         return self
 
     def skew_y(self, scale=0.3, sampling="bicubic", align="center"):
@@ -373,7 +384,7 @@ class Image(GraphicsObject):
                                                   (abs(scale) * -height) if scale > 0 else 0),
                                                   IMAGE_INTERPOLATIONS[sampling])
 
-            self.update()
+            self.update_required = True
         return self
 
     def skew_xy(self, x_scale=0.3, y_scale=None, sampling="bicubic", x_align="center", y_align=None):
@@ -419,7 +430,7 @@ class Image(GraphicsObject):
             y_scale * size_factor_h, 1, (abs(y_scale) * -height) if y_scale > 0 else 0),
                                                        IMAGE_INTERPOLATIONS[sampling])
 
-        self.update()
+        self.update_required = True
         return self
 
     # ----------------------------------
@@ -440,7 +451,7 @@ class Image(GraphicsObject):
         if _external_call:
             self.initial_width = width
             self.initial_height = height
-        self.update()
+        self.update_required = True
         return self
 
     def resize_height(self, height, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
@@ -495,7 +506,7 @@ class Image(GraphicsObject):
 
     def blur(self):
         self.img_PIL = self.original_img.filter(filter=ImageFilter.BLUR)
-        self.update()
+        self.update_required = True
         return self
 
     def blur_box(self, radius=3):
@@ -504,7 +515,7 @@ class Image(GraphicsObject):
             raise GraphicsError(f"\n\nGraphicsError: Radius for Blur must be an integer or float, not {radius}")
 
         self.img_PIL = self.original_img.filter(filter=ImageFilter.BoxBlur(radius))
-        self.update()
+        self.update_required = True
         return self
 
     def blur_gaussian(self, radius=3):
@@ -514,7 +525,7 @@ class Image(GraphicsObject):
 
         self.img_PIL = self.original_img.filter(filter=ImageFilter.GaussianBlur(radius))
         self.blur_amount = radius
-        self.update()
+        self.update_required = True
         return self
 
     def sharpen(self, radius=3, percent=150):
@@ -525,7 +536,7 @@ class Image(GraphicsObject):
             raise GraphicsError(f"\n\nGraphicsError: Percent Blur must be an integer or float, not {percent}")
 
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.UnsharpMask(radius=radius, percent=percent))
-        self.update()
+        self.update_required = True
         return self
 
     # ----------------------------------
@@ -533,47 +544,47 @@ class Image(GraphicsObject):
 
     def filter_contour(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.CONTOUR)
-        self.update()
+        self.update_required = True
         return self
 
     def filter_detail(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.DETAIL)
-        self.update()
+        self.update_required = True
         return self
 
     def filter_emboss(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.EMBOSS)
-        self.update()
+        self.update_required = True
         return self
 
     def filter_find_edges(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.FIND_EDGES)
-        self.update()
+        self.update_required = True
         return self
 
     def filter_sharpen(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.SHARPEN)
-        self.update()
+        self.update_required = True
         return self
 
     def filter_smooth(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.SMOOTH)
-        self.update()
+        self.update_required = True
         return self
 
     def filter_more_smooth(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.SMOOTH_MORE)
-        self.update()
+        self.update_required = True
         return self
 
     def filter_enhance_edge(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.EDGE_ENHANCE)
-        self.update()
+        self.update_required = True
         return self
 
     def filter_more_enhance_edge(self):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.EDGE_ENHANCE_MORE)
-        self.update()
+        self.update_required = True
         return self
 
     # -------------------------------------------------------------------------
@@ -619,5 +630,5 @@ class Image(GraphicsObject):
         """
         self.original_img = self.original_img.putpixel((x, y), colour)
         self.img_PIL = self.img_PIL.putpixel((x, y), colour)
-        self.update()
+        self.update_required = True
         return self

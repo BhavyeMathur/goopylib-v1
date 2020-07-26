@@ -109,8 +109,8 @@ class Rectangle(gpBBox.BBox):
 
     def is_clicked(self, pos):
         if self.bounds is None:
-            width = self.get_width() / 2
-            height = self.get_height() / 2
+            width = self.width // 2
+            height = self.height // 2
             return self.anchor.x - width < pos.x < self.anchor.x + width and \
                    self.anchor.y - height < pos.y < self.anchor.y + height
         else:

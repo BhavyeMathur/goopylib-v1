@@ -9,7 +9,7 @@ from time import time as timetime
 
 class AnimatedImage(GraphicsObject):
     def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24, layer=0,
-                 tag=None):
+                 tag=None, autoflush=True):
         self.reprpath = filepath
         filepath = filepath.replace('\\', '/')
         self.filepath = filepath.split('.')
@@ -34,10 +34,16 @@ class AnimatedImage(GraphicsObject):
 
         self.frame = 0
         self.drawn_frame = 0
+        self.frame_bound_objects = {*()}
+
         self.imgs = [Image(p, f"{self.filepath[0]}{i}.{self.filepath[1]}", align=align, cursor=cursor)
                      for i in range(self.number_of_frames)]
+
         self.last_update_time = timetime()
         self.update_time = update_time
+        self.autoflush = autoflush
+
+        self.moved = False
 
         GraphicsObject.__init__(self, [], cursor=cursor, layer=layer, tag=tag)
         GraphicsObject.animated_image_instances.add(self)
@@ -51,9 +57,9 @@ class AnimatedImage(GraphicsObject):
     def _draw(self, canvas, options):
         self.imgs[self.frame].draw(canvas)
         self.drawn_frame = self.frame
-
-        for img in self.imgs:
-            img.graphwin = canvas
+        if self.graphwin != canvas:
+            for img in self.imgs:
+                img.graphwin = canvas
 
     def _move(self, dx, dy):
         for img in self.imgs:
@@ -81,6 +87,9 @@ class AnimatedImage(GraphicsObject):
             self.last_update_time = timetime()
         else:
             self.last_update_time = _time
+
+        for obj in self.frame_bound_objects:
+            obj.increment_frame(_time=_time, _internal_call=_internal_call)
         return self
 
     def decrement_frame(self, _time=None, _internal_call=False):
@@ -99,6 +108,9 @@ class AnimatedImage(GraphicsObject):
             self.last_update_time = timetime()
         else:
             self.last_update_time = _time
+
+        for obj in self.frame_bound_objects:
+            obj.decrement_frame(_time=_time, _internal_call=_internal_call)
         return self
 
     def set_frame(self, frame, _time=None, _internal_call=False):
@@ -122,6 +134,19 @@ class AnimatedImage(GraphicsObject):
             self.last_update_time = _time
         return self
 
+    def bind_frame_to(self, obj):
+        if not isinstance(obj, AnimatedImage):
+            if obj in GraphicsObject.tagged_objects:
+                obj = GraphicsObject.tagged_objects[obj]
+                if not isinstance(obj, AnimatedImage):
+                    raise GraphicsError("\n\nGraphicsError: object to bind frame to must be an Animated Image object, "
+                                        f"not {obj}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: object to bind frame to must be an Animated Image object, "
+                                    f"not {obj}")
+        obj.frame_bound_objects.add(self)
+        return self
+
     # -------------------------------------------------------------------------
     # OTHER & IMPORTANT FUNCTIONS
 
@@ -130,6 +155,8 @@ class AnimatedImage(GraphicsObject):
         self.imgs[self.drawn_frame].undraw(set_blinking=set_blinking)
 
     def is_clicked(self, mouse_pos):
+        for img in self.imgs:
+            img.graphwin = self.graphwin
         return self.imgs[self.frame].is_clicked(mouse_pos)
 
     def save(self, filename):

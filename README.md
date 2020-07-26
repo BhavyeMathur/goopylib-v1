@@ -145,6 +145,23 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.190-beta 25th July 2020 
+
+* Added a `set_object()` function to the CycleButton class to set the state to a GraphicsObject
+* The Image class destroys itself before updating to save on memory and stop the drops in FPS as time went on
+* Added a `bind_frame_to()` function to the Animated Image class to synchronize the frames of multiple objects
+
+* More Optimizations (for performance values before, check previous version history)
+
+      These were tested on 20,000 frames as opposed to yesterday's 2400 frames
+      FPS increased from ~3040 FPS to ~9020 FPS
+      
+      Average: 2.218 secs, 9017.133 FPS
+      
+* Fixed bug with Images not resizing properly to fit the window scale
+* Added a `copy_movement_bounds_from()` & `set_allow_movement_looping()` function
+* Added a callback argument for movement collisions
+
 #### 1.0.183-beta 24th July 2020
 
 * Fixed bug with Polygon Triangulation where the last triangle wasn't added to the list of triangles
@@ -156,7 +173,7 @@ Goopy also has functionality for other animations such as moving to locations, r
  
       FPS increased from ~650 FPS to ~3040 FPS
       
-      BEFORE:--------------------------
+      BEFORE: -------------------------
       
       Trial 1: 4.025 secs, 596.273 FPS
       Trial 2: 3.959 secs, 606.214 FPS

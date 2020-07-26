@@ -12,7 +12,6 @@ from goopylib.util import GraphicsError, GraphicsWarning
 from goopylib.constants import _root, RELIEF, CURSORS
 from goopylib.math.Easing import *
 
-from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.Point import Point
 from goopylib._internal_classes import Transform
 
@@ -288,8 +287,8 @@ class GraphWin(tkCanvas):
         self.key_pressed_with_alt = None
         self.key_pressed_with_control = None
 
-        self.keys_down = []
-        self.keys_clicked = []
+        self.keys_down = {*()}
+        self.keys_clicked = {*()}
 
         self.bind("<KeyPress>", self._on_key_press)
         self.bind("<Shift-KeyPress>", self._on_shift_key_press)
@@ -347,12 +346,12 @@ class GraphWin(tkCanvas):
         if e.keysym in self.keys_down:
             self.keys_down.remove(e.keysym)
         if e.keysym not in self.keys_clicked:
-            self.keys_clicked.append(e.keysym)
+            self.keys_clicked.add(e.keysym)
 
     def _on_key_press(self, e):
         self.last_key_pressed = e.keysym
         if e.keysym not in self.keys_down:
-            self.keys_down.append(e.keysym)
+            self.keys_down.add(e.keysym)
 
     def _on_shift_key_press(self, e):
         self.key_pressed_with_shift = e.keysym
@@ -1703,3 +1702,6 @@ class GraphWin(tkCanvas):
             if "Image" in instance.__repr__() and instance.graphwin == self:
                 instance.destroy()
         return self
+
+
+from goopylib.objects.GraphicsObject import GraphicsObject

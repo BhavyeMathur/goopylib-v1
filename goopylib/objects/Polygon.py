@@ -1,11 +1,10 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.styles import *
 
-from goopylib.math.Triangulation import TriangulateEarClipping, CheckInTriangle
+from goopylib.math.Triangulation import TriangulateEarClipping
 from math import radians, sin, cos
 
 class Polygon(GraphicsObject):
-
     def __init__(self, *points, style=None, fill=None, outline=None, outline_width=None, is_rounded=False, roundness=5,
                  layer=0, tag=None):
 
@@ -63,7 +62,7 @@ class Polygon(GraphicsObject):
         self.triangles = None
 
     def __repr__(self):
-        return "Polygon" + str(tuple(p for p in self.points))
+        return f"Polygon({self.points})"
 
     def _draw(self, canvas, options):
         points = []
@@ -176,57 +175,64 @@ class Polygon(GraphicsObject):
         return self.height
 
     def is_clicked(self, pos):
-        if self.bounds is None:
-            width = self.get_width() / 2
-            height = self.get_height() / 2
-
-            # Check if point in Rectangular Bounding Box
-            if self.anchor.x - width < pos.x < self.anchor.x + width and \
-               self.anchor.y - height < pos.y < self.anchor.y + height:
-
-                """
-                # Ray Casting Algorithm
-                # Code Modified from
-                # https://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon
-                intersections = 0
-                size = len(self.points)
-
-                v2p1 = (self.anchor.x - width - 1, pos.y)
-                for side in range(size):
-                    v1p1 = self.points[side]
-                    v1p2 = self.points[(side + 1) % size]
-
-                    a1 = v1p2.y - v1p1.y
-                    b1 = v1p1.x - v1p2.x
-                    c1 = (v1p2.x * v1p1.y) - (v1p1.x * v1p2.y)
-
-                    d1 = (a1 * pos.x) + (b1 * pos.y) + c1
-                    d2 = (a1 * v2p1[0]) + (b1 * v2p1[1]) + c1
-                    if d1 == 0 and d2 == 0:
-                        a2 = v2p1[1] - pos.y
-                        b2 = pos.x - v2p1[0]
-                        c2 = (v2p1[0] * pos.y) - (pos.x * v2p1[1])
-
-                        d1 = (a2 * v1p1.x) + (b2 * v1p1.y) + c2
-                        d2 = (a2 * v1p2.x) + (b2 * v1p2.y) + c2
-
-                        if d1 == 0 and d2 == 0:
-                            intersections += 1
-
-                return intersections % 1 == 1
-                """
-                self.triangulate()
-                if len(self.points) == 3:
-                    return CheckInTriangle(*self.points, pos)
-                else:
-                    for triangle in self.triangles:
-                        if triangle.is_clicked(pos):
-                            return True
-
-            else:
-                return False
+        if pos is None:
+            return False
         else:
-            return self.bounds.is_clicked(pos)
+            if self.bounds is None:
+                width = self.get_width() / 2
+                height = self.get_height() / 2
+    
+                # Check if point in Rectangular Bounding Box
+                if self.anchor.x - width < pos.x < self.anchor.x + width and \
+                   self.anchor.y - height < pos.y < self.anchor.y + height:
+    
+                    """
+                    # Ray Casting Algorithm
+                    # Code Modified from
+                    # https://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon
+                    intersections = 0
+                    size = len(self.points)
+    
+                    v2p1 = (self.anchor.x - width - 1, pos.y)
+                    for side in range(size):
+                        v1p1 = self.points[side]
+                        v1p2 = self.points[(side + 1) % size]
+    
+                        a1 = v1p2.y - v1p1.y
+                        b1 = v1p1.x - v1p2.x
+                        c1 = (v1p2.x * v1p1.y) - (v1p1.x * v1p2.y)
+    
+                        d1 = (a1 * pos.x) + (b1 * pos.y) + c1
+                        d2 = (a1 * v2p1[0]) + (b1 * v2p1[1]) + c1
+                        if d1 == 0 and d2 == 0:
+                            a2 = v2p1[1] - pos.y
+                            b2 = pos.x - v2p1[0]
+                            c2 = (v2p1[0] * pos.y) - (pos.x * v2p1[1])
+    
+                            d1 = (a2 * v1p1.x) + (b2 * v1p1.y) + c2
+                            d2 = (a2 * v1p2.x) + (b2 * v1p2.y) + c2
+    
+                            if d1 == 0 and d2 == 0:
+                                intersections += 1
+    
+                    return intersections % 1 == 1
+                    """
+                    self.triangulate()
+                    if len(self.points) == 3:
+                        p1, p2, p3 = self.points
+                        d1 = (pos.x - p2.x) * (p1.y - p2.y) - (p1.x - p2.x) * (pos.y - p2.y)
+                        d2 = (pos.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (pos.y - p3.y)
+                        d3 = (pos.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (pos.y - p1.y)
+
+                        return not ((d1 < 0 or d2 < 0 or d3 < 0) and (d1 > 0 or d2 > 0 or d3 > 0))
+                    else:
+                        for triangle in self.triangles:
+                            if triangle.is_clicked(pos):
+                                return True
+                else:
+                    return False
+            else:
+                return self.bounds.is_clicked(pos)
 
     def get_anchor(self):
         x = 0
