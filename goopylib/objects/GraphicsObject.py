@@ -702,7 +702,7 @@ class GraphicsObject:
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        if not callable(collision_callback):
+        if not (collision_callback is None or callable(collision_callback)):
             raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
                                 f"not {collision_callback}")
 
@@ -714,7 +714,7 @@ class GraphicsObject:
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        if not callable(collision_callback):
+        if not (collision_callback is None or callable(collision_callback)):
             raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
                                 f"not {collision_callback}")
 
@@ -726,7 +726,7 @@ class GraphicsObject:
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        if not callable(collision_callback):
+        if not (collision_callback is None or callable(collision_callback)):
             raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
                                 f"not {collision_callback}")
 
@@ -734,10 +734,13 @@ class GraphicsObject:
         self.move(-d * self.cosrotation, -d * self.sinrotation)
         return self
 
-    def move_right(self, d):
+    def move_right(self, d, collision_callback=None):
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
+        if not (collision_callback is None or callable(collision_callback)):
+            raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
+                                f"not {collision_callback}")
         self.move(d * self.cosrotation, d * self.sinrotation)
 
     # Rotation Transformations

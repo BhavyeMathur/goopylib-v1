@@ -154,9 +154,15 @@ Goopy also has functionality for other animations such as moving to locations, r
 * More Optimizations (for performance values before, check previous version history)
 
       These were tested on 20,000 frames as opposed to yesterday's 2400 frames
-      FPS increased from ~3040 FPS to ~9020 FPS
+      FPS increased from ~3040 FPS to ~7200 FPS
       
-      Average: 2.218 secs, 9017.133 FPS
+      Trial 1: 2.845 secs, 7029.877 FPS
+      Trial 2: 2.774 secs, 7209.805 FPS
+      Trial 3: 2.598 secs, 7698.229 FPS
+      Trial 4: 2.535 secs, 7889.546 FPS
+      Trial 5: 3.146 secs, 6357.279 FPS
+      
+      Average: 2.78 secs, 7195.28 FPS
       
 * Fixed bug with Images not resizing properly to fit the window scale
 * Added a `copy_movement_bounds_from()` & `set_allow_movement_looping()` function
