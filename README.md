@@ -145,6 +145,34 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.199-beta 26th-28th July 2020
+
+So unfortunately, online school (Grade 9!!!) has started and so updates won't be coming out as frequently as before, sorry!
+
+* Fixed bug with GraphicsObject raising error if the directional move functions weren't provided with a callback function
+* Adding functions to enable the obstacles of an object: `set_obstacles_enabled()`, `disable_obstacles()`, `enable_obstacles()`, and `toggle_obstacles_enabled()`
+* Replaced the for loops in goopylib with the `map()` function wherever in the GraphWin class possible to improve performance
+* Added an `undraw_obstacles()` function 
+
+* Added `animating_blur_time_left()` and `check_is_animating_blur()` functions to the GraphicsObject class
+* Fixed bug with objects not animating properly
+* Fixed bug with objects not blinking when gliding
+
+* Optimized the Animated Image and Cycle Button drawing functions
+
+      Tested 60,000 frames on a test game as opposed to v1.0.190-beta's 20,000 frames
+      FPS increased from ~7200 FPS to ~39470 FPS
+      
+      Trial 1: 1.542 secs, 38910.506 FPS
+      Trial 2: 1.49 secs, 40268.456 FPS
+      Trial 3: 1.633 secs, 36742.192 FPS
+      Trial 4: 1.445 secs, 41522.491 FPS
+      Trial 5: 1.491 secs, 40241.449 FPS
+      
+      Average: 1.520 secs, 39468.491 FPS
+      
+* Added a callback function for incrementing Animated Image frames
+      
 #### 1.0.190-beta 25th July 2020 
 
 * Added a `set_object()` function to the CycleButton class to set the state to a GraphicsObject

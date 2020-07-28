@@ -17,6 +17,7 @@ class GraphicsObject:
                          "skew": [], "contrast": [], "blur": []}
 
     objects = {*()}
+
     button_instances = {*()}
     slider_instances = {*()}
     slider_instances_bound = {*()}
@@ -78,7 +79,7 @@ class GraphicsObject:
         self.selected = False
         self.anchor = self.get_anchor()
 
-        self.callbacks = {}
+        self.callbacks = {"collision": None}
 
         # -------------------------------------------------------------------------
         # Animation Variables
@@ -103,6 +104,14 @@ class GraphicsObject:
         # Other Variables
 
         self.obstacles = {*()}
+        self.movement_lines = {*()}
+        self.movement_bounds = None
+
+        self.last_obstacle_checked_pos = None
+
+        self.movement_lines_enabled = True
+        self.obstacles_enabled = True
+        self.allow_looping = (False, False)
 
         self.cursor = cursor
 
@@ -120,9 +129,6 @@ class GraphicsObject:
         self.drawn = False
         self.bounds = bounds
         self.layer = layer
-
-        self.movement_bounds = None
-        self.allow_looping = (False, False)
 
         while layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append({*()})
@@ -146,7 +152,7 @@ class GraphicsObject:
             raise GraphicsError(f"\n\nThe config you have specified ({option}) is not valid for {self}")
         options = self.config
         options[option] = setting
-        if self.graphwin and not self.graphwin.is_closed():
+        if self.graphwin and not self.graphwin.closed:
             self.graphwin.itemconfig(self.id, options)
             if self.graphwin.autoflush:
                 _root.update()
@@ -181,20 +187,23 @@ class GraphicsObject:
             if not isinstance(graphwin, GraphWin):
                 raise GraphicsError(
                     f"\n\nGraphicsError: draw() function argument must be a GraphWin object, not {graphwin}")
-        if graphwin.is_closed():
+        if graphwin.closed:
             return self
 
         if self.drawn:
-            self.undraw()
+            self.base_undraw()
 
         self.id = self._draw(graphwin, self.config)
         self.graphwin = graphwin
         graphwin.add_item(self)
 
-        if not _internal_call:
-            for layer_index, layer in enumerate(GraphicsObject.object_layers):
-                if layer_index > self.layer:
-                    for obj in layer:
+        for layer_index, layer in enumerate(GraphicsObject.object_layers):
+            if layer_index > self.layer:
+                for obj in layer:
+                    if _internal_call:
+                        if obj not in GraphicsObject.redraw_on_frame[layer_index]:
+                            GraphicsObject.redraw_on_frame[layer_index].add(obj)
+                    else:
                         if obj.graphwin == graphwin and obj != self and obj.drawn:
                             obj.draw(graphwin, _internal_call=True)
 
@@ -207,6 +216,10 @@ class GraphicsObject:
 
         return self
 
+    def base_undraw(self):
+        self.graphwin.delete(self.id)
+        #self.graphwin.del_item(self)
+
     def undraw(self, set_blinking=True):
 
         """Undraw the object (i.e. hide it). Returns silently if the
@@ -217,24 +230,28 @@ class GraphicsObject:
                 f"\n\nGraphicsError: set_blinking argument for undraw() must be a boolean, not {set_blinking}")
 
         if self.drawn:
-            try:
-                if not self.graphwin.is_closed():
-                    self.graphwin.delete(self.id)
-                    self.graphwin.del_item(self)
-                    if self.graphwin.autoflush:
-                        _root.update()
-            except ValueError:
-                pass
+            if not self.graphwin.closed:
+                self.graphwin.delete(self.id)
+                if self.graphwin.autoflush:
+                    _root.update()
 
             self.drawn = False
             self.id = None
+
         if self.is_blinking and set_blinking:
             self.animate_blinking(0, animate=False)
+        return self
+
+    def redraw(self):
+        if self.drawn:
+            self.undraw(set_blinking=False)
+            self.draw(self.graphwin)
         return self
 
     def destroy(self):
         if self.graphwin is not None:
             self.graphwin.destroy_item(self.id)
+            self.graphwin.del_item(self)
 
     # -------------------------------------------------------------------------
     # LAYERING SYSTEM FUNCTIONS
@@ -503,9 +520,9 @@ class GraphicsObject:
                                     f"not {obj}")
 
         if destroy_previous:
-            for obj in self.obstacles:
-                obj.destroy()
+            map(GraphicsObject.destroy, self.obstacles)
         self.obstacles = obstacles
+        self.last_obstacle_checked_pos = None
         return self
 
     def copy_obstacles_from(self, other, create_copy=True):
@@ -519,6 +536,7 @@ class GraphicsObject:
             self.obstacles = other.obstacles.copy()
         else:
             self.obstacles = other.obstacles
+        self.last_obstacle_checked_pos = None
         return self
 
     def remove_obstacle(self, obj):
@@ -528,21 +546,37 @@ class GraphicsObject:
             else:
                 raise GraphicsError(f"\n\nGraphicsError: object to remove as obstacle is not in the object's obstacles")
         self.obstacles.remove(obj)
-        return self
-
-    def pop_obstacle(self):
-        self.obstacles.pop()
+        self.last_obstacle_checked_pos = None
         return self
 
     def clear_obstacles(self):
-        for obj in self.obstacles:
-            obj.destroy()
-            self.obstacles.remove(obj)
+        map(GraphicsObject.destroy, self.obstacles)
+        self.obstacles.clear()
+        self.last_obstacle_checked_pos = None
         return self
 
     def draw_obstacles(self):
-        for obj in self.obstacles:
-            obj.draw(self.graphwin)
+        map(GraphicsObject.draw, self.obstacles)
+        return self
+
+    def undraw_obstacles(self):
+        map(GraphicsObject.undraw, self.obstacles)
+        return self
+
+    def enable_obstacles(self):
+        self.obstacles_enabled = True
+        return self
+
+    def disable_obstacles(self):
+        self.obstacles_enabled = False
+        return self
+
+    def set_enabled_obstacles(self, enabled=True):
+        self.enable_obstacles() if enabled else self.disable_obstacles()
+        return self
+
+    def toggle_obstacles_enabled(self):
+        self.disable_obstacles() if self.obstacles_enabled else self.enable_obstacles()
         return self
 
     # -------------------------------------------------------------------------
@@ -582,6 +616,80 @@ class GraphicsObject:
         self.movement_bounds = other.movement_bounds
         self.allow_looping = other.allow_looping
         return self
+    
+    def set_movement_lines(self, lines, destroy_previous=True):
+        if not isinstance(lines, set):
+            raise GraphicsError("\n\nGraphicsError: lines to set for the object must be a set of GraphicsObjects, "
+                                f"not {lines}")
+        for obj in lines:
+            if not isinstance(obj, Line):
+                raise GraphicsError(f"\n\nGraphicsError: objects to add as lines must be Line object, not {obj}")
+
+        if destroy_previous:
+            map(GraphicsObject.destroy, self.movement_lines)
+        self.movement_lines = lines
+        return self
+    
+    def remove_movement_line(self, obj):
+        if obj not in self.movement_lines:
+            if obj in GraphicsObject.tagged_objects and GraphicsObject.tagged_objects[obj] in self.movement_lines:
+                obj = GraphicsObject.tagged_objects[obj]
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: object to remove is not in the object's movement lines")
+        self.movement_lines.remove(obj)
+        return self
+    
+    def add_movement_line(self, obj):
+        if not isinstance(obj, Line):
+            if obj in GraphicsObject.tagged_objects:
+                obj = GraphicsObject.tagged_objects[obj]
+            else:
+                raise GraphicsError("\n\nGraphicsError: object to add as movement line must be a Line object, "
+                                    f"not {obj}")
+        self.movement_lines.add(obj)
+        return self
+    
+    def copy_movement_lines_from(self, other, create_copy=True):
+        if not isinstance(other, GraphicsObject):
+            if other in GraphicsObject.tagged_objects:
+                other = GraphicsObject.tagged_objects[other]
+            else:
+                raise GraphicsError("\n\nGraphicsError: object to copy movement lines from must be a GraphicsObject, "
+                                    f"not {other}")
+        if create_copy:
+            self.movement_lines = other.movement_lines.copy()
+        else:
+            self.movement_lines = other.movement_lines
+        return self
+    
+    def clear_movement_lines(self):
+        map(GraphicsObject.destroy, self.movement_lines)
+        self.movement_lines.clear()
+        return self
+
+    def draw_movement_lines(self):
+        map(GraphicsObject.draw, self.movement_lines)
+        return self
+
+    def undraw_movement_lines(self):
+        map(GraphicsObject.undraw, self.movement_lines)
+        return self
+    
+    def enable_movement_lines(self):
+        self.movement_lines_enabled = True
+        return self
+
+    def disable_movement_lines(self):
+        self.movement_lines_enabled = False
+        return self
+
+    def set_enabled_movement_lines(self, enabled=True):
+        self.enable_movement_lines() if enabled else self.disable_movement_lines()
+        return self
+
+    def toggle_movement_lines_enabled(self):
+        self.disable_movement_lines() if self.movement_lines_enabled else self.enable_movement_lines()
+        return self
 
     def is_x_looping_allowed(self):
         return self.allow_looping[0]
@@ -605,32 +713,40 @@ class GraphicsObject:
         if not (isinstance(dy, int) or isinstance(dy, float)):
             raise GraphicsError("\n\nThe amount to move the object in the y-direction (dy) must be a number "
                                 f"(integer or float), not {dy}")
-
+        
+        new_pos = (self.anchor.x + dx, self.anchor.y + dy)
         if self.movement_bounds is not None:
-            if not self.movement_bounds.is_clicked(Point(self.anchor.x + dx, self.anchor.y + dy)):
+            if not self.movement_bounds.is_clicked(Point(new_pos[0], new_pos[1])):
                 if self.allow_looping[0]:
                     width = self.movement_bounds.get_width()
-                    if self.anchor.x + dx <= self.movement_bounds.anchor.x - width/2:
+                    if new_pos[0] <= self.movement_bounds.anchor.x - width/2:
                         dx = width - self.get_width() / 2
-                    elif self.anchor.x + dx >= self.movement_bounds.anchor.x + width/2:
+                    elif new_pos[0] >= self.movement_bounds.anchor.x + width/2:
                         dx = -width + self.get_width() / 2
                     else:
                         return self
                     
                 if self.allow_looping[1]:
                     height = self.movement_bounds.get_height()
-                    if self.anchor.y + dy <= self.movement_bounds.anchor.y - height/2:
+                    if new_pos[1] <= self.movement_bounds.anchor.y - height/2:
                         dy = height - self.get_height() / 2
-                    elif self.anchor.y + dy >= self.movement_bounds.anchor.y + height/2:
+                    elif new_pos[1] >= self.movement_bounds.anchor.y + height/2:
                         dy = -height + self.get_height() / 2
                     else:
                         return self
-
-        for obstacle in self.obstacles:
-            if obstacle.is_clicked(Point(self.anchor.x + dx, self.anchor.y + dy)):
-                if self.callbacks["collision"] is not None:
-                    self.callbacks["collision"]()
+        
+        if self.obstacles_enabled:
+            if self.last_obstacle_checked_pos == new_pos:
                 return self
+            for obstacle in self.obstacles:
+                if obstacle.is_clicked(Point(new_pos[0], new_pos[1])):
+                    if self.callbacks["collision"] is not None:
+                        self.callbacks["collision"]()
+                    self.last_obstacle_checked_pos = new_pos
+                    return self
+
+        if self.movement_lines_enabled:
+            pass
                     
         if align == "center":
             self._move(dx, dy)
@@ -702,11 +818,11 @@ class GraphicsObject:
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        if not (collision_callback is None or callable(collision_callback)):
+        if callable(collision_callback):
+            self.callbacks["collision"] = collision_callback
+        elif collision_callback is not None:
             raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
                                 f"not {collision_callback}")
-
-        self.callbacks["collision"] = collision_callback
         self.move(-d * self.sinrotation, -d * self.cosrotation)
         return self
 
@@ -714,11 +830,11 @@ class GraphicsObject:
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        if not (collision_callback is None or callable(collision_callback)):
+        if callable(collision_callback):
+            self.callbacks["collision"] = collision_callback
+        elif collision_callback is not None:
             raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
                                 f"not {collision_callback}")
-
-        self.callbacks["collision"] = collision_callback
         self.move(d * self.sinrotation, d * self.cosrotation)
         return self
 
@@ -726,19 +842,23 @@ class GraphicsObject:
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        if not (collision_callback is None or callable(collision_callback)):
+        if callable(collision_callback):
+            self.callbacks["collision"] = collision_callback
+        elif collision_callback is not None:
             raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
                                 f"not {collision_callback}")
 
-        self.callbacks["collision"] = collision_callback
-        self.move(-d * self.cosrotation, -d * self.sinrotation)
+        d = -d
+        self.move(d * self.cosrotation, d * self.sinrotation)
         return self
 
     def move_right(self, d, collision_callback=None):
         if not (isinstance(d, int) or isinstance(d, float)):
             raise GraphicsError("\n\nThe amount to move the object forward (d) must be a number "
                                 f"(integer or float), not {d}")
-        if not (collision_callback is None or callable(collision_callback)):
+        if callable(collision_callback):
+            self.callbacks["collision"] = collision_callback
+        elif collision_callback is not None:
             raise GraphicsError("\n\nGraphicsError: collision callback for moving must be a function, "
                                 f"not {collision_callback}")
         self.move(d * self.cosrotation, d * self.sinrotation)
@@ -771,16 +891,16 @@ class GraphicsObject:
 
     # Skewing transformations - these must be overriden in classes that support skewing
 
-    def skew_x(self, scale=0.3, sampling="bicubic", align="center"):
+    def skew_x(self, scale, sampling="bicubic", align="center"):
         pass
 
-    def skew_y(self, scale=0.3, sampling="bicubic", align="center"):
+    def skew_y(self, scale, sampling="bicubic", align="center"):
         pass
 
-    def skew_xy(self, x_scale=0.3, y_scale=None, sampling="bicubic", x_align="center", y_align=None):
+    def skew_xy(self, x_scale, y_scale=None, sampling="bicubic", x_align="center", y_align=None):
         pass
 
-    def skew(self, scale=0.3, sampling="bicubic", align="center", skew_x=True, skew_y=True):
+    def skew(self, scale, sampling="bicubic", align="center", skew_x=True, skew_y=True):
         self.skew_xy(x_scale=scale if skew_x else 0, y_scale=scale if skew_y else 0,
                      x_align=align if skew_x else "center", y_align=align if skew_y else "center",
                      sampling=sampling)
@@ -803,7 +923,7 @@ class GraphicsObject:
                 return True
         return False
 
-    def animate_blinking(self, interval=None, animate=True, blink_graphic=None, number_of_blinks=None):
+    def animate_blinking(self, interval, animate=True, blink_graphic=None, number_of_blinks=None):
         self.is_blinking = animate
         self.blinking_data = {"interval": interval, "blink graphic": blink_graphic, "last blink": timetime(),
                               "total blinks": 0, "max blinks": number_of_blinks}
@@ -815,7 +935,7 @@ class GraphicsObject:
         return self
 
     # Object Gliding Functions
-    def glide(self, dx, dy=None, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
+    def glide(self, dx, dy, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
               duplicates_metric=("Time", "Initial", "Change")):
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["2D Animation"]:
@@ -926,7 +1046,7 @@ class GraphicsObject:
 
         return self
 
-    def glide_to(self, x, y=None, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
+    def glide_to(self, x, y, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
                  duplicates_metric=("Time", "Initial", "Change")):
         if not (isinstance(x, int) or isinstance(x, float)):
             raise GraphicsError("\n\nThe x amount to glide the object by (x) must be a number "
@@ -1285,6 +1405,10 @@ class GraphicsObject:
 
     def animate_skew(self, skew_change_x, skew_change_y, time=1, easing_x=ease_linear(), easing_y=ease_linear(),
                      allow_duplicate=True, duplicates_metric=("Time", "Initial", "Change"), _internal_call=False):
+
+        if easing_y is None:
+            easing_y = easing_x
+
         if not (isinstance(skew_change_x, int) or isinstance(skew_change_x, float)):
             raise GraphicsError("\n\nGraphicsError: The amount to skew in the x direction (skew_change_x) must be a "
                                 f"number (integer or float), not {skew_change_x}")
@@ -1456,12 +1580,15 @@ class GraphicsObject:
     def check_is_animating_contrast(self):
         return self.is_animating_contrast
 
+    def check_is_animating_blur(self):
+        return self.is_animating_blur
+
     def check_is_blinking(self):
         return self.is_blinking
 
     def check_is_animating(self):
         return self.is_gliding or self.is_rotating or self.is_animating_fill or self.is_animating_outline \
-               or self.is_animating_width or self.is_animating_skew or self.is_animating_contrast
+               or self.is_animating_width or self.is_animating_skew or self.is_animating_contrast or self.animating_blur
 
     # -------------------------------------------------------------------------
     # TIME LEFT FOR ANIMATION FUNCTIONS
@@ -1511,6 +1638,13 @@ class GraphicsObject:
     def animating_contrast_time_left(self):
         if self.is_gliding:
             return (self.animation_queues["contrast"][-1]["Initial"] + self.animation_queues["contrast"][-1][
+                "Time"]) - timetime()
+        else:
+            return 0
+
+    def animating_blur_time_left(self):
+        if self.is_animating_blur:
+            return (self.animation_queues["blur"][-1]["Initial"] + self.animation_queues["blur"][-1][
                 "Time"]) - timetime()
         else:
             return 0
@@ -1732,7 +1866,7 @@ class GraphicsObject:
                             obj.animate_blinking(0, animate=False)
 
         for obj in GraphicsObject.animated_image_instances:
-            if obj.graphwin == graphwin and obj.autoflush and obj.drawn:
+            if obj.graphwin == graphwin and obj.autoflush:
                 if t - obj.last_update_time > obj.update_time:
                     obj.increment_frame(_time=t, _internal_call=True)
 
@@ -1740,8 +1874,7 @@ class GraphicsObject:
 
         for layer in GraphicsObject.redraw_on_frame:
             for obj in layer:
-                if obj.drawn:
-                    obj.draw(graphwin, _internal_call=True)
+                obj.draw(graphwin=graphwin, _internal_call=True)
             layer.clear()
 
     @staticmethod
@@ -1978,3 +2111,4 @@ class GraphicsObject:
 
 
 from goopylib.objects.Image import Image
+from goopylib.objects.Line import Line

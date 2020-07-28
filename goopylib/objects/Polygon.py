@@ -60,6 +60,7 @@ class Polygon(GraphicsObject):
         self.set_outline_width(self.outline_width)
 
         self.triangles = None
+        self.triangulate()
 
     def __repr__(self):
         return f"Polygon({self.points})"
@@ -217,7 +218,6 @@ class Polygon(GraphicsObject):
     
                     return intersections % 1 == 1
                     """
-                    self.triangulate()
                     if len(self.points) == 3:
                         p1, p2, p3 = self.points
                         d1 = (pos.x - p2.x) * (p1.y - p2.y) - (p1.x - p2.x) * (pos.y - p2.y)
@@ -247,7 +247,7 @@ class Polygon(GraphicsObject):
         return Point(x, y)
 
     def triangulate(self):
-        if len(self.points) != 3 and self.triangles is None:
+        if self.triangles is None and len(self.points) != 3:
             self.triangles = []
             for triangle in TriangulateEarClipping(list(self.points)):
                 self.triangles.append(Polygon(*triangle))

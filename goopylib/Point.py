@@ -6,11 +6,11 @@ class Point:
         if not ((isinstance(x, int) or isinstance(x, float)) and (isinstance(y, int) or isinstance(y, float))):
             raise GraphicsError("\n\nx (x={}) & y (y={}) positions must be integers".format(x, y))
 
-        self.x = float(x)
-        self.y = float(y)
+        self.x = x
+        self.y = y
 
     def __repr__(self):
-        return "Point({}, {})".format(self.x, self.y)
+        return f"Point({self.x}, {self.y})"
 
     def __mul__(self, other):
         if isinstance(other, Point):

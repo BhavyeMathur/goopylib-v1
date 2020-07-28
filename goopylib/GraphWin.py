@@ -217,8 +217,6 @@ class GraphWin(tkCanvas):
 
         # Mouse Related Variables
 
-        self.update_mouse = True
-
         self.mouse_left_click = None  # These are all coordinates of these events
         self.mouse_middle_click = None
         self.mouse_right_click = None
@@ -313,7 +311,7 @@ class GraphWin(tkCanvas):
             _root.update()
 
     def __repr__(self):
-        if self.is_closed():
+        if self.closed:
             return "<Closed GraphWin>"
         else:
             return f"GraphWin('{self.master.title()}', {self.master.winfo_width()}x{self.master.winfo_height()})"
@@ -515,9 +513,6 @@ class GraphWin(tkCanvas):
     def _on_mouse_motion(self, e):
         if self.is_open():
             self.mouse_pos = self.trans.world(e.x, e.y)
-
-            if self.mouse_in_window and self.update_mouse:
-                self.update_mouse = False
 
     def _on_mouse_scroll(self, e):
         if self.is_open():
@@ -1052,10 +1047,6 @@ class GraphWin(tkCanvas):
         return self
 
     def update_win(self, _internal_updating=False):
-        if self.autoflush and not _internal_updating:
-            warnings.warn("Updating the Graphics Object while autoflush is True might lead to issues, either let the "
-                          "window update automatically by setting autoflush to True or update it manually",
-                          GraphicsWarning)
         self.update()
 
         if self.is_gliding:
@@ -1082,7 +1073,6 @@ class GraphWin(tkCanvas):
 
                 self.glide_queue[0]["Update"] = timetime()
 
-        self.update_mouse = True
         GraphicsObject.on_update(self)
         return self
 
@@ -1116,7 +1106,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_left_mouse_press()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1131,7 +1121,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_middle_mouse_press()
             self.update()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1146,7 +1136,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_right_mouse_press()
             self.update()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1161,7 +1151,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_left_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1173,7 +1163,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_middle_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1185,7 +1175,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_right_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1199,7 +1189,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_double_left_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1211,7 +1201,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_double_middle_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1223,7 +1213,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_double_right_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1237,7 +1227,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_triple_left_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1249,7 +1239,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_triple_middle_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1261,7 +1251,7 @@ class GraphWin(tkCanvas):
             mouse_pos = self.check_triple_right_mouse_click()
             self.update_win()
 
-            if self.is_closed():
+            if self.closed:
                 break
 
         return mouse_pos
@@ -1270,158 +1260,138 @@ class GraphWin(tkCanvas):
     # -------------------------------------------------------------------------
 
     def check_left_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_left_click is None or self.closed:
             return None
-        if self.mouse_left_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_left_click[0], self.mouse_left_click[1])
 
-            if _refresh:
-                self.mouse_left_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_left_click[0], self.mouse_left_click[1])
+
+        if _refresh:
+            self.mouse_left_click = None
+        return Point(x, y)
 
     def check_middle_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_middle_click is None or self.closed:
             return None
-        if self.mouse_middle_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_middle_click[0], self.mouse_middle_click[1])
 
-            if _refresh:
-                self.mouse_middle_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_middle_click[0], self.mouse_middle_click[1])
+
+        if _refresh:
+            self.mouse_middle_click = None
+        return Point(x, y)
 
     def check_right_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_right_click is None or self.closed:
             return None
-        if self.mouse_right_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_right_click[0], self.mouse_right_click[1])
 
-            if _refresh:
-                self.mouse_right_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_right_click[0], self.mouse_right_click[1])
+
+        if _refresh:
+            self.mouse_right_click = None
+        return Point(x, y)
 
     # Double Mouse Clicks
 
     def check_double_left_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_double_left_click is None or self.closed:
             return None
-        if self.mouse_double_left_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_double_left_click[0], self.mouse_double_left_click[1])
 
-            if _refresh:
-                self.mouse_double_left_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_double_left_click[0], self.mouse_double_left_click[1])
+
+        if _refresh:
+            self.mouse_double_left_click = None
+        return Point(x, y)
 
     def check_double_middle_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_double_middle_click is None or self.closed:
             return None
-        if self.mouse_double_middle_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_double_middle_click[0], self.mouse_double_middle_click[1])
 
-            if _refresh:
-                self.mouse_double_middle_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_double_middle_click[0], self.mouse_double_middle_click[1])
+
+        if _refresh:
+            self.mouse_double_middle_click = None
+        return Point(x, y)
 
     def check_double_right_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_double_right_click is None or self.closed:
             return None
-        if self.mouse_double_right_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_double_right_click[0], self.mouse_double_right_click[1])
 
-            if _refresh:
-                self.mouse_double_right_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_double_right_click[0], self.mouse_double_right_click[1])
+
+        if _refresh:
+            self.mouse_double_right_click = None
+        return Point(x, y)
 
     # Triple Mouse Clicks
 
     def check_triple_left_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_triple_left_click is None or self.closed:
             return None
-        if self.mouse_triple_left_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_triple_left_click[0], self.mouse_triple_left_click[1])
 
-            if _refresh:
-                self.mouse_triple_left_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_triple_left_click[0], self.mouse_triple_left_click[1])
+
+        if _refresh:
+            self.mouse_triple_left_click = None
+        return Point(x, y)
 
     def check_triple_middle_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_triple_middle_click is None or self.closed:
             return None
-        if self.mouse_triple_middle_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_triple_middle_click[0], self.mouse_triple_middle_click[1])
 
-            if _refresh:
-                self.mouse_triple_middle_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_triple_middle_click[0], self.mouse_triple_middle_click[1])
+
+        if _refresh:
+            self.mouse_triple_middle_click = None
+        return Point(x, y)
 
     def check_triple_right_mouse_click(self, _refresh=True):
-        if self.is_closed():
+        if self.mouse_triple_right_click is None or self.closed:
             return None
-        if self.mouse_triple_right_click is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_triple_right_click[0], self.mouse_triple_right_click[1])
 
-            if _refresh:
-                self.mouse_triple_right_click = None
-            return Point(x, y)
-        else:
-            return None
+        x, y = self.to_world(self.mouse_triple_right_click[0], self.mouse_triple_right_click[1])
+
+        if _refresh:
+            self.mouse_triple_right_click = None
+        return Point(x, y)
 
     # Mouse Press
 
     def check_left_mouse_press(self, _refresh=True):
-        if self.is_closed():
-            pass
-        if self.mouse_left_press is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_left_press[0], self.mouse_left_press[1])
-
-            if _refresh:
-                self.mouse_left_press = None
-            return Point(x, y)
-        else:
+        if self.mouse_left_press is None or self.closed:
             return None
+
+        x, y = self.to_world(self.mouse_left_press[0], self.mouse_left_press[1])
+
+        if _refresh:
+            self.mouse_left_press = None
+        return Point(x, y)
 
     def check_middle_mouse_press(self, _refresh=True):
-        if self.mouse_middle_press is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_middle_press[0], self.mouse_middle_press[1])
-
-            if _refresh:
-                self.mouse_middle_press = None
-
-            return Point(x, y)
-        else:
+        if self.mouse_left_press is None or self.closed:
             return None
+
+        x, y = self.to_world(self.mouse_middle_press[0], self.mouse_middle_press[1])
+
+        if _refresh:
+            self.mouse_middle_press = None
+
+        return Point(x, y)
 
     def check_right_mouse_press(self, _refresh=True):
-        if self.mouse_right_press is not None and not self.is_closed():
-            x, y = self.to_world(self.mouse_right_press[0], self.mouse_right_press[1])
-
-            if _refresh:
-                self.mouse_right_press = None
-
-            return Point(x, y)
-        else:
+        if self.mouse_left_press is None or self.closed:
             return None
+
+        x, y = self.to_world(self.mouse_right_press[0], self.mouse_right_press[1])
+
+        if _refresh:
+            self.mouse_right_press = None
+
+        return Point(x, y)
 
     # OTHER MOUSE FUNCTIONS
     # -------------------------------------------------------------------------
 
     def check_mouse_scroll(self):
-        if self.is_closed():
+        if self.closed:
             return None
         else:
             self.update_win()
@@ -1530,43 +1500,22 @@ class GraphWin(tkCanvas):
         return key
 
     def check_for_all_keys_pressed(self, *keys, _refresh=True):
-        if len(keys) == 1:
-            return self.check_key_press(_refresh) == keys[0]
-        else:
-            for key in keys:
-                if key not in self.keys_down:
-                    return False
-            return True
+        return self.keys_down.issuperset(keys)
 
     def check_for_all_keys_clicked(self, *keys, _refresh=True):
-        if len(keys) == 1:
-            return self.check_key_click(_refresh) == keys[0]
-        else:
-            for key in keys:
-                if key not in self.keys_clicked:
-                    return False
-                else:
-                    pass
-                    #self.keys_clicked.remove(key)
-            return True
+        return self.keys_clicked.issuperset(keys)
 
     def check_for_keys_pressed(self, *keys, _refresh=True):
-        if len(keys) == 1:
-            return self.check_key_press(_refresh) == keys[0]
-        else:
-            for key in keys:
-                if key in self.keys_down:
-                    return True
-            return False
+        for key in keys:
+            if key in self.keys_down:
+                return True
+        return False
 
     def check_for_keys_clicked(self, *keys, _refresh=True):
-        if len(keys) == 1:
-            return self.check_key_click(_refresh) == keys[0]
-        else:
-            for key in keys:
-                if key in self.keys_clicked:
-                    return True
-            return False
+        for key in keys:
+            if key in self.keys_clicked:
+                return True
+        return False
 
     # INTERNAL FUNCTIONS
     # -------------------------------------------------------------------------

@@ -9,7 +9,12 @@ from time import time as timetime
 
 class AnimatedImage(GraphicsObject):
     def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24, layer=0,
-                 tag=None, autoflush=True):
+                 tag=None, autoflush=True, frame_callback=None):
+
+        if not (callable(frame_callback) or frame_callback is None):
+            raise GraphicsError("\n\nGraphicsError: Frame Increment callback for Animated Image must be a function, "
+                                f"not {frame_callback}")
+
         self.reprpath = filepath
         filepath = filepath.replace('\\', '/')
         self.filepath = filepath.split('.')
@@ -46,7 +51,8 @@ class AnimatedImage(GraphicsObject):
         self.moved = False
 
         GraphicsObject.__init__(self, [], cursor=cursor, layer=layer, tag=tag)
-        GraphicsObject.animated_image_instances.add(self)
+
+        self.callbacks["frame increment"] = frame_callback
 
     # -------------------------------------------------------------------------
     # INTERNAL FUNCTIONS
@@ -55,11 +61,14 @@ class AnimatedImage(GraphicsObject):
         return f"AnimatedImage({self.anchor}, {self.reprpath} and {len(self.imgs) - 1} others.)"
 
     def _draw(self, canvas, options):
-        self.imgs[self.frame].draw(canvas)
+        self.imgs[self.frame].draw(canvas, _internal_call=True)
         self.drawn_frame = self.frame
         if self.graphwin != canvas:
             for img in self.imgs:
                 img.graphwin = canvas
+
+        if self.autoflush and self not in GraphicsObject.animated_image_instances:
+            GraphicsObject.animated_image_instances.add(self)
 
     def _move(self, dx, dy):
         for img in self.imgs:
@@ -70,6 +79,15 @@ class AnimatedImage(GraphicsObject):
     def _rotate(self, dr, sampling="bicubic", center=None):
         for img in self.imgs:
             img.rotate(dr)
+
+    def set_autoflush(self, autoflush):
+        self.autoflush = autoflush
+        if self.autoflush:
+            if self.drawn and self not in GraphicsObject.animated_image_instances:
+                GraphicsObject.animated_image_instances.add(self)
+
+        elif self in GraphicsObject.animated_image_instances:
+            GraphicsObject.animated_image_instances.remove(self)
 
     def increment_frame(self, _time=None, _internal_call=False):
         self.frame += 1
@@ -89,7 +107,18 @@ class AnimatedImage(GraphicsObject):
             self.last_update_time = _time
 
         for obj in self.frame_bound_objects:
-            obj.increment_frame(_time=_time, _internal_call=_internal_call)
+            if obj.drawn:
+                obj.increment_frame(_time=_time, _internal_call=_internal_call)
+
+        if self.callbacks["frame increment"] is not None:
+            self.callbacks["frame increment"]()
+        return self
+
+    def set_frame_increment_callback(self, func):
+        if not (callable(func) or func is None):
+            raise GraphicsError("\n\nGraphicsError: Frame Increment callback for Animated Image must be a function, "
+                                f"not {func}")
+        self.callbacks["frame increment"] = func
         return self
 
     def decrement_frame(self, _time=None, _internal_call=False):
@@ -154,6 +183,12 @@ class AnimatedImage(GraphicsObject):
         self.drawn = False
         self.imgs[self.drawn_frame].undraw(set_blinking=set_blinking)
 
+        if self in GraphicsObject.animated_image_instances:
+            GraphicsObject.animated_image_instances.remove(self)
+
+    def base_undraw(self):
+        self.imgs[self.drawn_frame].base_undraw()
+
     def is_clicked(self, mouse_pos):
         for img in self.imgs:
             img.graphwin = self.graphwin
@@ -205,13 +240,11 @@ class AnimatedImage(GraphicsObject):
         return self
 
     def convert_greyscale(self):
-        for img in self.imgs:
-            img.convert_greyscale()
+        map(Image.convert_greyscale, self.imgs)
         return self
 
     def convert_binary(self):
-        for img in self.imgs:
-            img.convert_binary()
+        map(Image.convert_binary, self.imgs)
         return self
 
     # ----------------------------------
@@ -223,28 +256,23 @@ class AnimatedImage(GraphicsObject):
         return self
 
     def flip_x(self):
-        for img in self.imgs:
-            img.flip_x()
+        map(Image.flip_x, self.imgs)
         return self
 
     def flip_y(self):
-        for img in self.imgs:
-            img.flip_y()
+        map(Image.flip_y, self.imgs)
         return self
 
     def flip_xy(self):
-        for img in self.imgs:
-            img.flip_xy()
+        map(Image.flip_xy, self.imgs)
         return self
 
     def transverse(self):
-        for img in self.imgs:
-            img.transverse()
+        map(Image.transverse, self.imgs)
         return self
 
     def transpose(self):
-        for img in self.imgs:
-            img.transpose()
+        map(Image.transpose, self.imgs)
         return self
 
     # ----------------------------------
@@ -320,8 +348,7 @@ class AnimatedImage(GraphicsObject):
     # Blurring & Sharpening Functions
 
     def blur(self):
-        for img in self.imgs:
-            img.blur()
+        map(Image.blur, self.imgs)
         return self
 
     def blur_box(self, radius=3):
@@ -343,48 +370,39 @@ class AnimatedImage(GraphicsObject):
     # Filter Functions
 
     def filter_contour(self):
-        for img in self.imgs:
-            img.filter_contour()
+        map(Image.filter_contour, self.imgs)
         return self
 
     def filter_detail(self):
-        for img in self.imgs:
-            img.filter_detail()
+        map(Image.filter_detail, self.imgs)
         return self
 
     def filter_emboss(self):
-        for img in self.imgs:
-            img.filter_emboss()
+        map(Image.filter_emboss, self.imgs)
         return self
 
     def filter_find_edges(self):
-        for img in self.imgs:
-            img.filter_find_edges()
+        map(Image.filter_find_edges, self.imgs)
         return self
 
     def filter_sharpen(self):
-        for img in self.imgs:
-            img.filter_sharpen()
+        map(Image.filter_sharpen, self.imgs)
         return self
 
     def filter_smooth(self):
-        for img in self.imgs:
-            img.filter_smooth()
+        map(Image.filter_smooth, self.imgs)
         return self
 
     def filter_more_smooth(self):
-        for img in self.imgs:
-            img.filter_more_smooth()
+        map(Image.filter_more_smooth, self.imgs)
         return self
 
     def filter_enhance_edge(self):
-        for img in self.imgs:
-            img.filter_enhance_edge()
+        map(Image.filter_enhance_edge, self.imgs)
         return self
 
     def filter_more_enhance_edge(self):
-        for img in self.imgs:
-            img.filter_more_enhance_edge()
+        map(Image.filter_more_enhance_edge, self.imgs)
         return self
 
     # -------------------------------------------------------------------------

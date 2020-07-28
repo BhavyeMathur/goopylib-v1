@@ -25,7 +25,7 @@ class CycleButton(GraphicsObject):
         return f"CycleButton({self.graphic} and {len(self.states)} other states)"
 
     def _draw(self, canvas, options=()):
-        self.graphic.draw(canvas)
+        self.graphic.draw(canvas, _internal_call=True)
         for graphic in self.states:
             graphic.graphwin = canvas
         if self.disabled_graphic is not None:
@@ -36,6 +36,9 @@ class CycleButton(GraphicsObject):
         self.graphic.undraw(set_blinking=set_blinking)
         self.drawn = False
         return self
+
+    def base_undraw(self):
+        self.graphic.base_undraw()
 
     def _rotate(self, dr, sampling="bicubic", center=None):
         for graphic in self.states:
@@ -213,3 +216,6 @@ class CycleButton(GraphicsObject):
 
     def get_state(self):
         return self.state
+
+    def get_graphics(self):
+        return self.states
