@@ -158,7 +158,7 @@ So unfortunately, online school (Grade 9!!!) has started and so updates won't be
 * Fixed bug with objects not animating properly
 * Fixed bug with objects not blinking when gliding
 
-* Optimized the Animated Image and Cycle Button drawing functions
+* Optimized the Animated Image and Cycle Button drawing functions and a lot more
 
       Tested 60,000 frames on a test game as opposed to v1.0.190-beta's 20,000 frames
       FPS increased from ~7200 FPS to ~39470 FPS
