@@ -16,15 +16,18 @@ class Image(GraphicsObject):
     id_count = 0
     image_cache = {}  # tk photo images go here to avoid GC while drawn
 
+    default_sampling = "bicubic"
+    texture_path = "textures/"
+
     def __init__(self, p, filepath, align="center", cursor="arrow", layer=0, tag=None):
 
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: Image anchor point (p) must be a Point object, not {p}")
         if align not in ALIGN_OPTIONS:
             raise GraphicsError(f"\n\nGraphicsError: Image align must be one of {ALIGN_OPTIONS}, not {align}")
-
-        if osisfile(f"textures/{filepath}"):
-            self.texture = f"textures/{filepath}"
+        print(Image.texture_path + filepath)
+        if osisfile(Image.texture_path + filepath):
+            self.texture = Image.texture_path + filepath
         elif osisfile(filepath):
             self.texture = filepath
         else:
@@ -110,7 +113,9 @@ class Image(GraphicsObject):
         self.anchor.x += dx
         self.anchor.y += dy
 
-    def _rotate(self, dr, sampling="bicubic", center=None):
+    def _rotate(self, dr, sampling=None, center=None):
+        if sampling is None:
+            sampling = Image.default_sampling
         if center is not None:
             self.transforming_img = self.original_img.rotate(angle=-self.rotation, expand=True,
                                                              resample=IMAGE_INTERPOLATIONS[sampling],
@@ -306,10 +311,16 @@ class Image(GraphicsObject):
 
     def flip_x(self):
         self.img_PIL = self.img_PIL.transpose(Img.FLIP_LEFT_RIGHT)
+        self.update_required = True
+        if self.drawn:
+            self.redraw()
         return self
 
     def flip_y(self):
         self.img_PIL = self.img_PIL.transpose(Img.FLIP_TOP_BOTTOM)
+        self.update_required = True
+        if self.drawn:
+            self.redraw()
         return self
 
     def flip_xy(self):
@@ -330,7 +341,9 @@ class Image(GraphicsObject):
     # ----------------------------------
     # Skew Transformation Functions
 
-    def skew_x(self, scale=0.3, sampling="bicubic", align="center"):
+    def skew_x(self, scale=0.3, sampling=None, align="center"):
+        if sampling is None:
+            sampling = Image.default_sampling
         if self.x_skew != scale:
             if sampling not in IMAGE_INTERPOLATIONS.keys():
                 raise GraphicsError("\n\nGraphicsError: The resizing sampling argument must be one of "
@@ -358,7 +371,9 @@ class Image(GraphicsObject):
             self.update_required = True
         return self
 
-    def skew_y(self, scale=0.3, sampling="bicubic", align="center"):
+    def skew_y(self, scale=0.3, sampling=None, align="center"):
+        if sampling is None:
+            sampling = Image.default_sampling
         if self.y_skew != scale:
             if sampling not in IMAGE_INTERPOLATIONS.keys():
                 raise GraphicsError("\n\nGraphicsError: The resizing sampling argument must be one of "
@@ -387,11 +402,14 @@ class Image(GraphicsObject):
             self.update_required = True
         return self
 
-    def skew_xy(self, x_scale=0.3, y_scale=None, sampling="bicubic", x_align="center", y_align=None):
+    def skew_xy(self, x_scale=0.3, y_scale=None, sampling=None, x_align="center", y_align=None):
         if y_align is None:
             y_align = x_align
         if y_scale is None:
             y_scale = x_scale
+
+        if sampling is None:
+            sampling = Image.default_sampling
 
         if sampling not in IMAGE_INTERPOLATIONS.keys():
             raise GraphicsError("\n\nGraphicsError: The resizing sampling argument must be one of "
@@ -436,11 +454,14 @@ class Image(GraphicsObject):
     # ----------------------------------
     # Resizing Functions
 
-    def resize(self, width, height, sampling="bicubic", _external_call=True):
+    def resize(self, width, height, sampling=None, _external_call=True):
         if not (isinstance(width, int) or isinstance(width, float)):
             raise GraphicsError(f"\n\nGraphicsError: Resize Width must be an integer or float, not {width}")
         if not (isinstance(height, int) or isinstance(height, float)):
             raise GraphicsError(f"\n\nThe window's height must be an integer or float, not {height}")
+
+        if sampling is None:
+            sampling = Image.default_sampling
 
         if sampling not in IMAGE_INTERPOLATIONS.keys():
             raise GraphicsError("\n\nGraphicsError: The resizing sampling argument must be one of "
@@ -454,7 +475,7 @@ class Image(GraphicsObject):
         self.update_required = True
         return self
 
-    def resize_height(self, height, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
+    def resize_height(self, height, preserve_aspect_ratio=False, sampling=None, _external_call=True):
 
         if not isinstance(preserve_aspect_ratio, bool):
             raise GraphicsError("\n\nGraphicsError: Resizing Preserve Aspect Ratio argument must be a boolean, not "
@@ -464,7 +485,7 @@ class Image(GraphicsObject):
         self.resize(width, height, sampling=sampling, _external_call=_external_call)
         return self
 
-    def resize_width(self, width, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
+    def resize_width(self, width, preserve_aspect_ratio=False, sampling=None, _external_call=True):
 
         if not isinstance(preserve_aspect_ratio, bool):
             raise GraphicsError("\n\nGraphicsError: Resizing Preserve Aspect Ratio argument must be a boolean, not "
@@ -474,29 +495,29 @@ class Image(GraphicsObject):
         self.resize(width, height, sampling=sampling, _external_call=_external_call)
         return self
 
-    def resize_factor(self, factor, sampling="bicubic", _external_call=True):
+    def resize_factor(self, factor, sampling=None, _external_call=True):
         self.resize_width_factor(factor, sampling, _external_call)
         self.resize_height_factor(factor, sampling, _external_call)
         return self
 
-    def resize_width_factor(self, factor, sampling="bicubic", _external_call=True):
+    def resize_width_factor(self, factor, sampling=None, _external_call=True):
         self.resize(int(self.get_width() * factor), self.get_height(), sampling, _external_call)
         return self
 
-    def resize_height_factor(self, factor, sampling="bicubic", _external_call=True):
+    def resize_height_factor(self, factor, sampling=None, _external_call=True):
         self.resize(self.get_width(), int(self.get_height() * factor), sampling, _external_call)
         return self
 
-    def resize_to_fit(self, obj, sampling="bicubic", _external_call=True):
+    def resize_to_fit(self, obj, sampling=None, _external_call=True):
         self.resize(obj.get_width(), obj.get_height(), sampling=sampling, _external_call=_external_call)
         return self
 
-    def resize_to_fit_width(self, obj, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
+    def resize_to_fit_width(self, obj, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         self.resize_width(obj.get_width(), preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
                           _external_call=_external_call)
         return self
 
-    def resize_to_fit_height(self, obj, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
+    def resize_to_fit_height(self, obj, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         self.resize_height(obj.get_height(), preserve_aspect_ratio=preserve_aspect_ratio,
                            sampling=sampling, _external_call=_external_call)
         return self
@@ -632,3 +653,14 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.putpixel((x, y), colour)
         self.update_required = True
         return self
+
+    @staticmethod
+    def set_default_sampling(sampling):
+        if sampling not in IMAGE_INTERPOLATIONS:
+            raise GraphicsError(f"\n\nGraphicsError: sampling to set as default must be one of {IMAGE_INTERPOLATIONS}, "
+                                f"not {sampling}")
+        Image.default_sampling = sampling
+    
+    @staticmethod
+    def set_texture_path(path):
+        Image.texture_path = path

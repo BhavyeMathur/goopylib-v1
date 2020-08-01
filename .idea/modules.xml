@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/OneDrive/Python/Minecraft/.idea/Minecraft.iml" filepath="$USER_HOME$/OneDrive/Python/Minecraft/.idea/Minecraft.iml" />
+      <module fileurl="file://$USER_HOME$/OneDrive/Python/GameDevelopment/.idea/GameDevelopment.iml" filepath="$USER_HOME$/OneDrive/Python/GameDevelopment/.idea/GameDevelopment.iml" />
       <module fileurl="file://$USER_HOME$/OneDrive/Python/Pac-Man/.idea/Pac-Man.iml" filepath="$USER_HOME$/OneDrive/Python/Pac-Man/.idea/Pac-Man.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/goopylib.iml" filepath="$PROJECT_DIR$/.idea/goopylib.iml" />
     </modules>

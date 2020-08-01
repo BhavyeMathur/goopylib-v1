@@ -24,12 +24,14 @@ class CycleButton(GraphicsObject):
     def __repr__(self):
         return f"CycleButton({self.graphic} and {len(self.states)} other states)"
 
-    def _draw(self, canvas, options=()):
-        self.graphic.draw(canvas, _internal_call=True)
+    def draw(self, graphwin=None, _internal_call=False):
+        self.graphic.draw(graphwin, _internal_call=True)
         for graphic in self.states:
-            graphic.graphwin = canvas
+            graphic.graphwin = graphwin
         if self.disabled_graphic is not None:
-            self.disabled_graphic.graphwin = canvas
+            self.disabled_graphic.graphwin = graphwin
+        self.graphwin = graphwin
+        self.drawn = True
         return self
 
     def undraw(self, set_blinking=True):

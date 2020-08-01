@@ -1655,9 +1655,9 @@ class GraphicsObject:
     def is_selected(self):
         selected = self.is_clicked(self.graphwin.get_last_mouse())
         if selected:
-            self.selected_clicks = self.graphwin.left_mouse_clicks
+            self.selected_clicks = self.graphwin.total_left_mouse_clicks
 
-        return selected or self.selected_clicks == self.graphwin.left_mouse_clicks
+        return selected or self.selected_clicks == self.graphwin.total_left_mouse_clicks
 
     def is_clicked(self, mouse_pos):
         return False

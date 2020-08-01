@@ -145,6 +145,15 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.204-beta 31st July 2020
+
+* Added a `set_default_sampling()` function to the Image class to set the default sampling
+* Added a `set_texture_path()` function to the Image class
+* Fixed bug with Image not redrawing after flipping
+
+* Fixed bug with the GraphicsObject `is_selected()` function raising an error
+* The CheckBox class now inherits from the CycleButton class (it's a special case of 2 states)
+
 #### 1.0.199-beta 26th-28th July 2020
 
 So unfortunately, online school (Grade 9!!!) has started and so updates won't be coming out as frequently as before, sorry!
