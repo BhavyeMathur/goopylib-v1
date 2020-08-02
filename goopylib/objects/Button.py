@@ -42,12 +42,12 @@ class Button(GraphicsObject):
         return "Button({})".format(self.graphic)
 
     def _draw(self, canvas, options):
-        self.graphic.draw(canvas)
+        self.graphic.draw(canvas, _internal_call=True)
 
         self.anchor = self.graphic.anchor
 
         if self.label is not None:
-            self.label.draw(canvas)
+            self.label.draw(canvas, _internal_call=True)
 
     def _move(self, dx, dy):
         if self.hover_graphic_given:
@@ -72,23 +72,10 @@ class Button(GraphicsObject):
         if self.label is not None:
             self.label.rotate(dr)
 
-    def undraw(self, set_blinking=False):
+    def _undraw(self, set_blinking=False):
         self.graphic.undraw()
         if self.label is not None:
             self.label.undraw()
-
-        self.drawn = False
-        return self
-
-    def redraw(self):
-        if self.graphic.graphwin is None and self.graphwin is not None:
-            self.graphic.graphwin = self.graphwin
-
-        if self.label is not None:
-            self.label.redraw()
-
-        self.drawn = True
-        self.graphic.redraw()
 
         return self
 

@@ -1,5 +1,6 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.util import GraphicsError
+from goopylib.GraphWin import GraphWin
 
 from math import cos, sin
 
@@ -24,23 +25,24 @@ class CycleButton(GraphicsObject):
     def __repr__(self):
         return f"CycleButton({self.graphic} and {len(self.states)} other states)"
 
-    def draw(self, graphwin=None, _internal_call=False):
-        self.graphic.draw(graphwin, _internal_call=True)
+    def _draw(self, canvas=None, options=None):
+
+        self.graphic.draw(canvas, _internal_call=True)
         for graphic in self.states:
-            graphic.graphwin = graphwin
+            graphic.graphwin = canvas
         if self.disabled_graphic is not None:
-            self.disabled_graphic.graphwin = graphwin
-        self.graphwin = graphwin
-        self.drawn = True
+            self.disabled_graphic.graphwin = canvas
+
         return self
 
-    def undraw(self, set_blinking=True):
+    def _undraw(self, set_blinking=True):
         self.graphic.undraw(set_blinking=set_blinking)
-        self.drawn = False
         return self
 
     def base_undraw(self):
-        self.graphic.base_undraw()
+        for obj in self.states:
+            if obj.drawn:
+                obj.base_undraw()
 
     def _rotate(self, dr, sampling="bicubic", center=None):
         for graphic in self.states:
@@ -167,10 +169,17 @@ class CycleButton(GraphicsObject):
     # SETTER FUNCTIONS
 
     def set_state(self, state):
-        self.undraw()
+        if self.graphwin.autoflush:
+            self._draw(self.graphwin, ())
+
         self.state = state
         self.graphic = self.states[state]
-        self.draw(self.graphwin)
+
+        if self.graphwin.autoflush:
+            self._draw(self.graphwin, ())
+        else:
+            GraphicsObject.redraw_on_frame[self.layer].add(self)
+            self._update_layer()
 
         self.rotation = self.graphic.rotation
         self.cosrotation = cos(self.rotation / 57.2958)

@@ -1,50 +1,25 @@
 from goopylib.imports import *
 
-class Object:
-    def __init__(self, ghost_number, name):
-        self.animation_frame = 0
-        self.name = name
+# Creating a window with the given title, width, height and background colour
+window = GraphWin(title="Simple Pac-Man Animation", width=600, height=200, bk_colour=DARKEST_NAVY_BLUE)
 
-        self.xPos = 300 + ghost_number * 50 if self.name != "PacMan" else 250  # Get the intial X position
+# We can reference PacMan using the 'PacMan' string now as it is tagged with it
+objects = [AnimatedImage(Point(220, 100), "PacMan.png", tag="PacMan").draw()]
 
-        # Here, we draw the graphics of the object (pacman or the ghosts)
-        # The graphics are organized as '{name}{frame}.png' where increasing the frame animates the object
+for index, ghost in enumerate(("Blinky", "Pinky", "Inky", "Clyde")):
+    x = 300 + (index * 50)
 
-        if self.name != "PacMan":
-            self.graphic = Image(Point(self.xPos, 100), f"{self.name}{self.animation_frame}.png") \
-                .alpha_composite(Image(Point(self.xPos, 100), f"Pupils.png")).draw(window) # Compositing basically pastes an image on top of another
-                # Here, we are compositing the pupils of the Ghost
-        else:
-            self.graphic = Image(Point(self.xPos, 100), f"{self.name}{self.animation_frame}.png").draw(window)
+    # The position to the draw the Animated Image & the texture file to use, then pasting the pupils of the ghost on top
+    objects.append(AnimatedImage(Point(x, 100), f"{ghost}.png").alpha_composite(Image(Point(x, 100), "Pupils.png")).draw())
 
-    def update(self):
-        # Increase the current animation frame.
-        self.animation_frame += 0.5  # We increase by 0.5 because we want to slow down the animation and take the int(animationFrame) later
-        self.xPos -= 3  # Change the xPosition
-
-        self.graphic.undraw()  # Undraw the graphic to draw it again with a new frame
-
-        # Here, we take the modulus of the xPos because we want the objects to return from the other side of the window
-        # We take the modulus of the animationFrame because we have only 6 frames per object
-        if self.name != "PacMan":
-            self.graphic = Image(Point(self.xPos % 600, 100), f"{self.name}{int(self.animation_frame) % 6}.png")\
-                .alpha_composite(Image(Point(self.xPos % 600, 100), f"Pupils.png")).draw(window)
-        else:
-            self.graphic = Image(Point(self.xPos % 600, 100), f"{self.name}{int(self.animation_frame) % 6}.png").draw(window)
-
-
-# Creating a window. The autoflush parameter controls whether the window automatically updates, in this case, it doesn't
-# We are also setting the dimensions of the window to be relative to the screen size to cope with different screens
-# with different resolutions.
-window = GraphWin(title="Simple Pac-Man Animation", width=get_screen_size()[1] * 0.5, height=get_screen_size()[1] * 0.5 * 0.33,
-                  autoflush=False, bk_colour=DARKEST_NAVY_BLUE)
-window.set_coords(0, 0, 600, 200)  # Setting the coordinates of the window from top-left to bottom-right
-
-# Creating the 4 ghosts & Pac-Man
-objects = [Object(index, name) for index, name in enumerate(["PacMan", "Blinky", "Pinky", "Inky", "Clyde"])]
-
+last_update = time.time()  # The time module is automatically imported
 while True:
-    for obj in objects:  # Updating the ghosts & Pac-Man to make them move & animate
-        obj.update()
+    if time.time() - last_update > 0.03333:  # Moving the graphics every 1/30 seconds
+        last_update = time.time()
+
+        for obj in objects:
+            obj.move_x(-5)
+            if obj.get_x_pos() < 0:  # Checks if the object has exited the screen
+                obj.move_to_x(600)  # Takes it back to the other side is True
+
     window.update_win()  # Updating the window
-    update(24)  # Updating this loop at a rate of 24 FPS

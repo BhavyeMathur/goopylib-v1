@@ -197,16 +197,6 @@ class GraphicsObject:
         self.graphwin = graphwin
         graphwin.add_item(self)
 
-        for layer_index, layer in enumerate(GraphicsObject.object_layers):
-            if layer_index > self.layer:
-                for obj in layer:
-                    if _internal_call:
-                        if obj not in GraphicsObject.redraw_on_frame[layer_index]:
-                            GraphicsObject.redraw_on_frame[layer_index].add(obj)
-                    else:
-                        if obj.graphwin == graphwin and obj != self and obj.drawn:
-                            obj.draw(graphwin, _internal_call=True)
-
         if graphwin.autoflush:
             _root.update()
         self.drawn = True
@@ -219,6 +209,13 @@ class GraphicsObject:
     def base_undraw(self):
         self.graphwin.delete(self.id)
         #self.graphwin.del_item(self)
+
+    def _update_layer(self):
+        for layer_index, layer in enumerate(GraphicsObject.object_layers):
+            if layer_index > self.layer:
+                for obj in layer:
+                    if obj not in GraphicsObject.redraw_on_frame[layer_index]:
+                        GraphicsObject.redraw_on_frame[layer_index].add(obj)
 
     def undraw(self, set_blinking=True):
 
@@ -1874,7 +1871,7 @@ class GraphicsObject:
 
         for layer in GraphicsObject.redraw_on_frame:
             for obj in layer:
-                obj.draw(graphwin=graphwin, _internal_call=True)
+                obj.draw(graphwin=graphwin)
             layer.clear()
 
     @staticmethod
@@ -1967,7 +1964,8 @@ class GraphicsObject:
                             if obj.graphic != obj.hover_graphic:
                                 obj.undraw()
                                 obj.graphic = obj.hover_graphic
-                                obj.draw(graphwin)
+                                if obj not in GraphicsObject.redraw_on_frame[obj.layer]:
+                                    GraphicsObject.redraw_on_frame[obj.layer].add(obj)
                         else:
                             if obj.graphic != obj.clicked_graphic:
                                 obj.undraw()

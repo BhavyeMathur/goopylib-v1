@@ -174,6 +174,7 @@ class AnimatedImage(GraphicsObject):
                 raise GraphicsError("\n\nGraphicsError: object to bind frame to must be an Animated Image object, "
                                     f"not {obj}")
         obj.frame_bound_objects.add(self)
+        self.set_autoflush(False)
         return self
 
     # -------------------------------------------------------------------------

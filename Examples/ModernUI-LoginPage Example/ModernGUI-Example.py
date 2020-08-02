@@ -11,21 +11,17 @@ To run this, simply download the entire folder in which this is placed, and run 
 """
 
 # Creating a window
-# autoflush defines whether or not the window updates automatically.
 # We set the dimensions relative to the height of the screen because resolutions across screen can vary.
-window = GraphWin(title="Example GUI Design", width=get_screen_size()[1] * 0.8 - 200, height=get_screen_size()[1] * 0.8,
-                  autoflush=False)
-window.set_coords(0, 0, 800,
-                  1000)  # Because the actual height & width might be different according to the screen size, we define these virtual coordinates (Top-Left, Bottom-Right)
+window = GraphWin(title="Example GUI Design", width=800, height=1000)
+
 background = Checkbox(Image(Point(400, 500), "RegisterPage.png"),
-                      Image(Point(400, 500), "LoginPage.png"), autoflush=False).draw(
-    window)  # This is the background image
+                      Image(Point(400, 500), "LoginPage.png"), autoflush=False).draw()  # This is the background image
 
 # Creating the entry boxes
 email_entry = Entry(Point(360, 465), 24, fill=WHITE, font="century gothic", justify="left", font_colour=LIGHT_GREY,
-                    font_size=30, prompt_text="Email Address").draw(window)
+                    font_size=30, prompt_text="Email Address").draw()
 password_entry = Entry(Point(360, 600), 24, fill=WHITE, font="century gothic", justify="left", font_colour=LIGHT_GREY,
-                       font_size=30, prompt_text="Password", password=True).draw(window)
+                       font_size=30, prompt_text="Password", password=True).draw()
 
 # Creating the options tab. The Enter & Settings button are checkboxes too because we want to display different textures based on 2 states: register or signin
 # A checkbox takes 2 graphics: true & false
@@ -37,7 +33,7 @@ options_tab = Checkbox(Button(Image(Point(415, 320), "OptionsTab-Register.png"),
 
                        # The false graphic is very similar
                        Button(Image(Point(415, 320), "OptionsTab-SignIn.png"),
-                              Image(Point(415, 320), "OptionsTab-SignIn.png").resize_factor(1.02))).draw(window)
+                              Image(Point(415, 320), "OptionsTab-SignIn.png").resize_factor(1.02)), layer=1).draw()
 
 # Setting autoflush to false for the Checkbox means that it will not automatically update its state (go from True->False, or vice-versa)
 # We want this because we want to control the state to be that of the options page.
@@ -48,29 +44,25 @@ enter_button = Checkbox(Button(Image(Point(365, 750), "RegisterButton.png"),
 
                         Button(Image(Point(365, 750), "LoginButton.png"),
                                Image(Point(365, 750), "LoginButton.png").resize_height_factor(1.05)),
-                        autoflush=False).draw(window)
+                        autoflush=False, layer=1).draw()
 
 settings_button = Checkbox(Button(Image(Point(698, 750), "SettingsButton-Light.png"),
                                   Image(Point(698, 750), "SettingsButton-Light.png").resize_height_factor(1.05)),
 
                            Button(Image(Point(698, 750), "SettingsButton-Dark.png"),
                                   Image(Point(698, 750), "SettingsButton-Dark.png").resize_height_factor(1.05)),
-                           autoflush=False).draw(window)
+                           autoflush=False, layer=1).draw()
 
 # We are creating a blank text object to display information to the user if needed
-info_text = Text(Point(400, 850), "", font_size=15, font_face="century gothic", font_colour=DARK_NAVY_BLUE).draw(window)
+info_text = Text(Point(400, 850), "", font_size=15, font_face="century gothic", font_colour=DARK_NAVY_BLUE, layer=1).draw()
 
 next_page = "Home Page"
 
 # The mainloop
 while True:
-    background.set_state(options_tab.get_state())
-    enter_button.set_state(
-        options_tab.get_state())  # Updating the textures of these checkboxes to be that of the OptionsTab
+    #background.set_state(options_tab.get_state())
+    enter_button.set_state(options_tab.get_state())  # Updating the textures of these checkboxes to be that of the OptionsTab
     settings_button.set_state(options_tab.get_state())
-
-    options_tab.redraw()  # Redrawing because we're also redrawing the background
-    info_text.redraw()
 
     mouse_pos = window.check_left_mouse_click()  # Getting the position of a mouse click if there was one
 

@@ -41,7 +41,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -53,22 +53,22 @@
     </option>
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Minecraft\textures\bedrock" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man\goopylib" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python.layout_designer">
-    <configuration name="ChestGame-1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.2-ChestGame">
+    <configuration name="2-ChestGame" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -80,7 +80,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/ChestGame-1.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/2-ChestGame.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -89,28 +89,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="PacMan-4" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Pac-Man" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/Pac-Man" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/Pac-Man/PacMan-4.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="RPG-0" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="HelloWorld-1" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -118,11 +97,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/GameDevelopment/RPG" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/RPG/RPG-0.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment\1-HelloWorld.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -131,7 +110,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="layout_designer" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="ModernGUI-Example" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="goopylib" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -139,11 +118,32 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/goopylib/applications" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Examples/ModernUI-LoginPage Example" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/goopylib/applications/layout_designer.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Examples/ModernUI-LoginPage Example/ModernGUI-Example.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Pac-ManAnimation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="goopylib" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Examples/Pac-Man-Animation Example" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Examples/Pac-Man-Animation Example/Pac-ManAnimation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -174,18 +174,18 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.PacMan-4" />
       <item itemvalue="Python.setup" />
-      <item itemvalue="Python.RPG-0" />
-      <item itemvalue="Python.ChestGame-1" />
-      <item itemvalue="Python.layout_designer" />
+      <item itemvalue="Python.HelloWorld-1" />
+      <item itemvalue="Python.Pac-ManAnimation" />
+      <item itemvalue="Python.ModernGUI-Example" />
+      <item itemvalue="Python.2-ChestGame" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.layout_designer" />
-        <item itemvalue="Python.ChestGame-1" />
-        <item itemvalue="Python.RPG-0" />
-        <item itemvalue="Python.PacMan-4" />
+        <item itemvalue="Python.2-ChestGame" />
+        <item itemvalue="Python.HelloWorld-1" />
+        <item itemvalue="Python.ModernGUI-Example" />
+        <item itemvalue="Python.Pac-ManAnimation" />
         <item itemvalue="Python.setup" />
       </list>
     </recent_temporary>
@@ -269,26 +269,26 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="2168" height="495" key="GridCell.Tab.-1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594733814143" />
-    <state width="1071" height="303" key="GridCell.Tab.0.bottom" timestamp="1596216890175">
+    <state width="1075" height="301" key="GridCell.Tab.0.bottom" timestamp="1596304074293">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1071" height="303" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596216890175" />
-    <state width="1071" height="303" key="GridCell.Tab.0.center" timestamp="1596216890174">
+    <state width="1075" height="301" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596304074293" />
+    <state width="1075" height="301" key="GridCell.Tab.0.center" timestamp="1596304074293">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1071" height="303" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596216890174" />
-    <state width="1071" height="303" key="GridCell.Tab.0.left" timestamp="1596216890174">
+    <state width="1075" height="301" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596304074293" />
+    <state width="1075" height="301" key="GridCell.Tab.0.left" timestamp="1596304074292">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1071" height="303" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596216890174" />
-    <state width="1071" height="303" key="GridCell.Tab.0.right" timestamp="1596216890175">
+    <state width="1075" height="301" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596304074292" />
+    <state width="1075" height="301" key="GridCell.Tab.0.right" timestamp="1596304074293">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1071" height="303" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596216890175" />
+    <state width="1075" height="301" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596304074293" />
     <state width="2168" height="495" key="GridCell.Tab.1.bottom" timestamp="1594733811918">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -309,10 +309,10 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="1164" y="333" key="SettingsEditor/0.0.2189.1419@0.0.2189.1419" timestamp="1595085455245" />
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1596215425637">
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1596294985659">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1596215425637" />
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1596294985659" />
     <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595604872984">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -321,9 +321,9 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="837" y="353" key="refactoring.ChangeSignatureDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1595651941504" />
-    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1595605040033">
+    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1596257402853">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup/0.0.2189.1419@0.0.2189.1419" timestamp="1595605040033" />
+    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup/0.0.2189.1419@0.0.2189.1419" timestamp="1596257402853" />
   </component>
 </project>

@@ -145,6 +145,22 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ### v1.0
 
+#### 1.0.214-beta 1st August 2020
+
+* The Animated Image sets its autoflush to False whenever it is bound to another object
+* Fixed bug with the CycleButton (& Checkbox) `draw()` function not working properly when no graphwin is provided
+* Fixed recursion bug with layering in CycleButtons (& Checkboxes)
+ 
+* The Image `__repr__()` function now returns the filepath in "
+* Fixed bug with Image not updating itself for transformations after being drawn
+
+* Added transformation functions for the CycleButton class
+* Fixed bug with not allowing duplicate animations not working properly
+* Fixed bug with GraphicsObject gliding not working properly in queues
+* Fixed bug with rotation animations not working properly in queues and the `animate_set_rotation()` function
+
+* Added a "Final" metric to check if animations are the same
+
 #### 1.0.204-beta 31st July 2020
 
 * Added a `set_default_sampling()` function to the Image class to set the default sampling

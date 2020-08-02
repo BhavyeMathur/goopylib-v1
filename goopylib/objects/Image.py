@@ -25,7 +25,7 @@ class Image(GraphicsObject):
             raise GraphicsError(f"\n\nGraphicsError: Image anchor point (p) must be a Point object, not {p}")
         if align not in ALIGN_OPTIONS:
             raise GraphicsError(f"\n\nGraphicsError: Image align must be one of {ALIGN_OPTIONS}, not {align}")
-        print(Image.texture_path + filepath)
+
         if osisfile(Image.texture_path + filepath):
             self.texture = Image.texture_path + filepath
         elif osisfile(filepath):
