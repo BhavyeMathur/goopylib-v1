@@ -67,7 +67,7 @@
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.2-ChestGame">
+  <component name="RunManager" selected="Python.Pac-ManAnimation">
     <configuration name="2-ChestGame" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -182,11 +182,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Pac-ManAnimation" />
         <item itemvalue="Python.2-ChestGame" />
+        <item itemvalue="Python.setup" />
         <item itemvalue="Python.HelloWorld-1" />
         <item itemvalue="Python.ModernGUI-Example" />
-        <item itemvalue="Python.Pac-ManAnimation" />
-        <item itemvalue="Python.setup" />
       </list>
     </recent_temporary>
   </component>
@@ -269,26 +269,26 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="2168" height="495" key="GridCell.Tab.-1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594733814143" />
-    <state width="1075" height="301" key="GridCell.Tab.0.bottom" timestamp="1596304074293">
+    <state width="1075" height="301" key="GridCell.Tab.0.bottom" timestamp="1596341881254">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1075" height="301" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596304074293" />
-    <state width="1075" height="301" key="GridCell.Tab.0.center" timestamp="1596304074293">
+    <state width="1075" height="301" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596341881254" />
+    <state width="1075" height="301" key="GridCell.Tab.0.center" timestamp="1596341881253">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1075" height="301" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596304074293" />
-    <state width="1075" height="301" key="GridCell.Tab.0.left" timestamp="1596304074292">
+    <state width="1075" height="301" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596341881253" />
+    <state width="1075" height="301" key="GridCell.Tab.0.left" timestamp="1596341881253">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1075" height="301" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596304074292" />
-    <state width="1075" height="301" key="GridCell.Tab.0.right" timestamp="1596304074293">
+    <state width="1075" height="301" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596341881253" />
+    <state width="1075" height="301" key="GridCell.Tab.0.right" timestamp="1596341881253">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1075" height="301" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596304074293" />
+    <state width="1075" height="301" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596341881253" />
     <state width="2168" height="495" key="GridCell.Tab.1.bottom" timestamp="1594733811918">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
