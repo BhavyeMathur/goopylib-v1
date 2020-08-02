@@ -4,45 +4,24 @@ from goopylib.util import GraphicsError
 
 from os import listdir as oslistdir
 from os.path import dirname as osdirname
+from os.path import isdir as osisdir
 from time import time as timetime
 
 
 class AnimatedImage(GraphicsObject):
-    def __init__(self, p, filepath, align="center", cursor="arrow", number_of_frames=None, update_time=1/24, layer=0,
+    def __init__(self, p, frames, align="center", cursor="arrow", update_time=1/24, layer=0,
                  tag=None, autoflush=True, frame_callback=None):
 
         if not (callable(frame_callback) or frame_callback is None):
             raise GraphicsError("\n\nGraphicsError: Frame Increment callback for Animated Image must be a function, "
                                 f"not {frame_callback}")
 
-        self.reprpath = filepath
-        filepath = filepath.replace('\\', '/')
-        self.filepath = filepath.split('.')
-
-        if number_of_frames is not None:
-            self.number_of_frames = number_of_frames
-        else:
-            texture_dir = osdirname(f"{self.filepath[0]}{0}{self.filepath[1]}")
-            if texture_dir == "":
-                texture_dir = "."
-
-            self.number_of_frames = 0
-            for file in oslistdir(f"{texture_dir}/textures/"):
-                if self.filepath[0] in file and len(file) - (len(self.filepath[0]) + len(self.filepath[1])) == 2:
-                    self.number_of_frames += 1
-
-            if self.number_of_frames == 0:
-                files = oslistdir(texture_dir)
-                for file in files:
-                    if self.filepath[0] in file and len(file) - (len(self.filepath[0]) + len(self.filepath[1])) == 2:
-                        self.number_of_frames += 1
-
         self.frame = 0
+        self.number_of_frames = len(frames)
         self.drawn_frame = 0
         self.frame_bound_objects = {*()}
 
-        self.imgs = [Image(p, f"{self.filepath[0]}{i}.{self.filepath[1]}", align=align, cursor=cursor)
-                     for i in range(self.number_of_frames)]
+        self.imgs = [Image(p, path, align=align, cursor=cursor) for path in frames]
 
         self.last_update_time = timetime()
         self.update_time = update_time
@@ -58,7 +37,7 @@ class AnimatedImage(GraphicsObject):
     # INTERNAL FUNCTIONS
 
     def __repr__(self):
-        return f"AnimatedImage({self.anchor}, {self.reprpath} and {len(self.imgs) - 1} others.)"
+        return f"AnimatedImage({self.anchor}, {self.imgs[self.frame]} and {self.number_of_frames - 1} others.)"
 
     def _draw(self, canvas, options):
         self.imgs[self.frame].draw(canvas, _internal_call=True)
@@ -76,7 +55,7 @@ class AnimatedImage(GraphicsObject):
         self.anchor.x += dx
         self.anchor.y += dy
 
-    def _rotate(self, dr, sampling="bicubic", center=None):
+    def _rotate(self, dr, sampling=None, center=None):
         for img in self.imgs:
             img.rotate(dr)
 
@@ -241,11 +220,13 @@ class AnimatedImage(GraphicsObject):
         return self
 
     def convert_greyscale(self):
-        map(Image.convert_greyscale, self.imgs)
+        for img in self.imgs:
+            img.convert_greyscale()
         return self
 
     def convert_binary(self):
-        map(Image.convert_binary, self.imgs)
+        for img in self.imgs:
+            img.convert_binary()
         return self
 
     # ----------------------------------
@@ -257,23 +238,28 @@ class AnimatedImage(GraphicsObject):
         return self
 
     def flip_x(self):
-        map(Image.flip_x, self.imgs)
+        for img in self.imgs:
+            img.flip_x()
         return self
 
     def flip_y(self):
-        map(Image.flip_y, self.imgs)
+        for img in self.imgs:
+            img.flip_y()
         return self
 
     def flip_xy(self):
-        map(Image.flip_xy, self.imgs)
+        for img in self.imgs:
+            img.flip_xy()
         return self
 
     def transverse(self):
-        map(Image.transverse, self.imgs)
+        for img in self.imgs:
+            img.transverse()
         return self
 
     def transpose(self):
-        map(Image.transpose, self.imgs)
+        for img in self.imgs:
+            img.transpose()
         return self
 
     # ----------------------------------
@@ -284,12 +270,12 @@ class AnimatedImage(GraphicsObject):
             img.skew_x(scale=scale, sampling=sampling, align=align)
         return self
 
-    def skew_y(self, scale=0.3, sampling="bicubic", align="center"):
+    def skew_y(self, scale=0.3, sampling=None, align="center"):
         for img in self.imgs:
             img.skew_y(scale=scale, sampling=sampling, align=align)
         return self
 
-    def skew_xy(self, x_scale=0.3, y_scale=None, sampling="bicubic", x_align="center", y_align=None):
+    def skew_xy(self, x_scale=0.3, y_scale=None, sampling=None, x_align="center", y_align=None):
         for img in self.imgs:
             img.skew_xy(x_scale=x_scale, y_scale=y_scale, sampling=sampling, x_align=x_align, y_align=y_align)
         return self
@@ -297,59 +283,61 @@ class AnimatedImage(GraphicsObject):
     # ----------------------------------
     # Resizing Functions
 
-    def resize(self, width, height, sampling="bicubic", _external_call=True):
+    def resize(self, width, height, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize(width, height, sampling=sampling, _external_call=_external_call)
         return self
 
-    def resize_height(self, height, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
+    def resize_height(self, height, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize_height(height, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
-                              _external_call=_external_call)
+                                _external_call=_external_call)
         return self
 
-    def resize_width(self, width, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
+    def resize_width(self, width, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize_width(width, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
-                             _external_call=_external_call)
+                               _external_call=_external_call)
         return self
 
-    def resize_factor(self, factor, sampling="bicubic", _external_call=True):
+    def resize_factor(self, factor, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize_factor(factor, sampling=sampling, _external_call=_external_call)
+        return self
 
-    def resize_width_factor(self, factor, sampling="bicubic", _external_call=True):
+    def resize_width_factor(self, factor, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize_width_factor(factor, sampling=sampling, _external_call=_external_call)
         return self
 
-    def resize_height_factor(self, factor, sampling="bicubic", _external_call=True):
+    def resize_height_factor(self, factor, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize_width_factor(factor, sampling=sampling, _external_call=_external_call)
         return self
 
-    def resize_to_fit(self, obj, sampling="bicubic", _external_call=True):
+    def resize_to_fit(self, obj, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize_to_fit(obj, sampling=sampling, _external_call=_external_call)
         return self
 
-    def resize_to_fit_width(self, obj, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
+    def resize_to_fit_width(self, obj, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize_to_fit_width(obj, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
-                                    _external_call=_external_call)
+                                      _external_call=_external_call)
         return self
 
-    def resize_to_fit_height(self, obj, preserve_aspect_ratio=False, sampling="bicubic", _external_call=True):
+    def resize_to_fit_height(self, obj, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         for img in self.imgs:
             img.resize_to_fit_height(obj, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
-                                    _external_call=_external_call)
+                                       _external_call=_external_call)
         return self
 
     # ----------------------------------
     # Blurring & Sharpening Functions
 
     def blur(self):
-        map(Image.blur, self.imgs)
+        for img in self.imgs:
+            img.blur()
         return self
 
     def blur_box(self, radius=3):
@@ -371,39 +359,48 @@ class AnimatedImage(GraphicsObject):
     # Filter Functions
 
     def filter_contour(self):
-        map(Image.filter_contour, self.imgs)
+        for img in self.imgs:
+            img.filter_contour()
         return self
 
     def filter_detail(self):
-        map(Image.filter_detail, self.imgs)
+        for img in self.imgs:
+            img.filter_detail()
         return self
 
     def filter_emboss(self):
-        map(Image.filter_emboss, self.imgs)
+        for img in self.imgs:
+            img.filter_emboss()
         return self
 
     def filter_find_edges(self):
-        map(Image.filter_find_edges, self.imgs)
+        for img in self.imgs:
+            img.filter_find_edges()
         return self
 
     def filter_sharpen(self):
-        map(Image.filter_sharpen, self.imgs)
+        for img in self.imgs:
+            img.filter_sharpen()
         return self
 
     def filter_smooth(self):
-        map(Image.filter_smooth, self.imgs)
+        for img in self.imgs:
+            img.filter_smooth()
         return self
 
     def filter_more_smooth(self):
-        map(Image.filter_more_smooth, self.imgs)
+        for img in self.imgs:
+            img.filter_more_smooth()
         return self
 
     def filter_enhance_edge(self):
-        map(Image.filter_enhance_edge, self.imgs)
+        for img in self.imgs:
+            img.filter_enhance_edge()
         return self
 
     def filter_more_enhance_edge(self):
-        map(Image.filter_more_enhance_edge, self.imgs)
+        for img in self.imgs:
+            img.more_enhance_edge()
         return self
 
     # -------------------------------------------------------------------------

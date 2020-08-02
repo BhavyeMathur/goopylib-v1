@@ -1,8 +1,8 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.util import GraphicsError
-from goopylib.GraphWin import GraphWin
 
 from math import cos, sin
+
 
 class CycleButton(GraphicsObject):
     def __init__(self, *states, state=0, disabled_graphic=None, autoflush=True, layer=None, tag=None):
@@ -230,3 +230,225 @@ class CycleButton(GraphicsObject):
 
     def get_graphics(self):
         return self.states
+
+    def set_contrast(self, level):
+        for state in self.states:
+            state.set_contrast(level)
+        return self
+
+    def change_contrast(self, level):
+        for state in self.states:
+            state.change_contrast(level)
+        return self
+
+    def reset_contrast(self):
+        self.set_contrast(0)
+
+    # -------------------------------------------------------------------------
+    # IMAGE MANIPULATION FUNCTIONS
+
+    def crop(self, left=0, top=0, right=500, down=500, align="center"):
+        for state in self.states:
+            state.crop(left=left, top=top, right=right, down=down, align=align)
+        return self
+
+    # Blending & Compositing Functions
+
+    def blend(self, state, alpha):
+        for state in self.states:
+            state.blend(state, alpha)
+        return self
+
+    def alpha_composite(self, other):
+        for state in self.states:
+            state.alpha_composite(other)
+        return self
+
+    def composite(self, other, state_mask):
+        for state in self.states:
+            state.composite(other, state_mask)
+        return self
+
+    def convert_greyscale(self):
+        for state in self.states:
+            state.convert_greyscale()
+        return self
+
+    def convert_binary(self):
+        for state in self.states:
+            state.convert_binary()
+        return self
+
+    # ----------------------------------
+    # Flipping Functions
+
+    def flip(self, x_axis=True, y_axis=True):
+        for state in self.states:
+            state.flip(x_axis=x_axis, y_axis=y_axis)
+        return self
+
+    def flip_x(self):
+        for state in self.states:
+            state.flip_x()
+        return self
+
+    def flip_y(self):
+        for state in self.states:
+            state.flip_y()
+        return self
+
+    def flip_xy(self):
+        for state in self.states:
+            state.flip_xy()
+        return self
+
+    def transverse(self):
+        for state in self.states:
+            state.transverse()
+        return self
+
+    def transpose(self):
+        for state in self.states:
+            state.transpose()
+        return self
+
+    # ----------------------------------
+    # Skew Transformation Functions
+
+    def skew_x(self, scale=0.3, sampling="bicubic", align="center"):
+        for state in self.states:
+            state.skew_x(scale=scale, sampling=sampling, align=align)
+        return self
+
+    def skew_y(self, scale=0.3, sampling=None, align="center"):
+        for state in self.states:
+            state.skew_y(scale=scale, sampling=sampling, align=align)
+        return self
+
+    def skew_xy(self, x_scale=0.3, y_scale=None, sampling=None, x_align="center", y_align=None):
+        for state in self.states:
+            state.skew_xy(x_scale=x_scale, y_scale=y_scale, sampling=sampling, x_align=x_align, y_align=y_align)
+        return self
+
+    # ----------------------------------
+    # Resizing Functions
+
+    def resize(self, width, height, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize(width, height, sampling=sampling, _external_call=_external_call)
+        return self
+
+    def resize_height(self, height, preserve_aspect_ratio=False, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize_height(height, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
+                                _external_call=_external_call)
+        return self
+
+    def resize_width(self, width, preserve_aspect_ratio=False, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize_width(width, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
+                               _external_call=_external_call)
+        return self
+
+    def resize_factor(self, factor, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize_factor(factor, sampling=sampling, _external_call=_external_call)
+        return self
+
+    def resize_width_factor(self, factor, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize_width_factor(factor, sampling=sampling, _external_call=_external_call)
+        return self
+
+    def resize_height_factor(self, factor, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize_width_factor(factor, sampling=sampling, _external_call=_external_call)
+        return self
+
+    def resize_to_fit(self, obj, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize_to_fit(obj, sampling=sampling, _external_call=_external_call)
+        return self
+
+    def resize_to_fit_width(self, obj, preserve_aspect_ratio=False, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize_to_fit_width(obj, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
+                                      _external_call=_external_call)
+        return self
+
+    def resize_to_fit_height(self, obj, preserve_aspect_ratio=False, sampling=None, _external_call=True):
+        for state in self.states:
+            state.resize_to_fit_height(obj, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
+                                       _external_call=_external_call)
+        return self
+
+    # ----------------------------------
+    # Blurring & Sharpening Functions
+
+    def blur(self):
+        for state in self.states:
+            state.blur()
+        return self
+
+    def blur_box(self, radius=3):
+        for state in self.states:
+            state.blur_box(radius=radius)
+        return self
+
+    def blur_gaussian(self, radius=3):
+        for state in self.states:
+            state.blur_gaussian(radius=radius)
+        return self
+
+    def sharpen(self, radius=3, percent=150):
+        for state in self.states:
+            state.sharpen(radius=radius, percent=percent)
+        return self
+
+    # ----------------------------------
+    # Filter Functions
+
+    def filter_contour(self):
+        for state in self.states:
+            state.filter_contour()
+        return self
+
+    def filter_detail(self):
+        for state in self.states:
+            state.filter_detail()
+        return self
+
+    def filter_emboss(self):
+        for state in self.states:
+            state.filter_emboss()
+        return self
+
+    def filter_find_edges(self):
+        for state in self.states:
+            state.filter_find_edges()
+        return self
+
+    def filter_sharpen(self):
+        for state in self.states:
+            state.filter_sharpen()
+        return self
+
+    def filter_smooth(self):
+        for state in self.states:
+            state.filter_smooth()
+        return self
+
+    def filter_more_smooth(self):
+        for state in self.states:
+            state.filter_more_smooth()
+        return self
+
+    def filter_enhance_edge(self):
+        for state in self.states:
+            state.filter_enhance_edge()
+        return self
+
+    def filter_more_enhance_edge(self):
+        for state in self.states:
+            state.more_enhance_edge()
+        return self

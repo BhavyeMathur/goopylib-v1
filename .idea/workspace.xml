@@ -41,7 +41,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -53,18 +53,18 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man\goopylib" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Minecraft\textures\bedrock" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
     </key>
   </component>
   <component name="RunManager" selected="Python.2-ChestGame">

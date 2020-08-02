@@ -88,7 +88,7 @@ class Text(GraphicsObject):
         return canvas.create_text(x, y, options)
 
     def _move(self, dx, dy):
-        self.anchor.change_direction(dx, dy)
+        self.anchor.move(dx, dy)
 
     def is_clicked(self, mouse_pos):
         return False

@@ -62,9 +62,9 @@ JOINSTYLES = {"bevel", "round", "miter"}
 DASHES = {"solid": None, "dash": (5, ), "long dash": (8, ), "dot": (1, 3), "dashdot": (5, 1, 1, 1),
           "long dashdot": (8, 1, 1, 1)}
 
-DUPLICATES_METRICS = {"Colour Animation": {"Change", "Start", "Time", "Update", "Initial", "Easing"},
-                      "2D Animation": {"Change", "Start", "Time", "Update", "Initial", "EasingX", "EasingY"},
-                      "1D Animation": {"Change", "Start", "Time", "Update", "Initial", "Easing"}}
+DUPLICATES_METRICS = {"Colour Animation": {"Change", "Start", "Time", "Update", "Initial", "Easing", "Final"},
+                      "2D Animation": {"Change", "Start", "Time", "Update", "Initial", "EasingX", "EasingY", "Final"},
+                      "1D Animation": {"Change", "Start", "Time", "Update", "Initial", "Easing", "Final"}}
 
 CURVE_INTERPOLATIONS = {"linear", "cosine", "cubic", "hermite", "spline"}
 IMAGE_INTERPOLATIONS = {"bicubic": BICUBIC, "bilinear": BILINEAR, "box": BOX, "nearest": NEAREST, "hamming": HAMMING,
