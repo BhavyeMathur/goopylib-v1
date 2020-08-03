@@ -143,6 +143,19 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ## Version History
 
+#### 1.0.222-beta 2nd August 2020
+
+* Fixed bug with Cycle Button raising AttributeError when changing state and created but not drawn
+* Fixed bug with Animated Image drawing itself when redrawing
+* Fixed bug with the Cycle Button's `set_state()` function not working properly when the object wasn't drawn
+
+* Added `__iter__` function to the Animated Image and Cycle Button classes
+* Added a `set_bounds()` function to the GraphicsObject class
+* The Cycle Button's `is_clicked()` function now checks if its the bounds if it is not None
+
+* Checking for Obstacle & Movement Bounds collisions now uses the Graphic's Movement Bounds if they are not None
+* Added layering functions to the Animated Image class
+
 ### v1.0
 
 #### 1.0.214-beta 1st August 2020
