@@ -19,7 +19,7 @@ class Image(GraphicsObject):
     default_sampling = "bicubic"
     texture_path = "textures/"
 
-    def __init__(self, p, filepath, align="center", cursor="arrow", layer=0, tag=None):
+    def __init__(self, p, filepath, align="center", cursor="arrow", layer=0, tag=None, bounds=None):
 
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: Image anchor point (p) must be a Point object, not {p}")
@@ -56,7 +56,7 @@ class Image(GraphicsObject):
 
         self.update_required = False
 
-        GraphicsObject.__init__(self, [], cursor=cursor, layer=layer, tag=tag)
+        GraphicsObject.__init__(self, [], cursor=cursor, layer=layer, tag=tag, bounds=bounds)
 
         self.image_id = Image.id_count
         Image.id_count = Image.id_count + 1
@@ -139,7 +139,7 @@ class Image(GraphicsObject):
                 self.draw()
                 self.graphwin.update_win()
             else:
-                if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
                     GraphicsObject.redraw_on_frame[self.layer].add(self)
 
     # -------------------------------------------------------------------------
@@ -161,21 +161,26 @@ class Image(GraphicsObject):
         return self
 
     def is_clicked(self, mouse_pos):
-        if mouse_pos is not None:
-            if not isinstance(mouse_pos, Point):
-                raise GraphicsError(f"\n\nMouse Pos argument for is_clicked() must be a Point object, not {mouse_pos}")
+        if mouse_pos is None:
+            return False
+        else:
+            if self.bounds is None:
+                if not isinstance(mouse_pos, Point):
+                    raise GraphicsError(f"\n\nMouse Pos argument for is_clicked() must be a Point object, not {mouse_pos}")
 
-            if self.drawn:
-                width, height = abs(self.img.width() * self.graphwin.trans.x_scale), \
-                                abs(self.img.height() * self.graphwin.trans.y_scale)
-            else:
-                width, height = self.img.width(), self.img.height()
+                if self.drawn:
+                    width, height = abs(self.img.width() * self.graphwin.trans.x_scale), \
+                                    abs(self.img.height() * self.graphwin.trans.y_scale)
+                else:
+                    width, height = self.img.width(), self.img.height()
 
-            if (self.anchor.x - width / 2 < mouse_pos.x < self.anchor.x + width / 2) and (
-                    self.anchor.y - height / 2 < mouse_pos.y < self.anchor.y + height / 2):
-                return True
+                if (self.anchor.x - width / 2 < mouse_pos.x < self.anchor.x + width / 2) and (
+                        self.anchor.y - height / 2 < mouse_pos.y < self.anchor.y + height / 2):
+                    return True
+                else:
+                    return False
             else:
-                return False
+                return self.bounds.is_clicked(mouse_pos)
 
     def clone(self):
         other = Image(self.anchor.copy(), self.texture)
@@ -210,7 +215,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.point(contrast)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -256,7 +261,7 @@ class Image(GraphicsObject):
 
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -276,7 +281,7 @@ class Image(GraphicsObject):
         self.transforming_img = self.img_PIL
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -290,7 +295,7 @@ class Image(GraphicsObject):
         self.transforming_img = self.img_PIL
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -307,7 +312,7 @@ class Image(GraphicsObject):
         self.transforming_img = self.img_PIL
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -317,7 +322,7 @@ class Image(GraphicsObject):
         self.transforming_img = self.img_PIL
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -327,7 +332,7 @@ class Image(GraphicsObject):
         self.transforming_img = self.img_PIL
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -341,7 +346,7 @@ class Image(GraphicsObject):
         if y_axis:
             self.flip_y()
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -350,7 +355,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.transpose(Img.FLIP_LEFT_RIGHT)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -359,7 +364,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.transpose(Img.FLIP_TOP_BOTTOM)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -373,7 +378,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.transpose(Img.TRANSVERSE)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -382,7 +387,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.transpose(Img.TRANSPOSE)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -419,7 +424,7 @@ class Image(GraphicsObject):
                                                   IMAGE_INTERPOLATIONS[sampling])
             self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -454,7 +459,7 @@ class Image(GraphicsObject):
 
             self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -507,7 +512,7 @@ class Image(GraphicsObject):
 
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -536,7 +541,7 @@ class Image(GraphicsObject):
             self.initial_height = height
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
 
@@ -596,7 +601,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.original_img.filter(filter=ImageFilter.BLUR)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -609,7 +614,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.original_img.filter(filter=ImageFilter.BoxBlur(radius))
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -623,7 +628,7 @@ class Image(GraphicsObject):
         self.blur_amount = radius
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -638,7 +643,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.UnsharpMask(radius=radius, percent=percent))
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -650,7 +655,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.CONTOUR)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -659,7 +664,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.DETAIL)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -668,7 +673,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.EMBOSS)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -677,7 +682,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.FIND_EDGES)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -686,7 +691,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.SHARPEN)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -695,7 +700,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.SMOOTH)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -704,7 +709,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.SMOOTH_MORE)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -713,7 +718,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.EDGE_ENHANCE)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -722,7 +727,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.filter(filter=ImageFilter.EDGE_ENHANCE_MORE)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self
@@ -772,7 +777,7 @@ class Image(GraphicsObject):
         self.img_PIL = self.img_PIL.putpixel((x, y), colour)
         self.update_required = True
 
-        if self not in GraphicsObject.redraw_on_frame[self.layer]:
+        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
         self._update_layer()
         return self

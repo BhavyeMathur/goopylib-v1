@@ -5,7 +5,7 @@ from math import cos, sin
 
 
 class CycleButton(GraphicsObject):
-    def __init__(self, *states, state=0, disabled_graphic=None, autoflush=True, layer=None, tag=None):
+    def __init__(self, *states, state=0, disabled_graphic=None, autoflush=True, layer=None, tag=None, bounds=None):
         self.states = list(states)
         self.state = state
 
@@ -16,7 +16,7 @@ class CycleButton(GraphicsObject):
 
         self.graphic = states[state]
 
-        GraphicsObject.__init__(self, (), tag=tag)
+        GraphicsObject.__init__(self, (), tag=tag, bounds=bounds)
         GraphicsObject.cyclebutton_instances.add(self)
 
         if layer is not None:
@@ -25,9 +25,14 @@ class CycleButton(GraphicsObject):
     def __repr__(self):
         return f"CycleButton({self.graphic} and {len(self.states)} other states)"
 
+    def __iter__(self):
+        for state in self.states:
+            yield state
+
     def _draw(self, canvas=None, options=None):
 
-        self.graphic.draw(canvas, _internal_call=True)
+        self.states[self.state].draw(canvas, _internal_call=True)
+
         for graphic in self.states:
             graphic.graphwin = canvas
         if self.disabled_graphic is not None:
@@ -35,8 +40,11 @@ class CycleButton(GraphicsObject):
 
         return self
 
-    def _undraw(self, set_blinking=True):
-        self.graphic.undraw(set_blinking=set_blinking)
+    def undraw(self, set_blinking=True):
+        for obj in self.states:
+            if obj.drawn:
+                obj.undraw(set_blinking=set_blinking)
+        self.drawn = False
         return self
 
     def base_undraw(self):
@@ -52,9 +60,9 @@ class CycleButton(GraphicsObject):
 
     def _move(self, dx, dy):
         for graphic in self.states:
-            graphic.move(dx, dy)
+            graphic._move(dx, dy)
         if self.disabled_graphic is not None:
-            self.disabled_graphic.move(dx, dy)
+            self.disabled_graphic._move(dx, dy)
 
     def click(self):
         if not self.is_disabled:
@@ -66,10 +74,14 @@ class CycleButton(GraphicsObject):
         return self
 
     def is_clicked(self, mouse_pos):
-        return self.graphic.is_clicked(mouse_pos)
+        if self.bounds is None:
+            return self.graphic.is_clicked(mouse_pos)
+        else:
+            return self.bounds.is_clicked(mouse_pos)
 
     def change_graphic(self, element, value):
         self.states[element] = value
+        self._update_layer()
 
     # -------------------------------------------------------------------------
     # LAYERING SYSTEM FUNCTIONS
@@ -142,48 +154,65 @@ class CycleButton(GraphicsObject):
 
     def enable(self):
         self.is_disabled = False
-        self.undraw()
+
         self.graphic = self.states[self.state]
-        self._draw(self.graphwin)
 
-    def disable(self):
-        self.is_disabled = True
-        self.undraw()
-        self.graphic = self.disabled_graphic
-        self._draw(self.graphwin)
-
-    def toggle_enabled(self):
-        self.is_disabled = not self.is_disabled
-        self.undraw()
-        if self.is_disabled:
-            self.graphic = self.disabled_graphic
-        self.draw(self.graphwin)
-
-    def set_enabled(self, enable=True):
-        if enable:
-            self.enable()
-        else:
-            self.disable()
-
-    # -------------------------------------------------------------------------
-    # SETTER FUNCTIONS
-
-    def set_state(self, state):
-        if self.graphwin.autoflush:
-            self._draw(self.graphwin, ())
-
-        self.state = state
-        self.graphic = self.states[state]
-
-        if self.graphwin.autoflush:
-            self._draw(self.graphwin, ())
-        else:
+        if self.drawn:
             GraphicsObject.redraw_on_frame[self.layer].add(self)
             self._update_layer()
 
         self.rotation = self.graphic.rotation
         self.cosrotation = cos(self.rotation / 57.2958)
         self.sinrotation = sin(self.rotation / 57.2958)
+        self._update_layer()
+        return self
+
+    def disable(self):
+        self.is_disabled = True
+
+        self.graphic = self.disabled_graphic
+
+        if self.drawn:
+            GraphicsObject.redraw_on_frame[self.layer].add(self)
+            self._update_layer()
+
+        self.rotation = self.graphic.rotation
+        self.cosrotation = cos(self.rotation / 57.2958)
+        self.sinrotation = sin(self.rotation / 57.2958)
+        self._update_layer()
+        return self
+
+    def toggle_enabled(self):
+        self.is_disabled = not self.is_disabled
+        if self.is_disabled:
+            self.disable()
+        else:
+            self.enable()
+        return self
+
+    def set_enabled(self, enable=True):
+        if enable:
+            self.enable()
+        else:
+            self.disable()
+        return self
+
+    # -------------------------------------------------------------------------
+    # SETTER FUNCTIONS
+
+    def set_state(self, state):
+        self.state = state
+        self.graphic = self.states[state]
+
+        GraphicsObject.redraw_on_frame[self.layer].add(self)
+        self._update_layer()
+
+        self.rotation = self.graphic.rotation
+        self.cosrotation = cos(self.rotation / 57.2958)
+        self.sinrotation = sin(self.rotation / 57.2958)
+
+        self._update_layer()
+
         return self
 
     def add_state(self, state):
@@ -205,7 +234,8 @@ class CycleButton(GraphicsObject):
             if obj in GraphicsObject.tagged_objects:
                 obj = GraphicsObject.tagged_objects[obj]
             else:
-                raise GraphicsError("The Object you have specified is not a valid state for this CycleButton")
+                raise GraphicsError(f"\n\nGraphicsError: The object you have specified ({obj}) is not a valid state "
+                                    f"for this CycleButton")
         self.undraw()
         self.state = self.states.index(obj)
         self.graphic = obj
@@ -214,6 +244,9 @@ class CycleButton(GraphicsObject):
         self.rotation = self.graphic.rotation
         self.cosrotation = cos(self.rotation / 57.2958)
         self.sinrotation = sin(self.rotation / 57.2958)
+
+        self._update_layer()
+
         return self
 
     def get_object(self):
@@ -234,15 +267,18 @@ class CycleButton(GraphicsObject):
     def set_contrast(self, level):
         for state in self.states:
             state.set_contrast(level)
+        self._update_layer()
         return self
 
     def change_contrast(self, level):
         for state in self.states:
             state.change_contrast(level)
+        self._update_layer()
         return self
 
     def reset_contrast(self):
         self.set_contrast(0)
+        self._update_layer()
 
     # -------------------------------------------------------------------------
     # IMAGE MANIPULATION FUNCTIONS
@@ -250,6 +286,7 @@ class CycleButton(GraphicsObject):
     def crop(self, left=0, top=0, right=500, down=500, align="center"):
         for state in self.states:
             state.crop(left=left, top=top, right=right, down=down, align=align)
+        self._update_layer()
         return self
 
     # Blending & Compositing Functions
@@ -257,26 +294,31 @@ class CycleButton(GraphicsObject):
     def blend(self, state, alpha):
         for state in self.states:
             state.blend(state, alpha)
+        self._update_layer()
         return self
 
     def alpha_composite(self, other):
         for state in self.states:
             state.alpha_composite(other)
+        self._update_layer()
         return self
 
     def composite(self, other, state_mask):
         for state in self.states:
             state.composite(other, state_mask)
+        self._update_layer()
         return self
 
     def convert_greyscale(self):
         for state in self.states:
             state.convert_greyscale()
+        self._update_layer()
         return self
 
     def convert_binary(self):
         for state in self.states:
             state.convert_binary()
+        self._update_layer()
         return self
 
     # ----------------------------------
@@ -285,31 +327,37 @@ class CycleButton(GraphicsObject):
     def flip(self, x_axis=True, y_axis=True):
         for state in self.states:
             state.flip(x_axis=x_axis, y_axis=y_axis)
+        self._update_layer()
         return self
 
     def flip_x(self):
         for state in self.states:
             state.flip_x()
+        self._update_layer()
         return self
 
     def flip_y(self):
         for state in self.states:
             state.flip_y()
+        self._update_layer()
         return self
 
     def flip_xy(self):
         for state in self.states:
             state.flip_xy()
+        self._update_layer()
         return self
 
     def transverse(self):
         for state in self.states:
             state.transverse()
+        self._update_layer()
         return self
 
     def transpose(self):
         for state in self.states:
             state.transpose()
+        self._update_layer()
         return self
 
     # ----------------------------------
@@ -318,16 +366,19 @@ class CycleButton(GraphicsObject):
     def skew_x(self, scale=0.3, sampling="bicubic", align="center"):
         for state in self.states:
             state.skew_x(scale=scale, sampling=sampling, align=align)
+        self._update_layer()
         return self
 
     def skew_y(self, scale=0.3, sampling=None, align="center"):
         for state in self.states:
             state.skew_y(scale=scale, sampling=sampling, align=align)
+        self._update_layer()
         return self
 
     def skew_xy(self, x_scale=0.3, y_scale=None, sampling=None, x_align="center", y_align=None):
         for state in self.states:
             state.skew_xy(x_scale=x_scale, y_scale=y_scale, sampling=sampling, x_align=x_align, y_align=y_align)
+        self._update_layer()
         return self
 
     # ----------------------------------
@@ -336,50 +387,59 @@ class CycleButton(GraphicsObject):
     def resize(self, width, height, sampling=None, _external_call=True):
         for state in self.states:
             state.resize(width, height, sampling=sampling, _external_call=_external_call)
+        self._update_layer()
         return self
 
     def resize_height(self, height, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         for state in self.states:
             state.resize_height(height, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
                                 _external_call=_external_call)
+        self._update_layer()
         return self
 
     def resize_width(self, width, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         for state in self.states:
             state.resize_width(width, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
                                _external_call=_external_call)
+        self._update_layer()
         return self
 
     def resize_factor(self, factor, sampling=None, _external_call=True):
         for state in self.states:
             state.resize_factor(factor, sampling=sampling, _external_call=_external_call)
+        self._update_layer()
         return self
 
     def resize_width_factor(self, factor, sampling=None, _external_call=True):
         for state in self.states:
             state.resize_width_factor(factor, sampling=sampling, _external_call=_external_call)
+        self._update_layer()
         return self
 
     def resize_height_factor(self, factor, sampling=None, _external_call=True):
         for state in self.states:
             state.resize_width_factor(factor, sampling=sampling, _external_call=_external_call)
+        self._update_layer()
         return self
 
     def resize_to_fit(self, obj, sampling=None, _external_call=True):
         for state in self.states:
             state.resize_to_fit(obj, sampling=sampling, _external_call=_external_call)
+        self._update_layer()
         return self
 
     def resize_to_fit_width(self, obj, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         for state in self.states:
             state.resize_to_fit_width(obj, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
                                       _external_call=_external_call)
+        self._update_layer()
         return self
 
     def resize_to_fit_height(self, obj, preserve_aspect_ratio=False, sampling=None, _external_call=True):
         for state in self.states:
             state.resize_to_fit_height(obj, preserve_aspect_ratio=preserve_aspect_ratio, sampling=sampling,
                                        _external_call=_external_call)
+        self._update_layer()
         return self
 
     # ----------------------------------
@@ -388,21 +448,25 @@ class CycleButton(GraphicsObject):
     def blur(self):
         for state in self.states:
             state.blur()
+        self._update_layer()
         return self
 
     def blur_box(self, radius=3):
         for state in self.states:
             state.blur_box(radius=radius)
+        self._update_layer()
         return self
 
     def blur_gaussian(self, radius=3):
         for state in self.states:
             state.blur_gaussian(radius=radius)
+        self._update_layer()
         return self
 
     def sharpen(self, radius=3, percent=150):
         for state in self.states:
             state.sharpen(radius=radius, percent=percent)
+        self._update_layer()
         return self
 
     # ----------------------------------
@@ -411,44 +475,53 @@ class CycleButton(GraphicsObject):
     def filter_contour(self):
         for state in self.states:
             state.filter_contour()
+        self._update_layer()
         return self
 
     def filter_detail(self):
         for state in self.states:
             state.filter_detail()
+        self._update_layer()
         return self
 
     def filter_emboss(self):
         for state in self.states:
             state.filter_emboss()
+        self._update_layer()
         return self
 
     def filter_find_edges(self):
         for state in self.states:
             state.filter_find_edges()
+        self._update_layer()
         return self
 
     def filter_sharpen(self):
         for state in self.states:
             state.filter_sharpen()
+        self._update_layer()
         return self
 
     def filter_smooth(self):
         for state in self.states:
             state.filter_smooth()
+        self._update_layer()
         return self
 
     def filter_more_smooth(self):
         for state in self.states:
             state.filter_more_smooth()
+        self._update_layer()
         return self
 
     def filter_enhance_edge(self):
         for state in self.states:
             state.filter_enhance_edge()
+        self._update_layer()
         return self
 
     def filter_more_enhance_edge(self):
         for state in self.states:
             state.more_enhance_edge()
+        self._update_layer()
         return self

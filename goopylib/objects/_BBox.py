@@ -114,9 +114,6 @@ class BBox(GraphicsObject):
     def reset_bounds(self):
         self.bounds = BBox(self.p1, self.p2)
 
-    def set_bounds(self, p1, p2):
-        self.bounds = BBox(p1, p2)
-
     def set_coords(self, p1, p2):
 
         x1 = p1.x

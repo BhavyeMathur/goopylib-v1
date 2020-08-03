@@ -10,7 +10,7 @@ from time import time as timetime
 
 class AnimatedImage(GraphicsObject):
     def __init__(self, p, frames, align="center", cursor="arrow", update_time=1/24, layer=0,
-                 tag=None, autoflush=True, frame_callback=None):
+                 tag=None, autoflush=True, frame_callback=None, bounds=None):
 
         if not (callable(frame_callback) or frame_callback is None):
             raise GraphicsError("\n\nGraphicsError: Frame Increment callback for Animated Image must be a function, "
@@ -21,7 +21,7 @@ class AnimatedImage(GraphicsObject):
         self.drawn_frame = 0
         self.frame_bound_objects = {*()}
 
-        self.imgs = [Image(p, path, align=align, cursor=cursor) for path in frames]
+        self.imgs = [Image(p, path, align=align, cursor=cursor, bounds=bounds) for path in frames]
 
         self.last_update_time = timetime()
         self.update_time = update_time
@@ -38,6 +38,10 @@ class AnimatedImage(GraphicsObject):
 
     def __repr__(self):
         return f"AnimatedImage({self.anchor}, {self.imgs[self.frame]} and {self.number_of_frames - 1} others.)"
+    
+    def __iter__(self):
+        for img in self.imgs:
+            yield img
 
     def _draw(self, canvas, options):
         self.imgs[self.frame].draw(canvas, _internal_call=True)
@@ -58,6 +62,63 @@ class AnimatedImage(GraphicsObject):
     def _rotate(self, dr, sampling=None, center=None):
         for img in self.imgs:
             img.rotate(dr)
+            
+    def move_up_layer(self, layers=1):
+        if not isinstance(layers, int):
+            raise GraphicsError(f"\n\nGraphicsError: layers to move up must be an integer, not {layers}")
+        if layers < 0:
+            raise GraphicsError("\n\nGraphicsError: layers to move up must be greater than (or equal to) 0, "
+                                f"not {layers}")
+
+        GraphicsObject.object_layers[self.layer].remove(self)
+        self.layer += layers
+
+        while self.layer > len(GraphicsObject.object_layers) - 1:
+            GraphicsObject.object_layers.append([])
+        GraphicsObject.object_layers[self.layer].add(self)
+
+        for obj in self.imgs:
+            obj.move_up_layer(layers=layers)
+        return self
+
+    def move_down_layer(self, layers=1):
+        if not isinstance(layers, int):
+            raise GraphicsError(f"\n\nGraphicsError: layers to move down must be an integer, not {layers}")
+        if layers < 0:
+            raise GraphicsError("\n\nGraphicsError: layers to move down must be greater than (or equal to) 0, "
+                                f"not {layers}")
+
+        GraphicsObject.object_layers[self.layer].remove(self)
+        self.layer += layers
+        if self.layer < 0:
+            self.layer = 0
+
+        while self.layer > len(GraphicsObject.object_layers) - 1:
+            GraphicsObject.object_layers.append([])
+        GraphicsObject.object_layers[self.layer].add(self)
+
+        for obj in self.imgs:
+            obj.move_down_layer(layers=layers)
+        return self
+
+    def set_layer(self, layer=0):
+        if not isinstance(layer, int):
+            raise GraphicsError(f"\n\nGraphicsError: layer to set to must be an integer, not {layer}")
+        if layer < 0:
+            raise GraphicsError("\n\nGraphicsError: layer to set to must be greater than (or equal to) 0, "
+                                f"not {layer}")
+
+        for obj in self.imgs:
+            obj.set_layer(layer=layer)
+
+        GraphicsObject.object_layers[self.layer].remove(self)
+        while layer > len(GraphicsObject.object_layers) - 1:
+            GraphicsObject.object_layers.append({*()})
+        GraphicsObject.object_layers[layer].add(self)
+
+        self.layer = layer
+
+        return self
 
     def set_autoflush(self, autoflush):
         self.autoflush = autoflush
@@ -72,13 +133,6 @@ class AnimatedImage(GraphicsObject):
         self.frame += 1
         if self.frame == self.number_of_frames:
             self.frame = 0
-        if self.drawn:
-            if self.graphwin.autoflush:
-                self.undraw()
-                self.draw(self.graphwin)
-            else:
-                if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                    GraphicsObject.redraw_on_frame[self.layer].add(self)
 
         if _time is None:
             self.last_update_time = timetime()
@@ -91,6 +145,8 @@ class AnimatedImage(GraphicsObject):
 
         if self.callbacks["frame increment"] is not None:
             self.callbacks["frame increment"]()
+
+        self._update_layer()
         return self
 
     def set_frame_increment_callback(self, func):
@@ -109,7 +165,7 @@ class AnimatedImage(GraphicsObject):
                 self.undraw()
                 self.draw(self.graphwin)
             else:
-                if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
                     GraphicsObject.redraw_on_frame[self.layer].append(self)
 
         if _time is None:
@@ -119,6 +175,7 @@ class AnimatedImage(GraphicsObject):
 
         for obj in self.frame_bound_objects:
             obj.decrement_frame(_time=_time, _internal_call=_internal_call)
+        self._update_layer()
         return self
 
     def set_frame(self, frame, _time=None, _internal_call=False):
@@ -133,13 +190,14 @@ class AnimatedImage(GraphicsObject):
                 self.undraw()
                 self.draw(self.graphwin)
             else:
-                if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
                     GraphicsObject.redraw_on_frame[self.layer].append(self)
 
         if _time is None:
             self.last_update_time = timetime()
         else:
             self.last_update_time = _time
+        self._update_layer()
         return self
 
     def bind_frame_to(self, obj):
@@ -170,8 +228,6 @@ class AnimatedImage(GraphicsObject):
         self.imgs[self.drawn_frame].base_undraw()
 
     def is_clicked(self, mouse_pos):
-        for img in self.imgs:
-            img.graphwin = self.graphwin
         return self.imgs[self.frame].is_clicked(mouse_pos)
 
     def save(self, filename):
