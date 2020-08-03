@@ -41,7 +41,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Examples" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -60,11 +60,11 @@
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\Examples" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
     </key>
   </component>
   <component name="RunManager" selected="Python.2-ChestGame">
@@ -183,8 +183,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.2-ChestGame" />
-        <item itemvalue="Python.Pac-ManAnimation" />
         <item itemvalue="Python.setup" />
+        <item itemvalue="Python.Pac-ManAnimation" />
         <item itemvalue="Python.HelloWorld-1" />
         <item itemvalue="Python.ModernGUI-Example" />
       </list>
@@ -269,26 +269,26 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="2168" height="495" key="GridCell.Tab.-1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594733814143" />
-    <state width="1071" height="233" key="GridCell.Tab.0.bottom" timestamp="1596383576635">
+    <state width="1072" height="231" key="GridCell.Tab.0.bottom" timestamp="1596435245574">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1071" height="233" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596383576635" />
-    <state width="1071" height="233" key="GridCell.Tab.0.center" timestamp="1596383576635">
+    <state width="1072" height="231" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596435245574" />
+    <state width="1072" height="231" key="GridCell.Tab.0.center" timestamp="1596435245574">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1071" height="233" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596383576635" />
-    <state width="1071" height="233" key="GridCell.Tab.0.left" timestamp="1596383576635">
+    <state width="1072" height="231" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596435245574" />
+    <state width="1072" height="231" key="GridCell.Tab.0.left" timestamp="1596435245574">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1071" height="233" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596383576635" />
-    <state width="1071" height="233" key="GridCell.Tab.0.right" timestamp="1596383576635">
+    <state width="1072" height="231" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596435245574" />
+    <state width="1072" height="231" key="GridCell.Tab.0.right" timestamp="1596435245574">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="666" height="312" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1071" height="233" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596383576635" />
+    <state width="1072" height="231" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596435245574" />
     <state width="2168" height="495" key="GridCell.Tab.1.bottom" timestamp="1594733811918">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -309,10 +309,10 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="1164" y="333" key="SettingsEditor/0.0.2189.1419@0.0.2189.1419" timestamp="1595085455245" />
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1596430997482">
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1596441432305">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1596430997482" />
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1596441432305" />
     <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595604872984">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
