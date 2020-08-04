@@ -2,7 +2,7 @@
 
 ### Projects made using Goopy
 
-As these are entire projects with a lot of code and non-goopy elements, I have not supplied the code. But, if you want to look at example projects with code, skip to the next section 'Examples'. 
+As these are entire projects with a lot of code and non-goopy elements, I have not supplied the code. But, if you want to look at example projects with code, skip to the 'Examples' section.
 
 **1. A Pac-Man Recreation**
 
