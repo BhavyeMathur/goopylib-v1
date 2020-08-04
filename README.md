@@ -1,5 +1,35 @@
 # Goopy
 
+### Projects made using Goopy
+
+As these are entire projects with a lot of code and non-goopy elements, I have not supplied the code. But, if you want to look at example projects with code, skip to the next section 'Examples'. 
+
+**1. A Pac-Man Recreation**
+
+I worked on this as a school project and used the goopy library to create fully functional Pac-Man Game! (and an arcade too!) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and fruits to go on to the next level.
+
+![Pac-Man Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man.png)
+
+**2. Multiplayer UNO**
+
+During the COVID-19 Pandemic, my friends and I often hopped on a call and played a few games together: one such, was UNO. But the app we used was very laggy and didn't really function well. So I took it upon myself to create a Multiplayer UNO game in 5 days or less - and I succeeded on day 6... *"but day indices start at 0 so it was really the fifth day..."*. 
+
+The game allows 2-7 players to play together and the graphics animate the cards, rotate them randomly, make them travel to the centre (as opposed to just instantly moving there) and more.
+
+Here is a screenshot of the game:
+
+![UNO Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/MultiplayerUNO.png)
+
+Avatar graphics are from freepik.com
+
+**3. Activity Club Selection App**
+
+My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort through hundreds of entries and assign everybody a club - but not this year. This year I made an activity club selection app using the goopy library that would automatically do all this work for you! 
+
+Goopy is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it to anyone to use. Now mind you, this was made with an older version of Goopy so it did not contain lots of animations and visual feedback, but here is a screenshot:
+
+![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
+
 ## Introduction
 Goopy is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
  GUIs, games, and animations.
@@ -79,35 +109,6 @@ from goopylib.Point import Point
 
 There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written document and the creation of the documentation has begun at: https://github.com/BhavyeMathur/goopylib/wiki
 
-### Projects made using Goopy
-
-As these are entire projects with a lot of code and non-goopy elements, I have not supplied the code. But, if you want to look at example projects with code, skip to the next section 'Examples'. 
-
-**1. A Pac-Man Recreation**
-
-I worked on this as a school project and used the goopy library to create fully functional Pac-Man Game! (and an arcade too!) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and fruits to go on to the next level.
-
-![Pac-Man Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man.png)
-
-**2. Multiplayer UNO**
-
-During the COVID-19 Pandemic, my friends and I often hopped on a call and played a few games together: one such, was UNO. But the app we used was very laggy and didn't really function well. So I took it upon myself to create a Multiplayer UNO game in 5 days or less - and I succeeded on day 6... *"but day indices start at 0 so it was really the fifth day..."*. 
-
-The game allows 2-7 players to play together and the graphics animate the cards, rotate them randomly, make them travel to the centre (as opposed to just instantly moving there) and more.
-
-Here is a screenshot of the game:
-
-![UNO Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/MultiplayerUNO.png)
-
-Avatar graphics are from freepik.com
-
-**3. Activity Club Selection App**
-
-My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort through hundreds of entries and assign everybody a club - but not this year. This year I made an activity club selection app using the goopy library that would automatically do all this work for you! 
-
-Goopy is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it to anyone to use. Now mind you, this was made with an older version of Goopy so it did not contain lots of animations and visual feedback, but here is a screenshot:
-
-![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
 
 ### Examples
 
@@ -115,7 +116,7 @@ These examples with the code and required textures are included in folders for y
 
 1. This is a simply, modern, light Login Page that can be used for your application. It demonstrates the usage of Checkbox, Entries, and Buttons to take input from the user and was made entirely with just 60 lines of code! (excluding comments). 
 
-This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid input, a functional tab to change from registering to signing up, and more.
+This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid input, a functional tab to change from registering to signing up, and more
 
 ![GUI Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ModernUI-LoginPage%20Example/ExampleScreenshot.png)
 
