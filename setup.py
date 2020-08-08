@@ -15,7 +15,7 @@ setup(
               "goopylib/sound": "goopylib/sound",
               "goopylib/physics": "goopylib/physics"},
 
-    version='1.0.222b20',
+    version='1.0.226',
     license='MIT License',
 
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and animations.',
@@ -25,7 +25,7 @@ setup(
     author='Bhavye Mathur',
     author_email='bhavyemathur@gmail.com',
     url='https://github.com/BhavyeMathur/goopylib',
-    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.222-beta.tar.gz',
+    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.0.226.tar.gz',
     keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
     install_requires=['pillow', ],
     project_urls={"Bug Tracker": "https://github.com/BhavyeMathur/goopylib/issues",
