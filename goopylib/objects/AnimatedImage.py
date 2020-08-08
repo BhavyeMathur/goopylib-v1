@@ -55,7 +55,7 @@ class AnimatedImage(GraphicsObject):
 
     def _move(self, dx, dy):
         for img in self.imgs:
-            img._move(dx, dy)
+            img.move(dx, dy)
         self.anchor.x += dx
         self.anchor.y += dy
 
@@ -160,13 +160,6 @@ class AnimatedImage(GraphicsObject):
         self.frame -= 1
         if self.frame == -1:
             self.frame = self.number_of_frames - 1
-        if self.drawn:
-            if self.graphwin.autoflush:
-                self.undraw()
-                self.draw(self.graphwin)
-            else:
-                if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
-                    GraphicsObject.redraw_on_frame[self.layer].append(self)
 
         if _time is None:
             self.last_update_time = timetime()
@@ -185,13 +178,6 @@ class AnimatedImage(GraphicsObject):
                                 f"{self.number_of_frames - 1}, not {frame}")
 
         self.frame = frame
-        if self.drawn:
-            if self.graphwin.autoflush:
-                self.undraw()
-                self.draw(self.graphwin)
-            else:
-                if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
-                    GraphicsObject.redraw_on_frame[self.layer].append(self)
 
         if _time is None:
             self.last_update_time = timetime()
@@ -226,6 +212,7 @@ class AnimatedImage(GraphicsObject):
 
     def base_undraw(self):
         self.imgs[self.drawn_frame].base_undraw()
+        self.drawn = False
 
     def is_clicked(self, mouse_pos):
         return self.imgs[self.frame].is_clicked(mouse_pos)

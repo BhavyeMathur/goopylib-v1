@@ -30,7 +30,6 @@ class CycleButton(GraphicsObject):
             yield state
 
     def _draw(self, canvas=None, options=None):
-
         self.states[self.state].draw(canvas, _internal_call=True)
 
         for graphic in self.states:
@@ -51,6 +50,7 @@ class CycleButton(GraphicsObject):
         for obj in self.states:
             if obj.drawn:
                 obj.base_undraw()
+        self.drawn = False
 
     def _rotate(self, dr, sampling="bicubic", center=None):
         for graphic in self.states:
@@ -60,17 +60,17 @@ class CycleButton(GraphicsObject):
 
     def _move(self, dx, dy):
         for graphic in self.states:
-            graphic._move(dx, dy)
+            graphic.move(dx, dy)
         if self.disabled_graphic is not None:
-            self.disabled_graphic._move(dx, dy)
+            self.disabled_graphic.move(dx, dy)
 
     def click(self):
         if not self.is_disabled:
-            self.undraw()
             self.state += 1
             self.state %= len(self.states)
             self.graphic = self.states[self.state]
-            self.draw(self.graphwin)
+
+            self._update_layer()
         return self
 
     def is_clicked(self, mouse_pos):
@@ -157,10 +157,6 @@ class CycleButton(GraphicsObject):
 
         self.graphic = self.states[self.state]
 
-        if self.drawn:
-            GraphicsObject.redraw_on_frame[self.layer].add(self)
-            self._update_layer()
-
         self.rotation = self.graphic.rotation
         self.cosrotation = cos(self.rotation / 57.2958)
         self.sinrotation = sin(self.rotation / 57.2958)
@@ -171,10 +167,6 @@ class CycleButton(GraphicsObject):
         self.is_disabled = True
 
         self.graphic = self.disabled_graphic
-
-        if self.drawn:
-            GraphicsObject.redraw_on_frame[self.layer].add(self)
-            self._update_layer()
 
         self.rotation = self.graphic.rotation
         self.cosrotation = cos(self.rotation / 57.2958)
@@ -201,17 +193,18 @@ class CycleButton(GraphicsObject):
     # SETTER FUNCTIONS
 
     def set_state(self, state):
-        self.state = state
-        self.graphic = self.states[state]
+        if state != self.state:
+            if self.graphic in GraphicsObject.redraw_on_frame[self.layer]:
+                GraphicsObject.redraw_on_frame[self.layer].remove(self.graphic)
 
-        GraphicsObject.redraw_on_frame[self.layer].add(self)
-        self._update_layer()
+            self.state = state
+            self.graphic = self.states[state]
 
-        self.rotation = self.graphic.rotation
-        self.cosrotation = cos(self.rotation / 57.2958)
-        self.sinrotation = sin(self.rotation / 57.2958)
+            self.rotation = self.graphic.rotation
+            self.cosrotation = cos(self.rotation / 57.2958)
+            self.sinrotation = sin(self.rotation / 57.2958)
 
-        self._update_layer()
+            self._update_layer()
 
         return self
 
@@ -236,16 +229,19 @@ class CycleButton(GraphicsObject):
             else:
                 raise GraphicsError(f"\n\nGraphicsError: The object you have specified ({obj}) is not a valid state "
                                     f"for this CycleButton")
-        self.undraw()
-        self.state = self.states.index(obj)
-        self.graphic = obj
-        self.draw(self.graphwin)
 
-        self.rotation = self.graphic.rotation
-        self.cosrotation = cos(self.rotation / 57.2958)
-        self.sinrotation = sin(self.rotation / 57.2958)
+        if obj != self.graphic:
+            if self.graphic in GraphicsObject.redraw_on_frame[self.layer]:
+                GraphicsObject.redraw_on_frame[self.layer].remove(self.graphic)
 
-        self._update_layer()
+            self.state = self.states.index(obj)
+            self.graphic = obj
+
+            self.rotation = self.graphic.rotation
+            self.cosrotation = cos(self.rotation / 57.2958)
+            self.sinrotation = sin(self.rotation / 57.2958)
+
+            self._update_layer()
 
         return self
 

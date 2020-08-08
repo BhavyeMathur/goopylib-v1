@@ -5,9 +5,16 @@ with open("README.md", "r") as fh:
 
 setup(
     name='goopylib',
-    package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects', ":applications": 'goopylib/applications'},
-    packages={"goopylib": "goopylib", "goopylib/math": "goopylib/math", "goopylib/objects": "goopylib/objects",
-              "goopylib/applications": "goopylib/applications"},
+    package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects', ":applications": 'goopylib/applications',
+                 ":sound": 'goopylib/sound', ":physics": 'goopylib/physics'},
+
+    packages={"goopylib": "goopylib",
+              "goopylib/math": "goopylib/math",
+              "goopylib/objects": "goopylib/objects",
+              "goopylib/applications": "goopylib/applications",
+              "goopylib/sound": "goopylib/sound",
+              "goopylib/physics": "goopylib/physics"},
+
     version='1.0.222b20',
     license='MIT License',
 

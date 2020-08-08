@@ -41,7 +41,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Examples" />
+    <property name="last_opened_file_path" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -53,22 +53,22 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\Examples" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man\goopylib" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Minecraft\textures\bedrock" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\Examples" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man\goopylib" />
-    </key>
   </component>
-  <component name="RunManager" selected="Python.2-ChestGame">
-    <configuration name="2-ChestGame" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.sound_test">
+    <configuration name="0-HelloWorld" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -80,7 +80,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/2-ChestGame.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/0-HelloWorld.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -89,7 +89,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="HelloWorld-1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="1-PokemonChooser" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -101,7 +101,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment\1-HelloWorld.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/1-PokemonChooser.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -110,19 +110,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ModernGUI-Example" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="goopylib" />
+    <configuration name="2-PokemonBattle (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Examples/ModernUI-LoginPage Example" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Examples/ModernUI-LoginPage Example/ModernGUI-Example.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/2-PokemonBattle.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -131,19 +131,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Pac-ManAnimation" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="goopylib" />
+    <configuration name="FirstPythonFile" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Examples/Pac-Man-Animation Example" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Examples/Pac-Man-Animation Example/Pac-ManAnimation.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/FirstPythonFile.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -152,7 +152,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="setup" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="sound_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="goopylib" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -164,8 +164,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/setup.py" />
-      <option name="PARAMETERS" value="bdist_wheel" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sound_test.py" />
+      <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -174,19 +174,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.2-ChestGame" />
-      <item itemvalue="Python.HelloWorld-1" />
-      <item itemvalue="Python.ModernGUI-Example" />
-      <item itemvalue="Python.Pac-ManAnimation" />
-      <item itemvalue="Python.setup" />
+      <item itemvalue="Python.0-HelloWorld" />
+      <item itemvalue="Python.1-PokemonChooser" />
+      <item itemvalue="Python.2-PokemonBattle (1)" />
+      <item itemvalue="Python.FirstPythonFile" />
+      <item itemvalue="Python.sound_test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.2-ChestGame" />
-        <item itemvalue="Python.setup" />
-        <item itemvalue="Python.Pac-ManAnimation" />
-        <item itemvalue="Python.HelloWorld-1" />
-        <item itemvalue="Python.ModernGUI-Example" />
+        <item itemvalue="Python.sound_test" />
+        <item itemvalue="Python.1-PokemonChooser" />
+        <item itemvalue="Python.FirstPythonFile" />
+        <item itemvalue="Python.0-HelloWorld" />
+        <item itemvalue="Python.2-PokemonBattle (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -269,26 +269,30 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="2168" height="495" key="GridCell.Tab.-1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594733814143" />
-    <state width="1072" height="231" key="GridCell.Tab.0.bottom" timestamp="1596435245574">
+    <state width="1354" height="470" key="GridCell.Tab.0.bottom" timestamp="1596860924242">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
+    <state width="1073" height="155" key="GridCell.Tab.0.bottom/0.0.1094.690@0.0.1094.690" timestamp="1596546271301" />
     <state width="666" height="312" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1072" height="231" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596435245574" />
-    <state width="1072" height="231" key="GridCell.Tab.0.center" timestamp="1596435245574">
+    <state width="1354" height="470" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596860924242" />
+    <state width="1354" height="470" key="GridCell.Tab.0.center" timestamp="1596860924242">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
+    <state width="1073" height="155" key="GridCell.Tab.0.center/0.0.1094.690@0.0.1094.690" timestamp="1596546271299" />
     <state width="666" height="312" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1072" height="231" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596435245574" />
-    <state width="1072" height="231" key="GridCell.Tab.0.left" timestamp="1596435245574">
+    <state width="1354" height="470" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596860924242" />
+    <state width="1354" height="470" key="GridCell.Tab.0.left" timestamp="1596860924242">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
+    <state width="1073" height="155" key="GridCell.Tab.0.left/0.0.1094.690@0.0.1094.690" timestamp="1596546271298" />
     <state width="666" height="312" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1072" height="231" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596435245574" />
-    <state width="1072" height="231" key="GridCell.Tab.0.right" timestamp="1596435245574">
+    <state width="1354" height="470" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596860924242" />
+    <state width="1354" height="470" key="GridCell.Tab.0.right" timestamp="1596860924242">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
+    <state width="1073" height="155" key="GridCell.Tab.0.right/0.0.1094.690@0.0.1094.690" timestamp="1596546271300" />
     <state width="666" height="312" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1072" height="231" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596435245574" />
+    <state width="1354" height="470" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596860924242" />
     <state width="2168" height="495" key="GridCell.Tab.1.bottom" timestamp="1594733811918">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -309,10 +313,10 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="1164" y="333" key="SettingsEditor/0.0.2189.1419@0.0.2189.1419" timestamp="1595085455245" />
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1596441432305">
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1596814832389">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1596441432305" />
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1596814832389" />
     <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595604872984">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -321,9 +325,9 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="837" y="353" key="refactoring.ChangeSignatureDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1595651941504" />
-    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1596257402853">
+    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup" timestamp="1596555799649">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup/0.0.2189.1419@0.0.2189.1419" timestamp="1596257402853" />
+    <state x="1422" y="430" width="672" height="678" key="search.everywhere.popup/0.0.2189.1419@0.0.2189.1419" timestamp="1596555799649" />
   </component>
 </project>

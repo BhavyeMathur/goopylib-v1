@@ -140,8 +140,28 @@ Goopy also has functionality for other animations such as moving to locations, r
 9. Bryan Oakley, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with Unfocusing the Entry widget when the user clicks elsewhere
 10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th July 2020 - Helped with answering a question about smoothing in Tkinter
 
-
 ## Version History
+
+### 1.1
+
+There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
+on a Sound Engine for goopylib which I want to be part of 1.1
+
+#### 1.1.0-alpha 7th-8th August 2020
+
+* Added a Sound class that plays, pauses, crops, & destroys sounds. You can play multiple sounds & get data for each sound
+
+#### 
+
+### v1.0
+
+#### 1.0.226 3rd August 2020
+
+* Added a `has_moved()` to the GraphicsObject class to check if the object has moved from the last call
+* Fixed instances of misspelt lines to line which was causing a name error
+
+* Got rid of the Image cache in the Image class as it was mainly unnecessary
+* Added empty physics & sounds folders to goopylib
 
 #### 1.0.222-beta 2nd August 2020
 
@@ -155,8 +175,6 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 * Checking for Obstacle & Movement Bounds collisions now uses the Graphic's Movement Bounds if they are not None
 * Added layering functions to the Animated Image class
-
-### v1.0
 
 #### 1.0.214-beta 1st August 2020
 

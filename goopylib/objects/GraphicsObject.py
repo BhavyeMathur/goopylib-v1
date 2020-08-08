@@ -1,6 +1,5 @@
 from goopylib.styles import *
 from goopylib.constants import *
-from goopylib.constants import _root
 
 from goopylib.math.Easing import *
 from math import cos, sin
@@ -106,6 +105,7 @@ class GraphicsObject:
         self.movement_bounds = None
 
         self.last_obstacle_checked_pos = None
+        self.has_object_moved = True
 
         self.movement_lines_enabled = True
         self.obstacles_enabled = True
@@ -119,6 +119,7 @@ class GraphicsObject:
         self.rotation = 0
         self.cosrotation = 1
         self.sinrotation = 0
+        self.has_rotated = False
 
         self.x_skew = 0
         self.y_skew = 0
@@ -193,7 +194,7 @@ class GraphicsObject:
             return self
 
         if self.drawn:
-            self.base_undraw()
+            self.base_undraw() 
 
         self.id = self._draw(graphwin, self.config)
         self.graphwin = graphwin
@@ -207,21 +208,23 @@ class GraphicsObject:
         return self
 
     def base_undraw(self):
+        self.graphwin.delete(self.id)
         try:
-            self.graphwin.delete(self.id)
-            self.graphwin.del_item(self)
-        except:
-            return
+            self.graphwin.del_item(self.id)
+        except ValueError:
+            pass
+        self.drawn = False
 
     def _update_layer(self):
-        if self.drawn and self not in GraphicsObject.redraw_on_frame[self.layer]:
-            GraphicsObject.redraw_on_frame[self.layer].add(self)
+        if self.drawn:
+            if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                GraphicsObject.redraw_on_frame[self.layer].add(self)
 
-        for layer_index, layer in enumerate(GraphicsObject.object_layers):
-            if layer_index > self.layer:
-                for obj in layer:
-                    if obj.drawn and obj not in GraphicsObject.redraw_on_frame[layer_index]:
-                        GraphicsObject.redraw_on_frame[layer_index].add(obj)
+            for layer_index, layer in enumerate(GraphicsObject.object_layers):
+                if layer_index > self.layer:
+                    for obj in layer:
+                        if obj.drawn and obj not in GraphicsObject.redraw_on_frame[layer_index]:
+                            GraphicsObject.redraw_on_frame[layer_index].add(obj)
 
     def undraw(self, set_blinking=True):
 
@@ -235,8 +238,10 @@ class GraphicsObject:
         if self.drawn:
             if not self.graphwin.closed:
                 self.graphwin.delete(self.id)
-                if self.graphwin.autoflush:
-                    _root.update()
+                try:
+                    self.graphwin.del_item(self.id)
+                except ValueError:
+                    pass
 
             if self in GraphicsObject.redraw_on_frame[self.layer]:
                 GraphicsObject.redraw_on_frame[self.layer].remove(self)
@@ -361,7 +366,7 @@ class GraphicsObject:
 
         self.is_draggable = (draggable_x, draggable_x if draggable_y is None else draggable_y)
         self.callbacks["DraggingX"] = callback_x
-        self.callbacks["DraggingY"] = callback_x if callback_y is None else callback_y
+        self.callbacks["DraggingY"] = callback_y
 
         if self.is_draggable[0] or self.is_draggable[1]:
             GraphicsObject.draggable_objects.add(self)
@@ -383,7 +388,7 @@ class GraphicsObject:
         else:
             GraphicsObject.draggable_objects.remove(self)
         return self
-
+    
     def set_draggable_y(self, draggable=True, callback=None):
         if not isinstance(draggable, bool):
             raise GraphicsError(f"\n\nGraphicsError: Draggable value must be a boolean, not {draggable}")
@@ -669,7 +674,7 @@ class GraphicsObject:
                 raise GraphicsError(f"\n\nGraphicsError: objects to add as lines must be Line object, not {obj}")
 
         if destroy_previous:
-            for lines in self.movement_lines:
+            for line in self.movement_lines:
                 line.destroy()
         self.movement_lines = lines
         return self
@@ -707,18 +712,18 @@ class GraphicsObject:
         return self
     
     def clear_movement_lines(self):
-        for lines in self.movement_lines:
+        for line in self.movement_lines:
             line.destroy()
         self.movement_lines.clear()
         return self
 
     def draw_movement_lines(self):
-        for lines in self.movement_lines:
+        for line in self.movement_lines:
             line.draw(self.graphwin)
         return self
 
     def undraw_movement_lines(self):
-        for lines in self.movement_lines:
+        for line in self.movement_lines:
             line.undraw()
         return self
     
@@ -748,6 +753,13 @@ class GraphicsObject:
     # OBJECT TRANSFORMATION FUNCTIONS
 
     # Object Moving Functions
+
+    def has_moved(self):
+        if self.has_object_moved:
+            self.has_object_moved = False
+            return True
+        else:
+            return False
 
     def move(self, dx, dy, align="center", _not_animation_call=True):
 
@@ -802,6 +814,8 @@ class GraphicsObject:
 
         if self.movement_lines_enabled:
             pass
+
+        self.has_object_moved = True
                     
         if align == "center":
             self._move(dx, dy)
@@ -935,13 +949,6 @@ class GraphicsObject:
             self.sinrotation = sin(self.rotation / 57.2958)
 
             self._rotate(dr, sampling=sampling, center=center)
-            if self.drawn:
-                if self.graphwin.autoflush:
-                    self.draw(self.graphwin)
-                    self.graphwin.update_win()
-                else:
-                    if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                        GraphicsObject.redraw_on_frame[self.layer].add(self)
 
         self._update_layer()
 
@@ -1775,7 +1782,8 @@ class GraphicsObject:
 
     def check_is_animating(self):
         return self.is_gliding or self.is_rotating or self.is_animating_fill or self.is_animating_outline \
-               or self.is_animating_width or self.is_animating_skew or self.is_animating_contrast or self.animating_blur
+               or self.is_animating_width or self.is_animating_skew or self.is_animating_contrast \
+               or self.is_animating_blur
 
     # -------------------------------------------------------------------------
     # TIME LEFT FOR ANIMATION FUNCTIONS
@@ -2061,8 +2069,11 @@ class GraphicsObject:
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
+        print(GraphicsObject.redraw_on_frame, "\n")
+
         for layer in GraphicsObject.redraw_on_frame:
             for obj in layer:
+                print("-----", obj)
                 obj.draw(graphwin=graphwin)
             layer.clear()
 
