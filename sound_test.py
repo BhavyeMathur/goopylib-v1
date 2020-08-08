@@ -1,11 +1,26 @@
 from goopylib.sound.imports import *
+from matplotlib import pyplot as plt
 
-test_sound = Sound("eatghost.wav")
-test_sound.play()
+import wave
 
-"""
-while test_sound.check_is_playing():
-    test_sound.pause()
-    sleep(0.1)
-    test_sound.unpause()
-    sleep(0.1)"""
+#create_square_wave("output.wav", 1, freq=440, volume=0.5)
+
+sound_file = "output.wav"
+
+with wave.open(sound_file) as wavfile:
+    file = wavfile.readframes(wavfile.getnframes())
+    channels = wavfile.getnchannels()
+
+    file_data = [*file]
+    file_channels = [file_data[channel::channels] for channel in range(channels)]
+
+for channel in file_channels:
+    plt.plot(channel)
+
+sound = Sound(sound_file).play()
+
+print("Length:", sound.get_length())
+print("Samples/Sec:", sound.get_samples_per_second())
+print("Channels:", sound.get_number_of_channels())
+
+plt.show()

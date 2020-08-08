@@ -143,14 +143,19 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 ## Version History
 
-### 1.1
+### v1.1
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
-#### 1.1.0-alpha 7th-8th August 2020
+#### 1.1.5-alpha0 7th-8th August 2020
 
 * Added a Sound class that plays, pauses, crops, & destroys sounds. You can play multiple sounds & get data for each sound
+* Added __init__.py files to the physics & sound subpackages
+* Added `create_sin_wave()`, `create_square_wave()`, and `create_sawtooth_wave()` functions to create a simple sounds
+
+* You can now create sounds by simply inputting a list of frequencies into a function. 
+* Added numpy as a dependency as it is used for matrix multiplication in the Bezier Curve functions (soon to be removed though)
 
 #### 
 
