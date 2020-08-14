@@ -6,7 +6,7 @@ from goopylib.sound.Sound import Sound
 from goopylib.util import GraphicsError
 
 
-def create_sin_wave(filename, duration, freq, tag=None, volume=1, sample_rate=44100):
+def create_sin_wave(filename, duration, freq, tag=None, volume=1, sample_rate=7000):
 
     if not (isinstance(duration, float) or isinstance(duration, int)):
         raise GraphicsError(f"\n\nGraphicsError: duration value for sin wave must be an int or float, not {duration}")
@@ -33,7 +33,7 @@ def create_sin_wave(filename, duration, freq, tag=None, volume=1, sample_rate=44
     return create_sound_from_values(filename, audio, tag=tag, channels=1, sample_rate=sample_rate)
 
 
-def create_sawtooth_wave(filename, duration, freq, reverse=False, tag=None, volume=1, sample_rate=44100):
+def create_sawtooth_wave(filename, duration, freq, reverse=False, tag=None, volume=1, sample_rate=7000):
     
     if not (isinstance(duration, float) or isinstance(duration, int)):
         raise GraphicsError(f"\n\nGraphicsError: duration value for sawtooth wave must be an int or float, not {duration}")
@@ -61,7 +61,7 @@ def create_sawtooth_wave(filename, duration, freq, reverse=False, tag=None, volu
     return create_sound_from_values(filename, audio, tag=tag, channels=1, sample_rate=sample_rate)
 
 
-def create_square_wave(filename, duration, freq, tag=None, volume=1, sample_rate=44100):
+def create_square_wave(filename, duration, freq, tag=None, volume=1, sample_rate=7000):
     
     if not (isinstance(duration, float) or isinstance(duration, int)):
         raise GraphicsError(f"\n\nGraphicsError: duration value for square wave must be an int or float, not {duration}")
@@ -96,7 +96,7 @@ def create_square_wave(filename, duration, freq, tag=None, volume=1, sample_rate
     return create_sound_from_values(filename, audio, tag=tag, channels=1, sample_rate=sample_rate)
 
 
-def create_sound_from_values(filename, values, tag=None, channels=1, sample_rate=44100):
+def create_sound_from_values(filename, values, tag=None, channels=1, sample_rate=11050):
     
     if not (tag is None or isinstance(tag, str)):
         raise GraphicsError(f"\n\nGraphicsError: tag for sound must be a string or None, not {tag}")

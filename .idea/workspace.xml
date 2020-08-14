@@ -67,28 +67,7 @@
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.sound_test">
-    <configuration name="0-HelloWorld" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="GameDevelopment" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/0-HelloWorld.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.InputStatement">
     <configuration name="1-PokemonChooser" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -123,6 +102,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/FirstPythonFile.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="InputStatement" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GameDevelopment" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/InputStatement.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -174,19 +174,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.0-HelloWorld" />
       <item itemvalue="Python.1-PokemonChooser" />
       <item itemvalue="Python.FirstPythonFile" />
-      <item itemvalue="Python.sound_test" />
       <item itemvalue="Python.setup" />
+      <item itemvalue="Python.sound_test" />
+      <item itemvalue="Python.InputStatement" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.sound_test" />
-        <item itemvalue="Python.setup" />
+        <item itemvalue="Python.InputStatement" />
         <item itemvalue="Python.1-PokemonChooser" />
+        <item itemvalue="Python.setup" />
+        <item itemvalue="Python.sound_test" />
         <item itemvalue="Python.FirstPythonFile" />
-        <item itemvalue="Python.0-HelloWorld" />
       </list>
     </recent_temporary>
   </component>
@@ -269,30 +269,30 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="2168" height="495" key="GridCell.Tab.-1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594733814143" />
-    <state width="1242" height="324" key="GridCell.Tab.0.bottom" timestamp="1596906935001">
+    <state width="1049" height="493" key="GridCell.Tab.0.bottom" timestamp="1597234979879">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="1073" height="155" key="GridCell.Tab.0.bottom/0.0.1094.690@0.0.1094.690" timestamp="1596546271301" />
-    <state width="666" height="312" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1242" height="324" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1596906935001" />
-    <state width="1242" height="324" key="GridCell.Tab.0.center" timestamp="1596906934999">
+    <state width="1326" height="399" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1597218311485" />
+    <state width="1049" height="493" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1597234979879" />
+    <state width="1049" height="493" key="GridCell.Tab.0.center" timestamp="1597234979879">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="1073" height="155" key="GridCell.Tab.0.center/0.0.1094.690@0.0.1094.690" timestamp="1596546271299" />
-    <state width="666" height="312" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1242" height="324" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1596906934999" />
-    <state width="1242" height="324" key="GridCell.Tab.0.left" timestamp="1596906934999">
+    <state width="1326" height="399" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1597218311485" />
+    <state width="1049" height="493" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1597234979879" />
+    <state width="1049" height="493" key="GridCell.Tab.0.left" timestamp="1597234979878">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="1073" height="155" key="GridCell.Tab.0.left/0.0.1094.690@0.0.1094.690" timestamp="1596546271298" />
-    <state width="666" height="312" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1242" height="324" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1596906934999" />
-    <state width="1242" height="324" key="GridCell.Tab.0.right" timestamp="1596906935000">
+    <state width="1326" height="399" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1597218311485" />
+    <state width="1049" height="493" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1597234979878" />
+    <state width="1049" height="493" key="GridCell.Tab.0.right" timestamp="1597234979879">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="1073" height="155" key="GridCell.Tab.0.right/0.0.1094.690@0.0.1094.690" timestamp="1596546271300" />
-    <state width="666" height="312" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1595677549105" />
-    <state width="1242" height="324" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1596906935000" />
+    <state width="1326" height="399" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1597218311485" />
+    <state width="1049" height="493" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1597234979879" />
     <state width="2168" height="495" key="GridCell.Tab.1.bottom" timestamp="1594733811918">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -313,10 +313,10 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="1164" y="333" key="SettingsEditor/0.0.2189.1419@0.0.2189.1419" timestamp="1595085455245" />
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1596888311180">
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1597419157218">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1596888311180" />
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1597419157218" />
     <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595604872984">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>

@@ -84,11 +84,13 @@ import goopylib as gp
 
 ```
 
-The first allows you to import everything that is part of the library, but if you want only specific classes & functions, read on. 
+The first allows you to import everything that is part of the library, but if you want only specific classes 
+z& functions, read on. 
 
 ### Organization
 
-Goopy is organized into a few different files and depending on what you want to do, you can import these files. There are 2 subfolders in goopy: math & objects. The objects folder contains all of the graphics objects you might want to use like Images, Rectangles, Buttons, etc. To import these, type:
+Goopy is organized into a few different files and depending on what you want to do, you can import these files. 
+There are 2 subfolders in goopy: math & objects. The objects folder contains all of the graphics objects you might want to use like Images, Rectangles, Buttons, etc. To import these, type:
 
 ```python
 from goopylib.math.BezierCurve import BezierCurve # The other modules are 'Interpolation', & 'BSpline'
@@ -107,20 +109,25 @@ from goopylib.Point import Point
 
 ### Documentation
 
-There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written document and the creation of the documentation has begun at: https://github.com/BhavyeMathur/goopylib/wiki
+There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written
+ document and the creation of the documentation has begun at: https://github.com/BhavyeMathur/goopylib/wiki
 
 
 ### Examples
 
-These examples with the code and required textures are included in folders for you to download and try out for yourselves!
+These examples with the code and required textures are included in folders for you to download and try out for 
+yourselves!
 
-1. This is a simply, modern, light Login Page that can be used for your application. It demonstrates the usage of Checkbox, Entries, and Buttons to take input from the user and was made entirely with just 60 lines of code! (excluding comments). 
+1. This is a simply, modern, light Login Page that can be used for your application. It demonstrates the usage of 
+Checkbox, Entries, and Buttons to take input from the user and was made entirely with just 60 lines of code! (excluding comments). 
 
-This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid input, a functional tab to change from registering to signing up, and more
+This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid 
+input, a functional tab to change from registering to signing up, and more
 
 ![GUI Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ModernUI-LoginPage%20Example/ExampleScreenshot.png)
 
-2. Also provided is a very simple animation of Pac-Man being chased by some ghosts and it was created with just 40 lines of code! This really is an example of how simple animations such as these can help make a really good game or project. 
+2. Also provided is a very simple animation of Pac-Man being chased by some ghosts and it was created with just 40 lines 
+of code! This really is an example of how simple animations such as these can help make a really good game or project. 
 
 Goopy also has functionality for other animations such as moving to locations, rotating animations, and a lot to come soon. I am planning to include animations for almost every attribute of a Graphics Object like size, colour, outline thickness, transformation (skewing, fliping, etc.) and more. It also contains easy-to-use easing functions like those you would find in a professional animator.
 
