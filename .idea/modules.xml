@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$USER_HOME$/OneDrive/Python/GameDevelopment/.idea/GameDevelopment.iml" filepath="$USER_HOME$/OneDrive/Python/GameDevelopment/.idea/GameDevelopment.iml" />
+      <module fileurl="file://$USER_HOME$/OneDrive/Python/MultiplayerChess/.idea/MultiplayerChess.iml" filepath="$USER_HOME$/OneDrive/Python/MultiplayerChess/.idea/MultiplayerChess.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/goopylib.iml" filepath="$PROJECT_DIR$/.idea/goopylib.iml" />
     </modules>
   </component>
