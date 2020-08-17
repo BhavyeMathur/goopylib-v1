@@ -118,7 +118,7 @@ There are plans to create a detailed documentation for this library both in the 
 These examples with the code and required textures are included in folders for you to download and try out for 
 yourselves!
 
-1. This is a simply, modern, light Login Page that can be used for your application. It demonstrates the usage of 
+1. This is a simple, modern, light Login Page that can be used for your application. It demonstrates the usage of 
 Checkbox, Entries, and Buttons to take input from the user and was made entirely with just 60 lines of code! (excluding comments). 
 
 This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid 
