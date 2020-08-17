@@ -41,7 +41,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/OneDrive/Python/MultiplayerChess" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -53,21 +53,21 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\MultiplayerChess" />
+      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\Examples" />
+      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Minecraft\textures\bedrock" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib" />
       <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\objects" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\MultiplayerChess" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\GameDevelopment" />
-      <recent name="C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\Examples" />
-      <recent name="C:\Users\Bhavye Mathur\OneDrive\Python\Pac-Man" />
-    </key>
   </component>
-  <component name="RunManager" selected="Python.MultiplayerChess">
+  <component name="RunManager" selected="Python.3-ChestGame">
     <configuration name="1-PokemonChooser" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GameDevelopment" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -81,6 +81,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/1-PokemonChooser.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="3-ChestGame" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GameDevelopment" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/GameDevelopment" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/GameDevelopment/3-ChestGame.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -110,27 +131,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="MultiplayerChess" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="MultiplayerChess" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Python/MultiplayerChess" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/OneDrive/Python/MultiplayerChess/MultiplayerChess.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="setup" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="goopylib" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -152,7 +152,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="sound_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="goopylib" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -164,7 +164,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sound_test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -175,18 +175,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.1-PokemonChooser" />
-      <item itemvalue="Python.setup" />
-      <item itemvalue="Python.sound_test" />
+      <item itemvalue="Python.3-ChestGame" />
       <item itemvalue="Python.InputStatement" />
-      <item itemvalue="Python.MultiplayerChess" />
+      <item itemvalue="Python.setup" />
+      <item itemvalue="Python.test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.MultiplayerChess" />
-        <item itemvalue="Python.InputStatement" />
+        <item itemvalue="Python.3-ChestGame" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.1-PokemonChooser" />
+        <item itemvalue="Python.InputStatement" />
         <item itemvalue="Python.setup" />
-        <item itemvalue="Python.sound_test" />
       </list>
     </recent_temporary>
   </component>
@@ -249,10 +249,10 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="93" y="93" width="2003" height="1234" key="DiffContextDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1594658162667" />
-    <state x="1174" y="464" key="FileChooserDialogImpl" timestamp="1597427388225">
+    <state x="1174" y="464" key="FileChooserDialogImpl" timestamp="1597680105220">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1174" y="464" key="FileChooserDialogImpl/0.0.2189.1419@0.0.2189.1419" timestamp="1597427388225" />
+    <state x="1174" y="464" key="FileChooserDialogImpl/0.0.2189.1419@0.0.2189.1419" timestamp="1597680105220" />
     <state width="2168" height="495" key="GridCell.Tab.-1.bottom" timestamp="1594733814143">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -269,30 +269,30 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="2168" height="495" key="GridCell.Tab.-1.right/0.0.2189.1419@0.0.2189.1419" timestamp="1594733814143" />
-    <state width="1606" height="490" key="GridCell.Tab.0.bottom" timestamp="1597428430106">
+    <state width="2146" height="480" key="GridCell.Tab.0.bottom" timestamp="1597675509224">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="1073" height="155" key="GridCell.Tab.0.bottom/0.0.1094.690@0.0.1094.690" timestamp="1596546271301" />
     <state width="1326" height="399" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1597218311485" />
-    <state width="1606" height="490" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1597428430106" />
-    <state width="1606" height="490" key="GridCell.Tab.0.center" timestamp="1597428430106">
+    <state width="2146" height="480" key="GridCell.Tab.0.bottom/0.0.2189.1419@0.0.2189.1419" timestamp="1597675509224" />
+    <state width="2146" height="480" key="GridCell.Tab.0.center" timestamp="1597675509224">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="1073" height="155" key="GridCell.Tab.0.center/0.0.1094.690@0.0.1094.690" timestamp="1596546271299" />
     <state width="1326" height="399" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1597218311485" />
-    <state width="1606" height="490" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1597428430106" />
-    <state width="1606" height="490" key="GridCell.Tab.0.left" timestamp="1597428430106">
+    <state width="2146" height="480" key="GridCell.Tab.0.center/0.0.2189.1419@0.0.2189.1419" timestamp="1597675509224" />
+    <state width="2146" height="480" key="GridCell.Tab.0.left" timestamp="1597675509223">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="1073" height="155" key="GridCell.Tab.0.left/0.0.1094.690@0.0.1094.690" timestamp="1596546271298" />
     <state width="1326" height="399" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1597218311485" />
-    <state width="1606" height="490" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1597428430106" />
-    <state width="1606" height="490" key="GridCell.Tab.0.right" timestamp="1597428430106">
+    <state width="2146" height="480" key="GridCell.Tab.0.left/0.0.2189.1419@0.0.2189.1419" timestamp="1597675509223" />
+    <state width="2146" height="480" key="GridCell.Tab.0.right" timestamp="1597675509224">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state width="1073" height="155" key="GridCell.Tab.0.right/0.0.1094.690@0.0.1094.690" timestamp="1596546271300" />
     <state width="1326" height="399" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1597218311485" />
-    <state width="1606" height="490" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1597428430106" />
+    <state width="2146" height="480" key="GridCell.Tab.0.right/0.0.2189.1419@0.0.2189.1419" timestamp="1597675509224" />
     <state width="2168" height="495" key="GridCell.Tab.1.bottom" timestamp="1594733811918">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
@@ -313,10 +313,10 @@
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
     <state x="1164" y="333" key="SettingsEditor/0.0.2189.1419@0.0.2189.1419" timestamp="1595085455245" />
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1597427368458">
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog" timestamp="1597680047162">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>
-    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1597427368458" />
+    <state x="1088" y="451" key="com.intellij.ide.util.TipDialog/0.0.2189.1419@0.0.2189.1419" timestamp="1597680047162" />
     <state x="735" y="325" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1595604872984">
       <screen x="0" y="0" width="2189" height="1419" />
     </state>

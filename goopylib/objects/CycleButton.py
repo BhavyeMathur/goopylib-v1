@@ -39,18 +39,17 @@ class CycleButton(GraphicsObject):
 
         return self
 
-    def undraw(self, set_blinking=True):
+    def _undraw(self, set_blinking=True):
         for obj in self.states:
+            print(obj, obj.drawn)
             if obj.drawn:
                 obj.undraw(set_blinking=set_blinking)
-        self.drawn = False
         return self
 
     def base_undraw(self):
         for obj in self.states:
             if obj.drawn:
                 obj.base_undraw()
-        self.drawn = False
 
     def _rotate(self, dr, sampling="bicubic", center=None):
         for graphic in self.states:

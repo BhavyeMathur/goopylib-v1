@@ -5,6 +5,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="GameDevelopment" />
-    <orderEntry type="module" module-name="MultiplayerChess" />
+    <orderEntry type="module" module-name="RecipeDatabase" />
   </component>
 </module>

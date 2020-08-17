@@ -163,6 +163,13 @@ class GraphicsObject:
         Returns Tk id of item drawn"""
         pass  # must override in subclass
 
+    def _undraw(self):
+        self.graphwin.delete(self.id)
+        try:
+            self.graphwin.del_item(self.id)
+        except ValueError:
+            pass
+
     def _move(self, dx, dy):
         """updates internal state of object to move it dx,dy units"""
         pass  # must override in subclass
@@ -237,11 +244,7 @@ class GraphicsObject:
 
         if self.drawn:
             if not self.graphwin.closed:
-                self.graphwin.delete(self.id)
-                try:
-                    self.graphwin.del_item(self.id)
-                except ValueError:
-                    pass
+                self._undraw()
 
             if self in GraphicsObject.redraw_on_frame[self.layer]:
                 GraphicsObject.redraw_on_frame[self.layer].remove(self)
@@ -2069,12 +2072,10 @@ class GraphicsObject:
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
-        print(GraphicsObject.redraw_on_frame, "\n")
-
         for layer in GraphicsObject.redraw_on_frame:
             for obj in layer:
-                print("-----", obj)
-                obj.draw(graphwin=graphwin)
+                if obj.graphwin == graphwin:
+                    obj.draw(graphwin=graphwin)
             layer.clear()
 
     @staticmethod
@@ -2163,22 +2164,19 @@ class GraphicsObject:
             for obj in GraphicsObject.button_instances:
                 if obj.graphwin == graphwin and obj.drawn:
                     if obj.is_clicked(mouse_pos):
-                        if not graphwin.left_mouse_down:
-                            if obj.graphic != obj.hover_graphic:
-                                obj.undraw()
-                                obj.graphic = obj.hover_graphic
-                                if obj not in GraphicsObject.redraw_on_frame[obj.layer]:
-                                    GraphicsObject.redraw_on_frame[obj.layer].add(obj)
-                        else:
+                        if graphwin.left_mouse_down:
                             if obj.graphic != obj.clicked_graphic:
-                                obj.undraw()
                                 obj.graphic = obj.clicked_graphic
-                                obj.draw(graphwin)
+                                obj._update_layer()
+
+                        else:
+                            if obj.graphic != obj.hover_graphic:
+                                obj.graphic = obj.hover_graphic
+                                obj._update_layer()
 
                     elif obj.graphic != obj.normal_graphic and not obj.is_disabled:
-                        obj.undraw()
                         obj.graphic = obj.normal_graphic
-                        obj.draw(graphwin)
+                        obj._update_layer()
 
             for obj in GraphicsObject.slider_instances:
                 if obj.graphwin == graphwin:

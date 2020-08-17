@@ -155,6 +155,12 @@ Goopy also has functionality for other animations such as moving to locations, r
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
+#### 1.1.7-alpha1 17th August 2020
+
+* Fixed bug with Button not undrawing hover graphic when the user stopped hovering over the object
+* Removed print statement in the GraphicsObject class
+* Fixed bug with CycleButtons with AnimatedImages as states not working properly
+
 #### 1.1.5-alpha0 7th-8th August 2020
 
 * Added a Sound class that plays, pauses, crops, & destroys sounds. You can play multiple sounds & get data for each sound

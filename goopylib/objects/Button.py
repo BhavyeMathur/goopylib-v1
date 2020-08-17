@@ -29,6 +29,7 @@ class Button(GraphicsObject):
             self.disabled_graphic_given = False
 
         self.graphic = self.normal_graphic
+        self.drawn_graphic = self.graphic
 
         self.label = label
         self.is_disabled = disable
@@ -43,6 +44,7 @@ class Button(GraphicsObject):
 
     def _draw(self, canvas, options):
         self.graphic.draw(canvas, _internal_call=True)
+        self.drawn_graphic = self.graphic
 
         self.anchor = self.graphic.anchor
 
@@ -73,11 +75,15 @@ class Button(GraphicsObject):
             self.label.rotate(dr)
 
     def _undraw(self, set_blinking=False):
-        self.graphic.undraw()
+        self.drawn_graphic.undraw()
         if self.label is not None:
             self.label.undraw()
-
         return self
+
+    def base_undraw(self):
+        self.drawn_graphic.base_undraw()
+        if self.label is not None:
+            self.label.base_undraw()
 
     def get_width(self):
         return self.graphic.get_width()

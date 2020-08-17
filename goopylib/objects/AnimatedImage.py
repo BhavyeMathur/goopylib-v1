@@ -204,8 +204,8 @@ class AnimatedImage(GraphicsObject):
     # OTHER & IMPORTANT FUNCTIONS
 
     def undraw(self, set_blinking=True):
-        self.drawn = False
         self.imgs[self.drawn_frame].undraw(set_blinking=set_blinking)
+        self.drawn = False
 
         if self in GraphicsObject.animated_image_instances:
             GraphicsObject.animated_image_instances.remove(self)
@@ -213,6 +213,9 @@ class AnimatedImage(GraphicsObject):
     def base_undraw(self):
         self.imgs[self.drawn_frame].base_undraw()
         self.drawn = False
+
+        if self in GraphicsObject.animated_image_instances:
+            GraphicsObject.animated_image_instances.remove(self)
 
     def is_clicked(self, mouse_pos):
         return self.imgs[self.frame].is_clicked(mouse_pos)

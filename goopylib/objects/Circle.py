@@ -26,6 +26,8 @@ class Circle(Oval):
         return self.radius
 
     def is_clicked(self, mouse_pos):
+        if mouse_pos is None:
+            return False
         if self.bounds is None:
             return ((self.anchor.x - mouse_pos.x) ** 2 + (self.anchor.y - mouse_pos.y) ** 2) ** 0.5 < self.radius
         else:
