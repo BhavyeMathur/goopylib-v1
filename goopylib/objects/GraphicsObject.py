@@ -2067,9 +2067,9 @@ class GraphicsObject:
                             obj.animate_blinking(0, animate=False)
 
         for obj in GraphicsObject.animated_image_instances:
-            if obj.graphwin == graphwin and obj.autoflush:
+            if obj.graphwin == graphwin:
                 if t - obj.last_update_time > obj.update_time:
-                    obj.increment_frame(_time=t, _internal_call=True)
+                    obj.increment_frame(_internal_call=True)
 
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 

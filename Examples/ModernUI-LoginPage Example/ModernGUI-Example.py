@@ -18,9 +18,9 @@ background = Checkbox(Image(Point(400, 500), "RegisterPage.png"),
                       Image(Point(400, 500), "LoginPage.png"), autoflush=False).draw()  # This is the background image
 
 # Creating the entry boxes
-email_entry = Entry(Point(360, 465), 24, fill=WHITE, font="century gothic", justify="left", font_colour=LIGHT_GREY,
+email_entry = Entry(Point(360, 465), 24, fill=WHITE, font_face="century gothic", justify="left", font_colour=LIGHT_GREY,
                     font_size=30, prompt_text="Email Address").draw()
-password_entry = Entry(Point(360, 600), 24, fill=WHITE, font="century gothic", justify="left", font_colour=LIGHT_GREY,
+password_entry = Entry(Point(360, 600), 24, fill=WHITE, font_face="century gothic", justify="left", font_colour=LIGHT_GREY,
                        font_size=30, prompt_text="Password", password=True).draw()
 
 # Creating the options tab. The Enter & Settings button are checkboxes too because we want to display different textures based on 2 states: register or signin
@@ -60,7 +60,7 @@ next_page = "Home Page"
 
 # The mainloop
 while True:
-    #background.set_state(options_tab.get_state())
+    background.set_state(options_tab.get_state())
     enter_button.set_state(options_tab.get_state())  # Updating the textures of these checkboxes to be that of the OptionsTab
     settings_button.set_state(options_tab.get_state())
 

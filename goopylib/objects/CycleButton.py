@@ -41,7 +41,6 @@ class CycleButton(GraphicsObject):
 
     def _undraw(self, set_blinking=True):
         for obj in self.states:
-            print(obj, obj.drawn)
             if obj.drawn:
                 obj.undraw(set_blinking=set_blinking)
         return self

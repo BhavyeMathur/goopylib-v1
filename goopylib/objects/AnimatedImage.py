@@ -9,7 +9,7 @@ from time import time as timetime
 
 
 class AnimatedImage(GraphicsObject):
-    def __init__(self, p, frames, align="center", cursor="arrow", update_time=1/24, layer=0,
+    def __init__(self, p, frames, align="center", cursor="arrow", update_time=1/30, layer=0,
                  tag=None, autoflush=True, frame_callback=None, bounds=None):
 
         if not (callable(frame_callback) or frame_callback is None):
@@ -44,7 +44,9 @@ class AnimatedImage(GraphicsObject):
             yield img
 
     def _draw(self, canvas, options):
+        self.imgs[self.frame].anchor = self.anchor.clone()
         self.imgs[self.frame].draw(canvas, _internal_call=True)
+
         self.drawn_frame = self.frame
         if self.graphwin != canvas:
             for img in self.imgs:
@@ -54,8 +56,6 @@ class AnimatedImage(GraphicsObject):
             GraphicsObject.animated_image_instances.add(self)
 
     def _move(self, dx, dy):
-        for img in self.imgs:
-            img.move(dx, dy)
         self.anchor.x += dx
         self.anchor.y += dy
 
@@ -203,19 +203,16 @@ class AnimatedImage(GraphicsObject):
     # -------------------------------------------------------------------------
     # OTHER & IMPORTANT FUNCTIONS
 
-    def undraw(self, set_blinking=True):
+    def _undraw(self, set_blinking=True):
         self.imgs[self.drawn_frame].undraw(set_blinking=set_blinking)
-        self.drawn = False
 
         if self in GraphicsObject.animated_image_instances:
             GraphicsObject.animated_image_instances.remove(self)
 
     def base_undraw(self):
-        self.imgs[self.drawn_frame].base_undraw()
-        self.drawn = False
-
-        if self in GraphicsObject.animated_image_instances:
-            GraphicsObject.animated_image_instances.remove(self)
+        for img in self.imgs:
+            if img.drawn:
+                img.base_undraw()
 
     def is_clicked(self, mouse_pos):
         return self.imgs[self.frame].is_clicked(mouse_pos)

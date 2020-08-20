@@ -308,7 +308,9 @@ class GraphWin(tkCanvas):
         self.set_coords(0, 0, width, height)
 
         if autoflush:
-            _root.update()
+            self.update_win()
+
+        self.last_update = timetime()
 
     def __repr__(self):
         if self.closed:
@@ -1046,34 +1048,37 @@ class GraphWin(tkCanvas):
         self.update_idletasks()
         return self
 
-    def update_win(self, _internal_updating=False):
-        self.update()
+    def update_win(self, rate=None, _internal_updating=False):
+        if rate is None or timetime() - self.last_update > 1 / rate:
+            self.update()
 
-        if self.is_gliding:
-            t = timetime()
+            if self.is_gliding:
+                t = timetime()
 
-            # Check if the window is gliding for every interval of time or every frame
-            # To cope with lag, you might use time to glide irrespective of how many frames passed
+                # Check if the window is gliding for every interval of time or every frame
+                # To cope with lag, you might use time to glide irrespective of how many frames passed
 
-            # Check if the window should still be gliding
-            if t - self.glide_queue[0]["Start"] >= self.glide_queue[0]["Time"]:
-                self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x,
-                             self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y)
+                # Check if the window should still be gliding
+                if t - self.glide_queue[0]["Start"] >= self.glide_queue[0]["Time"]:
+                    self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x,
+                                 self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y)
 
-                self.glide_queue.pop(0)  # Remove the object from the gliding queue
-                if len(self.glide_queue) == 0:
-                    self.is_gliding = False
-            else:
+                    self.glide_queue.pop(0)  # Remove the object from the gliding queue
+                    if len(self.glide_queue) == 0:
+                        self.is_gliding = False
+                else:
 
-                perX = self.glide_queue[0]["EasingX"]((t - self.glide_queue[0]['Start']) / self.glide_queue[0]['Time'])
-                perY = self.glide_queue[0]["EasingY"]((t - self.glide_queue[0]['Start']) / self.glide_queue[0]['Time'])
+                    perX = self.glide_queue[0]["EasingX"]((t - self.glide_queue[0]['Start']) / self.glide_queue[0]['Time'])
+                    perY = self.glide_queue[0]["EasingY"]((t - self.glide_queue[0]['Start']) / self.glide_queue[0]['Time'])
 
-                self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x * perX,
-                             self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y * perY)
+                    self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x * perX,
+                                 self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y * perY)
 
-                self.glide_queue[0]["Update"] = timetime()
+                    self.glide_queue[0]["Update"] = timetime()
 
-        GraphicsObject.on_update(self)
+            GraphicsObject.on_update(self)
+
+            self.last_update = timetime()
         return self
 
     def save_canvas(self, height=None, width=None):

@@ -119,17 +119,18 @@ These examples with the code and required textures are included in folders for y
 yourselves!
 
 1. This is a simple, modern, light Login Page that can be used for your application. It demonstrates the usage of 
-Checkbox, Entries, and Buttons to take input from the user and was made entirely with just 60 lines of code! (excluding comments). 
+Checkbox, Entries, and Buttons to take input from the user and was made entirely with just 60 lines of code!. 
 
 This includes giving the user visual feedback if they hover over a button, making sure the user has entered a valid 
 input, a functional tab to change from registering to signing up, and more
 
 ![GUI Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ModernUI-LoginPage%20Example/ExampleScreenshot.png)
 
-2. Also provided is a very simple animation of Pac-Man being chased by some ghosts and it was created with just 40 lines 
+2. Also provided is a very simple animation of Pac-Man being chased by some ghosts and it was created with just 13 lines 
 of code! This really is an example of how simple animations such as these can help make a really good game or project. 
 
-Goopy also has functionality for other animations such as moving to locations, rotating animations, and a lot to come soon. I am planning to include animations for almost every attribute of a Graphics Object like size, colour, outline thickness, transformation (skewing, fliping, etc.) and more. It also contains easy-to-use easing functions like those you would find in a professional animator.
+Goopy also has functionality for other animations such as moving to locations, rotating animations, and a lot more. 
+It also contains easy-to-use easing functions like those you would find in a professional animator.
 
 ![Pac-Man Animation Example](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man-Animation%20Example/Pac-ManAnimation.png)
 
@@ -154,6 +155,11 @@ Goopy also has functionality for other animations such as moving to locations, r
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
+
+#### 1.1.16-alpha3 20th August 2020
+
+* Made Animated Image moving much faster
+* Added an optional parameter to the GraphWin's `update_win()` function to control how often a window updates
 
 #### 1.1.14-alpha2 18th-19th August 2020
 
