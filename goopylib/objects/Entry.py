@@ -1,6 +1,6 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.styles import *
-from goopylib.constants import _root, ALL_CHARACTERS
+from goopylib.constants import _root, ALL_CHARACTERS, ALIGN_OPTIONS
 
 from tkinter import StringVar as tkStringVar
 from tkinter import Entry as tkEntry
@@ -9,15 +9,20 @@ from tkinter import END as tkEND
 
 class Entry(GraphicsObject):
 
-    def __init__(self, p, text_width=10, style=None, fill=None, font_colour=None, entry=None, font=None, font_size=None,
+    def __init__(self, p, text_width=10, style=None, fill=None, font_colour=None, font_face=None, font_size=None,
                  outline=None, font_style=None, outline_width=None, border_relief="flat", password=False, layer=0,
-                 active="NORMAL", justify="center", cursor="xterm", select_colour=None, prompt_text="", tag=None):
+                 active="NORMAL", justify="left", cursor="xterm", select_colour=None, prompt_text="", tag=None,
+                 bounds=None, align="center", text=""):
 
         self.anchor = p.clone()
         self.text_width = text_width
 
+        if align not in ALIGN_OPTIONS:
+            raise GraphicsError(f"\n\nGraphicsError: Image align must be one of {ALIGN_OPTIONS}, not {align}")
+        self.align = align
+
         self.text = tkStringVar(_root)
-        self.text.set("")
+        self.text.set(text)
 
         if style is None:
             self.style = global_style
@@ -84,10 +89,10 @@ class Entry(GraphicsObject):
             else:
                 self.font_style = STYLES["default"]["font style"]
 
-        if font in STYLES[self.style].keys():
-            self.font = STYLES[self.style][font]
-        elif isinstance(font, str):
-            self.font = font
+        if font_face in STYLES[self.style].keys():
+            self.font = STYLES[self.style][font_face]
+        elif isinstance(font_face, str):
+            self.font = font_face
         else:
             if "font face" in STYLES[self.style].keys():
                 self.font = STYLES[self.style]["font face"]
@@ -105,7 +110,7 @@ class Entry(GraphicsObject):
                 self.justify = STYLES["default"]["justify"]
 
         self.font_config = (self.font, self.font_size, self.font_style)
-        self.entry = entry
+        self.entry = None
         self.border_type = border_relief
         if password:
             self.text_type = "*"
@@ -120,10 +125,13 @@ class Entry(GraphicsObject):
 
         self.allowed_symbols = ALL_CHARACTERS
 
-        GraphicsObject.__init__(self, style=style, options=["fill", "font"], layer=layer, tag=tag)
+        GraphicsObject.__init__(self, style=style, options=["fill"], layer=layer, tag=tag, bounds=bounds)
 
     def __repr__(self):
-        return "Entry({}, {})".format(self.anchor, self.text_width)
+        if self.drawn:
+            return f"Entry({self.anchor}, {self.get_text()})"
+        else:
+            return f"Entry({self.anchor})"
 
     def _in_allowed(self, c):
         return c in self.allowed_symbols
@@ -143,12 +151,15 @@ class Entry(GraphicsObject):
         pass
 
     def is_clicked(self, mouse_pos):
-        if mouse_pos is not None:
-            width, height = self.get_width(), self.get_height()
-            if (self.anchor.x - width / 2 > mouse_pos.x > self.anchor.x + width / 2) and \
-               (self.anchor.y - height / 2 > mouse_pos.y > self.anchor.y + height / 2):
-                return True
-            return False
+        if self.bounds is None:
+            if mouse_pos is not None:
+                width, height = self.get_width(), self.get_height()
+                if (self.anchor.x - width / 2 > mouse_pos.x > self.anchor.x + width / 2) and \
+                   (self.anchor.y - height / 2 > mouse_pos.y > self.anchor.y + height / 2):
+                    return True
+                return False
+
+        return self.bounds.is_clicked(mouse_pos)
 
     def allow_character(self, character):
         if character not in self.allowed_symbols and character in ALL_CHARACTERS:
@@ -219,7 +230,8 @@ class Entry(GraphicsObject):
 
     def _draw(self, canvas, options):
         p = self.anchor
-        x, y = canvas.to_screen(p.x, p.y)
+        x, y = self.anchor
+
         frm = tkFrame(canvas.master)
 
         self.set_size(self.initial_font_size / canvas.trans.x_scale, False)
@@ -238,6 +250,34 @@ class Entry(GraphicsObject):
 
         self.text.trace('w', self._on_edit)
 
+        width = self.get_width()
+        height = self.get_height()
+
+        if self.align == "center":
+            pass
+        elif self.align == "bottom":
+            y -= self.font_size / 2
+        elif self.align == "top":
+            y += self.font_size / 2
+        elif self.align == "left":
+            x += self.font_size * self.text_width / 2
+        elif self.align == "right":
+            x -= self.font_size * self.text_width / 2
+        elif self.align == "bottomleft":
+            y -= self.font_size / 2
+            x += self.font_size * self.text_width / 2
+        elif self.align == "bottomright":
+            y -= self.font_size / 2
+            x -= self.font_size * self.text_width / 2
+        elif self.align == "topleft":
+            y += self.font_size / 2
+            x += self.font_size * self.text_width / 2
+        elif self.align == "topright":
+            y += self.font_size / 2
+            x -= self.font_size * self.text_width / 2
+
+        x, y = canvas.to_screen(x, y)
+
         return canvas.create_window(x, y, window=frm)
 
     def get_text(self):
@@ -248,7 +288,7 @@ class Entry(GraphicsObject):
                                 f"? {self.graphwin.is_open()}, Drawn? {self.drawn}")
 
     def _move(self, dx, dy):
-        self.anchor.change_direction(dx, dy)
+        self.anchor.move(dx, dy)
 
     def hide_cursor(self):
         self.entry.config(insertontime=0)

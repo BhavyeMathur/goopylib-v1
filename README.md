@@ -155,6 +155,18 @@ Goopy also has functionality for other animations such as moving to locations, r
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
+#### 1.1.14-alpha2 18th-19th August 2020
+
+* Fixed some text set attribute functions to work properly
+* Fixed the text justify attribute to work properly with 1 line of text
+* Replaced the `.format()` function in the Text `__repr__()` function with a f-string
+
+* Added clicking bounds for the entry & button objects
+* Added an `is_clicked()` function for Text objects
+* You can now align Entry objects to left, right, top, bottom, etc. positions
+
+* Fixed bug with AttributeError for the Rectangle `is_clicked()` function is mouse_pos is None
+
 #### 1.1.7-alpha1 17th August 2020
 
 * Fixed bug with Button not undrawing hover graphic when the user stopped hovering over the object

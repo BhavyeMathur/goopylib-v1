@@ -15,8 +15,7 @@ STYLES = {"default": {"fill": CHROME_YELLOW, "background": WHITE,
 
                       # Config for Font & Text
                       "text": "Lorem Ipsum", "justify": "center", "font face": "calibri",
-                      "font size": 10, "font style": "normal", "font colour": BLACK,
-                      "font": (10, "calibri", "normal")},
+                      "font size": 10, "font style": "normal", "font colour": BLACK},
           }
 
 

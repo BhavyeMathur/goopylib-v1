@@ -500,8 +500,8 @@ class GraphicsObject:
         return self.config.keys()
 
     def get_fill(self):
-        """Override in GraphicsObject subclasses if fill is a valid config for them"""
-        pass
+        if "fill" in self.config:
+            return self.config["fill"]
 
     def get_outline(self):
         """Override in GraphicsObject subclasses if outline is a valid config for them"""
@@ -989,7 +989,8 @@ class GraphicsObject:
             duplicate_exists = False
             for metric in duplicates_metric:
                 if metric == "Final":
-                    duplicate_exists = animation["Change"] + animation["Initial"] == check_animation["Change"] + check_animation["Initial"]
+                    duplicate_exists = animation["Change"] + animation["Initial"] == check_animation["Change"] \
+                                       + check_animation["Initial"]
                 else:
                     duplicate_exists = animation[metric] == check_animation[metric]
 

@@ -108,6 +108,8 @@ class Rectangle(gpBBox.BBox):
         return other
 
     def is_clicked(self, pos):
+        if pos is None:
+            return False
         if self.bounds is None:
             width = self.width // 2
             height = self.height // 2

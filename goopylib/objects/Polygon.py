@@ -72,49 +72,6 @@ class Polygon(GraphicsObject):
             points.append(x)
             points.append(y)
 
-        # Rounding code from Francisco Gomes,
-        # https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
-        if self.is_rounded:
-            # The sharpness here is just how close the sub-points
-            # are going to be to the vertex. The more the sharpness,
-            # the more the sub-points will be closer to the vertex.
-            # (This is not normalized)
-            x = points[::2]
-            y = points[1::2]
-
-            if self.sharpness < 2:
-                self.sharpness = 2
-
-            ratio_multiplier = self.sharpness - 1
-            ratio_dividend = self.sharpness
-
-            # Array to store the points
-            points = []
-
-            # Iterate over the x points
-            for i in range(len(x)):
-                # Set vertex
-                points.append(x[i])
-                points.append(y[i])
-
-                # If it's not the last point
-                if i != (len(x) - 1):
-                    # Insert submultiples points. The higher the sharpness, the more these points will be
-                    # closer to the vertex.
-                    points.append((ratio_multiplier * x[i] + x[i + 1]) / ratio_dividend)
-                    points.append((ratio_multiplier * y[i] + y[i + 1]) / ratio_dividend)
-                    points.append((ratio_multiplier * x[i + 1] + x[i]) / ratio_dividend)
-                    points.append((ratio_multiplier * y[i + 1] + y[i]) / ratio_dividend)
-                else:
-                    # Insert submultiples points.
-                    points.append((ratio_multiplier * x[i] + x[0]) / ratio_dividend)
-                    points.append((ratio_multiplier * y[i] + y[0]) / ratio_dividend)
-                    points.append((ratio_multiplier * x[0] + x[i]) / ratio_dividend)
-                    points.append((ratio_multiplier * y[0] + y[i]) / ratio_dividend)
-                    # Close the polygon
-                    points.append(x[0])
-                    points.append(y[0])
-
         if options["width"] == 0:
             options["outline"] = options["fill"]
         return canvas.create_polygon(points, options, smooth=self.is_rounded)

@@ -2,7 +2,7 @@ from goopylib.objects.Checkbox import Checkbox
 from goopylib.objects.GraphicsObject import GraphicsObject
 
 class Button(GraphicsObject):
-    def __init__(self, graphic, hover_graphic=None, clicked_graphic=None, disabled_graphic=None,
+    def __init__(self, graphic, hover_graphic=None, clicked_graphic=None, disabled_graphic=None, bounds=None,
                  disable=False, autoflush=True, label=None, layer=0, tag=None):
 
         self.disabled_graphic_given = True
@@ -37,7 +37,7 @@ class Button(GraphicsObject):
         if not isinstance(self, Checkbox):
             GraphicsObject.button_instances.add(self)
 
-        GraphicsObject.__init__(self, options=(), layer=layer, tag=tag)
+        GraphicsObject.__init__(self, options=(), layer=layer, tag=tag, bounds=bounds)
 
     def __repr__(self):
         return "Button({})".format(self.graphic)
@@ -105,10 +105,10 @@ class Button(GraphicsObject):
         self.draw(self.graphwin)
 
     def is_clicked(self, mouse_pos):
-        if self.drawn:
+        if self.bounds is None:
             return self.graphic.is_clicked(mouse_pos) and not self.is_disabled
         else:
-            return False
+            return self.bounds.is_clicked(mouse_pos)
 
     def get_anchor(self):
         return self.graphic.anchor
