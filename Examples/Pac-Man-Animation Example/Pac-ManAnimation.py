@@ -21,7 +21,7 @@ for index, ghost in enumerate(("Blinky", "Pinky", "Inky", "Clyde")):
     # We copy the movement bounds of the object from the object tagged "PacMan"
     objects[-1].copy_movement_bounds_from("PacMan").alpha_composite(Image(objects[-1].get_anchor(), "Pupils.png"))
 
-while True:
+while True:  # This is the main loop
     for obj in objects:
         obj.move_x(-4)  # Moving each object left by 4 pixels
 
