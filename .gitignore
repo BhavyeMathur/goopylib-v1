@@ -1,3 +1,6 @@
 .idea/
 *.log
-.gitignore
+sound_test.py
+test.py
+dist/
+build/
