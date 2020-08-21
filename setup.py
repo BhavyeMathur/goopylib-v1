@@ -15,7 +15,7 @@ setup(
               "goopylib/sound": "goopylib/sound",
               "goopylib/physics": "goopylib/physics"},
 
-    version='1.1.14a2',
+    version='1.1.20a3',
     license='MIT License',
 
     description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and animations.',
