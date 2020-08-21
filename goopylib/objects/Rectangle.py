@@ -7,6 +7,12 @@ class Rectangle(gpBBox.BBox):
 
     def __init__(self, p1, p2, bounds=None, style=None, fill=None, outline=None, outline_width=None, layer=0,
                  cursor="arrow", is_rounded=False, roundness=5, tag=None):
+
+        if p1.x > p2.x:
+            p1.x, p2.x = p2.x, p1.x
+        if p1.y > p2.y:
+            p1.y, p2.y = p2.y, p1.y
+
         gpBBox.BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width,
                              style=style, cursor=cursor, layer=layer, tag=tag)
 

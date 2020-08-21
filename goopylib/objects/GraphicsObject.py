@@ -4,7 +4,7 @@ from goopylib.constants import *
 from goopylib.math.Easing import *
 from math import cos, sin
 
-from goopylib.GraphWin import GraphWin
+from goopylib.Window import Window
 
 
 class GraphicsObject:
@@ -188,12 +188,12 @@ class GraphicsObject:
         is already visible."""
 
         if graphwin is None:
-            if len(GraphWin.instances) == 0:
+            if len(Window.instances) == 0:
                 raise GraphicsError("\n\nGraphicsError: no open graphwin to draw object to")
-            graphwin = GraphWin.instances[-1]
+            graphwin = Window.instances[-1]
 
         else:
-            if not isinstance(graphwin, GraphWin):
+            if not isinstance(graphwin, Window):
                 raise GraphicsError(
                     f"\n\nGraphicsError: draw() function argument must be a GraphWin object, not {graphwin}")
 
@@ -637,7 +637,10 @@ class GraphicsObject:
         from goopylib.objects.Rectangle import Rectangle
 
         if not (isinstance(obj, Rectangle) or isinstance(obj, Image)):
-            raise GraphicsError(f"\n\nGraphicsError: obj argument must be a Rectangle or Image, not {obj}")
+            if isinstance(obj, Window):
+                obj = Rectangle(*obj.get_coords())
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: obj argument must be a Rectangle or Image, not {obj}")
         if not isinstance(allow_looping_x, bool):
             raise GraphicsError(f"\n\nGraphicsError: allow_looping_x argument must be a boolean, not {allow_looping_x}")
         if not isinstance(allow_looping_y, bool):

@@ -1,4 +1,4 @@
-from goopylib.GraphWin import GraphWin
+from goopylib.Window import Window
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.Point import Point
 

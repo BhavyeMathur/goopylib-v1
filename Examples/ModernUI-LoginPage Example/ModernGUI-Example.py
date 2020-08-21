@@ -12,7 +12,7 @@ To run this, simply download the entire folder in which this is placed, and run 
 
 # Creating a window
 # We set the dimensions relative to the height of the screen because resolutions across screen can vary.
-window = GraphWin(title="Example GUI Design", width=800, height=1000)
+window = Window(title="Example GUI Design", width=800, height=1000)
 
 background = Checkbox(Image(Point(400, 500), "RegisterPage.png"),
                       Image(Point(400, 500), "LoginPage.png"), autoflush=False).draw()  # This is the background image

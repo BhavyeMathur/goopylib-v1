@@ -103,7 +103,7 @@ To access elements of Goopy like the Point & GraphWin classes, Colours, etc. use
 ```python
 from goopylib.colours import *
 
-from goopylib.GraphWin import GraphWin
+from goopylib.Window import Window
 from goopylib.Point import Point
 ```
 
@@ -156,10 +156,15 @@ It also contains easy-to-use easing functions like those you would find in a pro
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
-#### 1.1.16-alpha3 20th August 2020
+#### 1.1.20-alpha3 20th-21st August 2020
 
 * Made Animated Image moving much faster
 * Added an optional parameter to the GraphWin's `update_win()` function to control how often a window updates
+* Renamed the GraphWin class to Window
+
+* You can now use a Window object as movement bounds for objects
+* The Rectangle Class now reorganizes it's point coordinate values to be lowest for p1
+* Fixed bug with the Window `get_coords()` function not returning the values in the proper order
 
 #### 1.1.14-alpha2 18th-19th August 2020
 

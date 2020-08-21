@@ -9,6 +9,10 @@ class Transform:
         yspan = (y_high - y_low)
         self.x_base = x_low
         self.y_base = y_high
+
+        self.other_x = x_high
+        self.other_y = y_low
+
         self.x_scale = xspan / w
         self.y_scale = yspan / h
 

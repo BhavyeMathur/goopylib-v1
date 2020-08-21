@@ -3,8 +3,8 @@ from pathlib import Path as pathlib_Path
 
 # I kinda wanted to scrap this, it wasn't that good.
 def create_custom_ease():
-    window = GraphWin(title="goopylib: Create Custom Ease", width=get_screen_size()[1] * 0.7,
-                      height=get_screen_size()[1] * 0.7, autoflush=False, bk_colour=DARKER_GREY)
+    window = Window(title="goopylib: Create Custom Ease", width=get_screen_size()[1] * 0.7,
+                    height=get_screen_size()[1] * 0.7, autoflush=False, bk_colour=DARKER_GREY)
     window.set_coords(0, 0, 1000, 1000)
     path = f"{pathlib_Path(__file__).parent.absolute()}/textures/"
 
@@ -248,8 +248,8 @@ def create_custom_ease():
 
 
 def create_custom_ease2():
-    window = GraphWin(title="goopylib_b: Create Custom Ease", width=get_screen_size()[1] * 0.7,
-                      height=get_screen_size()[1] * 0.7, autoflush=False, bk_colour=DARKER_GREY)
+    window = Window(title="goopylib_b: Create Custom Ease", width=get_screen_size()[1] * 0.7,
+                    height=get_screen_size()[1] * 0.7, autoflush=False, bk_colour=DARKER_GREY)
     window.set_coords(0, 0, 1000, 1000)
     path = f"{pathlib_Path(__file__).parent.absolute()}/textures/"
 

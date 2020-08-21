@@ -1,6 +1,6 @@
 from goopylib.imports import *
 
-window = GraphWin(title="Hello World!", width=500, height=500, bk_colour=DARKEST_GREY)  # Creating the window
+window = Window(title="Hello World!", width=500, height=500, bk_colour=DARKEST_GREY)  # Creating the window
 
 Rectangle(Point(0, 220), Point(500, 280), fill=DARK_GREY, outline_width=0).draw()  # Drawing a rectangle in the back
 
