@@ -4,3 +4,4 @@ sound_test.py
 test.py
 dist/
 build/
+goopylib.egg-info/

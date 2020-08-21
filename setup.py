@@ -25,7 +25,7 @@ setup(
     author='Bhavye Mathur',
     author_email='bhavyemathur@gmail.com',
     url='https://github.com/BhavyeMathur/goopylib',
-    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.14-alpha.tar.gz',
+    download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.20-alpha.tar.gz',
     keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
     install_requires=['pillow', 'numpy'],
     project_urls={"Bug Tracker": "https://github.com/BhavyeMathur/goopylib/issues",
