@@ -151,6 +151,8 @@ It also contains easy-to-use easing functions like those you would find in a pro
 
 ## Version History
 
+Unfortunately, online school (Grade 9!!!) has started and so updates won't be coming out as frequently as before, sorry!
+
 ### v1.1
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
@@ -187,7 +189,7 @@ on a Sound Engine for goopylib which I want to be part of 1.1
 #### 1.1.5-alpha0 7th-8th August 2020
 
 * Added a Sound class that plays, pauses, crops, & destroys sounds. You can play multiple sounds & get data for each sound
-* Added __init__.py files to the physics & sound subpackages
+* Added `__init__.py` files to the physics & sound subpackages
 * Added `create_sin_wave()`, `create_square_wave()`, and `create_sawtooth_wave()` functions to create a simple sounds
 
 * You can now create sounds by simply inputting a list of frequencies into a function. 
@@ -244,8 +246,6 @@ on a Sound Engine for goopylib which I want to be part of 1.1
 * The CheckBox class now inherits from the CycleButton class (it's a special case of 2 states)
 
 #### 1.0.199-beta 26th-28th July 2020
-
-So unfortunately, online school (Grade 9!!!) has started and so updates won't be coming out as frequently as before, sorry!
 
 * Fixed bug with GraphicsObject raising error if the directional move functions weren't provided with a callback function
 * Adding functions to enable the obstacles of an object: `set_obstacles_enabled()`, `disable_obstacles()`, `enable_obstacles()`, and `toggle_obstacles_enabled()`
