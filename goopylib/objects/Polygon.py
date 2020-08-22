@@ -1,7 +1,7 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.styles import *
 
-from goopylib.math.Triangulation import TriangulateEarClipping
+from goopylib.math.Triangulation import triangulate_modified_earclip
 from math import radians, sin, cos
 
 class Polygon(GraphicsObject):
@@ -206,5 +206,5 @@ class Polygon(GraphicsObject):
     def triangulate(self):
         if self.triangles is None and len(self.points) != 3:
             self.triangles = []
-            for triangle in TriangulateEarClipping(list(self.points)):
+            for triangle in triangulate_modified_earclip(list(self.points)):
                 self.triangles.append(Polygon(*triangle))

@@ -1622,37 +1622,37 @@ class Window(tkCanvas):
         if not issubclass(obj, GraphicsObject):
             raise GraphicsError(f"\n\nGraphicsError: obj instance to destroy must be a GraphicsObject, not {obj}")
 
-        for instance in GraphicsObject.objects:
+        for instance in GraphicsObject.objects.copy():
             if isinstance(instance, obj) and instance.graphwin == self:
                 instance.destroy()
         return self
 
     def destroy_all_lines(self):
-        for instance in GraphicsObject.objects:
+        for instance in GraphicsObject.objects.copy():
             if "Line" in instance.__repr__() and instance.graphwin == self:
                 instance.destroy()
         return self
 
     def destroy_all_circles(self):
-        for instance in GraphicsObject.objects:
+        for instance in GraphicsObject.objects.copy():
             if "Circle" in instance.__repr__() and instance.graphwin == self:
                 instance.destroy()
         return self
 
     def destroy_all_rectangles(self):
-        for instance in GraphicsObject.objects:
+        for instance in GraphicsObject.objects.copy():
             if "Rectangle" in instance.__repr__() and instance.graphwin == self:
                 instance.destroy()
         return self
 
     def destroy_all_ovals(self):
-        for instance in GraphicsObject.objects:
+        for instance in GraphicsObject.objects.copy():
             if "Oval" in instance.__repr__() and instance.graphwin == self:
                 instance.destroy()
         return self
 
     def destroy_all_images(self):
-        for instance in GraphicsObject.objects:
+        for instance in GraphicsObject.objects.copy():
             if "Image" in instance.__repr__() and instance.graphwin == self:
                 instance.destroy()
         return self

@@ -2,19 +2,26 @@
 
 ### Projects made using Goopy
 
-As these are entire projects with a lot of code and non-goopy elements, I have not supplied the code. But, if you want to look at example projects with code, skip to the 'Examples' section.
+As these are entire projects with a lot of code and non-goopy elements, I have not supplied the code. But, if you want
+ to look at example projects with code, skip to the 'Examples' section.
 
 **1. A Pac-Man Recreation**
 
-I worked on this as a school project and used the goopy library to create fully functional Pac-Man Game! (and an arcade too!) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and fruits to go on to the next level.
+I worked on this as a school project and used the goopy library to create fully functional Pac-Man Game! (and an arcade 
+too!) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and 
+fruits to go on to the next level.
 
 ![Pac-Man Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man.png)
 
 **2. Multiplayer UNO**
 
-During the COVID-19 Pandemic, my friends and I often hopped on a call and played a few games together: one such, was UNO. But the app we used was very laggy and didn't really function well. So I took it upon myself to create a Multiplayer UNO game in 5 days or less - and I succeeded on day 6... *"but day indices start at 0 so it was really the fifth day..."*. 
+During the COVID-19 Pandemic, my friends and I often hopped on a call and played a few games together: one such, was
+ UNO. But the app we used was very laggy and didn't really function well. So I took it upon myself to create a 
+ Multiplayer UNO game in 5 days or less - and I succeeded on day 6... *"but day indices start at 0 so it was really the 
+ fifth day..."*. 
 
-The game allows 2-7 players to play together and the graphics animate the cards, rotate them randomly, make them travel to the centre (as opposed to just instantly moving there) and more.
+The game allows 2-7 players to play together and the graphics animate the cards, rotate them randomly, make them travel 
+to the centre (as opposed to just instantly moving there) and more.
 
 Here is a screenshot of the game:
 
@@ -24,19 +31,24 @@ Avatar graphics are from freepik.com
 
 **3. Activity Club Selection App**
 
-My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort through hundreds of entries and assign everybody a club - but not this year. This year I made an activity club selection app using the goopy library that would automatically do all this work for you! 
+My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for 
+activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort 
+through hundreds of entries and assign everybody a club - but not this year. This year I made an activity club selection 
+app using the goopylib library that would automatically do all this work for you! 
 
-Goopy is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it to anyone to use. Now mind you, this was made with an older version of Goopy so it did not contain lots of animations and visual feedback, but here is a screenshot:
+Goopylib is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it 
+to anyone to use. Now mind you, this was made with an older version of Goopylib so it did not contain lots of animations 
+and visual feedback, but here is a screenshot anyways:
 
 ![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
 
 ## Introduction
-Goopy is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
+Goopylib is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
  GUIs, games, and animations.
 
 This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python 
 Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add 
-more featurs to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to
+more features to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to
  enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case. 
  Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python 
  Graphics Libraries. 
@@ -46,10 +58,10 @@ please do so. I would love it if you would use this library in your projects and
 Right now, this is very much an alpha stage - there are many bugs, many features that aren't compatible with each other, 
 and a ton of things to do differently, but this will all be fixed with future releases. 
 
-Goopy is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) also known as Pyinstaller. 
+Goopylib is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) also known as Pyinstaller. 
 This compatibility mainly means that all paths to textures & sounds are automatically converted into the absolute paths 
-which you don't have to worry about! This means that you will be able to convert applications written with Goopy into
- executables, hopefully, with no errors.  
+which you don't have to worry about! This means that you will be able to convert applications written with Goopylib into
+executables with, hopefully, no errors.  
 
 If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
 
@@ -66,7 +78,7 @@ pip install goopylib
  pip3 install goopylib
  ```
  
- This will install Goopy and all the requirements for it to run. You can then import the library as shown next.
+ This will install Goopylib and all the requirements for it to run. You can then import the library as shown next.
 
 An alternative method to use this library is very simple to use especially if you want access to the source code, all 
 you need is the folder called 'goopylib' and the requirements. This just includes the 
@@ -87,10 +99,13 @@ import goopylib as gp
 The first allows you to import everything that is part of the library, but if you want only specific classes 
 z& functions, read on. 
 
+
 ### Organization
 
-Goopy is organized into a few different files and depending on what you want to do, you can import these files. 
-There are 2 subfolders in goopy: math & objects. The objects folder contains all of the graphics objects you might want to use like Images, Rectangles, Buttons, etc. To import these, type:
+Goopylib is organized into a few different files and depending on what you want to do, you can import these files. 
+There are 5 subpackages in goopylib: objects, math, sound, physics, & applications. 
+
+To import these, type:
 
 ```python
 from goopylib.math.BezierCurve import BezierCurve # The other modules are 'Interpolation', & 'BSpline'
@@ -98,7 +113,7 @@ from goopylib.math.BezierCurve import BezierCurve # The other modules are 'Inter
 from goopylib.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
 ```
 
-To access elements of Goopy like the Point & GraphWin classes, Colours, etc. use this:
+To access elements of goopylib like the Point & GraphWin classes, Colours, etc. use this:
 
 ```python
 from goopylib.colours import *
@@ -106,6 +121,7 @@ from goopylib.colours import *
 from goopylib.Window import Window
 from goopylib.Point import Point
 ```
+
 
 ### Documentation
 
@@ -129,7 +145,7 @@ input, a functional tab to change from registering to signing up, and more
 2. Also provided is a very simple animation of Pac-Man being chased by some ghosts and it was created with just 13 lines 
 of code! This really is an example of how simple animations such as these can help make a really good game or project. 
 
-Goopy also has functionality for other animations such as moving to locations, rotating animations, and a lot more. 
+Goopylib also has functionality for other animations such as moving to locations, rotating animations, and a lot more. 
 It also contains easy-to-use easing functions like those you would find in a professional animator.
 
 ![Pac-Man Animation Example](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man-Animation%20Example/Pac-ManAnimation.png)
@@ -157,6 +173,21 @@ Unfortunately, online school (Grade 9!!!) has started and so updates won't be co
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
+
+#### 1.1.28-alpha4 22nd August 2020
+
+* Fixed bug with Window destroy all instance functions raising RunTime Errors
+
+* The Ear Clipping Triangulation function now creates a copy of the input vertex chain
+* The Ear Clipping Triangulation function now returns a list of the input vertices if their length is 3, ie 
+`[(edge1, edge2, edge3)]` and not `(edge1, edge2, edge3)`
+* Made the Ear Clipping Algorithm run a little bit faster than before
+* The Triangulation Algorithms now accept tuples of vertices rather than just lists
+
+* The GraphicsObject `has_moved()` function now returns False if the object has just been created
+* Added a modified ear clipping algorithm for triangulating polygons that runs in O(n^2) time
+
+* Started work on plane sweep triangulation algorithm which runs in O(n log n) time
 
 #### 1.1.20-alpha3 20th-21st August 2020
 

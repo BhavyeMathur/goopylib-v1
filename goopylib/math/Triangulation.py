@@ -1,14 +1,14 @@
 from goopylib.util import GraphicsError
 from goopylib.Point import Point
 
-def IsConvex(p1, p2, p3):  # check to see if 3 Points given are convex
+def is_reflex(p1, p2, p3):  # check to see if 3 Points given are convex
     if not (isinstance(p1, Point) and isinstance(p2, Point) and isinstance(p3, Point)):
         raise GraphicsError("\n\nGraphicsError: points given to check whether they are convex must all be Point "
                             f"objects, not {p1}, {p2}, {p3}")
     return not (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x) >= 0
 
 
-def CheckInTriangle(p1, p2, p3, pt):
+def check_in_triangle(p1, p2, p3, pt):
     if not (isinstance(p1, Point) and isinstance(p2, Point) and isinstance(p3, Point)):
         raise GraphicsError("\n\nGraphicsError: points given for triangle must all be Point "
                             f"objects, not {p1}, {p2}, {p3}")
@@ -31,7 +31,15 @@ def CheckInTriangle(p1, p2, p3, pt):
         return not ((d1 < 0 or d2 < 0 or d3 < 0) and (d1 > 0 or d2 > 0 or d3 > 0))
 
 
-def IsClockwise(vertex_chain):
+def contains_no_other_points(p1, p2, p3, vertex_chain):
+    for vertex in vertex_chain:
+        if vertex not in (p1, p2, p3):
+            if check_in_triangle(p1, p2, p3, vertex):
+                return False
+    return True
+
+
+def is_clockwise(vertex_chain):
     # Code from https://github.com/mrbaozi/triangulation/blob/master/sources/triangulate.py
     sum = (vertex_chain[0].x - vertex_chain[len(vertex_chain) - 1].x) * \
           (vertex_chain[0].y + vertex_chain[len(vertex_chain) - 1].y)
@@ -39,36 +47,203 @@ def IsClockwise(vertex_chain):
         sum += (vertex_chain[i + 1].x - vertex_chain[i].x) * (vertex_chain[i + 1].y + vertex_chain[i].y)
     return sum > 0
 
-
-def TriangulateEarClipping(vertex_chain):
+# Runs in O(n^3) time
+def triangulate_earclip(vertex_chain):
     if not isinstance(vertex_chain, list):
-        raise GraphicsError(f"\n\nGraphicsError: input argument for triangulation must be a list, not {vertex_chain}")
+        if isinstance(vertex_chain, tuple):
+            vertex_chain = list(vertex_chain)
+        else:
+            raise GraphicsError("\n\nGraphicsError: input argument for triangulation must be a list or tuple,"
+                                f" not {vertex_chain}")
     if len(vertex_chain) == 3:
-        return ()
+        return [tuple(vertex_chain)]
     elif len(vertex_chain) < 3:
         raise GraphicsError("\n\nGraphicsError: polygon for triangulation must have at least 3 vertices, currently, "
                             f"only {len(vertex_chain)} vertices are present")
 
-    if not IsClockwise(vertex_chain):
-        vertex_chain = vertex_chain[::-1]
+    vertex_chain = vertex_chain.copy()
+
+    if is_clockwise(vertex_chain):
+        vertex_chain.reverse()
 
     triangles = []
-    while len(vertex_chain) > 3:
-        size = len(vertex_chain)
-        ear_removed = False
+    size = len(vertex_chain)
+    while size > 3:
         for i, point in enumerate(vertex_chain):
-            if not ear_removed:
-                p1, p2, p3 = vertex_chain[(i - 1) % size], point, vertex_chain[(i + 1) % size]
-                if IsConvex(p1, p2, p3):
-                    is_diagonal = True
-                    for vertex in vertex_chain:
-                        if vertex not in (p1, p2, p3):
-                            if not is_diagonal:
-                                continue
-                            is_diagonal = not CheckInTriangle(p1, p2, p3, vertex)
-                    if is_diagonal:
-                        vertex_chain.remove(p2)
-                        ear_removed = True
-                        triangles.append((p1, p2, p3))
+            p1 = vertex_chain[i - 1]
+            p3 = vertex_chain[(i + 1) % size]
+            if not is_reflex(p1, point, p3):
+                if contains_no_other_points(p1, point, p3, vertex_chain):
+                    vertex_chain.remove(point)
+                    size -= 1
+                    triangles.append((p1, point, p3))
+
     triangles.append(tuple(vertex_chain))
     return triangles
+
+# Runs in O(n^2) time
+# Reference: https://www.geometrictools.com/Documentation/TriangulationByEarClipping.pdf
+def triangulate_modified_earclip(vertex_chain):
+    if not isinstance(vertex_chain, list):
+        if isinstance(vertex_chain, tuple):
+            vertex_chain = list(vertex_chain)
+        else:
+            raise GraphicsError("\n\nGraphicsError: input argument for triangulation must be a list or tuple,"
+                                f" not {vertex_chain}")
+    if len(vertex_chain) == 3:
+        return [tuple(vertex_chain)]
+    elif len(vertex_chain) < 3:
+        raise GraphicsError("\n\nGraphicsError: polygon for triangulation must have at least 3 vertices, currently, "
+                            f"only {len(vertex_chain)} vertices are present")
+
+    vertex_chain = vertex_chain.copy()
+
+    if is_clockwise(vertex_chain):
+        vertex_chain.reverse()
+
+    triangles = []
+    ear_vertices = []
+
+    reflex_vertices = []
+    convex_vertices = []
+
+    size = len(vertex_chain)
+    # Complexity of O(n)
+    for i, vertex in enumerate(vertex_chain):
+        if is_reflex(vertex_chain[i - 1], vertex, vertex_chain[(i + 1) % size]):
+            reflex_vertices.append(vertex)
+        else:
+            convex_vertices.append(vertex)
+
+    # Upper Limit Complexity of O(n)
+    for i, vertex in enumerate(convex_vertices):
+        if contains_no_other_points(vertex_chain[i - 1], vertex, vertex_chain[(i + 1) % size], reflex_vertices):
+            ear_vertices.append(vertex)
+
+    while size > 3:
+        ear_vertex = ear_vertices.pop(0)
+        i = vertex_chain.index(ear_vertex)
+
+        prev_vertex = vertex_chain[i - 1]
+        next_vertex = vertex_chain[(i + 1) % size]
+
+        vertex_chain.pop(i)
+        size -= 1
+
+        triangles.append((prev_vertex, ear_vertex, next_vertex))
+
+        if size > 3:
+            if not is_reflex(vertex_chain[i - 2], prev_vertex, next_vertex) and \
+                    contains_no_other_points(vertex_chain[i - 2], prev_vertex, next_vertex, reflex_vertices):
+                if prev_vertex not in ear_vertices:
+                    ear_vertices.append(prev_vertex)
+                    if prev_vertex in reflex_vertices:
+                        reflex_vertices.remove(prev_vertex)
+                        convex_vertices.append(prev_vertex)
+
+            elif prev_vertex in ear_vertices:
+                ear_vertices.remove(prev_vertex)
+                if prev_vertex in convex_vertices:
+                    convex_vertices.remove(prev_vertex)
+                    reflex_vertices.append(prev_vertex)
+
+            if (not is_reflex(prev_vertex, next_vertex, vertex_chain[(i + 1) % size])) and \
+                    contains_no_other_points(prev_vertex, next_vertex, vertex_chain[(i + 1) % size], reflex_vertices):
+                if next_vertex not in ear_vertices:
+                    ear_vertices.append(next_vertex)
+                    if next_vertex in reflex_vertices:
+                        reflex_vertices.remove(next_vertex)
+                        convex_vertices.append(next_vertex)
+
+            elif next_vertex in ear_vertices:
+                ear_vertices.remove(next_vertex)
+                if next_vertex in convex_vertices:
+                    convex_vertices.remove(next_vertex)
+                    reflex_vertices.append(next_vertex)
+
+        else:
+            break
+
+    triangles.append(tuple(vertex_chain))
+    return triangles
+
+# Runs in O(n log n) time
+# Reference: https://cs.gmu.edu/~jmlien/teaching/09_fall_cs633/uploads/Main/lecture03.pdf
+# Work in Progress
+def triangulate_plane_sweep(vertex_chain):
+    if not isinstance(vertex_chain, list):
+        if isinstance(vertex_chain, tuple):
+            vertex_chain = list(vertex_chain)
+        else:
+            raise GraphicsError("\n\nGraphicsError: input argument for triangulation must be a list or tuple,"
+                                f" not {vertex_chain}")
+    if len(vertex_chain) == 3:
+        return [tuple(vertex_chain)]
+    elif len(vertex_chain) < 3:
+        raise GraphicsError("\n\nGraphicsError: polygon for triangulation must have at least 3 vertices, currently, "
+                            f"only {len(vertex_chain)} vertices are present")
+
+    vertex_chain = vertex_chain.copy()
+
+# ----------------------------------------------------------------
+# These are empty functions for now, but are planned in the future.
+
+# Runs in O(n log* n) time
+# Reference: http://gamma.cs.unc.edu/SEIDEL/
+def triangulate_siedel(vertex_chain):
+    if not isinstance(vertex_chain, list):
+        if isinstance(vertex_chain, tuple):
+            vertex_chain = list(vertex_chain)
+        else:
+            raise GraphicsError("\n\nGraphicsError: input argument for triangulation must be a list or tuple,"
+                                f" not {vertex_chain}")
+    if len(vertex_chain) == 3:
+        return [tuple(vertex_chain)]
+    elif len(vertex_chain) < 3:
+        raise GraphicsError("\n\nGraphicsError: polygon for triangulation must have at least 3 vertices, currently, "
+                            f"only {len(vertex_chain)} vertices are present")
+
+# Runs in O(n log log n) time
+# Reference: https://pdfs.semanticscholar.org/fe11/1fe1d1f73eb006280f4cda839f868d435f73.pdf
+def triangulate_tarjan_wyk(vertex_chain):
+    if not isinstance(vertex_chain, list):
+        if isinstance(vertex_chain, tuple):
+            vertex_chain = list(vertex_chain)
+        else:
+            raise GraphicsError("\n\nGraphicsError: input argument for triangulation must be a list or tuple,"
+                                f" not {vertex_chain}")
+    if len(vertex_chain) == 3:
+        return [tuple(vertex_chain)]
+    elif len(vertex_chain) < 3:
+        raise GraphicsError("\n\nGraphicsError: polygon for triangulation must have at least 3 vertices, currently, "
+                            f"only {len(vertex_chain)} vertices are present")
+
+# Runs in O(n log log n) time
+# Reference: https://link.springer.com/content/pdf/10.1007/BF02187846.pdf
+def triangulate_wrap_around_partition(vertex_chain):
+    if not isinstance(vertex_chain, list):
+        if isinstance(vertex_chain, tuple):
+            vertex_chain = list(vertex_chain)
+        else:
+            raise GraphicsError("\n\nGraphicsError: input argument for triangulation must be a list or tuple,"
+                                f" not {vertex_chain}")
+    if len(vertex_chain) == 3:
+        return [tuple(vertex_chain)]
+    elif len(vertex_chain) < 3:
+        raise GraphicsError("\n\nGraphicsError: polygon for triangulation must have at least 3 vertices, currently, "
+                            f"only {len(vertex_chain)} vertices are present")
+
+# Runs in O(n) time
+# Reference: https://www.cs.princeton.edu/~chazelle/pubs/polygon-triang.pdf
+def triangulate_chazelle(vertex_chain):
+    if not isinstance(vertex_chain, list):
+        if isinstance(vertex_chain, tuple):
+            vertex_chain = list(vertex_chain)
+        else:
+            raise GraphicsError("\n\nGraphicsError: input argument for triangulation must be a list or tuple,"
+                                f" not {vertex_chain}")
+    if len(vertex_chain) == 3:
+        return [tuple(vertex_chain)]
+    elif len(vertex_chain) < 3:
+        raise GraphicsError("\n\nGraphicsError: polygon for triangulation must have at least 3 vertices, currently, "
+                            f"only {len(vertex_chain)} vertices are present")

@@ -105,7 +105,7 @@ class GraphicsObject:
         self.movement_bounds = None
 
         self.last_obstacle_checked_pos = None
-        self.has_object_moved = True
+        self.has_object_moved = False
 
         self.movement_lines_enabled = True
         self.obstacles_enabled = True
