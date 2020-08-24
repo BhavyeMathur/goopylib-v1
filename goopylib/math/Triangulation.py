@@ -2,33 +2,23 @@ from goopylib.util import GraphicsError
 from goopylib.Point import Point
 
 def is_reflex(p1, p2, p3):  # check to see if 3 Points given are convex
-    if not (isinstance(p1, Point) and isinstance(p2, Point) and isinstance(p3, Point)):
-        raise GraphicsError("\n\nGraphicsError: points given to check whether they are convex must all be Point "
-                            f"objects, not {p1}, {p2}, {p3}")
-    return not (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x) >= 0
+    return not (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]) >= 0
 
 
 def check_in_triangle(p1, p2, p3, pt):
-    if not (isinstance(p1, Point) and isinstance(p2, Point) and isinstance(p3, Point)):
-        raise GraphicsError("\n\nGraphicsError: points given for triangle must all be Point "
-                            f"objects, not {p1}, {p2}, {p3}")
     if pt is None:
         return False
-    else:
-        if not isinstance(pt, Point):
-            raise GraphicsError("\n\nGraphicsError: the point given to check if it is inside the triangle must be a Point"
-                                f" object, not {pt}")
 
-        # Code from https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
+    # Code from https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
 
-        def sign(v1, v2, v3):
-            return (v1.x - v3.x) * (v2.y - v3.y) - (v2.x - v3.x) * (v1.y - v3.y)
+    def sign(v1, v2, v3):
+        return (v1[0] - v3[0]) * (v2[1] - v3[1]) - (v2[0] - v3[0]) * (v1[1] - v3[1])
 
-        d1 = sign(pt, p1, p2)
-        d2 = sign(pt, p2, p3)
-        d3 = sign(pt, p3, p1)
+    d1 = sign(pt, p1, p2)
+    d2 = sign(pt, p2, p3)
+    d3 = sign(pt, p3, p1)
 
-        return not ((d1 < 0 or d2 < 0 or d3 < 0) and (d1 > 0 or d2 > 0 or d3 > 0))
+    return not ((d1 < 0 or d2 < 0 or d3 < 0) and (d1 > 0 or d2 > 0 or d3 > 0))
 
 
 def contains_no_other_points(p1, p2, p3, vertex_chain):
@@ -109,18 +99,22 @@ def triangulate_modified_earclip(vertex_chain):
 
     size = len(vertex_chain)
     # Complexity of O(n)
-    for i, vertex in enumerate(vertex_chain):
+    i = 0
+    for vertex in vertex_chain:
         if is_reflex(vertex_chain[i - 1], vertex, vertex_chain[(i + 1) % size]):
             reflex_vertices.append(vertex)
         else:
             convex_vertices.append(vertex)
+        i += 1
 
     # Upper Limit Complexity of O(n)
-    for i, vertex in enumerate(convex_vertices):
+    i = 0
+    for vertex in convex_vertices:
         if contains_no_other_points(vertex_chain[i - 1], vertex, vertex_chain[(i + 1) % size], reflex_vertices):
             ear_vertices.append(vertex)
+        i += 1
 
-    while size > 3:
+    while size > 9:
         ear_vertex = ear_vertices.pop(0)
         i = vertex_chain.index(ear_vertex)
 
@@ -169,6 +163,7 @@ def triangulate_modified_earclip(vertex_chain):
 
 # Runs in O(n log n) time
 # Reference: https://cs.gmu.edu/~jmlien/teaching/09_fall_cs633/uploads/Main/lecture03.pdf
+# Reference: https://www.slideserve.com/billy/brute-force-triangulation
 # Work in Progress
 def triangulate_plane_sweep(vertex_chain):
     if not isinstance(vertex_chain, list):
@@ -184,6 +179,70 @@ def triangulate_plane_sweep(vertex_chain):
                             f"only {len(vertex_chain)} vertices are present")
 
     vertex_chain = vertex_chain.copy()
+    size = len(vertex_chain)
+
+    if is_clockwise(vertex_chain):
+        vertex_chain.reverse()
+
+    vertex = vertex_chain[-1]
+    vertex2 = vertex_chain[0]
+
+    if vertex2[1] > vertex[1]:
+        last_direction = "down"
+    elif vertex2[1] == vertex[1]:
+        if vertex2[0] > vertex[1]:
+            last_direction = "down"
+        else:
+            last_direction = "up"
+    else:
+        last_direction = "up"
+
+    vertex_types = []
+
+    for i, vertex in enumerate(vertex_chain):
+        vertex2 = vertex_chain[(i + 1) % size]
+
+        is_turn_vertex = False
+        if vertex2[1] > vertex[1]:
+            if last_direction != "down":
+                is_turn_vertex = True
+                last_direction = "down"
+
+        elif vertex2[1] == vertex[1]:
+            if vertex2[0] > vertex[1]:
+                if last_direction != "down":
+                    is_turn_vertex = True
+                    last_direction = "down"
+            else:
+                if last_direction != "up":
+                    is_turn_vertex = True
+                    last_direction = "up"
+        else:
+            if last_direction != "up":
+                is_turn_vertex = True
+                last_direction = "up"
+
+        if is_turn_vertex:
+            if is_reflex(vertex_chain[i - 1], vertex, vertex2):
+                if vertex2[1] < vertex[1]:
+                    vertex_types.append("merge")
+                elif vertex2[1] == vertex[1] and vertex2[0] > vertex[0]:
+                    vertex_types.append("merge")
+                else:
+                    vertex_types.append("split")
+            else:
+                if vertex2[1] < vertex[1]:
+                    vertex_types.append("end")
+                elif vertex2[1] == vertex[1] and vertex2[0] > vertex[0]:
+                    vertex_types.append("end")
+                else:
+                    vertex_types.append("start")
+        else:
+            vertex_types.append("regular")
+
+    print(vertex_types)
+
+    return triangulate_modified_earclip(vertex_chain)
 
 # ----------------------------------------------------------------
 # These are empty functions for now, but are planned in the future.

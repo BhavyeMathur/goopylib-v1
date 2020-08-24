@@ -1,13 +1,13 @@
-# Goopy
+# Goopylib
 
-### Projects made using Goopy
+### Projects made using goopylib
 
-As these are entire projects with a lot of code and non-goopy elements, I have not supplied the code. But, if you want
+As these are entire projects with a lot of code and non-goopylib elements, I have not supplied the code. But, if you want
  to look at example projects with code, skip to the 'Examples' section.
 
 **1. A Pac-Man Recreation**
 
-I worked on this as a school project and used the goopy library to create fully functional Pac-Man Game! (and an arcade 
+I worked on this as a school project and used the goopylib library to create fully functional Pac-Man Game! (and an arcade 
 too!) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and 
 fruits to go on to the next level.
 
@@ -37,7 +37,7 @@ through hundreds of entries and assign everybody a club - but not this year. Thi
 app using the goopylib library that would automatically do all this work for you! 
 
 Goopylib is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it 
-to anyone to use. Now mind you, this was made with an older version of Goopylib so it did not contain lots of animations 
+to anyone to use. Now mind you, this was made with an older version of goopylib so it did not contain lots of animations 
 and visual feedback, but here is a screenshot anyways:
 
 ![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
@@ -60,7 +60,7 @@ and a ton of things to do differently, but this will all be fixed with future re
 
 Goopylib is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) also known as Pyinstaller. 
 This compatibility mainly means that all paths to textures & sounds are automatically converted into the absolute paths 
-which you don't have to worry about! This means that you will be able to convert applications written with Goopylib into
+which you don't have to worry about! This means that you will be able to convert applications written with goopylib into
 executables with, hopefully, no errors.  
 
 If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
@@ -174,6 +174,11 @@ Unfortunately, online school (Grade 9!!!) has started and so updates won't be co
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
+#### 1.1.29-alpha5 23rd August 2020 
+
+* Fixed AttributeError in the _BBox `set_resizable()` function because of using the `append()` function on a set, 
+should have been `add()`
+
 #### 1.1.28-alpha4 22nd August 2020
 
 * Fixed bug with Window destroy all instance functions raising RunTime Errors
@@ -219,12 +224,14 @@ on a Sound Engine for goopylib which I want to be part of 1.1
 
 #### 1.1.5-alpha0 7th-8th August 2020
 
-* Added a Sound class that plays, pauses, crops, & destroys sounds. You can play multiple sounds & get data for each sound
+* Added a Sound class that plays, pauses, crops, & destroys sounds. You can play multiple sounds & get data for each 
+sound
 * Added `__init__.py` files to the physics & sound subpackages
 * Added `create_sin_wave()`, `create_square_wave()`, and `create_sawtooth_wave()` functions to create a simple sounds
 
 * You can now create sounds by simply inputting a list of frequencies into a function. 
-* Added numpy as a dependency as it is used for matrix multiplication in the Bezier Curve functions (soon to be removed though)
+* Added numpy as a dependency as it is used for matrix multiplication in the Bezier Curve functions (soon to be removed 
+though)
 
 #### 
 
@@ -278,9 +285,12 @@ on a Sound Engine for goopylib which I want to be part of 1.1
 
 #### 1.0.199-beta 26th-28th July 2020
 
-* Fixed bug with GraphicsObject raising error if the directional move functions weren't provided with a callback function
-* Adding functions to enable the obstacles of an object: `set_obstacles_enabled()`, `disable_obstacles()`, `enable_obstacles()`, and `toggle_obstacles_enabled()`
-* Replaced the for loops in goopylib with the `map()` function wherever in the GraphWin class possible to improve performance
+* Fixed bug with GraphicsObject raising error if the directional move functions weren't provided with a callback 
+function
+* Adding functions to enable the obstacles of an object: `set_obstacles_enabled()`, `disable_obstacles()`, 
+`enable_obstacles()`, and `toggle_obstacles_enabled()`
+* Replaced the for loops in goopylib with the `map()` function wherever in the GraphWin class possible to improve 
+performance
 * Added an `undraw_obstacles()` function 
 
 * Added `animating_blur_time_left()` and `check_is_animating_blur()` functions to the GraphicsObject class
@@ -387,8 +397,10 @@ which should come out soon!
 * The layering system now checks if an object has been drawn before drawing it on top
 
 * Performance upgrades (on test code, update time from 0.0008 secs to 0.0003) to the layering system
-* More Performance upgrades to stop the unnecessary redrawing of Graphics Objects (on test code, update time from 0.0003 secs to .00013 secs)
-* Changed all lists in constants.py to be sets to increase performance ([wiki.python.org](https://wiki.python.org/moin/PythonSpeed))
+* More Performance upgrades to stop the unnecessary redrawing of Graphics Objects (on test code, update time from 0.0003 
+secs to .00013 secs)
+* Changed all lists in constants.py to be sets to increase performance 
+([wiki.python.org](https://wiki.python.org/moin/PythonSpeed))
 * Changed the directional move functions to correctly align with intuitive axes (forward being up, not down)
 * Image rotation now happens clockwise instead of anticlockwise
 
@@ -406,7 +418,8 @@ which should come out soon!
 * Image blurring & filter functions now work correctly with rotation and other transformations
 * Fixed bug with Image blurring animation functions not using easing correctly
 * Added a layering system to draw graphics in front of and behind others!
-* Added functions for the layering system: `move_up_layer()`, `move_down_layer()`, `set_layer()`, and `get_layer_objects()`
+* Added functions for the layering system: `move_up_layer()`, `move_down_layer()`, `set_layer()`, and 
+`get_layer_objects()`
 * Added errors to the GraphicsObject class and fixed some errors in the GraphWin class
 
 #### 1.0.144-beta 19th July 2020
@@ -416,7 +429,8 @@ which should come out soon!
 * Fixed bug with AnimatedImage redrawing after being undrawn by the user
 * Fixed bug with GraphicsObjects continuing to blink after being undrawn
 
-* Added some getter functions to the AnimatedImage class: `get_current_frame()`, `get_all_frames()`, `get_frame()`, `get_number_of_frames()`
+* Added some getter functions to the AnimatedImage class: `get_current_frame()`, `get_all_frames()`, `get_frame()`,
+ `get_number_of_frames()`
 * Added `decrement_frame()` and `set_frame()` functions to the AnimatedImage class
 * Added `get_x_pos()` and `get_y_pos()` functions to the GraphicsObject class
 
@@ -436,11 +450,14 @@ which should come out soon!
 * Performance upgrade for Goopylib when many objects are drawn on the GraphWin
 * GraphWin setter functions only update the window if the window's `autoflush` is `True`
 * The GraphWin doesn't call the `time.time()` function inside the `update_win()` if it is not gliding
-* More Performance Upgrades for the `_on_mouse_motion()` static method for the GraphicsObject (from ~0.05 secs/call to ~0.0 secs)
+* More Performance Upgrades for the `_on_mouse_motion()` static method for the GraphicsObject (from ~0.05 secs/call to
+ ~0.0 secs)
 * Added an AnimationImage GraphicsObject to create Images which go through multiple frames
-* Improved Performance for Animating Images (tested on my Pac-Man game, brought down time for 1 loop cycle from ~0.13 secs to ~0.05 secs)
+* Improved Performance for Animating Images (tested on my Pac-Man game, brought down time for 1 loop cycle from ~0.13 
+secs to ~0.05 secs)
 
-* Added a `blink_graphic` to the `animate_blinking()` function to set a specific graphic when blinking rather than just undrawing it (which happens when it is set to None)
+* Added a `blink_graphic` to the `animate_blinking()` function to set a specific graphic when blinking rather than just 
+undrawing it (which happens when it is set to None)
 
 #### 1.0.121-beta 16th July 2020
 
@@ -458,21 +475,26 @@ which should come out soon!
 * Fixed bug with Images as Button graphics not scaling to fit the Window's Coordinates
 * Removed the `get_size()` function from the Image class and added it to the GraphicsObject class
 * Added Errors to the Image class to make sure the user has specified the correct arguments
-* Added flipping functions to the Image class: `flip()`, `flip_xy()`, `flip_x()`, `flip_y()`, `transpose()`, & `transverse()`
+* Added flipping functions to the Image class: `flip()`, `flip_xy()`, `flip_x()`, `flip_y()`, `transpose()`, &
+ `transverse()`
 
 * Added `get_mode()` and `get_format()` methods to the Image class
-* Fixed the image get size functions to return the size of the PIL image rather than itself (useful for transformations & stuff)
-* Added skewing function to the Image class: `skew()`, `skew_x()`, `skew_y()`, and `scew_xy()` (This was so confusing to implement...)
+* Fixed the image get size functions to return the size of the PIL image rather than itself (useful for transformations
+ & stuff)
+* Added skewing function to the Image class: `skew()`, `skew_x()`, `skew_y()`, and `scew_xy()` (This was so confusing to 
+implement...)
 * Added `set_contrast()`, `change_contrast()`, `reset_contrast()`, and `get_contrast()` functions to the Image object
 * The Image now keeps its contrast settings while rotating after the contrast has been changed
 
 #### 1.0.107-beta 13th-14th July 2020 - 6632 lines of code
 
-* Added functionality to the Arc class which now inherits from the Curved Line class which means it has all the functionality of the line class too!
+* Added functionality to the Arc class which now inherits from the Curved Line class which means it has all the
+ functionality of the line class too!
 * Added an empty Solid Arc class
 * Added the Arc Wiki
 
-* Performance upgrade to the Image class when drawing it. It no longer updates itself (because it's not required) causing image drawing to be much faster
+* Performance upgrade to the Image class when drawing it. It no longer updates itself (because it's not required) 
+causing image drawing to be much faster
 * Added `move_forward()`, `move_backward()`, `move_left()`, `move_right()` functions to the GraphicsObject class
 * Added `get_screen_width()` and  `get_screen_height()` function to util.py
 * Added `get_cursor()` & `get_config_options()` functions to the GraphicsObject class
@@ -485,13 +507,15 @@ which should come out soon!
 * Added even more animation functions! `animate_change_outline()` and `animate_set_outline()`
 
 * Added `get_mouse_pos()` and `check_keys_down` functions to the GraphWin
-* The user can now specify if they want duplicate animations and they can give a duplicates metric to specify what a duplicate is
+* The user can now specify if they want duplicate animations and they can give a duplicates metric to specify what a
+ duplicate is
 * Renamed all the arguments for animations such as `Rotation`, `Distance`, `Colour Change`, etc. to just `Change`
 * Added a `check_animation_exists()` function to the GraphWin to check if an animation already exists
 * Animation functions for changing width: `animate_change_outline_width()` and `animate_set_outline_width()`
 
 * Added axis-based dragging functions with callbacks: `set_draggable_x()` and `set_draggable_y()`
-* Added `resize_to_fit()`, `resize_to_fit_width()`, & `resize_to_height()` functions to the image class to resize itself to the size of another object
+* Added `resize_to_fit()`, `resize_to_fit_width()`, & `resize_to_height()` functions to the image class to resize itself
+ to the size of another object
 * Added `resize_width()` and `resize_height()` to resize only 1 dimension of the image
 
 * Added a `get_aspect_ratio()` function to the Image class
@@ -526,7 +550,8 @@ which should come out soon!
 * Added a `CURVE_INTERPOLATIONS` variable to the `constants.py` file
 
 * Added cosine, linear, and cubic interpolation to the Curved Line class - it's actually a curved line now!
-* Added a `bounds_width` argument to the Line classes that determines how close a mouse click has to be to be considered clicking the line
+* Added a `bounds_width` argument to the Line classes that determines how close a mouse click has to be to be considered 
+ clicking the line
 * Added getter & setter function for the `bounds_width` argument of the Line classes
 
 #### 1.0.65-beta 11th July 2020 - 6290 lines of code
@@ -551,7 +576,8 @@ which should come out soon!
 #### 1.0.54-beta 10th July 2020
 
 * Changed the Circle class `__repr__` function
-* Added an align parameter to the GraphicsObject move function to move an object 'left-aligned' or right, top, bottom, etc.
+* Added an align parameter to the GraphicsObject move function to move an object 'left-aligned' or right, top, bottom, 
+etc.
 * Added `get_height()` and `get_width()` functions to _BBox
 * The Button class now inherits from the GraphicsObject class
 * Defined all the rotate functions for the button as well as `get_height()` and `get_width()` functions
@@ -559,7 +585,8 @@ which should come out soon!
 * Fixed bug with Button movement
 * Button is_clicked() function returns False if the button hasn't been drawn
 
-* Renamed the `BezierCurve()` function to `RawBezierCurve()` and created a faster `BezierCurve()` function that uses matrices
+* Renamed the `BezierCurve()` function to `RawBezierCurve()` and created a faster `BezierCurve()` function that uses 
+matrices
 * Added Linear & Cosine Interpolation Functions
 * Worked on a graphical application to allow users to create their own custom ease functions
 
@@ -588,7 +615,8 @@ which should come out soon!
 * Added `get_width()` & `get_height()` functions to the Entry
 * The Entry Widget unfocuses itself when the user clicks somewhere else
 
-* Added a GraphWin Wiki! (mainly cause I felt guilty that the people who liked Goopy (4 stars!) wouldn't be able to use it)
+* Added a GraphWin Wiki! (mainly cause I felt guilty that the people who liked Goopy (4 stars!) wouldn't be able to use 
+it)
 * The GraphWin returns itself for functions where it didn't (unless it is returning something else)
 * Added a `move_to_point()` function for the GraphWin
 
@@ -628,7 +656,8 @@ which should come out soon!
 * Fixed GraphicsObject gliding functions to work with the new easing.
 * Added a check to make sure the easing provided is a function
 * Added glide_to_point() easing function for the GraphWin
-* You can now not supply a value for y or dy for the glide() & glide_to() functions to make the object glide equally in both directions
+* You can now not supply a value for y or dy for the glide() & glide_to() functions to make the object glide equally in 
+both directions
 * You can now supply different easings for the y & x gliding
 
 * Removed keyboard module dependency
@@ -642,12 +671,15 @@ which should come out soon!
 
 #### 1.0.0-alpha to 1.0.6-alpha - 6th July 2020
 
-* Added move_to(), move_to_x(), move_to_y(), move(), move_x(), and move_y() functions to the GraphWin class to move a window on the screen
+* Added move_to(), move_to_x(), move_to_y(), move(), move_x(), and move_y() functions to the GraphWin class to move a 
+window on the screen
 * Added seperate Cursor Lists for All, Windows, & Mac OSx 
 * Expanded the Cursor List to include all available cursors
-* Added a Cursor Dictionary to reference the Cursors with more intuitive names like 'up-down arrow' rather than 'sb_h_double_arrow'
+* Added a Cursor Dictionary to reference the Cursors with more intuitive names like 'up-down arrow' rather than 
+'sb_h_double_arrow'
 
-* Added Closure functions for all the interpolations so that the user can 1. Get a value of the interpolation, or 2. Get the function with predifined parameters other than time for use in animations internally
+* Added Closure functions for all the interpolations so that the user can 1. Get a value of the interpolation, or 2.
+ Get the function with predifined parameters other than time for use in animations internally
 * Created the Cursors Wiki Page
 
 * Various Bug Fixes from changing the naming convention & splitting files
@@ -657,14 +689,17 @@ which should come out soon!
 
 #### 6.11.11 to 6.11.29 to 1.0.0-alpha - 4th-5th July 2020
 
-* Added a callback function to the Entry object which will allow for features like controlling what text the user can type in there, prompt text, etc.
-* Added a promptText attribute to the Entry which displays text before the user has typed and disappears when he/she starts typing
+* Added a callback function to the Entry object which will allow for features like controlling what text the user can 
+type in there, prompt text, etc.
+* Added a promptText attribute to the Entry which displays text before the user has typed and disappears when he/she 
+starts typing
 * Added a new style key 'entry width' which deafults to 0 to make Entries look better with less manual configuration
 * Entry now raises and error if you try to getText() when it is not drawn, or the GraphWin is closed
 
 * Added a set_enabled() and toggle_enabled() function for Buttons
 
-* Point adding & setting functions don't mutate the point itself now, instead they return a clone of the point with the operations performed
+* Point adding & setting functions don't mutate the point itself now, instead they return a clone of the point with the 
+operations performed
 * Added a getState() function to the checkbox which returns its current state
 
 * Added functions for finding Bezier Curves, Bernstein Polynomials, & 'nCk' (combinations) to create better curves
@@ -693,7 +728,8 @@ which should come out soon!
 * Fixed the GraphWin's setBackground() function to work with colours referencing a style
 * Fixed bug with the GraphWin not referencing the global style properly
 
-* Warning added to warn the user if they are both calling the updateWin() function manually and the autoflush of the GraphWin is set to True
+* Warning added to warn the user if they are both calling the updateWin() function manually and the autoflush of the 
+GraphWin is set to True
 * While resizing a rectangle, you can set the min. width & height beyond which, the rectangle cannot be resized 
 * A GraphicsError is now raised if the minWidth & minHeight arguments of the setResizable() function are < 1
 

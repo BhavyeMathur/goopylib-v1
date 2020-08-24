@@ -218,7 +218,7 @@ class BBox(GraphicsObject):
         self.is_resizing = {"top": top, "left": left, "bottom": bottom, "right": right}
 
         self._set_resizable([top, bottom, left, right], thickness=bounds_width, show_bounds=show_bounds)
-        GraphicsObject.resizing_objects.append(self)
+        GraphicsObject.resizing_objects.add(self)
         self.bounds_thickness = bounds_width
 
         return self

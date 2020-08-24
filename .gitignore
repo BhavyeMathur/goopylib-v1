@@ -2,6 +2,7 @@
 *.log
 *.fla
 sound_test.py
+test.py
 triangulation_test.py
 test.py
 dist/
