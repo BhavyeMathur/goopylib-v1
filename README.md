@@ -174,10 +174,17 @@ Unfortunately, online school (Grade 9!!!) has started and so updates won't be co
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
-#### 1.1.29-alpha5 23rd August 2020 
+#### 1.1.35-alpha5 1st-2nd September 2020 
 
 * Fixed AttributeError in the _BBox `set_resizable()` function because of using the `append()` function on a set, 
 should have been `add()`
+* Added a max_characters variable to the Entry class to control the max number of characters the user can enter
+* Added a multiline entry class to create... multi-line entries.
+
+* You can use tags for setting bounds for GraphicsObjects
+* Added Dragging functions for the Window class
+* Added bounding bounds for the Window class
+* Added getter functions to get the position of the window
 
 #### 1.1.28-alpha4 22nd August 2020
 
