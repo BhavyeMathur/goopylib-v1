@@ -174,6 +174,20 @@ Unfortunately, online school (Grade 9!!!) has started and so updates won't be co
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
+#### 1.1.43-alpha6 3rd-4th September 2020
+
+* Fixed `destroy()` function with Buttons
+* Fixed bug with the Button's `move()` functions not working properly due to bug with the anchor being moved twice
+* Added more getter functions to the Entry & MultilineEntry classes
+* Added more setter functions to the MultilineEntry class
+
+* Fixed bug with Checkbox state changing not undrawing the previous state properly
+* Fixed more bugs with the Checkbox not undrawing when changing sate when using non-button states
+* You can now bind the state of a Checkbox to the state of another
+
+* Fixed the state argument in Checkboxes which was setting its state to the opposite state of the one inputted
+* Added a setter & getter function for text inside a multiline entry
+
 #### 1.1.35-alpha5 1st-2nd September 2020 
 
 * Fixed AttributeError in the _BBox `set_resizable()` function because of using the `append()` function on a set, 

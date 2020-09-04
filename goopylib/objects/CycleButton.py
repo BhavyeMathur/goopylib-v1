@@ -11,6 +11,7 @@ class CycleButton(GraphicsObject):
 
         self.is_disabled = False
         self.disabled_graphic = disabled_graphic
+        self.drawn_graphic = None
 
         self.autoflush = autoflush
 
@@ -31,6 +32,7 @@ class CycleButton(GraphicsObject):
 
     def _draw(self, canvas=None, options=None):
         self.states[self.state].draw(canvas, _internal_call=True)
+        self.drawn_graphic = self.states[self.state]
 
         for graphic in self.states:
             graphic.graphwin = canvas
@@ -40,15 +42,11 @@ class CycleButton(GraphicsObject):
         return self
 
     def _undraw(self, set_blinking=True):
-        for obj in self.states:
-            if obj.drawn:
-                obj.undraw(set_blinking=set_blinking)
+        self.drawn_graphic.undraw(set_blinking=set_blinking)
         return self
 
     def base_undraw(self):
-        for obj in self.states:
-            if obj.drawn:
-                obj.base_undraw()
+        self.drawn_graphic.undraw()
 
     def _rotate(self, dr, sampling="bicubic", center=None):
         for graphic in self.states:

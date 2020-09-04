@@ -14,6 +14,7 @@ from goopylib.objects.Rectangle import Rectangle
 
 from goopylib.objects.Text import Text
 from goopylib.objects.Entry import Entry
+from goopylib.objects.MultilineEntry import MultilineEntry
 
 from goopylib.objects.Image import Image
 from goopylib.objects.AnimatedImage import AnimatedImage

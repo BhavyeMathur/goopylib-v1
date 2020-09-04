@@ -15,6 +15,9 @@ class Entry(GraphicsObject):
                  bounds=None, align="center", text="", max_characters=None):
 
         self.anchor = p.clone()
+
+        if not isinstance(text_width, int):
+            raise GraphicsError(f"Text Width for the Entry must be an integer, not {text_width}")
         self.text_width = text_width
 
         if align not in ALIGN_OPTIONS:
@@ -23,6 +26,8 @@ class Entry(GraphicsObject):
 
         self.text = tkStringVar(_root)
         self.text.set(text)
+
+        self.was_edited_since_last_call = False
 
         if style is None:
             self.style = global_style
@@ -109,7 +114,6 @@ class Entry(GraphicsObject):
             else:
                 self.justify = STYLES["default"]["justify"]
 
-        self.font_config = (self.font, self.font_size, self.font_style)
         self.entry = None
         self.border_type = border_relief
         if password:
@@ -127,7 +131,7 @@ class Entry(GraphicsObject):
         self.max_characters = None
         self.set_max_characters(max_characters)
 
-        GraphicsObject.__init__(self, style=style, options=["fill"], layer=layer, tag=tag, bounds=bounds)
+        GraphicsObject.__init__(self, (), style=style, layer=layer, tag=tag, bounds=bounds)
 
     def __repr__(self):
         if self.drawn:
@@ -135,8 +139,69 @@ class Entry(GraphicsObject):
         else:
             return f"Entry({self.anchor})"
 
+    def _draw(self, canvas, options):
+        p = self.anchor
+        x, y = self.anchor
+
+        frm = tkFrame(canvas.master)
+
+        self.set_font_size(int(self.initial_font_size / canvas.trans.x_scale), False)
+        self.entry = tkEntry(frm, width=self.text_width, textvariable=self.text, bg=self.fill, fg=self.font_colour,
+                             bd=self.outline_width, font=(self.font, self.font_size, self.font_style),
+                             insertbackground=self.font_colour, show=self.text_type, state=self.enabled,
+                             justify=self.justify, cursor="xterm", exportselection=0,
+                             selectbackground=self.select_colour, insertborderwidth=0)
+
+        if not self.edited:
+            self.entry.insert(0, self.prompt_text)
+            self.entry.config(show="")
+        self.entry.pack()
+
+        self.entry.bind("<Return>", self._on_enter)
+
+        self.text.trace('w', self._on_edit)
+
+        width = self.get_width()
+        height = self.get_height()
+
+        if self.align == "center":
+            pass
+        elif self.align == "bottom":
+            y -= self.font_size / 2
+        elif self.align == "top":
+            y += self.font_size / 2
+        elif self.align == "left":
+            x += self.font_size * self.text_width / 2
+        elif self.align == "right":
+            x -= self.font_size * self.text_width / 2
+        elif self.align == "bottomleft":
+            y -= self.font_size / 2
+            x += self.font_size * self.text_width / 2
+        elif self.align == "bottomright":
+            y -= self.font_size / 2
+            x -= self.font_size * self.text_width / 2
+        elif self.align == "topleft":
+            y += self.font_size / 2
+            x += self.font_size * self.text_width / 2
+        elif self.align == "topright":
+            y += self.font_size / 2
+            x -= self.font_size * self.text_width / 2
+
+        x, y = canvas.to_screen(x, y)
+
+        return canvas.create_window(x, y, window=frm)
+
+    def _move(self, dx, dy):
+        self.anchor.move(dx, dy)
+
     def _in_allowed(self, c):
         return c in self.allowed_symbols
+
+    def was_edited(self):
+        if self.was_edited_since_last_call:
+            self.was_edited_since_last_call = False
+            return True
+        return False
 
     def _on_edit(self, *args):
         text = self.text.get()
@@ -144,6 +209,7 @@ class Entry(GraphicsObject):
             if len(text) > self.max_characters:
                 self.text.set(text[:-1])
                 return
+
         corrected = ''.join(filter(self._in_allowed, text))
         self.text.set(corrected)
 
@@ -153,6 +219,8 @@ class Entry(GraphicsObject):
 
             if self.text_type == "*":
                 self.entry.config(show="*")
+
+        self.was_edited_since_last_call = True
 
     def _on_enter(self, e):
         pass
@@ -213,6 +281,12 @@ class Entry(GraphicsObject):
 
         return self
 
+    def hide_cursor(self):
+        self.entry.config(insertontime=0)
+
+    def show_cursor(self):
+        self.entry.config(insertontime=1)
+
     def disable(self):
         self.enabled = "disabled"
         if self.entry:
@@ -240,73 +314,12 @@ class Entry(GraphicsObject):
         if self.entry:
             self.entry.config(show=self.text)
 
-    def _draw(self, canvas, options):
-        p = self.anchor
-        x, y = self.anchor
-
-        frm = tkFrame(canvas.master)
-
-        self.set_size(self.initial_font_size / canvas.trans.x_scale, False)
-
-        self.entry = tkEntry(frm, width=self.text_width, textvariable=self.text, bg=self.fill, fg=self.font_colour,
-                             bd=self.outline_width, font=self.font_config, insertbackground=self.font_colour,
-                             show=self.text_type, state=self.enabled, justify=self.justify, cursor="xterm",
-                             exportselection=0, selectbackground=self.select_colour, insertborderwidth=0)
-
-        if not self.edited:
-            self.entry.insert(0, self.prompt_text)
-            self.entry.config(show="")
-        self.entry.pack()
-
-        self.entry.bind("<Return>", self._on_enter)
-
-        self.text.trace('w', self._on_edit)
-
-        width = self.get_width()
-        height = self.get_height()
-
-        if self.align == "center":
-            pass
-        elif self.align == "bottom":
-            y -= self.font_size / 2
-        elif self.align == "top":
-            y += self.font_size / 2
-        elif self.align == "left":
-            x += self.font_size * self.text_width / 2
-        elif self.align == "right":
-            x -= self.font_size * self.text_width / 2
-        elif self.align == "bottomleft":
-            y -= self.font_size / 2
-            x += self.font_size * self.text_width / 2
-        elif self.align == "bottomright":
-            y -= self.font_size / 2
-            x -= self.font_size * self.text_width / 2
-        elif self.align == "topleft":
-            y += self.font_size / 2
-            x += self.font_size * self.text_width / 2
-        elif self.align == "topright":
-            y += self.font_size / 2
-            x -= self.font_size * self.text_width / 2
-
-        x, y = canvas.to_screen(x, y)
-
-        return canvas.create_window(x, y, window=frm)
-
     def get_text(self):
         if self.drawn and self.graphwin.is_open():
             return self.entry.get()
         else:
             raise GraphicsError(f"\n\nEntry can only return text when it is drawn and the window is open. Window Open"
                                 f"? {self.graphwin.is_open()}, Drawn? {self.drawn}")
-
-    def _move(self, dx, dy):
-        self.anchor.move(dx, dy)
-
-    def hide_cursor(self):
-        self.entry.config(insertontime=0)
-
-    def show_cursor(self):
-        self.entry.config(insertontime=1)
 
     def get_anchor(self):
         return self.anchor.clone()
@@ -316,6 +329,33 @@ class Entry(GraphicsObject):
 
     def get_height(self):
         return self.entry.winfo_height()
+
+    def get_font_size(self):
+        return self.font_size
+
+    def get_font_face(self):
+        return self.font
+
+    def get_font_colour(self):
+        return self.font_colour
+
+    def get_font_style(self):
+        return self.font_style
+
+    def get_justify(self):
+        return self.justify
+
+    def get_selection_colour(self):
+        return self.select_colour
+
+    def get_maximum_characters(self):
+        return self.max_characters
+
+    def get_outline_width(self):
+        return self.outline_width
+
+    def get_fill(self):
+        return self.fill
 
     def clone(self):
         other = Entry(self.anchor, self.text_width)
@@ -328,41 +368,91 @@ class Entry(GraphicsObject):
     def set_text(self, t):
         self.entry.delete(0, tkEND)
         self.entry.insert(0, t)
+        self._update_layer()
+        return self
 
     def set_fill(self, colour):
         self.fill = colour
         if self.entry:
             self.entry.config(bg=colour)
+        self._update_layer()
+        return self
 
-    def _set_font_component(self, which, value):
-        font = (self.font, self.font_size, self.font_style)
-
-        self.font_config = list(self.font_config)
-        self.font_config[which] = value
+    def set_face(self, font_face):
+        if font_face in STYLES[self.style].keys():
+            self.font = STYLES[self.style][font_face]
+        elif isinstance(font_face, str):
+            self.font = font_face
+        else:
+            if "font face" in STYLES[self.style].keys():
+                self.font = STYLES[self.style]["font face"]
+            else:
+                self.font = STYLES["default"]["font face"]
 
         if self.entry:
-            self.entry.config(font=font)
+            self.entry.config(font=(self.font, self.font_size, self.font_style))
+        self._update_layer()
+        return self
 
-    def set_face(self, face):
-        self._set_font_component(0, face)
+    def set_font_size(self, font_size, set_initial_font_size=True):
+        if isinstance(font_size, int):
+            self.font_size = font_size
+        elif font_size in STYLES[self.style].keys():
+            self.font_size = STYLES[self.style][font_size]
+        else:
+            if "font size" in STYLES[self.style].keys():
+                self.font_size = STYLES[self.style]["font size"]
+            else:
+                self.font_size = STYLES["default"]["font size"]
 
-    def set_size(self, size, font_size=True):
-        if font_size:
-            self.initial_font_size = round(size)
-        self._set_font_component(1, round(size))
+        if set_initial_font_size:
+            self.initial_font_size = round(font_size)
 
-    def set_style(self, style):
-        self._set_font_component(2, style)
+        if self.entry:
+            self.entry.config(font=(self.font, self.font_size, self.font_style))
+        self._update_layer()
+        return self
+
+    def set_font_style(self, font_style):
+        if font_style in STYLES[self.style].keys():
+            self.font_style = STYLES[self.style][font_style]
+        elif isinstance(font_style, str):
+            self.font_style = font_style
+        else:
+            if "font style" in STYLES[self.style].keys():
+                self.font_style = STYLES[self.style]["font style"]
+            else:
+                self.font_style = STYLES["default"]["font style"]
+
+        if self.entry:
+            self.entry.config(font=(self.font, self.font_size, self.font_style))
+        self._update_layer()
+        return self
 
     def set_text_colour(self, colour):
         self.font_colour = colour
         if self.entry:
             self.entry.config(fg=colour)
+        self._update_layer()
+        return self
 
     def set_border_relief(self, border):
         if border not in ["flat", "groove", "raised", "ridge", "solid", "sunken"]:
             raise GraphicsError("\n\nBorder type must be one of "
                                 "['flat', 'groove', 'raised', 'ridge', 'solid', 'sunken']")
+        self.border_type = border
         if self.entry:
-            self.border_type = border
             self.entry.config(relief=border)
+        self._update_layer()
+        return self
+
+    def set_width(self, text_width):
+        if not isinstance(text_width, int):
+            raise GraphicsError(f"Text Width for the Entry must be an integer, not {text_width}")
+        self.text_width = text_width
+
+        if self.entry:
+            self.entry.config(width=text_width)
+
+        self._update_layer()
+        return self

@@ -267,12 +267,15 @@ class GraphicsObject:
         GraphicsObject.draggable_objects.discard(self)
         GraphicsObject.cursor_objects.discard(self)
 
-        if self.tag is not None:
-            GraphicsObject.tagged_objects.pop(self.tag)
-        GraphicsObject.object_layers[self.layer].discard(self)
+        if self in GraphicsObject.redraw_on_frame[self.layer]:
+            GraphicsObject.redraw_on_frame[self.layer].remove(self)
+
         if self.graphwin is not None:
             self.graphwin.destroy_item(self.id)
             self.graphwin.del_item(self)
+
+        self.drawn = False
+        self.id = None
 
     # -------------------------------------------------------------------------
     # LAYERING SYSTEM FUNCTIONS
@@ -2080,7 +2083,7 @@ class GraphicsObject:
         GraphicsObject.on_mouse_motion(graphwin=graphwin)
 
         for layer in GraphicsObject.redraw_on_frame:
-            for obj in layer:
+            for obj in layer.copy():
                 if obj.graphwin == graphwin:
                     obj.draw(graphwin=graphwin)
             layer.clear()
@@ -2101,15 +2104,9 @@ class GraphicsObject:
 
         for obj in GraphicsObject.button_instances:
             if obj.graphwin == graphwin and obj.graphic == obj.clicked_graphic and obj.drawn:
-                obj.undraw()
                 if not obj.is_disabled:
                     obj.graphic = obj.normal_graphic
-                obj.draw(obj.graphwin)
-
-        for obj in GraphicsObject.checkbox_instances:
-            if obj.graphwin == graphwin and obj.autoflush:
-                if obj.is_clicked(mouse_pos):
-                    obj.click()
+                obj.draw(graphwin)
 
         for obj in GraphicsObject.cyclebutton_instances:
             if obj.graphwin == graphwin and obj.autoflush:
@@ -2136,9 +2133,9 @@ class GraphicsObject:
         for obj in GraphicsObject.button_instances:
             if obj.graphwin == graphwin and obj.drawn:
                 if obj.is_clicked(mouse_pos):
-                    obj.graphic.undraw()
+                    
                     obj.graphic = obj.clicked_graphic
-                    obj._draw(obj.graphwin, ())
+                    obj.draw(graphwin)
 
         for obj in GraphicsObject.resizing_objects:
             if obj.graphwin == graphwin:
@@ -2174,16 +2171,16 @@ class GraphicsObject:
                         if graphwin.left_mouse_down:
                             if obj.graphic != obj.clicked_graphic:
                                 obj.graphic = obj.clicked_graphic
-                                obj._update_layer()
+                                obj.draw(graphwin)
 
                         else:
                             if obj.graphic != obj.hover_graphic:
                                 obj.graphic = obj.hover_graphic
-                                obj._update_layer()
+                                obj.draw(graphwin)
 
                     elif obj.graphic != obj.normal_graphic and not obj.is_disabled:
                         obj.graphic = obj.normal_graphic
-                        obj._update_layer()
+                        obj.draw(graphwin)
 
             for obj in GraphicsObject.slider_instances:
                 if obj.graphwin == graphwin:

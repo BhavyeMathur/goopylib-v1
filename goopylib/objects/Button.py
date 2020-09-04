@@ -40,7 +40,7 @@ class Button(GraphicsObject):
         GraphicsObject.__init__(self, options=(), layer=layer, tag=tag, bounds=bounds)
 
     def __repr__(self):
-        return "Button({})".format(self.graphic)
+        return f"Button({self.graphic})"
 
     def _draw(self, canvas, options):
         self.graphic.draw(canvas, _internal_call=True)
@@ -51,20 +51,35 @@ class Button(GraphicsObject):
         if self.label is not None:
             self.label.draw(canvas, _internal_call=True)
 
-    def _move(self, dx, dy):
+    def destroy(self):
         if self.hover_graphic_given:
-            self.hover_graphic.move(dx, dy)
-        self.normal_graphic.move(dx, dy)
+            self.hover_graphic.destroy()
+        self.normal_graphic.destroy()
         if self.clicked_graphic_given:
-            self.clicked_graphic.move(dx, dy)
+            self.clicked_graphic.destroy()
         if self.disabled_graphic_given:
-            self.disabled_graphic.move(dx, dy)
+            self.disabled_graphic.destroy()
 
-        self.anchor.x += dx
-        self.anchor.y += dy
+        if self in GraphicsObject.redraw_on_frame[self.layer]:
+            GraphicsObject.redraw_on_frame[self.layer].remove(self)
 
         if self.label is not None:
-            self.label.move(dx, dy)
+            self.label.destroy()
+
+        self.drawn = False
+        self.id = None
+
+    def _move(self, dx, dy):
+        if self.hover_graphic_given:
+            self.hover_graphic._move(dx, dy)
+        self.normal_graphic._move(dx, dy)
+        if self.clicked_graphic_given:
+            self.clicked_graphic._move(dx, dy)
+        if self.disabled_graphic_given:
+            self.disabled_graphic._move(dx, dy)
+
+        if self.label is not None:
+            self.label._move(dx, dy)
 
     def _rotate(self, dr):
         self.disabled_graphic.rotate(dr)
@@ -81,9 +96,9 @@ class Button(GraphicsObject):
         return self
 
     def base_undraw(self):
-        self.drawn_graphic.base_undraw()
+        self.drawn_graphic.undraw()
         if self.label is not None:
-            self.label.base_undraw()
+            self.label.undraw()
 
     def get_width(self):
         return self.graphic.get_width()
