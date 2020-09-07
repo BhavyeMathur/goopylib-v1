@@ -30,7 +30,7 @@ class GraphicsObject:
     cursor_objects = {*()}
     draggable_objects = {*()}
 
-    redraw_on_frame = [{*()}]
+    redraw_on_frame = [[]]
 
     def __init__(self, options=(), style=None, cursor="arrow", layer=0, bounds=None, tag=None):
         # options is a list of strings indicating which options are
@@ -133,7 +133,7 @@ class GraphicsObject:
 
         while layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append({*()})
-            GraphicsObject.redraw_on_frame.append({*()})
+            GraphicsObject.redraw_on_frame.append([])
 
         GraphicsObject.object_layers[layer].add(self)
         GraphicsObject.objects.add(self)
@@ -200,17 +200,28 @@ class GraphicsObject:
         if graphwin.closed:
             return self
 
-        if self.drawn:
-            self.base_undraw() 
-
-        self.id = self._draw(graphwin, self.config)
         self.graphwin = graphwin
-        graphwin.add_item(self)
 
-        self.drawn = True
+        if _internal_call:
+            if self.drawn:
+                self.base_undraw()
 
-        if self.get_cursor() != graphwin.get_window_cursor() and self not in GraphicsObject.cursor_objects:
-            GraphicsObject.cursor_objects.add(self)
+            self.id = self._draw(graphwin, self.config)
+
+            graphwin.add_item(self)
+
+            if self.get_cursor() != graphwin.get_window_cursor() and self not in GraphicsObject.cursor_objects:
+                GraphicsObject.cursor_objects.add(self)
+            self.drawn = True
+        else:
+            if self not in GraphicsObject.redraw_on_frame[self.layer]:
+                GraphicsObject.redraw_on_frame[self.layer].append(self)
+
+            for layer_index, layer in enumerate(GraphicsObject.object_layers):
+                if layer_index > self.layer:
+                    for obj in layer:
+                        if obj.drawn and obj not in GraphicsObject.redraw_on_frame[layer_index]:
+                            GraphicsObject.redraw_on_frame[layer_index].append(obj)
 
         return self
 
@@ -225,13 +236,13 @@ class GraphicsObject:
     def _update_layer(self):
         if self.drawn:
             if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                GraphicsObject.redraw_on_frame[self.layer].add(self)
+                GraphicsObject.redraw_on_frame[self.layer].append(self)
 
             for layer_index, layer in enumerate(GraphicsObject.object_layers):
                 if layer_index > self.layer:
                     for obj in layer:
                         if obj.drawn and obj not in GraphicsObject.redraw_on_frame[layer_index]:
-                            GraphicsObject.redraw_on_frame[layer_index].add(obj)
+                            GraphicsObject.redraw_on_frame[layer_index].append(obj)
 
     def undraw(self, set_blinking=True):
 
@@ -272,7 +283,10 @@ class GraphicsObject:
 
         if self.graphwin is not None:
             self.graphwin.destroy_item(self.id)
-            self.graphwin.del_item(self)
+            try:
+                self.graphwin.del_item(self)
+            except ValueError:
+                pass
 
         self.drawn = False
         self.id = None
@@ -292,7 +306,7 @@ class GraphicsObject:
 
         while self.layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append({*()})
-            GraphicsObject.redraw_on_frame.append({*()})
+            GraphicsObject.redraw_on_frame.append([])
 
         self._update_layer()
 
@@ -324,7 +338,7 @@ class GraphicsObject:
         GraphicsObject.object_layers[self.layer].discard(self)
         while layer > len(GraphicsObject.object_layers) - 1:
             GraphicsObject.object_layers.append({*()})
-            GraphicsObject.redraw_on_frame.append({*()})
+            GraphicsObject.redraw_on_frame.append([])
 
         self.layer = layer
         self._update_layer()
@@ -778,88 +792,89 @@ class GraphicsObject:
         """move object dx units in x direction and dy units in y
         direction"""
 
-        if not (isinstance(dx, int) or isinstance(dx, float)):
-            raise GraphicsError("\n\nThe amount to move the object in the x-direction (dx) must be a number "
-                                f"(integer or float), not {dx}")
-        if not (isinstance(dy, int) or isinstance(dy, float)):
-            raise GraphicsError("\n\nThe amount to move the object in the y-direction (dy) must be a number "
-                                f"(integer or float), not {dy}")
+        if not (dx == 0 and dy == 0):
+            if not (isinstance(dx, int) or isinstance(dx, float)):
+                raise GraphicsError("\n\nThe amount to move the object in the x-direction (dx) must be a number "
+                                    f"(integer or float), not {dx}")
+            if not (isinstance(dy, int) or isinstance(dy, float)):
+                raise GraphicsError("\n\nThe amount to move the object in the y-direction (dy) must be a number "
+                                    f"(integer or float), not {dy}")
 
-        if self.bounds is None:
-            new_pos = (self.anchor.x + dx, self.anchor.y + dy)
-        else:
-            new_pos = (self.bounds.anchor.x + dx, self.bounds.anchor.y + dy)
-        if self.movement_bounds is not None:
-            if not self.movement_bounds.is_clicked(Point(*new_pos)):
-                if self.allow_looping[0]:
-                    width = self.movement_bounds.get_width()
-                    if new_pos[0] <= self.movement_bounds.anchor.x - width/2:
-                        dx = width - self.get_width() / 2
-                    elif new_pos[0] >= self.movement_bounds.anchor.x + width/2:
-                        dx = -width + self.get_width() / 2
-                    else:
-                        self._update_layer()
-                        return self
-                    
-                if self.allow_looping[1]:
-                    height = self.movement_bounds.get_height()
-                    if new_pos[1] <= self.movement_bounds.anchor.y - height/2:
-                        dy = height - self.get_height() / 2
-                    elif new_pos[1] >= self.movement_bounds.anchor.y + height/2:
-                        dy = -height + self.get_height() / 2
-                    else:
-                        self._update_layer()
-                        return self
-        
-        if self.obstacles_enabled:
-            if self.last_obstacle_checked_pos == new_pos:
-                self._update_layer()
-                return self
-            for obstacle in self.obstacles:
+            if self.bounds is None:
+                new_pos = (self.anchor.x + dx, self.anchor.y + dy)
+            else:
+                new_pos = (self.bounds.anchor.x + dx, self.bounds.anchor.y + dy)
+            if self.movement_bounds is not None:
+                if not self.movement_bounds.is_clicked(Point(*new_pos)):
+                    if self.allow_looping[0]:
+                        width = self.movement_bounds.get_width()
+                        if new_pos[0] <= self.movement_bounds.anchor.x - width/2:
+                            dx = width - self.get_width() / 2
+                        elif new_pos[0] >= self.movement_bounds.anchor.x + width/2:
+                            dx = -width + self.get_width() / 2
+                        else:
+                            self._update_layer()
+                            return self
 
-                if obstacle.is_clicked(Point(*new_pos)):
-                    if self.callbacks["collision"] is not None:
-                        self.callbacks["collision"]()
-                    self.last_obstacle_checked_pos = new_pos
+                    if self.allow_looping[1]:
+                        height = self.movement_bounds.get_height()
+                        if new_pos[1] <= self.movement_bounds.anchor.y - height/2:
+                            dy = height - self.get_height() / 2
+                        elif new_pos[1] >= self.movement_bounds.anchor.y + height/2:
+                            dy = -height + self.get_height() / 2
+                        else:
+                            self._update_layer()
+                            return self
+
+            if self.obstacles_enabled:
+                if self.last_obstacle_checked_pos == new_pos:
                     self._update_layer()
                     return self
+                for obstacle in self.obstacles:
 
-        if self.movement_lines_enabled:
-            pass
+                    if obstacle.is_clicked(Point(*new_pos)):
+                        if self.callbacks["collision"] is not None:
+                            self.callbacks["collision"]()
+                        self.last_obstacle_checked_pos = new_pos
+                        self._update_layer()
+                        return self
 
-        self.has_object_moved = True
-                    
-        if align == "center":
-            self._move(dx, dy)
-        elif align == "left":
-            self._move(dx + self.get_width() / 2, dy)
-        elif align == "right":
-            self._move(dx - self.get_width() / 2, dy)
-        elif align == "top":
-            self._move(dx, dy + self.get_height() / 2)
-        elif align == "bottom":
-            self._move(dx, dy - self.get_height() / 2)
-        elif align == "topleft":
-            self._move(dx + self.get_width() / 2, dy + self.get_height() / 2)
-        elif align == "topright":
-            self._move(dx - self.get_width() / 2, dy + self.get_height() / 2)
-        elif align == "bottomleft":
-            self._move(dx + self.get_width() / 2, dy - self.get_height() / 2)
-        elif align == "bottomright":
-            self._move(dx - self.get_width() / 2, dy - self.get_height() / 2)
-        else:
-            raise GraphicsError(f"\n\nGraphicsError: align for object must be one of {ALIGN_OPTIONS}, not {align}")
+            if self.movement_lines_enabled:
+                pass
 
-        if self.bounds is not None:
-            self.bounds.move(dx, dy, align=align)
+            self.has_object_moved = True
 
-        if _not_animation_call:
-            for animation in self.animation_queues["glide"]:
-                animation["Initial"].x += dx
-                animation["Initial"].y += dy
+            if align == "center":
+                self._move(dx, dy)
+            elif align == "left":
+                self._move(dx + self.get_width() / 2, dy)
+            elif align == "right":
+                self._move(dx - self.get_width() / 2, dy)
+            elif align == "top":
+                self._move(dx, dy + self.get_height() / 2)
+            elif align == "bottom":
+                self._move(dx, dy - self.get_height() / 2)
+            elif align == "topleft":
+                self._move(dx + self.get_width() / 2, dy + self.get_height() / 2)
+            elif align == "topright":
+                self._move(dx - self.get_width() / 2, dy + self.get_height() / 2)
+            elif align == "bottomleft":
+                self._move(dx + self.get_width() / 2, dy - self.get_height() / 2)
+            elif align == "bottomright":
+                self._move(dx - self.get_width() / 2, dy - self.get_height() / 2)
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: align for object must be one of {ALIGN_OPTIONS}, not {align}")
 
-        self._update_layer()
-                
+            if self.bounds is not None:
+                self.bounds.move(dx, dy, align=align)
+
+            if _not_animation_call:
+                for animation in self.animation_queues["glide"]:
+                    animation["Initial"].x += dx
+                    animation["Initial"].y += dy
+
+            self._update_layer()
+
         return self
 
     def move_to(self, x, y, align="center", _not_animation_call=True):
@@ -2085,7 +2100,7 @@ class GraphicsObject:
         for layer in GraphicsObject.redraw_on_frame:
             for obj in layer.copy():
                 if obj.graphwin == graphwin:
-                    obj.draw(graphwin=graphwin)
+                    obj.draw(graphwin=graphwin, _internal_call=True)
             layer.clear()
 
     @staticmethod
@@ -2106,7 +2121,7 @@ class GraphicsObject:
             if obj.graphwin == graphwin and obj.graphic == obj.clicked_graphic and obj.drawn:
                 if not obj.is_disabled:
                     obj.graphic = obj.normal_graphic
-                obj.draw(graphwin)
+                    obj._update_layer()
 
         for obj in GraphicsObject.cyclebutton_instances:
             if obj.graphwin == graphwin and obj.autoflush:
@@ -2133,9 +2148,8 @@ class GraphicsObject:
         for obj in GraphicsObject.button_instances:
             if obj.graphwin == graphwin and obj.drawn:
                 if obj.is_clicked(mouse_pos):
-                    
                     obj.graphic = obj.clicked_graphic
-                    obj.draw(graphwin)
+                    obj._update_layer()
 
         for obj in GraphicsObject.resizing_objects:
             if obj.graphwin == graphwin:
@@ -2171,16 +2185,16 @@ class GraphicsObject:
                         if graphwin.left_mouse_down:
                             if obj.graphic != obj.clicked_graphic:
                                 obj.graphic = obj.clicked_graphic
-                                obj.draw(graphwin)
+                                obj._update_layer()
 
                         else:
                             if obj.graphic != obj.hover_graphic:
                                 obj.graphic = obj.hover_graphic
-                                obj.draw(graphwin)
+                                obj._update_layer()
 
                     elif obj.graphic != obj.normal_graphic and not obj.is_disabled:
                         obj.graphic = obj.normal_graphic
-                        obj.draw(graphwin)
+                        obj._update_layer()
 
             for obj in GraphicsObject.slider_instances:
                 if obj.graphwin == graphwin:

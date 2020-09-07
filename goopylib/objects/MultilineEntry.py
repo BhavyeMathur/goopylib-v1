@@ -1,6 +1,7 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.styles import STYLES, global_style
 from goopylib.colours import Colour
+from goopylib.util import GraphicsError
 
 from tkinter import Text as tkText
 from tkinter import WORD as tkWORD
@@ -155,7 +156,11 @@ class MultilineEntry(GraphicsObject):
         return self.fill
 
     def get_text(self):
-        return self.widget.get("1.0", "end-1c")
+        if self.drawn and self.graphwin.is_open():
+            return self.widget.get("1.0", "end-1c")
+        else:
+            raise GraphicsError("\n\nGraphicsError: get_text() function for the Multiline Entry object can only be "
+                                "used if the object is drawn and the window is open")
 
     def set_fill(self, colour):
         self.fill = colour

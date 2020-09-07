@@ -174,6 +174,19 @@ Unfortunately, online school (Grade 9!!!) has started and so updates won't be co
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
+#### 1.1.50-alpha7 5th-7th September 2020
+
+* If the distance to move an object is 0 for both x & y, the `_move()` function does not execute.
+* Changed a lot about how objects are drawn to fix bug with the layering system
+* Optimized Entry box movement to make it much faster
+
+* Fixed bug with Checkboxes not changing states properly
+* Closing a window now binds another window to mouse & key functions
+* The Entry, MultilineEntry, and Text objects' `set_text()` function now converts the text given to a string 
+* The MultilinEntry now raises an error if the user tries to use the `get_text()` function when the object is not drawn
+
+* Fixed bug with the Window's `update_win()` function not working properly.
+
 #### 1.1.43-alpha6 3rd-4th September 2020
 
 * Fixed `destroy()` function with Buttons

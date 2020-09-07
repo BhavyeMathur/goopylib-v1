@@ -131,6 +131,8 @@ class Entry(GraphicsObject):
         self.max_characters = None
         self.set_max_characters(max_characters)
 
+        self.last_graphwin = None
+
         GraphicsObject.__init__(self, (), style=style, layer=layer, tag=tag, bounds=bounds)
 
     def __repr__(self):
@@ -140,17 +142,19 @@ class Entry(GraphicsObject):
             return f"Entry({self.anchor})"
 
     def _draw(self, canvas, options):
-        p = self.anchor
         x, y = self.anchor
 
-        frm = tkFrame(canvas.master)
+        if self.last_graphwin != canvas:
+            self.frm = tkFrame(canvas.master)
+            self.set_font_size(int(self.initial_font_size / canvas.trans.x_scale), False)
 
-        self.set_font_size(int(self.initial_font_size / canvas.trans.x_scale), False)
-        self.entry = tkEntry(frm, width=self.text_width, textvariable=self.text, bg=self.fill, fg=self.font_colour,
-                             bd=self.outline_width, font=(self.font, self.font_size, self.font_style),
-                             insertbackground=self.font_colour, show=self.text_type, state=self.enabled,
-                             justify=self.justify, cursor="xterm", exportselection=0,
-                             selectbackground=self.select_colour, insertborderwidth=0)
+            self.last_graphwin = canvas
+
+            self.entry = tkEntry(self.frm, width=self.text_width, textvariable=self.text, bg=self.fill, fg=self.font_colour,
+                                 bd=self.outline_width, font=(self.font, self.font_size, self.font_style),
+                                 insertbackground=self.font_colour, show=self.text_type, state=self.enabled,
+                                 justify=self.justify, cursor="xterm", exportselection=0,
+                                 selectbackground=self.select_colour, insertborderwidth=0)
 
         if not self.edited:
             self.entry.insert(0, self.prompt_text)
@@ -189,7 +193,7 @@ class Entry(GraphicsObject):
 
         x, y = canvas.to_screen(x, y)
 
-        return canvas.create_window(x, y, window=frm)
+        return canvas.create_window(x, y, window=self.frm)
 
     def _move(self, dx, dy):
         self.anchor.move(dx, dy)
@@ -227,12 +231,13 @@ class Entry(GraphicsObject):
 
     def is_clicked(self, mouse_pos):
         if self.bounds is None:
-            if mouse_pos is not None:
-                width, height = self.get_width(), self.get_height()
-                if (self.anchor.x - width / 2 > mouse_pos.x > self.anchor.x + width / 2) and \
-                   (self.anchor.y - height / 2 > mouse_pos.y > self.anchor.y + height / 2):
-                    return True
-                return False
+            if self.entry:
+                if mouse_pos is not None:
+                    width, height = self.get_width(), self.get_height()
+                    if (self.anchor.x - width / 2 > mouse_pos.x > self.anchor.x + width / 2) and \
+                       (self.anchor.y - height / 2 > mouse_pos.y > self.anchor.y + height / 2):
+                        return True
+            return False
 
         return self.bounds.is_clicked(mouse_pos)
 
@@ -315,20 +320,18 @@ class Entry(GraphicsObject):
             self.entry.config(show=self.text)
 
     def get_text(self):
-        if self.drawn and self.graphwin.is_open():
-            return self.entry.get()
-        else:
-            raise GraphicsError(f"\n\nEntry can only return text when it is drawn and the window is open. Window Open"
-                                f"? {self.graphwin.is_open()}, Drawn? {self.drawn}")
+        return self.text.get()
 
     def get_anchor(self):
         return self.anchor.clone()
 
     def get_width(self):
-        return self.entry.winfo_width()
+        if self.entry:
+            return self.entry.winfo_width()
 
     def get_height(self):
-        return self.entry.winfo_height()
+        if self.entry:
+            return self.entry.winfo_height()
 
     def get_font_size(self):
         return self.font_size
@@ -367,7 +370,7 @@ class Entry(GraphicsObject):
 
     def set_text(self, t):
         self.entry.delete(0, tkEND)
-        self.entry.insert(0, t)
+        self.entry.insert(0, str(t))
         self._update_layer()
         return self
 

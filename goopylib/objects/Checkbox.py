@@ -27,10 +27,6 @@ class Checkbox(CycleButton):
         self.set_state(not self.state)
         return self
 
-    def click(self):
-        self.change_state()
-        return self
-
     def bind_state_to(self, other):
         if not isinstance(other, Checkbox):
             raise GraphicsError(f"Object to bind this Checkbox to must be another Checkbox, not {other}")

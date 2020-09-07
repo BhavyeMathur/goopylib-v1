@@ -77,7 +77,7 @@ class Text(GraphicsObject):
         return other
 
     def set_text(self, text):
-        self._reconfig("text", text)
+        self._reconfig("text", str(text))
 
     def get_text(self):
         return self.config["text"]

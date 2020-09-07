@@ -311,21 +311,18 @@ class Window(tkCanvas):
         self.style = style
 
         master.lift()  # No idea what this does, does anyone know?
-        self.instances.append(self)
+        Window.instances.append(self)
 
         self.set_coords(0, 0, width, height)
 
         if remove_title_bar:
             master.overrideredirect(True)
 
-        if autoflush:
-            self.update_win()
-
-        self.last_update = timetime()
+        self.last_update = 0
 
     def __repr__(self):
         if self.closed:
-            return "<Closed GraphWin>"
+            return f"Closed GraphWin({self.title})"
         else:
             return f"GraphWin('{self.master.title()}', {self.master.winfo_width()}x{self.master.winfo_height()})"
 
@@ -539,11 +536,9 @@ class Window(tkCanvas):
                     self.move(e.x - self.last_drag_x if self.is_draggable_x else 0,
                               e.y - self.last_drag_y if self.is_draggable_y else 0)
 
-
     def _on_mouse_scroll(self, e):
-        if self.is_open():
-            self.mouse_wheel_pos = e.delta
-            GraphicsObject.on_mouse_scroll(e.delta / 120, self)
+        self.mouse_wheel_pos = e.delta
+        GraphicsObject.on_mouse_scroll(e.delta / 120, self)
 
     def _on_mouse_in(self, e):
         self.mouse_in_window = True
@@ -1080,10 +1075,45 @@ class Window(tkCanvas):
 
         if self.closed:
             return
-        self.closed = True
         self.master.destroy()
-        Window.instances.remove(self)
+        self.closed = True
         self.__autoflush()
+        Window.instances.remove(self)
+
+        if len(Window.instances) > 0:
+            Window.instances[0].master.bind("<1>", lambda event: event.widget.focus_set())
+            Window.instances[0].bind("<Button-1>", Window.instances[0]._on_left_click)  # These functions are called whenever these events happen
+            Window.instances[0].bind("<Button-2>", Window.instances[0]._on_middle_click)
+            Window.instances[0].bind("<Button-3>", Window.instances[0]._on_right_click)
+
+            Window.instances[0].bind("<ButtonRelease-1>", Window.instances[0]._on_left_release)
+            Window.instances[0].bind("<ButtonRelease-2>", Window.instances[0]._on_middle_release)
+            Window.instances[0].bind("<ButtonRelease-3>", Window.instances[0]._on_right_release)
+
+            Window.instances[0].bind("<ButtonPress-1>", Window.instances[0]._on_left_press)
+            Window.instances[0].bind("<ButtonPress-2>", Window.instances[0]._on_middle_press)
+            Window.instances[0].bind("<ButtonPress-3>", Window.instances[0]._on_right_press)
+
+            Window.instances[0].bind("<Motion>", Window.instances[0]._on_mouse_motion)
+            Window.instances[0].bind_all("<MouseWheel>", Window.instances[0]._on_mouse_scroll)
+            Window.instances[0].bind("<Enter>", Window.instances[0]._on_mouse_in)
+            Window.instances[0].bind("<Leave>", Window.instances[0]._on_mouse_out)
+
+            Window.instances[0].bind("<Double-Button-1>", Window.instances[0]._on_left_double_click)
+            Window.instances[0].bind("<Double-Button-2>", Window.instances[0]._on_middle_double_click)
+            Window.instances[0].bind("<Double-Button-3>", Window.instances[0]._on_right_double_click)
+
+            Window.instances[0].bind("<Triple-Button-1>", Window.instances[0]._on_left_triple_click)
+            Window.instances[0].bind("<Triple-Button-2>", Window.instances[0]._on_middle_triple_click)
+            Window.instances[0].bind("<Triple-Button-3>", Window.instances[0]._on_right_triple_click)
+
+            Window.instances[0].bind("<KeyPress>", Window.instances[0]._on_key_press)
+            Window.instances[0].bind("<Shift-KeyPress>", Window.instances[0]._on_shift_key_press)
+            Window.instances[0].bind("<Alt-KeyPress>", Window.instances[0]._on_alt_key_press)
+            Window.instances[0].bind("<Control-KeyPress>", Window.instances[0]._on_control_key_press)
+
+            Window.instances[0].bind("<KeyRelease>", Window.instances[0]._on_key_release)
+
         return self
 
     def plot(self, x, y, colour=BLACK):
@@ -1111,8 +1141,6 @@ class Window(tkCanvas):
 
     def update_win(self, rate=None, _internal_updating=False):
         if rate is None or timetime() - self.last_update > 1 / rate:
-            self.update()
-
             if self.is_gliding:
                 t = timetime()
 
@@ -1138,6 +1166,8 @@ class Window(tkCanvas):
                     self.glide_queue[0]["Update"] = timetime()
 
             GraphicsObject.on_update(self)
+
+            self.update()
 
             self.last_update = timetime()
         return self
