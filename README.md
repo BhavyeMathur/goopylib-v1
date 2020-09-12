@@ -1,6 +1,6 @@
 # goopylib
 
-![goopylib Logo](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/goopylibLogo-Primary.png)
+![goopylib Logo](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/goopylibLogo-Secondary.png)
 
 ### Projects made using goopylib
 
