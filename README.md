@@ -49,7 +49,11 @@ Here is a screenshot of the game:
 
 Avatar graphics are from freepik.com
 
-**3. Activity Club Selection App**
+**3. WROS - Website Recipe Organization System**
+
+This was an application I created for my mother as part of a school project to help her organize recipes for her website. 
+
+**4. Activity Club Selection App**
 
 My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for 
 activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort 
@@ -61,10 +65,6 @@ to anyone to use. Now mind you, this was made with an older version of goopylib 
 and visual feedback, but here is a screenshot anyways:
 
 ![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
-
-**4. WROS - Website Recipe Organization System**
-
-This was an application I created for my mother as part of a school project to help her organize recipes for her website. 
 
 ### Installation
 
@@ -100,7 +100,6 @@ import goopylib as gp
 The first allows you to import everything that is part of the library, but if you want only specific classes 
 z& functions, read on. 
 
-
 ### Organization
 
 Goopylib is organized into a few different files and depending on what you want to do, you can import these files. 
@@ -126,9 +125,7 @@ from goopylib.Point import Point
 
 ### Documentation
 
-There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written
- document and the creation of the documentation has begun at: https://github.com/BhavyeMathur/goopylib/wiki
-
+There are plans to create a detailed documentation for this library both in the form of YouTube videos and a writen documentation which has begun at: https://github.com/BhavyeMathur/goopylib/wiki
 
 ### Examples
 
@@ -151,6 +148,11 @@ It also contains easy-to-use easing functions like those you would find in a pro
 
 ![Pac-Man Animation Example](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man-Animation%20Example/Pac-ManAnimation.png)
 
+3. A quick hello world example is also part of the examples which demonstrates gliding animations with easing. 
+
+4. The last example is a calendar GUI written to help the user select a date. The calendar is made from RadioButtons and uses more
+
+![Calender Date Selector Example](https://)
 
 ## Contributions
 
