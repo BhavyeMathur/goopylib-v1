@@ -197,7 +197,9 @@ not its bound was clicked.
 
 * Removed an unnecessary `checkbox_instances` variable from the GraphicsObject class as the checkbox now works under
  the CycleButton class
- * Fixed bug with the Checkbox's `set_state()` function setting the opposite state
+* Fixed bug with the Checkbox's `set_state()` function setting the opposite state
+ 
+* Created the official goopylib logo
 
 #### 1.1.50-alpha7 5th-7th September 2020
 
