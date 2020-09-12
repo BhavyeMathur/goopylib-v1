@@ -51,7 +51,7 @@ Avatar graphics are from freepik.com
 
 **3. WROS - Website Recipe Organization System**
 
-This was an application I created for my mother as part of a school project to help her organize recipes for her website. 
+This was an application I created for my mother as part of a school project to help her organize recipes for her website. It was the largest GUI project I worked on with goopylib. It took 7 days to make and demonstrates how goopylib can be used to create proffessional appliations. 
 
 **4. Activity Club Selection App**
 
