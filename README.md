@@ -1,8 +1,28 @@
 ![goopylib Logo](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/goopylibLogo-Secondary.png)
 
+Goopylib is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
+ GUIs, games, and animations.
+
+This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python 
+Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add 
+more features to use with making my GUIs and games. My aim while editing was to create a powerful medium to
+enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case.
+Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python 
+Graphics Libraries. 
+
+If you would want to contribute to this library by suggesting features, reporting bugs, or adding changes yourself, 
+please do so. I would love it if you would use this library in your projects and do make sure to tell me about them! 
+
+Goopylib is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) also known as Pyinstaller. 
+This compatibility mainly means that all paths to textures & sounds are automatically converted into the absolute paths 
+which you don't have to worry about! This means that you will be able to convert applications written with goopylib into
+executables with, hopefully, no errors.  
+
+If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
+
 ### Projects made using goopylib
 
-As these are entire projects with a lot of code and non-goopylib elements, I have not supplied the code. But, if you want
+I have not supplied the code for these projects because of their scale, but, if you want
  to look at example projects with code, skip to the 'Examples' section.
 
 **1. A Pac-Man Recreation**
@@ -29,7 +49,15 @@ Here is a screenshot of the game:
 
 Avatar graphics are from freepik.com
 
-**3. Activity Club Selection App**
+**3. WROS - Website Recipe Organization System**
+
+This was an application I created for my mother as part of a school project to help her organize recipes for her website. It was the largest GUI project I worked on with goopylib. It took 7 days to make and demonstrates how goopylib can be used to create proffessional appliations such as this one. 
+
+![WROS Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/WROS-RecipeEditor.png)
+
+[Watch here for more](https://www.youtube.com/watch?v=dhgYgPUObv0)
+
+**4. Activity Club Selection App**
 
 My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for 
 activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort 
@@ -41,29 +69,6 @@ to anyone to use. Now mind you, this was made with an older version of goopylib 
 and visual feedback, but here is a screenshot anyways:
 
 ![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
-
-## Introduction
-Goopylib is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
- GUIs, games, and animations.
-
-This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python 
-Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add 
-more features to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to
- enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case. 
- Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python 
- Graphics Libraries. 
-
-If you would want to contribute to this library by suggesting features, reporting bugs, or adding changes yourself, 
-please do so. I would love it if you would use this library in your projects and do make sure to tell me about them! 
-Right now, this is very much an alpha stage - there are many bugs, many features that aren't compatible with each other, 
-and a ton of things to do differently, but this will all be fixed with future releases. 
-
-Goopylib is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) also known as Pyinstaller. 
-This compatibility mainly means that all paths to textures & sounds are automatically converted into the absolute paths 
-which you don't have to worry about! This means that you will be able to convert applications written with goopylib into
-executables with, hopefully, no errors.  
-
-If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
 
 ### Installation
 
@@ -99,7 +104,6 @@ import goopylib as gp
 The first allows you to import everything that is part of the library, but if you want only specific classes 
 z& functions, read on. 
 
-
 ### Organization
 
 Goopylib is organized into a few different files and depending on what you want to do, you can import these files. 
@@ -125,9 +129,7 @@ from goopylib.Point import Point
 
 ### Documentation
 
-There are plans to create a detailed documentation for this library both in the form of YouTube videos and a written
- document and the creation of the documentation has begun at: https://github.com/BhavyeMathur/goopylib/wiki
-
+There are plans to create a detailed documentation for this library both in the form of YouTube videos and a writen documentation which has begun at: https://github.com/BhavyeMathur/goopylib/wiki
 
 ### Examples
 
@@ -150,12 +152,17 @@ It also contains easy-to-use easing functions like those you would find in a pro
 
 ![Pac-Man Animation Example](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man-Animation%20Example/Pac-ManAnimation.png)
 
+3. A quick hello world example is also part of the examples which demonstrates gliding animations with easing. 
+
+4. The last example is a calendar GUI written to help the user select a date. The calendar is made from RadioButtons and uses more
+
+![Calender Date Selector Example](https://)
 
 ## Contributions
 
 1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd 
 July 2020 - Help with creating rounded polygon corners
-2. Spectral Doy - 3rd July 2020 - Helpin~~~~g me choose a name! we went through a lot of options... pyraphics, oreopy,
+2. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy,
  pyllustrate, guipy... barnacle...
 3. John Zelle - Creating the graphics.py package which formed the basis for my library.
 
@@ -174,6 +181,8 @@ with hiding & showing the Entry cursor
 with Unfocusing the Entry widget when the user clicks elsewhere
 10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th 
 July 2020 - Helped with answering a question about smoothing in Tkinter
+
+11. Mihir Raddi, Ved Sanyal, Haaziq Kazi, and Spectral Doy - 12th September - For their valuable feedback on goopylib's logo which developed into what it is currently due to their help!
 
 ## Version History
 
