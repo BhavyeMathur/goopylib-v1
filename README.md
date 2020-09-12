@@ -5,15 +5,13 @@ Goopylib is a simple-yet-powerful 2D graphics framework built on top of Tkinter 
 
 This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python 
 Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add 
-more features to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to
- enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case. 
- Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python 
- Graphics Libraries. 
+more features to use with making my GUIs and games. My aim while editing was to create a powerful medium to
+enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case.
+Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python 
+Graphics Libraries. 
 
 If you would want to contribute to this library by suggesting features, reporting bugs, or adding changes yourself, 
 please do so. I would love it if you would use this library in your projects and do make sure to tell me about them! 
-Right now, this is very much an alpha stage - there are many bugs, many features that aren't compatible with each other, 
-and a ton of things to do differently, but this will all be fixed with future releases. 
 
 Goopylib is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) also known as Pyinstaller. 
 This compatibility mainly means that all paths to textures & sounds are automatically converted into the absolute paths 
