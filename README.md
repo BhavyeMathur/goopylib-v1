@@ -1,4 +1,4 @@
-# Goopylib
+# goopylib
 
 ### Projects made using goopylib
 
