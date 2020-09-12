@@ -2,7 +2,7 @@
 
 ### Projects made using goopylib
 
-As these are entire projects with a lot of code and non-goopylib elements, I have not supplied the code. But, if you want
+I have not supplied the code for these projects because of their scale, but, if you want
  to look at example projects with code, skip to the 'Examples' section.
 
 **1. A Pac-Man Recreation**
@@ -41,6 +41,10 @@ to anyone to use. Now mind you, this was made with an older version of goopylib 
 and visual feedback, but here is a screenshot anyways:
 
 ![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
+
+**4. WROS - Website Recipe Organization System**
+
+This was an application I created for my mother as part of a school project to help her organize recipes for her website. 
 
 ## Introduction
 Goopylib is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
