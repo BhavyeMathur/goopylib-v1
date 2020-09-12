@@ -1,5 +1,27 @@
 ![goopylib Logo](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/goopylibLogo-Secondary.png)
 
+Goopylib is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
+ GUIs, games, and animations.
+
+This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python 
+Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add 
+more features to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to
+ enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case. 
+ Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python 
+ Graphics Libraries. 
+
+If you would want to contribute to this library by suggesting features, reporting bugs, or adding changes yourself, 
+please do so. I would love it if you would use this library in your projects and do make sure to tell me about them! 
+Right now, this is very much an alpha stage - there are many bugs, many features that aren't compatible with each other, 
+and a ton of things to do differently, but this will all be fixed with future releases. 
+
+Goopylib is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) also known as Pyinstaller. 
+This compatibility mainly means that all paths to textures & sounds are automatically converted into the absolute paths 
+which you don't have to worry about! This means that you will be able to convert applications written with goopylib into
+executables with, hopefully, no errors.  
+
+If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
+
 ### Projects made using goopylib
 
 I have not supplied the code for these projects because of their scale, but, if you want
@@ -45,29 +67,6 @@ and visual feedback, but here is a screenshot anyways:
 **4. WROS - Website Recipe Organization System**
 
 This was an application I created for my mother as part of a school project to help her organize recipes for her website. 
-
-## Introduction
-Goopylib is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
- GUIs, games, and animations.
-
-This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python 
-Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add 
-more features to use with making my GUIs and games. My entire aim while editing was to create a powerful medium to
- enable me to create good-looking graphics within Python and I have spent a lot of time making sure this is the case. 
- Thus, this is a very intuitive, simple to use package with the potential of growing into one of the best Python 
- Graphics Libraries. 
-
-If you would want to contribute to this library by suggesting features, reporting bugs, or adding changes yourself, 
-please do so. I would love it if you would use this library in your projects and do make sure to tell me about them! 
-Right now, this is very much an alpha stage - there are many bugs, many features that aren't compatible with each other, 
-and a ton of things to do differently, but this will all be fixed with future releases. 
-
-Goopylib is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/) also known as Pyinstaller. 
-This compatibility mainly means that all paths to textures & sounds are automatically converted into the absolute paths 
-which you don't have to worry about! This means that you will be able to convert applications written with goopylib into
-executables with, hopefully, no errors.  
-
-If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
 
 ### Installation
 
