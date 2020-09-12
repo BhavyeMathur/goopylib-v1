@@ -25,9 +25,9 @@ class Image(GraphicsObject):
         if align not in ALIGN_OPTIONS:
             raise GraphicsError(f"\n\nGraphicsError: Image align must be one of {ALIGN_OPTIONS}, not {align}")
 
-        if osisfile(Image.texture_path + filepath):
+        if osisfile(resource_path(Image.texture_path + filepath)):
             self.texture = Image.texture_path + filepath
-        elif osisfile(filepath):
+        elif osisfile(resource_path(filepath)):
             self.texture = filepath
         else:
             raise GraphicsError("\n\nGraphicsError: Image filepath is not valid. No such file or directory as "

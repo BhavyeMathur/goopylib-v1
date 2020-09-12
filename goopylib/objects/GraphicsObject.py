@@ -17,11 +17,13 @@ class GraphicsObject:
 
     objects = {*()}
 
-    button_instances = {*()}
     slider_instances = {*()}
     slider_instances_bound = {*()}
-    checkbox_instances = {*()}
+
+    button_instances = {*()}
     cyclebutton_instances = {*()}
+    radiobutton_instances = {*()}
+
     entry_instances = {*()}
     animated_image_instances = {*()}
 
@@ -2127,6 +2129,16 @@ class GraphicsObject:
             if obj.graphwin == graphwin and obj.autoflush:
                 if obj.is_clicked(mouse_pos):
                     obj.click()
+
+        for obj in GraphicsObject.radiobutton_instances:
+            if obj.graphwin == graphwin:
+                for checkbox in obj.checkboxes:
+                    if checkbox.is_clicked(mouse_pos):
+                        checkbox.click()
+                        obj.current_state.click()
+                        
+                        obj.current_state = checkbox
+                        break
 
     @staticmethod
     def on_middle_click(graphwin):

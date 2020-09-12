@@ -60,17 +60,6 @@ class CycleButton(GraphicsObject):
         if self.disabled_graphic is not None:
             self.disabled_graphic.move(dx, dy)
 
-    def _update_layer(self):
-        if self.drawn:
-            if self not in GraphicsObject.redraw_on_frame[self.layer]:
-                GraphicsObject.redraw_on_frame[self.layer].append(self)
-
-            for layer_index, layer in enumerate(GraphicsObject.object_layers):
-                if layer_index > self.layer:
-                    for obj in layer:
-                        if obj.drawn and obj not in GraphicsObject.redraw_on_frame[layer_index]:
-                            GraphicsObject.redraw_on_frame[layer_index].append(obj)
-
     def click(self):
         if not self.is_disabled:
             self.state += 1

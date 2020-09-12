@@ -153,17 +153,27 @@ It also contains easy-to-use easing functions like those you would find in a pro
 
 ## Contributions
 
-1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd July 2020 - Help with creating rounded polygon corners
-2. Spectral Doy - 3rd July 2020 - Helpin~~~~g me choose a name! we went through a lot of options... pyraphics, oreopy, pyllustrate, guipy... barnacle...
+1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd 
+July 2020 - Help with creating rounded polygon corners
+2. Spectral Doy - 3rd July 2020 - Helpin~~~~g me choose a name! we went through a lot of options... pyraphics, oreopy,
+ pyllustrate, guipy... barnacle...
 3. John Zelle - Creating the graphics.py package which formed the basis for my library.
 
-4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve - 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
-5. Bryan Oakley, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width is 0 
-6. Atlast435, https://stackoverflow.com/questions/62751626/tkinter-rotated-resizing-cursor - 6th July 2020 - Helped expand the list of supported cursors by refering me to a documentation.
-7. Sinoroc, https://stackoverflow.com/questions/62772377/python-package-does-not-get-created-in-site-packages-folder? - 7th July 2020 - Helped fix bug with Packaging
-8. Cool Cloud, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with hiding & showing the Entry cursor
-9. Bryan Oakley, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped with Unfocusing the Entry widget when the user clicks elsewhere
-10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th July 2020 - Helped with answering a question about smoothing in Tkinter
+4. Nico Schertler, https://stackoverflow.com/questions/62738195/python-zerodivisionerror-in-open-uniform-b-spline-curve 
+- 4th July 2020 - Helped fix a ZeroDivisionError with Open Unifrom B-Splines
+5. Bryan Oakley, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-
+specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width
+ is 0 
+6. Atlast435, https://stackoverflow.com/questions/62751626/tkinter-rotated-resizing-cursor - 6th July 2020 - Helped 
+expand the list of supported cursors by refering me to a documentation.
+7. Sinoroc, https://stackoverflow.com/questions/62772377/python-package-does-not-get-created-in-site-packages-folder? -
+ 7th July 2020 - Helped fix bug with Packaging
+8. Cool Cloud, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped 
+with hiding & showing the Entry cursor
+9. Bryan Oakley, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped 
+with Unfocusing the Entry widget when the user clicks elsewhere
+10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th 
+July 2020 - Helped with answering a question about smoothing in Tkinter
 
 ## Version History
 
@@ -173,6 +183,21 @@ Unfortunately, online school (Grade 9!!!) has started and so updates won't be co
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
+
+#### 1.1.57-alpha8 10th-11th September 2020
+
+* The Window and Image classes now use the absolute path to open icons and filepaths to make themselves compatible with 
+auto-py-to-exe
+
+* Added functionality to the Radio Button class
+* The Checkbox now only checks if its graphic has been clicked if its bound is None. otherwise, it returns whether or 
+not its bound was clicked.
+* Removed the Checkbox's `is_clicked()` function because its superclass (CycleButton) already defines it
+* Removed the CycleButton's `_update_layer()` function because its superclass (GraphicsObject) already defines it
+
+* Removed an unnecessary `checkbox_instances` variable from the GraphicsObject class as the checkbox now works under
+ the CycleButton class
+ * Fixed bug with the Checkbox's `set_state()` function setting the opposite state
 
 #### 1.1.50-alpha7 5th-7th September 2020
 

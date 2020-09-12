@@ -8,7 +8,7 @@ from os.path import isfile as osisfile
 from time import time as timetime
 
 from goopylib.styles import *
-from goopylib.util import GraphicsError, GraphicsWarning
+from goopylib.util import GraphicsError, GraphicsWarning, resource_path
 from goopylib.constants import _root, RELIEF, CURSORS
 from goopylib.math.Easing import *
 
@@ -55,9 +55,6 @@ class Window(tkCanvas):
         if icon is not None:
             if not isinstance(icon, str):
                 raise GraphicsError(f"The window icon must be a string (path to .ico texture) or None, not {icon}")
-            if not osisfile(f"textures/{icon}") and not osisfile(f"{icon}"):
-                raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
-                                    f"Check for spelling and make sure this is in the correct directory.")
             if not icon.endswith(".ico"):
                 raise GraphicsError("The icon file must be a .ico type. "
                                     "You can use an online converter to convert your file")
@@ -208,10 +205,10 @@ class Window(tkCanvas):
         self.set_background(self.bk_colour)
 
         if icon is not None:  # Setting the Icon of the Window
-            if osisfile(f"textures/{icon}"):
-                self.master.iconbitmap(f"textures/{icon}")
+            if osisfile(resource_path(f"textures/{icon}")):
+                self.master.iconbitmap(resource_path(f"textures/{icon}"))
             else:
-                self.master.iconbitmap(f"{icon}")
+                self.master.iconbitmap(resource_path(f"{icon}"))
 
         self.pack()
 

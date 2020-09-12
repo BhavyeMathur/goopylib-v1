@@ -11,11 +11,8 @@ class Checkbox(CycleButton):
     def __repr__(self):
         return f"Checkbox({self.states[0]}, {self.states[1]})"
 
-    def is_clicked(self, mouse_pos):
-        return self.graphic.is_clicked(mouse_pos)
-
     def set_state(self, state):
-        super().set_state(int(state))
+        super().set_state(not int(state))
         for obj in self.bound_objects:
             obj.set_state(state)
         return self
