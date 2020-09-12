@@ -179,7 +179,7 @@ with Unfocusing the Entry widget when the user clicks elsewhere
 10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th 
 July 2020 - Helped with answering a question about smoothing in Tkinter
 
-11. Mihir Raddi, Ved Sanyal, and Spectral Doy - 12th September - For their valuable feedback on goopylib's logo which developed into what it is currently due to their help!
+11. Mihir Raddi, Ved Sanyal, Haaziq Kazi, and Spectral Doy - 12th September - For their valuable feedback on goopylib's logo which developed into what it is currently due to their help!
 
 ## Version History
 
