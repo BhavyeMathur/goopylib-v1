@@ -1,5 +1,7 @@
 # goopylib
 
+![goopylib Logo](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/goopylibLogo-Primary.png)
+
 ### Projects made using goopylib
 
 As these are entire projects with a lot of code and non-goopylib elements, I have not supplied the code. But, if you want
