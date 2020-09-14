@@ -21,7 +21,7 @@ class Rectangle(gpBBox.BBox):
         self.sharpness = roundness  # Usually values between 2 & 10 work well.
 
     def __repr__(self):
-        return "Rectangle({}, {})".format(str(self.p1), str(self.p2))
+        return f"Rectangle({self.p1}, {self.p2}, fill={self.fill})"
 
     def _set_resizable(self, resizables, thickness=10, show_bounds=False):
         self.resizing_bounds = {}

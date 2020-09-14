@@ -62,6 +62,23 @@ class AnimatedImage(GraphicsObject):
     def _rotate(self, dr, sampling=None, center=None):
         for img in self.imgs:
             img.rotate(dr)
+
+    def destroy(self):
+        GraphicsObject.objects.discard(self)
+        GraphicsObject.draggable_objects.discard(self)
+        GraphicsObject.cursor_objects.discard(self)
+
+        if self in GraphicsObject.redraw_on_frame[self.layer]:
+            GraphicsObject.redraw_on_frame[self.layer].remove(self)
+
+        for img in self.imgs:
+            img.destroy()
+
+        self.drawn = False
+        self.graphwin = None
+        self.id = None
+
+        return self
             
     def move_up_layer(self, layers=1):
         if not isinstance(layers, int):

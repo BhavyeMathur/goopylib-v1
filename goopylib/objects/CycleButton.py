@@ -48,6 +48,26 @@ class CycleButton(GraphicsObject):
     def base_undraw(self):
         self.drawn_graphic.undraw()
 
+    def destroy(self):
+        GraphicsObject.objects.discard(self)
+        GraphicsObject.object_layers[self.layer].discard(self)
+        GraphicsObject.draggable_objects.discard(self)
+        GraphicsObject.cursor_objects.discard(self)
+
+        GraphicsObject.cyclebutton_instances.discard(self)
+
+        if self in GraphicsObject.redraw_on_frame[self.layer]:
+            GraphicsObject.redraw_on_frame[self.layer].remove(self)
+
+        for state in self.states:
+            state.destroy()
+
+        self.drawn = False
+        self.graphwin = None
+        self.id = None
+
+        return self
+
     def _rotate(self, dr, sampling="bicubic", center=None):
         for graphic in self.states:
             graphic.rotate(dr, sampling=sampling, center=center)

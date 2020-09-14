@@ -1649,54 +1649,6 @@ class Window(tkCanvas):
             self.update_win()
         return self
 
-    # Undraw everything on this window
-    def undraw_all(self):
-        for item in self.items:
-            item.undraw()
-
-        if self.autoflush:
-            self.update_win()
-        return self
-
-    def undraw_all_instances(self, obj):
-        if not issubclass(obj, GraphicsObject):
-            raise GraphicsError(f"\n\nGraphicsError: obj instance to undraw must be a GraphicsObject, not {obj}")
-        for instance in GraphicsObject.objects:
-            if isinstance(instance, obj) and instance.graphwin == self:
-                instance.undraw()
-
-        return self
-    
-    def undraw_all_lines(self):
-        for instance in GraphicsObject.objects:
-            if "Line" in instance.__repr__() and instance.graphwin == self:
-                instance.undraw()
-        return self
-
-    def undraw_all_circles(self):
-        for instance in GraphicsObject.objects:
-            if "Circle" in instance.__repr__() and instance.graphwin == self:
-                instance.undraw()
-        return self
-
-    def undraw_all_rectangles(self):
-        for instance in GraphicsObject.objects:
-            if "Rectangle" in instance.__repr__() and instance.graphwin == self:
-                instance.undraw()
-        return self
-
-    def undraw_all_ovals(self):
-        for instance in GraphicsObject.objects:
-            if "Oval" in instance.__repr__() and instance.graphwin == self:
-                instance.undraw()
-        return self
-
-    def undraw_all_images(self):
-        for instance in GraphicsObject.objects:
-            if "Image" in instance.__repr__() and instance.graphwin == self:
-                instance.undraw()
-        return self
-
     # Destroying Functions
 
     def destroy_all(self):
@@ -1743,6 +1695,44 @@ class Window(tkCanvas):
         for instance in GraphicsObject.objects.copy():
             if "Image" in instance.__repr__() and instance.graphwin == self:
                 instance.destroy()
+        return self
+    
+    def destroy_all_radiobuttons(self):
+        from goopylib.objects.Button import Button
+
+        for instance in GraphicsObject.radiobutton_instances.copy():
+            GraphicsObject.objects.remove(instance)
+            instance.destroy()
+
+        GraphicsObject.radiobutton_instances = {*()}
+        return self
+    
+    def destroy_all_cyclebuttons(self):
+        for instance in GraphicsObject.cyclebutton_instances.copy():
+            GraphicsObject.objects.remove(instance)
+            instance.destroy()
+        GraphicsObject.cyclebutton_instances = {*()}
+        return self
+    
+    def destroy_all_entries(self):
+        for instance in GraphicsObject.entry_instances.copy():
+            GraphicsObject.objects.remove(instance)
+            instance.destroy()
+        GraphicsObject.entry_instances = {*()}
+        return self
+
+    def destroy_all_buttons(self):
+        for instance in GraphicsObject.button_instances.copy():
+            GraphicsObject.objects.remove(instance)
+            instance.destroy()
+        GraphicsObject.button_instances = {*()}
+        return self
+    
+    def destroy_all_animated_images(self):
+        for instance in GraphicsObject.animated_image_instances.copy():
+            GraphicsObject.objects.remove(instance)
+            instance.destroy()
+        GraphicsObject.animated_image_instances = {*()}
         return self
 
 

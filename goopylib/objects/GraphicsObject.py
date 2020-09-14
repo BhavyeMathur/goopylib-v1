@@ -247,10 +247,6 @@ class GraphicsObject:
                             GraphicsObject.redraw_on_frame[layer_index].append(obj)
 
     def undraw(self, set_blinking=True):
-
-        """Undraw the object (i.e. hide it). Returns silently if the
-        object is not currently drawn."""
-
         if not isinstance(set_blinking, bool):
             raise GraphicsError(
                 f"\n\nGraphicsError: set_blinking argument for undraw() must be a boolean, not {set_blinking}")
@@ -258,6 +254,7 @@ class GraphicsObject:
         if self.drawn:
             if not self.graphwin.closed:
                 self._undraw()
+                pass
 
             if self in GraphicsObject.redraw_on_frame[self.layer]:
                 GraphicsObject.redraw_on_frame[self.layer].remove(self)
@@ -276,7 +273,8 @@ class GraphicsObject:
         return self
 
     def destroy(self):
-        GraphicsObject.objects.discard(self)
+        GraphicsObject.objects.remove(self)
+        GraphicsObject.object_layers[self.layer].remove(self)
         GraphicsObject.draggable_objects.discard(self)
         GraphicsObject.cursor_objects.discard(self)
 
@@ -291,6 +289,7 @@ class GraphicsObject:
                 pass
 
         self.drawn = False
+        self.graphwin = None
         self.id = None
 
     # -------------------------------------------------------------------------
@@ -2122,21 +2121,23 @@ class GraphicsObject:
         for obj in GraphicsObject.button_instances:
             if obj.graphwin == graphwin and obj.graphic == obj.clicked_graphic and obj.drawn:
                 if not obj.is_disabled:
+                    #print(0)
                     obj.graphic = obj.normal_graphic
                     obj._update_layer()
 
         for obj in GraphicsObject.cyclebutton_instances:
-            if obj.graphwin == graphwin and obj.autoflush:
+            if obj.graphwin == graphwin and obj.drawn and obj.autoflush:
+                #print(1)
                 if obj.is_clicked(mouse_pos):
                     obj.click()
 
         for obj in GraphicsObject.radiobutton_instances:
-            if obj.graphwin == graphwin:
+            if obj.drawn and obj.graphwin == graphwin:
                 for checkbox in obj.checkboxes:
                     if checkbox.is_clicked(mouse_pos):
+                        #print(2)
                         checkbox.click()
                         obj.current_state.click()
-                        
                         obj.current_state = checkbox
                         break
 
@@ -2198,13 +2199,13 @@ class GraphicsObject:
                             if obj.graphic != obj.clicked_graphic:
                                 obj.graphic = obj.clicked_graphic
                                 obj._update_layer()
-
                         else:
                             if obj.graphic != obj.hover_graphic:
                                 obj.graphic = obj.hover_graphic
                                 obj._update_layer()
 
                     elif obj.graphic != obj.normal_graphic and not obj.is_disabled:
+                        #print(obj)
                         obj.graphic = obj.normal_graphic
                         obj._update_layer()
 

@@ -40,7 +40,7 @@ class Button(GraphicsObject):
         GraphicsObject.__init__(self, options=(), layer=layer, tag=tag, bounds=bounds)
 
     def __repr__(self):
-        return f"Button({self.graphic})"
+        return f"Button({self.graphic}, {self.normal_graphic}, {self.hover_graphic})"
 
     def _draw(self, canvas, options):
         self.graphic.draw(canvas, _internal_call=True)
@@ -52,6 +52,12 @@ class Button(GraphicsObject):
             self.label.draw(canvas, _internal_call=True)
 
     def destroy(self):
+        GraphicsObject.objects.remove(self)
+        GraphicsObject.object_layers[self.layer].discard(self)
+        GraphicsObject.draggable_objects.discard(self)
+        GraphicsObject.cursor_objects.discard(self)
+        GraphicsObject.button_instances.discard(self)
+
         if self.hover_graphic_given:
             self.hover_graphic.destroy()
         self.normal_graphic.destroy()
@@ -67,7 +73,10 @@ class Button(GraphicsObject):
             self.label.destroy()
 
         self.drawn = False
+        self.graphwin = None
         self.id = None
+
+        return self
 
     def _move(self, dx, dy):
         if self.hover_graphic_given:

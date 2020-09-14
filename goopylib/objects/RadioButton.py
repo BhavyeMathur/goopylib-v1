@@ -34,6 +34,26 @@ class RadioButton(GraphicsObject):
         for checkbox in self.checkboxes:
             checkbox.undraw()
 
+    def destroy(self):
+        GraphicsObject.objects.discard(self)
+        GraphicsObject.object_layers[self.layer].discard(self)
+        GraphicsObject.draggable_objects.discard(self)
+        GraphicsObject.cursor_objects.discard(self)
+
+        GraphicsObject.radiobutton_instances.discard(self)
+
+        if self in GraphicsObject.redraw_on_frame[self.layer]:
+            GraphicsObject.redraw_on_frame[self.layer].remove(self)
+
+        for checkbox in self.checkboxes:
+            checkbox.destroy()
+
+        self.drawn = False
+        self.graphwin = None
+        self.id = None
+
+        return self
+
     def base_undraw(self):
         for checkbox in self.checkboxes:
             checkbox.base_undraw()
@@ -58,8 +78,8 @@ class RadioButton(GraphicsObject):
 
     def set_autoflush(self, autoflush):
         if autoflush:
-            if self not in GraphicsObject.radio_button_instances:
-                GraphicsObject.radio_button_instances.add(self)
-        elif self in GraphicsObject.radio_button_instances:
-            GraphicsObject.radio_button_instances.remove(self)
+            if self not in GraphicsObject.radiobutton_instances:
+                GraphicsObject.radiobutton_instances.add(self)
+        elif self in GraphicsObject.radiobutton_instances:
+            GraphicsObject.radiobutton_instances.remove(self)
         return self

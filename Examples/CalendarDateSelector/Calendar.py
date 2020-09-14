@@ -4,6 +4,7 @@ from goopylib.Point import Point
 from goopylib.objects.Image import Image
 from goopylib.objects.Rectangle import Rectangle
 from goopylib.objects.Text import Text
+
 from goopylib.objects.Button import Button
 from goopylib.objects.Checkbox import Checkbox
 from goopylib.objects.RadioButton import RadioButton
@@ -56,26 +57,93 @@ def date_selector():
     left_arrow = Image(Point(35, 33), "Arrow.png").draw(window)
     right_arrow = Image(Point(415, 33), "Arrow.png").flip_x().draw(window)
 
-    date_buttons = RadioButton(*(Checkbox(Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                           Point(70 + day * 60, 175 + 50 * week),
-                                                           fill=ColourRGB(255, 83, 84), outline_width=0),
+    checkboxes = []
+    other_dates = []
 
-                                                 label=Text(Point(45 + day * 60, 150 + 50 * week), day + week * 7,
-                                                            font_size=15, font_face="century gothic", font_colour=WHITE)),
+    def draw_month():
+        window.destroy_all_radiobuttons()
 
-                                          Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                           Point(70 + day * 60, 175 + 50 * week), fill=WHITE,
-                                                           outline_width=0),
+        for text in other_dates:
+            text.destroy()
 
-                                                 Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                           Point(70 + day * 60, 175 + 50 * week), fill=LIGHTEST_PINK,
-                                                           outline_width=0),
-                                                 label=Text(Point(45 + day * 60, 150 + 50 * week), day + week * 7,
-                                                            font_size=15, font_face="century gothic")),
+        for week in range(6):
+            for day in range(7):
+                date = day + week * 7
+                in_month = True
 
-                                          state=False)
+                if date <= first_day:
+                    date = previous_number_of_days - abs(date - first_day)
+                    in_month = False
+                else:
+                    date -= first_day
+                    if date > number_of_days:
+                        date -= number_of_days
+                        in_month = False
 
-                               for day in range(7) for week in range(6))).draw(window)
+                if in_month:
+                    checkboxes.append(Checkbox(Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
+                                                                Point(70 + day * 60, 175 + 50 * week),
+                                                                fill=ColourRGB(255, 83, 84), outline_width=0),
+
+                                                      label=Text(Point(45 + day * 60, 150 + 50 * week), date,
+                                                      font_size=15, font_face="century gothic", font_colour=WHITE)),
+
+                                               Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
+                                                                Point(70 + day * 60, 175 + 50 * week), fill=WHITE,
+                                                                outline_width=0),
+
+                                                      Rectangle(Point(20 + day * 60, 125 + 50 * week),
+                                                                Point(70 + day * 60, 175 + 50 * week), fill=LIGHTEST_PINK,
+                                                                outline_width=0),
+                                                      label=Text(Point(45 + day * 60, 150 + 50 * week), date,
+                                                                 font_size=15, font_face="century gothic",
+                                                                 font_colour=DARKER_GREY)),
+                                               state=False))
+                else:
+                    other_dates.append(Text(Point(45 + day * 60, 150 + 50 * week), date, font_size=15,
+                                            font_face="century gothic", font_colour=LIGHTER_GREY).draw(window))
+
+        date_buttons = RadioButton(*checkboxes).draw(window)
+
+    for week in range(6):
+        for day in range(7):
+            date = day + week * 7
+            in_month = True
+
+            if date <= first_day:
+                date = previous_number_of_days - abs(date - first_day)
+                in_month = False
+            else:
+                date -= first_day
+                if date > number_of_days:
+                    date -= number_of_days
+                    in_month = False
+
+            if in_month:
+                checkboxes.append(Checkbox(Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
+                                                            Point(70 + day * 60, 175 + 50 * week),
+                                                            fill=ColourRGB(255, 83, 84), outline_width=0),
+
+                                                  label=Text(Point(45 + day * 60, 150 + 50 * week), date,
+                                                             font_size=15, font_face="century gothic",
+                                                             font_colour=WHITE)),
+
+                                           Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
+                                                            Point(70 + day * 60, 175 + 50 * week), fill=BLACK,
+                                                            outline_width=0),
+
+                                                  Rectangle(Point(20 + day * 60, 125 + 50 * week),
+                                                            Point(70 + day * 60, 175 + 50 * week), fill=LIGHTEST_PINK,
+                                                            outline_width=0),
+                                                  label=Text(Point(45 + day * 60, 150 + 50 * week), date,
+                                                             font_size=15, font_face="century gothic",
+                                                             font_colour=DARKER_GREY)),
+                                           state=False))
+            else:
+                other_dates.append(Text(Point(45 + day * 60, 150 + 50 * week), date, font_size=15,
+                                        font_face="century gothic", font_colour=LIGHTER_GREY).draw(window))
+
+    date_buttons = RadioButton(*checkboxes).draw(window)
 
     while window.is_open():
         key = window.check_key_press()
@@ -84,6 +152,12 @@ def date_selector():
         if key == "Escape" or close_button.is_clicked(mouse_pos) \
                 or accept_button.is_clicked(mouse_pos) or key == "Return":
             window.close()
+
+        elif left_arrow.is_clicked(mouse_pos):
+            draw_month()
+
+        elif right_arrow.is_clicked(mouse_pos):
+            pass
 
         window.update_win()
 

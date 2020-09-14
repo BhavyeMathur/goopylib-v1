@@ -193,7 +193,7 @@ Unfortunately, online school (Grade 9!!!) has started and so updates won't be co
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
 
-#### 1.1.57-alpha8 10th-11th September 2020
+#### 1.1.59-alpha8 10th-15th September 2020
 
 * The Window and Image classes now use the absolute path to open icons and filepaths to make themselves compatible with 
 auto-py-to-exe
@@ -209,6 +209,8 @@ not its bound was clicked.
 * Fixed bug with the Checkbox's `set_state()` function setting the opposite state
  
 * Created the official goopylib logo
+* Made destroying compound GraphicObject classes much more efficient
+* Added more destroy all instances functions to the Window class 
 
 #### 1.1.50-alpha7 5th-7th September 2020
 
