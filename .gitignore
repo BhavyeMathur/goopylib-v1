@@ -7,4 +7,10 @@ triangulation_test.py
 dist/
 build/
 goopylib.egg-info/
-Documentation/YouTube/
+Documentation/YouTube/Music/
+Documentation/YouTube/Adobe Premiere Pro Auto-Save/
+Documentation/YouTube/Adobe Premiere Pro Captured Audio/
+Documentation/YouTube/*/*.mp4
+Documentation/YouTube/*/*.wav
+Documentation/YouTube/*/*/*.mp4
+Documentation/YouTube/*.prproj
