@@ -20,7 +20,7 @@ executables with, hopefully, no errors.
 
 To know more about goopylib, watch the following video:
 
-[![goopylib Introduction Video Thumbnail](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/YouTube/%231%20-%20IntroductionThumbnail.png)](https://www.youtube.com/watch?v=x54SQk2eA0)
+[![goopylib Introduction Video Thumbnail](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/YouTube/%231%20-%20IntroductionThumbnail.png)](https://www.youtube.com/watch?v=x54SQk2eA08)
 
 If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
 
