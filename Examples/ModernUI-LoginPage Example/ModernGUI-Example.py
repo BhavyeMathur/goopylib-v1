@@ -78,7 +78,7 @@ while True:
         next_page = "Settings Page"
         break
 
-    window.update_win()  # Updating the window
+    window.update()  # Updating the window
 
 window.close()  # Closing the window
 

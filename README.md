@@ -112,7 +112,7 @@ There are 5 subpackages in goopylib: objects, math, sound, physics, & applicatio
 To import these, type:
 
 ```python
-from goopylib.math.BezierCurve import BezierCurve # The other modules are 'Interpolation', & 'BSpline'
+from goopylib.math.PyBezierCurve import PyBezierCurve # The other modules are 'Interpolation', & 'BSpline'
 # or
 from goopylib.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
 ```
@@ -192,6 +192,56 @@ Unfortunately, online school (Grade 9!!!) has started and so updates won't be co
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
+
+#### 1.1.80-alpha9 18th-22nd September 2020
+
+* Renamed the Window's `update_win()` function to just `update()`
+* The rectangle class doesn't define a list of points inside the `__init__()` function anymore, rather, it does it in 
+the `draw()` function
+
+* Added a C implementation for the Factorial, Combination, & BernsteinPolynomial functions
+* Renamed all the functions (`Combination`, `BernsteinPolynomial`, `RawBezierCurve`, `RationalBezierCurve`, 
+`BezierCurve`) inside BezierCurve.py to have a suffix `Py` in front to avoid confusion with the C functions. 
+
+* The `PyRawBezierCurve()`, `PyRationalBezierCurve()`, & `PyBezierCurve()` functions now return a tuple `(x, y)` 
+instead of `Point(x, y)`
+* Made the `PyRawBezierCurve()` function more efficient and faster by calculating the size of the `control_points` once 
+rather than every iteration
+
+* Made the `PyRawBezierCurve()` function more efficient by calculating the `berstein_polynomial` once every iteration 
+and using the stored value
+
+* The Rectangle class raises exceptions if proper arguments aren't supplied
+* Removed an unused VectorEquation import statement from the Rectangle class
+* You can now provide bounds arguments for the Rectangle `set_resizable()` function to define custom bounds in each 
+direction
+* Removed the `show_bounds` argument from the _BBox's `set_resizable()` function
+
+* Added an `undraw_bounds()` function to the GraphicsObject class to undraw any drawn bounds
+* Removed the `show_bounds()` and `hide_bounds()` functions from the _BBox class as these are already defined in the 
+GraphicsObject class
+
+* Fixed bug with the _BBox's `set_resizable()` function being able to add the objects to the GraphicsObject's 
+`resizing_objects` set multiple times and not removing objects from it if the object is set to be not resizable.
+
+* Removed an unused Line module import statement from _BBox.py and a VectorEquation module import statement from 
+Rectangle.py
+
+* _BBox & Line objects now use floor division to find the anchor of itself to give an integer result rather than a 
+float.
+* The Rectangle, Oval, and _BBox classes no longer use the Point class. This aims towards a shift from deprecating the point 
+class in favour of length-2 list `[x, y]`
+
+* Removed the `reset_bounds()` function from the _BBox class as its functionality is not required.
+* You can no longer assign a style value to any of the _BBox classes. This is a step towards deprecating the largely 
+useless styles
+
+* The Rectangle's `_draw()` function now draws a Polygon shaped like a rectangle only if the rectangle is rounded, 
+otherwise, it draws a rectangle
+
+* Fixed the Rectangle's `clone()` function to transfer all the previous Rectangle's attributes over properly
+
+* More misc changes to the GraphicsObject & Oval classes
 
 #### 1.1.59-alpha8 10th-15th September 2020
 

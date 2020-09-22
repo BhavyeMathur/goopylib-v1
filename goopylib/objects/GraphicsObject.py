@@ -509,10 +509,10 @@ class GraphicsObject:
         pass
 
     def get_x_pos(self):
-        return self.get_anchor().x
+        return self.get_anchor()[0]
 
     def get_y_pos(self):
-        return self.get_anchor().y
+        return self.get_anchor()[1]
 
     def get_cursor(self):
         return self.cursor
@@ -802,16 +802,16 @@ class GraphicsObject:
                                     f"(integer or float), not {dy}")
 
             if self.bounds is None:
-                new_pos = (self.anchor.x + dx, self.anchor.y + dy)
+                new_pos = (self.anchor[0] + dx, self.anchor[1] + dy)
             else:
-                new_pos = (self.bounds.anchor.x + dx, self.bounds.anchor.y + dy)
+                new_pos = (self.bounds.anchor[0] + dx, self.bounds.anchor[1] + dy)
             if self.movement_bounds is not None:
                 if not self.movement_bounds.is_clicked(Point(*new_pos)):
                     if self.allow_looping[0]:
                         width = self.movement_bounds.get_width()
-                        if new_pos[0] <= self.movement_bounds.anchor.x - width/2:
+                        if new_pos[0] <= self.movement_bounds.anchor[0] - width/2:
                             dx = width - self.get_width() / 2
-                        elif new_pos[0] >= self.movement_bounds.anchor.x + width/2:
+                        elif new_pos[0] >= self.movement_bounds.anchor[0] + width/2:
                             dx = -width + self.get_width() / 2
                         else:
                             self._update_layer()
@@ -819,9 +819,9 @@ class GraphicsObject:
 
                     if self.allow_looping[1]:
                         height = self.movement_bounds.get_height()
-                        if new_pos[1] <= self.movement_bounds.anchor.y - height/2:
+                        if new_pos[1] <= self.movement_bounds.anchor[1] - height/2:
                             dy = height - self.get_height() / 2
-                        elif new_pos[1] >= self.movement_bounds.anchor.y + height/2:
+                        elif new_pos[1] >= self.movement_bounds.anchor[1] + height/2:
                             dy = -height + self.get_height() / 2
                         else:
                             self._update_layer()
@@ -871,8 +871,8 @@ class GraphicsObject:
 
             if _not_animation_call:
                 for animation in self.animation_queues["glide"]:
-                    animation["Initial"].x += dx
-                    animation["Initial"].y += dy
+                    animation["Initial"][0] += dx
+                    animation["Initial"][1] += dy
 
             self._update_layer()
 
@@ -886,7 +886,7 @@ class GraphicsObject:
             raise GraphicsError("\n\nGraphicsObject: the y location to move the object to must be an integer or float, "
                                 f"not {y}")
 
-        self.move(x - self.get_anchor().x, y - self.get_anchor().y, align=align,
+        self.move(x - self.get_anchor()[0], y - self.get_anchor()[1], align=align,
                   _not_animation_call=_not_animation_call)
         return self
 
@@ -902,20 +902,20 @@ class GraphicsObject:
         if not (isinstance(y, int) or isinstance(y, float)):
             raise GraphicsError("\n\nThe amount to move the object in the y-direction (y) must be a number "
                                 f"(integer or float), not {y}")
-        self.move(0, y - self.get_anchor().y, align=align)
+        self.move(0, y - self.get_anchor()[1], align=align)
         return self
 
     def move_to_x(self, x, align="center"):
         if not (isinstance(x, int) or isinstance(x, float)):
             raise GraphicsError("\n\nThe amount to move the object in the x-direction (x) must be a number "
                                 f"(integer or float), not {x}")
-        self.move(x - self.get_anchor().x, 0, align=align)
+        self.move(x - self.get_anchor()[0], 0, align=align)
         return self
 
     def move_to_point(self, p, align="center"):
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
-        self.move_to(p.x, p.y, align=align)
+        self.move_to(p[0], p[1], align=align)
         return self
 
     def move_forward(self, d, collision_callback=None):
@@ -1205,7 +1205,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": Point(x - initial_pos.x, y - initial_pos.y), "EasingX": easing_x,
+                          "Change": Point(x - initial_pos[0], y - initial_pos[1]), "EasingX": easing_x,
                           "EasingY": easing_y}
 
         if not allow_duplicate:
@@ -1246,7 +1246,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": Point(x - initial_pos.x, 0), "EasingX": easing, "EasingY": easing}
+                          "Change": Point(x - initial_pos[0], 0), "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1286,7 +1286,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": Point(0, y - initial_pos.y), "EasingX": easing, "EasingY": easing}
+                          "Change": Point(0, y - initial_pos[1]), "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1304,7 +1304,7 @@ class GraphicsObject:
                        duplicates_metric=("Time", "Final")):
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
-        self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y, allow_duplicate=allow_duplicate,
+        self.glide_to(x=p[0], y=p[1], time=time, easing_x=easing_x, easing_y=easing_y, allow_duplicate=allow_duplicate,
                       duplicates_metric=duplicates_metric)
         return self
 
@@ -1564,7 +1564,7 @@ class GraphicsObject:
                                         f"{DUPLICATES_METRICS}, not {metric}")
 
             start = timetime()
-            initial_skew = [self.y_skew, self.x_skew]
+            initial_skew = [self.x_skew, self.y_skew]
 
             for animation in self.animation_queues["skew"]:
                 start += animation["Time"]
@@ -1604,7 +1604,7 @@ class GraphicsObject:
                                         f"{DUPLICATES_METRICS}, not {metric}")
 
             start = timetime()
-            initial_skew = [self.y_skew, self.x_skew]
+            initial_skew = [self.x_skew, self.y_skew]
 
             for animation in self.animation_queues["skew"]:
                 start += animation["Time"]
@@ -1653,7 +1653,7 @@ class GraphicsObject:
                                         f"{DUPLICATES_METRICS}, not {metric}")
 
             start = timetime()
-            initial_skew = [self.y_skew, self.x_skew]
+            initial_skew = [self.x_skew, self.y_skew]
 
             for animation in self.animation_queues["skew"]:
                 start += animation["Time"]
@@ -1897,8 +1897,8 @@ class GraphicsObject:
             if obj.graphwin == graphwin and obj.drawn:
                 if t - obj.animation_queues["glide"][0]["Start"] >= obj.animation_queues["glide"][0]["Time"]:
                     obj.move_to(
-                        obj.animation_queues["glide"][0]["Initial"].x + obj.animation_queues["glide"][0]["Change"].x,
-                        obj.animation_queues["glide"][0]["Initial"].y + obj.animation_queues["glide"][0]["Change"].y, 
+                        obj.animation_queues["glide"][0]["Initial"][0] + obj.animation_queues["glide"][0]["Change"][0],
+                        obj.animation_queues["glide"][0]["Initial"][1] + obj.animation_queues["glide"][0]["Change"][1], 
                         _not_animation_call=False)
 
                     obj.animation_queues["glide"].pop(0)  # Remove the object from the gliding queue
@@ -1911,10 +1911,10 @@ class GraphicsObject:
                     perY = obj.animation_queues["glide"][0]["EasingY"](
                         (t - obj.animation_queues["glide"][0]['Start']) / obj.animation_queues["glide"][0]['Time'])
 
-                    obj.move_to(obj.animation_queues["glide"][0]["Initial"].x + obj.animation_queues["glide"][0][
-                                    "Change"].x * perX,
-                                obj.animation_queues["glide"][0]["Initial"].y + obj.animation_queues["glide"][0][
-                                    "Change"].y * perY, _not_animation_call=False)
+                    obj.move_to(obj.animation_queues["glide"][0]["Initial"][0] + obj.animation_queues["glide"][0][
+                                    "Change"][0] * perX,
+                                obj.animation_queues["glide"][0]["Initial"][1] + obj.animation_queues["glide"][0][
+                                    "Change"][1] * perY, _not_animation_call=False)
                     
                     obj.animation_queues["glide"][0]["Update"] = timetime()
 
@@ -2112,9 +2112,9 @@ class GraphicsObject:
             if obj.graphwin == graphwin:
                 if obj.line.is_clicked(mouse_pos):
                     if obj.orientation == "vertical":
-                        obj.mouse_value(mouse_pos.y)
+                        obj.mouse_value(mouse_pos[1])
                     else:
-                        obj.mouse_value(mouse_pos.x)
+                        obj.mouse_value(mouse_pos[0])
 
                 obj.set_selected(False)
 
@@ -2213,9 +2213,9 @@ class GraphicsObject:
                 if obj.graphwin == graphwin:
                     if obj.selected:
                         if obj.orientation == "vertical":
-                            obj.mouse_value(mouse_pos.y)
+                            obj.mouse_value(mouse_pos[1])
                         else:
-                            obj.mouse_value(mouse_pos.x)
+                            obj.mouse_value(mouse_pos[0])
 
             hover_count = 0
             for obj in GraphicsObject.cursor_objects:
@@ -2229,11 +2229,11 @@ class GraphicsObject:
                     if obj.is_dragging:
                         if graphwin.left_mouse_down:
                             if obj.is_draggable[0]:
-                                obj.move_to_x(mouse_pos.x)
+                                obj.move_to_x(mouse_pos[0])
                                 if obj.callbacks["DraggingX"] is not None:
                                     obj.callbacks["DraggingX"]()
                             if obj.is_draggable[1]:
-                                obj.move_to_y(mouse_pos.y)
+                                obj.move_to_y(mouse_pos[1])
                                 if obj.callbacks["DraggingY"] is not None:
                                     obj.callbacks["DraggingY"]()
                         else:
@@ -2246,9 +2246,9 @@ class GraphicsObject:
                 for obj in GraphicsObject.slider_instances:
                     if obj.graphwin == graphwin and obj.is_clicked(graphwin.get_last_mouse()):
                         if obj.orientation == "vertical":
-                            obj.mouse_value(mouse_pos.y)
+                            obj.mouse_value(mouse_pos[1])
                         else:
-                            obj.mouse_value(mouse_pos.x)
+                            obj.mouse_value(mouse_pos[0])
 
                 for obj in GraphicsObject.resizing_objects:
                     if obj.graphwin == graphwin:
@@ -2261,21 +2261,21 @@ class GraphicsObject:
                                     dir1 = "right"
                                     dir2 = "left"
                                     if bound == "left":
-                                        if mouse_pos.x < obj.resizing_anchor.x + obj.resizing_initial_size[0] / 2 \
+                                        if mouse_pos[0] < obj.resizing_anchor[0] + obj.resizing_initial_size[0] / 2 \
                                                 - obj.min_width:
-                                            w = obj.resizing_anchor.x - mouse_pos.x + obj.resizing_initial_size[0] / 2
-                                            obj.resizing_bounds[dir2].move_to_x(mouse_pos.x)
+                                            w = obj.resizing_anchor[0] - mouse_pos[0] + obj.resizing_initial_size[0] / 2
+                                            obj.resizing_bounds[dir2].move_to_x(mouse_pos[0])
                                         else:
-                                            obj.resizing_bounds[dir2].move_to_x(obj.p1.x)
+                                            obj.resizing_bounds[dir2].move_to_x(obj.p1[0])
 
                                     elif bound == "right":
                                         dir1, dir2 = dir2, dir1
-                                        if mouse_pos.x > obj.resizing_anchor.x - obj.resizing_initial_size[0] / 2 \
+                                        if mouse_pos[0] > obj.resizing_anchor[0] - obj.resizing_initial_size[0] / 2 \
                                                 + obj.min_width:
-                                            w = mouse_pos.x - obj.resizing_anchor.x + obj.resizing_initial_size[0] / 2
-                                            obj.resizing_bounds[dir2].move_to_x(mouse_pos.x)
+                                            w = mouse_pos[0] - obj.resizing_anchor[0] + obj.resizing_initial_size[0] / 2
+                                            obj.resizing_bounds[dir2].move_to_x(mouse_pos[0])
                                         else:
-                                            obj.resizing_bounds[dir2].move_to_x(obj.p2.x)
+                                            obj.resizing_bounds[dir2].move_to_x(obj.p2[0])
 
                                     obj.set_width(w, dir1)
 
@@ -2286,22 +2286,22 @@ class GraphicsObject:
                                     dir1 = "bottom"
                                     dir2 = "top"
                                     if bound == "top":
-                                        if mouse_pos.y < obj.resizing_anchor.y + obj.resizing_initial_size[1] / 2 \
+                                        if mouse_pos[1] < obj.resizing_anchor[1] + obj.resizing_initial_size[1] / 2 \
                                                 - obj.min_height:
-                                            h = obj.resizing_anchor.y - mouse_pos.y + obj.resizing_initial_size[1] / 2
-                                            obj.resizing_bounds[dir2].move_to_y(mouse_pos.y)
+                                            h = obj.resizing_anchor[1] - mouse_pos[1] + obj.resizing_initial_size[1] / 2
+                                            obj.resizing_bounds[dir2].move_to_y(mouse_pos[1])
                                         else:
                                             h = obj.min_height
-                                            obj.resizing_bounds[dir2].move_to_y(obj.p1.y)
+                                            obj.resizing_bounds[dir2].move_to_y(obj.p1[1])
                                     else:
                                         dir1, dir2 = dir2, dir1
-                                        if mouse_pos.y > obj.resizing_anchor.y - obj.resizing_initial_size[1] / 2 \
+                                        if mouse_pos[1] > obj.resizing_anchor[1] - obj.resizing_initial_size[1] / 2 \
                                                 + obj.min_height:
-                                            h = mouse_pos.y - obj.resizing_anchor.y + obj.resizing_initial_size[1] / 2
-                                            obj.resizing_bounds[dir2].move_to_y(mouse_pos.y)
+                                            h = mouse_pos[1] - obj.resizing_anchor[1] + obj.resizing_initial_size[1] / 2
+                                            obj.resizing_bounds[dir2].move_to_y(mouse_pos[1])
                                         else:
                                             h = obj.min_height
-                                            obj.resizing_bounds[dir2].move_to_y(obj.p2.y)
+                                            obj.resizing_bounds[dir2].move_to_y(obj.p2[1])
 
                                     obj.set_height(h, dir1)
 

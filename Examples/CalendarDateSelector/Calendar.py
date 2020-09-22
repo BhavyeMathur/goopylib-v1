@@ -159,7 +159,7 @@ def date_selector():
         elif right_arrow.is_clicked(mouse_pos):
             pass
 
-        window.update_win()
+        window.update()
 
     """
     # The previous_date_index is variable which stores
@@ -304,7 +304,7 @@ def date_selector():
             else:
                 selection_hover.undraw()
 
-        window.update_win()
+        window.update()
 
     month = {"January": "Jan", "February": "Feb", "March": "March", "April": "April", "May": "May", "June": "June",
              "July": "July", "August": "Aug", "September": "Sep", "October": "Oct", "November": "Nov",

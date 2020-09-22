@@ -25,5 +25,5 @@ while True:  # This is the main loop
     for obj in objects:
         obj.move_x(-4)  # Moving each object left by 4 pixels
 
-    window.update_win()  # Updating the window
+    window.update()  # Updating the window
     update(30)  # Updating the loop at a rate of 30 FPS

@@ -1,5 +1,6 @@
 .idea/
 *.log
+.vs/
 PolygonTriangulation.fla
 sound_test.py
 test.py

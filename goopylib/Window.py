@@ -144,7 +144,9 @@ class Window(tkCanvas):
         #   2. The colour provided is a colour tag in the window's style
         #   3. If not, choose the background colour tag of the window's style
         #   4. If this does not exist, choose the default background colour
-        if not isinstance(bk_colour, Colour):
+        if isinstance(bk_colour, Colour):
+            self.bk_colour = bk_colour
+        else:
             if bk_colour in STYLES[style].keys():
                 self.bk_colour = STYLES[style][bk_colour]
             else:
@@ -155,12 +157,12 @@ class Window(tkCanvas):
                 if bk_colour is not None:
                     warnings.warn(f"The background colour specified ({bk_colour}) is not in the graphwin's style. "
                                   f"The background colour was set to the default colour ({self.bk_colour})")
-        else:
-            self.bk_colour = bk_colour
+
 
         # Setting most of the attributes of the window
         # We set the width & height of the window to be the screen size to get rid of a bug with resizing,
         # then setting the window coordinates
+
         tkCanvas.__init__(self, master, width=_root.winfo_screenwidth(), height=_root.winfo_screenheight(),
                           highlightthickness=0, bd=border_width,
                           bg=self.bk_colour, cursor=CURSORS[cursor.lower()], relief=border_relief)
@@ -201,8 +203,6 @@ class Window(tkCanvas):
 
         self.border_width = border_width
         self.border_relief = border_relief.lower()
-
-        self.set_background(self.bk_colour)
 
         if icon is not None:  # Setting the Icon of the Window
             if osisfile(resource_path(f"textures/{icon}")):
@@ -779,7 +779,7 @@ class Window(tkCanvas):
         return self.title
 
     def get_coords(self):
-        return Point(self.trans.x_base, self.trans.other_y), Point(self.trans.other_x, self.trans.y_base)
+        return [self.trans.x_base, self.trans.other_y], [self.trans.other_x, self.trans.y_base]
 
     # SETTER FUNCTIONS
     # -------------------------------------------------------------------------
@@ -798,8 +798,6 @@ class Window(tkCanvas):
 
         self.__check_open()
         self.master.config(bg=self.bk_colour)
-        if self.autoflush:
-            self.__autoflush()
         return self
 
     def set_border_width(self, width):
@@ -1136,7 +1134,7 @@ class Window(tkCanvas):
         self.update_idletasks()
         return self
 
-    def update_win(self, rate=None, _internal_updating=False):
+    def update(self, rate=None, _internal_updating=False):
         if rate is None or timetime() - self.last_update > 1 / rate:
             if self.is_gliding:
                 t = timetime()
@@ -1164,7 +1162,7 @@ class Window(tkCanvas):
 
             GraphicsObject.on_update(self)
 
-            self.update()
+            tkCanvas.update(self)
 
             self.last_update = timetime()
         return self
@@ -1197,7 +1195,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_left_mouse_press()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1242,7 +1240,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_left_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1254,7 +1252,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_middle_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1266,7 +1264,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_right_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1280,7 +1278,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_double_left_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1292,7 +1290,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_double_middle_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1304,7 +1302,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_double_right_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1318,7 +1316,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_triple_left_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1330,7 +1328,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_triple_middle_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1342,7 +1340,7 @@ class Window(tkCanvas):
 
         while mouse_pos is None:
             mouse_pos = self.check_triple_right_mouse_click()
-            self.update_win()
+            self.update()
 
             if self.closed:
                 break
@@ -1487,7 +1485,7 @@ class Window(tkCanvas):
         if self.closed:
             return None
         else:
-            self.update_win()
+            self.update()
             self.mouse_scroll_amount += self.mouse_wheel_pos / 120
             self.mouse_wheel_pos = 0
 
@@ -1534,28 +1532,28 @@ class Window(tkCanvas):
     def get_key_press(self):
         """Wait for user to press a key and return it as a string."""
         while self.check_key_press(_refresh=False) is None:
-            self.update_win()
+            self.update()
         return self.check_key_press()
 
     def get_key_click(self):
         """Wait for user to press a key and return it as a string."""
         while not self.check_key_click(_refresh=False):
-            self.update_win()
+            self.update()
         return self.check_key_click()
 
     def get_key_with_shift_pressed(self):
         while self.check_key_with_shift_pressed(_refresh=False) is None:
-            self.update_win()
+            self.update()
         return self.check_key_with_shift_pressed()
 
     def get_key_with_alt_pressed(self):
         while self.check_key_with_alt_pressed(_refresh=False) is None:
-            self.update_win()
+            self.update()
         return self.check_key_with_alt_pressed()
     
     def get_key_with_control_pressed(self):
         while self.check_key_with_control_pressed(_refresh=False) is None:
-            self.update_win()
+            self.update()
         return self.check_key_with_control_pressed()
 
     def check_key_press(self, _refresh=True):
@@ -1646,7 +1644,7 @@ class Window(tkCanvas):
         for item in self.items:
             item.redraw()
         if self.autoflush:
-            self.update_win()
+            self.update()
         return self
 
     # Destroying Functions
