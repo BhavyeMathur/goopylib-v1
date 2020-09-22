@@ -1,7 +1,7 @@
 ![goopylib Logo](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/goopylibLogo-Secondary.png)
 
 Goopylib is a simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern
- GUIs, games, and animations.
+GUIs, games, and animations.
 
 This graphics library is built upon John Zelle's graphics.py package which he made for use with his textbook "Python 
 Programming: An Introduction to Computer Science". Over the past 2 years, I have worked on editing this library to add 
@@ -17,6 +17,10 @@ Goopylib is also compatible with [auto-py-to-exe](https://pypi.org/project/auto-
 This compatibility mainly means that all paths to textures & sounds are automatically converted into the absolute paths 
 which you don't have to worry about! This means that you will be able to convert applications written with goopylib into
 executables with, hopefully, no errors.  
+
+To know more about goopylib, watch the following video:
+
+[![goopylib Introduction Video Thumbnail](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/YouTube/%231%20-%20IntroductionThumbnail.png)](https://www.youtube.com/watch?v=x54SQk2eA08)
 
 If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
 
