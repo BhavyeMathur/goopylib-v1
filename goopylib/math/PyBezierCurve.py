@@ -1,54 +1,84 @@
-from goopylib.Point import Point
 import math
-import numpy as np
-
-BezierMatrices = [np.array([[-1, 1], [1, 0]]), np.array([[1, -2, 1], [-2, 2, 0], [1, 0, 0]]),
-                  np.array([[-1, 3, -3, 1], [3, -6, 3, 0], [-3, 3, 0, 0], [1, 0, 0, 0]]),
-                  np.array([[1, -4, 6, -4, 1], [-4, 12, -12, 4, 0], [6, -12, 6, 0, 0], [-4, 4, 0, 0, 0], [1, 0, 0, 0, 0]])]
 
 # References for this: https://www.youtube.com/watch?v=qhQrRCJ-mVg
 
-def PyBezierCurve(t, control_points):
-    if len(control_points) - 1 > len(BezierMatrices):
-        return PyRawBezierCurve(t, control_points)
-    else:
-        x_matrix = np.array([point[0] for point in control_points])
-        y_matrix = np.array([point[1] for point in control_points])
+def py_bezier_curve(t, control_points):
+    size = len(control_points)
+    if size > 5:
+        sum_x, sum_y = 0, 0
 
-        t_matrix = np.array([t ** (len(control_points) - n - 1) for n in range(len(control_points))])
-        M = BezierMatrices[len(control_points) - 2]
+        size = len(control_points) - 1
+        for i in range(0, size + 1):
+            coeff = py_bernstein_polynomial(i, size, t)
+            sum_y += coeff * control_points[i][1]
+            sum_x += coeff * control_points[i][0]
 
-        return x_matrix.dot(M).dot(t_matrix), y_matrix.dot(M).dot(t_matrix)
+        return sum_x, sum_y
 
-def PyRawBezierCurve(t, control_points):
-    sum_x, sum_y = 0, 0
+    elif size == 2:
+        return ((1 - t) * control_points[0][0]) + (t * control_points[1][0]), \
+               ((1 - t) * control_points[0][1]) + (t * control_points[1][1])
 
-    size = len(control_points) - 1
-    for i in range(0, size + 1):
-        bernstein_polynomial = PyBernsteinPolynomial(i, size, t)
-        sum_y += bernstein_polynomial * control_points[i][1]
-        sum_x += bernstein_polynomial * control_points[i][0]
+    elif size == 3:
+        t2 = t * t
+        t *= 2
 
-    return sum_x, sum_y
+        return ((t2 - t + 1) * control_points[0][0]) + (((-2 * t2) + t) * control_points[1][0]) + \
+               (t2 * control_points[2][0]), \
+               ((t2 - t + 1) * control_points[0][1]) + (((-2 * t2) + t) * control_points[1][1]) + \
+               (t2 * control_points[2][1])
 
+    elif size == 4:
+        t2 = t * t
+        t3 = t2 * t
 
-def PyRationalBezierCurve(t, weights, control_points):
+        t *= 3
+
+        return ((-t3 + (3 * t2) - t + 1) * control_points[0][0]) + \
+               (((3 * t3) - (6 * t2) + t) * control_points[1][0]) + \
+               (((-3 * t3) + (3 * t2)) * control_points[2][0]) + \
+               (t3 * control_points[3][0]), \
+               ((-t3 + (3 * t2) - t + 1) * control_points[0][1]) + \
+               (((3 * t3) - (6 * t2) + t) * control_points[1][1]) + \
+               (((-3 * t3) + (3 * t2)) * control_points[2][1]) + (t3 * control_points[3][1])
+
+    elif size == 5:
+        t2 = t * t
+        t3 = t2 * t
+        t4 = t3 * t
+
+        t *= 4
+
+        return ((t4 - (4 * t3) + (6 * t2) - t + 1) * control_points[0][0]) + \
+               (((-4 * t4) + (12 * t3) - (12 * t2) + t) * control_points[1][0]) + \
+               (((6 * t4) - (12 * t3) + (6 * t2)) * control_points[2][0]) + \
+               (((-4 * t4) + (4 * t3)) * control_points[3][0]) + \
+               (t4 * control_points[4][0]), \
+               ((t4 - (4 * t3) + (6 * t2) - t + 1) * control_points[0][1]) + \
+               (((-4 * t4) + (12 * t3) - (12 * t2) + t) * control_points[1][1]) + \
+               (((6 * t4) - (12 * t3) + (6 * t2)) * control_points[2][1]) + \
+               (((-4 * t4) + (4 * t3)) * control_points[3][1]) + \
+               (t4 * control_points[4][1])
+
+    return 0, 0
+
+def py_rational_bezier_curve(t, weights, control_points):
     sum_x_numerator, sum_y_numerator = 0, 0
     sum_x, sum_y = 0, 0
 
     for i in range(0, len(control_points)):
-        sum_x_numerator += (PyBernsteinPolynomial(i, len(control_points) - 1, t) * control_points[i][0] * weights[i])
-        sum_x += PyBernsteinPolynomial(i, len(control_points) - 1, t) * weights[i]
+        sum_x_numerator += (py_bernstein_polynomial(i, len(control_points) - 1, t) * control_points[i][0] * weights[i])
+        sum_x += py_bernstein_polynomial(i, len(control_points) - 1, t) * weights[i]
 
-        sum_y_numerator += (PyBernsteinPolynomial(i, len(control_points) - 1, t) * control_points[i][1] * weights[i])
-        sum_y += PyBernsteinPolynomial(i, len(control_points) - 1, t) * weights[i]
+        sum_y_numerator += (py_bernstein_polynomial(i, len(control_points) - 1, t) * control_points[i][1] * weights[i])
+        sum_y += py_bernstein_polynomial(i, len(control_points) - 1, t) * weights[i]
 
     return sum_x_numerator / sum_x, sum_y_numerator / sum_y
 
 
-def PyBernsteinPolynomial(i, n, t):
-    return PyCombination(n, i) * (t ** i) * ((1 - t) ** (n - i))
+def py_bernstein_polynomial(i, n, t):
+    return py_combination(n, i) * (t ** i) * ((1 - t) ** (n - i))
 
 
-def PyCombination(n, k):
+def py_combination(n, k):
     return math.factorial(n) / (math.factorial(k) * math.factorial(n - k))

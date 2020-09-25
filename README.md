@@ -116,7 +116,7 @@ There are 5 subpackages in goopylib: objects, math, sound, physics, & applicatio
 To import these, type:
 
 ```python
-from goopylib.math.PyBezierCurve import PyBezierCurve # The other modules are 'Interpolation', & 'BSpline'
+from goopylib.math.PyBezierCurve import py_bezier_curve # The other modules are 'Interpolation', & 'BSpline'
 # or
 from goopylib.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
 ```
@@ -175,27 +175,63 @@ July 2020 - Help with creating rounded polygon corners
 5. Bryan Oakley, https://stackoverflow.com/questions/62740726/tkinter-polygons-width-not-being-set-to-zero-even-though-
 specified/62741739#62741739 - 4th July 2020 - Helped fix bug with Polygons drawing their outlines even though the width
  is 0 
+ 
 6. Atlast435, https://stackoverflow.com/questions/62751626/tkinter-rotated-resizing-cursor - 6th July 2020 - Helped 
 expand the list of supported cursors by refering me to a documentation.
 7. Sinoroc, https://stackoverflow.com/questions/62772377/python-package-does-not-get-created-in-site-packages-folder? -
  7th July 2020 - Helped fix bug with Packaging
 8. Cool Cloud, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped 
 with hiding & showing the Entry cursor
+
 9. Bryan Oakley, https://stackoverflow.com/questions/62809413/hide-text-cursor-in-tkinter-entry - 9th July 2020 - Helped 
 with Unfocusing the Entry widget when the user clicks elsewhere
 10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th 
 July 2020 - Helped with answering a question about smoothing in Tkinter
 
-11. Mihir Raddi, Ved Sanyal, Haaziq Kazi, and Spectral Doy - 12th September - For their valuable feedback on goopylib's logo which developed into what it is currently due to their help!
+11. Mihir Raddi, Ved Sanyal, Haaziq Kazi, and Spectral Doy - 12th September - For their valuable feedback on goopylib's 
+logo which developed into what it is currently due to their help!
+
+12. Antti Haapala, 
+https://stackoverflow.com/questions/63980828/error-when-compiling-cpython-c2440-function-cannot-convert-from-pyobject-t 
+- 21st September 2020 - Helped fix error with compiling CPython BezierCurve module
+
+13. lcarus3, 
+https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot-convert-from-pylongobject-to-pyobject -
+ 21st September 2020 - Helped fix bug with compiling CPython BezierCurve module code
 
 ## Version History
-
-Unfortunately, online school (Grade 9!!!) has started and so updates won't be coming out as frequently as before, sorry!
 
 ### v1.1
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on a Sound Engine for goopylib which I want to be part of 1.1
+
+#### 1.1.94-alpha10 23rd September 2020
+
+* If no parameter is supplied to a GraphicObject's `draw()` function, it checks if it has been previously drawn and if 
+so, draws to the same window
+
+* Fixed bug with the Rectangle using its `width` variable (defines how wide the rectangle is) instead of `outline_width`
+ (defines the thickness of the outline) to draw the outline
+ 
+* The Window & AnimatedImages objects do not use the Point class anymore opting instead for a list in form `[x, y]`
+* Window attributes related to size & position now have to `ints` instead of the previously acceptable `int` or `float`
+* The Window's `max_width` & `max_height` variables are `None` by default which means the user can choose to not define 
+a max size
+
+* Added a check to ensure that the Window's `min_height` and `min_width` are greater than 0 and changed the check from
+ `... not > 0` to `... < 1`
+ 
+ * Window objects no longer use styles
+ * Fixed bug with wrongly spelt `filter_more_enhance_edge()` as `more_enhance_edge()` inside the AnimatedImage class
+
+* Added a C implementation of the `PyRawBezierCurve()` function to make it run much faster.  
+* Added optimizations for the `PyBezierCurve()` function for curves with a degree less than 6. 
+* `numpy` is no longer a goopylib dependency
+
+* Renamed the Python implementations of the Bezier Curve functions to follow the Python Convention
+* Removed the `py_raw_bezier_curve()` & `raw_bezier_curve()` functions as they were only meant to be used internally
+ and moved their code directly into where they were being called
 
 #### 1.1.80-alpha9 18th-22nd September 2020
 

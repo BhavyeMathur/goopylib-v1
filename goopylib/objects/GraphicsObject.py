@@ -190,9 +190,12 @@ class GraphicsObject:
         is already visible."""
 
         if graphwin is None:
-            if len(Window.instances) == 0:
-                raise GraphicsError("\n\nGraphicsError: no open graphwin to draw object to")
-            graphwin = Window.instances[-1]
+            if self.graphwin is None:
+                if len(Window.instances) == 0:
+                    raise GraphicsError("\n\nGraphicsError: no open graphwin to draw object to")
+                graphwin = Window.instances[-1]
+            else:
+                graphwin = self.graphwin
 
         else:
             if not isinstance(graphwin, Window):
@@ -806,7 +809,7 @@ class GraphicsObject:
             else:
                 new_pos = (self.bounds.anchor[0] + dx, self.bounds.anchor[1] + dy)
             if self.movement_bounds is not None:
-                if not self.movement_bounds.is_clicked(Point(*new_pos)):
+                if not self.movement_bounds.is_clicked(new_pos):
                     if self.allow_looping[0]:
                         width = self.movement_bounds.get_width()
                         if new_pos[0] <= self.movement_bounds.anchor[0] - width/2:
@@ -833,7 +836,7 @@ class GraphicsObject:
                     return self
                 for obstacle in self.obstacles:
 
-                    if obstacle.is_clicked(Point(*new_pos)):
+                    if obstacle.is_clicked(new_pos):
                         if self.callbacks["collision"] is not None:
                             self.callbacks["collision"]()
                         self.last_obstacle_checked_pos = new_pos
@@ -1071,7 +1074,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": Point(dx, dy), "EasingX": easing_x, "EasingY": easing_y}
+                          "Change": [dx, dy], "EasingX": easing_x, "EasingY": easing_y}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1113,7 +1116,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                              "Change": Point(dx, 0), "EasingX": easing, "EasingY": easing}
+                              "Change": [dx, 0], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1154,7 +1157,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": Point(0, dy), "EasingX": easing, "EasingY": easing}
+                          "Change": [0, dy], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1205,7 +1208,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": Point(x - initial_pos[0], y - initial_pos[1]), "EasingX": easing_x,
+                          "Change": [x - initial_pos[0], y - initial_pos[1]], "EasingX": easing_x,
                           "EasingY": easing_y}
 
         if not allow_duplicate:
@@ -1246,7 +1249,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": Point(x - initial_pos[0], 0), "EasingX": easing, "EasingY": easing}
+                          "Change": [x - initial_pos[0], 0], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1286,7 +1289,7 @@ class GraphicsObject:
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": Point(0, y - initial_pos[1]), "EasingX": easing, "EasingY": easing}
+                          "Change": [0, y - initial_pos[1]], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):

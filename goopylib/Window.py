@@ -12,12 +12,11 @@ from goopylib.util import GraphicsError, GraphicsWarning, resource_path
 from goopylib.constants import _root, RELIEF, CURSORS
 from goopylib.math.Easing import *
 
-from goopylib.Point import Point
 from goopylib._internal_classes import Transform
 
 
 class Window(tkCanvas):
-    """A GraphWin is a toplevel window for displaying graphics."""
+    """A Window is a toplevel window for displaying graphics."""
     instances = []  # a list of all instances of this class
 
     # Most of the parameters are self explanatory, but for those that might not be:
@@ -25,33 +24,33 @@ class Window(tkCanvas):
     # Resizable Height & Width: Whether you can resize the window by pulling its sides
     # Autoflush: The window will update automatically if True
     # Style: The colour styles have attributes called 'background-colour' which the window will use if bk_colour=None
-    def __init__(self, title="Graphics Window", width=800, height=600, min_width=0, min_height=0, max_width=2000,
-                 max_height=2000, x_pos=0, y_pos=0, resizable_width=False, resizable_height=False, bounds=None,
-                 style=None, bk_colour=None, icon=None, autoflush=False, cursor="arrow", border_relief="flat",
+    def __init__(self, title="New Goopylib Window", width=800, height=600, min_width=1, min_height=1, max_width=None,
+                 max_height=None, x_pos=0, y_pos=0, resizable_width=False, resizable_height=False, bounds=None,
+                 bk_colour=None, icon=None, autoflush=False, cursor="arrow", border_relief="flat",
                  border_width=0, remove_title_bar=False):
 
-        # Making sure all the arguments are valid and raising erros if not
+        # Making sure all the arguments are valid and raising errors if not
 
         if not isinstance(title, str):
             raise GraphicsError(f"\n\nThe window's title must be a string, not {title}")
 
-        if not (isinstance(width, int) or isinstance(width, float)):
-            raise GraphicsError(f"\n\nThe window's width must be a number (integer or float), not {width}")
-        if not width > 0:
+        if not isinstance(width, int):
+            raise GraphicsError(f"\n\nThe window's width must be an integer, not {width}")
+        if width < 1:
             raise GraphicsError(f"\n\nThe window's width must be greater than 0, not {width}")
-        if not (isinstance(height, int) or isinstance(height, float)):
-            raise GraphicsError(f"\n\nThe window's height must be a number (integer or float), not {height}")
-        if not height > 0:
+        if not isinstance(height, int):
+            raise GraphicsError(f"\n\nThe window's height must be an integer, not {height}")
+        if height < 1:
             raise GraphicsError(f"\n\nThe window's height must be greater than 0, not {height}")
 
-        if not (isinstance(x_pos, int) or isinstance(x_pos, float)):
-            raise GraphicsError(f"\n\nThe window x-position (x_pos) must be a number (integer or a float), not {x_pos}")
-        if not (isinstance(y_pos, int) or isinstance(y_pos, float)):
-            raise GraphicsError(f"\n\nThe window y-position (y_pos) must be a number (integer or float), not {y_pos}")
+        if not isinstance(x_pos, int):
+            raise GraphicsError(f"\n\nThe window x-position (x_pos) must be an integer, not {x_pos}")
+        if not isinstance(y_pos, int):
+            raise GraphicsError(f"\n\nThe window y-position (y_pos) must be an integer, not {y_pos}")
 
-        if not (isinstance(bk_colour, Colour) or isinstance(bk_colour, str) or bk_colour is None):
-            raise GraphicsError("The window's background colour (bk_colour) must be a colour or string referencing a"
-                                f"style colour, not {bk_colour}")
+        if not (isinstance(bk_colour, Colour) or bk_colour is None):
+            raise GraphicsError("The window's background colour (bk_colour) must be None or a Colour Objector, "
+                                f"not {bk_colour}")
         if icon is not None:
             if not isinstance(icon, str):
                 raise GraphicsError(f"The window icon must be a string (path to .ico texture) or None, not {icon}")
@@ -59,33 +58,46 @@ class Window(tkCanvas):
                 raise GraphicsError("The icon file must be a .ico type. "
                                     "You can use an online converter to convert your file")
 
-        if not isinstance(autoflush, bool):
-            raise GraphicsError(f"\n\nAuto-flush must be a boolean, not {autoflush}")
+        if not isinstance(min_width, int):
+            raise GraphicsError(f"\n\nThe window's minimum width (min_width) must be an integer, not {min_width}")
+        if min_width < 1:
+            raise GraphicsError(f"\n\nThe window's minimum width must be greater than 0, not {min_width}")
 
-        if not isinstance(resizable_width, bool):
-            raise GraphicsError(f"\n\nresizable_width must be a boolean, not {resizable_width}")
-        if not isinstance(resizable_height, bool):
-            raise GraphicsError(f"\n\nresizable_height must be a boolean, not {resizable_height}")
-        if not (isinstance(min_width, int) or isinstance(min_width, float)):
-            raise GraphicsError(f"\n\nThe window's minimum width (min_width) must be a number (integer or float), "
-                                f"not {min_width}")
-        if not (isinstance(min_height, int) or isinstance(min_height, float)):
-            raise GraphicsError(f"\n\nThe window's minimum height (min_height) must be a number (integer or float), "
-                                f"not {min_height}")
+        if not isinstance(min_height, int):
+            raise GraphicsError(f"\n\nThe window's minimum height (min_height) must be an integer, not {min_height}")
+        if min_height < 1:
+            raise GraphicsError(f"\n\nThe window's minimum height must be greater than 0, not {min_height}")
 
-        if not (isinstance(max_width, int) or isinstance(max_width, float)):
-            raise GraphicsError(f"\n\nThe window's maximum width (max_width) must be a number (integer or float), "
-                                f"not {max_width}")
-        if not (isinstance(max_height, int) or isinstance(max_height, float)):
-            raise GraphicsError(f"\n\nThe window's maximum height (max_height) must be a number (integer or float), "
-                                f"not {max_height}")
+        if max_width is not None:
+            if isinstance(max_width, int):
+                if min_width > max_width:
+                    raise GraphicsError(
+                        f"Window's minimum width ({min_width}) is larger than its maximum width ({max_width})")
 
-        if min_width > max_width:
-            raise GraphicsError(f"Window's minimum width ({min_width}) is larger than its maximum width ({max_width})")
+                if width > max_width:
+                    warning = f"\n\nWindow width ({width}) is greater than window's maximum width ({max_width}). " \
+                              f"Window maximum width has been set to {width}."
+                    max_width = width
+                    warnings.warn(warning, GraphicsWarning)
 
-        if min_height > max_height:
-            raise GraphicsError(f"Window's minimum height ({min_height}) is larger than its maximum height "
-                                f"({max_height})'")
+            else:
+                raise GraphicsError(f"\n\nThe window's maximum width (max_width) must be an integer, not {max_width}")
+
+        if max_height is not None:
+            if isinstance(max_height, int):
+                if min_height > max_height:
+                    raise GraphicsError(f"Window's minimum height ({min_height}) is larger than its maximum height "
+                                        f"({max_height})'")
+
+                if height > max_height:
+                    warning = f"\n\nWindow height ({height}) is greater than window's maximum height ({max_height}). " \
+                              f"Window maximum height has been set to {height}."
+                    max_height = height
+                    warnings.warn(warning, GraphicsWarning)
+
+            else:
+                raise GraphicsError("\n\nThe window's maximum height (max_height) must be an integer, "
+                                    f"not {max_height}")
 
         if not isinstance(cursor, str):
             raise GraphicsError(f"\n\nThe cursor must be a string, not {cursor}")
@@ -102,13 +114,6 @@ class Window(tkCanvas):
         if bounds is not None and not isinstance(bounds, GraphicsObject):
             raise GraphicsError(f"\n\nThe window's bounds must be a GraphicsObject, not {bounds}")
 
-        # Assigning the default style if none is provided
-        if style is None:
-            style = global_style
-        elif style not in STYLES.keys():  # If the style provided is not valid
-            raise GraphicsError(f"\n\nThe style you have specified ({style}) is not valid. "
-                                f"Must be one of {list(STYLES.keys())}")
-
         # Making sure that the parameters provided for the dimensions of the window don't contradict with each other.
         # If they do, this raises a warning and sets the dimensions to the correct value
 
@@ -118,22 +123,10 @@ class Window(tkCanvas):
             min_width = width
             warnings.warn(warning, GraphicsWarning)
 
-        elif width > max_width:
-            warning = f"\n\nWindow width ({width}) is greater than window's maximum width ({max_width}). " \
-                      f"Window maximum width has been set to {width}."
-            max_width = width
-            warnings.warn(warning, GraphicsWarning)
-
         if height < min_height:
             warning = f"\n\nWindow height ({height}) is less than window's minimum height ({min_height}). " \
                       f"Window minimum height has been set to {height}."
             min_height = height
-            warnings.warn(warning, GraphicsWarning)
-
-        elif height > max_height:
-            warning = f"\n\nWindow height ({height}) is greater than window's maximum height ({max_height}). " \
-                      f"Window maximum height has been set to {height}."
-            max_height = height
             warnings.warn(warning, GraphicsWarning)
 
         master = tkToplevel(_root)  # Actually creating the window
@@ -147,17 +140,7 @@ class Window(tkCanvas):
         if isinstance(bk_colour, Colour):
             self.bk_colour = bk_colour
         else:
-            if bk_colour in STYLES[style].keys():
-                self.bk_colour = STYLES[style][bk_colour]
-            else:
-                if "background" in STYLES[style].keys():
-                    self.bk_colour = STYLES[style]["background"]
-                else:
-                    self.bk_colour = STYLES["default"]["background"]
-                if bk_colour is not None:
-                    warnings.warn(f"The background colour specified ({bk_colour}) is not in the graphwin's style. "
-                                  f"The background colour was set to the default colour ({self.bk_colour})")
-
+            self.bk_colour = STYLES["default"]["background"]
 
         # Setting most of the attributes of the window
         # We set the width & height of the window to be the screen size to get rid of a bug with resizing,
@@ -174,17 +157,17 @@ class Window(tkCanvas):
         self.master.geometry('%dx%d+%d+%d' % (width, height, x_pos, y_pos))  # Setting the X & Y position of the window
         self.height = height
         self.width = width
-        self.center = Point(width / 2, height / 2)
+        self.center = [width / 2, height / 2]
 
         self.x_pos = x_pos
         self.y_pos = y_pos
 
-        self.min_width = int(min_width)
-        self.min_height = int(min_height)
+        self.min_width = min_width
+        self.min_height = min_height
         self.master.minsize(self.min_width, self.min_height)  # Minimum size of the window
 
-        self.max_width = int(max_width)
-        self.max_height = int(max_height)
+        self.max_width = max_width
+        self.max_height = max_height
         self.master.maxsize(self.max_width, self.max_height)  # Maximum size of the window
 
         self.master.resizable(resizable_width, resizable_height)  # Is the window resizable?
@@ -305,8 +288,6 @@ class Window(tkCanvas):
         self.is_gliding = False  # Is the window gliding?
         self.glide_queue = []  # The next locations for the window to glide to
 
-        self.style = style
-
         master.lift()  # No idea what this does, does anyone know?
         Window.instances.append(self)
 
@@ -377,7 +358,7 @@ class Window(tkCanvas):
             self.last_mouse_event = self.trans.world(e.x, e.y)
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_double_left_click(self)
 
@@ -387,7 +368,7 @@ class Window(tkCanvas):
             self.last_mouse_event = self.trans.world(e.x, e.y)
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_double_middle_click(self)
 
@@ -397,7 +378,7 @@ class Window(tkCanvas):
             self.last_mouse_event = self.trans.world(e.x, e.y)
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_double_right_click(self)
 
@@ -409,7 +390,7 @@ class Window(tkCanvas):
             self.last_mouse_event = self.trans.world(e.x, e.y)
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_triple_left_click(self)
 
@@ -419,7 +400,7 @@ class Window(tkCanvas):
             self.last_mouse_event = self.trans.world(e.x, e.y)
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_triple_middle_click(self)
 
@@ -429,7 +410,7 @@ class Window(tkCanvas):
             self.last_mouse_event = self.trans.world(e.x, e.y)
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_triple_right_click(self)
 
@@ -443,7 +424,7 @@ class Window(tkCanvas):
             self.total_left_mouse_clicks += 1
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_left_click(self)
 
@@ -455,7 +436,7 @@ class Window(tkCanvas):
             self.total_middle_mouse_clicks += 1
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_middle_click(self)
 
@@ -467,7 +448,7 @@ class Window(tkCanvas):
             self.total_right_mouse_clicks += 1
 
             if self._mouse_callback:
-                self._mouse_callback(Point(e.x, e.y))
+                self._mouse_callback([e.x, e.y])
 
             GraphicsObject.on_right_click(self)
 
@@ -497,7 +478,7 @@ class Window(tkCanvas):
             self.last_mouse_event = self.mouse_left_press
             self.left_mouse_down = True
 
-            if self.bounds is None or self.bounds.is_clicked(Point(e.x, e.y)):
+            if self.bounds is None or self.bounds.is_clicked([e.x, e.y]):
                 self.is_dragging = True
 
                 self.last_drag_x = e.x
@@ -620,8 +601,8 @@ class Window(tkCanvas):
         self.glide_y(time=time, dy=dy, easing=easing_y, _internal_call=True)
 
         self.glide_queue.append({"Time": time, "Start": timetime(),
-                                 "Update": timetime(), "Initial": Point(self.x_pos, self.y_pos),
-                                 "Dist": Point(dx, dy), "EasingX": easing_x, "EasingY": easing_y})
+                                 "Update": timetime(), "Initial": [self.x_pos, self.y_pos],
+                                 "Dist": [dx, dy], "EasingX": easing_x, "EasingY": easing_y})
 
         return self
 
@@ -639,14 +620,14 @@ class Window(tkCanvas):
         self.is_gliding = True
         if not _internal_call:
             start = timetime()
-            initial_pos = Point(self.x_pos, self.y_pos)
+            initial_pos = [self.x_pos, self.y_pos]
 
             for glide in self.glide_queue:
                 start += glide["Time"]
                 initial_pos = glide["Initial"] + glide["Dist"]
 
             self.glide_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
-                                     "Dist": Point(dx, 0), "EasingX": easing, "EasingY": easing})
+                                     "Dist": [dx, 0], "EasingX": easing, "EasingY": easing})
 
         return self
 
@@ -664,7 +645,7 @@ class Window(tkCanvas):
         self.is_gliding = True
         if not _internal_call:
             start = timetime()
-            initial_pos = Point(self.x_pos, self.y_pos)
+            initial_pos = [self.x_pos, self.y_pos]
 
             for glide in self.glide_queue:
                 start += glide["Time"]
@@ -672,7 +653,7 @@ class Window(tkCanvas):
 
             self.glide_queue.append({"Time": time, "Start": start,
                                      "Update": timetime(), "Initial": initial_pos,
-                                     "Dist": Point(0, dy), "EasingX": easing, "EasingY": easing})
+                                     "Dist": [0, dy], "EasingX": easing, "EasingY": easing})
 
         return self
 
@@ -686,13 +667,13 @@ class Window(tkCanvas):
         self.glide_y(time=time, dy=y - self.y_pos, easing=easing_y, _internal_call=True)
 
         start = timetime()
-        initial_pos = Point(self.x_pos, self.y_pos)
+        initial_pos = [self.x_pos, self.y_pos]
         for glide in self.glide_queue:
             start += glide["Time"]
             initial_pos = glide["Initial"] + glide["Dist"]
 
         self.glide_queue.append({"Time": time, "Start": start, "Update": timetime(), "Initial": initial_pos,
-                                 "Dist": Point(x, y) - initial_pos, "EasingX": easing_x, "EasingY": easing_y})
+                                 "Dist": [x - initial_pos[0], y - initial_pos[1]], "EasingX": easing_x, "EasingY": easing_y})
 
         return self
 
@@ -1057,9 +1038,7 @@ class Window(tkCanvas):
                 (isinstance(x2, int) or isinstance(x2, float)) and (isinstance(y2, int) or isinstance(y2, float))):
             raise GraphicsError("\n\nCoordinate Arguments must be numbers (integers or floats)")
         self.trans = Transform(self.get_width(), self.get_height(), x1, y2, x2, y1)
-        self.center = Point(abs((x2 - x1) / 2), abs((y2 - y1) / 2))
-        if self.autoflush:
-            self.redraw()
+        self.center = [abs((x2 - x1) / 2), abs((y2 - y1) / 2)]
         return self
 
     # OTHER WINDOW FUNCTIONS
@@ -1358,7 +1337,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_left_click = None
-        return Point(x, y)
+        return [x, y]
 
     def check_middle_mouse_click(self, _refresh=True):
         if self.mouse_middle_click is None or self.closed:
@@ -1368,7 +1347,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_middle_click = None
-        return Point(x, y)
+        return [x, y]
 
     def check_right_mouse_click(self, _refresh=True):
         if self.mouse_right_click is None or self.closed:
@@ -1378,7 +1357,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_right_click = None
-        return Point(x, y)
+        return [x, y]
 
     # Double Mouse Clicks
 
@@ -1390,7 +1369,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_double_left_click = None
-        return Point(x, y)
+        return [x, y]
 
     def check_double_middle_mouse_click(self, _refresh=True):
         if self.mouse_double_middle_click is None or self.closed:
@@ -1400,7 +1379,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_double_middle_click = None
-        return Point(x, y)
+        return [x, y]
 
     def check_double_right_mouse_click(self, _refresh=True):
         if self.mouse_double_right_click is None or self.closed:
@@ -1410,7 +1389,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_double_right_click = None
-        return Point(x, y)
+        return [x, y]
 
     # Triple Mouse Clicks
 
@@ -1422,7 +1401,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_triple_left_click = None
-        return Point(x, y)
+        return [x, y]
 
     def check_triple_middle_mouse_click(self, _refresh=True):
         if self.mouse_triple_middle_click is None or self.closed:
@@ -1432,7 +1411,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_triple_middle_click = None
-        return Point(x, y)
+        return [x, y]
 
     def check_triple_right_mouse_click(self, _refresh=True):
         if self.mouse_triple_right_click is None or self.closed:
@@ -1442,7 +1421,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_triple_right_click = None
-        return Point(x, y)
+        return [x, y]
 
     # Mouse Press
 
@@ -1454,7 +1433,7 @@ class Window(tkCanvas):
 
         if _refresh:
             self.mouse_left_press = None
-        return Point(x, y)
+        return [x, y]
 
     def check_middle_mouse_press(self, _refresh=True):
         if self.mouse_left_press is None or self.closed:
@@ -1465,7 +1444,7 @@ class Window(tkCanvas):
         if _refresh:
             self.mouse_middle_press = None
 
-        return Point(x, y)
+        return [x, y]
 
     def check_right_mouse_press(self, _refresh=True):
         if self.mouse_left_press is None or self.closed:
@@ -1476,7 +1455,7 @@ class Window(tkCanvas):
         if _refresh:
             self.mouse_right_press = None
 
-        return Point(x, y)
+        return [x, y]
 
     # OTHER MOUSE FUNCTIONS
     # -------------------------------------------------------------------------
@@ -1493,7 +1472,7 @@ class Window(tkCanvas):
 
     def get_last_mouse(self):
         if self.last_mouse_event is not None:
-            return Point(self.last_mouse_event[0], self.last_mouse_event[1])
+            return [self.last_mouse_event[0], self.last_mouse_event[1]]
         else:
             return
 
@@ -1504,14 +1483,14 @@ class Window(tkCanvas):
             if _refresh:
                 self.mouse_pos = None
 
-            return Point(x, y)
+            return [x, y]
         else:
             return
 
     def get_mouse_position(self):
         if self.mouse_pos is not None:
             x, y = self.mouse_pos
-            return Point(x, y)
+            return [x, y]
         else:
             return
 
@@ -1696,8 +1675,6 @@ class Window(tkCanvas):
         return self
     
     def destroy_all_radiobuttons(self):
-        from goopylib.objects.Button import Button
-
         for instance in GraphicsObject.radiobutton_instances.copy():
             GraphicsObject.objects.remove(instance)
             instance.destroy()

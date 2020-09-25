@@ -56,8 +56,8 @@ class AnimatedImage(GraphicsObject):
             GraphicsObject.animated_image_instances.add(self)
 
     def _move(self, dx, dy):
-        self.anchor.x += dx
-        self.anchor.y += dy
+        self.anchor[0] += dx
+        self.anchor[1] += dy
 
     def _rotate(self, dr, sampling=None, center=None):
         for img in self.imgs:
@@ -460,7 +460,7 @@ class AnimatedImage(GraphicsObject):
 
     def filter_more_enhance_edge(self):
         for img in self.imgs:
-            img.more_enhance_edge()
+            img.filter_more_enhance_edge()
         return self
 
     # -------------------------------------------------------------------------

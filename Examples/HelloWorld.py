@@ -1,6 +1,6 @@
 from goopylib.imports import *
 
-window = Window(title="Hello World!", width=500, height=500, bk_colour=GREY)  # Creating the window
+window = Window(title="Hello World!", width=500, height=500, bk_colour=DARKEST_GREY)  # Creating the window
 
 Rectangle([0, 220], [500, 280], fill=DARK_GREY, outline_width=0).draw()  # Drawing a rectangle in the back
 

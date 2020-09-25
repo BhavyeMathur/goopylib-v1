@@ -97,9 +97,9 @@ class Rectangle(gpBBox.BBox):
                                      f"GraphicsObject or tag referencing a GraphicsObject, not {top_bounds}")
 
     def _draw(self, canvas, options):
-        if self.is_rounded:
+        if self.is_rounded:  # The rectangle is rounded, so we draw a polygon
             points = [self.p1[0], self.p1[1], self.p1[0], self.p2[1], self.p2[0], self.p2[1], self.p2[0], self.p1[1]]
-            for point in range(len(points[::2])):
+            for point in range(len(points) - 2):
                 points[point * 2], points[point * 2 + 1] = canvas.to_screen(points[point * 2], points[point * 2 + 1])
 
             # Code modified from Francisco Gomes, https://stackoverflow.com/users/9139005/francisco-gomes
@@ -152,8 +152,12 @@ class Rectangle(gpBBox.BBox):
             return canvas.create_polygon(points, width=self.outline_width, fill=self.fill, outline=self.outline,
                                          smooth=self.is_rounded)
 
-        return canvas.create_rectangle(self.p1[0], self.p1[1], self.p2[0], self.p2[1], fill=self.fill,
-                                       outline=self.outline, width=self.width)
+        else:  # The rectangle is not rounded, so we draw a rectangle to the window
+            x1, y1 = canvas.to_screen(self.p1[0], self.p1[1])  # Transforms the 2 points to match with the scaling of
+            x2, y2 = canvas.to_screen(self.p2[0], self.p2[1])  # the Window
+
+            return canvas.create_rectangle(x1, y1, x2, y2, fill=self.fill,  # actually creates the rectangle
+                                           outline=self.outline, width=self.outline_width)
 
     def clone(self, new_tag=None):
         other = Rectangle(self.p1, self.p2, fill=self.fill, outline=self.outline, outline_width=self.outline_width,

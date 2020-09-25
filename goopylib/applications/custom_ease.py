@@ -118,7 +118,7 @@ def create_custom_ease():
     curve = []
     for t in range(int(10 ** resolution)):
         t /= 10 ** resolution
-        curve.append(PyBezierCurve(t, points))
+        curve.append(py_bezier_curve(t, points))
 
     circle_objects = []
     for i in range(int(10 ** resolution)):
@@ -133,7 +133,7 @@ def create_custom_ease():
             points.append(obj.anchor)
 
         if interpolation_button.get_state() == 0:
-            return 1 - (PyBezierCurve(time, points).y - 118) / 555
+            return 1 - (py_bezier_curve(time, points).y - 118) / 555
         else:
             return 1 - (LinearInterpolation(time, points).y - 118) / 555
 
@@ -149,7 +149,7 @@ def create_custom_ease():
             t /= 10 ** resolution
 
             if interpolation_button.get_state() == 0:
-                curve.append(PyBezierCurve(t, points))
+                curve.append(py_bezier_curve(t, points))
             else:
                 curve.append(LinearInterpolation(t, points))
 
