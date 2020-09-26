@@ -5,7 +5,7 @@
 
 
 struct DoubleTuple2 {
-    double x, y;
+    long double x, y;
 };
 
 unsigned long long factorial(unsigned long long number){
@@ -21,32 +21,28 @@ unsigned long long combination(unsigned long long n, unsigned long long k){
 double bernstein_polynomial(unsigned long long i, unsigned long long n, double t){
     return combination(n, i) * pow(t, i) * pow(1 - t, n - i);}
 
-
 struct DoubleTuple2 bezier_curve(long double t, unsigned long long size, long long control_points[]){
+
+    struct DoubleTuple2 point;
 
     if (size > 5)
         double sum_x = 0, sum_y = 0;
-        int i = 0;
+        unsigned long long degree = size - 1, index = 0;
 
-        unsigned long long degree = size, index = 0;
         size *= 2;
 
-        while (i < size) {
-            double coeff = bernstein_polynomial(index, degree - 1, t);
+        for (unsigned long long i = 0; i < size; i += 2) {
+            double coeff = bernstein_polynomial(index, degree, t);
             sum_x += coeff * control_points[i];
             sum_y += coeff * control_points[i + 1];
 
-            i += 2;
             index++;
         }
 
-        struct DoubleTuple2 point;
         point.x = sum_x;
         point.y = sum_y;
 
         return point;
-
-    struct DoubleTuple2 point;
 
     double t2 = 0, t3 = 0, t4 = 0;
 
@@ -113,6 +109,32 @@ struct DoubleTuple2 bezier_curve(long double t, unsigned long long size, long lo
     return point;
 }
 
+struct DoubleTuple2 rational_bezier_curve(long double t, unsigned long long size, long long control_points[],
+long double weights[]) {
+
+    struct DoubleTuple2 point;
+
+    long double sum_x_denominator = 0, sum_y_denominator = 0, sum_x_numerator = 0, sum_y_numerator = 0;
+    unsigned long long degree = size - 1, index = 0;
+
+    size *= 2;
+
+    for (unsigned long long i = 0; i < size; i += 2) {
+        long double coeff = bernstein_polynomial(index, degree, t) * weights[index];
+        sum_x_numerator += coeff * control_points[i];
+        sum_y_numerator += coeff * control_points[i + 1];
+
+        sum_x_denominator += coeff;
+        sum_y_denominator += coeff;
+
+        index++;
+    }
+
+    point.x = sum_x_numerator / sum_x_denominator;
+    point.y = sum_y_numerator / sum_y_denominator;
+
+    return point;
+}
 
 static PyObject* BezierCurve_factorial(PyObject *self, PyObject *args){
     unsigned long long n;
@@ -140,45 +162,6 @@ static PyObject* BezierCurve_bernstein_polynomial(PyObject* self, PyObject* args
         return NULL;
 
     return Py_BuildValue("d", bernstein_polynomial(i, n, t));
-}
-
-static PyObject* BezierCurve_raw_bezier_curve(PyObject* self, PyObject* args){
-    unsigned long long size;
-    double t;
-    PyObject *py_control_points, *temp1, *x, *y;
-
-    if (!PyArg_ParseTuple(args, "dO", &t, &py_control_points))
-        return NULL;
-
-    size = PyLong_AsUnsignedLongLong(PyLong_FromSsize_t(PyList_GET_SIZE(py_control_points)));
-
-    long long *control_points = (long long*)malloc(size * sizeof(long long) * 2);
-    unsigned long long index = 0;
-
-    for (unsigned long long i = 0; i < size; i++){
-
-        temp1 = PyList_GetItem(py_control_points, i);
-
-        if (temp1 == NULL)
-            return NULL;
-
-        x = PyList_GetItem(temp1, 0);
-        y = PyList_GetItem(temp1, 1);
-
-        if (PyNumber_Check(x) != 1 || PyNumber_Check(y) != 1){
-            PyErr_SetString(PyExc_TypeError, "Control Points Argument is Non-Numeric");
-            return NULL;}
-
-        control_points[index] = PyLong_AsLongLong(x);
-        control_points[index + 1] = PyLong_AsLongLong(y);
-        index += 2;
-
-        if (PyErr_Occurred())
-            return NULL;
-    }
-
-    struct DoubleTuple2 point = raw_bezier_curve(t, size, control_points);
-    return Py_BuildValue("[d, d]", point.x, point.y);
 }
 
 static PyObject* BezierCurve_bezier_curve(PyObject* self, PyObject* args) {
@@ -220,9 +203,45 @@ static PyObject* BezierCurve_bezier_curve(PyObject* self, PyObject* args) {
     return Py_BuildValue("[d, d]", point.x, point.y);
 }
 
+static PyObject* BezierCurve_rational_bezier_curve(PyObject* self, PyObject* args) {
+    unsigned long long size;
+    double t;
+    PyObject *py_control_points, *py_weights, *temp1, *x, *y, *temp2;
+
+    if (!PyArg_ParseTuple(args, "dOO", &t, &py_control_points, &py_weights))
+        return NULL;
+
+    size = PyLong_AsUnsignedLongLong(PyLong_FromSsize_t(PyList_GET_SIZE(py_control_points)));
+
+    long long *control_points = (long long*)malloc(size * sizeof(long long) * 2);
+    long double *weights = (double*)malloc(size * sizeof(long double));
+    unsigned long long index = 0;
+
+    for (unsigned long long i = 0; i < size; i++){
+
+        temp1 = PyList_GetItem(py_control_points, i);
+        temp2 = PyList_GetItem(py_weights, i);
+
+        x = PyList_GetItem(temp1, 0);
+        y = PyList_GetItem(temp1, 1);
+
+        weights[i] = PyFloat_AsDouble(temp2);
+
+        control_points[index] = PyLong_AsLongLong(x);
+        control_points[index + 1] = PyLong_AsLongLong(y);
+        index += 2;
+
+        if (PyErr_Occurred())
+            return NULL;
+    }
+
+    struct DoubleTuple2 point = rational_bezier_curve(t, size, control_points, weights);
+    return Py_BuildValue("[d, d]", point.x, point.y);
+}
 
 
-static PyMethodDef BezierCurve_funcs[] = {
+
+static PyMethodDef CBezierCurve_funcs[] = {
     {"factorial", (PyCFunction)BezierCurve_factorial, METH_VARARGS, "factorial(x): calculates factorial of x"},
     {"combination", (PyCFunction)BezierCurve_combination, METH_VARARGS, "combination(n, k): calculates nCk"},
     {"bernstein_polynomial", (PyCFunction)BezierCurve_bernstein_polynomial, METH_VARARGS,
@@ -231,13 +250,16 @@ static PyMethodDef BezierCurve_funcs[] = {
     {"bezier_curve", (PyCFunction)BezierCurve_bezier_curve, METH_VARARGS,
     "bezier_curve(t, control_points): calculates the bezier curve at point t for control_points"},
 
+    {"rational_bezier_curve", (PyCFunction)BezierCurve_rational_bezier_curve, METH_VARARGS,
+    "rational_bezier_curve(t, control_points, weights): calculates the rational bezier curve at point t for control_points & weights"},
+
     {NULL, NULL, 0, NULL}};
 
-static struct PyModuleDef BezierCurveModule = {
+static struct PyModuleDef CBezierCurveModule = {
     PyModuleDef_HEAD_INIT,
-    "BezierCurveModule", "Functions to Calculate Bezier Curves.",
-    -1, BezierCurve_funcs};
+    "CBezierCurveModule", "Functions to Calculate Bezier Curves.",
+    -1, CBezierCurve_funcs};
 
-PyMODINIT_FUNC PyInit_BezierCurve(void){
-    return PyModule_Create(&BezierCurveModule);
+PyMODINIT_FUNC PyInit_CBezierCurve(void){
+    return PyModule_Create(&CBezierCurveModule);
 }

@@ -1,23 +1,31 @@
 from distutils.core import setup, Extension
 import os
 
-module = Extension("BezierCurve", sources=["BezierCurve.c"])
+def setup_bezier_curve():
+    name = "CBezierCurve"
+    setup(name=name, ext_modules=[Extension(name, sources=["BezierCurve.c"])])
 
-setup(name="BezierCurve", ext_modules=[module])
+    try:
+        os.remove(f"/goopylib/math/{name}.pyd")
+        os.remove(f"C:/Users/Bhavye Mathur/AppData/Local/Programs/Python/Python38/Lib/site-packages/{name}-0.0.0-py3.8.egg-info")
+    except FileNotFoundError:
+        pass
 
-print("Moving File")
+    os.rename(
+        f"C:/Users/Bhavye Mathur/AppData/Local/Programs/Python/Python38/Lib/site-packages/{name}.cp38-win_amd64.pyd",
+        f"{name}.pyd")
 
-file = 0
-try:
-    os.remove(r"C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\math\BezierCurve.pyd")
-    file += 1
-    os.remove(r"C:\Users\Bhavye Mathur\AppData\Local\Programs\Python\Python38\Lib\site-packages\BezierCurve-0.0.0-py3.8.egg-info")
-    file += 1
-    os.remove(r"C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\math\build")
-except FileNotFoundError:
-    print(f"File {file} not Found")
-except PermissionError:
-    print(f"Permission to remove file {file} denied")
+def setup_easing():
+    setup(name="Easing", ext_modules=[Extension("Easing", sources=["Easing.c"])])
 
-os.rename(r"C:\Users\Bhavye Mathur\AppData\Local\Programs\Python\Python38\Lib\site-packages\BezierCurve.cp38-win_amd64.pyd",
-          r"C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\math\BezierCurve.pyd")
+    try:
+        os.remove(r"C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\math\Easing.pyd")
+        os.remove(r"C:\Users\Bhavye Mathur\AppData\Local\Programs\Python\Python38\Lib\site-packages\Easing-0.0.0-py3.8.egg-info")
+    except FileNotFoundError:
+        pass
+
+    os.rename(r"C:\Users\Bhavye Mathur\AppData\Local\Programs\Python\Python38\Lib\site-packages\Easing.cp38-win_amd64.pyd",
+              r"C:\Users\Bhavye Mathur\Documents\GitHub\goopylib\goopylib\math\CEasing.pyd")
+
+
+setup_bezier_curve()

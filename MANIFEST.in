@@ -1,0 +1,3 @@
+include README.md
+include goopylib/math/CBezierCurve.pyd
+prune goopylib.egg-info/

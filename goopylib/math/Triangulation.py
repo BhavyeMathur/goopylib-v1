@@ -1,5 +1,4 @@
 from goopylib.util import GraphicsError
-from goopylib.Point import Point
 
 def is_reflex(p1, p2, p3):  # check to see if 3 Points given are convex
     return not (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]) >= 0

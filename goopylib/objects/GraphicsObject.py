@@ -1,7 +1,7 @@
 from goopylib.styles import *
 from goopylib.constants import *
 
-from goopylib.math.Easing import *
+from goopylib.math.PyEasing import *
 from math import cos, sin
 
 from goopylib.Window import Window
@@ -1038,7 +1038,7 @@ class GraphicsObject:
         return self
 
     # Object Gliding Functions
-    def glide(self, dx, dy, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
+    def glide(self, dx, dy, time=1, easing_x=py_ease_linear(), easing_y=None, allow_duplicate=True,
               duplicates_metric=("Time", "Initial", "Change")):
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["2D Animation"]:
@@ -1088,7 +1088,7 @@ class GraphicsObject:
 
         return self
 
-    def glide_x(self, dx, time=1, easing=ease_linear(), allow_duplicate=True,
+    def glide_x(self, dx, time=1, easing=py_ease_linear(), allow_duplicate=True,
                 duplicates_metric=("Time", "Initial", "Change")):
 
         for metric in duplicates_metric:
@@ -1130,7 +1130,7 @@ class GraphicsObject:
 
         return self
 
-    def glide_y(self, dy, time=1, easing=ease_linear(), allow_duplicate=True,
+    def glide_y(self, dy, time=1, easing=py_ease_linear(), allow_duplicate=True,
                 duplicates_metric=("Time", "Initial", "Change")):
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["1D Animation"]:
@@ -1171,7 +1171,7 @@ class GraphicsObject:
 
         return self
 
-    def glide_to(self, x, y, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
+    def glide_to(self, x, y, time=1, easing_x=py_ease_linear(), easing_y=None, allow_duplicate=True,
                  duplicates_metric=("Time", "Final")):
 
         for metric in duplicates_metric:
@@ -1223,7 +1223,7 @@ class GraphicsObject:
 
         return self
 
-    def glide_to_x(self, x, time=1, easing=ease_linear(), allow_duplicate=True, duplicates_metric=("Time", "Final")):
+    def glide_to_x(self, x, time=1, easing=py_ease_linear(), allow_duplicate=True, duplicates_metric=("Time", "Final")):
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["1D Animation"]:
                 raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
@@ -1263,7 +1263,7 @@ class GraphicsObject:
 
         return self
 
-    def glide_to_y(self, y, time=1, easing=ease_linear(), allow_duplicate=True, duplicates_metric=("Time", "Final")):
+    def glide_to_y(self, y, time=1, easing=py_ease_linear(), allow_duplicate=True, duplicates_metric=("Time", "Final")):
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["1D Animation"]:
                 raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
@@ -1303,7 +1303,7 @@ class GraphicsObject:
 
         return self
 
-    def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None, allow_duplicate=True,
+    def glide_to_point(self, p, time=1, easing_x=py_ease_linear(), easing_y=None, allow_duplicate=True,
                        duplicates_metric=("Time", "Final")):
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
@@ -1312,7 +1312,7 @@ class GraphicsObject:
         return self
 
     # Rotating Animations
-    def animate_rotate(self, dr, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_rotate(self, dr, time=1, easing=py_ease_linear(), allow_duplicate=True,
                        duplicates_metric=("Time", "Initial", "Change")):
         if not (isinstance(dr, int) or isinstance(dr, float)):
             raise GraphicsError("\n\nGraphicsError: The amount to rotate the object by (dr) must be a number "
@@ -1348,7 +1348,7 @@ class GraphicsObject:
             self.is_rotating = True
         return self
 
-    def animate_set_rotation(self, r, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_set_rotation(self, r, time=1, easing=py_ease_linear(), allow_duplicate=True,
                              duplicates_metric=("Time", "Final")):
         if not (isinstance(r, int) or isinstance(r, float)):
             raise GraphicsError("\n\nGraphicsError: The amount to rotate the object to (r) must be a number "
@@ -1386,7 +1386,7 @@ class GraphicsObject:
         return self
 
     # Colour Animations
-    def animate_change_fill(self, colour_change, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_change_fill(self, colour_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                             duplicates_metric=("Time", "Initial", "Change")):
         if "fill" in self.config.keys():
             if not isinstance(colour_change, tuple):
@@ -1429,7 +1429,7 @@ class GraphicsObject:
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support colour fill animations")
 
-    def animate_set_fill(self, end_colour, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_set_fill(self, end_colour, time=1, easing=py_ease_linear(), allow_duplicate=True,
                          duplicates_metric=("Time", "Final")):
         if "fill" in self.config.keys():
 
@@ -1447,7 +1447,7 @@ class GraphicsObject:
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support colour fill animations")
 
-    def animate_change_outline(self, colour_change, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_change_outline(self, colour_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                                duplicates_metric=("Time", "Initial", "Change")):
         if "outline" in self.config.keys():
             if not isinstance(colour_change, tuple):
@@ -1491,7 +1491,7 @@ class GraphicsObject:
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support colour outline animations")
 
-    def animate_set_outline(self, end_colour, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_set_outline(self, end_colour, time=1, easing=py_ease_linear(), allow_duplicate=True,
                             duplicates_metric=("Time", "Final")):
         if "outline" in self.config.keys():
 
@@ -1510,7 +1510,7 @@ class GraphicsObject:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support colour outline animations")
 
     # Outline Width Animations
-    def animate_change_outline_width(self, width_change, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_change_outline_width(self, width_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                                      duplicates_metric=("Time", "Initial", "Change")):
         if not (isinstance(width_change, int) or isinstance(width_change, float)):
             raise GraphicsError("\n\nGraphicsError: The amount to change the outline width by (width_change) must be a "
@@ -1542,14 +1542,14 @@ class GraphicsObject:
             self.is_animating_width = True
         return self
 
-    def animate_set_outline_width(self, width_change, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_set_outline_width(self, width_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                                   duplicates_metric=("Time", "Final")):
         self.animate_change_outline_width(width_change - self.get_outline_width(), time=time, easing=easing,
                                           allow_duplicate=allow_duplicate, duplicates_metric=duplicates_metric)
         return self
 
     # Skew Animations
-    def animate_skew_x(self, skew_change, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_skew_x(self, skew_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                        duplicates_metric=("Time", "Initial", "Change"), _internal_call=False):
         if not (isinstance(skew_change, int) or isinstance(skew_change, float)):
             raise GraphicsError("\n\nGraphicsError: The amount to change the skew by (skew_change) must be a "
@@ -1589,7 +1589,7 @@ class GraphicsObject:
 
         return self
 
-    def animate_skew_y(self, skew_change, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_skew_y(self, skew_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                        duplicates_metric=("Time", "Initial", "Change"), _internal_call=False):
         if not (isinstance(skew_change, int) or isinstance(skew_change, float)):
             raise GraphicsError("\n\nGraphicsError: The amount to change the skew by (skew_change) must be a "
@@ -1629,7 +1629,7 @@ class GraphicsObject:
 
         return self
 
-    def animate_skew(self, skew_change_x, skew_change_y, time=1, easing_x=ease_linear(), easing_y=ease_linear(),
+    def animate_skew(self, skew_change_x, skew_change_y, time=1, easing_x=py_ease_linear(), easing_y=py_ease_linear(),
                      allow_duplicate=True, duplicates_metric=("Time", "Initial", "Change"), _internal_call=False):
 
         if easing_y is None:
@@ -1679,7 +1679,7 @@ class GraphicsObject:
         return self
 
     # Image Specific Functions
-    def animate_change_contrast(self, contrast_change, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_change_contrast(self, contrast_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                                 duplicates_metric=("Time", "Initial", "Change")):
         if isinstance(self, Image):
             if not (isinstance(contrast_change, int) or isinstance(contrast_change, float)):
@@ -1721,7 +1721,7 @@ class GraphicsObject:
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support contrast animations")
 
-    def animate_set_contrast(self, contrast, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_set_contrast(self, contrast, time=1, easing=py_ease_linear(), allow_duplicate=True,
                              duplicates_metric=("Time", "Final")):
         if isinstance(self, Image):
             self.animate_change_contrast(contrast - self.contrast, time=time, easing=easing,
@@ -1731,7 +1731,7 @@ class GraphicsObject:
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support the contrast animation")
 
-    def animate_change_blur(self, blur_change, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_change_blur(self, blur_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                             duplicates_metric=("Time", "Initial", "Change")):
         if isinstance(self, Image):
             if not (isinstance(blur_change, int) or isinstance(blur_change, float)):
@@ -1772,7 +1772,7 @@ class GraphicsObject:
         else:
             raise GraphicsError("\n\nGraphicsError: This object doesn't support blur animations")
 
-    def animate_set_blur(self, blur, time=1, easing=ease_linear(), allow_duplicate=True,
+    def animate_set_blur(self, blur, time=1, easing=py_ease_linear(), allow_duplicate=True,
                          duplicates_metric=("Time", "Final")):
         if isinstance(self, Image):
             self.animate_change_blur(blur - self.blur, time=time, easing=easing,

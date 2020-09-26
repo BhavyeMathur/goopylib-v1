@@ -62,16 +62,19 @@ def py_bezier_curve(t, control_points):
 
     return 0, 0
 
-def py_rational_bezier_curve(t, weights, control_points):
+def py_rational_bezier_curve(t, control_points, weights):
     sum_x_numerator, sum_y_numerator = 0, 0
     sum_x, sum_y = 0, 0
 
-    for i in range(0, len(control_points)):
-        sum_x_numerator += (py_bernstein_polynomial(i, len(control_points) - 1, t) * control_points[i][0] * weights[i])
-        sum_x += py_bernstein_polynomial(i, len(control_points) - 1, t) * weights[i]
+    degree = len(control_points) - 1
 
-        sum_y_numerator += (py_bernstein_polynomial(i, len(control_points) - 1, t) * control_points[i][1] * weights[i])
-        sum_y += py_bernstein_polynomial(i, len(control_points) - 1, t) * weights[i]
+    for i in range(0, len(control_points)):
+        coeff = py_bernstein_polynomial(i, degree, t) * weights[i]
+        sum_x_numerator += coeff * control_points[i][0]
+        sum_x += coeff
+
+        sum_y_numerator += coeff * control_points[i][1]
+        sum_y += coeff
 
     return sum_x_numerator / sum_x, sum_y_numerator / sum_y
 

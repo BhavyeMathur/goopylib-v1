@@ -10,7 +10,7 @@ from time import time as timetime
 from goopylib.styles import *
 from goopylib.util import GraphicsError, GraphicsWarning, resource_path
 from goopylib.constants import _root, RELIEF, CURSORS
-from goopylib.math.Easing import *
+from goopylib.math.PyEasing import *
 
 from goopylib._internal_classes import Transform
 
@@ -591,7 +591,7 @@ class Window(tkCanvas):
 
     # Gliding Functions
 
-    def glide(self, dx, dy=None, time=1, easing_x=ease_linear(), easing_y=None):
+    def glide(self, dx, dy=None, time=1, easing_x=py_ease_linear(), easing_y=None):
         if dy is None:
             dy = dx
         if easing_y is None:
@@ -606,7 +606,7 @@ class Window(tkCanvas):
 
         return self
 
-    def glide_x(self, dx, time=1, easing=ease_linear(), _internal_call=False):
+    def glide_x(self, dx, time=1, easing=py_ease_linear(), _internal_call=False):
         if not (isinstance(dx, int) or isinstance(dx, float)):
             raise GraphicsError("\n\nThe x amount to glide the window by (dx) must be a number "
                                 f"(integer or float), not {dx}")
@@ -631,7 +631,7 @@ class Window(tkCanvas):
 
         return self
 
-    def glide_y(self, dy, time=1, easing=ease_linear(), _internal_call=False):
+    def glide_y(self, dy, time=1, easing=py_ease_linear(), _internal_call=False):
         if not (isinstance(dy, int) or isinstance(dy, float)):
             raise GraphicsError("\n\nThe y amount to glide the window by (dy) must be a number "
                                 f"(integer or float), not {dy}")
@@ -657,7 +657,7 @@ class Window(tkCanvas):
 
         return self
 
-    def glide_to(self, x, y=None, time=1, easing_x=ease_linear(), easing_y=None):
+    def glide_to(self, x, y=None, time=1, easing_x=py_ease_linear(), easing_y=None):
         if y is None:
             y = x
         if easing_y is None:
@@ -677,13 +677,13 @@ class Window(tkCanvas):
 
         return self
 
-    def glide_to_x(self, x, time=1, easing=ease_linear()):
+    def glide_to_x(self, x, time=1, easing=py_ease_linear()):
         return self.glide_x(time=time, dx=x - self.x_pos, easing=easing)
 
-    def glide_to_y(self, y, time=1, easing=ease_linear()):
+    def glide_to_y(self, y, time=1, easing=py_ease_linear()):
         return self.glide_y(time=time, dy=y - self.y_pos, easing=easing)
 
-    def glide_to_point(self, p, time=1, easing_x=ease_linear(), easing_y=None):
+    def glide_to_point(self, p, time=1, easing_x=py_ease_linear(), easing_y=None):
         if not isinstance(p, Point):
             raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
         return self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)

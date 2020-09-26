@@ -1,5 +1,3 @@
-from goopylib.Point import Point
-
 def UniformBSpline(t, control_points, degree=3, open=True):
     sum_x, sum_y = 0, 0
     knot_vector = [x for x in range(len(control_points) + 2 + degree)]\
@@ -17,7 +15,7 @@ def UniformBSpline(t, control_points, degree=3, open=True):
         sum_x += CoxDeBoorRecursion(i, degree, t, knot_vector) * control_points[i].x
         sum_y += CoxDeBoorRecursion(i, degree, t, knot_vector) * control_points[i].y
 
-    return Point(sum_x, sum_y)
+    return sum_x, sum_y
 
 
 def CoxDeBoorRecursion(i, j, t, knot_vector):

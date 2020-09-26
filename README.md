@@ -204,9 +204,29 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 ### v1.1
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
-on a Sound Engine for goopylib which I want to be part of 1.1
+on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.94-alpha10 23rd September 2020
+#### 1.1.102-alpha11 24th September 2020
+
+* The BSpline module no longer uses the Point class. It returns the spline as a list in the form `[x, y]`
+* Removed an unnecessary and unused definition of `_ease_liner()` from `Easing.py`
+* Renamed the `Easing.py` module to `PyEasing.py` and renamed all functions in it to have a suffix of `py_`
+
+* Few more optimizations to the `bezier_curve()` function to make it run a little bit quicker
+
+![Bezier Curve Speed Comparision](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/Tests/BezierCurve-Comparision.png)
+
+* Added a C implementation of the `rational_bezier_curve()` function 
+* Optimized the `py_rational_bezier_curve()` function a lot
+
+![Rational Bezier Curve Speed Comparision](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/Tests/RationalBezierCurve-Comparision.png)
+
+* The `py_rational_bezier_curve()` function takes the `control_points` argument before the `weights` to make it more 
+consistent with the other functions
+
+* Added a `MANIFEST.in` file to include the `.pyd` C-extension modules which weren't being packaged properly
+
+#### 1.1.94-alpha10 23rd September 2020 - 11740 lines
 
 * If no parameter is supplied to a GraphicObject's `draw()` function, it checks if it has been previously drawn and if 
 so, draws to the same window
