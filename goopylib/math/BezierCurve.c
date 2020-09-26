@@ -4,52 +4,45 @@
 #include <math.h>
 
 
-struct DoubleTuple2 {
-    long double x, y;
-};
-
-unsigned long long factorial(unsigned long long number){
+unsigned long long factorial(int number){
     if (number <= 1)
         return 1;
     else
         return number * factorial(number - 1);
 }
 
-unsigned long long combination(unsigned long long n, unsigned long long k){
+unsigned long long combination(int n, int k){
     return factorial(n) / (factorial(k) * factorial(n - k));}
 
-double bernstein_polynomial(unsigned long long i, unsigned long long n, double t){
+float bernstein_polynomial(int i, int n, float t){
     return combination(n, i) * pow(t, i) * pow(1 - t, n - i);}
 
-struct DoubleTuple2 bezier_curve(long double t, unsigned long long size, long long control_points[]){
+PyObject* bezier_curve(float t, int size, long long control_points[]){
 
-    struct DoubleTuple2 point;
+    float sum_x = 0, sum_y = 0;
 
     if (size > 5)
-        double sum_x = 0, sum_y = 0;
-        unsigned long long degree = size - 1, index = 0;
+
+        int degree = size - 1, index = 0;
 
         size *= 2;
 
-        for (unsigned long long i = 0; i < size; i += 2) {
-            double coeff = bernstein_polynomial(index, degree, t);
+        for (int i = 0; i < size; i += 2) {
+            float coeff = bernstein_polynomial(index, degree, t);
             sum_x += coeff * control_points[i];
             sum_y += coeff * control_points[i + 1];
 
             index++;
         }
 
-        point.x = sum_x;
-        point.y = sum_y;
+        return Py_BuildValue("[f, f]", sum_x, sum_y);
 
-        return point;
-
-    double t2 = 0, t3 = 0, t4 = 0;
+    float t2 = 0, t3 = 0, t4 = 0;
 
     switch (size) {
         case 2:
-            point.x = ((1 - t) * control_points[0]) + (t * control_points[2]);
-            point.y = ((1 - t) * control_points[1]) + (t * control_points[3]);
+            sum_x = ((1 - t) * control_points[0]) + (t * control_points[2]);
+            sum_y = ((1 - t) * control_points[1]) + (t * control_points[3]);
             break;
 
         case 3:
@@ -57,11 +50,11 @@ struct DoubleTuple2 bezier_curve(long double t, unsigned long long size, long lo
 
             t *= 2;
 
-            point.x = ((t2 - t + 1) * control_points[0]) +
+            sum_x = ((t2 - t + 1) * control_points[0]) +
             (((-2 * t2) + t) * control_points[2]) +
             (t2 * control_points[4]);
 
-            point.y = ((t2 - t + 1) * control_points[1]) +
+            sum_y = ((t2 - t + 1) * control_points[1]) +
             (((-2 * t2) + t) * control_points[3]) +
             (t2 * control_points[5]);
 
@@ -73,12 +66,12 @@ struct DoubleTuple2 bezier_curve(long double t, unsigned long long size, long lo
 
             t *= 3;
 
-            point.x = ((-t3 + (3 * t2) - t + 1) * control_points[0]) +
+            sum_x = ((-t3 + (3 * t2) - t + 1) * control_points[0]) +
             (((3 * t3) - (6 * t2) + t) * control_points[2]) +
             (((-3 * t3) + (3 * t2)) * control_points[4]) +
             (t3 * control_points[6]);
 
-            point.y = ((-t3 + (3 * t2) - t + 1) * control_points[1]) +
+            sum_y = ((-t3 + (3 * t2) - t + 1) * control_points[1]) +
             (((3 * t3) - (6 * t2) + t) * control_points[3]) +
              (((-3 * t3) + (3 * t2)) * control_points[5]) +
             (t3 * control_points[7]);
@@ -92,13 +85,13 @@ struct DoubleTuple2 bezier_curve(long double t, unsigned long long size, long lo
 
             t *= 4;
 
-            point.x = ((t4 - (4 * t3) + (6 * t2) - t + 1) * control_points[0]) +
+            sum_x = ((t4 - (4 * t3) + (6 * t2) - t + 1) * control_points[0]) +
             (((-4 * t4) + (12 * t3) - (12 * t2) + t) * control_points[2]) +
             (((6 * t4) - (12 * t3) + (6 * t2)) * control_points[4]) +
             (((-4 * t4) + (4 * t3)) * control_points[6]) +
             (t4 * control_points[8]);
 
-            point.y = ((t4 - (4 * t3) + (6 * t2) - t + 1) * control_points[1]) +
+            sum_y = ((t4 - (4 * t3) + (6 * t2) - t + 1) * control_points[1]) +
             (((-4 * t4) + (12 * t3) - (12 * t2) + t) * control_points[3]) +
             (((6 * t4) - (12 * t3) + (6 * t2)) * control_points[5]) +
             (((-4 * t4) + (4 * t3)) * control_points[7]) +
@@ -106,21 +99,19 @@ struct DoubleTuple2 bezier_curve(long double t, unsigned long long size, long lo
 
             break;}
 
-    return point;
+    return Py_BuildValue("[f, f]", sum_x, sum_x);
 }
 
-struct DoubleTuple2 rational_bezier_curve(long double t, unsigned long long size, long long control_points[],
-long double weights[]) {
+PyObject* rational_bezier_curve(float t, int size, long long control_points[],
+float weights[]) {
 
-    struct DoubleTuple2 point;
-
-    long double sum_x_denominator = 0, sum_y_denominator = 0, sum_x_numerator = 0, sum_y_numerator = 0;
-    unsigned long long degree = size - 1, index = 0;
+    float sum_x_denominator = 0, sum_y_denominator = 0, sum_x_numerator = 0, sum_y_numerator = 0;
+    int degree = size - 1, index = 0;
 
     size *= 2;
 
-    for (unsigned long long i = 0; i < size; i += 2) {
-        long double coeff = bernstein_polynomial(index, degree, t) * weights[index];
+    for (int i = 0; i < size; i += 2) {
+        float coeff = bernstein_polynomial(index, degree, t) * weights[index];
         sum_x_numerator += coeff * control_points[i];
         sum_y_numerator += coeff * control_points[i + 1];
 
@@ -130,113 +121,145 @@ long double weights[]) {
         index++;
     }
 
-    point.x = sum_x_numerator / sum_x_denominator;
-    point.y = sum_y_numerator / sum_y_denominator;
-
-    return point;
+    return Py_BuildValue("[f, f]", sum_x_numerator / sum_x_denominator, sum_y_numerator / sum_y_denominator);
 }
 
 static PyObject* BezierCurve_factorial(PyObject *self, PyObject *args){
-    unsigned long long n;
+    int n;
 
-    if (!PyArg_ParseTuple(args, "K", &n))
+    if (!PyArg_ParseTuple(args, "i", &n))
         return NULL;
 
     return Py_BuildValue("K", factorial(n));
 }
 
 static PyObject* BezierCurve_combination(PyObject *self, PyObject *args){
-    unsigned long long n, k;
+    int n, k;
 
-    if (!PyArg_ParseTuple(args, "KK", &n, &k))
+    if (!PyArg_ParseTuple(args, "ii", &n, &k))
         return NULL;
 
     return Py_BuildValue("K", combination(n, k));
 }
 
 static PyObject* BezierCurve_bernstein_polynomial(PyObject* self, PyObject* args){
-    unsigned long long i, n;
-    long double t;
+    int i, n;
+    float t;
 
-    if (!PyArg_ParseTuple(args, "KKd", &i, &n, &t))
+    if (!PyArg_ParseTuple(args, "iif", &i, &n, &t))
         return NULL;
 
-    return Py_BuildValue("d", bernstein_polynomial(i, n, t));
+    return Py_BuildValue("f", bernstein_polynomial(i, n, t));
 }
 
 static PyObject* BezierCurve_bezier_curve(PyObject* self, PyObject* args) {
-    unsigned long long size;
-    double t;
+    int size;
+    float t;
     PyObject *py_control_points, *temp1, *x, *y;
 
-    if (!PyArg_ParseTuple(args, "dO", &t, &py_control_points))
+    if (!PyArg_ParseTuple(args, "fO", &t, &py_control_points))
         return NULL;
 
-    size = PyLong_AsUnsignedLongLong(PyLong_FromSsize_t(PyList_GET_SIZE(py_control_points)));
+    size = PyLong_AsLong(PyLong_FromSsize_t(PyList_GET_SIZE(py_control_points)));
 
     long long *control_points = (long long*)malloc(size * sizeof(long long) * 2);
-    unsigned long long index = 0;
+    int index = 0;
 
-    for (unsigned long long i = 0; i < size; i++){
+    for (int i = 0; i < size; i++){
 
         temp1 = PyList_GetItem(py_control_points, i);
-
-        if (temp1 == NULL)
-            return NULL;
 
         x = PyList_GetItem(temp1, 0);
         y = PyList_GetItem(temp1, 1);
 
-        if (PyNumber_Check(x) != 1 || PyNumber_Check(y) != 1){
-            PyErr_SetString(PyExc_TypeError, "Control Points Argument is Non-Numeric");
-            return NULL;}
-
         control_points[index] = PyLong_AsLongLong(x);
         control_points[index + 1] = PyLong_AsLongLong(y);
         index += 2;
-
-        if (PyErr_Occurred())
-            return NULL;
     }
 
-    struct DoubleTuple2 point = bezier_curve(t, size, control_points);
-    return Py_BuildValue("[d, d]", point.x, point.y);
+    return bezier_curve(t, size, control_points);
 }
 
 static PyObject* BezierCurve_rational_bezier_curve(PyObject* self, PyObject* args) {
-    unsigned long long size;
-    double t;
+    Py_ssize_t size;
+    float t;
     PyObject *py_control_points, *py_weights, *temp1, *x, *y, *temp2;
 
-    if (!PyArg_ParseTuple(args, "dOO", &t, &py_control_points, &py_weights))
+    if (!PyArg_ParseTuple(args, "fOO", &t, &py_control_points, &py_weights))
         return NULL;
 
-    size = PyLong_AsUnsignedLongLong(PyLong_FromSsize_t(PyList_GET_SIZE(py_control_points)));
+    if (PyList_Check(py_control_points) == 1) {
+        if (PyList_Check(py_weights) == 1) {
+            size = PyList_Size(py_control_points);
 
-    long long *control_points = (long long*)malloc(size * sizeof(long long) * 2);
-    long double *weights = (double*)malloc(size * sizeof(long double));
-    unsigned long long index = 0;
+            if (size > 21) {
+                PyErr_SetString(PyErr_NewException("GraphicsError", NULL, NULL),
+                "\n\nGraphicsError: The Rational Bezier Curve Function is no longer accurate after the number of control points exceeds 20, use the py_rational_bezier_curve() function instead");
+                return NULL;}
 
-    for (unsigned long long i = 0; i < size; i++){
+            if (size != PyList_Size(py_weights)) {
+                PyErr_SetString(PyErr_NewException("GraphicsError", NULL, NULL),
+                "\n\nGraphicsError: the length of weights must match the length of control_points");
+                return NULL;}
 
-        temp1 = PyList_GetItem(py_control_points, i);
-        temp2 = PyList_GetItem(py_weights, i);
+            long long *control_points = (long long*)malloc(size * sizeof(long long) * 2);
+            float *weights = (float*)malloc(size * sizeof(float));
+            int index = 0;
 
-        x = PyList_GetItem(temp1, 0);
-        y = PyList_GetItem(temp1, 1);
+            for (Py_ssize_t i = 0; i < size; i++){
 
-        weights[i] = PyFloat_AsDouble(temp2);
+                temp1 = PyList_GetItem(py_control_points, i);
+                temp2 = PyList_GetItem(py_weights, i);
 
-        control_points[index] = PyLong_AsLongLong(x);
-        control_points[index + 1] = PyLong_AsLongLong(y);
-        index += 2;
+                if (PyList_Check(temp1) == 1) {
+                    x = PyList_GetItem(temp1, 0);
+                    y = PyList_GetItem(temp1, 1);
 
-        if (PyErr_Occurred())
-            return NULL;
+                    if (PyFloat_Check(temp2) == 1 || PyNumber_Check(temp2) == 1) {
+                        if (PyNumber_Check(x) == 1 && PyNumber_Check(y) == 1) {
+                            weights[i] = PyFloat_AsDouble(temp2);
+
+                            control_points[index] = PyLong_AsLongLong(x);
+                            control_points[index + 1] = PyLong_AsLongLong(y);
+                            index += 2;}
+                        else {
+                            PyErr_SetString(PyErr_NewException("GraphicsError", NULL, NULL),
+
+                            PyBytes_AsString(PyBytes_FromFormat("\n\nGraphicsError: x & y elements of control_points at index %xd must be an integer, not [%s, %s]",
+                            i, PyBytes_AsString(PyObject_Repr(x)), PyBytes_AsString(PyObject_Repr(y)))));
+                            return NULL;}
+                    }
+                    else {
+                        PyErr_SetString(PyErr_NewException("GraphicsError", NULL, NULL),
+                        PyBytes_AsString(PyBytes_FromFormat("\n\nGraphicsError: each element of weights must be an integer or float, not %s at index %zd",
+                        PyBytes_AsString(PyObject_Repr(temp2)), i)));
+
+                        return NULL;}
+                }
+                else {
+                    PyErr_SetString(PyErr_NewException("GraphicsError", NULL, NULL),
+                    PyBytes_AsString(PyBytes_FromFormat("\n\nGraphicsError: each element of control_points must be a list in the form [x, y], not %s at index %zd",
+                    PyBytes_AsString(PyObject_Repr(temp1)), i)));
+
+                    return NULL;}
+            }
+
+            return rational_bezier_curve(t, size, control_points, weights);
+        }
+        else {
+            PyErr_SetString(PyErr_NewException("GraphicsError", NULL, NULL),
+            PyBytes_AsString(PyBytes_FromFormat("\n\nGraphicsError: weights argument for rational bezier curve must be a list, not %s",
+            PyBytes_AsString(PyObject_Repr(py_weights)))));
+
+            return NULL;}
     }
+    else {
+        PyErr_SetString(PyErr_NewException("GraphicsError", NULL, NULL),
 
-    struct DoubleTuple2 point = rational_bezier_curve(t, size, control_points, weights);
-    return Py_BuildValue("[d, d]", point.x, point.y);
+        PyBytes_AsString(PyBytes_FromFormat("\n\nGraphicsError: control_points argument for rational bezier curve must be a list, not %s",
+        PyBytes_AsString(PyObject_Repr(py_control_points)))));
+
+        return NULL;}
 }
 
 
