@@ -206,12 +206,13 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.104-alpha11 24th September 2020
+#### 1.1.106-alpha11 24th September 2020
 
 * The BSpline module no longer uses the Point class. It returns the spline as a list in the form `[x, y]`
 * Removed an unnecessary and unused definition of `_ease_liner()` from `Easing.py`
 * Renamed the `Easing.py` module to `PyEasing.py` and renamed all functions in it to have a suffix of `py_`
 
+* Added a `BezierCurve.py` file to serve as an interface between Python & the C Extensions
 * Few more optimizations to the `bezier_curve()` function to make it run a little bit quicker
 
 ![Bezier Curve Speed Comparision](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/Tests/BezierCurve-Comparision.png)
@@ -232,6 +233,8 @@ provide results for
  functions.
  
  ![Speed Comparision](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/Tests/RationalBezierCurve-OptimizedInterface.png)
+
+* Added argument and error checks to the `bezier_curve()`, `berstein_polynomial()`, and `combination()` functions
 
 #### 1.1.94-alpha10 23rd September 2020 - 11740 lines
 
