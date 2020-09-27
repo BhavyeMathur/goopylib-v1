@@ -3,7 +3,6 @@
 .vs/
 PolygonTriangulation.fla
 sound_test.py
-test.py
 triangulation_test.py
 dist/
 build/
@@ -15,3 +14,5 @@ Documentation/YouTube/*/*.mp4
 Documentation/YouTube/*/*.wav
 Documentation/YouTube/*/*/*.mp4
 Documentation/YouTube/*.prproj
+CColours.egg-info/
+CEasing.egg-info/

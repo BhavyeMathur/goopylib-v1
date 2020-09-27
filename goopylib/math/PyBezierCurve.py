@@ -46,7 +46,6 @@ def py_bezier_curve(t, control_points):
         t2 = t * t
         t3 = t2 * t
         t4 = t3 * t
-
         t *= 4
 
         return ((t4 - (4 * t3) + (6 * t2) - t + 1) * control_points[0][0]) + \

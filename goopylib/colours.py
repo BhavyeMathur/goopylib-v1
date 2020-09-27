@@ -198,9 +198,6 @@ class Colour:
     def __bool__(self):
         return self.colour != "#000000"
 
-    def __bytes__(self):
-        return bytes(self.colour)
-
     def __contains__(self, item):
         if self.red == item or self.blue == item or self.green == item:
             return True
@@ -238,12 +235,6 @@ class Colour:
 
     def __ne__(self, other):
         return self.colour != other.colour
-
-    def __ceil__(self):
-        return -(-self // 1)
-
-    def __floor__(self):
-        return self // 1
 
     def __divmod__(self, other):
         return self // other, self % other
@@ -321,9 +312,6 @@ class Colour:
         self.red, self.green, self.blue = self / other
         return self
 
-    def __oct__(self):
-        return oct(self.red), oct(self.green), oct(self.blue)
-
     def __reversed__(self):
         return ColourRGB(self.blue, self.green, self.red)
 
@@ -340,9 +328,9 @@ class ColourRGB(Colour):
         self.colour = "#%02x%02x%02x" % (r, g, b)
         self.string = f"rgb {r}, {g}, {b}"
 
-        self.red = +r
-        self.green = +g
-        self.blue = +b
+        self.red = r
+        self.green = g
+        self.blue = b
 
 
 class ColourHex(Colour):
@@ -361,7 +349,9 @@ class ColourHex(Colour):
         self.string = self.colour
 
         colour = colour[1:]
+
         rgb = [int(colour[i:i+2], 16) for i in (0, 2, 4)]
+
         self.red = rgb[0]
         self.green = rgb[1]
         self.blue = rgb[2]
@@ -593,6 +583,9 @@ def BlendHermite(colour_start, colour_end, t, tension=1, bias=0):
                      int(HermiteInterpolation(colour_start.blue, colour_start.blue, colour_end.blue, colour_end.blue, t,
                                               tension=tension, bias=bias)))
 
+def rgb_to_hex(red, green, blue):
+    return "#%02x%02x%02x" % (red, green, blue)
+
 
 # -------------------------------------------------------------------------
 # COLOUR DEFINITIONS
@@ -643,9 +636,9 @@ LIGHTEST_PINK = ColourRGB(255, 224, 222)
 
 ABSOLUTE_RED = ColourRGB(255, 0, 0)
 
-
 # Orange & Brown Shades from: https://graf1x.com/shades-of-orange-color-palette/
 # ORANGES
+
 MELON_ORANGE = ColourRGB(247, 152, 98)
 SALAMANDER_ORANGE = ColourRGB(240, 94, 35)
 SANDSTONE_ORANGE = ColourRGB(215, 144, 44)

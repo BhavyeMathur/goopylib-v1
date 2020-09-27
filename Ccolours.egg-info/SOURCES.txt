@@ -1,0 +1,11 @@
+MANIFEST.in
+README.md
+setup.py
+CColours.egg-info/PKG-INFO
+CColours.egg-info/SOURCES.txt
+CColours.egg-info/dependency_links.txt
+CColours.egg-info/top_level.txt
+goopylib/CColours.pyd
+goopylib/colours.c
+goopylib/math/BezierCurve.c
+goopylib/math/CBezierCurve.pyd

@@ -206,7 +206,19 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.106-alpha11 24th September 2020
+#### 1.1.112-alpha12 27th September 2020
+
+* Changed the if-else statements for the easing functions from `if t is not None:` to `if t is None:` and switched the
+ code (from else-if and if-else) to reduce the amount of `not`s called and improve performance.
+
+* Removed an unnecessary `+` symbol from `+r`, `+g`, `+b` from the `ColourRGB()` `__init__` function.
+* Started working a C-implementation of `colours.py` - Added the 4 colour classes and `rgb_to_hex()` function.
+* Added a `rgb_to_hex()` function to `colours.py`
+
+* Removed the `__bytes__()`, `__oct__()`, `__ceil__()`, and `__floor__() functions from `Colour` object as they are 
+mostly unnecessary
+
+#### 1.1.107-alpha11 24th-26th September 2020
 
 * The BSpline module no longer uses the Point class. It returns the spline as a list in the form `[x, y]`
 * Removed an unnecessary and unused definition of `_ease_liner()` from `Easing.py`
@@ -226,7 +238,7 @@ on converting goopylib code to Cython C and also building a Sound Engine for goo
 consistent with the other functions
 
 * Added a `MANIFEST.in` file to include the `.pyd` C-extension modules which weren't being packaged properly
-* The CPython Interface functions now raise errors if the arguments provided are bigger than what C can accuratly 
+* The CPython Interface functions now raise errors if the arguments provided are bigger than what C can accurately 
 provide results for
 
 * Moved most argument checking statements to the C implementation to increase the performance of the CPython Interface
@@ -235,6 +247,7 @@ provide results for
  ![Speed Comparision](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Documentation/Tests/RationalBezierCurve-OptimizedInterface.png)
 
 * Added argument and error checks to the `bezier_curve()`, `berstein_polynomial()`, and `combination()` functions
+* The C extension packages now correctly package as a module with the goopylib package
 
 #### 1.1.94-alpha10 23rd September 2020 - 11740 lines
 
