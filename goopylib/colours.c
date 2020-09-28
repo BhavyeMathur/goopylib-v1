@@ -70,20 +70,81 @@ static PyObject *Colour_rgb(Colour *self, PyObject *Py_UNUSED(ignored)) {
 }
 
 static PyObject *Colour_repr(Colour *self) {
-    return PyUnicode_FromString(self.colour);
+    return PyUnicode_FromString(self->colour);
 }
 
 static PyObject *Colour_str(Colour *self) {
-    return PyUnicode_FromString(self.colour);
-}
-
-static PyObject *Colour_richcompare(Colour *self, PyObject *other, int op) {
-    /* Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE*/
-
+    return PyUnicode_FromString(self->colour);
 }
 
 static PyObject *Colour_iter(Colour *self) {
 
+}
+
+static PyTypeObject ColourType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "goopylib.Colour",
+    .tp_doc = "The superclass of all goopylib colour classes",
+    .tp_basicsize = sizeof(Colour),
+    .tp_itemsize = 0,
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    .tp_alloc = PyType_GenericNew,
+    .tp_new = Colour_new,
+    .tp_dealloc = (destructor) Colour_dealloc,
+    .tp_init = (initproc) Colour_init,
+    .tp_members = Colour_members,
+
+    .tp_repr = (reprfunc) Colour_repr,
+    .tp_str = (reprfunc) Colour_str,
+    .tp_iter = (getiterfunc) Colour_iter,
+};
+
+
+static PyObject *Colour_richcompare(Colour *self, PyObject *other, int op) {
+
+    if (PyObject_IsInstance(other, (PyObject *)&ColourType)) {
+        switch (op) {
+            case Py_LT:
+                if (self->red + self->green + self->blue < other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_LE:
+                if (self->red + self->green + self->blue <= other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_EQ:
+                if (self->red + self->green + self->blue == other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_NE:
+                if (!(self->red + self->green + self->blue == other->red + other->green + other->blue)) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_GT:
+                if (self->red + self->green + self->blue > other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_GE:
+                if (self->red + self->green + self->blue >= other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+        }
+    else {
+        PyErr_SetObject(GraphicsError, PyUnicode_FromFormat("\n\nGraphicsError: comparing operations '<' '>' '=' '!=' '<=' '>=' for Colour object must be with another Colour Type, not %R", other));
+        return NULL;}
+
+    Py_RETURN_FALSE;
 }
 
 static PyObject *Colour_add(Colour *self, PyObject* other) {
@@ -147,6 +208,14 @@ static PyObject *Colour_xor(Colour *self, PyObject* other) {
 }
 
 static PyObject *Colour_or(Colour *self, PyObject* other) {
+
+}
+
+static PyObject *Colour_int(Colour *self) {
+
+}
+
+static PyObject *Colour_float(Colour *self) {
 
 }
 
@@ -234,70 +303,59 @@ static PyObject *Colour_reversed(Colour *self) {
 
 }
 
-typedef struct {
-    (binaryfunc) *Colour_add;
-    (binaryfunc) *Colour_subtract;
-    (binaryfunc) *Colour_multiply;
-    (binaryfunc) *Colour_remainder;
-    (binaryfunc) *Colour_divmod;
-    (ternaryfunc) *Colour_power;
-    (unaryfunc) *Colour_negative;
-    (unaryfunc) *Colour_positive;
-    (unaryfunc) *Colour_absolute;
-    (inquiry) *Colour_bool;
-    (binaryfunc) *Colour_invert;
-    (binaryfunc) *Colour_lshift;
-    (binaryfunc) *Colour_rshift;
-    (binaryfunc) *Colour_and;
-    (binaryfunc) *Colour_xor;
-    (binaryfunc) *Colour_or;
-    (unaryfunc) *Colour_int;
-    NULL;
-    (unaryfunc) *Colour_float;
+static PyObject *Colour_matrix_multiply(Colour *self, PyObject* other) {
 
-    (binaryfunc) *Colour_iadd;
-    (binaryfunc) *Colour_isubtract;
-    (binaryfunc) *Colour_imultiply;
-    (binaryfunc) *Colour_iremainder;
-    (ternaryfunc) *Colour_ipower;
-    (binaryfunc) *Colour_ilshift;
-    (binaryfunc) *Colour_irshift;
-    (binaryfunc) *Colour_iand;
-    (binaryfunc) *Colour_ixor;
-    (binaryfunc) *Colour_ior;
+}
 
-    (binaryfunc) *Colour_floor_divide;
-    (binaryfunc) *Colour_true_divide;
-    (binaryfunc) *Colour_ifloor_divide;
-    (binaryfunc) *Colour_itrue_divide;
+static PyObject *Colour_imatrix_multiply(Colour *self, PyObject* other) {
 
-    (unaryfunc) *Colour_index;
+}
 
-    (binaryfunc) *Colour_matrix_multiply;
-    (binaryfunc) *Colour_imatrix_mulitply;
+static PyNumberMethods Colour_PyNumberMethods = {
+    (binaryfunc) *Colour_add,
+    (binaryfunc) *Colour_subtract,
+    (binaryfunc) *Colour_multiply,
+    (binaryfunc) *Colour_remainder,
+    (binaryfunc) *Colour_divmod,
+    (ternaryfunc) *Colour_power,
+    (unaryfunc) *Colour_negative,
+    (unaryfunc) *Colour_positive,
+    (unaryfunc) *Colour_absolute,
+    (inquiry) *Colour_bool,
+    (unaryfunc) *Colour_invert,
+    (binaryfunc) *Colour_lshift,
+    (binaryfunc) *Colour_rshift,
+    (binaryfunc) *Colour_and,
+    (binaryfunc) *Colour_xor,
+    (binaryfunc) *Colour_or,
+    (unaryfunc) *Colour_int,
+    NULL,
+    (unaryfunc) *Colour_float,
 
-} Colour_PyNumberMethods;
+    (binaryfunc) *Colour_iadd,
+    (binaryfunc) *Colour_isubtract,
+    (binaryfunc) *Colour_imultiply,
+    (binaryfunc) *Colour_iremainder,
+    (ternaryfunc) *Colour_ipower,
+    (binaryfunc) *Colour_ilshift,
+    (binaryfunc) *Colour_irshift,
+    (binaryfunc) *Colour_iand,
+    (binaryfunc) *Colour_ixor,
+    (binaryfunc) *Colour_ior,
 
+    (binaryfunc) *Colour_floor_divide,
+    (binaryfunc) *Colour_true_divide,
+    (binaryfunc) *Colour_ifloor_divide,
+    (binaryfunc) *Colour_itrue_divide,
 
-static PyTypeObject ColourType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "goopylib.Colour",
-    .tp_doc = "The superclass of all goopylib colour classes",
-    .tp_basicsize = sizeof(Colour),
-    .tp_itemsize = 0,
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_alloc = PyType_GenericNew
-    .tp_new = Colour_new,
-    .tp_dealloc = (destructor) Colour_dealloc,
-    .tp_init = (initproc) Colour_init,
-    .tp_members = Colour_members,
+    (unaryfunc) *Colour_index,
 
-    .tp_repr = (reprfunc) Colour_repr,
-    .tp_str = (reprfunc) Colour_str,
-    .tp_richcompare = (richcmpfunc) Colour_richcompare,
-    .tp_iter = (getiterfunc) Colour_iter,
-    .tp_as_number = Colour_PyNumberMethods,
+    (binaryfunc) *Colour_matrix_multiply,
+    (binaryfunc) *Colour_imatrix_multiply
 };
+
+ColourType.tp_as_number = Colour_PyNumberMethods;
+ColourType.tp_richcompare = (richcmpfunc) Colour_richcompare;
 
 /* ColourRGB class*/
 

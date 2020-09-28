@@ -206,7 +206,7 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.112-alpha12 27th September 2020
+#### 1.1.121-alpha12 27th September 2020
 
 * Changed the if-else statements for the easing functions from `if t is not None:` to `if t is None:` and switched the
  code (from else-if and if-else) to reduce the amount of `not`s called and improve performance.
@@ -217,6 +217,21 @@ on converting goopylib code to Cython C and also building a Sound Engine for goo
 
 * Removed the `__bytes__()`, `__oct__()`, `__ceil__()`, and `__floor__() functions from `Colour` object as they are 
 mostly unnecessary
+
+* The `Arc`, `CurvedLine`, `Entry`, & `Circle` classes no longer use `Point` objects opting instead for lists in the 
+form `[x, y]`
+* You can no longer assign a style to `Circle`, `Entry`, `Arc`, `Text`, & `CurvedLine` objects
+* Added a `rotate_to_face()` function to the `GraphicsObject` that rotates an object to face another
+* Removed a check from the `GraphicsObject` class that checked if the cursor provided was a `str` because another check 
+already made sure that the cursor was part of a set of options
+
+* Removed the style argument from the `GraphicsObject` class's `__init__()` function
+* `Text` objects no longer use the old system of configs for every `GraphicsObject`. They have shifted to just using 
+variables
+
+* The `Text` object getter functions now call `_update_layer()` internally to fix bug with a manual redrawing required
+* Changed the `Text` object's `clone()` function to copy all the attributes properly
+* All the `GraphicsErrors` raised in `Text.py` now start with `"\n\nGraphicsError: "`
 
 #### 1.1.107-alpha11 24th-26th September 2020
 

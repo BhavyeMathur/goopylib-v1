@@ -44,7 +44,7 @@ class AnimatedImage(GraphicsObject):
             yield img
 
     def _draw(self, canvas, options):
-        self.imgs[self.frame].anchor = self.anchor.clone()
+        self.imgs[self.frame].anchor = self.anchor
         self.imgs[self.frame].draw(canvas, _internal_call=True)
 
         self.drawn_frame = self.frame

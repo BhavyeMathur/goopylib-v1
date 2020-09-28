@@ -9,12 +9,12 @@ from tkinter import END as tkEND
 
 class Entry(GraphicsObject):
 
-    def __init__(self, p, text_width=10, style=None, fill=None, font_colour=None, font_face=None, font_size=None,
+    def __init__(self, p, text_width=10, fill=None, font_colour=None, font_face=None, font_size=None,
                  outline=None, font_style=None, outline_width=None, border_relief="flat", password=False, layer=0,
                  active="NORMAL", justify="left", cursor="xterm", select_colour=None, prompt_text="", tag=None,
                  bounds=None, align="center", text="", max_characters=None):
 
-        self.anchor = p.clone()
+        self.anchor = p.copy()
 
         if not isinstance(text_width, int):
             raise GraphicsError(f"Text Width for the Entry must be an integer, not {text_width}")
@@ -29,90 +29,45 @@ class Entry(GraphicsObject):
 
         self.was_edited_since_last_call = False
 
-        if style is None:
-            self.style = global_style
-        else:
-            self.style = style
-
         if isinstance(fill, Colour):
             self.fill = fill
-        elif fill in STYLES[self.style].keys():
-            self.fill = STYLES[self.style][fill]
         else:
-            if "fill" in STYLES[self.style].keys():
-                self.fill = STYLES[self.style]["fill"]
-            else:
-                self.fill = STYLES["default"]["fill"]
+            self.fill = STYLES["default"]["fill"]
 
         if isinstance(select_colour, Colour):
             self.select_colour = select_colour
-        elif select_colour in STYLES[self.style].keys():
-            self.select_colour = STYLES[self.style][select_colour]
         else:
-            if "select colour" in STYLES[self.style].keys():
-                self.select_colour = STYLES[self.style]["select colour"]
-            else:
-                self.select_colour = STYLES["default"]["select colour"]
+            self.select_colour = STYLES["default"]["select colour"]
 
         if isinstance(font_colour, Colour):
             self.font_colour = font_colour
-        elif font_colour in STYLES[self.style].keys():
-            self.font_colour = STYLES[self.style][font_colour]
         else:
-            if "font colour" in STYLES[self.style].keys():
-                self.font_colour = STYLES[self.style]["font colour"]
-            else:
-                self.font_colour = STYLES["default"]["font colour"]
+            self.font_colour = STYLES["default"]["font colour"]
 
         if isinstance(outline_width, int):
             self.outline_width = outline_width
-        elif outline_width in STYLES[self.style].keys():
-            self.outline_width = STYLES[self.style][outline_width]
         else:
-            if "width" in STYLES[self.style].keys():
-                self.outline_width = STYLES[self.style]["entry width"]
-            else:
-                self.outline_width = STYLES["default"]["entry width"]
+            self.outline_width = STYLES["default"]["entry width"]
 
         if isinstance(font_size, int):
             self.font_size = font_size
-        elif font_size in STYLES[self.style].keys():
-            self.font_size = STYLES[self.style][font_size]
         else:
-            if "font size" in STYLES[self.style].keys():
-                self.font_size = STYLES[self.style]["font size"]
-            else:
-                self.font_size = STYLES["default"]["font size"]
+            self.font_size = STYLES["default"]["font size"]
 
-        if font_style in STYLES[self.style].keys():
-            self.font_style = STYLES[self.style][font_style]
-        elif isinstance(font_style, str):
+        if isinstance(font_style, str):
             self.font_style = font_style
         else:
-            if "font style" in STYLES[self.style].keys():
-                self.font_style = STYLES[self.style]["font style"]
-            else:
-                self.font_style = STYLES["default"]["font style"]
+            self.font_style = STYLES["default"]["font style"]
 
-        if font_face in STYLES[self.style].keys():
-            self.font = STYLES[self.style][font_face]
-        elif isinstance(font_face, str):
+        if isinstance(font_face, str):
             self.font = font_face
         else:
-            if "font face" in STYLES[self.style].keys():
-                self.font = STYLES[self.style]["font face"]
-            else:
-                self.font = STYLES["default"]["font face"]
+            self.font = STYLES["default"]["font face"]
 
-        if justify in STYLES[self.style].keys():
-            self.justify = STYLES[self.style][justify]
-        elif isinstance(justify, str):
+        if isinstance(justify, str):
             self.justify = justify
         else:
-            if "justify" in STYLES[self.style].keys():
-                self.justify = STYLES[self.style]["justify"]
-            else:
-                self.justify = STYLES["default"]["justify"]
+            self.justify = STYLES["default"]["justify"]
 
         self.entry = None
         self.border_type = border_relief
@@ -133,7 +88,7 @@ class Entry(GraphicsObject):
 
         self.last_graphwin = None
 
-        GraphicsObject.__init__(self, (), style=style, layer=layer, tag=tag, bounds=bounds)
+        GraphicsObject.__init__(self, (), layer=layer, tag=tag, bounds=bounds)
 
     def __repr__(self):
         if self.drawn:
@@ -234,8 +189,8 @@ class Entry(GraphicsObject):
             if self.entry:
                 if mouse_pos is not None:
                     width, height = self.get_width(), self.get_height()
-                    if (self.anchor.x - width / 2 > mouse_pos.x > self.anchor.x + width / 2) and \
-                       (self.anchor.y - height / 2 > mouse_pos.y > self.anchor.y + height / 2):
+                    if (self.anchor[0] - width / 2 > mouse_pos[0] > self.anchor[0] + width / 2) and \
+                       (self.anchor[1] - height / 2 > mouse_pos[1] > self.anchor[1] + height / 2):
                         return True
             return False
 
@@ -303,7 +258,7 @@ class Entry(GraphicsObject):
             self.entry.config(state=self.enabled)
 
     def toggle_enabled(self):
-        self.enabled = ["disabled", "normal"].index(self.enabled)
+        self.enabled = ["disabled", "normal"].index(int(self.enabled))
         if self.entry:
             self.entry.config(state=self.enabled)
 

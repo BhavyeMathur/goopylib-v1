@@ -7,7 +7,7 @@ from goopylib.constants import CURVE_INTERPOLATIONS
 
 class CurvedLine(Line):
 
-    def __init__(self, *p, style=None, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
+    def __init__(self, *p, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
                  cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, interpolation="cosine", resolution=5,
                  smooth=True, bounds_width=None, layer=0, tag=None,
                  bias=0, tension=1):  # These last two are only required for hermite interpolation
@@ -40,12 +40,12 @@ class CurvedLine(Line):
             for point in range(len(p) - 1):
                 for t in range(1, resolution + 1):
                     tn = t / (resolution + 1)
-                    x = self.points[point].x + tn * (self.points[point + 1].x - self.points[point].x)
+                    x = self.points[point][0] + tn * (self.points[point + 1][0] - self.points[point][0])
 
                     if interpolation == "cosine":
-                        new_point = Point(x, CosineInterpolation(self.points[point], self.points[point + 1], tn))
+                        new_point = [x, CosineInterpolation(self.points[point], self.points[point + 1], tn)]
                     else:
-                        new_point = Point(x, LinearInterpolation(self.points[point], self.points[point + 1], tn))
+                        new_point = [x, LinearInterpolation(self.points[point], self.points[point + 1], tn)]
 
                     self.points_copy.insert((point * (resolution + 1)) + t, new_point)
 
@@ -57,21 +57,21 @@ class CurvedLine(Line):
             for point in range(1, len(self.points) - 2):
                 for t in range(1, resolution + 1):
                     tn = t / (resolution + 1)
-                    x = self.points[point].x + tn * (self.points[point + 1].x - self.points[point].x)
+                    x = self.points[point][0] + tn * (self.points[point + 1][0] - self.points[point][0])
 
                     if interpolation == "cubic":
-                        new_point = Point(x, CubicInterpolation(self.points[point - 1], self.points[point],
-                                                                self.points[point + 1], self.points[point + 2], tn))
+                        new_point = [x, CubicInterpolation(self.points[point - 1], self.points[point],
+                                                           self.points[point + 1], self.points[point + 2], tn)]
                     else:
-                        new_point = Point(x, HermiteInterpolation(self.points[point - 1], self.points[point],
-                                                                  self.points[point + 1], self.points[point + 2], tn,
-                                                                  tension, bias))
+                        new_point = [x, HermiteInterpolation(self.points[point - 1], self.points[point],
+                                                             self.points[point + 1], self.points[point + 2], tn,
+                                                             tension, bias)]
 
                     self.points_copy.insert((point * (resolution + 1)) + t - resolution, new_point)
 
             self.points_copy = self.points_copy[1:-1]
 
-        Line.__init__(self, *self.points_copy, style=style, outline=outline, outline_width=outline_width, arrow=arrow,
+        Line.__init__(self, *self.points_copy, outline=outline, outline_width=outline_width, arrow=arrow,
                       capstyle=capstyle, joinstyle=joinstyle, cursor=cursor, arrow_shape=arrow_shape, tag=tag,
                       arrow_scale=arrow_scale, dash=dash, bounds_width=bounds_width, layer=layer)
 
@@ -83,6 +83,6 @@ class CurvedLine(Line):
 
     def _draw(self, canvas, options):
         # Converting all the coordinates to Window coordinates to account for stretching, changed coords, etc.
-        points = [canvas.to_screen(point.x, point.y) for point in self.points]
+        points = [canvas.to_screen(point[0], point[1]) for point in self.points]
 
         return canvas.create_line(points, options, smooth=self.is_smooth)  # Creating the line!

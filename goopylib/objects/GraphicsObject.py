@@ -2,7 +2,7 @@ from goopylib.styles import *
 from goopylib.constants import *
 
 from goopylib.math.PyEasing import *
-from math import cos, sin
+from math import cos, sin, atan2, degrees
 
 from goopylib.Window import Window
 
@@ -34,7 +34,7 @@ class GraphicsObject:
 
     redraw_on_frame = [[]]
 
-    def __init__(self, options=(), style=None, cursor="arrow", layer=0, bounds=None, tag=None):
+    def __init__(self, options=(), cursor="arrow", layer=0, bounds=None, tag=None):
         # options is a list of strings indicating which options are
         # legal for this object.
 
@@ -42,107 +42,95 @@ class GraphicsObject:
         #    object where it is drawn and id is the TK identifier of the
         #    drawn shape.
 
-        if not isinstance(cursor, str):
-            raise GraphicsError(f"\n\nThe cursor must be a string, not {cursor}")
-        if not cursor.lower() in CURSORS.keys():
-            raise GraphicsError(f"\n\nThe cursor for the window must be one of {list(CURSORS.keys())}, not {cursor}")
+        if cursor.lower() in CURSORS.keys():
+            if isinstance(layer, int):
+                if layer < 0:
+                    raise GraphicsError(
+                        f"\n\nGraphicsError: object layer must be greater than (or equal to) 0, not {layer}")
 
-        if not isinstance(layer, int):
-            raise GraphicsError(f"\n\nGraphicsError: object layer must be an integer greater than (or equal to) 0, "
-                                f"not {layer}")
-        if layer < 0:
-            raise GraphicsError(f"\n\nGraphicsError: object layer must be greater than (or equal to) 0, not {layer}")
+                self.id = None
 
-        self.id = None
+                # Config is the dictionary of configuration options for the widget.
+                self.config = {}
 
-        if style is None:
-            self.style = global_style
+                if "width" in options:
+                    self.text_width = self.config["width"]
+
+                self.selected_clicks = -1
+                self.selected = False
+
+                self.callbacks = {"collision": None}
+
+                # -------------------------------------------------------------------------
+                # Animation Variables
+
+                self.animation_queues = {"fill": [], "outline": [], "width": [], "resize": [], "glide": [],
+                                         "rotate": [],
+                                         "skew": [], "contrast": [], "blur": []}
+
+                self.is_animating_width = False
+                self.is_resizing = False
+                self.is_gliding = False
+                self.is_rotating = False
+                self.is_animating_fill = False
+                self.is_animating_outline = False
+                self.is_animating_skew = False
+                self.is_animating_contrast = False
+                self.is_animating_blur = False
+
+                self.blinking_data = {}
+                self.is_blinking = False
+
+                # -------------------------------------------------------------------------
+                # Other Variables
+
+                self.obstacles = {*()}
+                self.movement_lines = {*()}
+                self.movement_bounds = None
+
+                self.last_obstacle_checked_pos = None
+                self.has_object_moved = False
+
+                self.movement_lines_enabled = True
+                self.obstacles_enabled = True
+                self.allow_looping = (False, False)
+
+                self.cursor = cursor
+
+                self.is_draggable = (False, False)
+                self.is_dragging = False
+
+                self.rotation = 0
+                self.cosrotation = 1
+                self.sinrotation = 0
+                self.has_rotated = False
+
+                self.x_skew = 0
+                self.y_skew = 0
+
+                self.graphwin = None
+                self.drawn = False
+                self.layer = layer
+
+                self.bounds = bounds
+
+                prev_layer = len(GraphicsObject.object_layers) - 1
+                while layer > prev_layer:
+                    GraphicsObject.object_layers.append({*()})
+                    GraphicsObject.redraw_on_frame.append([])
+
+                GraphicsObject.object_layers[layer].add(self)
+                GraphicsObject.objects.add(self)
+
+                self.tag = tag
+                if tag is not None:
+                    GraphicsObject.tagged_objects[tag] = self
+            else:
+                raise GraphicsError(
+                    f"\n\nThe cursor for the window must be one of {list(CURSORS.keys())}, not {cursor}")
         else:
-            if style in STYLES.keys():
-                self.style = style
-            else:
-                raise GraphicsError(f"\n\nStyle argument must be one of {STYLES.keys()}, not {style}")
-
-        # Config is the dictionary of configuration options for the widget.
-        self.config = {}
-        for option in options:
-            if option not in STYLES[self.style].keys():
-                self.config[option] = STYLES["default"][option]
-            else:
-                self.config[option] = STYLES[self.style][option]
-
-        if "width" in options:
-            self.text_width = self.config["width"]
-
-        self.selected_clicks = -1
-        self.selected = False
-        self.anchor = self.get_anchor()
-
-        self.callbacks = {"collision": None}
-
-        # -------------------------------------------------------------------------
-        # Animation Variables
-
-        self.animation_queues = {"fill": [], "outline": [], "width": [], "resize": [], "glide": [], "rotate": [],
-                                 "skew": [], "contrast": [], "blur": []}
-
-        self.is_animating_width = False
-        self.is_resizing = False
-        self.is_gliding = False
-        self.is_rotating = False
-        self.is_animating_fill = False
-        self.is_animating_outline = False
-        self.is_animating_skew = False
-        self.is_animating_contrast = False
-        self.is_animating_blur = False
-
-        self.blinking_data = {}
-        self.is_blinking = False
-
-        # -------------------------------------------------------------------------
-        # Other Variables
-
-        self.obstacles = {*()}
-        self.movement_lines = {*()}
-        self.movement_bounds = None
-
-        self.last_obstacle_checked_pos = None
-        self.has_object_moved = False
-
-        self.movement_lines_enabled = True
-        self.obstacles_enabled = True
-        self.allow_looping = (False, False)
-
-        self.cursor = cursor
-
-        self.is_draggable = (False, False)
-        self.is_dragging = False
-
-        self.rotation = 0
-        self.cosrotation = 1
-        self.sinrotation = 0
-        self.has_rotated = False
-
-        self.x_skew = 0
-        self.y_skew = 0
-
-        self.graphwin = None
-        self.drawn = False
-        self.layer = layer
-
-        self.bounds = None
-        self.set_bounds(bounds)
-
-        while layer > len(GraphicsObject.object_layers) - 1:
-            GraphicsObject.object_layers.append({*()})
-            GraphicsObject.redraw_on_frame.append([])
-
-        GraphicsObject.object_layers[layer].add(self)
-        GraphicsObject.objects.add(self)
-        
-        self.tag = tag
-        if tag is not None:
-            GraphicsObject.tagged_objects[tag] = self
+            raise GraphicsError("\n\nGraphicsError: object layer must be an integer greater than (or equal to) 0, "
+                                f"not {layer}")
 
     def __repr__(self):
         return "GraphicsObject"
@@ -916,8 +904,8 @@ class GraphicsObject:
         return self
 
     def move_to_point(self, p, align="center"):
-        if not isinstance(p, Point):
-            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
+        if not isinstance(p, list):
+            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a list in the form [x, y], not {p}")
         self.move_to(p[0], p[1], align=align)
         return self
 
@@ -989,6 +977,18 @@ class GraphicsObject:
         if not (isinstance(r, int) or isinstance(r, float)):
             raise GraphicsError(f"\n\nGraphicsError: object rotation must be an integer or float, not {r}")
         self.rotate(r - self.rotation, sampling=sampling, center=center)
+        return self
+
+    def rotate_to_face(self, other, sampling="bicubic", center=None):
+        if isinstance(other, GraphicsObject):
+            self.rotate(degrees(atan2(other.anchor[1] - self.anchor[1], other.anchor[0] - self.anchor[0]))
+                        - self.rotation, sampling=sampling, center=center)
+        elif isinstance(other, list):
+            self.rotate(degrees(atan2(other[1] - self.anchor[1], other[0] - self.anchor[0]))
+                        - self.rotation, sampling=sampling, center=center)
+        else:
+            raise GraphicsError("\n\nGraphicsError: object to rotate this one to face must be another GraphicsObject or "
+                                f"a Point (list in the form [x, y]), not {other}")
         return self
 
     # Skewing transformations - these must be overriden in classes that support skewing
@@ -1070,7 +1070,7 @@ class GraphicsObject:
             initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.clone()
+            initial_pos = self.anchor.copy()
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
@@ -1112,11 +1112,11 @@ class GraphicsObject:
             initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.clone()
+            initial_pos = self.anchor.copy()
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                              "Change": [dx, 0], "EasingX": easing, "EasingY": easing}
+                          "Change": [dx, 0], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1153,7 +1153,7 @@ class GraphicsObject:
             initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.clone()
+            initial_pos = self.anchor.copy()
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
@@ -1204,7 +1204,7 @@ class GraphicsObject:
             initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.clone()
+            initial_pos = self.anchor.copy()
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
@@ -1245,7 +1245,7 @@ class GraphicsObject:
             initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.clone()
+            initial_pos = self.anchor.copy()
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
@@ -1285,7 +1285,7 @@ class GraphicsObject:
             initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.clone()
+            initial_pos = self.anchor.copy()
             start = timetime()
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
@@ -1305,8 +1305,8 @@ class GraphicsObject:
 
     def glide_to_point(self, p, time=1, easing_x=py_ease_linear(), easing_y=None, allow_duplicate=True,
                        duplicates_metric=("Time", "Final")):
-        if not isinstance(p, Point):
-            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
+        if not isinstance(p, list):
+            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a list in the form [x, y], not {p}")
         self.glide_to(x=p[0], y=p[1], time=time, easing_x=easing_x, easing_y=easing_y, allow_duplicate=allow_duplicate,
                       duplicates_metric=duplicates_metric)
         return self
@@ -2124,13 +2124,11 @@ class GraphicsObject:
         for obj in GraphicsObject.button_instances:
             if obj.graphwin == graphwin and obj.graphic == obj.clicked_graphic and obj.drawn:
                 if not obj.is_disabled:
-                    #print(0)
                     obj.graphic = obj.normal_graphic
                     obj._update_layer()
 
         for obj in GraphicsObject.cyclebutton_instances:
             if obj.graphwin == graphwin and obj.drawn and obj.autoflush:
-                #print(1)
                 if obj.is_clicked(mouse_pos):
                     obj.click()
 
@@ -2138,7 +2136,6 @@ class GraphicsObject:
             if obj.drawn and obj.graphwin == graphwin:
                 for checkbox in obj.checkboxes:
                     if checkbox.is_clicked(mouse_pos):
-                        #print(2)
                         checkbox.click()
                         obj.current_state.click()
                         obj.current_state = checkbox
@@ -2208,7 +2205,6 @@ class GraphicsObject:
                                 obj._update_layer()
 
                     elif obj.graphic != obj.normal_graphic and not obj.is_disabled:
-                        #print(obj)
                         obj.graphic = obj.normal_graphic
                         obj._update_layer()
 

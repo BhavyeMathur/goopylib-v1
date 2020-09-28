@@ -14,7 +14,7 @@ STYLES = {"default": {"fill": CHROME_YELLOW, "background": WHITE,
                       "entry width": 0, "select colour": BLUE,
 
                       # Config for Font & Text
-                      "text": "Lorem Ipsum", "justify": "center", "font face": "calibri",
+                      "text": "Lorem Ipsum", "justify": "center", "font face": "calibri", "text align": "center",
                       "font size": 10, "font style": "normal", "font colour": BLACK},
           }
 

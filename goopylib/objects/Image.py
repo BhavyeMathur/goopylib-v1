@@ -8,7 +8,6 @@ from os.path import isfile as osisfile
 from goopylib.util import GraphicsError, resource_path
 
 from goopylib.objects.GraphicsObject import GraphicsObject
-from goopylib.Point import Point
 from goopylib.constants import ALIGN_OPTIONS, IMAGE_INTERPOLATIONS
 
 
@@ -20,8 +19,8 @@ class Image(GraphicsObject):
 
     def __init__(self, p, filepath, align="center", cursor="arrow", layer=0, tag=None, bounds=None):
 
-        if not isinstance(p, Point):
-            raise GraphicsError(f"\n\nGraphicsError: Image anchor point (p) must be a Point object, not {p}")
+        if not isinstance(p, list):
+            raise GraphicsError(f"\n\nGraphicsError: Image anchor (p) must be a list in the form [x, y], not {p}")
         if align not in ALIGN_OPTIONS:
             raise GraphicsError(f"\n\nGraphicsError: Image align must be one of {ALIGN_OPTIONS}, not {align}")
 
@@ -42,10 +41,10 @@ class Image(GraphicsObject):
         self.transforming_img = self.img_PIL.copy()
 
         self.align = align
-        self.anchor = p.clone()
+        self.anchor = p.copy()
 
-        self.x = self.anchor.x
-        self.y = self.anchor.y
+        self.x = self.anchor[0]
+        self.y = self.anchor[1]
         self.initial_width = self.get_width()
         self.initial_height = self.get_height()
         self.resized = False
@@ -107,8 +106,8 @@ class Image(GraphicsObject):
         return canvas.create_image(x, y, image=self.img)
 
     def _move(self, dx, dy):
-        self.anchor.x += dx
-        self.anchor.y += dy
+        self.anchor[0] += dx
+        self.anchor[1] += dy
 
     def _rotate(self, dr, sampling=None, center=None):
         if sampling is None:
@@ -141,17 +140,14 @@ class Image(GraphicsObject):
             return False
         else:
             if self.bounds is None:
-                if not isinstance(mouse_pos, Point):
-                    raise GraphicsError(f"\n\nMouse Pos argument for is_clicked() must be a Point object, not {mouse_pos}")
-
                 if self.drawn:
                     width, height = abs(self.img.width() * self.graphwin.trans.x_scale), \
                                     abs(self.img.height() * self.graphwin.trans.y_scale)
                 else:
                     width, height = self.img.width(), self.img.height()
 
-                if (self.anchor.x - width / 2 < mouse_pos.x < self.anchor.x + width / 2) and (
-                        self.anchor.y - height / 2 < mouse_pos.y < self.anchor.y + height / 2):
+                if (self.anchor[0] - width / 2 < mouse_pos[0] < self.anchor[0] + width / 2) and (
+                        self.anchor[1] - height / 2 < mouse_pos[1] < self.anchor[1] + height / 2):
                     return True
                 else:
                     return False
@@ -360,7 +356,7 @@ class Image(GraphicsObject):
             if align != "center":
                 valid = False
                 if align == "left" or align == "right":
-                    self.move_to_x(self.anchor.x, align=align)
+                    self.move_to_x(self.anchor[0], align=align)
                 else:
                     raise GraphicsError(f"\n\nGraphicsError: Skew align must be one of ['center', 'left', 'right'], "
                                         f"not {align}")
@@ -392,7 +388,7 @@ class Image(GraphicsObject):
             if align != "center":
                 valid = False
                 if align == "top" or align == "bottom":
-                    self.move_to_y(self.anchor.y, align=align)
+                    self.move_to_y(self.anchor[1], align=align)
                 else:
                     raise GraphicsError(f"\n\)nGraphicsError: Skew align must be one of ['center', 'top', 'bottom'], "
                                         f"not {align}")
@@ -432,14 +428,14 @@ class Image(GraphicsObject):
         if y_align != "center":
             valid = False
             if y_align == "top" or y_align == "bottom":
-                self.move_to_y(self.anchor.y, align=y_align)
+                self.move_to_y(self.anchor[1], align=y_align)
             else:
                 raise GraphicsError(f"\n\nGraphicsError: Skew Y Align must be one of ['center', 'top', 'bottom'], "
                                     f"not {y_align}")
         if x_align != "center":
             valid = False
             if x_align == "left" or x_align == "right":
-                self.move_to_x(self.anchor.x, align=x_align)
+                self.move_to_x(self.anchor[0], align=x_align)
             else:
                 raise GraphicsError(f"\n\nGraphicsError: Skew X Align must be one of ['center', 'left', 'right'], "
                                     f"not {x_align}")
@@ -654,7 +650,7 @@ class Image(GraphicsObject):
     # GETTER FUNCTIONS
 
     def get_anchor(self):
-        return self.anchor.clone()
+        return self.anchor.copy()
 
     def get_width(self):
         """Returns the width of the image in pixels"""

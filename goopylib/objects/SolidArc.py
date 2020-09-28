@@ -4,7 +4,7 @@ from goopylib.objects.GraphicsObject import GraphicsObject
 import math
 
 class SolidArc(GraphicsObject):
-    def __init__(self, p, start_angle, end_angle, radius, radius2=None, style=None, outline=None, outline_width=None,
+    def __init__(self, p, start_angle, end_angle, radius, radius2=None, outline=None, outline_width=None,
                  cursor="arrow", arrow=None, resolution=10, smooth=True, layer=0, tag=None):
 
         self.start_angle = start_angle
@@ -43,7 +43,7 @@ class SolidArc(GraphicsObject):
             self.points.append(self.points[-1] + Point(x_change * math.cos(math.radians(cur_angle)),
                                                        y_change * math.sin(math.radians(cur_angle))))
 
-        GraphicsObject.__init__(self, style=style, options=["outline", "width", "fill"], tag=tag)
+        GraphicsObject.__init__(self, options=["outline", "width", "fill"], tag=tag)
 
     def _draw(self, canvas, options):
         return canvas.create_polygon(self.points, options)

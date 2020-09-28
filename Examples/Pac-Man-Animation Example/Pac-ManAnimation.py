@@ -8,13 +8,13 @@ window = Window(title="Simple Pac-Man Animation", width=600, height=200, bk_colo
 # The List argument defines what frames (img paths) to use for the animated image
 # The movement bounds define the boundaries the object can move in - in this, it is the window
 # The True after the window means that the object returns to the other side of the window once it crosses its edge
-objects = [AnimatedImage(Point(220, 100), [f"PacMan{frame}.png" for frame in range(5)], tag="PacMan",
+objects = [AnimatedImage([220, 100], [f"PacMan{frame}.png" for frame in range(5)], tag="PacMan",
                          update_time=1/15).set_movement_bounds(window, True).draw()]
 
 for index, ghost in enumerate(("Blinky", "Pinky", "Inky", "Clyde")):
     # The Animated Image parameters are the position to the draw the Animated Image & the texture file to use
     # Binding the frame keeps it synchronized with other Animated Images
-    objects.append(AnimatedImage(Point(300 + (index * 50), 100), [f"{ghost}{frame}.png" for frame in range(6)],
+    objects.append(AnimatedImage([300 + (index * 50), 100], [f"{ghost}{frame}.png" for frame in range(6)],
                                  update_time=1/15).bind_frame_to("PacMan").draw())
     # The alpha composite pastes the pupils of the ghost on top of every frame in the Animated Image
     # The get_anchor() function returns the position of an object. This draws the pupils in the same position as the ghost

@@ -1,15 +1,14 @@
 from goopylib.objects.CurvedLine import CurvedLine
-from goopylib.Point import Point
 from goopylib.util import GraphicsError
 
 import math
 
 class Arc(CurvedLine):
-    def __init__(self, p, start_angle, end_angle, radius, radius2=None, style=None, outline=None, outline_width=None,
+    def __init__(self, p, start_angle, end_angle, radius, radius2=None, outline=None, outline_width=None,
                  cursor="arrow", arrow=None, resolution=10, smooth=True, bounds_width=10, layer=0, tag=None):
 
-        if not isinstance(p, Point):
-            raise GraphicsError(f"\n\nGraphicsError: Anchor Point (p) for Arc must be a Point Object, not {p}")
+        if not isinstance(p, list):
+            raise GraphicsError(f"\n\nGraphicsError: anchor for arc (p) must be a list in the form [x, y], not {p}")
         
         if not (isinstance(start_angle, int) or isinstance(start_angle, float)):
             raise GraphicsError(f"\n\nGraphicsError: start_angle must be an integer or float, not {start_angle}")
@@ -51,13 +50,12 @@ class Arc(CurvedLine):
         x_change = self.radius1 / 2 / x_coeff
         y_change = self.radius2 / 2 / y_coeff
 
-        self.points = [p - Point(x_change/2, self.radius2 / 2)]
+        self.points = [[p[0] - x_change/2, p[1] - self.radius2 / 2]]
 
         for i in range(resolution):
             cur_angle = (i * angle_change) + start_angle
-            self.points.append(self.points[-1] + Point(x_change * math.cos(math.radians(cur_angle)),
-                                                       y_change * math.sin(math.radians(cur_angle))))
+            self.points.append([self.points[-1][0] + x_change * math.cos(math.radians(cur_angle)), self.points[-1][1] + y_change * math.sin(math.radians(cur_angle))])
 
-        CurvedLine.__init__(self, *self.points, style=style, outline=outline, outline_width=outline_width, arrow=arrow,
+        CurvedLine.__init__(self, *self.points, outline=outline, outline_width=outline_width, arrow=arrow,
                             resolution=0, interpolation="spline", smooth=smooth, bounds_width=bounds_width, layer=layer,
                             tag=tag)
