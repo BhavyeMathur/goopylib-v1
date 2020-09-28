@@ -21,7 +21,7 @@ def create_release():
 
         include_package_data=True,
 
-        version='1.1.107a11',
+        version='1.1.121a12',
         license='MIT License',
 
         description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and animations.',
@@ -31,7 +31,7 @@ def create_release():
         author='Bhavye Mathur',
         author_email='bhavyemathur@gmail.com',
         url='https://github.com/BhavyeMathur/goopylib',
-        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.106-alpha.tar.gz',
+        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.121-alpha.tar.gz',
         keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
         install_requires=['pillow'],
         project_urls={"Bug Tracker": "https://github.com/BhavyeMathur/goopylib/issues",
@@ -88,4 +88,4 @@ def setup_colours():
         f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/{name}.pyd")
 
 
-setup_colours()
+create_release()
