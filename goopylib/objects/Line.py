@@ -9,7 +9,7 @@ from math import sin, cos, radians, atan
 class Line(GraphicsObject):
 
     def __init__(self, *p, style=None, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
-                 cursor="arrow", arrow_shape=None, arrow_scale=0.5, dash=None, bounds_width=None, layer=0, tag=None):
+                 cursor="arrow", arrow_shape=None, arrow_scale=None, dash=None, bounds_width=None, layer=0, tag=None):
 
         self.points = list(p)  # The list of points that define the line segment
         for p in self.points:
@@ -22,28 +22,88 @@ class Line(GraphicsObject):
 
         self.low_x, self.low_y = None, None  # These variables are all defined in the get_size() function called below
         self.high_x, self.high_y = None, None  # They store the extreme x & y points farthest from the line's anchor
-        self.width, self.height = None, None
+        self.outline_width, self.height = None, None
 
         self.get_size()  # Calculates the Width & Height of the line
 
         self.anchor = None  # The anchor is the center of the line
         self.get_anchor()  # It is calculated as the averages of all the points in the line
 
-        GraphicsObject.__init__(self, options=["arrow", "width", "fill", "capstyle", "joinstyle", "arrowshape", "dash"],
+        GraphicsObject.__init__(self, options=["joinstyle", "arrowshape", "dash"],
                                 cursor=cursor, layer=0, tag=tag)
 
-        self.arrow_scale_coeff = arrow_scale
+        self.arrow_scale_coeff = 1 if arrow_scale is None else arrow_scale
 
-        self.set_arrow(arrow)  # Setting the options of the line: arrow, outline colour, and outline width
-        self.set_outline(outline)
-        self.set_outline_width(outline_width)
-        self.set_dash(dash)
+        if arrow is None:
+            self.arrow = STYLES["default"]["arrow"]
 
-        self.arrow_scale = self.get_outline_width() * arrow_scale
+        elif isinstance(arrow, str):
+            arrow = arrow.lower()
+            if arrow in ARROWS:  # Check if the Arrow specified is valid
+                self.arrow = arrow
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: capstyle for Line must be one of {ARROWS}, not {arrow}")
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: arrow option for Line must be one of {ARROWS}, not {arrow}")
 
-        self.set_capstyle(capstyle)  # Setting the cap & join styles of the line
-        self.set_joinstyle(joinstyle)
-        self.set_arrow_shape(arrow_shape, scale=bool(arrow_scale))
+        if outline is None:
+            self.outline = STYLES["default"]["line outline"]
+        elif isinstance(outline, Colour):  # Checking if the option is a colour
+            self.outline = outline
+        else:  # If not, raise an error
+            raise GraphicsError(f"\n\nGraphicsError: The line outline must be a Colour object , not {outline}")
+
+        if outline_width is None:
+            self.outline_width = STYLES["default"]["width"]
+        elif isinstance(outline_width, int):  # Checking if the option is an integer
+            self.outline_width = outline_width
+        else:  # If not, raise an error
+            raise GraphicsError(f"\n\nGraphicsError: The line width must be an integer, not {outline_width}")
+        self.arrow_scale = self.outline_width * self.arrow_scale_coeff
+
+        if capstyle is None:
+            self.capstyle = STYLES["default"]["capstyle"]
+        elif isinstance(capstyle, str):
+            capstyle = capstyle.lower()
+            if capstyle in CAPSTYLES:
+                self.capstyle = capstyle
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: capstyle for line must be one of {CAPSTYLES}, not {style}")
+        
+        if joinstyle is None:
+            self.joinstyle = STYLES["default"]["joinstyle"]
+        elif isinstance(joinstyle, str):
+            joinstyle = joinstyle.lower()
+            if joinstyle in JOINSTYLES:
+                self.joinstyle = joinstyle
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: joinstyle for line must be one of {JOINSTYLES}, not {joinstyle}")
+
+        if (arrow_shape is None) or isinstance(arrow_shape, list):  # Check if the Arrow arrow_shape specified is valid
+            if arrow_scale:
+                arrow_shape = arrow_shape
+                for i in range(len(arrow_shape)):
+                    arrow_shape[i] = arrow_shape[i] * self.arrow_scale  # Scaling the arrow to match the width of the line
+            self.arrow_shape = arrow_shape  # Changing the arrow
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: arrow shape for line must be a list, not {arrow_shape}")
+
+        if dash is None:  # Checking if the value is none, if it is, it becomes a solid line
+            self.dash = None
+        else:
+            if dash in DASHES:
+                self.dash = DASHES[dash]
+
+            elif isinstance(dash, list):
+                for num in dash:
+                    if 0 < num < 266 and isinstance(num, int):
+                        continue
+                    else:
+                        raise GraphicsError(f"\n\nGraphicsError: custom dash numbers must be integers within 1 & 255")
+                self.dash = dash
+            else:
+                raise GraphicsError(f"\n\nLine dash must be a tuple or a string referencing a dash "
+                                    f"(one of {DASHES.keys()}), not {dash}")
 
         self.bounds_width = None
         self.set_bounds_width(bounds_width)
@@ -65,14 +125,16 @@ class Line(GraphicsObject):
         # Converting all the coordinates to Window coordinates to account for stretching, changed coords, etc.
         points = [canvas.to_screen(point[0], point[1]) for point in self.points]
 
-        return canvas.create_line(points, options)  # Creating the line!
+        return canvas.create_line(points, arrow=self.arrow, fill=self.outline, width=self.outline_width,
+                                  capstyle=self.capstyle, joinstyle=self.joinstyle, arrowshape=self.arrow_shape,
+                                  dash=self.dash)  # Creating the line!
 
     def _move(self, dx, dy):
         for i in range(len(self.points)):  # Going through all the points in the line
             self.points[i] += [dx, dy]  # And then moving them
         self.anchor = self.get_anchor()  # Recalculating the center of the line
 
-    def _rotate(self, dr, center=None):
+    def _rotate(self, dr, scaling="bicubic", center=None):
         if center is None:
             center = self.get_anchor()  # Getting the center of rotation
 
@@ -89,9 +151,8 @@ class Line(GraphicsObject):
         self.equations = []  # The variable to store the Vector Equations of the line segments
         for line in self.segments:
             # For more information about these steps, see https://www.desmos.com/calculator/esn97hdwbe
-
             try:
-                slope = line[0].slope(line[1])  # Finding the slope of the line segment
+                slope = (line[0][1] - line[1][1]) / (line[0][0] - line[1][0]) # Finding the slope of the line segment
                 shift = - line[0][1] / slope  # Finding the x-shift
 
                 # The height of the line to get it to be the correct amount of wide when rotated
@@ -131,9 +192,11 @@ class Line(GraphicsObject):
         # To calculate the center, it simply calculates the Average of all the Points
         self.anchor = [0, 0]  # Starts the anchor at (0, 0)
         for point in self.points:
-            self.anchor += point  # Sums up all the Point values
+            self.anchor[0] += point[0]  # Sums up all the Point values
+            self.anchor[1] += point[1]
 
-        self.anchor //= len(self.points)  # Divides by number of Points
+        self.anchor[0] //= len(self.points)  # Divides by number of Points
+        self.anchor[1] //= len(self.points)
 
         return self.anchor
 
@@ -147,9 +210,9 @@ class Line(GraphicsObject):
                 self.low_x = point[0]
             elif point[0] > self.high_x:  # Checking if this point is larger
                 self.high_x = point[0]
-        self.width = abs(self.high_x - self.low_x)  # Getting the width
+        self.outline_width = abs(self.high_x - self.low_x)  # Getting the width
 
-        return self.width
+        return self.outline_width
 
     def get_height(self):
         # To calculate the height, it finds the smallest & largest y points and gets the height
@@ -167,25 +230,25 @@ class Line(GraphicsObject):
 
     # These next functions return the value from the Object's config
     def get_outline_width(self):
-        return self.config["width"]
+        return self.outline_width
 
     def get_fill(self):
-        return self.config["fill"]
+        return self.outline
 
     def get_arrow(self):
-        return self.config["arrow"]
+        return self.arrow
 
     def get_outline(self):
-        return self.config["fill"]
+        return self.outline
 
     def get_capstyle(self):
-        return self.config["capstyle"]
+        return self.capstyle
 
     def get_joinstyle(self):
-        return self.config["joinstyle"]
-    
+        return self.joinstyle
+
     def get_arrow_shape(self):
-        return self.config["arrowshape"]
+        return self.arrow_shape
 
     def get_bounds_width(self):
         return self.bounds_width
@@ -194,138 +257,82 @@ class Line(GraphicsObject):
     # SETTER FUNCTIONS
 
     def set_arrow(self, option):
-        if option is not None:  # If the Option is None, set the arrow to default arrow
-            if option.lower() not in ARROWS:  # Check if the Arrow specified is valid
-                raise GraphicsError(f"\n\nGraphicsError: capstyle for line must be one of {ARROWS}, not {option}")
-            elif option in STYLES[self.style].keys():  # Checking if the option is a key referencing the object's style
-                self._reconfig("arrow", STYLES[self.style][option])
-            else:
-                self._reconfig("arrow", option)  # Changing the arrow
+        if option.lower() in ARROWS:  # Check if the Arrow specified is valid
+            self.arrow = option
         else:
-            self._reconfig("arrow", STYLES[self.style]["arrow"])
+            raise GraphicsError(f"\n\nGraphicsError: arrow for line must be one of {ARROWS}, not {option}")
 
     # These arrow functions reference the set_arrow() function to set the arrow
     def remove_arrows(self):
         self.set_arrow("none")
 
     def set_arrow_both(self):
-        self.set_arrow("none")
+        self.set_arrow("both")
 
     def set_arrow_first(self):
-        self.set_arrow("none")
+        self.set_arrow("first")
 
     def set_arrow_last(self):
-        self.set_arrow("none")
+        self.set_arrow("last")
 
     def set_outline(self, outline):
-        if outline is not None:  # If the option is None, set the outline to the default outline
-            if isinstance(outline, Colour):  # Checking if the option is a colour
-                self._reconfig("fill", outline)
-            elif outline in STYLES[self.style].keys():  # Checking if the option is a key referencing a style
-                self._reconfig("fill", STYLES[self.style][outline])
-            else:  # If not, raise an error
-                raise GraphicsError("\n\nGraphicsError: The line outline must be either a Colour or a string referencing a "
-                                    f"colour style, not {outline}")
-        else:
-            self._reconfig("fill", STYLES[self.style]["line outline"])
+        if isinstance(outline, Colour):  # Checking if the option is a colour
+            self.outline = outline
+        else:  # If not, raise an error
+            raise GraphicsError(f"\n\nGraphicsError: The line outline must be a Colour object , not {outline}")
 
     def set_outline_width(self, outline_width):
-        if outline_width is not None:  # If the option is None, set the outline to the default width
-            if isinstance(outline_width, int):  # Checking if the option is an integer
-                self._reconfig("width", outline_width)
-            elif outline_width in STYLES[self.style].keys():  # Checking if the option is a key referencing a style
-                self._reconfig("width", STYLES[self.style][outline_width])
-            else:  # If not, raise an error
-                raise GraphicsError(f"\n\nGraphicsError: The line width must be an integer, not {outline_width}")
-        else:
-            self._reconfig("width", STYLES[self.style]["line width"])
+        if isinstance(outline_width, int):  # Checking if the option is an integer
+            self.outline_width = outline_width
+        else:  # If not, raise an error
+            raise GraphicsError(f"\n\nGraphicsError: The line width must be an integer, not {outline_width}")
 
-        self.arrow_scale = self.get_outline_width() * self.arrow_scale_coeff
+        self.arrow_scale = self.outline_width * self.arrow_scale_coeff
             
     def set_capstyle(self, style):
-        if style is not None:  # If the Option is None, set the capstyle to default capstyle
-            if style.lower() not in CAPSTYLES:  # Check if the Arrow specified is valid
-                raise GraphicsError(f"\n\nGraphicsError: capstyle for line must be one of {CAPSTYLES}, not {style}")
-            elif style in STYLES[self.style].keys():  # Checking if the style is a key referencing the object's style
-                self._reconfig("capstyle", STYLES[self.style][style])
-            else:
-                self._reconfig("capstyle", style)  # Changing the arrow
+        style = style.lower()
+        if style in CAPSTYLES:  # Check if the Arrow specified is valid
+            self.capstyle = style  # Changing the arrow
         else:
-            self._reconfig("capstyle", STYLES[self.style]["capstyle"])
+            raise GraphicsError(f"\n\nGraphicsError: capstyle for line must be one of {CAPSTYLES}, not {style}")
     
-    def set_joinstyle(self, style):
-        if style is not None:  # If the Option is None, set the joinstyle to default joinstyle
-            if style.lower() not in JOINSTYLES:  # Check if the Arrow specified is valid
-                raise GraphicsError(f"\n\nGraphicsError: joinstyle for line must be one of {JOINSTYLES}, not {style}")
-            elif style in STYLES[self.style].keys():  # Checking if the style is a key referencing the object's style
-                self._reconfig("joinstyle", STYLES[self.style][style])
-            else:
-                self._reconfig("joinstyle", style)  # Changing the arrow
+    def set_joinstyle(self, joinstyle):
+        joinstyle = joinstyle.lower()
+        if joinstyle in JOINSTYLES:  # Check if the Arrow specified is valid
+            self.joinstyle = joinstyle  # Changing the arrow
         else:
-            self._reconfig("joinstyle", STYLES[self.style]["joinstyle"])
+            raise GraphicsError(f"\n\nGraphicsError: joinstyle for line must be one of {JOINSTYLES}, not {joinstyle}")
             
     def set_arrow_shape(self, shape, scale=True):
-        if not isinstance(scale, bool):
+        if isinstance(scale, bool):
+            if isinstance(shape, list):  # Check if the Arrow shape specified is valid
+                if scale:
+                    shape = shape
+                    for i in range(len(shape)):
+                        shape[i] = shape[i] * self.arrow_scale  # Scaling the arrow to match the width of the line
+                self.arrowshape = shape  # Changing the arrow
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: arrow shape for line must be a list, not {shape}")
+        else:
             raise GraphicsError(f"\n\nGraphicsError: scale argument must be a boolean, not {scale}")
 
-        if shape is not None:  # If the option is None, set the arrow shape to default arrow shape
-            if not isinstance(shape, str):
-                if not (isinstance(shape, tuple) or isinstance(shape, list)):  # Check if the Arrow shape specified is valid
-                    raise GraphicsError("\n\nGraphicsError: arrow shape for line must be one of tuple of length 3, "
-                                        f"not {shape}")
-                elif len(shape) != 3:
-                    raise GraphicsError("\n\nGraphicsError: arrow shape for line must be one of tuple of length 3, "
-                                        f"not {shape}")
-                else:
-                    if scale:
-                        shape = list(shape)
-                        for i in range(len(shape)):
-                            shape[i] = shape[i] * self.arrow_scale  # Scaling the arrow to match the width of the line
-                        self._reconfig("arrowshape", shape)  # Changing the arrow
-                    else:
-                        self._reconfig("arrowshape", shape)  # Changing the arrow
-
-            else:  # It is a string
-                if shape in STYLES[self.style].keys():  # Checking if the style is a key referencing the object's style
-                    if scale:
-                        shape = list(STYLES[self.style][shape])
-                        for i in range(len(shape)):
-                            shape[i] = shape[i] * self.arrow_scale # Scaling the arrow to match the width of the line
-                        self._reconfig("arrowshape", shape)  # Changing the arrow
-                    else:
-                        self._reconfig("arrowshape", STYLES[self.style][shape])
-                else:
-                    raise GraphicsError("\n\nGraphicsError: arrow shape for line must be one of tuple of length 3 or a "
-                                        f"string referencing a style, not {shape}")
-        else:
-            if scale:
-                shape = list(STYLES[self.style]["arrowshape"])
-                for i in range(len(shape)):
-                    shape[i] = shape[i] * self.arrow_scale
-                self._reconfig("arrowshape", shape)  # Changing the arrow
-            else:
-                self._reconfig("arrowshape", STYLES[self.style]["arrowshape"])
-
     def set_dash(self, dash):
-        if dash is not None:  # Checking if the value is none, if it is, it becomes a solid line
-            if isinstance(dash, str):
-                if dash in STYLES[self.style].keys():
-                    self._reconfig("dash", STYLES[self.style][dash])
-                elif dash not in DASHES.keys():
-                    raise GraphicsError(f"\n\nGraphicsError: Dash must be one of {DASHES.keys()}, not {dash}")
-                else:
-                    self._reconfig("dash", DASHES[dash])
+        if dash is None:  # Checking if the value is none, if it is, it becomes a solid line
+            self.dash = None
+        else:
+            if dash in DASHES:
+                self.dash = DASHES[dash]
 
-            elif isinstance(dash, list) or isinstance(dash, tuple) or dash is None:
-                if dash is not None:
-                    for num in dash:
-                        if (not 0 < num < 266) or not isinstance(num, int):
-                            raise GraphicsError(f"\n\nGraphicsError: custom dash numbers must be integers within 1 & 255")
-                self._reconfig("dash", dash)
-
+            elif isinstance(dash, list):
+                for num in dash:
+                    if 0 < num < 266 and isinstance(num, int):
+                        continue
+                    else:
+                        raise GraphicsError(f"\n\nGraphicsError: custom dash numbers must be integers within 1 & 255")
+                self.dash = dash
             else:
                 raise GraphicsError(f"\n\nLine dash must be a tuple or a string referencing a dash "
-                                    f"(one of {DASHES.keys()}) or a style (or None for no dash), not {dash}")
+                                    f"(one of {DASHES.keys()}), not {dash}")
 
     def set_bounds_width(self, width):
         if width is None:

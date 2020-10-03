@@ -206,7 +206,25 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.121-alpha12 27th September 2020
+#### 1.1.130-alpha13 29th September-3rd October 2020
+
+* Renamed the `open` argument of the `UniformBSpline()` function to `is_open` to avoid the same name as the 
+built-in function
+* `BSpline.py` no longer uses the `Point` class for any of its functions
+
+* Fixed a bug with the `Line` class's `set_arrow_first()`, `set_arrow_last()`, & `set_arrow_both` functions removing 
+all arrows
+* The `Line` class's `set_arrow()` function now displays the correct error
+* Made the setter functions for the `Line` class run faster by getting rid of `not`s and restructuring the code
+* The `Line` class no longer uses a `GraphicsObject` config to store data opting instead for internal variables
+
+* Fixed an error with the closed `UniformBSpline()` function working incorrectly
+* Renamed the `UniformBSpline()` & `CoxDeBoorRecursion` functions to `uniform_bspline()` & `cox_de_boor_recursion` 
+respectively to conform with Python Convention & PEP 8
+
+* The `Line` class no longer uses styles
+
+#### 1.1.121-alpha12 27th-28th September 2020
 
 * Changed the if-else statements for the easing functions from `if t is not None:` to `if t is None:` and switched the
  code (from else-if and if-else) to reduce the amount of `not`s called and improve performance.

@@ -53,9 +53,6 @@ class GraphicsObject:
                 # Config is the dictionary of configuration options for the widget.
                 self.config = {}
 
-                if "width" in options:
-                    self.text_width = self.config["width"]
-
                 self.selected_clicks = -1
                 self.selected = False
 
