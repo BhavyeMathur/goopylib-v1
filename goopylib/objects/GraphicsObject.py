@@ -1220,6 +1220,8 @@ class GraphicsObject:
 
         return self
 
+
+
     def glide_to_x(self, x, time=1, easing=py_ease_linear(), allow_duplicate=True, duplicates_metric=("Time", "Final")):
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["1D Animation"]:

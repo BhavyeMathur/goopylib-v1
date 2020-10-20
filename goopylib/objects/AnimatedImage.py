@@ -16,6 +16,8 @@ class AnimatedImage(GraphicsObject):
             raise GraphicsError("\n\nGraphicsError: Frame Increment callback for Animated Image must be a function, "
                                 f"not {frame_callback}")
 
+        self.anchor = p.copy()
+
         self.frame = 0
         self.number_of_frames = len(frames)
         self.drawn_frame = 0
@@ -467,7 +469,7 @@ class AnimatedImage(GraphicsObject):
     # GETTER FUNCTIONS
 
     def get_anchor(self):
-        return self.imgs[0].get_anchor()
+        return self.anchor
 
     def get_width(self):
         return self.imgs[0].get_width()

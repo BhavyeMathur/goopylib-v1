@@ -206,6 +206,11 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
+#### 1.1.132-alpha14 4th-20th October 2020 
+
+* Fixed bug with the `AnimatedImage` class not defining its `anchor` attribute
+* Added a try & except clause for the `CBezierCurve` import statement as some people were facing errors importing it.
+
 #### 1.1.130-alpha13 29th September-3rd October 2020
 
 * Renamed the `open` argument of the `UniformBSpline()` function to `is_open` to avoid the same name as the 
