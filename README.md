@@ -206,6 +206,11 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
+#### 1.1.1134-alpha15 27th October 2020
+
+* Added a `try except` clause when importing the sound subpackage to handle for MacOS Users
+* The goopylib `__init__.py` file not longer imports everything. 
+
 #### 1.1.132-alpha14 4th-20th October 2020 
 
 * Fixed bug with the `AnimatedImage` class not defining its `anchor` attribute
