@@ -1,7 +1,7 @@
 from goopylib.imports import *
 
 """
-Textures have been designed by Freepik, https://www.freepik.com/free-vector/modern-web-design-button-collection-with-flat-design_3099377.htm
+textures have been designed by Freepik, https://www.freepik.com/free-vector/modern-web-design-button-collection-with-flat-design_3099377.htm
 
 This is a very simple program that creates a modern, light, login page which demonstrates the 
 capabilities of using Checkboxes, Entries, and Buttons. 
@@ -23,7 +23,7 @@ email_entry = Entry(Point(360, 465), 24, fill=WHITE, font_face="century gothic",
 password_entry = Entry(Point(360, 600), 24, fill=WHITE, font_face="century gothic", justify="left", font_colour=LIGHT_GREY,
                        font_size=30, prompt_text="Password", password=True).draw()
 
-# Creating the options tab. The Enter & Settings button are checkboxes too because we want to display different textures based on 2 states: register or signin
+# Creating the options tab. The Enter & Settings button are checkboxes too because we want to display different textures_other based on 2 states: register or signin
 # A checkbox takes 2 graphics: true & false
 
 # Here, we specify the first graphic (true) to be a button. A button also takes in a graphic to display which can be any other Graphics Object.
@@ -61,7 +61,7 @@ next_page = "Home Page"
 # The mainloop
 while True:
     background.set_state(options_tab.get_state())
-    enter_button.set_state(options_tab.get_state())  # Updating the textures of these checkboxes to be that of the OptionsTab
+    enter_button.set_state(options_tab.get_state())  # Updating the textures_other of these checkboxes to be that of the OptionsTab
     settings_button.set_state(options_tab.get_state())
 
     mouse_pos = window.check_left_mouse_click()  # Getting the position of a mouse click if there was one

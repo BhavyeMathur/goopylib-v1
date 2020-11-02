@@ -83,3 +83,14 @@ class RadioButton(GraphicsObject):
         elif self in GraphicsObject.radiobutton_instances:
             GraphicsObject.radiobutton_instances.remove(self)
         return self
+
+    def set_state(self, state):
+        for checkbox in self.checkboxes:
+            if self.checkboxes[state] == checkbox:
+                checkbox.click()
+                self.current_state.click()
+                self.current_state = checkbox
+                break
+
+    def get_state(self):
+        return self.checkboxes.index(self.current_state)

@@ -206,7 +206,21 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.1134-alpha15 27th October 2020
+#### 1.1.142-alpha17 1st-2nd November 2020
+
+* Fixed bug with the default Image Texture path being `textures_other/` instead of `textures/`
+* Fixed bug with every `GraphicsObject` entering an infinite loop when the user sets the objects' layer to not 0
+
+* Added `animate_resize()` and `animate_resize_factor()` functions to the `GraphicsObject` class
+* Added a `get_state()` function to the `RadioButton` class
+* You can now specify custom bounds for a `Checkbox` instance
+
+* Fixed bug with the Text object's `is_clicked()` function not working properly when the text is not center-aligned 
+* Fixed bug with the `GraphicsObject` class raising an error when you try to destroy an object twice
+
+* Added a `set_state()` function to the `RadioButton` class
+
+#### 1.1.134-alpha15 27th October 2020
 
 * Added a `try except` clause when importing the sound subpackage to handle for MacOS Users
 * The goopylib `__init__.py` file not longer imports everything. 

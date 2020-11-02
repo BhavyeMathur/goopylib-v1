@@ -101,8 +101,28 @@ class Text(GraphicsObject):
         if self.bounds is None:
             width = self.get_width()
             height = self.get_height()
-            if (self.anchor[0] - width / 2 < mouse_pos[0] < self.anchor[0] + width / 2) and \
-                    (self.anchor[1] - height / 2 < mouse_pos[1] < self.anchor[1] + height / 2):
+
+            if self.text_align == "center":
+                anchor = self.anchor
+            if self.text_align == "n":
+                anchor = [self.anchor[0], self.anchor[1] + height // 2]
+            elif self.text_align == "ne":
+                anchor = [self.anchor[0] - width // 2, self.anchor[1] + height // 2]
+            elif self.text_align == "e":
+                anchor = [self.anchor[0] - width // 2, self.anchor[1]]
+            elif self.text_align == "se":
+                anchor = [self.anchor[0] - width // 2, self.anchor[1] - height // 2]
+            elif self.text_align == "s":
+                anchor = [self.anchor[0], self.anchor[1] - height // 2]
+            elif self.text_align == "sw":
+                anchor = [self.anchor[0] + width // 2, self.anchor[1] - height // 2]
+            elif self.text_align == "w":
+                anchor = [self.anchor[0] + width // 2, self.anchor[1]]
+            elif self.text_align == "nw":
+                anchor = [self.anchor[0] + width // 2, self.anchor[1] + height // 2]
+
+            if (anchor[0] - width // 2 < mouse_pos[0] < anchor[0] + width // 2) and \
+                    (anchor[1] - height // 2 < mouse_pos[1] < anchor[1] + height // 2):
                 return True
             return False
 

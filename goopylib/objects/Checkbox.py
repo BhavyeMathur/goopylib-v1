@@ -3,9 +3,10 @@ from goopylib.util import GraphicsError
 
 class Checkbox(CycleButton):
     def __init__(self, true_graphic, false_graphic, disabled_graphic=None, autoflush=True, state=True, layer=0,
-                 tag=None):
+                 tag=None, bounds=None):
+
         super().__init__(true_graphic, false_graphic, disabled_graphic=disabled_graphic, state=int(not state),
-                         layer=layer, autoflush=autoflush, tag=tag)
+                         layer=layer, autoflush=autoflush, tag=tag, bounds=bounds)
         self.bound_objects = {*()}
 
     def __repr__(self):

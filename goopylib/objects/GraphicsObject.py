@@ -13,7 +13,7 @@ class GraphicsObject:
     blinking_objects = {*()}
     resizing_objects = {*()}
     animating_objects = {"gliding": [], "rotating": [], "fill": [], "outline": [], "width": [],
-                         "skew": [], "contrast": [], "blur": []}
+                         "skew": [], "contrast": [], "blur": [], "resizing": []}
 
     objects = {*()}
 
@@ -62,13 +62,14 @@ class GraphicsObject:
                 # Animation Variables
 
                 self.animation_queues = {"fill": [], "outline": [], "width": [], "resize": [], "glide": [],
-                                         "rotate": [],
+                                         "rotate": [], "resizing": [],
                                          "skew": [], "contrast": [], "blur": []}
 
                 self.is_animating_width = False
                 self.is_resizing = False
                 self.is_gliding = False
                 self.is_rotating = False
+                self.is_resizing = False
                 self.is_animating_fill = False
                 self.is_animating_outline = False
                 self.is_animating_skew = False
@@ -115,6 +116,7 @@ class GraphicsObject:
                 while layer > prev_layer:
                     GraphicsObject.object_layers.append({*()})
                     GraphicsObject.redraw_on_frame.append([])
+                    prev_layer += 1
 
                 GraphicsObject.object_layers[layer].add(self)
                 GraphicsObject.objects.add(self)
@@ -261,8 +263,8 @@ class GraphicsObject:
         return self
 
     def destroy(self):
-        GraphicsObject.objects.remove(self)
-        GraphicsObject.object_layers[self.layer].remove(self)
+        GraphicsObject.objects.discard(self)
+        GraphicsObject.object_layers[self.layer].discard(self)
         GraphicsObject.draggable_objects.discard(self)
         GraphicsObject.cursor_objects.discard(self)
 
@@ -1064,13 +1066,13 @@ class GraphicsObject:
                                 f"(integer or float), not {time}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.copy()
+            initial = self.anchor.copy()
             start = timetime()
 
-        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
+        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial,
                           "Change": [dx, dy], "EasingX": easing_x, "EasingY": easing_y}
 
         if not allow_duplicate:
@@ -1106,13 +1108,13 @@ class GraphicsObject:
                                 f"not {allow_duplicate}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.copy()
+            initial = self.anchor.copy()
             start = timetime()
 
-        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
+        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial,
                           "Change": [dx, 0], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
@@ -1147,13 +1149,13 @@ class GraphicsObject:
                                 f"not {allow_duplicate}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.copy()
+            initial = self.anchor.copy()
             start = timetime()
 
-        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
+        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial,
                           "Change": [0, dy], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
@@ -1198,14 +1200,14 @@ class GraphicsObject:
                                 f"(integer or float), not {time}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.copy()
+            initial = self.anchor.copy()
             start = timetime()
 
-        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": [x - initial_pos[0], y - initial_pos[1]], "EasingX": easing_x,
+        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial,
+                          "Change": [x - initial[0], y - initial[1]], "EasingX": easing_x,
                           "EasingY": easing_y}
 
         if not allow_duplicate:
@@ -1219,8 +1221,6 @@ class GraphicsObject:
             GraphicsObject.animating_objects["gliding"].append(self)
 
         return self
-
-
 
     def glide_to_x(self, x, time=1, easing=py_ease_linear(), allow_duplicate=True, duplicates_metric=("Time", "Final")):
         for metric in duplicates_metric:
@@ -1241,14 +1241,14 @@ class GraphicsObject:
                                 f"not {allow_duplicate}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.copy()
+            initial = self.anchor.copy()
             start = timetime()
 
-        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": [x - initial_pos[0], 0], "EasingX": easing, "EasingY": easing}
+        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial,
+                          "Change": [x - initial[0], 0], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1281,14 +1281,14 @@ class GraphicsObject:
                                 f"not {allow_duplicate}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial_pos = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
-            initial_pos = self.anchor.copy()
+            initial = self.anchor.copy()
             start = timetime()
 
-        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_pos,
-                          "Change": [0, y - initial_pos[1]], "EasingX": easing, "EasingY": easing}
+        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial,
+                          "Change": [0, y - initial[1]], "EasingX": easing, "EasingY": easing}
 
         if not allow_duplicate:
             if not self.check_animation_exists(self.animation_queues["glide"], animation_data, duplicates_metric):
@@ -1525,7 +1525,7 @@ class GraphicsObject:
 
         for animation in self.animation_queues["width"]:
             start += animation["Time"]
-            initial_pos = animation["Initial"] + animation["Change"]
+            initial = animation["Initial"] + animation["Change"]
 
         animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial_width,
                           "Change": width_change, "Easing": easing}
@@ -1678,6 +1678,108 @@ class GraphicsObject:
         return self
 
     # Image Specific Functions
+    def animate_resize(self, x, y, time=1, easing_x=py_ease_linear(), easing_y=None, allow_duplicate=True,
+              duplicates_metric=("Time", "Initial", "Change")):
+        for metric in duplicates_metric:
+            if metric not in DUPLICATES_METRICS["2D Animation"]:
+                raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                    f"{DUPLICATES_METRICS['2D Animation']}, not {metric}")
+
+        if easing_y is None:
+            easing_y = easing_x
+
+        if not (isinstance(x, int) or isinstance(x, float)):
+            raise GraphicsError("\n\nThe x resize value for the object (x) must be a number "
+                                f"(integer or float), not {x}")
+        if not (isinstance(y, int) or isinstance(y, float)):
+            raise GraphicsError("\n\nThe y resize value for the object (y) must be a number "
+                                f"(integer or float), not {y}")
+
+        if not callable(easing_x):
+            raise GraphicsError(f"\n\nThe X Easing Function Provided ({easing_x}) is not a valid Function")
+        if not callable(easing_y):
+            raise GraphicsError(f"\n\nThe Y Easing Function Provided ({easing_y}) is not a valid Function")
+        if not isinstance(allow_duplicate, bool):
+            raise GraphicsError(f"\n\nGraphicsError: allow_duplicate argument for resizing must be a boolean, "
+                                f"not {allow_duplicate}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nThe time to resize the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+
+        if len(self.animation_queues["resizing"]) > 0:
+            initial = [self.animation_queues["resizing"][-1]["Initial"][0] + self.animation_queues["resizing"][-1]["Change"][0],
+                       self.animation_queues["resizing"][-1]["Initial"][1] + self.animation_queues["resizing"][-1]["Change"][1]]
+            start = self.animation_queues["resizing"][-1]["Start"] + self.animation_queues["resizing"][-1]["Time"]
+        else:
+            initial = [self.get_width(), self.get_height()]
+            start = timetime()
+
+        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial,
+                          "Change": [x, y], "EasingX": easing_x, "EasingY": easing_y}
+
+        if not allow_duplicate:
+            if not self.check_animation_exists(self.animation_queues["resizing"], animation_data, duplicates_metric):
+                self.animation_queues["resizing"].append(animation_data)
+        else:
+            self.animation_queues["resizing"].append(animation_data)
+
+        if self not in GraphicsObject.animating_objects["resizing"]:
+            self.is_resizing = True
+            GraphicsObject.animating_objects["resizing"].append(self)
+
+        return self
+
+    def animate_resize_factor(self, x, y, time=1, easing_x=py_ease_linear(), easing_y=None, allow_duplicate=True,
+              duplicates_metric=("Time", "Initial", "Change")):
+        for metric in duplicates_metric:
+            if metric not in DUPLICATES_METRICS["2D Animation"]:
+                raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
+                                    f"{DUPLICATES_METRICS['2D Animation']}, not {metric}")
+
+        if easing_y is None:
+            easing_y = easing_x
+
+        if not (isinstance(x, int) or isinstance(x, float)):
+            raise GraphicsError("\n\nThe x resize value for the object (x) must be a number "
+                                f"(integer or float), not {x}")
+        if not (isinstance(y, int) or isinstance(y, float)):
+            raise GraphicsError("\n\nThe y resize value for the object (y) must be a number "
+                                f"(integer or float), not {y}")
+
+        if not callable(easing_x):
+            raise GraphicsError(f"\n\nThe X Easing Function Provided ({easing_x}) is not a valid Function")
+        if not callable(easing_y):
+            raise GraphicsError(f"\n\nThe Y Easing Function Provided ({easing_y}) is not a valid Function")
+        if not isinstance(allow_duplicate, bool):
+            raise GraphicsError(f"\n\nGraphicsError: allow_duplicate argument for resizing must be a boolean, "
+                                f"not {allow_duplicate}")
+        if not (isinstance(time, int) or isinstance(time, float)):
+            raise GraphicsError("\n\nThe time to resize the object for (time) must be a number "
+                                f"(integer or float), not {time}")
+
+        if len(self.animation_queues["resizing"]) > 0:
+            initial = [self.animation_queues["resizing"][-1]["Initial"][0] + self.animation_queues["resizing"][-1]["Change"][0],
+                       self.animation_queues["resizing"][-1]["Initial"][1] + self.animation_queues["resizing"][-1]["Change"][1]]
+            start = self.animation_queues["resizing"][-1]["Start"] + self.animation_queues["resizing"][-1]["Time"]
+        else:
+            initial = [self.get_width(), self.get_height()]
+            start = timetime()
+
+        animation_data = {"Time": time, "Start": start, "Update": start, "Initial": initial,
+                          "Change": [(initial[0] * x) - initial[0], (initial[1] * y) - initial[1]], "EasingX": easing_x, "EasingY": easing_y}
+
+        if not allow_duplicate:
+            if not self.check_animation_exists(self.animation_queues["resizing"], animation_data, duplicates_metric):
+                self.animation_queues["resizing"].append(animation_data)
+        else:
+            self.animation_queues["resizing"].append(animation_data)
+
+        if self not in GraphicsObject.animating_objects["resizing"]:
+            self.is_resizing = True
+            GraphicsObject.animating_objects["resizing"].append(self)
+
+        return self
+    
     def animate_change_contrast(self, contrast_change, time=1, easing=py_ease_linear(), allow_duplicate=True,
                                 duplicates_metric=("Time", "Initial", "Change")):
         if isinstance(self, Image):
@@ -2075,6 +2177,30 @@ class GraphicsObject:
                             "Change"] * per)
                     obj.animation_queues["contrast"][0]["Update"] = timetime()
 
+        for obj in GraphicsObject.animating_objects["resizing"]:
+            if obj.graphwin == graphwin and obj.drawn:
+                if t - obj.animation_queues["resizing"][0]["Start"] >= obj.animation_queues["resizing"][0]["Time"]:
+                    obj.resize(
+                        obj.animation_queues["resizing"][0]["Initial"][0] + obj.animation_queues["resizing"][0]["Change"][0],
+                        obj.animation_queues["resizing"][0]["Initial"][1] + obj.animation_queues["resizing"][0]["Change"][1])
+
+                    obj.animation_queues["resizing"].pop(0)  # Remove the object from the resizing queue
+                    if len(obj.animation_queues["resizing"]) == 0:
+                        obj.is_resizing = False
+                        GraphicsObject.animating_objects["resizing"].remove(obj)
+                else:
+                    perX = obj.animation_queues["resizing"][0]["EasingX"](
+                        (t - obj.animation_queues["resizing"][0]['Start']) / obj.animation_queues["resizing"][0]['Time'])
+                    perY = obj.animation_queues["resizing"][0]["EasingY"](
+                        (t - obj.animation_queues["resizing"][0]['Start']) / obj.animation_queues["resizing"][0]['Time'])
+
+                    obj.resize(obj.animation_queues["resizing"][0]["Initial"][0] + obj.animation_queues["resizing"][0][
+                        "Change"][0] * perX,
+                                obj.animation_queues["resizing"][0]["Initial"][1] + obj.animation_queues["resizing"][0][
+                                    "Change"][1] * perY)
+
+                    obj.animation_queues["resizing"][0]["Update"] = timetime()
+        
         for obj in GraphicsObject.blinking_objects:
             if obj.graphwin == graphwin and obj.is_blinking:
                 if t - obj.blinking_data["last blink"] > obj.blinking_data["interval"]:
