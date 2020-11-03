@@ -141,13 +141,13 @@ class Image(GraphicsObject):
         else:
             if self.bounds is None:
                 if self.drawn:
-                    width, height = abs(self.img.width() * self.graphwin.trans.x_scale), \
-                                    abs(self.img.height() * self.graphwin.trans.y_scale)
+                    width, height = abs(self.img.width() * self.graphwin.trans.x_scale) // 2, \
+                                    abs(self.img.height() * self.graphwin.trans.y_scale) // 2
                 else:
-                    width, height = self.img.width(), self.img.height()
+                    width, height = self.img.width() // 2, self.img.height() // 2
 
-                if (self.anchor[0] - width / 2 < mouse_pos[0] < self.anchor[0] + width / 2) and (
-                        self.anchor[1] - height / 2 < mouse_pos[1] < self.anchor[1] + height / 2):
+                if (self.anchor[0] - width < mouse_pos[0] < self.anchor[0] + width) and (
+                        self.anchor[1] - height < mouse_pos[1] < self.anchor[1] + height):
                     return True
                 else:
                     return False

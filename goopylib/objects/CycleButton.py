@@ -17,6 +17,20 @@ class CycleButton(GraphicsObject):
 
         self.graphic = states[state]
 
+        self.number_of_states = len(self.states)
+
+        number_of_states = 0
+        self.anchor = [0, 0]
+        for state in self.states:
+            state_anchor = state.get_anchor()
+            if state_anchor is not None:
+                self.anchor[0] += state_anchor[0]
+                self.anchor[1] += state_anchor[1]
+                number_of_states += 1
+
+        if number_of_states != 0:
+            self.anchor = [self.anchor[0] // number_of_states, self.anchor[1] // number_of_states]
+
         GraphicsObject.__init__(self, (), tag=tag, bounds=bounds)
         GraphicsObject.cyclebutton_instances.add(self)
 
@@ -29,6 +43,12 @@ class CycleButton(GraphicsObject):
     def __iter__(self):
         for state in self.states:
             yield state
+
+    def __getitem__(self, item):
+        return self.states[item]
+
+    def __len__(self):
+        return self.number_of_states
 
     def _draw(self, canvas=None, options=None):
         self.states[self.state].draw(canvas, _internal_call=True)
@@ -75,6 +95,8 @@ class CycleButton(GraphicsObject):
             self.disabled_graphic.rotate(dr, sampling=sampling, center=center)
 
     def _move(self, dx, dy):
+        self.anchor[0] += dx
+        self.anchor[1] += dy
         for graphic in self.states:
             graphic.move(dx, dy)
         if self.disabled_graphic is not None:
@@ -227,16 +249,47 @@ class CycleButton(GraphicsObject):
 
     def add_state(self, state):
         self.states.append(state)
+        self.number_of_states += 1
+        number_of_states = 0
+        self.anchor = [0, 0]
+        for state in self.states:
+            state_anchor = state.get_anchor()
+            if state_anchor is not None:
+                self.anchor[0] += state_anchor[0]
+                self.anchor[1] += state_anchor[1]
+                number_of_states += 1
+
+        self.anchor = [self.anchor[0] // number_of_states, self.anchor[1] // number_of_states]
         return self
 
     def remove_state(self, state):
-        if state not in self.states:
-            raise GraphicsError("\n\nThe state to remove is not an existing state of this cycle button")
+        self.number_of_states -= 1
+        number_of_states = 0
+        self.anchor = [0, 0]
+        for state in self.states:
+            state_anchor = state.get_anchor()
+            if state_anchor is not None:
+                self.anchor[0] += state_anchor[0]
+                self.anchor[1] += state_anchor[1]
+                number_of_states += 1
+
+        self.anchor = [self.anchor[0] // number_of_states, self.anchor[1] // number_of_states]
 
         self.states.remove(state)
         return self
 
     def pop_state(self, index):
+        self.number_of_states -= 1
+        number_of_states = 0
+        self.anchor = [0, 0]
+        for state in self.states:
+            state_anchor = state.get_anchor()
+            if state_anchor is not None:
+                self.anchor[0] += state_anchor[0]
+                self.anchor[1] += state_anchor[1]
+                number_of_states += 1
+
+        self.anchor = [self.anchor[0] // number_of_states, self.anchor[1] // number_of_states]
         return self.states.pop(index)
 
     def set_object(self, obj):
@@ -269,7 +322,7 @@ class CycleButton(GraphicsObject):
     # GETTER FUNCTIONS
 
     def get_anchor(self):
-        return self.graphic.anchor
+        return self.graphic.get_anchor()
 
     def get_state(self):
         return self.state

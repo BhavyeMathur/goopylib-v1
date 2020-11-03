@@ -206,6 +206,35 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
+#### 1.1.158-alpha18 3rd November 2020
+
+* The `is_clicked()` function of the `GraphicsObject` class returns whether or not the object's `bounds` were clicked. 
+If it has no bounds, it returns `False`
+
+* Made the `RadioButton` class an iterable
+* You can now use the `len()` function on `RadioButton` and `CycleButton` objects
+* The `RadioButton` and `CycleButton` classes are now subscriptable
+* Added an `anchor` attribute to the `CycleButton` class to support gliding
+
+* The `RadioButton` and `CycleButton` classes now support movement and gliding functions
+* The `get_anchor()` function of the `CycleButton` class now returns the value from its states' `get_anchor()` function,
+ not the `anchor` attribute itself
+ 
+ * The `is_clicked()` function in the `Image()` class now uses integer division (`//`) rather than float division (`/`)
+  to make it slightly faster and also pre-calculates the divisions to perform half the division operations
+  
+ * Fixed bug with the `RadioButton` & `CycleButton` class not changing their anchors when moving
+ * Fixed bug with all the `GraphicsObject`glide functions adding 2 lists together instead of their elements
+ * The `RadioButton` class now raises an error if the user has specified 0 states
+ 
+ * Added a `get_anchor()` function to the `RadioButton` class
+ * Fixed bug with `Button` objects not defining their `anchor` during the initialization
+ * The `change_graphic()` function of the `Button` class now allows you to set graphics to `None`
+ 
+ * The `GraphicObject` class now raises an error if the user tries to glide an object which does not support it
+ * Renamed the `allow_only_numeric()` function of the `Entry` to `allow_only_positive_integer()` and added 2 new 
+ functions: `allow_only_numeric()` and `allow_only_integer()`
+
 #### 1.1.142-alpha17 1st-2nd November 2020
 
 * Fixed bug with the default Image Texture path being `textures_other/` instead of `textures/`

@@ -1039,6 +1039,10 @@ class GraphicsObject:
     # Object Gliding Functions
     def glide(self, dx, dy, time=1, easing_x=py_ease_linear(), easing_y=None, allow_duplicate=True,
               duplicates_metric=("Time", "Initial", "Change")):
+
+        if self.get_anchor() is None:
+            raise GraphicsError("\n\nGraphicsError: gliding functions unsupported for this object")
+
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["2D Animation"]:
                 raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
@@ -1066,7 +1070,9 @@ class GraphicsObject:
                                 f"(integer or float), not {time}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = [
+                self.animation_queues["glide"][-1]["Initial"][0] + self.animation_queues["glide"][-1]["Change"][0],
+                self.animation_queues["glide"][-1]["Initial"][1] + self.animation_queues["glide"][-1]["Change"][1]]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
             initial = self.anchor.copy()
@@ -1090,6 +1096,9 @@ class GraphicsObject:
     def glide_x(self, dx, time=1, easing=py_ease_linear(), allow_duplicate=True,
                 duplicates_metric=("Time", "Initial", "Change")):
 
+        if self.get_anchor() is None:
+            raise GraphicsError("\n\nGraphicsError: gliding functions unsupported for this object")
+
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["1D Animation"]:
                 raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
@@ -1108,7 +1117,9 @@ class GraphicsObject:
                                 f"not {allow_duplicate}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = [
+                self.animation_queues["glide"][-1]["Initial"][0] + self.animation_queues["glide"][-1]["Change"][0],
+                self.animation_queues["glide"][-1]["Initial"][1] + self.animation_queues["glide"][-1]["Change"][1]]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
             initial = self.anchor.copy()
@@ -1131,6 +1142,10 @@ class GraphicsObject:
 
     def glide_y(self, dy, time=1, easing=py_ease_linear(), allow_duplicate=True,
                 duplicates_metric=("Time", "Initial", "Change")):
+
+        if self.get_anchor() is None:
+            raise GraphicsError("\n\nGraphicsError: gliding functions unsupported for this object")
+
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["1D Animation"]:
                 raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
@@ -1149,7 +1164,9 @@ class GraphicsObject:
                                 f"not {allow_duplicate}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = [
+                self.animation_queues["glide"][-1]["Initial"][0] + self.animation_queues["glide"][-1]["Change"][0],
+                self.animation_queues["glide"][-1]["Initial"][1] + self.animation_queues["glide"][-1]["Change"][1]]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
             initial = self.anchor.copy()
@@ -1172,6 +1189,9 @@ class GraphicsObject:
 
     def glide_to(self, x, y, time=1, easing_x=py_ease_linear(), easing_y=None, allow_duplicate=True,
                  duplicates_metric=("Time", "Final")):
+
+        if self.get_anchor() is None:
+            raise GraphicsError("\n\nGraphicsError: gliding functions unsupported for this object")
 
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["2D Animation"]:
@@ -1200,7 +1220,9 @@ class GraphicsObject:
                                 f"(integer or float), not {time}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = [
+                self.animation_queues["glide"][-1]["Initial"][0] + self.animation_queues["glide"][-1]["Change"][0],
+                self.animation_queues["glide"][-1]["Initial"][1] + self.animation_queues["glide"][-1]["Change"][1]]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
             initial = self.anchor.copy()
@@ -1223,6 +1245,9 @@ class GraphicsObject:
         return self
 
     def glide_to_x(self, x, time=1, easing=py_ease_linear(), allow_duplicate=True, duplicates_metric=("Time", "Final")):
+        if self.get_anchor() is None:
+            raise GraphicsError("\n\nGraphicsError: gliding functions unsupported for this object")
+
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["1D Animation"]:
                 raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
@@ -1241,7 +1266,9 @@ class GraphicsObject:
                                 f"not {allow_duplicate}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = [
+                self.animation_queues["glide"][-1]["Initial"][0] + self.animation_queues["glide"][-1]["Change"][0],
+                self.animation_queues["glide"][-1]["Initial"][1] + self.animation_queues["glide"][-1]["Change"][1]]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
             initial = self.anchor.copy()
@@ -1263,6 +1290,9 @@ class GraphicsObject:
         return self
 
     def glide_to_y(self, y, time=1, easing=py_ease_linear(), allow_duplicate=True, duplicates_metric=("Time", "Final")):
+        if self.get_anchor() is None:
+            raise GraphicsError("\n\nGraphicsError: gliding functions unsupported for this object")
+
         for metric in duplicates_metric:
             if metric not in DUPLICATES_METRICS["1D Animation"]:
                 raise GraphicsError("\n\nGraphicsError: Metric in duplicates_metric must be one of "
@@ -1281,7 +1311,8 @@ class GraphicsObject:
                                 f"not {allow_duplicate}")
 
         if len(self.animation_queues["glide"]) > 0:
-            initial = self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1]["Change"]
+            initial = [self.animation_queues["glide"][-1]["Initial"][0] + self.animation_queues["glide"][-1]["Change"][0],
+                       self.animation_queues["glide"][-1]["Initial"][1] + self.animation_queues["glide"][-1]["Change"][1]]
             start = self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1]["Time"]
         else:
             initial = self.anchor.copy()
@@ -1988,7 +2019,10 @@ class GraphicsObject:
         return selected or self.selected_clicks == self.graphwin.total_left_mouse_clicks
 
     def is_clicked(self, mouse_pos):
-        return False
+        if self.bounds is None:
+            return False
+        else:
+            return self.bounds.is_clicked(mouse_pos)
 
     # -------------------------------------------------------------------------
     # STATIC METHODS

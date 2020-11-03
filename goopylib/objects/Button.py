@@ -29,6 +29,7 @@ class Button(GraphicsObject):
             self.disabled_graphic_given = False
 
         self.graphic = self.normal_graphic
+        self.anchor = self.graphic.anchor
         self.drawn_graphic = self.graphic
 
         self.label = label
@@ -52,7 +53,7 @@ class Button(GraphicsObject):
             self.label.draw(canvas, _internal_call=True)
 
     def destroy(self):
-        GraphicsObject.objects.remove(self)
+        GraphicsObject.objects.discard(self)
         GraphicsObject.object_layers[self.layer].discard(self)
         GraphicsObject.draggable_objects.discard(self)
         GraphicsObject.cursor_objects.discard(self)
@@ -160,18 +161,18 @@ class Button(GraphicsObject):
         else:
             self.disable()
 
-    def change_graphic(self, graphic=None, hover_graphic=None, clicked_graphic=None, disabled_graphic=None, label=None):
+    def change_graphic(self, graphic=0, hover_graphic=0, clicked_graphic=0, disabled_graphic=0, label=0):
         self.undraw()
-        if hover_graphic is not None:
+        if hover_graphic != 0:
             self.hover_graphic = hover_graphic
-        if graphic is not None:
+        if graphic != 0:
             self.normal_graphic = graphic
-        if clicked_graphic is not None:
+        if clicked_graphic != 0:
             self.clicked_graphic = clicked_graphic
-        if disabled_graphic is not None:
+        if disabled_graphic != 0:
             self.disabled_graphic = disabled_graphic
 
-        if label is not None:
+        if label != 0:
             self.label = label
 
         self.draw(self.graphwin)

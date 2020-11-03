@@ -5,25 +5,50 @@ from goopylib.util import GraphicsError
 class RadioButton(GraphicsObject):
 
     def __init__(self, *checkboxes, state=0, cursor="arrow", layer=0, tag=None, autoflush=True):
-        for obj in checkboxes:
-            if not isinstance(obj, Checkbox):
-                raise GraphicsError(f"\n\nGraphicsError: All Radio Button states must be Checkboxes, not {obj}")
-            if obj in GraphicsObject.cyclebutton_instances:
-                GraphicsObject.cyclebutton_instances.remove(obj)
-            obj.set_state(False)
+        if len(checkboxes) > 0:
+            for obj in checkboxes:
+                if not isinstance(obj, Checkbox):
+                    raise GraphicsError(f"\n\nGraphicsError: All Radio Button states must be Checkboxes, not {obj}")
+                if obj in GraphicsObject.cyclebutton_instances:
+                    GraphicsObject.cyclebutton_instances.remove(obj)
+                obj.set_state(False)
 
-        self.checkboxes = checkboxes
+            self.checkboxes = checkboxes
 
-        super().__init__(options=(), cursor=cursor, layer=layer, tag=tag)
-        if autoflush:
-            GraphicsObject.radiobutton_instances.add(self)
+            super().__init__(options=(), cursor=cursor, layer=layer, tag=tag)
+            if autoflush:
+                GraphicsObject.radiobutton_instances.add(self)
 
-        self.state = state
+            self.state = state
 
-        self.current_state = self.checkboxes[self.state].set_state(True)
+            number_of_states = 0
+            self.anchor = [0, 0]
+            for state in self.checkboxes:
+                state_anchor = state.get_anchor()
+                if state_anchor is not None:
+                    self.anchor[0] += state_anchor[0]
+                    self.anchor[1] += state_anchor[1]
+                    number_of_states += 1
+
+            if number_of_states != 0:
+                self.anchor = [self.anchor[0] // number_of_states, self.anchor[1] // number_of_states]
+
+            self.current_state = self.checkboxes[self.state].set_state(True)
+        else:
+            raise GraphicsError("\n\nGraphicsError: RadioButton must have at least 1 state, not 0")
 
     def __repr__(self):
         return f"RadioButton({self.checkboxes[self.state]} and {len(self.checkboxes) - 1} others)"
+
+    def __iter__(self):
+        for state in self.checkboxes:
+            yield state
+
+    def __len__(self):
+        return len(self.checkboxes)
+
+    def __getitem__(self, item):
+        return self.checkboxes[item]
 
     def _draw(self, canvas, options):
         for checkbox in self.checkboxes:
@@ -63,8 +88,13 @@ class RadioButton(GraphicsObject):
             checkbox.rotate(dr, sampling=sampling, center=center)
 
     def _move(self, dx, dy):
+        self.anchor[0] += dx
+        self.anchor[1] += dy
         for checkbox in self.checkboxes:
             checkbox.move(dx, dy)
+
+    def get_anchor(self):
+        return self.anchor
 
     def is_clicked(self, mouse_pos):
         if self.bounds is None:
@@ -94,3 +124,6 @@ class RadioButton(GraphicsObject):
 
     def get_state(self):
         return self.checkboxes.index(self.current_state)
+
+    def get_object(self):
+        return self.current_state
