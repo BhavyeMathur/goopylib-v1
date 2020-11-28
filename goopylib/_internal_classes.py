@@ -38,8 +38,8 @@ class VectorEquation:
 
     def is_clicked(self, pos):
         if pos is not None:
-            x = pos.x
-            y = pos.y
+            x = pos[0]
+            y = pos[1]
             return eval(self.equation)
     
     def check_on_edge(self, pos):

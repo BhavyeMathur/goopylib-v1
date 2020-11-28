@@ -206,6 +206,36 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
+#### 1.1.176-alpha19 4th-27th November 2020
+
+* You can now use the `set_text()` function for `Entry` objects even if the `Entry` hasn't been drawn
+* Fixed the `RandomColourRGB()` function to no longer raise errors if the user hasn't specified the RGB values
+* Optimized the error checking in the `RandomColourRGB()` & `RandomGreyscale()` functions by reducing the number of 
+`not` & `!=`
+
+* Simplified the `RandomColourCMYK()` function and optimized it like with the `RandomColourRGB()` one
+* The `RandomColourHex()` function now works if the user hasn't supplied hex values for r, g, & b and optimized the 
+function to execute faster
+
+* Added a new lists to contain all of `GREENS`, `PURPLES`, etc. and for `WARM COLOURS` and `COOL COLOURS`
+* Added a list of all goopylib colours objects
+
+* Added HSV colours to goopylib: a `ColourHSV` class & `RandomColourHSV()` function
+* Changed all the `GraphicsError`s in `colours.py` to be raised with a `"GraphicsError:"` prefix
+* The `ColourCMYK` class is now printed as `"cmyk c%, m%, y%, k%"` rather than the previous `"cmyk c, m, y, k"`
+ 
+* The Internal goopylib classes no longer use the `Point` class in favour of an iterable
+* Added a few more (7) colour definitions to complete the existing colour scales
+* Added HSL colours to goopylib: a `ColourHSL` class & `RandomColourHSL()` function
+
+* Renamed all the functions inside `colours.py` to follow the Python naming convention
+* Added American spelling (`color`) equivalents of everything in `colours.py` which references the original functions
+* Renamed the `blend_BLENDINGTYPE()` functions to `blend_colour_BLENDINGTYPE()` and added their American equivalents.
+
+* Moved the `random` module's import statement above the `goopylib.math.Interpolations` import statement in `colours.py` 
+to abide by PEP8
+* Created a `color.py` file which simply imports everything from `colours.py`
+
 #### 1.1.158-alpha18 3rd November 2020
 
 * The `is_clicked()` function of the `GraphicsObject` class returns whether or not the object's `bounds` were clicked. 

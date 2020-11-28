@@ -348,8 +348,7 @@ class Entry(GraphicsObject):
         return other
 
     def set_text(self, t):
-        self.entry.delete(0, tkEND)
-        self.entry.insert(0, str(t))
+        self.text.set(t)
         self._update_layer()
         return self
 

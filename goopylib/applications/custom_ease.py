@@ -103,7 +103,7 @@ def create_custom_ease():
     delete_dropdown = Button(Image(Point(0, 0), f"{path}DeleteDropdown.png"),
                              Image(Point(0, 0), f"{path}DeleteDropdownHover.png"))
 
-    colour_grad = ColourGradient(LIGHTER_VIOLET, DARKEST_VIOLET, 100)
+    colour_grad = colour_gradient(LIGHTER_VIOLET, DARKEST_VIOLET, 100)
 
     resolution = 2
 
