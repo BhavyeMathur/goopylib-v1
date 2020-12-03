@@ -4,6 +4,7 @@
 PolygonTriangulation.fla
 sound_test.py
 triangulation_test.py
+test.py
 dist/
 build/
 goopylib.egg-info/

@@ -479,16 +479,16 @@ static PyObject* BezierCurve_rational_bezier_curve(PyObject* self, PyObject* arg
 
 
 static PyMethodDef CBezierCurve_funcs[] = {
-    {"factorial", (PyCFunction)BezierCurve_factorial, METH_VARARGS, "factorial(x): calculates factorial of x"},
-    {"combination", (PyCFunction)BezierCurve_combination, METH_VARARGS, "combination(n, k): calculates nCk"},
+    {"factorial", (PyCFunction)BezierCurve_factorial, METH_VARARGS, "factorial(x) -> unsigned long long\nCalculates factorial of x"},
+    {"combination", (PyCFunction)BezierCurve_combination, METH_VARARGS, "combination(n, k) -> unsigned long long\nCalculates nCk"},
     {"bernstein_polynomial", (PyCFunction)BezierCurve_bernstein_polynomial, METH_VARARGS,
-    "bernstein_polynomial(i, n, t): calculates the ith bernstein_polynomial at t for n-degrees"},
+    "bernstein_polynomial(i, n, t) -> float\nCalculates the ith bernstein_polynomial at t for n-degrees"},
 
     {"bezier_curve", (PyCFunction)BezierCurve_bezier_curve, METH_VARARGS,
-    "bezier_curve(t, control_points): calculates the bezier curve at point t for control_points"},
+    "bezier_curve(t, control_points) -> [float, float]\nCalculates the bezier curve at point t for control_points"},
 
     {"rational_bezier_curve", (PyCFunction)BezierCurve_rational_bezier_curve, METH_VARARGS,
-    "rational_bezier_curve(t, control_points, weights): calculates the rational bezier curve at point t for control_points & weights"},
+    "rational_bezier_curve(t, control_points, weights) -> [float, float]\nCalculates the rational bezier curve at point t for control_points & weights"},
 
     {NULL, NULL, 0, NULL}};
 

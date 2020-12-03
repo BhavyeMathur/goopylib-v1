@@ -206,7 +206,87 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.176-alpha19 4th-27th November 2020
+#### 1.1.216-alpha20 1st-3rd December 2020
+
+* Fixed bug with the `ColourHSL` & `ColourHSV` classes not correctly converting to RGB values properly when 
+`120 <= h < 180`
+* Added a C implementation of the `ColourHSV` & `ColourHSL` classes to `colours.c`
+* The Colour type in `colours.c` finally overrides the number protocol (for operations like addition, subtraction, etc.)
+
+* Fixed mispelt argument name `color_start1` in the `color_gradient_2d()` function 
+* Changed the `__init_subclass__()` method in the `Colour` class to just a `__init__()` method as the previous wasn't 
+required
+
+* Moved the default instance variable definitions in the `Colour` class outside the `__init__()` function and to static 
+variables
+* Allowed the C implementation of the `rgb_to_hex()` function to be accessible from Python
+* Changed the docstrings of the `CBezierCurve` module functions to show what the output type of each function is
+
+* Added a `hex_digit_to_int()` function to `colours.c` that allows you to convert a hexadecimal digit to a base-10 int
+* The `Colour` types implemented in C are now actually semi-usable. 
+* Removed the `__format__()` method from the `Colour` class because it wasn't required
+
+* Changed the C-implementation of the `Colour` type's `__repr__()` method to match the Python implementation
+* Fixed misordered format values in the `rgb()` method of the `Colour` class
+* Reordered the PyNumber Methods of the `Colour` class to follow the order described here: 
+https://docs.python.org/3/c-api/typeobj.html?highlight=tp_#c.PyNumberMethods
+
+* Changed the `__hex__()` method of the `Colour` class to return a `ColourHex` instance of the same colour as which the 
+function is used on
+* Made the `Colour` class PyNumber Methods faster by replacing the  `min([255, ...])` for if statements
+* Using the multiplication operator on a `Colour` instance will now make sure that the rgb values for the colour are less 
+than 256
+
+* You can no longer perform operations with floats and `Colour` objects
+* The `pow()` function with `Colour` objects now accepts a `Colour` type value for the modulo argument
+* `Colour` object PyNumber Methods now set the red, green, or blue value to 0 if the resulting value from operation is 
+less than 0
+
+* Added functions to convert between colour types: `hex_to_rgb()`, `cmyk_to_rgb()`, `hsv_to_rgb()`, `hsl_to_rgb()`, 
+`rgb_to_cmyk()`, `rgb_to_hsl()`, `rgb_to_hsv()`, `hex_to_cmyk()`, `hex_to_hsl()`, `hex_to_hsv()`, `cmyk_to_hex()`, 
+`cmyk_to_hsl()`, `cmyk_to_hsv()`, `hsv_to_hex()`, `hsv_to_cmyk()`, `hsv_to_hsl()`, `hsl_to_hex()`, `hsl_to_cmyk()`, & 
+`hsl_to_hsl()`
+
+* Copied the `Colour` class's `__floordiv__()` function to its `__truediv__()` one to use `"/"` in the error message 
+rather than `"//"s`
+
+* The `ColourHSL` & `ColourHSV` classes now only accept integer values representing percentages for H & L, and H & V to 
+make it consistent with `ColourCMYK`
+* Simplified the conversion of inputs to RGB for the `ColourCMYK`, `ColourHSV`, & `ColourHSL` classes by removing 3 
+redundant variables
+
+* Fixed bug with the `Colour` classes not updating their string & hex value when performed operations on. This meant 
+that operations on colours had no real effect.
+
+* Renamed the colour `ABSOLUTE_TURQUOISE` to `ABSOLUTE_CYAN`
+* `colours.py` now uses the `round()` function to round outputs of operations/functions on colours to the nearest 
+integer rather than the previous `int()` which sometimes gave errors of +-1
+
+* Fixed a bug in the `ColourCMYK()` class where the CMYK colours were not being properly converted to RGB
+* Renamed the `Colour` class's `rgb()` function to `rgb_string()`
+* Added methods to return a `Colour` instance's colours in different colour models: `hex_string()`, `cmyk_string()`, 
+`hsv_string()`, `hsl_string()`
+
+* Added methods to the `Colour` class to convert the colour into another colour type: `to_rgb_colour()`, 
+`to_hex_colour()`, `to_cmyk_colour()`, `to_hsl_colour()`, `to_hsv_colour()`
+
+* There are now separate PyNumber methods for each `Colour` subclass (except `ColourRGB`) whose return values are the 
+type the operation is performed on
+* All goopylib pre-defined colours use the `ColourRGB` class (some previously used `ColourHex`) as it is the most 
+efficient `Colour` subclass
+
+* Fixed the ordering of `ColourCMYK` arguments from `c, y, m, k` to `c, m, y, k`
+* Changed the `__lshift__()` & `__rshift__()` methods of the `Colour` class to ensure that the returned value is within 
+permitted bounds for a colour
+
+* Added setter functions for `Colour` subclasses to set individual colour arguments
+* Operations on Colours of the same type (RGB & RGB, HSL & HSL, etc.) are now performed argument-wise for that colour, 
+ie h1 + h2, s1 + s2, v1 + v2 for HSL + HSL rather than converting to RGB first.
+
+* The inplace PyNumber methods of the `Colour` subclasses (except for `ColourRGB` & `ColourHex`) now follow the same 
+rules as the normal PyNumber methods
+
+#### 1.1.177-alpha19 4th-27th November 2020
 
 * You can now use the `set_text()` function for `Entry` objects even if the `Entry` hasn't been drawn
 * Fixed the `RandomColourRGB()` function to no longer raise errors if the user hasn't specified the RGB values
@@ -235,6 +315,8 @@ function to execute faster
 * Moved the `random` module's import statement above the `goopylib.math.Interpolations` import statement in `colours.py` 
 to abide by PEP8
 * Created a `color.py` file which simply imports everything from `colours.py`
+* The `Colour` class now raises a `TypeError` if the modulo value for the `pow()` function is of an unsupported type
+* The `abs()` function on a `Colour` instance now returns an integer value colour
 
 #### 1.1.158-alpha18 3rd November 2020
 

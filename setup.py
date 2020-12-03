@@ -1,7 +1,9 @@
 from setuptools import setup, Extension
 from distutils.core import setup, Extension
-from Cython.Build import cythonize
 import os
+import shutil
+
+from Cython.Build import cythonize
 
 def create_release():
     with open("README.md", "r") as fh:
@@ -21,7 +23,7 @@ def create_release():
 
         include_package_data=True,
 
-        version='1.1.158a18',
+        version='1.1.176a19',
         license='MIT License',
 
         description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and animations.',
@@ -31,7 +33,7 @@ def create_release():
         author='Bhavye Mathur',
         author_email='bhavyemathur@gmail.com',
         url='https://github.com/BhavyeMathur/goopylib',
-        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.158-alpha.tar.gz',
+        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.176-alpha.tar.gz',
         keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
         install_requires=['pillow'],
         project_urls={"Bug Tracker": "https://github.com/BhavyeMathur/goopylib/issues",
@@ -52,13 +54,14 @@ def setup_bezier_curve():
 
     try:
         os.remove(f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/math/{name}.pyd")
-        os.remove(f"C:/Users/Bhavye Mathur/AppData/Local/Programs/Python/Python38/Lib/site-packages/{name}-0.0.0-py3.8.egg-info")
     except FileNotFoundError:
         print("File not Found")
 
     os.rename(
-        f"C:/Users/Bhavye Mathur/AppData/Local/Programs/Python/Python38/Lib/site-packages/{name}.cp38-win_amd64.pyd",
+        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd",
         f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/math/{name}.pyd")
+
+    shutil.rmtree("C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build")
 
 def setup_easing():
     name = "CEasing"
@@ -71,8 +74,11 @@ def setup_easing():
     except FileNotFoundError:
         pass
 
-    os.rename(f"C:/Users/Bhavye Mathur/AppData/Local/Programs/Python/Python38/Lib/site-packages/{name}.cp38-win_amd64.pyd",
-              f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/math/{name}.pyd")
+    os.rename(
+        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd",
+        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/math/{name}.pyd")
+
+    shutil.rmtree("C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build")
 
 def setup_colours():
     name = "CColours"
@@ -80,12 +86,17 @@ def setup_colours():
 
     try:
         os.remove(f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/{name}.pyd")
+        print("Removing existing .pyd file")
     except:
         pass
-
     os.rename(
-        f"C:/Users/Bhavye Mathur/AppData/Local/Programs/Python/Python38/Lib/site-packages/{name}-0.0.0-py3.8-win-amd64.egg/Ccolours.cp38-win_amd64.pyd",
+        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd",
         f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/{name}.pyd")
 
+    shutil.rmtree("C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build")
 
-create_release()
+
+setup_colours()
+
+# To create release: python setup.py sdist bdist_wheel
+# To build Extension: python setup.py build
