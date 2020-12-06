@@ -55,7 +55,7 @@ def setup_extension(name, sources, output):
 
     system = platform.system()
 
-    if True:
+    try:
         if system == "Windows":
             try:
                 os.remove(f"goopylib/{output}{name}.pyd")
@@ -70,15 +70,16 @@ def setup_extension(name, sources, output):
                 pass
             os.rename(f"build/lib.macosx-10.9-x86_64-3.8/{name}.cpython-38-darwin.so", f"goopylib/{output}{name}.so")
 
-    #except FileNotFoundError as e:
-        #print(e)
+            shutil.rmtree("dist")
+            shutil.rmtree(f"{name}.egg-info")
+
+    except FileNotFoundError as e:
+        print(e)
 
     shutil.rmtree("build")
-    shutil.rmtree("dist")
-    shutil.rmtree(f"{name}.egg-info")
 
 
-# setup_extension("colours", ["goopylib/colours.c"], "")
+setup_extension("colours", ["goopylib/colours.c"], "")
 # setup_extension("easing", ["goopylib/math/Easing.c"], "math/")
 # setup_extension("bezier_curve", ["goopylib/math/bezier_curve.c"], "math/")
 
