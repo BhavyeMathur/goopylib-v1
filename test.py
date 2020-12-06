@@ -4,21 +4,26 @@ import os
 
 from matplotlib import pyplot as plt
 
-from goopylib.colours import *
+from goopylib.imports import *
+
 
 def func1():
     return min([240, 255])
 
+
 def func2():
     return min(240, 255)
+
 
 def func3():
     if 260 > 255:
         return 255
     return 240
 
+
 def func4():
     return 255 if 240 > 255 else 240
+
 
 def countlines(start, lines=0, header=True, begin_start=None):
     if header:

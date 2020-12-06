@@ -20,7 +20,7 @@ unsigned long long combination(int n, int k){
 float bernstein_polynomial(int i, int n, float t){
     return combination(n, i) * pow(t, i) * pow(1 - t, n - i);}
 
-static PyObject* BezierCurve_factorial(PyObject *self, PyObject *args){
+static PyObject* bezier_curve_factorial(PyObject *self, PyObject *args){
     int n;
 
     if (!PyArg_ParseTuple(args, "i", &n))
@@ -29,7 +29,7 @@ static PyObject* BezierCurve_factorial(PyObject *self, PyObject *args){
     return Py_BuildValue("K", factorial(n));
 }
 
-static PyObject* BezierCurve_combination(PyObject *self, PyObject *args){
+static PyObject* bezier_curve_combination(PyObject *self, PyObject *args){
     int n, k;
 
     if (!PyArg_ParseTuple(args, "ii", &n, &k))
@@ -38,7 +38,7 @@ static PyObject* BezierCurve_combination(PyObject *self, PyObject *args){
     return Py_BuildValue("K", combination(n, k));
 }
 
-static PyObject* BezierCurve_bernstein_polynomial(PyObject* self, PyObject* args){
+static PyObject* bezier_curve_bernstein_polynomial(PyObject* self, PyObject* args){
     int i, n;
     float t;
 
@@ -48,7 +48,7 @@ static PyObject* BezierCurve_bernstein_polynomial(PyObject* self, PyObject* args
     return Py_BuildValue("f", bernstein_polynomial(i, n, t));
 }
 
-static PyObject* BezierCurve_bezier_curve(PyObject* self, PyObject* args) {
+static PyObject* bezier_curve_bezier_curve(PyObject* self, PyObject* args) {
     Py_ssize_t size;
     float t;
     PyObject *py_control_points, *temp1, *x, *y;
@@ -400,7 +400,7 @@ static PyObject* BezierCurve_bezier_curve(PyObject* self, PyObject* args) {
         return NULL;}
 }
 
-static PyObject* BezierCurve_rational_bezier_curve(PyObject* self, PyObject* args) {
+static PyObject* bezier_curve_rational_bezier_curve(PyObject* self, PyObject* args) {
     Py_ssize_t size;
     float t, sum_x_denominator = 0, sum_y_denominator = 0, sum_x_numerator = 0, sum_y_numerator = 0;
     PyObject *py_control_points, *py_weights, *temp1, *x, *y, *temp2;
@@ -478,34 +478,34 @@ static PyObject* BezierCurve_rational_bezier_curve(PyObject* self, PyObject* arg
 }
 
 
-static PyMethodDef CBezierCurve_funcs[] = {
-    {"factorial", (PyCFunction)BezierCurve_factorial, METH_VARARGS, "factorial(x) -> unsigned long long\nCalculates factorial of x"},
-    {"combination", (PyCFunction)BezierCurve_combination, METH_VARARGS, "combination(n, k) -> unsigned long long\nCalculates nCk"},
-    {"bernstein_polynomial", (PyCFunction)BezierCurve_bernstein_polynomial, METH_VARARGS,
+static PyMethodDef c_bezier_curve_funcs[] = {
+    {"factorial", (PyCFunction)bezier_curve_factorial, METH_VARARGS, "factorial(x) -> unsigned long long\nCalculates factorial of x"},
+    {"combination", (PyCFunction)bezier_curve_combination, METH_VARARGS, "combination(n, k) -> unsigned long long\nCalculates nCk"},
+    {"bernstein_polynomial", (PyCFunction)bezier_curve_bernstein_polynomial, METH_VARARGS,
     "bernstein_polynomial(i, n, t) -> float\nCalculates the ith bernstein_polynomial at t for n-degrees"},
 
-    {"bezier_curve", (PyCFunction)BezierCurve_bezier_curve, METH_VARARGS,
+    {"bezier_curve", (PyCFunction)bezier_curve_bezier_curve, METH_VARARGS,
     "bezier_curve(t, control_points) -> [float, float]\nCalculates the bezier curve at point t for control_points"},
 
-    {"rational_bezier_curve", (PyCFunction)BezierCurve_rational_bezier_curve, METH_VARARGS,
+    {"rational_bezier_curve", (PyCFunction)bezier_curve_rational_bezier_curve, METH_VARARGS,
     "rational_bezier_curve(t, control_points, weights) -> [float, float]\nCalculates the rational bezier curve at point t for control_points & weights"},
 
     {NULL, NULL, 0, NULL}};
 
-static struct PyModuleDef CBezierCurveModule = {
+static struct PyModuleDef c_bezier_curveModule = {
     PyModuleDef_HEAD_INIT,
-    "CBezierCurveModule", "Functions to Calculate Bezier Curves.",
-    -1, CBezierCurve_funcs};
+    "c_bezier_curve_module", "Functions to Calculate Bezier Curves.",
+    -1, c_bezier_curve_funcs};
 
-PyMODINIT_FUNC PyInit_CBezierCurve(void){
+PyMODINIT_FUNC PyInit_c_bezier_curve(void){
 
     PyObject *m;
 
-    m = PyModule_Create(&CBezierCurveModule);
+    m = PyModule_Create(&c_bezier_curveModule);
     if (!m) {
         return NULL;}
 
-    GraphicsError = PyErr_NewException("goopylib.GraphicsError.BezierCurve", NULL, NULL);
+    GraphicsError = PyErr_NewException("goopylib.GraphicsError.bezier_curve", NULL, NULL);
     Py_XINCREF(GraphicsError);
 
     if (PyModule_AddObject(m, "GraphicsError", GraphicsError) < 0) {

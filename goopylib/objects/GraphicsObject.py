@@ -1,7 +1,7 @@
 from goopylib.styles import *
 from goopylib.constants import *
 
-from goopylib.math.PyEasing import *
+from goopylib.math.py_easing import *
 from math import cos, sin, atan2, degrees
 
 from goopylib.Window import Window

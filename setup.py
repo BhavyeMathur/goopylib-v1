@@ -1,9 +1,10 @@
 from setuptools import setup, Extension
 from distutils.core import setup, Extension
+
 import os
+import platform
 import shutil
 
-from Cython.Build import cythonize
 
 def create_release():
     with open("README.md", "r") as fh:
@@ -47,56 +48,41 @@ def create_release():
         python_requires=">=3.6"
     )
 
-def setup_bezier_curve():
-    name = "CBezierCurve"
-    setup(name=name,
-          ext_modules=[Extension(name, sources=["goopylib/math/BezierCurve.c"])])
 
-    try:
-        os.remove(f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/math/{name}.pyd")
-    except FileNotFoundError:
-        print("File not Found")
+def setup_extension(name, sources, output):
+    name = "c_" + name
+    setup(name=name, ext_modules=[Extension(name, sources=sources)])
 
-    os.rename(
-        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd",
-        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/math/{name}.pyd")
+    system = platform.system()
 
-    shutil.rmtree("C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build")
+    if True:
+        if system == "Windows":
+            try:
+                os.remove(f"goopylib/{output}{name}.pyd")
+            except FileNotFoundError:
+                pass
+            os.rename(f"build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd", f"goopylib/{name}.pyd")
 
-def setup_easing():
-    name = "CEasing"
-    setup(name=name,
-          ext_modules=[Extension(name, sources=["goopylib/math/Easing.c"])])
+        elif system == "Darwin":
+            try:
+                os.remove(f"goopylib/{output}{name}.o")
+            except FileNotFoundError:
+                pass
+            os.rename(f"build/lib.macosx-10.9-x86_64-3.8/{name}.cpython-38-darwin.so", f"goopylib/{output}{name}.so")
 
-    try:
-        os.remove(f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/math/{name}.pyd")
-        os.remove(f"C:/Users/Bhavye Mathur/AppData/Local/Programs/Python/Python38/Lib/site-packages/{name}-0.0.0-py3.8.egg-info")
-    except FileNotFoundError:
-        pass
+    #except FileNotFoundError as e:
+        #print(e)
 
-    os.rename(
-        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd",
-        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/math/{name}.pyd")
-
-    shutil.rmtree("C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build")
-
-def setup_colours():
-    name = "CColours"
-    setup(name=name, ext_modules=[Extension(name, sources=["goopylib/colours.c"])])
-
-    try:
-        os.remove(f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/{name}.pyd")
-        print("Removing existing .pyd file")
-    except:
-        pass
-    os.rename(
-        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd",
-        f"C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/goopylib/{name}.pyd")
-
-    shutil.rmtree("C:/Users/Bhavye Mathur/Documents/GitHub/goopylib/build")
+    shutil.rmtree("build")
+    shutil.rmtree("dist")
+    shutil.rmtree(f"{name}.egg-info")
 
 
-setup_colours()
+# setup_extension("colours", ["goopylib/colours.c"], "")
+# setup_extension("easing", ["goopylib/math/Easing.c"], "math/")
+# setup_extension("bezier_curve", ["goopylib/math/bezier_curve.c"], "math/")
+
+# create_release()
 
 # To create release: python setup.py sdist bdist_wheel
 # To build Extension: python setup.py build

@@ -1,5 +1,5 @@
 from goopylib.objects.Line import Line
-from goopylib.math.Interpolations import *
+from goopylib.math.interpolations import *
 from goopylib.constants import CURVE_INTERPOLATIONS
 
 # The Curved Line class is used for drawing curved lines segments between 2 or more points

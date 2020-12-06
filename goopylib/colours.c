@@ -9,7 +9,7 @@ static PyObject *ColourRGB_reference;
 /* Other Functions */
 
 char* rgb_to_hex(int red, int green, int blue) {
-    char hex_string[7];
+    static char hex_string[7];
 
     sprintf(hex_string, "#%x%x%x", red, green, blue);
     return hex_string;
@@ -171,7 +171,8 @@ static PyTypeObject ColourType = {
 
     .tp_repr = (reprfunc) Colour_repr,
     .tp_str = (reprfunc) Colour_str,
-    .tp_iter = (getiterfunc) Colour_iter,
+    /*
+    .tp_iter = (getiterfunc) Colour_iter, */
 };
 
 /* ColourRGB class*/
@@ -283,10 +284,9 @@ static int ColourHex_init(Colour *self, PyObject *args, PyObject *kwds) {
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|U", kwlist, &colour_object))
         return -1;
 
-    colour_object = PyUnicode_AsASCIIString(colour_object);
-    strcpy(colour, PyBytes_AsString(colour_object));
+    strcpy(colour, PyBytes_AsString(PyUnicode_AsASCIIString(colour_object)));
 
-    self->string = colour;
+    self->string = colour_object;
 
     self->red = (16 * hex_digit_to_int(colour[1])) + hex_digit_to_int(colour[2]);
     self->green = (16 * hex_digit_to_int(colour[3])) + hex_digit_to_int(colour[4]);
@@ -336,8 +336,8 @@ static int ColourHSL_init(Colour *self, PyObject *args, PyObject *kwds) {
 
     /* Conversion from HSL to RGB */
 
-    float c = (1 - abs(2*l - 1)) * s;
-    float x = c * (1 - abs(fmod(h / 60.0f, 2) - 1));
+    float c = (1 - fabs(2*l - 1)) * s;
+    float x = c * (1 - fabs(fmod(h / 60.0f, 2) - 1));
     float m = l - c / 2;
 
     int red = 0, green = 0, blue = 0;
@@ -417,7 +417,7 @@ static int ColourHSV_init(Colour *self, PyObject *args, PyObject *kwds) {
     /* Conversion from HSV to RGB */
 
     float c = v * s;
-    float x = c * (1 - abs(fmod(h / 60.0f, 2) - 1));
+    float x = c * (1 - fabs(fmod(h / 60.0f, 2) - 1));
     float m = v - c;
 
     int red = 0, green = 0, blue = 0;
@@ -689,7 +689,7 @@ static PyObject *Colour_imatrix_multiply(Colour *self, PyObject* other) {
 
 /* CPython API & Module Related Functions */
 
-static PyMethodDef CColours_funcs[] = {
+static PyMethodDef c_colours_funcs[] = {
 
     {"rgb_to_hex", (PyCFunction)Colours_rgb_to_hex, METH_VARARGS,
     "rgb_to_hex(int r, int g, int b) -> string (#rrggbb)\nConverts RGB values to a hex string"},
@@ -699,14 +699,14 @@ static PyMethodDef CColours_funcs[] = {
 
     {NULL, NULL, 0, NULL}};
 
-static PyModuleDef CColoursModule = {
+static PyModuleDef c_coloursModule = {
     PyModuleDef_HEAD_INIT,
-    .m_name = "CColoursModule",
+    .m_name = "c_coloursModule",
     .m_doc = "C implementation of a module to work with colours!",
-    .m_size = -1, CColours_funcs};
+    .m_size = -1, c_colours_funcs};
 
 
-PyMODINIT_FUNC PyInit_CColours(void){
+PyMODINIT_FUNC PyInit_c_colours(void){
 
     PyObject *m;
 
@@ -780,7 +780,7 @@ PyMODINIT_FUNC PyInit_CColours(void){
     if (PyType_Ready(&ColourHSVType) < 0)
         return NULL;
 
-    m = PyModule_Create(&CColoursModule);
+    m = PyModule_Create(&c_coloursModule);
     if (m == NULL)
         return NULL;
 

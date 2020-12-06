@@ -1,1 +1,1 @@
-import goopylib.math.CBezierCurve
+import goopylib.math.c_bezier_curve

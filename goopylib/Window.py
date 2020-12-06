@@ -10,7 +10,7 @@ from time import time as timetime
 from goopylib.styles import *
 from goopylib.util import GraphicsError, GraphicsWarning, resource_path
 from goopylib.constants import _root, RELIEF, CURSORS
-from goopylib.math.PyEasing import *
+from goopylib.math.py_easing import *
 
 from goopylib._internal_classes import Transform
 

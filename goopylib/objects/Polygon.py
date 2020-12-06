@@ -1,7 +1,7 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.styles import *
 
-from goopylib.math.Triangulation import triangulate_modified_earclip
+from goopylib.math.triangulation import triangulate_modified_earclip
 from math import radians, sin, cos
 
 class Polygon(GraphicsObject):

@@ -116,7 +116,7 @@ There are 5 subpackages in goopylib: objects, math, sound, physics, & applicatio
 To import these, type:
 
 ```python
-from goopylib.math.PyBezierCurve import py_bezier_curve # The other modules are 'Interpolation', & 'BSpline'
+from goopylib.math.py_bezier_curve import py_bezier_curve # The other modules are 'Interpolation', & 'BSpline'
 # or
 from goopylib.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
 ```
@@ -205,6 +205,17 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
+
+#### 1.1.220-alpha21 6th December 2020
+
+* Fixed warning with the `string` attribute of the C implementation of the `ColourHex` class in which the `PyObject*` 
+was being defined to a `char[7]`. It is now defined to a `PyUnicode` object.
+* Changed `abs()` to `fabs()` in `colours.c` when it took a `float` argument
+* The `hexstring` variable in the `rgb_to_hex()` function in `colours.c` is now static to avoid returning a 'address of 
+stack memory associated with local variable'
+
+* Renamed all the modules in goopylib.math & all C extensions with the Python naming convention 
+(lowercase & underscores)
 
 #### 1.1.216-alpha20 1st-3rd December 2020
 
