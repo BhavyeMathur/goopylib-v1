@@ -3,8 +3,6 @@ from goopylib.util import GraphicsError
 
 import math
 
-class Interpolations:
-    pass
 
 def LinearInterpolation(p0, p1, t):
     if not isinstance(p0, Point):
@@ -20,6 +18,7 @@ def LinearInterpolation(p0, p1, t):
 
 # References for these from http://paulbourke.net/miscellaneous/interpolation/
 
+
 def CosineInterpolation(p0, p1, t):
     if not isinstance(p0, Point):
         raise GraphicsError(f"\n\nGraphicsError: p0 Point to Interpolate between must be a Point object, not {p0}")
@@ -32,6 +31,7 @@ def CosineInterpolation(p0, p1, t):
 
     t = (1 - math.cos(t * math.pi)) / 2
     return (1 - t) * p0.y + t * p1.y
+
 
 def CubicInterpolation(p0, p1, p2, p3, t):
     for i, p in enumerate([p0, p1, p2, p3]):
@@ -49,6 +49,7 @@ def CubicInterpolation(p0, p1, p2, p3, t):
     a3 = p1.y
     
     return (a0 * t ** 3) + (a1 * t ** 2) + (a2 * t) + a3
+
 
 def HermiteInterpolation(p0, p1, p2, p3, t, tension, bias):
     for i, p in enumerate([p0, p1, p2, p3]):
@@ -79,6 +80,7 @@ def HermiteInterpolation(p0, p1, p2, p3, t, tension, bias):
     a3 = -2 * t3 + 3 * t2
 
     return a0 * p1.y + a1 * m0 + a2 * m1 + a3 * p2.y
+
 
 def CircularInterpolation(p0, p1, t):
     pass

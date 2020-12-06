@@ -55,7 +55,10 @@ def countlines(start, lines=0, header=True, begin_start=None):
     return lines
 
 
-countlines("goopylib")
+# countlines("goopylib")
+
+c = ColourRGB(100, 150, 100)
+print(isinstance(c, ColorRGB))
 
 
 """

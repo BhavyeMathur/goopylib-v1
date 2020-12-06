@@ -206,7 +206,7 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.220-alpha21 6th December 2020
+#### 1.1.224-alpha21 6th December 2020
 
 * Fixed warning with the `string` attribute of the C implementation of the `ColourHex` class in which the `PyObject*` 
 was being defined to a `char[7]`. It is now defined to a `PyUnicode` object.
@@ -216,6 +216,12 @@ stack memory associated with local variable'
 
 * Renamed all the modules in goopylib.math & all C extensions with the Python naming convention 
 (lowercase & underscores)
+* Fixed bug with the goopylib C extension modules raising errors when being imported
+* Removed the `__get_item__()` function of the `Colour` class as it didn't make a lot of sense to keep
+
+* Simplified expressions to check for valid arguments in `colours.py` and made them run faster by removing unneeded 
+`not`s
+* Renamed `Sound.py` to `sound.py` to follow the Python naming convention
 
 #### 1.1.216-alpha20 1st-3rd December 2020
 

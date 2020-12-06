@@ -375,11 +375,6 @@ class Colour:
     def __len__(self):
         return 3
 
-    def __getitem__(self, item):
-        if item > 2:
-            raise IndexError(f"\n\nColour index must be less than 3, not {item}")
-        return (self.red, self.green, self.blue)[item]
-
     def __iter__(self):
         for c in (self.red, self.green, self.blue):
             yield c
@@ -444,51 +439,80 @@ class Colour:
         return ColourHSV(h, s, v)
 
     def set_red(self, value):
-        self.red = value
-        self.update_values()
+        if isinstance(value, int):
+            if 256 > value > -1:
+                self.red = value
+                self.update_values()
+            else:
+                raise GraphicsError("\n\nGraphicsError: red value for set_red() function must be between 0 & 255, "
+                                    f"inclusive, 0 <= red <= 255, not {value}")
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: red value for set_red() function must be an integer, not {value}")
         return self
 
     def set_green(self, value):
-        self.green = value
-        self.update_values()
+        if isinstance(value, int):
+            if 256 > value > -1:
+                self.green = value
+                self.update_values()
+            else:
+                raise GraphicsError("\n\nGraphicsError: green value for set_green() function must be between 0 & 255, "
+                                    f"inclusive, 0 <= green <= 255, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: green value for set_green() function must be an integer, "
+                                f"not {value}")
         return self
 
     def set_blue(self, value):
-        self.blue = value
-        self.update_values()
+        if isinstance(value, int):
+            if 256 > value > -1:
+                self.blue = value
+                self.update_values()
+            else:
+                raise GraphicsError("\n\nGraphicsError: blue value for set_blue() function must be between 0 & 255, "
+                                    f"inclusive, 0 <= blue <= 255, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: blue value for set_blue() function must be an integer, "
+                                f"not {value}")
         return self
 
 
 class ColourRGB(Colour):
     def __init__(self, r, g, b):
-        if not (isinstance(r, int) and isinstance(g, int) and isinstance(b, int)):
+        if isinstance(r, int) and isinstance(g, int) and isinstance(b, int):
+            if 256 > r > -1 and 256 > g > -1 and 256 > b > -1:
+                super().__init__()
+
+                self.colour = "#%02x%02x%02x" % (r, g, b)
+                self.string = f"rgb {r}, {g}, {b}"
+
+                self.red = r
+                self.green = g
+                self.blue = b
+            else:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: RGB values must be between 0 & 255 (included), not {r}, {g}, {b}")
+        else:
             raise GraphicsError(f"\n\nGraphicsError: GraphicsError: RGB values must be integers! not {r}, {g}, {b}")
-        if not (256 > r > -1 and 256 > g > -1 and 256 > b > -1):
-            raise GraphicsError(f"\n\nGraphicsError: RGB values must be between 0 & 255 (included), not {r}, {g}, {b}")
-
-        super().__init__()
-
-        self.colour = "#%02x%02x%02x" % (r, g, b)
-        self.string = f"rgb {r}, {g}, {b}"
-
-        self.red = r
-        self.green = g
-        self.blue = b
 
 
 class ColourHex(Colour):
 
     def __init__(self, colour):
-        if not isinstance(colour, str):
+        if isinstance(colour, str):
+            if len(colour) == 7:
+                try:
+                    decimal_number = int(colour[1:], 16)
+                    if decimal_number > 16777215 or decimal_number < 0:
+                        raise GraphicsError("\n\nGraphicsError: The colour value must be between #000000 and #ffffff, "
+                                            f"not {colour}")
+                except ValueError:
+                    raise GraphicsError(
+                        f"\n\nGraphicsError: The colour value must be a hexadecimal string, not {colour}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: The length of the hex colour string must be 7: '#rrggbb'")
+        else:
             raise GraphicsError("\n\nGraphicsError: Hex value must be a string in format: #rrggbb")
-        if len(colour) != 7:
-            raise GraphicsError("\n\nGraphicsError: The length of the hex colour string must be 7: '#rrggbb'")
-        try:
-            if int(colour[1:], 16) > 16777215 or int(colour[1:], 16) < 0:
-                raise GraphicsError("\n\nGraphicsError: The colour value must be between #000000 and #ffffff, "
-                                    f"not {colour}")
-        except ValueError:
-            raise GraphicsError(f"\n\nGraphicsError: The colour value must be a hexadecimal string, not {colour}")
 
         super().__init__()
 
@@ -697,25 +721,26 @@ class ColourHex(Colour):
 
 class ColourCMYK(Colour):
     def __init__(self, c, m, y, k):
-        if not (isinstance(c, int) and isinstance(m, int) and isinstance(y, int) and isinstance(k, int)):
+        if isinstance(c, int) and isinstance(m, int) and isinstance(y, int) and isinstance(k, int):
+            if 101 > c > -1 and 101 > m > -1 and 101 > y > -1 and 101 > k > -1:
+                super().__init__()
+
+                self.red = round(255 * (1 - (c + k) / 100))
+                self.green = round(255 * (1 - (m + k) / 100))
+                self.blue = round(255 * (1 - (y + k) / 100))
+
+                self.cyan = c
+                self.magenta = m
+                self.yellow = y
+                self.key = k
+
+                self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
+                self.string = f"cmyk {c}%, {m}%, {y}%, {k}%"
+            else:
+                raise GraphicsError("\n\nGraphicsError: CMYK values must be between 0 & 100 (included), "
+                                    f"not {c}, {m}, {y}, {k}")
+        else:
             raise GraphicsError(f"\n\nGraphicsError: CMYK values must be integers! not {c}, {m}, {y}, {k}")
-        if not (101 > c > -1 and 101 > m > -1 and 101 > y > -1 and 101 > k > -1):
-            raise GraphicsError("\n\nGraphicsError: CMYK values must be between 0 & 100 (included), "
-                                f"not {c}, {m}, {y}, {k}")
-
-        super().__init__()
-
-        self.red = round(255 * (1 - (c + k) / 100))
-        self.green = round(255 * (1 - (m + k) / 100))
-        self.blue = round(255 * (1 - (y + k) / 100))
-
-        self.cyan = c
-        self.magenta = m
-        self.yellow = y
-        self.key = k
-
-        self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
-        self.string = f"cmyk {c}%, {m}%, {y}%, {k}%"
 
     # PyNumber Methods
 
@@ -1089,7 +1114,7 @@ class ColourCMYK(Colour):
                 self.blue = 0
         else:
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
-        
+
         self.update_values()
 
     def __isub__(self, other):
@@ -1301,7 +1326,7 @@ class ColourCMYK(Colour):
                 self.yellow = 100
             elif self.yellow < 0:
                 self.yellow = 0
-                
+
             if self.key > 100:
                 self.key = 100
             elif self.key < 0:
@@ -1449,7 +1474,7 @@ class ColourCMYK(Colour):
             self.red &= other
             self.green &= other
             self.blue &= other
-            
+
             if self.red > 255:
                 self.red = 255
             elif self.red < 0:
@@ -1625,30 +1650,62 @@ class ColourCMYK(Colour):
         self.cyan, self.magenta, self.yellow, self.key = rgb_to_cmyk(self.red, self.green, self.blue)
         self.string = f"cmyk {self.cyan}%, {self.magenta}%, {self.yellow}%, {self.key}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
-        
+
         return self
 
     def set_cyan(self, value):
-        self.cyan = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 101 > value > -1:
+                self.cyan = value
+                self._update_on_operation()
+            else:
+                raise GraphicsError("\n\nGraphicsError: cyan value for set_cyan() function must be between 0 & 255, "
+                                    f"inclusive, 0 <= cyan <= 100, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: cyan value for set_cyan() function must be an integer, "
+                                f"not {value}")
 
         return self
 
     def set_magenta(self, value):
-        self.magenta = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 101 > value > -1:
+                self.magenta = value
+                self._update_on_operation()
+            else:
+                raise GraphicsError("\n\nGraphicsError: magenta value for set_magenta() function must be between "
+                                    f"0 & 255, inclusive, 0 <= magenta <= 100, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: magenta value for set_magenta() function must be an integer, "
+                                f"not {value}")
 
         return self
 
     def set_yellow(self, value):
-        self.yellow = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 101 > value > -1:
+                self.yellow = value
+                self._update_on_operation()
+            else:
+                raise GraphicsError("\n\nGraphicsError: yellow value for set_yellow() function must be between 0 & 255,"
+                                    f" inclusive, 0 <= yellow <= 100, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: yellow value for set_yellow() function must be an integer, "
+                                f"not {value}")
 
         return self
 
     def set_key(self, value):
-        self.key = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 101 > value > -1:
+                self.key = value
+                self._update_on_operation()
+            else:
+                raise GraphicsError("\n\nGraphicsError: key value for set_key() function must be between 0 & 255, "
+                                    f"inclusive, 0 <= key <= 100, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: key value for set_key() function must be an integer, "
+                                f"not {value}")
 
         return self
 
@@ -2553,20 +2610,42 @@ class ColourHSV(Colour):
         return self
 
     def set_hue(self, value):
-        self.hue = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 360 > value > -1:
+                self.hue = value
+            else:
+                self.hue = value % 360
+            self._update_on_operation()
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: hue value for set_hue() function must be an integer, not {value}")
 
         return self
 
     def set_saturation(self, value):
-        self.saturation = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 101 > value > -1:
+                self.saturation = value
+                self._update_on_operation()
+            else:
+                raise GraphicsError("\n\nGraphicsError: saturation value for set_saturation() function must be between "
+                                    f"0 & 255, inclusive, 0 <= saturation <= 100, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: saturation value for set_saturation() function must be an integer, "
+                                f"not {value}")
 
         return self
 
     def set_value(self, value):
-        self.value = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 101 > value > -1:
+                self.value = value
+                self._update_on_operation()
+            else:
+                raise GraphicsError("\n\nGraphicsError: value for set_value() function must be between 0 & 255, "
+                                    f"inclusive, 0 <= value <= 100, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: value for set_value() function must be an integer, "
+                                f"not {value}")
 
         return self
 
@@ -3450,20 +3529,42 @@ class ColourHSL(Colour):
         return self
 
     def set_hue(self, value):
-        self.hue = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 360 > value > -1:
+                self.hue = value
+            else:
+                self.hue = value % 360
+            self._update_on_operation()
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: hue value for set_hue() function must be an integer, not {value}")
 
         return self
 
     def set_saturation(self, value):
-        self.saturation = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 101 > value > -1:
+                self.saturation = value
+                self._update_on_operation()
+            else:
+                raise GraphicsError("\n\nGraphicsError: saturation value for set_saturation() function must be between "
+                                    f"0 & 255, inclusive, 0 <= saturation <= 100, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: saturation value for set_saturation() function must be an integer, "
+                                f"not {value}")
 
         return self
 
     def set_luminance(self, value):
-        self.luminance = value
-        self._update_on_operation()
+        if isinstance(value, int):
+            if 101 > value > -1:
+                self.luminance = value
+                self._update_on_operation()
+            else:
+                raise GraphicsError("\n\nGraphicsError: luminance for set_luminance() function must be between 0 & 255,"
+                                    f" inclusive, 0 <= luminance <= 100, not {value}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: luminance for set_luminance() function must be an integer, "
+                                f"not {value}")
 
         return self
 
@@ -3681,202 +3782,258 @@ random_color_hsl = random_colour_hsl
 
 # Colour Gradients
 def colour_gradient(colour_start=ColourRGB(255, 255, 255), colour_end=ColourRGB(0, 0, 0), divisions=10):
-    if not isinstance(colour_start, Colour):
+    if isinstance(colour_start, Colour):
+        if isinstance(colour_end, Colour):
+            if isinstance(divisions, int):
+                red_dist = colour_end.red - colour_start.red
+                green_dist = colour_end.green - colour_start.green
+                blue_dist = colour_end.blue - colour_start.blue
+
+                cur_red, cur_green, cur_blue = colour_start.red, colour_start.green, colour_start.blue
+
+                gradient = []
+                for i in range(divisions - 1):
+                    gradient.append(ColourRGB(max([0, cur_red]), max([cur_green, 0]), max([cur_blue, 0])))
+                    cur_red = colour_start.red + i * red_dist // divisions
+                    cur_green = colour_start.green + i * green_dist // divisions
+                    cur_blue = colour_start.blue + i * blue_dist // divisions
+
+                gradient.append(colour_end)
+                return gradient
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: The number of divisions must be an integer, not {divisions}")
+        else:
+            raise GraphicsError(
+                f"\n\nGraphicsError: The end colour (colour_end) must be a Colour object, not {colour_end}")
+    else:
         raise GraphicsError("\n\nGraphicsError: The start colour (colour_start) must be a Colour object, "
                             f"not {colour_start}")
-    if not isinstance(colour_end, Colour):
-        raise GraphicsError(f"\n\nGraphicsError: The end colour (colour_end) must be a Colour object, not {colour_end}")
-    if not isinstance(divisions, int):
-        raise GraphicsError(f"\n\nGraphicsError: The number of divisions must be an integer, not {divisions}")
-
-    red_dist = colour_end.red - colour_start.red
-    green_dist = colour_end.green - colour_start.green
-    blue_dist = colour_end.blue - colour_start.blue
-
-    cur_red, cur_green, cur_blue = colour_start.red, colour_start.green, colour_start.blue
-
-    gradient = []
-    for i in range(divisions - 1):
-        gradient.append(ColourRGB(max([0, cur_red]), max([cur_green, 0]), max([cur_blue, 0])))
-        cur_red = colour_start.red + i * red_dist // divisions
-        cur_green = colour_start.green + i * green_dist // divisions
-        cur_blue = colour_start.blue + i * blue_dist // divisions
-
-    gradient.append(colour_end)
-    return gradient
 
 
 def color_gradient(color_start=ColourRGB(255, 255, 255), color_end=ColourRGB(0, 0, 0), divisions=10):
-    if not isinstance(color_start, Colour):
+    if isinstance(color_start, Colour):
+        if isinstance(color_end, Colour):
+            if isinstance(divisions, int):
+                red_dist = color_end.red - color_start.red
+                green_dist = color_end.green - color_start.green
+                blue_dist = color_end.blue - color_start.blue
+
+                cur_red, cur_green, cur_blue = color_start.red, color_start.green, color_start.blue
+
+                gradient = []
+                for i in range(divisions - 1):
+                    gradient.append(ColourRGB(max([0, cur_red]), max([cur_green, 0]), max([cur_blue, 0])))
+                    cur_red = color_start.red + i * red_dist // divisions
+                    cur_green = color_start.green + i * green_dist // divisions
+                    cur_blue = color_start.blue + i * blue_dist // divisions
+
+                gradient.append(color_end)
+                return gradient
+            else:
+                raise GraphicsError(f"\n\nGraphicsError: The number of divisions must be an integer, not {divisions}")
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: The end color (color_end) must be a Color object, not {color_end}")
+    else:
         raise GraphicsError("\n\nGraphicsError: The start color (color_start) must be a Color object, "
                             f"not {color_start}")
-    if not isinstance(color_end, Colour):
-        raise GraphicsError(f"\n\nGraphicsError: The end color (color_end) must be a Color object, not {color_end}")
-    if not isinstance(divisions, int):
-        raise GraphicsError(f"\n\nGraphicsError: The number of divisions must be an integer, not {divisions}")
-
-    red_dist = color_end.red - color_start.red
-    green_dist = color_end.green - color_start.green
-    blue_dist = color_end.blue - color_start.blue
-
-    cur_red, cur_green, cur_blue = color_start.red, color_start.green, color_start.blue
-
-    gradient = []
-    for i in range(divisions - 1):
-        gradient.append(ColourRGB(max([0, cur_red]), max([cur_green, 0]), max([cur_blue, 0])))
-        cur_red = color_start.red + i * red_dist // divisions
-        cur_green = color_start.green + i * green_dist // divisions
-        cur_blue = color_start.blue + i * blue_dist // divisions
-
-    gradient.append(color_end)
-    return gradient
 
 
 def colour_gradient_2d(colour_start1=ColourRGB(0, 0, 0), colour_end1=ColourRGB(255, 0, 0),
                        colour_start2=ColourRGB(255, 255, 255), colour_end2=ColourRGB(0, 255, 0),
                        divisions_x=10, divisions_y=10):
-    if not isinstance(colour_start1, Colour):
+    if isinstance(colour_start1, Colour):
+        if isinstance(colour_start2, Colour):
+            if isinstance(colour_end1, Colour):
+                if isinstance(colour_end2, Colour):
+                    if isinstance(divisions_x, int):
+                        if isinstance(divisions_y, int):
+                            top_gradient = colour_gradient(colour_start1, colour_end1, divisions=divisions_x)
+                            bottom_gradient = colour_gradient(colour_start2, colour_end2, divisions=divisions_x)
+
+                            gradient = [[None for _ in range(divisions_y)] for _ in range(divisions_x)]
+
+                            for col in range(divisions_x):
+                                gradient[col][0] = top_gradient[col]
+                                gradient[col][-1] = bottom_gradient[col]
+
+                            for col in range(0, len(gradient)):
+                                gradient[col] = colour_gradient(gradient[col][0], gradient[col][-1], divisions_y)
+
+                            return gradient
+                        else:
+                            raise GraphicsError("\n\nGraphicsError: The Y divisions (divisions_y) must be an integer, "
+                                                f"not {divisions_y}")
+                    else:
+                        raise GraphicsError(
+                            f"\n\nGraphicsError: The X divisions (divisions_x) must be an integer, not {divisions_x}")
+                else:
+                    raise GraphicsError("\n\nGraphicsError: The end colour (colour_end2) must be a Colour object, "
+                                        f"not {colour_end2}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: The end colour (colour_end1) must be a Colour object, "
+                                    f"not {colour_end1}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: The start colour (colour_start2) must be a Colour object, "
+                                f"not {colour_start2}")
+    else:
         raise GraphicsError("\n\nGraphicsError: The start colour (colour_start1) must be a Colour object, "
                             f"not {colour_start1}")
-    if not isinstance(colour_start2, Colour):
-        raise GraphicsError("\n\nGraphicsError: The start colour (colour_start2) must be a Colour object, "
-                            f"not {colour_start2}")
-    if not isinstance(colour_end1, Colour):
-        raise GraphicsError("\n\nGraphicsError: The end colour (colour_end1) must be a Colour object, "
-                            f"not {colour_end1}")
-    if not isinstance(colour_end2, Colour):
-        raise GraphicsError("\n\nGraphicsError: The end colour (colour_end2) must be a Colour object, "
-                            f"not {colour_end2}")
-
-    if not isinstance(divisions_x, int):
-        raise GraphicsError(f"\n\nGraphicsError: The X divisions (divisions_x) must be an integer, not {divisions_x}")
-    if not isinstance(divisions_y, int):
-        raise GraphicsError(f"\n\nGraphicsError: The Y divisions (divisions_y) must be an integer, not {divisions_y}")
-
-    top_gradient = colour_gradient(colour_start1, colour_end1, divisions=divisions_x)
-    bottom_gradient = colour_gradient(colour_start2, colour_end2, divisions=divisions_x)
-
-    cur_red, cur_green, cur_blue = colour_start1.red, colour_start1.green, colour_start1.blue
-
-    gradient = [[None for _ in range(divisions_y)] for _ in range(divisions_x)]
-
-    for col in range(divisions_x):
-        gradient[col][0] = top_gradient[col]
-        gradient[col][-1] = bottom_gradient[col]
-
-    for col in range(0, len(gradient)):
-        gradient[col] = colour_gradient(gradient[col][0], gradient[col][-1], divisions_y)
-
-    return gradient
 
 
-def color_gradient_2d(color_start1=ColourRGB(0, 0, 0), color_end1=ColourRGB(255, 0, 0),
-                      color_start2=ColourRGB(255, 255, 255), color_end2=ColourRGB(0, 255, 0),
+def color_gradient_2d(color_start1=ColorRGB(0, 0, 0), color_end1=ColorRGB(255, 0, 0),
+                      color_start2=ColorRGB(255, 255, 255), color_end2=ColorRGB(0, 255, 0),
                       divisions_x=10, divisions_y=10):
-    if not isinstance(color_start1, Colour):
+    if isinstance(color_start1, Color):
+        if isinstance(color_start2, Color):
+            if isinstance(color_end1, Color):
+                if isinstance(color_end2, Color):
+                    if isinstance(divisions_x, int):
+                        if isinstance(divisions_y, int):
+                            top_gradient = color_gradient(color_start1, color_end1, divisions=divisions_x)
+                            bottom_gradient = color_gradient(color_start2, color_end2, divisions=divisions_x)
+
+                            gradient = [[None for _ in range(divisions_y)] for _ in range(divisions_x)]
+
+                            for col in range(divisions_x):
+                                gradient[col][0] = top_gradient[col]
+                                gradient[col][-1] = bottom_gradient[col]
+
+                            for col in range(0, len(gradient)):
+                                gradient[col] = color_gradient(gradient[col][0], gradient[col][-1], divisions_y)
+
+                            return gradient
+                        else:
+                            raise GraphicsError("\n\nGraphicsError: The Y divisions (divisions_y) must be an integer, "
+                                                f"not {divisions_y}")
+                    else:
+                        raise GraphicsError(
+                            f"\n\nGraphicsError: The X divisions (divisions_x) must be an integer, not {divisions_x}")
+                else:
+                    raise GraphicsError("\n\nGraphicsError: The end color (color_end2) must be a Color object, "
+                                        f"not {color_end2}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: The end color (color_end1) must be a Color object, "
+                                    f"not {color_end1}")
+        else:
+            raise GraphicsError("\n\nGraphicsError: The start color (color_start2) must be a Color object, "
+                                f"not {color_start2}")
+    else:
         raise GraphicsError("\n\nGraphicsError: The start color (color_start1) must be a Color object, "
                             f"not {color_start1}")
-    if not isinstance(color_start2, Colour):
-        raise GraphicsError("\n\nGraphicsError: The start color (color_start2) must be a Color object, "
-                            f"not {color_start2}")
-    if not isinstance(color_end1, Colour):
-        raise GraphicsError("\n\nGraphicsError: The end color (color_end1) must be a Color object, "
-                            f"not {color_end1}")
-    if not isinstance(color_end2, Colour):
-        raise GraphicsError("\n\nGraphicsError: The end color (color_end2) must be a Color object, "
-                            f"not {color_end2}")
-
-    if not isinstance(divisions_x, int):
-        raise GraphicsError(f"\n\nGraphicsError: The X divisions (divisions_x) must be an integer, not {divisions_x}")
-    if not isinstance(divisions_y, int):
-        raise GraphicsError(f"\n\nGraphicsError: The Y divisions (divisions_y) must be an integer, not {divisions_y}")
-
-    top_gradient = color_gradient(color_start1, color_end1, divisions=divisions_x)
-    bottom_gradient = color_gradient(color_start2, color_end2, divisions=divisions_x)
-
-    cur_red, cur_green, cur_blue = color_start1.red, color_start1.green, color_start1.blue
-
-    gradient = [[None for _ in range(divisions_y)] for _ in range(divisions_x)]
-
-    for col in range(divisions_x):
-        gradient[col][0] = top_gradient[col]
-        gradient[col][-1] = bottom_gradient[col]
-
-    for col in range(0, len(gradient)):
-        gradient[col] = color_gradient(gradient[col][0], gradient[col][-1], divisions_y)
-
-    return gradient
 
 
 # Colour Blending
-def blend_colour_linear(colour_start, colour_end, t):
-    return ColourRGB(round(LinearInterpolation(colour_start.red, colour_end.red, t)),
-                     round(LinearInterpolation(colour_start.green, colour_end.green, t)),
-                     round(LinearInterpolation(colour_start.blue, colour_end.blue, t)))
+def blend_colour_linear(start, end, t):
+    if isinstance(start, Colour):
+        if isinstance(end, Colour):
+            return ColourRGB(round(LinearInterpolation(start.red, end.red, t)),
+                             round(LinearInterpolation(start.green, end.green, t)),
+                             round(LinearInterpolation(start.blue, end.blue, t)))
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: end colour for blending must be a Colour instance, not {end}")
+    else:
+        raise GraphicsError(f"\n\nGraphicsError: start colour for blending must be a Colour instance, not {start}")
 
 
-def blend_colour_cosine(colour_start, colour_end, t):
-    return ColourRGB(round(CosineInterpolation(colour_start.red, colour_end.red, t)),
-                     round(CosineInterpolation(colour_start.green, colour_end.green, t)),
-                     round(CosineInterpolation(colour_start.blue, colour_end.blue, t)))
+def blend_colour_cosine(start, end, t):
+    if isinstance(start, Colour):
+        if isinstance(end, Colour):
+            return ColourRGB(round(CosineInterpolation(start.red, end.red, t)),
+                             round(CosineInterpolation(start.green, end.green, t)),
+                             round(CosineInterpolation(start.blue, end.blue, t)))
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: end colour for blending must be a Colour instance, not {end}")
+    else:
+        raise GraphicsError(f"\n\nGraphicsError: start colour for blending must be a Colour instance, not {start}")
 
 
-def blend_colour_cubic(colour_start, colour_end, t):
-    return ColourRGB(round(CubicInterpolation(colour_start.red, colour_start.red, colour_end.red, colour_end.red, t)),
-                     round(
-                         CubicInterpolation(colour_start.green, colour_start.green, colour_end.green, colour_end.green,
-                                            t)),
-                     round(
-                         CubicInterpolation(colour_start.blue, colour_start.blue, colour_end.blue, colour_end.blue, t)))
+def blend_colour_cubic(start, end, t):
+    if isinstance(start, Colour):
+        if isinstance(end, Colour):
+            return ColourRGB(round(CubicInterpolation(start.red, start.red, end.red, 
+                                                      end.red, t)),
+                             round(CubicInterpolation(start.green, start.green, end.green,
+                                                      end.green, t)),
+                             round(CubicInterpolation(start.blue, start.blue, end.blue,
+                                                      end.blue, t)))
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: end colour for blending must be a Colour instance, not {end}")
+    else:
+        raise GraphicsError(f"\n\nGraphicsError: start colour for blending must be a Colour instance, not {start}")
 
 
-def blend_colour_hermite(colour_start, colour_end, t, tension=1, bias=0):
-    return ColourRGB(round(HermiteInterpolation(colour_start.red, colour_start.red, colour_end.red, colour_end.red, t,
-                                                tension=tension, bias=bias)),
-                     round(HermiteInterpolation(colour_start.green, colour_start.green, colour_end.green,
-                                                colour_end.green, t, tension=tension, bias=bias)),
-                     round(
-                         HermiteInterpolation(colour_start.blue, colour_start.blue, colour_end.blue, colour_end.blue, t,
-                                              tension=tension, bias=bias)))
+def blend_colour_hermite(start, end, t, tension=1, bias=0):
+    if isinstance(start, Colour):
+        if isinstance(end, Colour):
+            return ColourRGB(round(HermiteInterpolation(start.red, start.red, end.red, 
+                                                        end.red, t, tension=tension, bias=bias)),                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                             round(HermiteInterpolation(start.green, start.green, end.green, 
+                                                        end.green, t, tension=tension, bias=bias)),
+                             round(HermiteInterpolation(start.blue, start.blue, end.blue, 
+                                                        end.blue, t, tension=tension, bias=bias)))
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: end colour for blending must be a Colour instance, not {end}")
+    else:
+        raise GraphicsError(f"\n\nGraphicsError: start colour for blending must be a Colour instance, not {start}")
 
 
 # American Spelling Blending
 
-def blend_color_linear(color_start, color_end, t):
-    return ColourRGB(round(LinearInterpolation(color_start.red, color_end.red, t)),
-                     round(LinearInterpolation(color_start.green, color_end.green, t)),
-                     round(LinearInterpolation(color_start.blue, color_end.blue, t)))
-
-
-def blend_color_cosine(color_start, color_end, t):
-    return ColourRGB(round(CosineInterpolation(color_start.red, color_end.red, t)),
-                     round(CosineInterpolation(color_start.green, color_end.green, t)),
-                     round(CosineInterpolation(color_start.blue, color_end.blue, t)))
-
-
-def blend_color_cubic(color_start, color_end, t):
-    return ColourRGB(round(CubicInterpolation(color_start.red, color_start.red, color_end.red, color_end.red, t)),
-                     round(
-                         CubicInterpolation(color_start.green, color_start.green, color_end.green, color_end.green, t)),
-                     round(CubicInterpolation(color_start.blue, color_start.blue, color_end.blue, color_end.blue, t)))
-
-
-def blend_color_hermite(color_start, color_end, t, tension=1, bias=0):
-    return ColourRGB(round(HermiteInterpolation(color_start.red, color_start.red, color_end.red, color_end.red, t,
-                                                tension=tension, bias=bias)),
-                     round(HermiteInterpolation(color_start.green, color_start.green, color_end.green,
-                                                color_end.green, t, tension=tension, bias=bias)),
-                     round(HermiteInterpolation(color_start.blue, color_start.blue, color_end.blue, color_end.blue, t,
-                                                tension=tension, bias=bias)))
+blend_color_linear = blend_colour_linear
+blend_color_cosine = blend_colour_cosine
+blend_color_cubic = blend_colour_cubic
+blend_color_hermite = blend_colour_hermite
 
 
 # RGB to other format
 
 def rgb_to_hex(red, green, blue):
+    if isinstance(red, int):
+        if isinstance(green, int):
+            if isinstance(blue, int):
+                if red < 0 or red > 255:
+                    raise GraphicsError("\n\nGraphicsError: red value for RGB to Hex conversion must be between "
+                                        f"0 & 255, inclusive, 0 <= red <= 255, not {red}")
+                else:
+                    if green < 0 or green > 255:
+                        raise GraphicsError("\n\nGraphicsError: green value for RGB to Hex conversion must be between "
+                                            f"0 & 255, inclusive, 0 <= green <= 255, not {green}")
+                    else:
+                        if blue < 0 or blue > 255:
+                            raise GraphicsError("\n\nGraphicsError: blue value for RGB to Hex conversion must be "
+                                                f"between 0 & 255, inclusive, 0 <= blue <= 255, not {blue}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: blue value for conversion from RGB to Hex must be an integer")
+        else:
+            raise GraphicsError("\n\nGraphicsError: green value for conversion from RGB to Hex must be an integer")
+    else:
+        raise GraphicsError("\n\nGraphicsError: red value for conversion from RGB to Hex must be an integer")
+
     return "#%02x%02x%02x" % (red, green, blue)
 
 
 def rgb_to_cmyk(red, green, blue):
+    if isinstance(red, int):
+        if isinstance(green, int):
+            if isinstance(blue, int):
+                if red < 0 or red > 255:
+                    raise GraphicsError("\n\nGraphicsError: red value for RGB to CMYK conversion must be between "
+                                        f"0 & 255, inclusive, 0 <= red <= 255, not {red}")
+                else:
+                    if green < 0 or green > 255:
+                        raise GraphicsError("\n\nGraphicsError: green value for RGB to CMYK conversion must be between "
+                                            f"0 & 255, inclusive, 0 <= green <= 255, not {green}")
+                    else:
+                        if blue < 0 or blue > 255:
+                            raise GraphicsError("\n\nGraphicsError: blue value for RGB to CMYK conversion must be "
+                                                f"between 0 & 255, inclusive, 0 <= blue <= 255, not {blue}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: blue value for conversion from RGB to CMYK must be an integer")
+        else:
+            raise GraphicsError("\n\nGraphicsError: green value for conversion from RGB to CMYK must be an integer")
+    else:
+        raise GraphicsError("\n\nGraphicsError: red value for conversion from RGB to CMYK must be an integer")
+    
     red /= 255
     green /= 255
     blue /= 255
@@ -3891,6 +4048,27 @@ def rgb_to_cmyk(red, green, blue):
 
 
 def rgb_to_hsl(red, green, blue):
+    if isinstance(red, int):
+        if isinstance(green, int):
+            if isinstance(blue, int):
+                if red < 0 or red > 255:
+                    raise GraphicsError("\n\nGraphicsError: red value for RGB to HSL conversion must be between "
+                                        f"0 & 255, inclusive, 0 <= red <= 255, not {red}")
+                else:
+                    if green < 0 or green > 255:
+                        raise GraphicsError("\n\nGraphicsError: green value for RGB to HSL conversion must be between "
+                                            f"0 & 255, inclusive, 0 <= green <= 255, not {green}")
+                    else:
+                        if blue < 0 or blue > 255:
+                            raise GraphicsError("\n\nGraphicsError: blue value for RGB to HSL conversion must be "
+                                                f"between 0 & 255, inclusive, 0 <= blue <= 255, not {blue}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: blue value for conversion from RGB to HSL must be an integer")
+        else:
+            raise GraphicsError("\n\nGraphicsError: green value for conversion from RGB to HSL must be an integer")
+    else:
+        raise GraphicsError("\n\nGraphicsError: red value for conversion from RGB to HSL must be an integer")
+    
     red /= 255
     green /= 255
     blue /= 255
@@ -3919,6 +4097,27 @@ def rgb_to_hsl(red, green, blue):
 
 
 def rgb_to_hsv(red, green, blue):
+    if isinstance(red, int):
+        if isinstance(green, int):
+            if isinstance(blue, int):
+                if red < 0 or red > 255:
+                    raise GraphicsError("\n\nGraphicsError: red value for RGB to HSV conversion must be between "
+                                        f"0 & 255, inclusive, 0 <= red <= 255, not {red}")
+                else:
+                    if green < 0 or green > 255:
+                        raise GraphicsError("\n\nGraphicsError: green value for RGB to HSV conversion must be between "
+                                            f"0 & 255, inclusive, 0 <= green <= 255, not {green}")
+                    else:
+                        if blue < 0 or blue > 255:
+                            raise GraphicsError("\n\nGraphicsError: blue value for RGB to HSV conversion must be "
+                                                f"between 0 & 255, inclusive, 0 <= blue <= 255, not {blue}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: blue value for conversion from RGB to HSV must be an integer")
+        else:
+            raise GraphicsError("\n\nGraphicsError: green value for conversion from RGB to HSV must be an integer")
+    else:
+        raise GraphicsError("\n\nGraphicsError: red value for conversion from RGB to HSV must be an integer")
+    
     red /= 255
     green /= 255
     blue /= 255
@@ -3945,37 +4144,67 @@ def rgb_to_hsv(red, green, blue):
 # Hex to other format
 
 def hex_to_rgb(hexstring):
+    if isinstance(hexstring, str):
+        if len(hexstring) == 7:
+            try:
+                int(hexstring[1:], 16)
+            except ValueError:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: The hexstring value must be a hexadecimal string, not {hexstring}")
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: The length of the hexstring must be 7: '#rrggbb', not {hexstring}")
+    else:
+        raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
+    
     return (int(hexstring[i:i + 2], 16) for i in (1, 3, 5))
 
 
 def hex_to_cmyk(hexstring):
-    return rgb_to_cmyk(*hex_to_rgb(hexstring))
+    if isinstance(hexstring, str):
+        if len(hexstring) == 7:
+            try:
+                int(hexstring[1:], 16)
+            except ValueError:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: The hexstring value must be a hexadecimal string, not {hexstring}")
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: The length of the hexstring must be 7: '#rrggbb', not {hexstring}")
+    else:
+        raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
+
+    red, green, blue = hex_to_rgb(hexstring)
+
+    red /= 255
+    green /= 255
+    blue /= 255
+
+    k = 1 - max(red, green, blue)
+    k_inverse = 1 - k
+
+    return round(100 * (k_inverse - red) / k_inverse), \
+           round(100 * (k_inverse - green) / k_inverse), \
+           round(100 * (k_inverse - blue) / k_inverse), \
+           round(100 * k)
 
 
 def hex_to_hsl(hexstring):
-    return rgb_to_hsl(*hex_to_rgb(hexstring))
+    if isinstance(hexstring, str):
+        if len(hexstring) == 7:
+            try:
+                int(hexstring[1:], 16)
+            except ValueError:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: The hexstring value must be a hexadecimal string, not {hexstring}")
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: The length of the hexstring must be 7: '#rrggbb', not {hexstring}")
+    else:
+        raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
 
+    red, green, blue = hex_to_rgb(hexstring)
 
-def hex_to_hsv(hexstring):
-    return rgb_to_hsv(*hex_to_rgb(hexstring))
-
-
-# CYMK to other format
-
-def cmyk_to_rgb(c, m, y, k):
-    return round(255 * (1 - (c + k) / 100)), \
-           round(255 * (1 - (m + k) / 100)), \
-           round(255 * (1 - (y + k) / 100))
-
-
-def cmyk_to_hex(c, m, y, k):
-    return rgb_to_hex(*cmyk_to_rgb(c, m, y, k))
-
-
-def cmyk_to_hsl(c, m, y, k):
-    red = 1 - (c + k) / 100
-    green = 1 - (m + k) / 100
-    blue = 1 - (y + k) / 100
+    red /= 255
+    green /= 255
+    blue /= 255
 
     cmax = max(red, green, blue)
     cmin = min(red, green, blue)
@@ -4000,10 +4229,202 @@ def cmyk_to_hsl(c, m, y, k):
     return round(h), round(100 * s), round(100 * L)
 
 
-def cmyk_to_hsv(c, m, y, k):
-    red = 1 - (c + k) / 100
-    green = 1 - (m + k) / 100
-    blue = 1 - (y + k) / 100
+def hex_to_hsv(hexstring):
+    if isinstance(hexstring, str):
+        if len(hexstring) == 7:
+            try:
+                int(hexstring[1:], 16)
+            except ValueError:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: The hexstring value must be a hexadecimal string, not {hexstring}")
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: The length of the hexstring must be 7: '#rrggbb', not {hexstring}")
+    else:
+        raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
+
+    red, green, blue = hex_to_rgb(hexstring)
+
+    red /= 255
+    green /= 255
+    blue /= 255
+
+    cmax = max(red, green, blue)
+    cmin = min(red, green, blue)
+
+    delta = cmax - cmin
+
+    if delta == 0:
+        h = 0
+    elif cmax == red:
+        h = 60 * (((green - blue) / delta) % 6)
+    elif cmax == green:
+        h = 60 * (((blue - red) / delta) + 2)
+    else:
+        h = 60 * (((red - green) / delta) + 4)
+
+    s = 0 if cmax == 0 else (delta / cmax)
+
+    return round(h), round(100 * s), round(100 * cmax)
+
+
+# CYMK to other format
+
+def cmyk_to_rgb(cyan, magenta, yellow, key):
+    if isinstance(cyan, int):
+        if isinstance(magenta, int):
+            if isinstance(yellow, int):
+                if isinstance(key, int):
+                    if cyan < 0 or cyan > 100:
+                        raise GraphicsError("\n\nGraphicsError: cyan value for CMYK to RGB conversion must be between "
+                                            f"0 & 100, inclusive, 0 <= cyan <= 100, not {cyan}")
+                    else:
+                        if magenta < 0 or magenta > 100:
+                            raise GraphicsError("\n\nGraphicsError: magenta value for CMYK to RGB conversion must be "
+                                                f"between 0 & 100, inclusive, 0 <= magenta <= 100, not {magenta}")
+                        else:
+                            if yellow < 0 or yellow > 100:
+                                raise GraphicsError("\n\nGraphicsError: yellow value for CMYK to RGB conversion must be"
+                                                    f" between 0 & 100, inclusive, 0 <= yellow <= 100, not {yellow}")
+                else:
+                    raise GraphicsError(
+                        f"\n\nGraphicsError: key value for conversion from CMYK to RGB must be an integer, not {key}")
+            else:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: yellow value for conversion from CMYK to RGB must be an integer, not {yellow}")
+        else:
+            raise GraphicsError(
+                f"\n\nGraphicsError: magenta value for conversion from CMYK to RGB must be an integer, not {magenta}")
+    else:
+        raise GraphicsError(
+            f"\n\nGraphicsError: cyan value for conversion from CMYK to RGB must be an integer, not {cyan}")
+    
+    return round(255 * (1 - (cyan + key) / 100)), \
+           round(255 * (1 - (magenta + key) / 100)), \
+           round(255 * (1 - (yellow + key) / 100))
+
+
+def cmyk_to_hex(cyan, magenta, yellow, key):
+    if isinstance(cyan, int):
+        if isinstance(magenta, int):
+            if isinstance(yellow, int):
+                if isinstance(key, int):
+                    if cyan < 0 or cyan > 100:
+                        raise GraphicsError("\n\nGraphicsError: cyan value for CMYK to Hex conversion must be between "
+                                            f"0 & 100, inclusive, 0 <= cyan <= 100, not {cyan}")
+                    else:
+                        if magenta < 0 or magenta > 100:
+                            raise GraphicsError("\n\nGraphicsError: magenta value for CMYK to Hex conversion must be "
+                                                f"between 0 & 100, inclusive, 0 <= magenta <= 100, not {magenta}")
+                        else:
+                            if yellow < 0 or yellow > 100:
+                                raise GraphicsError("\n\nGraphicsError: yellow value for CMYK to Hex conversion must be"
+                                                    f" between 0 & 100, inclusive, 0 <= yellow <= 100, not {yellow}")
+                else:
+                    raise GraphicsError(
+                        f"\n\nGraphicsError: key value for conversion from CMYK to Hex must be an integer, not {key}")
+            else:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: yellow value for conversion from CMYK to Hex must be an integer, not {yellow}")
+        else:
+            raise GraphicsError(
+                f"\n\nGraphicsError: magenta value for conversion from CMYK to Hex must be an integer, not {magenta}")
+    else:
+        raise GraphicsError(
+            f"\n\nGraphicsError: cyan value for conversion from CMYK to Hex must be an integer, not {cyan}")
+    
+    return "#%02x%02x%02x" % (round(255 * (1 - (cyan + key) / 100)),
+                              round(255 * (1 - (magenta + key) / 100)),
+                              round(255 * (1 - (yellow + key) / 100)))
+
+
+def cmyk_to_hsl(cyan, magenta, yellow, key):
+    if isinstance(cyan, int):
+        if isinstance(magenta, int):
+            if isinstance(yellow, int):
+                if isinstance(key, int):
+                    if cyan < 0 or cyan > 100:
+                        raise GraphicsError("\n\nGraphicsError: cyan value for CMYK to HSL conversion must be between "
+                                            f"0 & 100, inclusive, 0 <= cyan <= 100, not {cyan}")
+                    else:
+                        if magenta < 0 or magenta > 100:
+                            raise GraphicsError("\n\nGraphicsError: magenta value for CMYK to HSL conversion must be "
+                                                f"between 0 & 100, inclusive, 0 <= magenta <= 100, not {magenta}")
+                        else:
+                            if yellow < 0 or yellow > 100:
+                                raise GraphicsError("\n\nGraphicsError: yellow value for CMYK to HSL conversion must be"
+                                                    f" between 0 & 100, inclusive, 0 <= yellow <= 100, not {yellow}")
+                else:
+                    raise GraphicsError(
+                        f"\n\nGraphicsError: key value for conversion from CMYK to HSL must be an integer, not {key}")
+            else:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: yellow value for conversion from CMYK to HSL must be an integer, not {yellow}")
+        else:
+            raise GraphicsError(
+                f"\n\nGraphicsError: magenta value for conversion from CMYK to HSL must be an integer, not {magenta}")
+    else:
+        raise GraphicsError(
+            f"\n\nGraphicsError: cyan value for conversion from CMYK to HSL must be an integer, not {cyan}")
+    
+    red = 1 - (cyan + key) / 100
+    green = 1 - (magenta + key) / 100
+    blue = 1 - (yellow + key) / 100
+
+    cmax = max(red, green, blue)
+    cmin = min(red, green, blue)
+
+    delta = cmax - cmin
+
+    L = 0.5 * (cmax + cmin)
+
+    if delta == 0:
+        h = 0
+        s = 0
+    elif cmax == red:
+        h = 60 * (((green - blue) / delta) % 6)
+        s = delta / (1 - abs(2 * L - 1))
+    elif cmax == green:
+        h = 60 * (((blue - red) / delta) + 2)
+        s = delta / (1 - abs(2 * L - 1))
+    else:
+        h = 60 * (((red - green) / delta) + 4)
+        s = delta / (1 - abs(2 * L - 1))
+
+    return round(h), round(100 * s), round(100 * L)
+
+
+def cmyk_to_hsv(cyan, magenta, yellow, key):
+    if isinstance(cyan, int):
+        if isinstance(magenta, int):
+            if isinstance(yellow, int):
+                if isinstance(key, int):
+                    if cyan < 0 or cyan > 100:
+                        raise GraphicsError("\n\nGraphicsError: cyan value for CMYK to HSV conversion must be between "
+                                            f"0 & 100, inclusive, 0 <= cyan <= 100, not {cyan}")
+                    else:
+                        if magenta < 0 or magenta > 100:
+                            raise GraphicsError("\n\nGraphicsError: magenta value for CMYK to HSV conversion must be "
+                                                f"between 0 & 100, inclusive, 0 <= magenta <= 100, not {magenta}")
+                        else:
+                            if yellow < 0 or yellow > 100:
+                                raise GraphicsError("\n\nGraphicsError: yellow value for CMYK to HSV conversion must be"
+                                                    f" between 0 & 100, inclusive, 0 <= yellow <= 100, not {yellow}")
+                else:
+                    raise GraphicsError(
+                        f"\n\nGraphicsError: key value for conversion from CMYK to HSV must be an integer, not {key}")
+            else:
+                raise GraphicsError(
+                    f"\n\nGraphicsError: yellow value for conversion from CMYK to HSV must be an integer, not {yellow}")
+        else:
+            raise GraphicsError(
+                f"\n\nGraphicsError: magenta value for conversion from CMYK to HSV must be an integer, not {magenta}")
+    else:
+        raise GraphicsError(
+            f"\n\nGraphicsError: cyan value for conversion from CMYK to HSV must be an integer, not {cyan}")
+    
+    red = 1 - (cyan + key) / 100
+    green = 1 - (magenta + key) / 100
+    blue = 1 - (yellow + key) / 100
 
     cmax = max(red, green, blue)
     cmin = min(red, green, blue)
@@ -4026,23 +4447,44 @@ def cmyk_to_hsv(c, m, y, k):
 
 # HSV to other format
 
-def hsv_to_rgb(h, s, v):
-    s /= 100
-    v /= 100
+def hsv_to_rgb(hue, saturation, value):
+    if isinstance(hue, int):
+        if isinstance(saturation, int):
+            if isinstance(value, int):
+                if hue < 0 or hue > 360:
+                    raise GraphicsError("\n\nGraphicsError: hue value for HSV to RGB conversion must be between "
+                                        f"0 & 360, inclusive, 0 <= hue <= 360, not {hue}")
+                else:
+                    if saturation < 0 or saturation > 100:
+                        raise GraphicsError("\n\nGraphicsError: saturation value for HSV to RGB conversion must be "
+                                            f"between 0 & 100, inclusive, 0 <= saturation <= 100, not {saturation}")
+                    else:
+                        if value < 0 or value > 100:
+                            raise GraphicsError("\n\nGraphicsError: value value for HSV to RGB conversion must be "
+                                                f"between 0 & 100, inclusive, 0 <= value <= 100, not {value}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: value value for conversion from HSV to RGB must be an integer")
+        else:
+            raise GraphicsError("\n\nGraphicsError: saturation value for conversion from HSV to RGB must be an integer")
+    else:
+        raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSV to RGB must be an integer")
+    
+    saturation /= 100
+    value /= 100
 
-    c = v * s
-    x = c * (1 - abs((h / 60) % 2 - 1))
-    m = v - c
+    c = value * saturation
+    x = c * (1 - abs((hue / 60) % 2 - 1))
+    m = value - c
 
-    if h < 60:
+    if hue < 60:
         rgb_ = (c, x, 0)
-    elif h < 120:
+    elif hue < 120:
         rgb_ = (x, c, 0)
-    elif h < 180:
+    elif hue < 180:
         rgb_ = (0, c, x)
-    elif h < 240:
+    elif hue < 240:
         rgb_ = (0, x, c)
-    elif h < 300:
+    elif hue < 300:
         rgb_ = (x, 0, c)
     else:
         rgb_ = (c, 0, x)
@@ -4052,8 +4494,29 @@ def hsv_to_rgb(h, s, v):
            round(255 * (rgb_[2] + m))
 
 
-def hsv_to_hex(h, s, v):
-    return rgb_to_hex(*hsv_to_rgb(h, s, v))
+def hsv_to_hex(hue, saturation, value):
+    if isinstance(hue, int):
+        if isinstance(saturation, int):
+            if isinstance(value, int):
+                if hue < 0 or hue > 360:
+                    raise GraphicsError("\n\nGraphicsError: hue value for HSV to RGB conversion must be between "
+                                        f"0 & 360, inclusive, 0 <= hue <= 360, not {hue}")
+                else:
+                    if saturation < 0 or saturation > 100:
+                        raise GraphicsError("\n\nGraphicsError: saturation value for HSV to RGB conversion must be "
+                                            f"between 0 & 100, inclusive, 0 <= saturation <= 100, not {saturation}")
+                    else:
+                        if value < 0 or value > 100:
+                            raise GraphicsError("\n\nGraphicsError: value value for HSV to RGB conversion must be "
+                                                f"between 0 & 100, inclusive, 0 <= value <= 100, not {value}")
+            else:
+                raise GraphicsError("\n\nGraphicsError: value value for conversion from HSV to RGB must be an integer")
+        else:
+            raise GraphicsError("\n\nGraphicsError: saturation value for conversion from HSV to RGB must be an integer")
+    else:
+        raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSV to RGB must be an integer")
+
+    return rgb_to_hex(*hsv_to_rgb(hue, saturation, value))
 
 
 def hsv_to_cmyk(h, s, v):
