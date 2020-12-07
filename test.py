@@ -4,7 +4,7 @@ import os
 
 from matplotlib import pyplot as plt
 
-from goopylib.imports import *
+from goopylib.c_colours import *
 
 
 def func1():
@@ -57,8 +57,11 @@ def countlines(start, lines=0, header=True, begin_start=None):
 
 # countlines("goopylib")
 
-c = ColourRGB(100, 150, 100)
-print(isinstance(c, ColorRGB))
+print("imported")
+
+c = ColourRGB(0, 0, 0)
+print("adding")
+print(c + 10)
 
 
 """

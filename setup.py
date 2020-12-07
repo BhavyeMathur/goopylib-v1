@@ -27,7 +27,8 @@ def create_release():
         version='1.1.176a19',
         license='MIT License',
 
-        description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating good-looking, modern GUIs, games, and animations.',
+        description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating '
+                    'good-looking, modern GUIs, games, and animations.',
         long_description=long_description,
         long_description_content_type="text/markdown",
 

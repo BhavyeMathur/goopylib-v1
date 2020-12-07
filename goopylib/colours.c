@@ -4,14 +4,19 @@
 #include <structmember.h>
 
 static PyObject *GraphicsError;
+
+static PyObject *Colour_reference;
 static PyObject *ColourRGB_reference;
+static PyObject *ColourCMYK_reference;
+static PyObject *ColourHSL_reference;
+static PyObject *ColourHSV_reference;
 
 /* Other Functions */
 
 char* rgb_to_hex(int red, int green, int blue) {
     static char hex_string[7];
 
-    sprintf(hex_string, "#%x%x%x", red, green, blue);
+    sprintf(hex_string, "#%02x%02x%02x", red, green, blue);
     return hex_string;
 }
 
@@ -71,13 +76,14 @@ static PyObject* Colours_hex_digit_to_int(PyObject *self, PyObject *args){
 typedef struct {
     PyObject_HEAD
     int red, green, blue;  /* RGB values for the colour */
-    char colour[7];  /* A Hexadecimal value for the colour string */
+    PyObject *colour;  /* A Hexadecimal value for the colour string */
     PyObject *string;
 } Colour;
 
 /* This is a function which deallocates memory for a Colour object*/
 static void Colour_dealloc(Colour * self) {
     Py_XDECREF(self->string);
+    Py_XDECREF(self->colour);
     Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -93,7 +99,7 @@ static PyObject* Colour_new(PyTypeObject *type, PyObject *args, PyObject*kwds) {
             return NULL;
         }
 
-        strncpy(self->colour, "#000000", 7); /* Puts a black hexadecimal value into the colour variable */
+        //strncpy(self->colour, "#000000", 7); /* Puts a black hexadecimal value into the colour variable */
 
         self->red = 0;
         self->green = 0; /* Puts 0 as the default value for each RGB value */
@@ -116,7 +122,7 @@ static PyMemberDef Colour_members[] = {
     {"blue", T_INT, offsetof(Colour, blue), 0,
      "RGB blue value of Colour"},
 
-    {"colour", T_STRING, offsetof(Colour, colour), 0,
+    {"colour", T_OBJECT_EX, offsetof(Colour, colour), 0,
      "Hexadecimal colour value of Colour"},
 
      {"string", T_OBJECT_EX, offsetof(Colour, string), 0,
@@ -130,7 +136,7 @@ static PyObject *Colour_rgb_string(Colour *self, PyObject *Py_UNUSED(ignored)) {
 }
 
 static PyObject *Colour_hex_string(Colour *self, PyObject *Py_UNUSED(ignored)) {
-    return PyUnicode_FromString(self->colour);
+    return self->colour;
 }
 
 static PyMethodDef Colour_methods[] = {
@@ -143,12 +149,277 @@ static PyMethodDef Colour_methods[] = {
     {NULL}  /* Sentinel */
 };
 
+/* Colour Object Functions */
+
+static PyObject *Colour_richcompare(Colour *self, PyObject *other, int op) {
+    /*
+    if (PyObject_IsInstance(other, (PyObject *)&ColourType)) {
+        switch (op) {
+            case Py_LT:
+                if (self->red + self->green + self->blue < other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_LE:
+                if (self->red + self->green + self->blue <= other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_EQ:
+                if (self->red + self->green + self->blue == other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_NE:
+                if (!(self->red + self->green + self->blue == other->red + other->green + other->blue)) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_GT:
+                if (self->red + self->green + self->blue > other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+
+            case Py_GE:
+                if (self->red + self->green + self->blue >= other->red + other->green + other->blue) {
+                    Py_RETURN_TRUE;}
+                else {
+                    Py_RETURN_FALSE;}
+        }
+    }
+    else {
+        PyErr_SetObject(GraphicsError, PyUnicode_FromFormat("\n\nGraphicsError: comparing operations '<' '>' '=' '!=' '<=' '>=' for Colour object must be with another Colour Type, not %R", other));
+        return NULL;}
+
+    Py_RETURN_FALSE; */
+}
+
+static PyObject *Colour_add(Colour *self, PyObject* other) {
+    int other_converted = PyLong_AsLong(other);
+    return PyObject_CallFunctionObjArgs(ColourRGB_reference, PyLong_FromLong(self->red + other_converted),
+                                                             PyLong_FromLong(self->green + other_converted),
+                                                             PyLong_FromLong(self->blue + other_converted), NULL);
+}
+
+static PyObject *Colour_subtract(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_multiply(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_remainder(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_divmod(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_power(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_negative(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_positive(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_absolute(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_bool(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_invert(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_lshift(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_rshift(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_and(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_xor(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_or(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_int(Colour *self) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_float(Colour *self) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_iadd(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_isubtract(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_imultiply(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_iremainder(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_ipower(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_ilshift(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_irshift(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_iand(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_ixor(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_ior(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_floor_divide(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_true_divide(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_ifloor_divide(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_itrue_divide(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_index(Colour *self, PyObject* index) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_length(Colour *self) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_contains(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_item(Colour *self, PyObject* index) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_dir(Colour *self) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_round(Colour *self, PyObject* n) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_reversed(Colour *self) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_matrix_multiply(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyObject *Colour_imatrix_multiply(Colour *self, PyObject* other) {
+    return PyObject_CallFunction(Colour_reference, NULL);
+}
+
+static PyNumberMethods Colour_number_methods = {
+    (binaryfunc)Colour_add,
+    (binaryfunc)Colour_subtract,
+    (binaryfunc)Colour_multiply,
+    (binaryfunc)Colour_remainder,
+    (binaryfunc)Colour_divmod,
+    (ternaryfunc)Colour_power,
+
+    (unaryfunc)Colour_negative,
+    (unaryfunc)Colour_positive,
+    (unaryfunc)Colour_absolute,
+
+    (inquiry)Colour_bool,
+    (unaryfunc)Colour_invert,
+    (binaryfunc)Colour_lshift,
+    (binaryfunc)Colour_rshift,
+
+    (binaryfunc)Colour_and,
+    (binaryfunc)Colour_xor,
+    (binaryfunc)Colour_or,
+
+    (unaryfunc)Colour_int,
+    (unaryfunc)Colour_float,
+
+    (binaryfunc)Colour_iadd,
+    (binaryfunc)Colour_isubtract,
+    (binaryfunc)Colour_imultiply,
+    (binaryfunc)Colour_iremainder,
+    (ternaryfunc)Colour_ipower,
+
+    (binaryfunc)Colour_ilshift,
+    (binaryfunc)Colour_irshift,
+
+    (binaryfunc)Colour_iand,
+    (binaryfunc)Colour_ixor,
+    (binaryfunc)Colour_ior,
+
+    (binaryfunc)Colour_floor_divide,
+    (binaryfunc)Colour_true_divide,
+    (binaryfunc)Colour_ifloor_divide,
+    (binaryfunc)Colour_itrue_divide,
+
+    (unaryfunc)Colour_index,
+
+    (binaryfunc)Colour_matrix_multiply,
+    (binaryfunc)Colour_imatrix_multiply,
+};
+
 static PyObject *Colour_repr(Colour *self) {
     return self->string;
 }
 
 static PyObject *Colour_str(Colour *self) {
-    return PyUnicode_FromString(self->colour);
+    return self->colour;
 }
 
 static PyObject *Colour_iter(Colour *self) {
@@ -162,17 +433,17 @@ static PyTypeObject ColourType = {
     .tp_basicsize = sizeof(Colour),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_new = Colour_new,
+    .tp_new = (newfunc) Colour_new,
     .tp_dealloc = (destructor) Colour_dealloc,
     .tp_init = (initproc) Colour_init,
 
     .tp_members = Colour_members,
     .tp_methods = Colour_methods,
+    .tp_as_number = &Colour_number_methods,
 
     .tp_repr = (reprfunc) Colour_repr,
     .tp_str = (reprfunc) Colour_str,
-    /*
-    .tp_iter = (getiterfunc) Colour_iter, */
+    .tp_iter = (getiterfunc) Colour_iter,
 };
 
 /* ColourRGB class*/
@@ -180,7 +451,7 @@ static PyTypeObject ColourType = {
 typedef struct {
     Colour superclass;
     int red, green, blue;  /* RGB values for the colour */
-    char colour[7];  /* A Hexadecimal value for the colour string */
+    PyObject *colour;  /* A Hexadecimal value for the colour string */
     PyObject *string;
 } ColourRGB;
 
@@ -201,7 +472,10 @@ static int ColourRGB_init(Colour *self, PyObject *args, PyObject *kwds) {
     self->green = green;
     self->blue = blue;
 
-    sprintf(self->colour, "#%x%x%x", red, green, blue);
+    //char hexstring[6];
+    self->colour = PyUnicode_FromFormat("#%c", 1);
+
+    //PyBytes_FromString(snprintf(hexstring, sizeof(hexstring), "%02x%02x%02x", red, green, blue))
 
     return 0;
 }
@@ -223,7 +497,7 @@ static PyTypeObject ColourRGBType = {
 typedef struct {
     Colour superclass;
     int red, green, blue;
-    char colour[7];
+    PyObject *colour;
     PyObject *string;
 } ColourCMYK;
 
@@ -271,7 +545,7 @@ static PyTypeObject ColourCMYKType = {
 typedef struct {
     Colour superclass;
     int red, green, blue;
-    char colour[7];
+    PyObject *colour;
     PyObject *string;
 } ColourHex;
 
@@ -317,7 +591,7 @@ static PyTypeObject ColourHexType = {
 typedef struct {
     Colour superclass;
     int red, green, blue;
-    char colour[7];
+    PyObject *colour;
     PyObject *string;
 } ColourHSL;
 
@@ -398,7 +672,7 @@ static PyTypeObject ColourHSLType = {
 typedef struct {
     Colour superclass;
     int red, green, blue;
-    char colour[7];
+    PyObject *colour;
     PyObject *string;
 } ColourHSV;
 
@@ -473,220 +747,6 @@ static PyTypeObject ColourHSVType = {
     .tp_members = Colour_members,
 };
 
-/* Colour Object Functions */
-
-static PyObject *Colour_richcompare(Colour *self, PyObject *other, int op) {
-    /*
-    if (PyObject_IsInstance(other, (PyObject *)&ColourType)) {
-        switch (op) {
-            case Py_LT:
-                if (self->red + self->green + self->blue < other->red + other->green + other->blue) {
-                    Py_RETURN_TRUE;}
-                else {
-                    Py_RETURN_FALSE;}
-
-            case Py_LE:
-                if (self->red + self->green + self->blue <= other->red + other->green + other->blue) {
-                    Py_RETURN_TRUE;}
-                else {
-                    Py_RETURN_FALSE;}
-
-            case Py_EQ:
-                if (self->red + self->green + self->blue == other->red + other->green + other->blue) {
-                    Py_RETURN_TRUE;}
-                else {
-                    Py_RETURN_FALSE;}
-
-            case Py_NE:
-                if (!(self->red + self->green + self->blue == other->red + other->green + other->blue)) {
-                    Py_RETURN_TRUE;}
-                else {
-                    Py_RETURN_FALSE;}
-
-            case Py_GT:
-                if (self->red + self->green + self->blue > other->red + other->green + other->blue) {
-                    Py_RETURN_TRUE;}
-                else {
-                    Py_RETURN_FALSE;}
-
-            case Py_GE:
-                if (self->red + self->green + self->blue >= other->red + other->green + other->blue) {
-                    Py_RETURN_TRUE;}
-                else {
-                    Py_RETURN_FALSE;}
-        }
-    }
-    else {
-        PyErr_SetObject(GraphicsError, PyUnicode_FromFormat("\n\nGraphicsError: comparing operations '<' '>' '=' '!=' '<=' '>=' for Colour object must be with another Colour Type, not %R", other));
-        return NULL;}
-
-    Py_RETURN_FALSE; */
-}
-
-static PyObject *Colour_add(Colour *self, PyObject* other) {
-    return PyObject_CallFunctionObjArgs(ColourRGB_reference, 255, 0, 0);
-}
-
-static PyObject *Colour_subtract(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_multiply(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_remainder(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_divmod(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_power(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_negative(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_positive(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_absolute(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_bool(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_invert(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_lshift(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_rshift(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_and(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_xor(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_or(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_int(Colour *self) {
-
-}
-
-static PyObject *Colour_float(Colour *self) {
-
-}
-
-static PyObject *Colour_iadd(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_isubtract(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_imultiply(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_iremainder(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_ipower(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_ilshift(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_irshift(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_iand(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_ixor(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_ior(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_floor_divide(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_true_divide(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_ifloor_divide(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_itrue_divide(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_index(Colour *self, PyObject* index) {
-
-}
-
-static PyObject *Colour_length(Colour *self) {
-
-}
-
-static PyObject *Colour_contains(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_item(Colour *self, PyObject* index) {
-
-}
-
-static PyObject *Colour_dir(Colour *self) {
-
-}
-
-static PyObject *Colour_round(Colour *self, PyObject* n) {
-
-}
-
-static PyObject *Colour_reversed(Colour *self) {
-
-}
-
-static PyObject *Colour_matrix_multiply(Colour *self, PyObject* other) {
-
-}
-
-static PyObject *Colour_imatrix_multiply(Colour *self, PyObject* other) {
-
-}
-
 /* CPython API & Module Related Functions */
 
 static PyMethodDef c_colours_funcs[] = {
@@ -699,9 +759,9 @@ static PyMethodDef c_colours_funcs[] = {
 
     {NULL, NULL, 0, NULL}};
 
-static PyModuleDef c_coloursModule = {
+static PyModuleDef c_colours_module = {
     PyModuleDef_HEAD_INIT,
-    .m_name = "c_coloursModule",
+    .m_name = "c_colours_module",
     .m_doc = "C implementation of a module to work with colours!",
     .m_size = -1, c_colours_funcs};
 
@@ -716,57 +776,6 @@ PyMODINIT_FUNC PyInit_c_colours(void){
     ColourHSLType.tp_base = &ColourType;
     ColourHSVType.tp_base = &ColourType;
 
-    /*
-    ColourType.tp_as_number->nb_add = (binaryfunc)Colour_add;
-
-
-    ColourType.tp_as_number->nb_subtract = (binaryfunc)Colour_subtract;
-    ColourType.tp_as_number->nb_multiply = (binaryfunc)Colour_multiply;
-    ColourType.tp_as_number->nb_remainder = (binaryfunc)Colour_remainder;
-    ColourType.tp_as_number->nb_divmod = (binaryfunc)Colour_divmod;
-    ColourType.tp_as_number->nb_power = (ternaryfunc)Colour_power;
-
-    ColourType.tp_as_number->nb_negative = (unaryfunc)Colour_negative;
-    ColourType.tp_as_number->nb_positive = (unaryfunc)Colour_positive;
-    ColourType.tp_as_number->nb_absolute = (unaryfunc)Colour_absolute;
-
-    ColourType.tp_as_number->nb_bool = (inquiry)Colour_bool;
-    ColourType.tp_as_number->nb_invert = (unaryfunc)Colour_invert;
-    ColourType.tp_as_number->nb_lshift = (binaryfunc)Colour_lshift;
-    ColourType.tp_as_number->nb_rshift = (binaryfunc)Colour_rshift;
-
-    ColourType.tp_as_number->nb_and = (binaryfunc)Colour_and;
-    ColourType.tp_as_number->nb_xor = (binaryfunc)Colour_xor;
-    ColourType.tp_as_number->nb_or = (binaryfunc)Colour_or;
-
-    ColourType.tp_as_number->nb_int = (unaryfunc)Colour_int;
-    ColourType.tp_as_number->nb_float = (unaryfunc)Colour_float;
-
-    ColourType.tp_as_number->nb_inplace_add = (binaryfunc)Colour_iadd;
-    ColourType.tp_as_number->nb_inplace_subtract = (binaryfunc)Colour_isubtract;
-    ColourType.tp_as_number->nb_inplace_multiply = (binaryfunc)Colour_imultiply;
-    ColourType.tp_as_number->nb_inplace_remainder = (binaryfunc)Colour_remainder;
-    ColourType.tp_as_number->nb_inplace_power = (ternaryfunc)Colour_ipower;
-
-    ColourType.tp_as_number->nb_inplace_lshift = (binaryfunc)Colour_ilshift;
-    ColourType.tp_as_number->nb_inplace_rshift = (binaryfunc)Colour_irshift;
-
-    ColourType.tp_as_number->nb_inplace_and = (binaryfunc)Colour_iadd;
-    ColourType.tp_as_number->nb_inplace_xor = (binaryfunc)Colour_ixor;
-    ColourType.tp_as_number->nb_inplace_or = (binaryfunc)Colour_ior;
-
-    ColourType.tp_as_number->nb_floor_divide = (binaryfunc)Colour_floor_divide;
-    ColourType.tp_as_number->nb_true_divide = (binaryfunc)Colour_true_divide;
-    ColourType.tp_as_number->nb_inplace_floor_divide = (binaryfunc)Colour_ifloor_divide;
-    ColourType.tp_as_number->nb_inplace_true_divide = (binaryfunc)Colour_itrue_divide;
-
-    ColourType.tp_as_number->nb_index = (unaryfunc)Colour_index;
-
-    ColourType.tp_as_number->nb_matrix_multiply = (binaryfunc)Colour_matrix_multiply;
-    ColourType.tp_as_number->nb_inplace_matrix_multiply = (binaryfunc)Colour_imatrix_multiply;
-
-    */
-
     if (PyType_Ready(&ColourType) < 0)
         return NULL;
     if (PyType_Ready(&ColourRGBType) < 0)
@@ -780,7 +789,7 @@ PyMODINIT_FUNC PyInit_c_colours(void){
     if (PyType_Ready(&ColourHSVType) < 0)
         return NULL;
 
-    m = PyModule_Create(&c_coloursModule);
+    m = PyModule_Create(&c_colours_module);
     if (m == NULL)
         return NULL;
 
@@ -824,7 +833,11 @@ PyMODINIT_FUNC PyInit_c_colours(void){
     GraphicsError = PyErr_NewException("goopylib.GraphicsError.Colours", NULL, NULL);
     Py_XINCREF(GraphicsError);
 
+    Colour_reference = (PyObject *) &ColourType;
     ColourRGB_reference = (PyObject *) &ColourRGBType;
+    ColourCMYK_reference = (PyObject *) &ColourCMYKType;
+    ColourHSL_reference = (PyObject *) &ColourHSLType;
+    ColourHSV_reference = (PyObject *) &ColourHSVType;
 
     if (PyModule_AddObject(m, "GraphicsError", GraphicsError) < 0) {
         Py_XDECREF(GraphicsError);
