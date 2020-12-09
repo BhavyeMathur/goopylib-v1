@@ -1,5 +1,21 @@
 #define PY_SSIZE_T_CLEAN 16
 
+#define raiseGraphicsError(x) PyErr_SetObject(GraphicsError, PyUnicode_FromFormat(x)); return NULL;
+
+#define combination_n_incorrect_error "\n\nGraphicsError: n argument for combination(n, k) must be an integer, not %R", n_object
+#define combination_k_incorrect_error "\n\nGraphicsError: k argument for combination(n, k) must be an integer, not %R", k_object
+#define combination_n_less_than_k_error "\n\nGraphicsError: n argument for combination(n, k) must be >= k, not n=%i & k=%i", n, k
+
+#define bernstein_polynomial_n_less_than_i_error "\n\nGraphicsError: n argument for bernstein_polynomial(i, n, t) must be >= i, not n=%i & i=%i", n, i
+#define bernstein_polynomial_t_bounds_error "\n\nGraphicsError: t argument for bernstein_polynomial(i, n, t) must between 0 & 1, inclusive, 0 <= t <= 1, not %R", t_object
+#define bernstein_polynomial_i_incorrect_error "\n\nGraphicsError: i argument for bernstein_polynomial(i, n, t) must be an integer, not %R", i_object
+#define bernstein_polynomial_n_incorrect_error "\n\nGraphicsError: n argument for bernstein_polynomial(i, n, t) must be an integer, not %R", n_object
+#define bernstein_polynomial_t_incorrect_error "\n\nGraphicsError: t argument for bernstein_polynomial(i, n, t) must be an integer or float, not %R", t_object
+
+#define bezier_curve_t_bounds_error "\n\nGraphicsError: t argument for bezier_curve(t, control_points) must between 0 & 1, inclusive, 0 <= t <= 1, not %f", t
+#define bezier_curve_t_incorrect_error "\n\nGraphicsError: t argument for bezier_curve(t, control_points) must be an integer or float, not %R", t_object
+#define rational_bezier_curve_t_bounds_error "\n\nGraphicsError: t argument for rational_bezier_curve(t, control_points, weights) must between 0 & 1, inclusive, 0 <= t <= 1, not %f", t
+
 #include <Python.h>
 #include <math.h>
 
@@ -18,22 +34,31 @@ unsigned long long combination(int n, int k){
     return factorial(n) / (factorial(k) * factorial(n - k));}
 
 float bernstein_polynomial(int i, int n, float t){
-    return combination(n, i) * pow(t, i) * pow(1 - t, n - i);}
-
-static PyObject* bezier_curve_factorial(PyObject *self, PyObject *args){
-    int n;
-
-    if (!PyArg_ParseTuple(args, "i", &n))
-        return NULL;
-
-    return Py_BuildValue("K", factorial(n));
-}
+    return combination(n, i) * (float)(pow(t, i) * pow(1 - t, n - i));}
 
 static PyObject* bezier_curve_combination(PyObject *self, PyObject *args){
     int n, k;
 
-    if (!PyArg_ParseTuple(args, "ii", &n, &k))
+    if (!PyArg_ParseTuple(args, "ii", &n, &k)) {
+        PyObject *n_object, *k_object;
+
+        if (!PyArg_ParseTuple(args, "OO", &n_object, &k_object)) {
+            return NULL;
+        }
+
+        if (!PyLong_Check(n_object)) {
+            raiseGraphicsError(combination_n_incorrect_error)
+        }
+        if (!PyLong_Check(k_object)){
+            raiseGraphicsError(combination_k_incorrect_error)
+        }
+
         return NULL;
+    }
+
+    if (n < k) {
+        raiseGraphicsError(combination_n_less_than_k_error)
+    }
 
     return Py_BuildValue("K", combination(n, k));
 }
@@ -42,8 +67,45 @@ static PyObject* bezier_curve_bernstein_polynomial(PyObject* self, PyObject* arg
     int i, n;
     float t;
 
-    if (!PyArg_ParseTuple(args, "iif", &i, &n, &t))
+    PyObject *t_object;
+
+    if (!PyArg_ParseTuple(args, "iiO", &i, &n, &t_object)) {
+        PyObject *i_object, *n_object, *t_object;
+
+        if (!PyArg_ParseTuple(args, "OOO", &i_object, &n_object, &t_object)) {
+            return NULL;
+        }
+
+        if (!PyLong_Check(i_object)) {
+            raiseGraphicsError(bernstein_polynomial_i_incorrect_error)
+        }
+        if (!PyLong_Check(n_object)) {
+            raiseGraphicsError(bernstein_polynomial_n_incorrect_error)
+        }
+        if (!(PyFloat_Check(t_object) || PyLong_Check(t_object))) {
+            raiseGraphicsError(bernstein_polynomial_t_incorrect_error)
+        }
+
         return NULL;
+    }
+
+    if (PyFloat_Check(t_object)) {
+        t = (float)PyFloat_AsDouble(t_object);
+    }
+    else if (PyLong_Check(t_object)) {
+        t = (float)PyLong_AsLong(t_object);
+    }
+    else {
+        raiseGraphicsError(bernstein_polynomial_t_bounds_error)
+    }
+
+    if (n < i) {
+        raiseGraphicsError(bernstein_polynomial_n_less_than_i_error);
+    }
+
+    if ((t > 1) || (t < 0)) {
+        raiseGraphicsError(bernstein_polynomial_t_bounds_error)
+    }
 
     return Py_BuildValue("f", bernstein_polynomial(i, n, t));
 }
@@ -51,10 +113,25 @@ static PyObject* bezier_curve_bernstein_polynomial(PyObject* self, PyObject* arg
 static PyObject* bezier_curve_bezier_curve(PyObject* self, PyObject* args) {
     Py_ssize_t size;
     float t;
-    PyObject *py_control_points, *temp1, *x, *y;
+    PyObject *py_control_points, *temp1, *x, *y, *t_object;
 
-    if (!PyArg_ParseTuple(args, "fO", &t, &py_control_points))
+    if (!PyArg_ParseTuple(args, "OO", &t_object, &py_control_points)){
         return NULL;
+    }
+
+    if (PyFloat_Check(t_object)) {
+        t = (float)PyFloat_AsDouble(t_object);
+    }
+    else if (PyLong_Check(t_object)) {
+        t = (float)PyLong_AsLong(t_object);
+    }
+    else {
+        raiseGraphicsError(bezier_curve_t_incorrect_error)
+    }
+
+    if ((t > 1) || (t < 0)) {
+        raiseGraphicsError(bezier_curve_t_bounds_error)
+    }
 
     if (PyList_Check(py_control_points) == 1) {
         size = PyList_Size(py_control_points);
@@ -67,7 +144,7 @@ static PyObject* bezier_curve_bezier_curve(PyObject* self, PyObject* args) {
         float sum_x = 0, sum_y = 0;
 
         if (size > 5) {
-            int degree = size - 1;
+            int degree = (int)size - 1;
 
             for (Py_ssize_t i = 0; i < size; i++) {
                 temp1 = PyList_GetItem(py_control_points, i);
@@ -77,7 +154,7 @@ static PyObject* bezier_curve_bezier_curve(PyObject* self, PyObject* args) {
                     y = PyList_GetItem(temp1, 1);
 
                     if (PyNumber_Check(x) == 1 && PyNumber_Check(y) == 1) {
-                        float coeff = bernstein_polynomial(i, degree, t);
+                        float coeff = bernstein_polynomial((int)i, degree, t);
 
                         sum_x += coeff * PyLong_AsLongLong(x);
                         sum_y += coeff * PyLong_AsLongLong(y);
@@ -398,21 +475,40 @@ static PyObject* bezier_curve_bezier_curve(PyObject* self, PyObject* args) {
         PyUnicode_FromFormat("\n\nGraphicsError: control_points argument for bezier curve must be a list, not %R", py_control_points));
 
         return NULL;}
+    return NULL;
 }
 
 static PyObject* bezier_curve_rational_bezier_curve(PyObject* self, PyObject* args) {
     Py_ssize_t size;
-    float t, sum_x_denominator = 0, sum_y_denominator = 0, sum_x_numerator = 0, sum_y_numerator = 0;
-    PyObject *py_control_points, *py_weights, *temp1, *x, *y, *temp2;
+    float t, sum_x_denominator = 0.0f, sum_y_denominator = 0.0f, sum_x_numerator = 0.0f, sum_y_numerator = 0.0f;
+    PyObject *py_control_points, *py_weights, *temp1, *x, *y, *temp2, *t_object;
 
-    if (!PyArg_ParseTuple(args, "fOO", &t, &py_control_points, &py_weights))
+    if (!PyArg_ParseTuple(args, "OOO", &t_object, &py_control_points, &py_weights)) {
         return NULL;
+    }
+
+    if (PyFloat_Check(t_object)) {
+        t = (float)PyFloat_AsDouble(t_object);
+    }
+    else if (PyLong_Check(t_object)) {
+        t = (float)PyLong_AsLong(t_object);
+    }
+    else {
+        PyErr_SetObject(GraphicsError,
+        PyUnicode_FromFormat("\n\nGraphicsError: t argument for bezier_curve(i, n, t) must be an integer or float, not %R", t_object));
+
+        return NULL;
+    }
+
+    if ((t > 1) || (t < 0)) {
+        raiseGraphicsError(rational_bezier_curve_t_bounds_error)
+    }
 
     if (PyList_Check(py_control_points) == 1) {
         if (PyList_Check(py_weights) == 1) {
             size = PyList_Size(py_control_points);
 
-            if (size > 21) {
+            if (size > 20) {
                 PyErr_SetString(GraphicsError,
                 "\n\nGraphicsError: The Rational Bezier Curve Function is no longer accurate after the number of control points exceeds 20, use the py_rational_bezier_curve() function instead");
                 return NULL;}
@@ -422,7 +518,7 @@ static PyObject* bezier_curve_rational_bezier_curve(PyObject* self, PyObject* ar
                 "\n\nGraphicsError: the length of weights must match the length of control_points");
                 return NULL;}
 
-            int degree = size - 1;
+            int degree = (int)size - 1;
 
             for (Py_ssize_t i = 0; i < size; i++){
 
@@ -435,7 +531,7 @@ static PyObject* bezier_curve_rational_bezier_curve(PyObject* self, PyObject* ar
 
                     if (PyFloat_Check(temp2) == 1) {
                         if (PyNumber_Check(x) == 1 && PyNumber_Check(y) == 1) {
-                            float coeff = bernstein_polynomial(i, degree, t) * PyFloat_AsDouble(temp2);
+                            float coeff = bernstein_polynomial((int)i, degree, t) * (float)PyFloat_AsDouble(temp2);
 
                             sum_x_numerator += coeff * PyLong_AsLongLong(x);
                             sum_y_numerator += coeff * PyLong_AsLongLong(y);
@@ -479,7 +575,6 @@ static PyObject* bezier_curve_rational_bezier_curve(PyObject* self, PyObject* ar
 
 
 static PyMethodDef c_bezier_curve_funcs[] = {
-    {"factorial", (PyCFunction)bezier_curve_factorial, METH_VARARGS, "factorial(x) -> unsigned long long\nCalculates factorial of x"},
     {"combination", (PyCFunction)bezier_curve_combination, METH_VARARGS, "combination(n, k) -> unsigned long long\nCalculates nCk"},
     {"bernstein_polynomial", (PyCFunction)bezier_curve_bernstein_polynomial, METH_VARARGS,
     "bernstein_polynomial(i, n, t) -> float\nCalculates the ith bernstein_polynomial at t for n-degrees"},
@@ -492,7 +587,7 @@ static PyMethodDef c_bezier_curve_funcs[] = {
 
     {NULL, NULL, 0, NULL}};
 
-static struct PyModuleDef c_bezier_curveModule = {
+static struct PyModuleDef c_bezier_curve_module = {
     PyModuleDef_HEAD_INIT,
     "c_bezier_curve_module", "Functions to Calculate Bezier Curves.",
     -1, c_bezier_curve_funcs};
@@ -501,7 +596,7 @@ PyMODINIT_FUNC PyInit_c_bezier_curve(void){
 
     PyObject *m;
 
-    m = PyModule_Create(&c_bezier_curveModule);
+    m = PyModule_Create(&c_bezier_curve_module);
     if (!m) {
         return NULL;}
 

@@ -24,7 +24,7 @@ def create_release():
 
         include_package_data=True,
 
-        version='1.1.176a19',
+        version='1.1.236a21',
         license='MIT License',
 
         description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating '
@@ -35,7 +35,7 @@ def create_release():
         author='Bhavye Mathur',
         author_email='bhavyemathur@gmail.com',
         url='https://github.com/BhavyeMathur/goopylib',
-        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.176-alpha.tar.gz',
+        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.236-alpha.tar.gz',
         keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
         install_requires=['pillow'],
         project_urls={"Bug Tracker": "https://github.com/BhavyeMathur/goopylib/issues",
@@ -62,7 +62,7 @@ def setup_extension(name, sources, output):
                 os.remove(f"goopylib/{output}{name}.pyd")
             except FileNotFoundError:
                 pass
-            os.rename(f"build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd", f"goopylib/{name}.pyd")
+            os.rename(f"build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd", f"goopylib/{output}{name}.pyd")
 
         elif system == "Darwin":
             try:
@@ -80,9 +80,9 @@ def setup_extension(name, sources, output):
     shutil.rmtree("build")
 
 
-setup_extension("colours", ["goopylib/colours.c"], "")
+# setup_extension("colours", ["goopylib/colours.c"], "")
 # setup_extension("easing", ["goopylib/math/Easing.c"], "math/")
-# setup_extension("bezier_curve", ["goopylib/math/bezier_curve.c"], "math/")
+setup_extension("bezier_curve", ["goopylib/math/bezier_curve.c"], "math/")
 
 # create_release()
 

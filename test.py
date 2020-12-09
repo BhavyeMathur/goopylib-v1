@@ -5,25 +5,7 @@ import os
 from matplotlib import pyplot as plt
 
 from goopylib.c_colours import *
-
-
-def func1():
-    return min([240, 255])
-
-
-def func2():
-    return min(240, 255)
-
-
-def func3():
-    if 260 > 255:
-        return 255
-    return 240
-
-
-def func4():
-    return 255 if 240 > 255 else 240
-
+from goopylib.math.bezier_curve import *
 
 def countlines(start, lines=0, header=True, begin_start=None):
     if header:
@@ -33,7 +15,7 @@ def countlines(start, lines=0, header=True, begin_start=None):
     for thing in os.listdir(start):
         thing = os.path.join(start, thing)
         if os.path.isfile(thing):
-            if thing.endswith('.py') or thing.endswith('.c'):
+            if thing.endswith('.py') or thing.endswith('.c') or thing.endswith('.h'):
                 with open(thing, 'r') as f:
                     newlines = f.readlines()
                     newlines = len(newlines)
@@ -57,12 +39,24 @@ def countlines(start, lines=0, header=True, begin_start=None):
 
 # countlines("goopylib")
 
-print("imported")
+combination(2, 5)
 
-c = ColourRGB(0, 0, 0)
-print("adding")
-print(c + 10)
+c = ColourRGB(255, 0, 0)
+print("RGB:", c + 10)
 
+c1 = ColourHex("#ff00aa")
+print("Hex:", c1)
+
+print(c + c1 + 17)
+
+#c2 = ColourCMYK(100, 0, 100, 0)
+#print("CMYK:", c2)
+
+#c3 = ColourHSL(100, 0, 50)
+#print("HSL:", c3)
+
+#c4 = ColourHSV(100, 30, 50)
+#print("HSV:", c4)
 
 """
 while True:

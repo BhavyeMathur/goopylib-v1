@@ -206,7 +206,7 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.229-alpha21 6th December 2020
+#### 1.1.236-alpha21 6th-9th December 2020
 
 * Fixed warning with the `string` attribute of the C implementation of the `ColourHex` class in which the `PyObject*` 
 was being defined to a `char[7]`. It is now defined to a `PyUnicode` object.
@@ -229,6 +229,20 @@ stack memory associated with local variable'
 * Changed `max([...])` to `max(...)` inside the `colour_gradient()` & `color_gradient()` functions to make them faster
 
 * Added another set of colour conversions with a `_` prefix, these functions do not validate arguments
+* The Colour types in `colours.c` now use a `PyObject *` to store the hex colour string of a colour instance as opposed
+ to the previous use of a `char[7]`
+* Fixed error with the C colours module not compiling when `PyNumberMethods` of the Colour type were specified in the 
+module INIT
+
+* The C `ColourHSV` & `ColourHSL` types now take integer arguments for the S & V, and S & L values just like the Python
+ classes
+* Fixed the conversion from HSV to RGB and HSL to RGB in the initialization functions of `ColourHSV` & `ColoursHSL` in 
+`colours.c` 
+* Moved the error checking from the `bezier_curve.py` interface to `c_bezier_curve.c` making it faster
+* The `factorial()` function defined in `c_bezier_curve.c` is no longer accessible from Python 
+(use standard `math.factorial()` instead)
+* Defined all unary PyNumberMethods for the C implementation of the `Colour` class as well as nb_add, nb_subtract, 
+nb_multiply, nb_remainder, nb_divmod, & nb_power. All other PyNumberMethods return an empty `Colour` class
 
 #### 1.1.216-alpha20 1st-3rd December 2020
 
