@@ -15,5 +15,5 @@ subtitle = Text([250, 520], "Bhavye's 2nd program", text_align="center", font_co
 subtitle.glide(0, 0, time=5)
 subtitle.glide_to_y(300, time=10, easing=py_ease_circle_out())
 
-while True:  # The Mainloop
+while window.is_open():  # The Mainloop
     window.update()  # Updating the Window

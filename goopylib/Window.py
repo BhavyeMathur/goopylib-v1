@@ -291,6 +291,7 @@ class Window(tkCanvas):
         master.lift()  # No idea what this does, does anyone know?
         Window.instances.append(self)
 
+        _root.update_idletasks()
         self.set_coords(0, 0, width, height)
 
         if remove_title_bar:
@@ -1037,8 +1038,10 @@ class Window(tkCanvas):
         if not ((isinstance(x1, int) or isinstance(x1, float)) and (isinstance(y1, int) or isinstance(y1, float)) and
                 (isinstance(x2, int) or isinstance(x2, float)) and (isinstance(y2, int) or isinstance(y2, float))):
             raise GraphicsError("\n\nCoordinate Arguments must be numbers (integers or floats)")
+        print(self.get_width(), self.get_height())
         self.trans = Transform(self.get_width(), self.get_height(), x1, y2, x2, y1)
         self.center = [abs((x2 - x1) / 2), abs((y2 - y1) / 2)]
+
         return self
 
     # OTHER WINDOW FUNCTIONS

@@ -1726,7 +1726,7 @@ static PySequenceMethods Colour_sequence_methods = {
 ColourCMYK Specific Methods
 
 */
-
+/*
 static PyObject *ColourCMYK_add(Colour *self, PyObject *other) {
     if (PyObject_IsInstance(other, (PyObject *)&ColourType)) {
         int red = self->red + PyLong_AsLong(PyObject_GetAttrString(other, "red"));
@@ -1815,8 +1815,8 @@ static PyObject *ColourCMYK_subtract(Colour *self, PyObject *other) {
         }
 
         return PyObject_CallFunctionObjArgs(ColourCMYK_reference, PyLong_FromLong(red),
-                                                                 PyLong_FromLong(green),
-                                                                 PyLong_FromLong(blue), NULL);
+                                                                  PyLong_FromLong(green),
+                                                                  PyLong_FromLong(blue), NULL);
     }
     else if (PyLong_Check(other)) {
         int other_converted = PyLong_AsLong(other);
@@ -3288,3 +3288,4 @@ static PySequenceMethods ColourCMYK_sequence_methods = {
     NULL, // sq_inplace_concat
     NULL, // sq_inplace_repeat
 };
+*/

@@ -206,7 +206,7 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.245-alpha22 10th December 2020
+#### 1.1.246-alpha22 10th December 2020
 
 * Implemented all remaining PyNumberMethod methods for the C `Colour` class
 * Changed the `Colour` class's `__round__()` method to round up to 255 when the colour value is greater than 127, 
@@ -221,6 +221,8 @@ compared to the previous 128
 `Window` module yourself
 
 * Fixed issue with incorrectly named module import in `goopylib.sound.waves.py`
+* Fixed error with the `Window` class incorrectly initializing because the root wasn't updating, see 
+https://stackoverflow.com/questions/34373533/winfo-width-returns-1-even-after-using-pack
 
 #### 1.1.236-alpha21 6th-9th December 2020 - 18212 lines of code!
 

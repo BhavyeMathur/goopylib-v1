@@ -93,7 +93,9 @@ struct ColourCMYK rgb_to_cmyk(int red, int green, int blue) {
     double k = 1 - Py_MAX(red, Py_MAX(green, blue));
     double k_inverse = 1 - k;
 
-    return struct ColourCMYK(round(100 * (k_inverse - red) / k_inverse), round(100 * (k_inverse - green) / k_inverse), round(100 * (k_inverse - blue) / k_inverse), round(100 * k));
+    struct ColourCMYK return_value = {round(100 * (k_inverse - red) / k_inverse), round(100 * (k_inverse - green) / k_inverse), round(100 * (k_inverse - blue) / k_inverse), round(100 * k)};
+
+    return return_value;
 }
 
 /*

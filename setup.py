@@ -80,7 +80,7 @@ def setup_extension(name, sources, output):
     shutil.rmtree("build")
 
 
-setup_extension("colours", ["goopylib/colours.c"], "")
+# setup_extension("colours", ["goopylib/colours.c"], "")
 # setup_extension("easing", ["goopylib/math/Easing.c"], "math/")
 # setup_extension("bezier_curve", ["goopylib/math/bezier_curve.c"], "math/")
 
