@@ -24,7 +24,7 @@ def create_release():
 
         include_package_data=True,
 
-        version='1.1.236a21',
+        version='1.1.246a22',
         license='MIT License',
 
         description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating '
@@ -35,7 +35,7 @@ def create_release():
         author='Bhavye Mathur',
         author_email='bhavyemathur@gmail.com',
         url='https://github.com/BhavyeMathur/goopylib',
-        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.236-alpha.tar.gz',
+        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.246-alpha.tar.gz',
         keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
         install_requires=['pillow'],
         project_urls={"Bug Tracker": "https://github.com/BhavyeMathur/goopylib/issues",
@@ -84,7 +84,7 @@ def setup_extension(name, sources, output):
 # setup_extension("easing", ["goopylib/math/Easing.c"], "math/")
 # setup_extension("bezier_curve", ["goopylib/math/bezier_curve.c"], "math/")
 
-# create_release()
+create_release()
 
 # To create release: python setup.py sdist bdist_wheel
 # To build Extension: python setup.py build
