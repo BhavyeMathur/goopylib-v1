@@ -2,7 +2,7 @@ from wave import open as waveopen
 from math import sin as mathsin
 from struct import pack as structpack
 
-from goopylib.sound.sound import Sound
+from goopylib.sound.sound import sound
 from goopylib.util import GraphicsError
 
 

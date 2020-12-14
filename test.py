@@ -4,8 +4,9 @@ import os
 
 from matplotlib import pyplot as plt
 
-from goopylib.c_colours import *
+from goopylib.colours import *
 from goopylib.math.bezier_curve import *
+from goopylib.objects.imports import *
 
 def countlines(start, lines=0, header=True, begin_start=None):
     if header:
@@ -39,15 +40,12 @@ def countlines(start, lines=0, header=True, begin_start=None):
 
 # countlines("goopylib")
 
-combination(2, 5)
-
 c = ColourRGB(255, 0, 0)
-print("RGB:", c + 10)
+circ = Circle([0, 0], 50, fill=c)
+print("RGB:", c)
 
-c1 = ColourHex("#ff00aa")
-print("Hex:", c1)
-
-print(c + c1 + 17)
+window = Window()
+circ.draw(window)
 
 #c2 = ColourCMYK(100, 0, 100, 0)
 #print("CMYK:", c2)

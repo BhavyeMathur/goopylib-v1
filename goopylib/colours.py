@@ -229,52 +229,52 @@ class Colour:
 
     def __iadd__(self, other):
         self.red, self.green, self.blue = self + other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __isub__(self, other):
         self.red, self.green, self.blue = self - other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __imul__(self, other):
         self.red, self.green, self.blue = self * other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __imod__(self, other):
         self.red, self.green, self.blue = self % other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __ipow__(self, other):
         self.red, self.green, self.blue = self ** other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __ilshift__(self, other):
         self.red, self.green, self.blue = self << other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __irshift__(self, other):
         self.red, self.green, self.blue = self >> other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __iand__(self, other):
         self.red, self.green, self.blue = self & other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __ixor__(self, other):
         self.red, self.green, self.blue = self ^ other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __ior__(self, other):
         self.red, self.green, self.blue = self | other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __floordiv__(self, other):
@@ -309,35 +309,35 @@ class Colour:
 
     def __ifloordiv__(self, other):
         self.red, self.green, self.blue = self // other
-        self.update_values()
+        self.__update_values()
         return self
 
     def __itruediv__(self, other):
         self.red, self.green, self.blue = self / other
-        self.update_values()
+        self.__update_values()
         return self
 
     # Rich Compare Methods
 
     def __lt__(self, other):
-        if not isinstance(other, Colour):
-            raise TypeError(f"'<' not supported between instances of 'Colour' and '{other}'.")
-        return self.red + self.green + self.blue < other.red + other.green + other.blue
+        if isinstance(other, Colour):
+            return self.red + self.green + self.blue < other.red + other.green + other.blue
+        raise TypeError(f"'<' not supported between instances of 'Colour' and '{other}'.")
 
     def __le__(self, other):
-        if not isinstance(other, Colour):
-            raise TypeError(f"'<=' not supported between instances of 'Colour' and '{other}'.")
-        return self.red + self.green + self.blue <= other.red + other.green + other.blue
+        if isinstance(other, Colour):
+            return self.red + self.green + self.blue <= other.red + other.green + other.blue
+        raise TypeError(f"'<=' not supported between instances of 'Colour' and '{other}'.")
 
     def __gt__(self, other):
-        if not isinstance(other, Colour):
-            raise TypeError(f"'>' not supported between instances of 'Colour' and '{other}'.")
-        return self.red + self.green + self.blue > other.red + other.green + other.blue
+        if isinstance(other, Colour):
+            return self.red + self.green + self.blue > other.red + other.green + other.blue
+        raise TypeError(f"'>' not supported between instances of 'Colour' and '{other}'.")
 
     def __ge__(self, other):
-        if not isinstance(other, Colour):
-            raise TypeError(f"'>=' not supported between instances of 'Colour' and '{other}'.")
-        return self.red + self.green + self.blue >= other.red + other.green + other.blue
+        if isinstance(other, Colour):
+            return self.red + self.green + self.blue >= other.red + other.green + other.blue
+        raise TypeError(f"'>=' not supported between instances of 'Colour' and '{other}'.")
 
     def __eq__(self, other):
         return self.colour == other.colour
@@ -348,11 +348,7 @@ class Colour:
     # Other Overriding Methods
 
     def __contains__(self, item):
-        if self.red == item or self.blue == item or self.green == item:
-            return True
-        elif item == self.colour[1:3] or item == self.colour[3:5] or item == self.colour[5:7]:
-            return True
-        return item == self
+        return self.red == item or self.blue == item or self.green == item
 
     def __copy__(self):
         return ColourRGB(self.red, self.green, self.blue)
@@ -361,12 +357,12 @@ class Colour:
         return ColourHex("#%02x%02x%02x" % (self.red, self.green, self.blue))
 
     def __dir__(self):
-        return "see https://github.com/BhavyeMathur/goopylib/wiki/Colours-in-Goopy!"
+        return "see https://github.com/BhavyeMathur/goopylib/wiki/Colours-in-goopylib!"
 
     def __round__(self, n=None):
-        red = 255 if self.red > 128 else 0
-        green = 255 if self.green > 128 else 0
-        blue = 255 if self.blue > 128 else 0
+        red = 255 if self.red > 127 else 0
+        green = 255 if self.green > 127 else 0
+        blue = 255 if self.blue > 127 else 0
 
         return ColourRGB(red, green, blue)
 
@@ -377,7 +373,7 @@ class Colour:
     def __reversed__(self):
         return ColourRGB(self.blue, self.green, self.red)
 
-    def update_values(self):
+    def __update_values(self):
         self.string = f"rgb {self.red}, {self.green}, {self.blue}"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
         return self
@@ -543,7 +539,7 @@ class Colour:
         if isinstance(value, int):
             if 256 > value > -1:
                 self.red = value
-                self.update_values()
+                self.__update_values()
             else:
                 raise GraphicsError("\n\nGraphicsError: red value for set_red() function must be between 0 & 255, "
                                     f"inclusive, 0 <= red <= 255, not {value}")
@@ -555,7 +551,7 @@ class Colour:
         if isinstance(value, int):
             if 256 > value > -1:
                 self.green = value
-                self.update_values()
+                self.__update_values()
             else:
                 raise GraphicsError("\n\nGraphicsError: green value for set_green() function must be between 0 & 255, "
                                     f"inclusive, 0 <= green <= 255, not {value}")
@@ -568,7 +564,7 @@ class Colour:
         if isinstance(value, int):
             if 256 > value > -1:
                 self.blue = value
-                self.update_values()
+                self.__update_values()
             else:
                 raise GraphicsError("\n\nGraphicsError: blue value for set_blue() function must be between 0 & 255, "
                                     f"inclusive, 0 <= blue <= 255, not {value}")
@@ -814,7 +810,10 @@ class ColourHex(Colour):
                                             255 if green > 255 else (0 if green < 0 else green),
                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
-    def update_values(self):
+    def __contains__(self, item):
+        return (self.red == item or self.blue == item or self.green == item) or (item in self.colour)
+
+    def __update_values(self):
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
         self.string = self.colour
         return self
@@ -870,8 +869,8 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __sub__(self, other):
         if isinstance(other, ColourCMYK):
@@ -898,8 +897,8 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for -: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mul__(self, other):
         if isinstance(other, ColourCMYK):
@@ -926,8 +925,8 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mod__(self, other):
         if isinstance(other, ColourCMYK):
@@ -951,8 +950,8 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(0 if red < 0 else red,
-                                       0 if green < 0 else green,
-                                       0 if blue < 0 else blue))
+                                        0 if green < 0 else green,
+                                        0 if blue < 0 else blue))
 
     def __pow__(self, power, modulo=None):
         if isinstance(power, ColourCMYK):
@@ -1007,8 +1006,8 @@ class ColourCMYK(Colour):
                             "Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __neg__(self):
         return ColourCMYK(*_rgb_to_cmyk(255 - self.red, 255 - self.green, 255 - self.blue))
@@ -1046,8 +1045,8 @@ class ColourCMYK(Colour):
                 f"unsupported operand type(s) for <<: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __rshift__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1075,8 +1074,8 @@ class ColourCMYK(Colour):
                 f"unsupported operand type(s) for >>: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __and__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1103,8 +1102,8 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for &: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __xor__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1131,8 +1130,8 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __or__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1159,8 +1158,8 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                       255 if green > 255 else (0 if green < 0 else green),
-                                       255 if blue > 255 else (0 if blue < 0 else blue)))
+                                        255 if green > 255 else (0 if green < 0 else green),
+                                        255 if blue > 255 else (0 if blue < 0 else blue)))
 
     # inplace PyNumber Methods
 
@@ -1216,7 +1215,7 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __isub__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1270,7 +1269,7 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for -: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __imul__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1324,7 +1323,7 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __imod__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1357,7 +1356,7 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __ipow__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1404,7 +1403,7 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for **: 'Colour' and '{type(other)}'. "
                             "Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __ilshift__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1462,7 +1461,7 @@ class ColourCMYK(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for <<: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __irshift__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1520,7 +1519,7 @@ class ColourCMYK(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for >>: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __iand__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1593,7 +1592,7 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for &: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __ixor__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1666,7 +1665,7 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __ior__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1739,14 +1738,10 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __contains__(self, item):
-        if self.cyan == item or self.magenta == item or self.yellow == item or self.key == item:
-            return True
-        elif item == self.colour[1:3] or item == self.colour[3:5] or item == self.colour[5:7]:
-            return True
-        return item == self
+        return self.cyan == item or self.magenta == item or self.yellow == item or self.key == item
 
     def __copy__(self):
         return ColourCMYK(self.cyan, self.magenta, self.yellow, self.key)
@@ -1769,7 +1764,7 @@ class ColourCMYK(Colour):
         self.string = f"cmyk {self.cyan}%, {self.magenta}%, {self.yellow}%, {self.key}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
 
-    def update_values(self):
+    def __update_values(self):
         self.cyan, self.magenta, self.yellow, self.key = _rgb_to_cmyk(self.red, self.green, self.blue)
         self.string = f"cmyk {self.cyan}%, {self.magenta}%, {self.yellow}%, {self.key}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
@@ -1910,8 +1905,8 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __sub__(self, other):
         if isinstance(other, ColourHSV):
@@ -1936,8 +1931,8 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for -: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mul__(self, other):
         if isinstance(other, ColourHSV):
@@ -1962,8 +1957,8 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mod__(self, other):
         if isinstance(other, ColourHSV):
@@ -1986,8 +1981,8 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __pow__(self, power, modulo=None):
         if isinstance(power, ColourHSV):
@@ -2039,8 +2034,8 @@ class ColourHSV(Colour):
                             "Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __neg__(self):
         return ColourHSV(*_rgb_to_hsv(255 - self.red, 255 - self.green, 255 - self.blue))
@@ -2076,8 +2071,8 @@ class ColourHSV(Colour):
                 f"unsupported operand type(s) for <<: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __rshift__(self, other):
         if isinstance(other, ColourHSV):
@@ -2103,8 +2098,8 @@ class ColourHSV(Colour):
                 f"unsupported operand type(s) for >>: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __and__(self, other):
         if isinstance(other, ColourHSV):
@@ -2129,8 +2124,8 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for &: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __xor__(self, other):
         if isinstance(other, ColourHSV):
@@ -2155,8 +2150,8 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __or__(self, other):
         if isinstance(other, ColourHSV):
@@ -2181,8 +2176,8 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     # inplace PyNumber Methods
 
@@ -2235,7 +2230,7 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __isub__(self, other):
         if isinstance(other, ColourHSV):
@@ -2286,7 +2281,7 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for -: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __imul__(self, other):
         if isinstance(other, ColourHSV):
@@ -2337,7 +2332,7 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __imod__(self, other):
         if isinstance(other, ColourHSV):
@@ -2369,7 +2364,7 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __ipow__(self, other):
         if isinstance(other, ColourHSV):
@@ -2413,7 +2408,7 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for **: 'Colour' and '{type(other)}'. "
                             "Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __ilshift__(self, other):
         if isinstance(other, ColourHSV):
@@ -2465,7 +2460,7 @@ class ColourHSV(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for <<: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __irshift__(self, other):
         if isinstance(other, ColourHSV):
@@ -2517,7 +2512,7 @@ class ColourHSV(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for >>: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __iand__(self, other):
         if isinstance(other, ColourHSV):
@@ -2584,7 +2579,7 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for &: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __ixor__(self, other):
         if isinstance(other, ColourHSV):
@@ -2651,7 +2646,7 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __ior__(self, other):
         if isinstance(other, ColourHSV):
@@ -2718,14 +2713,10 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        self.update_values()
+        self.__update_values()
 
     def __contains__(self, item):
-        if self.hue == item or self.saturation == item or self.value == item:
-            return True
-        elif item == self.colour[1:3] or item == self.colour[3:5] or item == self.colour[5:7]:
-            return True
-        return item == self
+        return self.hue == item or self.saturation == item or self.value == item
 
     def __copy__(self):
         return ColourHSV(self.hue, self.saturation, self.value)
@@ -2747,7 +2738,7 @@ class ColourHSV(Colour):
         self.string = f"hsv {self.hue}°, {self.saturation}%, {self.value}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
 
-    def update_values(self):
+    def __update_values(self):
         h, s, v = _rgb_to_hsv(self.red, self.green, self.blue)
         self.string = f"hsv {h}°, {s}%, {v}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
@@ -2870,8 +2861,8 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __sub__(self, other):
         if isinstance(other, ColourHSL):
@@ -2896,8 +2887,8 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for -: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mul__(self, other):
         if isinstance(other, ColourHSL):
@@ -2922,8 +2913,8 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mod__(self, other):
         if isinstance(other, ColourHSL):
@@ -2946,8 +2937,8 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __pow__(self, power, modulo=None):
         if isinstance(power, ColourHSL):
@@ -2999,8 +2990,8 @@ class ColourHSL(Colour):
                             "Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __neg__(self):
         return ColourHSL(*_rgb_to_hsl(255 - self.red, 255 - self.green, 255 - self.blue))
@@ -3036,8 +3027,8 @@ class ColourHSL(Colour):
                 f"unsupported operand type(s) for <<: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __rshift__(self, other):
         if isinstance(other, ColourHSL):
@@ -3063,8 +3054,8 @@ class ColourHSL(Colour):
                 f"unsupported operand type(s) for >>: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __and__(self, other):
         if isinstance(other, ColourHSL):
@@ -3089,8 +3080,8 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for &: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __xor__(self, other):
         if isinstance(other, ColourHSL):
@@ -3115,8 +3106,8 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __or__(self, other):
         if isinstance(other, ColourHSL):
@@ -3141,8 +3132,8 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
         return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                     255 if green > 255 else (0 if green < 0 else green),
-                                     255 if blue > 255 else (0 if blue < 0 else blue)))
+                                      255 if green > 255 else (0 if green < 0 else green),
+                                      255 if blue > 255 else (0 if blue < 0 else blue)))
 
     # inplace PyNumber Methods
 
@@ -3661,11 +3652,7 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
     def __contains__(self, item):
-        if self.hue == item or self.saturation == item or self.luminance == item:
-            return True
-        elif item == self.colour[1:3] or item == self.colour[3:5] or item == self.colour[5:7]:
-            return True
-        return item == self
+        return self.hue == item or self.saturation == item or self.luminance == item
 
     def __copy__(self):
         return ColourHSL(self.hue, self.saturation, self.luminance)
@@ -3687,7 +3674,7 @@ class ColourHSL(Colour):
         self.string = f"hsv {self.hue}°, {self.saturation}%, {self.luminance}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
 
-    def update_values(self):
+    def __update_values(self):
         h, s, L = _rgb_to_hsl(self.red, self.green, self.blue)
         self.string = f"hsv {h}°, {s}%, {L}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)

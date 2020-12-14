@@ -16,7 +16,11 @@ static PyObject *ColourCMYK_reference;
 static PyObject *ColourHSL_reference;
 static PyObject *ColourHSV_reference;
 
-/* Internal Functions */
+/*
+------------------------------------------------------------------------------------------------------------------------
+Internal Functions
+
+*/
 
 int exponentMod(int base, int power, int modulo)
 {
@@ -42,7 +46,36 @@ int exponentMod(int base, int power, int modulo)
     return (int)((y + modulo) % modulo);
 }
 
-/* Other Functions */
+/*
+------------------------------------------------------------------------------------------------------------------------
+Colour Structure Definitions
+
+*/
+
+struct ColourRGB {
+    int r, g, b;
+};
+
+struct ColourCMYK {
+    int c, m, y, k;
+};
+
+struct ColourHSL {
+    int h, s, l;
+};
+
+struct ColourHSV {
+    int h, s, v;
+};
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+COLOUR TYPE CONVERSIONS
+
+*/
+
+
+// RGB to other format
 
 char* rgb_to_hex(int red, int green, int blue) {
     static char hex_string[7];
@@ -51,7 +84,408 @@ char* rgb_to_hex(int red, int green, int blue) {
     return hex_string;
 }
 
-static PyObject* Colours_rgb_to_hex(PyObject *self, PyObject *args){
+
+struct ColourCMYK rgb_to_cmyk(int red, int green, int blue) {
+    red = red / 255;
+    green = green / 255;
+    blue = blue / 255;
+
+    double k = 1 - Py_MAX(red, Py_MAX(green, blue));
+    double k_inverse = 1 - k;
+
+    return struct ColourCMYK(round(100 * (k_inverse - red) / k_inverse), round(100 * (k_inverse - green) / k_inverse), round(100 * (k_inverse - blue) / k_inverse), round(100 * k));
+}
+
+/*
+def rgb_to_hsl(int red, int green, int blue) {
+    red /= 255
+    green /= 255
+    blue /= 255
+
+    cmax = max(red, green, blue)
+    cmin = min(red, green, blue)
+
+    delta = cmax - cmin
+
+    L = 0.5 * (cmax + cmin)
+
+    if delta == 0:
+        h = 0
+        s = 0
+    elif cmax == red:
+        h = 60 * (((green - blue) / delta) % 6)
+        s = delta / (1 - abs(2 * L - 1))
+    elif cmax == green:
+        h = 60 * (((blue - red) / delta) + 2)
+        s = delta / (1 - abs(2 * L - 1))
+    else:
+        h = 60 * (((red - green) / delta) + 4)
+        s = delta / (1 - abs(2 * L - 1))
+
+    return round(h), round(100 * s), round(100 * L)
+}
+
+def rgb_to_hsv(int red, int green, int blue) {
+    red /= 255
+    green /= 255
+    blue /= 255
+
+    cmax = max(red, green, blue)
+    cmin = min(red, green, blue)
+
+    delta = cmax - cmin
+
+    if delta == 0:
+        h = 0
+    elif cmax == red:
+        h = 60 * (((green - blue) / delta) % 6)
+    elif cmax == green:
+        h = 60 * (((blue - red) / delta) + 2)
+    else:
+        h = 60 * (((red - green) / delta) + 4)
+
+    s = 0 if cmax == 0 else (delta / cmax)
+
+    return round(h), round(100 * s), round(100 * cmax)
+}
+
+// Hex to other format
+
+def hex_to_rgb(hexstring) {
+    return (int(hexstring[i:i + 2], 16) for i in (1, 3, 5))
+}
+
+def hex_to_cmyk(hexstring):
+    red, green, blue = hex_to_rgb(hexstring)
+
+    red /= 255
+    green /= 255
+    blue /= 255
+
+    k = 1 - max(red, green, blue)
+    k_inverse = 1 - k
+
+    return round(100 * (k_inverse - red) / k_inverse), \
+           round(100 * (k_inverse - green) / k_inverse), \
+           round(100 * (k_inverse - blue) / k_inverse), \
+           round(100 * k)
+}
+
+def hex_to_hsl(hexstring) {
+    red, green, blue = hex_to_rgb(hexstring)
+
+    red /= 255
+    green /= 255
+    blue /= 255
+
+    cmax = max(red, green, blue)
+    cmin = min(red, green, blue)
+
+    delta = cmax - cmin
+
+    L = 0.5 * (cmax + cmin)
+
+    if delta == 0:
+        h = 0
+        s = 0
+    elif cmax == red:
+        h = 60 * (((green - blue) / delta) % 6)
+        s = delta / (1 - abs(2 * L - 1))
+    elif cmax == green:
+        h = 60 * (((blue - red) / delta) + 2)
+        s = delta / (1 - abs(2 * L - 1))
+    else:
+        h = 60 * (((red - green) / delta) + 4)
+        s = delta / (1 - abs(2 * L - 1))
+
+    return round(h), round(100 * s), round(100 * L)
+}
+
+def hex_to_hsv(hexstring) {
+    red, green, blue = hex_to_rgb(hexstring)
+
+    red /= 255
+    green /= 255
+    blue /= 255
+
+    cmax = max(red, green, blue)
+    cmin = min(red, green, blue)
+
+    delta = cmax - cmin
+
+    if delta == 0:
+        h = 0
+    elif cmax == red:
+        h = 60 * (((green - blue) / delta) % 6)
+    elif cmax == green:
+        h = 60 * (((blue - red) / delta) + 2)
+    else:
+        h = 60 * (((red - green) / delta) + 4)
+
+    s = 0 if cmax == 0 else (delta / cmax)
+
+    return round(h), round(100 * s), round(100 * cmax)
+}
+
+// CMYK to other format
+
+def cmyk_to_rgb(cyan, magenta, yellow, key) {
+    return round(255 * (1 - (cyan + key) / 100)), \
+           round(255 * (1 - (magenta + key) / 100)), \
+           round(255 * (1 - (yellow + key) / 100))
+}
+
+def cmyk_to_hex(cyan, magenta, yellow, key) {
+    return "#%02x%02x%02x" % (round(255 * (1 - (cyan + key) / 100)),
+                              round(255 * (1 - (magenta + key) / 100)),
+                              round(255 * (1 - (yellow + key) / 100)))
+}
+
+def cmyk_to_hsl(cyan, magenta, yellow, key) {
+    red = 1 - (cyan + key) / 100
+    green = 1 - (magenta + key) / 100
+    blue = 1 - (yellow + key) / 100
+
+    cmax = max(red, green, blue)
+    cmin = min(red, green, blue)
+
+    delta = cmax - cmin
+
+    L = 0.5 * (cmax + cmin)
+
+    if delta == 0:
+        h = 0
+        s = 0
+    elif cmax == red:
+        h = 60 * (((green - blue) / delta) % 6)
+        s = delta / (1 - abs(2 * L - 1))
+    elif cmax == green:
+        h = 60 * (((blue - red) / delta) + 2)
+        s = delta / (1 - abs(2 * L - 1))
+    else:
+        h = 60 * (((red - green) / delta) + 4)
+        s = delta / (1 - abs(2 * L - 1))
+
+    return round(h), round(100 * s), round(100 * L)
+}
+
+def cmyk_to_hsv(cyan, magenta, yellow, key) {
+    red = 1 - (cyan + key) / 100
+    green = 1 - (magenta + key) / 100
+    blue = 1 - (yellow + key) / 100
+
+    cmax = max(red, green, blue)
+    cmin = min(red, green, blue)
+
+    delta = cmax - cmin
+
+    if delta == 0:
+        h = 0
+    elif cmax == red:
+        h = 60 * (((green - blue) / delta) % 6)
+    elif cmax == green:
+        h = 60 * (((blue - red) / delta) + 2)
+    else:
+        h = 60 * (((red - green) / delta) + 4)
+
+    s = 0 if cmax == 0 else delta / cmax
+
+    return round(h), round(100 * s), round(100 * cmax)
+}
+
+// HSV to other format
+
+def hsv_to_rgb(hue, saturation, value) {
+    saturation /= 100
+    value /= 100
+
+    c = value * saturation
+    x = c * (1 - abs((hue / 60) % 2 - 1))
+    m = value - c
+
+    if hue < 60:
+        rgb_ = (c, x, 0)
+    elif hue < 120:
+        rgb_ = (x, c, 0)
+    elif hue < 180:
+        rgb_ = (0, c, x)
+    elif hue < 240:
+        rgb_ = (0, x, c)
+    elif hue < 300:
+        rgb_ = (x, 0, c)
+    else:
+        rgb_ = (c, 0, x)
+
+    return round(255 * (rgb_[0] + m)), \
+           round(255 * (rgb_[1] + m)), \
+           round(255 * (rgb_[2] + m))
+}
+
+def hsv_to_hex(hue, saturation, value) {
+    saturation /= 100
+    value /= 100
+
+    c = value * saturation
+    x = c * (1 - abs((hue / 60) % 2 - 1))
+    m = value - c
+
+    if hue < 60:
+        rgb_ = (c, x, 0)
+    elif hue < 120:
+        rgb_ = (x, c, 0)
+    elif hue < 180:
+        rgb_ = (0, c, x)
+    elif hue < 240:
+        rgb_ = (0, x, c)
+    elif hue < 300:
+        rgb_ = (x, 0, c)
+    else:
+        rgb_ = (c, 0, x)
+
+    return "#%02x%02x%02x" % (round(255 * (rgb_[0] + m)), round(255 * (rgb_[1] + m)), round(255 * (rgb_[2] + m)))
+}
+
+def hsv_to_cmyk(hue, saturation, value) {
+    saturation /= 100
+    value /= 100
+
+    c = value * saturation
+    x = c * (1 - abs((hue / 60) % 2 - 1))
+    m = value - c
+
+    if hue < 60:
+        rgb_ = (c, x, 0)
+    elif hue < 120:
+        rgb_ = (x, c, 0)
+    elif hue < 180:
+        rgb_ = (0, c, x)
+    elif hue < 240:
+        rgb_ = (0, x, c)
+    elif hue < 300:
+        rgb_ = (x, 0, c)
+    else:
+        rgb_ = (c, 0, x)
+
+    red = rgb_[0] + m
+    green = rgb_[1] + m
+    blue = rgb_[2] + m
+
+    k = 1 - max(red, green, blue)
+    k_inverse = 1 - k
+
+    return round(100 * (k_inverse - red) / k_inverse), \
+           round(100 * (k_inverse - green) / k_inverse), \
+           round(100 * (k_inverse - blue) / k_inverse), \
+           round(100 * k)
+}
+
+def hsv_to_hsl(hue, saturation, value) {
+    saturation /= 100
+    value /= 100
+
+    L = value - (0.5 * value * saturation)
+    saturation = 0 if L == 0 else ((value - L) / min(L, 1 - L))
+
+    return hue, round(100 * saturation), round(100 * L)
+}
+
+// HSL to other format
+
+def hsl_to_rgb(hue, saturation, luminance) {
+    saturation /= 100
+    luminance /= 100
+
+    c = (1 - abs(2 * luminance - 1)) * saturation
+    x = c * (1 - abs((hue / 60) % 2 - 1))
+    m = luminance - c / 2
+
+    if hue < 60:
+        rgb_ = (c, x, 0)
+    elif hue < 120:
+        rgb_ = (x, c, 0)
+    elif hue < 180:
+        rgb_ = (0, c, x)
+    elif hue < 240:
+        rgb_ = (0, x, c)
+    elif hue < 300:
+        rgb_ = (x, 0, c)
+    else:
+        rgb_ = (c, 0, x)
+
+    return round(255 * (rgb_[0] + m)), round(255 * (rgb_[1] + m)), round(255 * (rgb_[2] + m))
+}
+
+def hsl_to_hex(hue, saturation, luminance) {
+    saturation /= 100
+    luminance /= 100
+
+    c = (1 - abs(2 * luminance - 1)) * saturation
+    x = c * (1 - abs((hue / 60) % 2 - 1))
+    m = luminance - c / 2
+
+    if hue < 60:
+        rgb_ = (c, x, 0)
+    elif hue < 120:
+        rgb_ = (x, c, 0)
+    elif hue < 180:
+        rgb_ = (0, c, x)
+    elif hue < 240:
+        rgb_ = (0, x, c)
+    elif hue < 300:
+        rgb_ = (x, 0, c)
+    else:
+        rgb_ = (c, 0, x)
+
+    return "#%02x%02x%02x" % (round(255 * (rgb_[0] + m)), round(255 * (rgb_[1] + m)), round(255 * (rgb_[2] + m)))
+}
+
+def hsl_to_cmyk(hue, saturation, luminance) {
+    saturation /= 100
+    luminance /= 100
+
+    c = saturation * (1 - abs(2 * luminance - 1))
+    m = luminance - c / 2
+
+    x = c * (1 - abs((hue / 60) % 2 - 1))
+
+    if hue < 60:
+        rgb_ = (c, x, 0)
+    elif hue < 120:
+        rgb_ = (x, c, 0)
+    elif hue < 180:
+        rgb_ = (0, c, x)
+    elif hue < 240:
+        rgb_ = (0, x, c)
+    elif hue < 300:
+        rgb_ = (x, 0, c)
+    else:
+        rgb_ = (c, 0, x)
+
+    red = rgb_[0] + m
+    green = rgb_[1] + m
+    blue = rgb_[2] + m
+
+    k = 1 - max(red, green, blue)
+    k_inverse = 1 - k
+
+    return round(100 * (k_inverse - red) / k_inverse), \
+           round(100 * (k_inverse - green) / k_inverse), \
+           round(100 * (k_inverse - blue) / k_inverse), \
+           round(100 * k)
+}
+
+def hsl_to_hsv(hue, saturation, luminance) {
+    saturation /= 100
+    luminance /= 100
+
+    v = luminance + saturation * min(luminance, 1 - luminance)
+    saturation = 0 if v == 0 else 2 - (2 * luminance / v)
+
+    return hue, round(100 * saturation), round(100 * v)
+}
+*/
+
+static PyObject* Colours_rgb_to_hex(PyObject *self, PyObject *args) {
     int red, green, blue;
 
     if (!PyArg_ParseTuple(args, "iii", &red, &green, &blue))
@@ -167,6 +601,12 @@ static PyObject *Colour_rgb_string(Colour *self, PyObject *Py_UNUSED(ignored)) {
 
 static PyObject *Colour_hex_string(Colour *self, PyObject *Py_UNUSED(ignored)) {
     return self->colour;
+}
+
+static Colour *Colour_update_values(Colour *self) {
+    self->string = PyUnicode_FromFormat("rgb %c, %c, %c", self->red, self->green, self->blue);
+    self->colour = PyUnicode_FromFormat("#%02x%02x%02x", self->red, self->green, self->blue);
+    return self;
 }
 
 static PyMethodDef Colour_methods[] = {
@@ -542,6 +982,8 @@ PyMODINIT_FUNC PyInit_c_colours(void){
     PyObject *m;
 
     ColourType.tp_as_number = &Colour_number_methods;
+    ColourType.tp_as_sequence = &Colour_sequence_methods;
+    ColourType.tp_richcompare = (richcmpfunc)&Colour_richcompare;
 
     ColourRGBType.tp_base = &ColourType;
     ColourHexType.tp_base = &ColourType;

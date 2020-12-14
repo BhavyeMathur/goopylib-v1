@@ -206,7 +206,23 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.236-alpha21 6th-9th December 2020
+#### 1.1.245-alpha22 10th December 2020
+
+* Implemented all remaining PyNumberMethod methods for the C `Colour` class
+* Changed the `Colour` class's `__round__()` method to round up to 255 when the colour value is greater than 127, 
+compared to the previous 128
+* Updated the link to the goopylib Colour doc in the `Colour` class's `__dir__()` function
+* Defined the `__dir__()`, `__round__()`, `__reversed__()`, & `__contains__()` functions for the C `Colour` class
+
+* Added a separate  `__contains__()` method for the `ColourHex()` class
+* Fixed the `Colour_richcompare()` method of the C `Colour` class for the `==` & `!=` operations
+* Renamed the `update_values()` method of the `Colour` classes to `__update_values()`
+* Fixed circular import with importing the `Window` while important the `GraphicsObject` module without importing the 
+`Window` module yourself
+
+* Fixed issue with incorrectly named module import in `goopylib.sound.waves.py`
+
+#### 1.1.236-alpha21 6th-9th December 2020 - 18212 lines of code!
 
 * Fixed warning with the `string` attribute of the C implementation of the `ColourHex` class in which the `PyObject*` 
 was being defined to a `char[7]`. It is now defined to a `PyUnicode` object.
@@ -268,6 +284,7 @@ variables
 * Fixed misordered format values in the `rgb()` method of the `Colour` class
 * Reordered the PyNumber Methods of the `Colour` class to follow the order described here: 
 https://docs.python.org/3/c-api/typeobj.html?highlight=tp_#c.PyNumberMethods
+
 
 * Changed the `__hex__()` method of the `Colour` class to return a `ColourHex` instance of the same colour as which the 
 function is used on

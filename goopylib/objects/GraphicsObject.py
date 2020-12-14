@@ -4,9 +4,6 @@ from goopylib.constants import *
 from goopylib.math.py_easing import *
 from math import cos, sin, atan2, degrees
 
-from goopylib.Window import Window
-
-
 class GraphicsObject:
     """Generic base class for all of the drawable objects"""
 
@@ -2500,3 +2497,4 @@ class GraphicsObject:
 
 from goopylib.objects.Image import Image
 from goopylib.objects.Line import Line
+from goopylib.Window import Window
