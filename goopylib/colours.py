@@ -4150,14 +4150,12 @@ def rgb_to_hex(red, green, blue):
                 if red < 0 or red > 255:
                     raise GraphicsError("\n\nGraphicsError: red value for RGB to Hex conversion must be between "
                                         f"0 & 255, inclusive, 0 <= red <= 255, not {red}")
-                else:
-                    if green < 0 or green > 255:
-                        raise GraphicsError("\n\nGraphicsError: green value for RGB to Hex conversion must be between "
-                                            f"0 & 255, inclusive, 0 <= green <= 255, not {green}")
-                    else:
-                        if blue < 0 or blue > 255:
-                            raise GraphicsError("\n\nGraphicsError: blue value for RGB to Hex conversion must be "
-                                                f"between 0 & 255, inclusive, 0 <= blue <= 255, not {blue}")
+                elif green < 0 or green > 255:
+                    raise GraphicsError("\n\nGraphicsError: green value for RGB to Hex conversion must be between "
+                                        f"0 & 255, inclusive, 0 <= green <= 255, not {green}")
+                elif blue < 0 or blue > 255:
+                    raise GraphicsError("\n\nGraphicsError: blue value for RGB to Hex conversion must be "
+                                        f"between 0 & 255, inclusive, 0 <= blue <= 255, not {blue}")
             else:
                 raise GraphicsError("\n\nGraphicsError: blue value for conversion from RGB to Hex must be an integer")
         else:

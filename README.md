@@ -24,56 +24,6 @@ To know more about goopylib, watch the following video:
 
 If you want to contact me, you can drop me an email at: bhavyemathur@gmail.com or post an issue on the issues tab.
 
-### Projects made using goopylib
-
-I have not supplied the code for these projects because of their scale, but, if you want
- to look at example projects with code, skip to the 'Examples' section.
-
-**1. A Pac-Man Recreation**
-
-I worked on this as a school project and used the goopylib library to create fully functional Pac-Man Game! (and an arcade 
-too!) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and 
-fruits to go on to the next level.
-
-![Pac-Man Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man.png)
-
-**2. Multiplayer UNO**
-
-During the COVID-19 Pandemic, my friends and I often hopped on a call and played a few games together: one such, was
- UNO. But the app we used was very laggy and didn't really function well. So I took it upon myself to create a 
- Multiplayer UNO game in 5 days or less - and I succeeded on day 6... *"but day indices start at 0 so it was really the 
- fifth day..."*. 
-
-The game allows 2-7 players to play together and the graphics animate the cards, rotate them randomly, make them travel 
-to the centre (as opposed to just instantly moving there) and more.
-
-Here is a screenshot of the game:
-
-![UNO Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/MultiplayerUNO.png)
-
-Avatar graphics are from freepik.com
-
-**3. WROS - Website Recipe Organization System**
-
-This was an application I created for my mother as part of a school project to help her organize recipes for her website. It was the largest GUI project I worked on with goopylib. It took 7 days to make and demonstrates how goopylib can be used to create proffessional appliations such as this one. 
-
-![WROS Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/WROS-RecipeEditor.png)
-
-[Watch here for more](https://www.youtube.com/watch?v=dhgYgPUObv0)
-
-**4. Activity Club Selection App**
-
-My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for 
-activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort 
-through hundreds of entries and assign everybody a club - but not this year. This year I made an activity club selection 
-app using the goopylib library that would automatically do all this work for you! 
-
-Goopylib is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it 
-to anyone to use. Now mind you, this was made with an older version of goopylib so it did not contain lots of animations 
-and visual feedback, but here is a screenshot anyways:
-
-![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
-
 ### Installation
 
 The Primary method to install this library is from [PyPi](https://pypi.org/project/goopylib/) via pip:
@@ -130,6 +80,56 @@ from goopylib.Window import Window
 from goopylib.Point import Point
 ```
 
+### Projects made using goopylib
+
+I have not supplied the code for these projects because of their scale, but, if you want
+ to look at example projects with code, skip to the 'Examples' section.
+
+**1. A Pac-Man Recreation**
+
+I worked on this as a school project and used the goopylib library to create fully functional Pac-Man Game! (and an arcade 
+too!) Pac-Man runs around while the ghosts (all animated of course) chase after him! He must collect all the pellets and 
+fruits to go on to the next level.
+
+![Pac-Man Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/Pac-Man.png)
+
+**2. Multiplayer UNO**
+
+During the COVID-19 Pandemic, my friends and I often hopped on a call and played a few games together: one such, was
+ UNO. But the app we used was very laggy and didn't really function well. So I took it upon myself to create a 
+ Multiplayer UNO game in 5 days or less - and I succeeded on day 6... *"but day indices start at 0 so it was really the 
+ fifth day..."*. 
+
+The game allows 2-7 players to play together and the graphics animate the cards, rotate them randomly, make them travel 
+to the centre (as opposed to just instantly moving there) and more.
+
+Here is a screenshot of the game:
+
+![UNO Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/MultiplayerUNO.png)
+
+Avatar graphics are from freepik.com
+
+**3. WROS - Website Recipe Organization System**
+
+This was an application I created for my mother as part of a school project to help her organize recipes for her website. It was the largest GUI project I worked on with goopylib. It took 7 days to make and demonstrates how goopylib can be used to create proffessional appliations such as this one. 
+
+![WROS Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/WROS-RecipeEditor.png)
+
+[Watch here for more](https://www.youtube.com/watch?v=dhgYgPUObv0)
+
+**4. Activity Club Selection App**
+
+My school has these weekly activity clubs where we all go to well, do activities. And every year, we sign up for 
+activities using a pen & paper. Writing down our choices, handing them over to our teachers and waiting for them to sort 
+through hundreds of entries and assign everybody a club - but not this year. This year I made an activity club selection 
+app using the goopylib library that would automatically do all this work for you! 
+
+Goopylib is compatible with auto-py-to-exe which means you can easily convert any program into a .exe file and mail it 
+to anyone to use. Now mind you, this was made with an older version of goopylib so it did not contain lots of animations 
+and visual feedback, but here is a screenshot anyways:
+
+![Activity Selection App Screenshot](https://raw.githubusercontent.com/BhavyeMathur/goopylib/master/Examples/ActivtySelectionApp.png)
+
 
 ### Documentation
 
@@ -166,7 +166,7 @@ It also contains easy-to-use easing functions like those you would find in a pro
 
 1. Reblochon Masque, https://stackoverflow.com/questions/62715279/creating-rounded-edges-for-a-polygon-in-python - 3rd 
 July 2020 - Help with creating rounded polygon corners
-2. Spectral Doy - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy,
+2. [SpectralDoy](https://github.com/spectraldoy) - 3rd July 2020 - Helping me choose a name! we went through a lot of options... pyraphics, oreopy,
  pyllustrate, guipy... barnacle...
 3. John Zelle - Creating the graphics.py package which formed the basis for my library.
 
@@ -188,7 +188,7 @@ with Unfocusing the Entry widget when the user clicks elsewhere
 10. Bryan Oakley, https://stackoverflow.com/questions/62836960/what-interpolation-does-tkinter-use-for-curves - 10th 
 July 2020 - Helped with answering a question about smoothing in Tkinter
 
-11. Mihir Raddi, Ved Sanyal, Haaziq Kazi, and Spectral Doy - 12th September - For their valuable feedback on goopylib's 
+11. Mihir Raddi, Ved Sanyal, Haaziq Kazi, and [SpectralDoy](https://github.com/spectraldoy) - 12th September - For their valuable feedback on goopylib's 
 logo which developed into what it is currently due to their help!
 
 12. Antti Haapala, 
@@ -204,7 +204,11 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 ### v1.1
 
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
-on converting goopylib code to Cython C and also building a Sound Engine for goopylib 1.2
+on converting goopylib code to Cython & C and also building a Sound Engine for goopylib 1.2
+
+#### 1.1.247-alpha23 20th December 2020
+
+* Added C implementations of conversion functions to convert between colour formats
 
 #### 1.1.246-alpha22 10th December 2020
 

@@ -4,9 +4,7 @@ import os
 
 from matplotlib import pyplot as plt
 
-from goopylib.colours import *
-from goopylib.math.bezier_curve import *
-from goopylib.objects.imports import *
+from goopylib.c_colours import *
 
 def countlines(start, lines=0, header=True, begin_start=None):
     if header:
@@ -38,24 +36,38 @@ def countlines(start, lines=0, header=True, begin_start=None):
     return lines
 
 
-# countlines("goopylib")
+countlines("goopylib")
 
-c = ColourRGB(255, 0, 0)
-circ = Circle([0, 0], 50, fill=c)
-print("RGB:", c)
-
-window = Window()
-circ.draw(window)
-
-#c2 = ColourCMYK(100, 0, 100, 0)
-#print("CMYK:", c2)
-
-#c3 = ColourHSL(100, 0, 50)
-#print("HSL:", c3)
-
-#c4 = ColourHSV(100, 30, 50)
-#print("HSV:", c4)
-
+"""
+print(rgb_to_hex(255, 100, 40))
+print(rgb_to_cmyk(255, 100, 40))
+print(rgb_to_hsl(255, 100, 40))
+print(rgb_to_hsv(255, 100, 40))
+"""
+"""
+print(hex_to_rgb("#ff6428"))
+print(hex_to_cmyk("#ff6428"))
+print(hex_to_hsl("#ff6428"))
+print(hex_to_hsv("#ff6428"))
+"""
+"""
+print(cmyk_to_rgb(0, 61, 84, 0))
+print(cmyk_to_hex(0, 61, 84, 0))
+print(cmyk_to_hsl(0, 61, 84, 0))
+print(cmyk_to_hsv(0, 61, 84, 0))
+"""
+"""
+print(hsv_to_rgb(17, 84, 100))
+print(hsv_to_hex(17, 84, 100))
+print(hsv_to_cmyk(17, 84, 100))
+print(hsv_to_hsl(17, 84, 100))
+"""
+"""
+print(hsl_to_rgb(17, 100, 58))
+print(hsl_to_hex(17, 100, 58))
+print(hsl_to_cmyk(17, 100, 58))
+print(hsl_to_hsv(17, 100, 58))
+"""
 """
 while True:
     print(timeit.timeit("func1()", setup="from __main__ import func1", number=10000000))
