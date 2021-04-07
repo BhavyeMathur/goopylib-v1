@@ -1,10 +1,11 @@
 import time
 import os
 import sys
+import platform
 
 from tkinter.filedialog import askopenfilename
 
-from goopylib.constants import _root, _update_lasttime
+from goopylib.constants import _root
 
 class GraphicsError(Exception):
     """Generic error class for graphics module exceptions."""
@@ -28,6 +29,8 @@ def resource_path(relative_path):
 
 
 # Time Related Functions
+
+_update_lasttime = 0
 
 def update(rate=None):
     global _update_lasttime
@@ -54,3 +57,14 @@ def get_screen_width():
 
 def openfilebrowser():
     return askopenfilename()
+
+
+def disable_dpi_awareness():
+    if platform.system() == "Windows":
+        import ctypes
+        ctypes.windll.shcore.SetProcessDpiAwareness(False)
+
+def enable_dpi_awareness():
+    if platform.system() == "Windows":
+        import ctypes
+        ctypes.windll.shcore.SetProcessDpiAwareness(True)

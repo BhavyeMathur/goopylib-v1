@@ -30,7 +30,7 @@ class Line(GraphicsObject):
         self.get_anchor()  # It is calculated as the averages of all the points in the line
 
         GraphicsObject.__init__(self, options=["joinstyle", "arrowshape", "dash"],
-                                cursor=cursor, layer=0, tag=tag)
+                                cursor=cursor, layer=layer, tag=tag)
 
         self.arrow_scale_coeff = 1 if arrow_scale is None else arrow_scale
 
@@ -78,8 +78,10 @@ class Line(GraphicsObject):
                 self.joinstyle = joinstyle
         else:
             raise GraphicsError(f"\n\nGraphicsError: joinstyle for line must be one of {JOINSTYLES}, not {joinstyle}")
-
-        if (arrow_shape is None) or isinstance(arrow_shape, list):  # Check if the Arrow arrow_shape specified is valid
+        
+        if arrow_shape is None:
+            self.arrow_shape = STYLES["default"]["arrowshape"]
+        elif isinstance(arrow_shape, list):  # Check if the Arrow arrow_shape specified is valid
             if arrow_scale:
                 arrow_shape = arrow_shape
                 for i in range(len(arrow_shape)):
@@ -124,7 +126,6 @@ class Line(GraphicsObject):
     def _draw(self, canvas, options):
         # Converting all the coordinates to Window coordinates to account for stretching, changed coords, etc.
         points = [canvas.to_screen(point[0], point[1]) for point in self.points]
-
         return canvas.create_line(points, arrow=self.arrow, fill=self.outline, width=self.outline_width,
                                   capstyle=self.capstyle, joinstyle=self.joinstyle, arrowshape=self.arrow_shape,
                                   dash=self.dash)  # Creating the line!
@@ -152,7 +153,7 @@ class Line(GraphicsObject):
         for line in self.segments:
             # For more information about these steps, see https://www.desmos.com/calculator/esn97hdwbe
             try:
-                slope = (line[0][1] - line[1][1]) / (line[0][0] - line[1][0]) # Finding the slope of the line segment
+                slope = (line[0][1] - line[1][1]) / (line[0][0] - line[1][0])  # Finding the slope of the line segment
                 shift = - line[0][1] / slope  # Finding the x-shift
 
                 # The height of the line to get it to be the correct amount of wide when rotated
@@ -165,7 +166,7 @@ class Line(GraphicsObject):
                     f"({slope} * (x - {shift} - {line[0][0]}) + {width}/2 > y > "
                     f"{slope} * (x - {shift} - {line[0][0]}) - {width}/2) and ({smaller} < x < {larger})"))
 
-            except GraphicsError:  # The Line is Vertical
+            except GraphicsError:  # The Line is Horizontal
 
                 smaller = min([line[0][1], line[1][1]])  # Which point has a smaller/larger y value?
                 larger = max([line[0][1], line[1][1]])
@@ -174,7 +175,7 @@ class Line(GraphicsObject):
                     f"({line[0][0] + self.bounds_width/2} > x > {line[1][0] - self.bounds_width/2}) and"
                     f"({larger} > y > {smaller})"))
 
-            except ZeroDivisionError:  # The Line is Horizontal
+            except ZeroDivisionError:  # The Line is Vertical
 
                 smaller = min([line[0][0], line[1][0]])  # Which point has a smaller/larger x value?
                 larger = max([line[0][0], line[1][0]])

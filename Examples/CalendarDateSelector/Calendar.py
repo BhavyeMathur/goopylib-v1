@@ -1,5 +1,4 @@
 from goopylib.Window import Window
-from goopylib.Point import Point
 
 from goopylib.objects.Image import Image
 from goopylib.objects.Rectangle import Rectangle
@@ -14,6 +13,12 @@ import calendar
 
 from goopylib.colours import ColourRGB, LIGHTEST_PINK, WHITE, DARKER_GREY, BLACK, LIGHTER_GREY
 
+"""
+
+NOTE: this is an incomplete example as of now
+
+"""
+
 # These import statements can also be replaced by from goopylib.imports import * which imports everything
 
 def date_selector():
@@ -26,8 +31,8 @@ def date_selector():
     # We set the window to be draggable, if the user clicks inside the window's bounds, the window will be dragged
 
     window = Window(title="goopylib Calendar Example", width=450, height=480, remove_title_bar=True,
-                    bounds=Rectangle(Point(100, 0), Point(350, 60))).set_draggable()
-    Image(Point(225, 240), "CalendarBackground.png").draw(window)  # Drawing the Background Image
+                    bounds=Rectangle([100, 0], [350, 60])).set_draggable()
+    Image([225, 240], "CalendarBackground.png").draw(window)  # Drawing the Background Image
 
     current_year = int(datetime.datetime.now().strftime('%Y'))  # Gets the current year
     current_month = datetime.datetime.now().strftime('%B')  # Gets the name of the current month
@@ -43,19 +48,19 @@ def date_selector():
 
     # This is a button to accept the date selected. It is made from 2 image objects, the first one is the normal state
     # and the second one is the state when you hover over (the same image, enlarged by a factor of 105%)
-    accept_button = Button(Image(Point(380, 448), "AcceptButton.png"),
-                           Image(Point(380, 448), "AcceptButton.png").resize_factor(1.05)).draw(window)
+    accept_button = Button(Image([380, 448], "AcceptButton.png"),
+                           Image([380, 448], "AcceptButton.png").resize_factor(1.05)).draw(window)
 
     # This is the title text showing the selected month and year. The font, style, colour, and size are all given too.
-    title = Text(Point(225, 31), f"{current_month} {current_year}", font_face="century gothic", font_style="bold",
+    title = Text([225, 31], f"{current_month} {current_year}", font_face="century gothic", font_style="bold",
                  font_colour=WHITE, font_size=25).draw(window)
 
     # This is the button to close the window given next to the title.
-    close_button = Button(Image(Point(73, 33), "CrossButton.png")).draw(window)
+    close_button = Button(Image([73, 33], "CrossButton.png")).draw(window)
 
     # These are buttons to navigate the months. Pressing left takes you to the previous month and right to the next
-    left_arrow = Image(Point(35, 33), "Arrow.png").draw(window)
-    right_arrow = Image(Point(415, 33), "Arrow.png").flip_x().draw(window)
+    left_arrow = Image([35, 33], "Arrow.png").draw(window)
+    right_arrow = Image([415, 33], "Arrow.png").flip_x().draw(window)
 
     checkboxes = []
     other_dates = []
@@ -81,26 +86,26 @@ def date_selector():
                         in_month = False
 
                 if in_month:
-                    checkboxes.append(Checkbox(Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                                Point(70 + day * 60, 175 + 50 * week),
+                    checkboxes.append(Checkbox(Button(Rectangle([20 + day * 60, 125 + 50 * week],
+                                                                [70 + day * 60, 175 + 50 * week],
                                                                 fill=ColourRGB(255, 83, 84), outline_width=0),
 
-                                                      label=Text(Point(45 + day * 60, 150 + 50 * week), date,
+                                                      label=Text([45 + day * 60, 150 + 50 * week], date,
                                                       font_size=15, font_face="century gothic", font_colour=WHITE)),
 
-                                               Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                                Point(70 + day * 60, 175 + 50 * week), fill=WHITE,
+                                               Button(Rectangle([20 + day * 60, 125 + 50 * week],
+                                                                [70 + day * 60, 175 + 50 * week], fill=WHITE,
                                                                 outline_width=0),
 
-                                                      Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                                Point(70 + day * 60, 175 + 50 * week), fill=LIGHTEST_PINK,
+                                                      Rectangle([20 + day * 60, 125 + 50 * week],
+                                                                [70 + day * 60, 175 + 50 * week], fill=LIGHTEST_PINK,
                                                                 outline_width=0),
-                                                      label=Text(Point(45 + day * 60, 150 + 50 * week), date,
+                                                      label=Text([45 + day * 60, 150 + 50 * week], date,
                                                                  font_size=15, font_face="century gothic",
                                                                  font_colour=DARKER_GREY)),
                                                state=False))
                 else:
-                    other_dates.append(Text(Point(45 + day * 60, 150 + 50 * week), date, font_size=15,
+                    other_dates.append(Text([45 + day * 60, 150 + 50 * week], date, font_size=15,
                                             font_face="century gothic", font_colour=LIGHTER_GREY).draw(window))
 
         date_buttons = RadioButton(*checkboxes).draw(window)
@@ -120,27 +125,27 @@ def date_selector():
                     in_month = False
 
             if in_month:
-                checkboxes.append(Checkbox(Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                            Point(70 + day * 60, 175 + 50 * week),
+                checkboxes.append(Checkbox(Button(Rectangle([20 + day * 60, 125 + 50 * week],
+                                                            [70 + day * 60, 175 + 50 * week],
                                                             fill=ColourRGB(255, 83, 84), outline_width=0),
 
-                                                  label=Text(Point(45 + day * 60, 150 + 50 * week), date,
+                                                  label=Text([45 + day * 60, 150 + 50 * week], date,
                                                              font_size=15, font_face="century gothic",
                                                              font_colour=WHITE)),
 
-                                           Button(Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                            Point(70 + day * 60, 175 + 50 * week), fill=BLACK,
+                                           Button(Rectangle([20 + day * 60, 125 + 50 * week],
+                                                            [70 + day * 60, 175 + 50 * week], fill=WHITE,
                                                             outline_width=0),
 
-                                                  Rectangle(Point(20 + day * 60, 125 + 50 * week),
-                                                            Point(70 + day * 60, 175 + 50 * week), fill=LIGHTEST_PINK,
+                                                  Rectangle([20 + day * 60, 125 + 50 * week],
+                                                            [70 + day * 60, 175 + 50 * week], fill=LIGHTEST_PINK,
                                                             outline_width=0),
-                                                  label=Text(Point(45 + day * 60, 150 + 50 * week), date,
+                                                  label=Text([45 + day * 60, 150 + 50 * week], date,
                                                              font_size=15, font_face="century gothic",
                                                              font_colour=DARKER_GREY)),
                                            state=False))
             else:
-                other_dates.append(Text(Point(45 + day * 60, 150 + 50 * week), date, font_size=15,
+                other_dates.append(Text([45 + day * 60, 150 + 50 * week], date, font_size=15,
                                         font_face="century gothic", font_colour=LIGHTER_GREY).draw(window))
 
     date_buttons = RadioButton(*checkboxes).draw(window)
@@ -161,7 +166,6 @@ def date_selector():
 
         window.update()
 
-    """
     # The previous_date_index is variable which stores
     prev_date_index = int(datetime.datetime.now().strftime('%d')) + first_day
 
@@ -177,14 +181,14 @@ def date_selector():
                 if day_index - first_day > 0 else previous_number_of_days - abs(day_index - first_day)
             colour = DARKER_GREY if day_index > first_day and day_index - first_day <= number_of_days else LIGHTER_GREY
 
-            date_numbers.append(Text(Point(45 + day * 60, 150 + 50 * week), text, font_face="century gothic", layer=2,
+            date_numbers.append(Text([45 + day * 60, 150 + 50 * week], text, font_face="century gothic", layer=2,
                                      font_size=15, font_colour=colour).draw(window))
             day_index += 1
 
     date_numbers[int(x + y * 7)].set_fill(WHITE)
 
-    selection_hover = Rectangle(Point(0, 0), Point(50, 50), outline_width=0, fill=LIGHTEST_PINK)
-    selection = Rectangle(Point(0, 0), Point(50, 50), outline_width=0, fill=ColourRGB(255, 83, 84),
+    selection_hover = Rectangle([0, 0], [50, 50], outline_width=0, fill=LIGHTEST_PINK)
+    selection = Rectangle([0, 0], [50, 50], outline_width=0, fill=ColourRGB(255, 83, 84),
                           layer=1).draw(window).move_to(x * 60 + 45, y * 50 + 150)
 
     while window.is_open():
@@ -223,7 +227,7 @@ def date_selector():
                     colour = DARKER_GREY if day_index > first_day and day_index - first_day <= number_of_days else LIGHTER_GREY
 
                     date_numbers.append(
-                        Text(Point(45 + day * 60, 150 + 50 * week), text, font_face="century gothic", layer=2,
+                        Text([45 + day * 60, 150 + 50 * week], text, font_face="century gothic", layer=2,
                              font_size=15, font_colour=colour).draw(window))
                     day_index += 1
 
@@ -263,7 +267,7 @@ def date_selector():
                     colour = DARKER_GREY if day_index > first_day and day_index - first_day <= number_of_days else LIGHTER_GREY
 
                     date_numbers.append(
-                        Text(Point(45 + day * 60, 150 + 50 * week), text, font_face="century gothic", layer=2,
+                        Text([45 + day * 60, 150 + 50 * week], text, font_face="century gothic", layer=2,
                              font_size=15, font_colour=colour).draw(window))
                     day_index += 1
 
@@ -311,7 +315,6 @@ def date_selector():
              "December": "Dec"}[current_month]
 
     return f"{prev_date_index - first_day} {month}, {current_year}"
-    """
 
 
 print(date_selector())

@@ -18,6 +18,8 @@ class Polygon(GraphicsObject):
         self.is_rounded = is_rounded
         self.sharpness = roundness
 
+        self.anchor = self.get_anchor()
+
         self.low_x, self.low_y = None, None  # These variables are all defined in the get_size() function called below
         self.high_x, self.high_y = None, None  # They store the extreme x & y points farthest from the line's anchor
         self.width, self.height = None, None
@@ -26,38 +28,27 @@ class Polygon(GraphicsObject):
 
         GraphicsObject.__init__(self, options=("fill", "outline", "width"), layer=layer, tag=tag)
 
-        if isinstance(fill, Colour):
+        if fill is None:
+            self.fill = STYLES["default"]["fill"]
+        elif isinstance(fill, Colour):  # Checking if the option is a colour
             self.fill = fill
-        elif fill in STYLES[self.style].keys():
-            self.fill = STYLES[self.style][fill]
-        else:
-            if "fill" in STYLES[self.style].keys():
-                self.fill = STYLES[self.style]["fill"]
-            else:
-                self.fill = STYLES["default"]["fill"]
-        self.set_fill(self.fill)
+        else:  # If not, raise an error
+            raise GraphicsError(f"\n\nGraphicsError: The Rectangle fill must be a Colour object , not {fill}")
 
-        if isinstance(outline, Colour):
+        if outline is None:
+            self.outline = STYLES["default"]["outline"]
+        elif isinstance(outline, Colour):  # Checking if the option is a colour
             self.outline = outline
-        elif outline in STYLES[self.style].keys():
-            self.outline = STYLES[self.style][outline]
-        else:
-            if "outline" in STYLES[self.style].keys():
-                self.outline = STYLES[self.style]["outline"]
-            else:
-                self.outline = STYLES["default"]["outlien"]
-        self.set_outline(self.outline)
+        else:  # If not, raise an error
+            raise GraphicsError(f"\n\nGraphicsError: The rectangle outline must be a Colour object , not {outline}")
 
-        if isinstance(outline_width, int):
+        if outline_width is None:
+            self.outline_width = STYLES["default"]["width"]
+        elif isinstance(outline_width, int):  # Checking if the option is an integer
             self.outline_width = outline_width
-        elif outline_width in STYLES[self.style].keys():
-            self.outline_width = STYLES[self.style][outline_width]
-        else:
-            if "width" in STYLES[self.style].keys():
-                self.outline_width = STYLES[self.style]["width"]
-            else:
-                self.outline_width = STYLES["default"]["width"]
-        self.set_outline_width(self.outline_width)
+        else:  # If not, raise an error
+            raise GraphicsError(
+                f"\n\nGraphicsError: The rectangle outline width must be an integer, not {outline_width}")
 
         self.triangles = None
         self.triangulate()
@@ -68,13 +59,12 @@ class Polygon(GraphicsObject):
     def _draw(self, canvas, options):
         points = []
         for p in self.points:
-            x, y = canvas.to_screen(p.x, p.y)
+            x, y = canvas.to_screen(p[0], p[1])
             points.append(x)
             points.append(y)
 
-        if options["width"] == 0:
-            options["outline"] = options["fill"]
-        return canvas.create_polygon(points, options, smooth=self.is_rounded)
+        return canvas.create_polygon(points, options, fill=self.fill, width=self.outline_width, smooth=self.is_rounded,
+                                     outline=self.fill if self.outline_width == 0 else self.outline)
 
     def _move(self, dx, dy):
         for p in self.points:
@@ -84,12 +74,12 @@ class Polygon(GraphicsObject):
         if center is None:
             center = self.get_anchor()
 
-        self.move(-center.x, -center.y)
+        self.move(-center[0], -center[1])
 
         points = []
         for p in self.points:
-            points.append(Point(cos(radians(dr)) * p.x - sin(radians(dr)) * p.y + center.x,
-                                sin(radians(dr)) * p.x + cos(radians(dr)) * p.y + center.y))
+            points.append(Point(cos(radians(dr)) * p[0] - sin(radians(dr)) * p[1] + center[0],
+                                sin(radians(dr)) * p[0] + cos(radians(dr)) * p[1] + center[1]))
         self.points = points
 
     def clone(self):
@@ -105,25 +95,25 @@ class Polygon(GraphicsObject):
 
     def calculate_dimensions(self):
         # To calculate the width, it finds the smallest & largest x points and gets the width
-        self.low_x = self.points[0].x  # Setting the High & Low point to the first point
+        self.low_x = self.points[0][0]  # Setting the High & Low point to the first point
         self.high_x = self.low_x
 
         for point in self.points[1:]:  # Going through all the other points
-            if point.x < self.low_x:  # Checking if this point is smaller
-                self.low_x = point.x
-            elif point.x > self.high_x:  # Checking if this point is larger
-                self.high_x = point.x
+            if point[0] < self.low_x:  # Checking if this point is smaller
+                self.low_x = point[0]
+            elif point[0] > self.high_x:  # Checking if this point is larger
+                self.high_x = point[0]
         self.width = abs(self.high_x - self.low_x)  # Getting the width
 
         # To calculate the height, it finds the smallest & largest y points and gets the height
-        self.low_y = self.points[0].y  # Setting the High & Low point to the first point
+        self.low_y = self.points[0][1]  # Setting the High & Low point to the first point
         self.high_y = self.low_y
 
         for point in self.points[1:]:  # Going through all the other points
-            if point.y < self.low_y:  # Checking if this point is smaller
-                self.low_y = point.y
-            elif point.y > self.high_y:  # Checking if this point is larger
-                self.high_y = point.y
+            if point[1] < self.low_y:  # Checking if this point is smaller
+                self.low_y = point[1]
+            elif point[1] > self.high_y:  # Checking if this point is larger
+                self.high_y = point[1]
         self.height = abs(self.high_y - self.low_y)  # Getting the height
 
     def get_width(self):
@@ -131,6 +121,15 @@ class Polygon(GraphicsObject):
 
     def get_height(self):
         return self.height
+
+    def get_fill(self):
+        return self.fill
+
+    def get_outline(self):
+        return self.outline
+
+    def get_outline_width(self):
+        return self.outline_width
 
     def is_clicked(self, pos):
         if pos is None:
@@ -141,8 +140,8 @@ class Polygon(GraphicsObject):
                 height = self.get_height() / 2
     
                 # Check if point in Rectangular Bounding Box
-                if self.anchor.x - width < pos.x < self.anchor.x + width and \
-                   self.anchor.y - height < pos.y < self.anchor.y + height:
+                if self.anchor[0] - width < pos[0] < self.anchor[0] + width and \
+                   self.anchor[1] - height < pos[1] < self.anchor[1] + height:
     
                     """
                     # Ray Casting Algorithm
@@ -151,24 +150,24 @@ class Polygon(GraphicsObject):
                     intersections = 0
                     size = len(self.points)
     
-                    v2p1 = (self.anchor.x - width - 1, pos.y)
+                    v2p1 = (self.anchor[0] - width - 1, pos[1])
                     for side in range(size):
                         v1p1 = self.points[side]
                         v1p2 = self.points[(side + 1) % size]
     
-                        a1 = v1p2.y - v1p1.y
-                        b1 = v1p1.x - v1p2.x
-                        c1 = (v1p2.x * v1p1.y) - (v1p1.x * v1p2.y)
+                        a1 = v1p2[1] - v1p1[1]
+                        b1 = v1p1[0] - v1p2[0]
+                        c1 = (v1p2[0] * v1p1[1]) - (v1p1[0] * v1p2[1])
     
-                        d1 = (a1 * pos.x) + (b1 * pos.y) + c1
+                        d1 = (a1 * pos[0]) + (b1 * pos[1]) + c1
                         d2 = (a1 * v2p1[0]) + (b1 * v2p1[1]) + c1
                         if d1 == 0 and d2 == 0:
-                            a2 = v2p1[1] - pos.y
-                            b2 = pos.x - v2p1[0]
-                            c2 = (v2p1[0] * pos.y) - (pos.x * v2p1[1])
+                            a2 = v2p1[1] - pos[1]
+                            b2 = pos[0] - v2p1[0]
+                            c2 = (v2p1[0] * pos[1]) - (pos[0] * v2p1[1])
     
-                            d1 = (a2 * v1p1.x) + (b2 * v1p1.y) + c2
-                            d2 = (a2 * v1p2.x) + (b2 * v1p2.y) + c2
+                            d1 = (a2 * v1p1[0]) + (b2 * v1p1[1]) + c2
+                            d2 = (a2 * v1p2[0]) + (b2 * v1p2[1]) + c2
     
                             if d1 == 0 and d2 == 0:
                                 intersections += 1
@@ -177,9 +176,9 @@ class Polygon(GraphicsObject):
                     """
                     if len(self.points) == 3:
                         p1, p2, p3 = self.points
-                        d1 = (pos.x - p2.x) * (p1.y - p2.y) - (p1.x - p2.x) * (pos.y - p2.y)
-                        d2 = (pos.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (pos.y - p3.y)
-                        d3 = (pos.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (pos.y - p1.y)
+                        d1 = (pos[0] - p2[0]) * (p1[1] - p2[1]) - (p1[0] - p2[0]) * (pos[1] - p2[1])
+                        d2 = (pos[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (pos[1] - p3[1])
+                        d3 = (pos[0] - p1[0]) * (p3[1] - p1[1]) - (p3[0] - p1[0]) * (pos[1] - p1[1])
 
                         return not ((d1 < 0 or d2 < 0 or d3 < 0) and (d1 > 0 or d2 > 0 or d3 > 0))
                     else:
@@ -195,16 +194,50 @@ class Polygon(GraphicsObject):
         x = 0
         y = 0
         for point in self.points:
-            x += point.x
-            y += point.y
+            x += point[0]
+            y += point[1]
 
         x /= len(self.points)
         y /= len(self.points)
 
-        return Point(x, y)
+        return [x, y]
 
     def triangulate(self):
         if self.triangles is None and len(self.points) != 3:
             self.triangles = []
             for triangle in triangulate_modified_earclip(list(self.points)):
                 self.triangles.append(Polygon(*triangle))
+
+    def set_fill(self, fill):
+        if fill is None:
+            self.fill = STYLES["default"]["fill"]
+        elif isinstance(fill, Colour):  # Checking if the option is a colour
+            self.fill = fill
+        else:  # If not, raise an error
+            raise GraphicsError(f"\n\nGraphicsError: The Rectangle fill must be a Colour object , not {fill}")
+
+        self._update_layer()
+        return self
+
+    def set_outline(self, outline):
+        if outline is None:
+            self.outline = STYLES["default"]["outline"]
+        elif isinstance(outline, Colour):  # Checking if the option is a colour
+            self.outline = outline
+        else:  # If not, raise an error
+            raise GraphicsError(f"\n\nGraphicsError: The rectangle outline must be a Colour object , not {outline}")
+
+        self._update_layer()
+        return self
+
+    def set_outline_width(self, outline_width):
+        if outline_width is None:
+            self.outline_width = STYLES["default"]["width"]
+        elif isinstance(outline_width, int):  # Checking if the option is an integer
+            self.outline_width = outline_width
+        else:  # If not, raise an error
+            raise GraphicsError(
+                f"\n\nGraphicsError: The rectangle outline width must be an integer, not {outline_width}")
+
+        self._update_layer()
+        return self

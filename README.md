@@ -177,9 +177,60 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython & C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.247-alpha23 20th December 2020
+#### 1.1.282-alpha24 29th March - 7th April 2021
+
+* Fixed bug with the `Line` requiring a type `list` for dashes, not `tuple`
+* Fixed bug with the `Line` class ensuring that the integers for custom dashes are less than `266`, not `256`
+* The `Line`, `Polygon`, and `Rectangle` class now create a copy of all the points entered
+
+* `triangulation.py` no longer uses the deprecated Point class
+* Fixed bug with the `__update_lasttime` variable not being defined in `util.py`
+
+#### 1.1.277-alpha23 20th December 2020 - 13th March 2021
 
 * Added C implementations of conversion functions to convert between colour formats
+* The default values for colour arguments in the Python Colour classes is now 0 to mimic the behaviour of the C classes
+
+* Removed print statement from the Window class mistakenly left there for debugging
+* Removed creation of the `a0` variable inside `CubicInterpolation()` since it wasn't needed
+* Renamed all the functions inside `interpolations.py` to follow the Python naming convention
+* Renamed all the functions inside `curves.py` to follow the Python naming convention
+
+* All the functions inside `curves.py` no longer use the `Point` class for creating their curves
+* Removed debugging print statement from `GraphicsObject.py`
+
+* Fixed error with the `linear_curve()` and `cosine_curve()` functions not working properly
+* All interpolation functions now accept points in the form `[x, y]`
+* Added a `cubic_curve()` and `hermite_curve()` function to interpolate between control points
+
+* Fixed bug with the `CurvedLine` class not drawing its options
+* Added an example file for the interpolation curve functions
+
+* Added DPI awareness scaling for the Windows OS
+* Added functions to enable and disable the DPI awareness: `enable_dpi_awareness()` and `disable_dpi_awareness()`
+* Fixed the `colour_gradient()`function because it wasn't working when there were 3 divisions
+
+* Changed the roundness of rounded rectangle to work better than before. The amount of roundness now refers to the 
+radius of the roundness
+* Implemented the `__getitem__()` functions for the Colour classes to override indexing
+* Added `set_fill()`, `set_outline_width()`, and `set_outline()` functions to the `_BBox` class
+* Added an `is_enabled()` and `is_disabled()` function to the `Button` and `CycleButton` (and `Checkbox`) classes
+* The `CycleButton` (and `Checkbox`) class now defaults to the current graphic if no disabled graphic is present
+
+* The `Text` class now defaults the font colour to the default `'font colour'` option, not to default `'outline'`
+* Fixed bug with the `Rectangle` `clone()` function throwing an error when the object has no defined bounds
+
+* Fixed bug with the `Polygon` class still using the deprecated `Point` class
+* Fixed bug with the `Polygon` `__init__()` not using the fill, outline, and outline width arguments correctly
+* Reimplemented the `Polygon` `set_fill()`, `set_outline()`, and `set_outline_width()` functions properly
+
+* Fixed bug with the `Line` class not working with layers
+* Implemented the `get_fill()`, `get_outline()`, and `get_outline_width()` functions for the `Polygon` class fixing 
+other bugs as a result
+* Added rotation functions to the `Text` class
+* All non-getter `Text` class functions now return `self`
+* Fixed bug with the `GraphicsObject` class not checking if an object is draggable properly, led to performance upgrade
+ on mouse presses
 
 #### 1.1.246-alpha22 10th December 2020
 

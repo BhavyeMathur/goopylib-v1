@@ -4,7 +4,7 @@ from goopylib.util import GraphicsError
 
 class Rectangle(gpBBox.BBox):
     def __init__(self, p1, p2, bounds=None, fill=None, outline=None, outline_width=None, layer=0,
-                 cursor="arrow", is_rounded=False, roundness=5, tag=None):
+                 cursor="arrow", is_rounded=False, roundness=50, tag=None):
 
         # This makes sure that the p1 & p2 arguments of the Rectangle are lists, raises an error otherwise
         if not isinstance(p1, list):
@@ -24,7 +24,7 @@ class Rectangle(gpBBox.BBox):
                              cursor=cursor, layer=layer, tag=tag)
 
         self.is_rounded = is_rounded  # A variable defining whether the rectangle is rounded
-        self.sharpness = roundness  # Usually values between 2 & 10 work well.
+        self.roundness = roundness
 
     def __repr__(self):
         return f"Rectangle({self.p1}, {self.p2}, tag={self.tag})"
@@ -98,8 +98,21 @@ class Rectangle(gpBBox.BBox):
 
     def _draw(self, canvas, options):
         if self.is_rounded:  # The rectangle is rounded, so we draw a polygon
-            points = [self.p1[0], self.p1[1], self.p1[0], self.p2[1], self.p2[0], self.p2[1], self.p2[0], self.p1[1]]
-            for point in range(len(points) - 2):
+
+            points = [self.p1[0], self.p1[1],
+                      self.p1[0] + self.roundness, self.p1[1],
+                      self.p2[0] - self.roundness, self.p1[1],
+                      self.p2[0], self.p1[1],
+                      self.p2[0], self.p1[1] + self.roundness,
+                      self.p2[0], self.p2[1] - self.roundness,
+                      self.p2[0], self.p2[1],
+                      self.p2[0] - self.roundness, self.p2[1],
+                      self.p1[0] + self.roundness, self.p2[1],
+                      self.p1[0], self.p2[1],
+                      self.p1[0], self.p2[1] - self.roundness,
+                      self.p1[0], self.p1[1] + self.roundness]
+
+            for point in range(12):
                 points[point * 2], points[point * 2 + 1] = canvas.to_screen(points[point * 2], points[point * 2 + 1])
 
             # Code modified from Francisco Gomes, https://stackoverflow.com/users/9139005/francisco-gomes
@@ -108,15 +121,15 @@ class Rectangle(gpBBox.BBox):
             # are going to be to the vertex. The more the sharpness,
             # the more the sub-points will be closer to the vertex.
             # (This is not normalized)
-
+            """
             x = points[::2]
             y = points[1::2]
 
-            if self.sharpness < 2:
-                self.sharpness = 2
+            if self.roundness < 2:
+                self.roundness = 2
 
-            ratio_multiplier = self.sharpness - 1
-            ratio_dividend = self.sharpness
+            ratio_multiplier = self.roundness - 1
+            ratio_dividend = self.roundness
 
             # List to store the points
             points = []
@@ -148,8 +161,9 @@ class Rectangle(gpBBox.BBox):
             # This is done due to an internal bug in Tkinter where it does not set the width of the polygon...
             if self.outline_width == 0:
                 self.outline = self.fill
-
-            return canvas.create_polygon(points, width=self.outline_width, fill=self.fill, outline=self.outline,
+            """
+            return canvas.create_polygon(points, width=self.outline_width, fill=self.fill,
+                                         outline=self.fill if self.outline_width == 0 else self.outline,
                                          smooth=self.is_rounded)
 
         else:  # The rectangle is not rounded, so we draw a rectangle to the window
@@ -161,8 +175,8 @@ class Rectangle(gpBBox.BBox):
 
     def clone(self, new_tag=None):
         other = Rectangle(self.p1, self.p2, fill=self.fill, outline=self.outline, outline_width=self.outline_width,
-                          layer=self.layer, cursor=self.cursor, is_rounded=self.is_rounded, roundness=self.sharpness,
-                          tag=new_tag, bounds=self.bounds.clone())
+                          layer=self.layer, cursor=self.cursor, is_rounded=self.is_rounded, roundness=self.roundness,
+                          tag=new_tag, bounds=None if self.bounds is None else self.bounds.clone())
         return other
 
     def is_clicked(self, pos):
