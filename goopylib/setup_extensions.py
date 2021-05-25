@@ -4,9 +4,10 @@ import os
 import shutil
 
 """
-Install Visual C++ Build Tools 2015 (v14.0)
-Tested on Python 3.7.9
-Install MinGW C Compiler
+Install Visual C++ Build Tools 2015 (v14.0) for Windows
+Install MinGW C Compiler for Windows
+
+Tested on Python 3.7.9 (Windows) and Python 3.8.6 (MacOSX)
 
 pip install twine
 pip install --upgrade setuptools
@@ -14,6 +15,22 @@ pip install --upgrade setuptools
 pip install build
 
 CREATING RELEASES-------------------------------------------------------------------------------------------------------
+    - Update README.md version number
+    - Update setup.cfg version number
+    - Update goopylib/__init__.py __version__ variable
+    - Run setup_extensions.py and build goopylib .pyd C extensions
+    - Test all Example python files, run goopylib_tests.py and test functions on Windows
+    - Run goopylib_tests.py countlines() function and update README.md with line count
+    - Push to GitHub, pull from MacOSX computer
+    - Run setup_extensions.py and build goopylib .so C extensions
+    - Test all Example python files, run goopylib_tests.py and test functions on MacOSX
+    - Push files to GitHub
+    - Create GitHub Release
+    - Build goopylib Release
+    - Upload goopylib Release on PyPi
+    - Test goopylib installation on Windows
+    - Test goopylib installation on MacOSX
+    
     To create release: python setup_extensions.py sdist bdist_wheel
     sdist bdist_wheel
 
@@ -75,23 +92,28 @@ def create_release():
 """
 
 
-def setup_extension(name, sources):
-    name = "c_" + name
-    folder_path = os.path.dirname(sources[0])
+def setup_extension(source):
+    name = f"c_{os.path.splitext(os.path.basename(source))[0]}"
+    folder_path = os.path.dirname(source)
+    if folder_path == "":
+        folder_path = "."
+
     setup(name=name,
-          ext_modules=[Extension(name, sources=sources)],
+          ext_modules=[Extension(name, sources=[source])],
           options={'build': {'build_lib': folder_path}})
 
-    files = os.listdir(folder_path)
-    for file in files:
-        if '.pyd' in file and file[:len(name)] == name:
-            os.rename(f"{folder_path}/{file}", f"{folder_path}/{name}.pyd")
+    for file in os.listdir(folder_path):
+        if file.startswith(name) and file.endswith('.pyd') and file != f"{name}.pyd":
+            shutil.move(f"{folder_path}/{file}", f"{folder_path}/{name}.pyd")
+            break
+        if file.startswith(name) and file.endswith('.so') and file != f"{name}.so":
+            shutil.move(f"{folder_path}/{file}", f"{folder_path}/{name}.so")
             break
 
 
 def setup_extensions(extensions):
     for extension in extensions:
-        setup_extension(extension[0], [extension[1]])
+        setup_extension(extension)
 
     try:
         shutil.rmtree("build")
@@ -99,5 +121,4 @@ def setup_extensions(extensions):
         pass
 
 
-setup_extensions([("colours", "goopylib/colours.c"),
-                  ("bezier_curve", "goopylib/math/bezier_curve.c")])
+setup_extensions(["colours.c", "math/bezier_curve.c"])

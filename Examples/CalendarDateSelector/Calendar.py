@@ -21,6 +21,7 @@ NOTE: this is an incomplete example as of now
 
 # These import statements can also be replaced by from goopylib.imports import * which imports everything
 
+
 def date_selector():
 
     # Creating a Window on which the calendar is drawn with a width of 450 and height of 480.

@@ -870,9 +870,9 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __sub__(self, other):
         if isinstance(other, ColourCMYK):
@@ -898,9 +898,9 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for -: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mul__(self, other):
         if isinstance(other, ColourCMYK):
@@ -926,9 +926,9 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mod__(self, other):
         if isinstance(other, ColourCMYK):
@@ -951,9 +951,9 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(0 if red < 0 else red,
-                                        0 if green < 0 else green,
-                                        0 if blue < 0 else blue))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(0 if red < 0 else red,
+                                               0 if green < 0 else green,
+                                               0 if blue < 0 else blue))
 
     def __pow__(self, power, modulo=None):
         if isinstance(power, ColourCMYK):
@@ -1007,19 +1007,19 @@ class ColourCMYK(Colour):
             raise TypeError(f"unsupported operand type(s) for **: 'Colour' and '{type(power)}'. "
                             "Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __neg__(self):
-        return ColourCMYK(*_rgb_to_cmyk(255 - self.red, 255 - self.green, 255 - self.blue))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 - self.red, 255 - self.green, 255 - self.blue))
 
     def __pos__(self):
-        return ColourCMYK(*_rgb_to_cmyk(self.red, self.green, self.blue))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(self.red, self.green, self.blue))
 
     def __abs__(self):
         c_value = (self.red + self.green + self.blue) // 3
-        return ColourCMYK(*_rgb_to_cmyk(c_value, c_value, c_value))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(c_value, c_value, c_value))
 
     def __lshift__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1046,9 +1046,9 @@ class ColourCMYK(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for <<: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __rshift__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1075,9 +1075,9 @@ class ColourCMYK(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for >>: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __and__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1103,9 +1103,9 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for &: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __xor__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1131,9 +1131,9 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __or__(self, other):
         if isinstance(other, ColourCMYK):
@@ -1159,9 +1159,9 @@ class ColourCMYK(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourCMYK(*_rgb_to_cmyk(255 if red > 255 else (0 if red < 0 else red),
-                                        255 if green > 255 else (0 if green < 0 else green),
-                                        255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourCMYK(*rgb_to_cmyk_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                               255 if green > 255 else (0 if green < 0 else green),
+                                               255 if blue > 255 else (0 if blue < 0 else blue)))
 
     # inplace PyNumber Methods
 
@@ -1764,13 +1764,13 @@ class ColourCMYK(Colour):
         return [self.cyan, self.magenta, self.yellow, self.key][item]
 
     def _update_on_operation(self):
-        self.red, self.green, self.blue = _cmyk_to_rgb(self.cyan, self.magenta, self.yellow, self.key)
+        self.red, self.green, self.blue = cmyk_to_rgb_nocheck(self.cyan, self.magenta, self.yellow, self.key)
 
         self.string = f"cmyk {self.cyan}%, {self.magenta}%, {self.yellow}%, {self.key}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
 
     def __update_values(self):
-        self.cyan, self.magenta, self.yellow, self.key = _rgb_to_cmyk(self.red, self.green, self.blue)
+        self.cyan, self.magenta, self.yellow, self.key = rgb_to_cmyk_nocheck(self.red, self.green, self.blue)
         self.string = f"cmyk {self.cyan}%, {self.magenta}%, {self.yellow}%, {self.key}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
 
@@ -1909,9 +1909,9 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __sub__(self, other):
         if isinstance(other, ColourHSV):
@@ -1935,9 +1935,9 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for -: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mul__(self, other):
         if isinstance(other, ColourHSV):
@@ -1961,9 +1961,9 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mod__(self, other):
         if isinstance(other, ColourHSV):
@@ -1985,9 +1985,9 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __pow__(self, power, modulo=None):
         if isinstance(power, ColourHSV):
@@ -2038,19 +2038,19 @@ class ColourHSV(Colour):
             raise TypeError(f"unsupported operand type(s) for **: 'Colour' and '{type(power)}'. "
                             "Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __neg__(self):
-        return ColourHSV(*_rgb_to_hsv(255 - self.red, 255 - self.green, 255 - self.blue))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 - self.red, 255 - self.green, 255 - self.blue))
 
     def __pos__(self):
-        return ColourHSV(*_rgb_to_hsv(self.red, self.green, self.blue))
+        return ColourHSV(*rgb_to_hsv_nocheck(self.red, self.green, self.blue))
 
     def __abs__(self):
         c_value = (self.red + self.green + self.blue) // 3
-        return ColourHSV(*_rgb_to_hsv(c_value, c_value, c_value))
+        return ColourHSV(*rgb_to_hsv_nocheck(c_value, c_value, c_value))
 
     def __lshift__(self, other):
         if isinstance(other, ColourHSV):
@@ -2075,9 +2075,9 @@ class ColourHSV(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for <<: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __rshift__(self, other):
         if isinstance(other, ColourHSV):
@@ -2102,9 +2102,9 @@ class ColourHSV(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for >>: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __and__(self, other):
         if isinstance(other, ColourHSV):
@@ -2128,9 +2128,9 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for &: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __xor__(self, other):
         if isinstance(other, ColourHSV):
@@ -2154,9 +2154,9 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __or__(self, other):
         if isinstance(other, ColourHSV):
@@ -2180,9 +2180,9 @@ class ColourHSV(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSV(*_rgb_to_hsv(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSV(*rgb_to_hsv_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     # inplace PyNumber Methods
 
@@ -2741,13 +2741,13 @@ class ColourHSV(Colour):
         return [self.hue, self.saturation, self.value][item]
 
     def _update_on_operation(self):
-        self.red, self.green, self.blue = _hsv_to_rgb(self.hue, self.saturation, self.value)
+        self.red, self.green, self.blue = hsv_to_rgb_nocheck(self.hue, self.saturation, self.value)
 
         self.string = f"hsv {self.hue}°, {self.saturation}%, {self.value}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
 
     def __update_values(self):
-        h, s, v = _rgb_to_hsv(self.red, self.green, self.blue)
+        h, s, v = rgb_to_hsv_nocheck(self.red, self.green, self.blue)
         self.string = f"hsv {h}°, {s}%, {v}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
         return self
@@ -2868,9 +2868,9 @@ class ColourHSL(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for +: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __sub__(self, other):
         if isinstance(other, ColourHSL):
@@ -2894,9 +2894,9 @@ class ColourHSL(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for -: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mul__(self, other):
         if isinstance(other, ColourHSL):
@@ -2920,9 +2920,9 @@ class ColourHSL(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for *: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __mod__(self, other):
         if isinstance(other, ColourHSL):
@@ -2944,9 +2944,9 @@ class ColourHSL(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for %: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __pow__(self, power, modulo=None):
         if isinstance(power, ColourHSL):
@@ -2997,19 +2997,19 @@ class ColourHSL(Colour):
             raise TypeError(f"unsupported operand type(s) for **: 'Colour' and '{type(power)}'. "
                             "Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __neg__(self):
-        return ColourHSL(*_rgb_to_hsl(255 - self.red, 255 - self.green, 255 - self.blue))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 - self.red, 255 - self.green, 255 - self.blue))
 
     def __pos__(self):
-        return ColourHSL(*_rgb_to_hsl(self.red, self.green, self.blue))
+        return ColourHSL(*rgb_to_hsl_nocheck(self.red, self.green, self.blue))
 
     def __abs__(self):
         c_luminance = (self.red + self.green + self.blue) // 3
-        return ColourHSL(*_rgb_to_hsl(c_luminance, c_luminance, c_luminance))
+        return ColourHSL(*rgb_to_hsl_nocheck(c_luminance, c_luminance, c_luminance))
 
     def __lshift__(self, other):
         if isinstance(other, ColourHSL):
@@ -3034,9 +3034,9 @@ class ColourHSL(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for <<: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __rshift__(self, other):
         if isinstance(other, ColourHSL):
@@ -3061,9 +3061,9 @@ class ColourHSL(Colour):
             raise TypeError(
                 f"unsupported operand type(s) for >>: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __and__(self, other):
         if isinstance(other, ColourHSL):
@@ -3087,9 +3087,9 @@ class ColourHSL(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for &: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __xor__(self, other):
         if isinstance(other, ColourHSL):
@@ -3113,9 +3113,9 @@ class ColourHSL(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for ^: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     def __or__(self, other):
         if isinstance(other, ColourHSL):
@@ -3139,9 +3139,9 @@ class ColourHSL(Colour):
         else:
             raise TypeError(f"unsupported operand type(s) for |: 'Colour' and '{type(other)}'. Must be a Colour or int")
 
-        return ColourHSL(*_rgb_to_hsl(255 if red > 255 else (0 if red < 0 else red),
-                                      255 if green > 255 else (0 if green < 0 else green),
-                                      255 if blue > 255 else (0 if blue < 0 else blue)))
+        return ColourHSL(*rgb_to_hsl_nocheck(255 if red > 255 else (0 if red < 0 else red),
+                                             255 if green > 255 else (0 if green < 0 else green),
+                                             255 if blue > 255 else (0 if blue < 0 else blue)))
 
     # inplace PyNumber Methods
 
@@ -3680,13 +3680,13 @@ class ColourHSL(Colour):
         return [self.hue, self.saturation, self.luminance][item]
 
     def _update_on_operation(self):
-        self.red, self.green, self.blue = _hsv_to_rgb(self.hue, self.saturation, self.luminance)
+        self.red, self.green, self.blue = hsv_to_rgb_nocheck(self.hue, self.saturation, self.luminance)
 
         self.string = f"hsv {self.hue}°, {self.saturation}%, {self.luminance}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
 
     def __update_values(self):
-        h, s, L = _rgb_to_hsl(self.red, self.green, self.blue)
+        h, s, L = rgb_to_hsl_nocheck(self.red, self.green, self.blue)
         self.string = f"hsv {h}°, {s}%, {L}%"
         self.colour = "#%02x%02x%02x" % (self.red, self.green, self.blue)
         return self
@@ -4007,6 +4007,7 @@ def color_gradient(color_start=ColorRGB(255, 255, 255), color_end=ColorRGB(0, 0,
         raise GraphicsError("\n\nGraphicsError: The start color (color_start) must be a Color object, "
                             f"not {color_start}")
 
+
 def colour_gradient_2d(colour_start1=ColourRGB(0, 0, 0), colour_end1=ColourRGB(255, 0, 0),
                        colour_start2=ColourRGB(255, 255, 255), colour_end2=ColourRGB(0, 255, 0),
                        divisions_x=10, divisions_y=10):
@@ -4180,7 +4181,7 @@ def rgb_to_hex(red, green, blue):
     else:
         raise GraphicsError("\n\nGraphicsError: red value for conversion from RGB to Hex must be an integer")
 
-    return "#%02x%02x%02x" % (red, green, blue)
+    return rgb_to_hex_nocheck(red, green, blue)
 
 
 def rgb_to_cmyk(red, green, blue):
@@ -4205,7 +4206,7 @@ def rgb_to_cmyk(red, green, blue):
     else:
         raise GraphicsError("\n\nGraphicsError: red value for conversion from RGB to CMYK must be an integer")
 
-    return _rgb_to_cmyk(red, green, blue)
+    return rgb_to_cmyk_nocheck(red, green, blue)
 
 
 def rgb_to_hsl(red, green, blue):
@@ -4230,7 +4231,7 @@ def rgb_to_hsl(red, green, blue):
     else:
         raise GraphicsError("\n\nGraphicsError: red value for conversion from RGB to HSL must be an integer")
 
-    return _rgb_to_hsl(red, green, blue)
+    return rgb_to_hsl_nocheck(red, green, blue)
 
 
 def rgb_to_hsv(red, green, blue):
@@ -4255,7 +4256,7 @@ def rgb_to_hsv(red, green, blue):
     else:
         raise GraphicsError("\n\nGraphicsError: red value for conversion from RGB to HSV must be an integer")
 
-    return _rgb_to_hsv(red, green, blue)
+    return rgb_to_hsv_nocheck(red, green, blue)
 
 
 # Hex to other format
@@ -4289,7 +4290,7 @@ def hex_to_cmyk(hexstring):
     else:
         raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
 
-    return _hex_to_cmyk(hexstring)
+    return hex_to_cmyk_nocheck(hexstring)
 
 
 def hex_to_hsl(hexstring):
@@ -4305,7 +4306,7 @@ def hex_to_hsl(hexstring):
     else:
         raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
 
-    return _hex_to_hsl(hexstring)
+    return hex_to_hsl_nocheck(hexstring)
 
 
 def hex_to_hsv(hexstring):
@@ -4321,7 +4322,7 @@ def hex_to_hsv(hexstring):
     else:
         raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
 
-    return _hex_to_hsv(hexstring)
+    return hex_to_hsv_nocheck(hexstring)
 
 
 # CMYK to other format
@@ -4355,7 +4356,7 @@ def cmyk_to_rgb(cyan, magenta, yellow, key):
         raise GraphicsError(
             f"\n\nGraphicsError: cyan value for conversion from CMYK to RGB must be an integer, not {cyan}")
 
-    return _cmyk_to_rgb(cyan, magenta, yellow, key)
+    return cmyk_to_rgb_nocheck(cyan, magenta, yellow, key)
 
 
 def cmyk_to_hex(cyan, magenta, yellow, key):
@@ -4387,7 +4388,7 @@ def cmyk_to_hex(cyan, magenta, yellow, key):
         raise GraphicsError(
             f"\n\nGraphicsError: cyan value for conversion from CMYK to Hex must be an integer, not {cyan}")
 
-    return _cmyk_to_hex(cyan, magenta, yellow, key)
+    return cmyk_to_hex_nocheck(cyan, magenta, yellow, key)
 
 
 def cmyk_to_hsl(cyan, magenta, yellow, key):
@@ -4419,7 +4420,7 @@ def cmyk_to_hsl(cyan, magenta, yellow, key):
         raise GraphicsError(
             f"\n\nGraphicsError: cyan value for conversion from CMYK to HSL must be an integer, not {cyan}")
 
-    return _cmyk_to_hsl(cyan, magenta, yellow, key)
+    return cmyk_to_hsl_nocheck(cyan, magenta, yellow, key)
 
 
 def cmyk_to_hsv(cyan, magenta, yellow, key):
@@ -4451,7 +4452,7 @@ def cmyk_to_hsv(cyan, magenta, yellow, key):
         raise GraphicsError(
             f"\n\nGraphicsError: cyan value for conversion from CMYK to HSV must be an integer, not {cyan}")
 
-    return _cmyk_to_hsv(cyan, magenta, yellow, key)
+    return cmyk_to_hsv_nocheck(cyan, magenta, yellow, key)
 
 
 # HSV to other format
@@ -4478,7 +4479,7 @@ def hsv_to_rgb(hue, saturation, value):
     else:
         raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSV to RGB must be an integer")
 
-    return _hsv_to_rgb(hue, saturation, value)
+    return hsv_to_rgb_nocheck(hue, saturation, value)
 
 
 def hsv_to_hex(hue, saturation, value):
@@ -4503,7 +4504,7 @@ def hsv_to_hex(hue, saturation, value):
     else:
         raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSV to Hex must be an integer")
 
-    return _hsv_to_hex(hue, saturation, value)
+    return hsv_to_hex_nocheck(hue, saturation, value)
 
 
 def hsv_to_cmyk(hue, saturation, value):
@@ -4529,7 +4530,7 @@ def hsv_to_cmyk(hue, saturation, value):
     else:
         raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSV to CMYK must be an integer")
 
-    return _hsv_to_cmyk(hue, saturation, value)
+    return hsv_to_cmyk_nocheck(hue, saturation, value)
 
 
 def hsv_to_hsl(hue, saturation, value):
@@ -4554,7 +4555,7 @@ def hsv_to_hsl(hue, saturation, value):
     else:
         raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSV to HSL must be an integer")
 
-    return _hsv_to_hsl(hue, saturation, value)
+    return hsv_to_hsl_nocheck(hue, saturation, value)
 
 
 # HSL to other format
@@ -4583,7 +4584,7 @@ def hsl_to_rgb(hue, saturation, luminance):
     else:
         raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSL to RGB must be an integer")
 
-    return _hsl_to_rgb(hue, saturation, luminance)
+    return hsl_to_rgb_nocheck(hue, saturation, luminance)
 
 
 def hsl_to_hex(hue, saturation, luminance):
@@ -4610,7 +4611,7 @@ def hsl_to_hex(hue, saturation, luminance):
     else:
         raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSL to Hex must be an integer")
 
-    return _hsl_to_hex(hue, saturation, luminance)
+    return hsl_to_hex_nocheck(hue, saturation, luminance)
 
 
 def hsl_to_cmyk(hue, saturation, luminance):
@@ -4637,7 +4638,7 @@ def hsl_to_cmyk(hue, saturation, luminance):
     else:
         raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSL to CMYK must be an integer")
 
-    return _hsl_to_cmyk(hue, saturation, luminance)
+    return hsl_to_cmyk_nocheck(hue, saturation, luminance)
 
 
 def hsl_to_hsv(hue, saturation, luminance):
@@ -4664,7 +4665,7 @@ def hsl_to_hsv(hue, saturation, luminance):
     else:
         raise GraphicsError("\n\nGraphicsError: hue value for conversion from HSL to HSV must be an integer")
 
-    return _hsl_to_hsv(hue, saturation, luminance)
+    return hsl_to_hsv_nocheck(hue, saturation, luminance)
 
 
 # -------------------------------------------------------------------------
@@ -4672,11 +4673,11 @@ def hsl_to_hsv(hue, saturation, luminance):
 
 # RGB to other format
 
-def _rgb_to_hex(red, green, blue):
+def rgb_to_hex_nocheck(red, green, blue):
     return "#%02x%02x%02x" % (red, green, blue)
 
 
-def _rgb_to_cmyk(red, green, blue):
+def rgb_to_cmyk_nocheck(red, green, blue):
     red /= 255
     green /= 255
     blue /= 255
@@ -4690,7 +4691,7 @@ def _rgb_to_cmyk(red, green, blue):
            round(100 * k)
 
 
-def _rgb_to_hsl(red, green, blue):
+def rgb_to_hsl_nocheck(red, green, blue):
     red /= 255
     green /= 255
     blue /= 255
@@ -4718,7 +4719,7 @@ def _rgb_to_hsl(red, green, blue):
     return round(h), round(100 * s), round(100 * L)
 
 
-def _rgb_to_hsv(red, green, blue):
+def rgb_to_hsv_nocheck(red, green, blue):
     red /= 255
     green /= 255
     blue /= 255
@@ -4744,11 +4745,11 @@ def _rgb_to_hsv(red, green, blue):
 
 # Hex to other format
 
-def _hex_to_rgb(hexstring):
+def hex_to_rgb_nocheck(hexstring):
     return (int(hexstring[1:3], 16), int(hexstring[3:5], 16), int(hexstring[5:7], 16))
 
 
-def _hex_to_cmyk(hexstring):
+def hex_to_cmyk_nocheck(hexstring):
     red, green, blue = hex_to_rgb(hexstring)
 
     red /= 255
@@ -4764,7 +4765,7 @@ def _hex_to_cmyk(hexstring):
            round(100 * k)
 
 
-def _hex_to_hsl(hexstring):
+def hex_to_hsl_nocheck(hexstring):
     red, green, blue = hex_to_rgb(hexstring)
 
     red /= 255
@@ -4794,7 +4795,7 @@ def _hex_to_hsl(hexstring):
     return round(h), round(100 * s), round(100 * L)
 
 
-def _hex_to_hsv(hexstring):
+def hex_to_hsv_nocheck(hexstring):
     red, green, blue = hex_to_rgb(hexstring)
 
     red /= 255
@@ -4822,19 +4823,19 @@ def _hex_to_hsv(hexstring):
 
 # CMYK to other format
 
-def _cmyk_to_rgb(cyan, magenta, yellow, key):
+def cmyk_to_rgb_nocheck(cyan, magenta, yellow, key):
     return round(0.0255 * (100 - cyan) * (100 - key)), \
            round(0.0255 * (100 - magenta) * (100 - key)), \
            round(0.0255 * (100 - yellow) * (100 - key))
 
 
-def _cmyk_to_hex(cyan, magenta, yellow, key):
+def cmyk_to_hex_nocheck(cyan, magenta, yellow, key):
     return "#%02x%02x%02x" % (round(.0255 * (100 - cyan) * (100 - key)),
                               round(.0255 * (100 - magenta) * (100 - key)),
                               round(.0255 * (100 - yellow) * (100 - key)))
 
 
-def _cmyk_to_hsl(cyan, magenta, yellow, key):
+def cmyk_to_hsl_nocheck(cyan, magenta, yellow, key):
     red = .0001 * (100 - cyan) * (100 - key)
     green = .0001 * (100 - magenta) * (100 - key)
     blue = .0001 * (100 - yellow) * (100 - key)
@@ -4862,7 +4863,7 @@ def _cmyk_to_hsl(cyan, magenta, yellow, key):
     return round(h), round(100 * s), round(100 * L)
 
 
-def _cmyk_to_hsv(cyan, magenta, yellow, key):
+def cmyk_to_hsv_nocheck(cyan, magenta, yellow, key):
     red = .0001 * (100 - cyan) * (100 - key)
     green = .0001 * (100 - magenta) * (100 - key)
     blue = .0001 * (100 - yellow) * (100 - key)
@@ -4888,7 +4889,7 @@ def _cmyk_to_hsv(cyan, magenta, yellow, key):
 
 # HSV to other format
 
-def _hsv_to_rgb(hue, saturation, value):
+def hsv_to_rgb_nocheck(hue, saturation, value):
     saturation /= 100
     value /= 100
 
@@ -4914,7 +4915,7 @@ def _hsv_to_rgb(hue, saturation, value):
            round(255 * (rgb_[2] + m))
 
 
-def _hsv_to_hex(hue, saturation, value):
+def hsv_to_hex_nocheck(hue, saturation, value):
     saturation /= 100
     value /= 100
 
@@ -4938,7 +4939,7 @@ def _hsv_to_hex(hue, saturation, value):
     return "#%02x%02x%02x" % (round(255 * (rgb_[0] + m)), round(255 * (rgb_[1] + m)), round(255 * (rgb_[2] + m)))
 
 
-def _hsv_to_cmyk(hue, saturation, value):
+def hsv_to_cmyk_nocheck(hue, saturation, value):
     saturation /= 100
     value /= 100
 
@@ -4972,7 +4973,7 @@ def _hsv_to_cmyk(hue, saturation, value):
            round(100 * k)
 
 
-def _hsv_to_hsl(hue, saturation, value):
+def hsv_to_hsl_nocheck(hue, saturation, value):
     saturation /= 100
     value /= 100
 
@@ -4984,7 +4985,7 @@ def _hsv_to_hsl(hue, saturation, value):
 
 # HSL to other format
 
-def _hsl_to_rgb(hue, saturation, luminance):
+def hsl_to_rgb_nocheck(hue, saturation, luminance):
     saturation /= 100
     luminance /= 100
 
@@ -5008,7 +5009,7 @@ def _hsl_to_rgb(hue, saturation, luminance):
     return round(255 * (rgb_[0] + m)), round(255 * (rgb_[1] + m)), round(255 * (rgb_[2] + m))
 
 
-def _hsl_to_hex(hue, saturation, luminance):
+def hsl_to_hex_nocheck(hue, saturation, luminance):
     saturation /= 100
     luminance /= 100
 
@@ -5032,7 +5033,7 @@ def _hsl_to_hex(hue, saturation, luminance):
     return "#%02x%02x%02x" % (round(255 * (rgb_[0] + m)), round(255 * (rgb_[1] + m)), round(255 * (rgb_[2] + m)))
 
 
-def _hsl_to_cmyk(hue, saturation, luminance):
+def hsl_to_cmyk_nocheck(hue, saturation, luminance):
     saturation /= 100
     luminance /= 100
 
@@ -5067,7 +5068,7 @@ def _hsl_to_cmyk(hue, saturation, luminance):
            round(100 * k)
 
 
-def _hsl_to_hsv(hue, saturation, luminance):
+def hsl_to_hsv_nocheck(hue, saturation, luminance):
     saturation /= 100
     luminance /= 100
 
