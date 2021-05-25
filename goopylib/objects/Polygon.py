@@ -1,7 +1,7 @@
 from goopylib.objects.GraphicsObject import GraphicsObject
 from goopylib.styles import *
 
-from goopylib.math.triangulation import triangulate_modified_earclip
+from goopylib.maths.triangulation import triangulate_modified_earclip
 from math import radians, sin, cos
 
 from copy import deepcopy

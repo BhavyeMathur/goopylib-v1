@@ -6,5 +6,5 @@ from goopylib.colours import *
 from goopylib.Window import Window
 
 from goopylib.objects.imports import *
-from goopylib.math.imports import *
+from goopylib.maths.imports import *
 from goopylib.sound.imports import *

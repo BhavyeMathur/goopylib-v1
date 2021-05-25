@@ -10,7 +10,7 @@ from time import time as timetime
 from goopylib.styles import *
 from goopylib.util import GraphicsError, GraphicsWarning, resource_path
 from goopylib.constants import _root, BORDER_RELIEFS, CURSORS
-from goopylib.math.easing import *
+from goopylib.maths.easing import *
 
 from goopylib._internal_classes import Transform
 
@@ -857,7 +857,10 @@ class Window(tkCanvas):
         else:
             self.cursor = cursor.lower()
 
-        self.config(cursor=CURSORS[cursor])
+        try:
+            self.config(cursor=CURSORS[cursor])
+        except:
+            print(cursor, CURSORS[cursor])
         self.__autoflush()
         return self
 

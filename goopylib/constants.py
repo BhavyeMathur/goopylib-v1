@@ -27,7 +27,7 @@ CURSORS_MACOSX_RAW = {"copyarrow", "aliasarrow", "contextualmenuarrow", "text", 
                       "resizeupdown", "none", "notallowed", "poof", "countinguphand", "countingdownhand",
                       "countingupanddownhand", "spinning"}
 
-CURSORS = {"x": "x_cursor", "arrow": "arrow", "based-down-arrow": "based_arrow_down",
+CURSORS = {"arrow": "arrow", "based-down-arrow": "based_arrow_down",
            "based-up-arrow": "based_arrow_up", "boat": "boat", "maze_symbol": "bogosity",
            "bottom-left-corner-arrow": "bottom_left_corner", "bottom-right-corner-arrow": "bottom_right_corner",
            "download": "bottom_side", "bottom-t": "bottom_tee", "spiral": "box_spiral", "up-arrow-thin": "center_ptr",
@@ -48,10 +48,9 @@ CURSORS = {"x": "x_cursor", "arrow": "arrow", "based-down-arrow": "based_arrow_d
            "spraycan": "spraycan", "star": "star", "target": "target", "t-cross": "tcross",
            "flipped-pointer": "top_left_arrow", "top-left-corner-arrow": "top_left_corner",
            "top-right-corner-arrow": "top_right_corner", "top-download": "top_side", "top-t": "top_tee",
-           "virus": "trek",
-           "top-left-corner": "ul_angle", "umbrella": "umbrella", "top-right-corner": "ur_angle", "loading": "watch",
-           "text-cursor": "xterm"}
-CURSORS_WINDOWS = {"cancel": "no"}
+           "virus": "trek", "top-left-corner": "ul_angle", "umbrella": "umbrella", "top-right-corner": "ur_angle",
+           "loading": "watch", "text-cursor": "xterm"}
+CURSORS_WINDOWS = {"cancel": "no", "x": "x_cursor"}
 CURSORS_MACOSX = {}
 
 BORDER_RELIEFS = {"flat", "sunken", "raised", "groove", "ridge"}

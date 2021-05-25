@@ -66,7 +66,7 @@ There are 5 subpackages in goopylib: objects, math, sound, physics, & applicatio
 To import these, type:
 
 ```python
-from goopylib.math.py_bezier_curve import py_bezier_curve # The other modules are 'Interpolation', & 'BSpline'
+from goopylib.maths.py_bezier_curve import py_bezier_curve # The other modules are 'Interpolation', & 'BSpline'
 # or
 from goopylib.objects.Rectangle import Rectangle  # For a list of graphics objects, look at the documentation
 ```
@@ -177,7 +177,7 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython & C and also building a Sound Engine for goopylib 1.2
 
-#### 1.1.316-alpha25 5th May - 25th May 2021 - 25,061 lines of code
+#### 1.1.318-alpha25 5th May - 25th May 2021 - 25,061 lines of code
 
 * Fixed bug with the `Rectangle` class's `copy()` function not creating a copy of the position lists and just creating a 
 new reference
@@ -224,8 +224,10 @@ against a non-`Colour` object
  * Redefined the `_update_lasttime` variable which was removed for an unknown reason
  
  * Renamed the base colour conversion functions, like `_rgb_to_hex()` to `rgb_to_hex_nocheck()`
- * Added a `__version__` variable that keeps track of the goopyplib version
+ * Added a `__version__` variable that keeps track of the goopyplib version, and an `__all__` variable
  * Added American (spelled with color) colour conversion tests to `goopylib_tests.py`
+ * Renamed the goopylib `math` subpackage to `maths` to avoid conflicts with Python's standard library
+ * Removed `'x_cursor'` from `CURSORS` and moved it to `CURSORS_WINDOWS` since it isn't available on MacOS
  
 #### 1.1.282-alpha24 29th March - 7th April 2021
 

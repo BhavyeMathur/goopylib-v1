@@ -508,7 +508,7 @@ def test_window_methods(_test_function=True):
     
     window = gp.Window(title="Test Window", width=500, height=500)
     functions_dict = [{"func": gp.Window.__init__, "args": {"self": window, "title": "Test Window",
-                                                         "width": 500, "height": 500}, "expected": None},
+                       "width": 500, "height": 500}, "expected": None},
 
                       {"func": gp.Window._check__autoflush, "args": (window,), "expected": False},
                       {"func": gp.Window._check__check_open, "args": (window,), "expected": True},
@@ -741,7 +741,7 @@ while True:
     print()
 """
 
-# test_all_functions()
-# test_all_examples()
+test_all_functions()
+test_all_examples()
 
-countlines(".")
+# countlines(".")

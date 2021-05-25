@@ -21,15 +21,15 @@ CREATING RELEASES---------------------------------------------------------------
     - Run setup_extensions.py and build goopylib .pyd C extensions
     - Test all Example python files, run goopylib_tests.py and test functions on Windows
     - Run goopylib_tests.py countlines() function and update README.md with line count
-    - Push to GitHub, pull from MacOSX computer
+    - Push to GitHub, pull from MacOS computer
     - Run setup_extensions.py and build goopylib .so C extensions
-    - Test all Example python files, run goopylib_tests.py and test functions on MacOSX
+    - Test all Example python files, run goopylib_tests.py and test functions on MacOS
     - Push files to GitHub
     - Create GitHub Release
     - Build goopylib Release
     - Upload goopylib Release on PyPi
     - Test goopylib installation on Windows
-    - Test goopylib installation on MacOSX
+    - Test goopylib installation on MacOS
     
     To create release: python setup_extensions.py sdist bdist_wheel
     sdist bdist_wheel
@@ -55,11 +55,11 @@ def create_release():
         version='1.1.282a24',
         download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.282-alpha.tar.gz',
 
-        package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects', ":applications": 'goopylib/applications',
+        package_dir={':maths': 'goopylib/maths', ":objects": 'goopylib/objects', ":applications": 'goopylib/applications',
                      ":sound": 'goopylib/sound', ":physics": 'goopylib/physics'},
 
         packages={"goopylib": "goopylib",
-                  "goopylib/math": "goopylib/math",
+                  "goopylib/maths": "goopylib/maths",
                   "goopylib/objects": "goopylib/objects",
                   "goopylib/applications": "goopylib/applications",
                   "goopylib/sound": "goopylib/sound",
@@ -121,4 +121,4 @@ def setup_extensions(extensions):
         pass
 
 
-setup_extensions(["colours.c", "math/bezier_curve.c"])
+setup_extensions(["colours.c", "maths/bezier_curve.c"])

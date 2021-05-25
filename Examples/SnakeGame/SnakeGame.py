@@ -66,7 +66,7 @@ snake_squares = [Rectangle([150, 300], [180, 330], fill=LIGHTISH_BLUE, outline_w
 # [x, y]
 apple_position = [random.randint(0, 19) * 30 + 15, random.randint(0, 19) * 30 + 15]
 # between [0, 0] and [19, 19]
-apple = Circle(apple_position, 10, fill=LIGHTISH_RED).draw(window)
+apple = Circle(apple_position, 10, fill=LIGHTISH_RED, outline_width=0).draw(window)
 apple.animate_blinking(0.2)  # blinks the apple at a rate of 0.2 seconds
 
 apple_eaten = False

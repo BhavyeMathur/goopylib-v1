@@ -10,10 +10,10 @@ vertices = [[100, 600], [350.0, 100.0], [558.0, 20.0], [681.0, 72.0], [636.0, 13
 if False:
     while True:
         print(timeit.timeit(
-            setup="from __main__ import vertices; from goopylib.math.Triangulation import triangulate_earclip",
+            setup="from __main__ import vertices; from goopylib.maths.Triangulation import triangulate_earclip",
             stmt="triangulate_earclip(vertices)", number=1000))
         print(timeit.timeit(
-            setup="from __main__ import vertices; from goopylib.math.Triangulation import triangulate_modified_earclip",
+            setup="from __main__ import vertices; from goopylib.maths.Triangulation import triangulate_modified_earclip",
             stmt="triangulate_modified_earclip(vertices)", number=1000))
 
         print()

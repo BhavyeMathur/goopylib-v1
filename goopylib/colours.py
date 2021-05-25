@@ -1,6 +1,6 @@
 from random import randint as randomrandint
 
-from goopylib.math.interpolations import *
+from goopylib.maths.interpolations import *
 
 
 # -------------------------------------------------------------------------
