@@ -140,7 +140,8 @@ class Text(GraphicsObject):
     def clone(self, new_tag=None):
         other = Text(self.anchor, self.text, font_size=self._initial_font_size, font_face=self.font_face,
                      font_style=self.font_style, font_colour=self.outline, justify=self.justify,
-                     text_align=self.text_align, layer=self.layer, tag=new_tag, bounds=self.bounds.clone())
+                     text_align=self.text_align, layer=self.layer, tag=new_tag,
+                     bounds=None if self.bounds is None else self.bounds.clone())
         return other
 
     def set_text(self, text):

@@ -1,10 +1,33 @@
 from setuptools import setup, Extension
-from distutils.core import setup, Extension
 
 import os
-import platform
 import shutil
 
+"""
+Install Visual C++ Build Tools 2015 (v14.0)
+Tested on Python 3.7.9
+Install MinGW C Compiler
+
+pip install twine
+pip install --upgrade setuptools
+
+pip install build
+
+CREATING RELEASES-------------------------------------------------------------------------------------------------------
+    To create release: python setup_extensions.py sdist bdist_wheel
+    sdist bdist_wheel
+
+    To check release: twine check dist/*
+    To upload release: twine upload dist/*
+
+BUILDING EXTENSIONS-----------------------------------------------------------------------------------------------------
+    To build Extension: python setup_extensions.py build -c mingw32
+    build -c mingw32
+"""
+
+
+"""
+Use setup.cfg instead
 
 def create_release():
     with open("README.md", "r") as fh:
@@ -12,6 +35,9 @@ def create_release():
 
     setup(
         name='goopylib',
+        version='1.1.282a24',
+        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.282-alpha.tar.gz',
+
         package_dir={':math': 'goopylib/math', ":objects": 'goopylib/objects', ":applications": 'goopylib/applications',
                      ":sound": 'goopylib/sound', ":physics": 'goopylib/physics'},
 
@@ -24,7 +50,6 @@ def create_release():
 
         include_package_data=True,
 
-        version='1.1.282a24',
         license='MIT License',
 
         description='A simple-yet-powerful 2D graphics framework built on top of Tkinter capable of creating '
@@ -35,7 +60,6 @@ def create_release():
         author='Bhavye Mathur',
         author_email='bhavyemathur@gmail.com',
         url='https://github.com/BhavyeMathur/goopylib',
-        download_url='https://github.com/BhavyeMathur/goopylib/archive/v1.1.282-alpha.tar.gz',
         keywords=['Tkinter', '2D Graphics', 'Python GUI', 'Game Creator', 'Graphics Library'],
         install_requires=['pillow'],
         project_urls={"Bug Tracker": "https://github.com/BhavyeMathur/goopylib/issues",
@@ -46,49 +70,34 @@ def create_release():
             'Topic :: Software Development :: Build Tools',
             'License :: OSI Approved :: MIT License',
         ],
-        python_requires=">=3.6"
+        python_requires=">=3.6",
     )
+"""
 
 
-def setup_extension(name, sources, output):
+def setup_extension(name, sources):
     name = "c_" + name
-    setup(name=name, ext_modules=[Extension(name, sources=sources)])
+    folder_path = os.path.dirname(sources[0])
+    setup(name=name,
+          ext_modules=[Extension(name, sources=sources)],
+          options={'build': {'build_lib': folder_path}})
 
-    system = platform.system()
+    files = os.listdir(folder_path)
+    for file in files:
+        if '.pyd' in file and file[:len(name)] == name:
+            os.rename(f"{folder_path}/{file}", f"{folder_path}/{name}.pyd")
+            break
+
+
+def setup_extensions(extensions):
+    for extension in extensions:
+        setup_extension(extension[0], [extension[1]])
 
     try:
-        if system == "Windows":
-            try:
-                os.remove(f"goopylib/{output}{name}.pyd")
-            except FileNotFoundError:
-                pass
-            os.rename(f"build/lib.win-amd64-3.8/{name}.cp38-win_amd64.pyd", f"goopylib/{output}{name}.pyd")
-
-        elif system == "Darwin":
-            try:
-                os.remove(f"goopylib/{output}{name}.o")
-            except FileNotFoundError:
-                pass
-            os.rename(f"build/lib.macosx-10.9-x86_64-3.8/{name}.cpython-38-darwin.so", f"goopylib/{output}{name}.so")
-
-            shutil.rmtree("dist")
-            shutil.rmtree(f"{name}.egg-info")
-
-    except FileNotFoundError as e:
-        print(e)
-
-    shutil.rmtree("build")
+        shutil.rmtree("build")
+    except FileNotFoundError:
+        pass
 
 
-#setup_extension("colours", ["goopylib/colours.c"], "")
-# setup_extension("easing", ["goopylib/math/Easing.c"], "math/")
-# setup_extension("bezier_curve", ["goopylib/math/bezier_curve.c"], "math/")
-
-create_release()
-# To check release: twine check dist/*
-# To upload release: twine upload dist/*
-
-# To create release: python setup.py sdist bdist_wheel
-# To build Extension: python setup.py build
-
-# Create text wrapping
+setup_extensions([("colours", "goopylib/colours.c"),
+                  ("bezier_curve", "goopylib/math/bezier_curve.c")])

@@ -30,10 +30,10 @@ def contains_no_other_points(p1, p2, p3, vertex_chain):
 
 def is_clockwise(vertex_chain):
     # Code from https://github.com/mrbaozi/triangulation/blob/master/sources/triangulate.py
-    sum = (vertex_chain[0].x - vertex_chain[len(vertex_chain) - 1].x) * \
-          (vertex_chain[0].y + vertex_chain[len(vertex_chain) - 1].y)
+    sum = (vertex_chain[0][0] - vertex_chain[len(vertex_chain) - 1][0]) * \
+          (vertex_chain[0][1] + vertex_chain[len(vertex_chain) - 1][1])
     for i in range(len(vertex_chain) - 1):
-        sum += (vertex_chain[i + 1].x - vertex_chain[i].x) * (vertex_chain[i + 1].y + vertex_chain[i].y)
+        sum += (vertex_chain[i + 1][0] - vertex_chain[i][0]) * (vertex_chain[i + 1][1] + vertex_chain[i][1])
     return sum > 0
 
 # Runs in O(n^3) time

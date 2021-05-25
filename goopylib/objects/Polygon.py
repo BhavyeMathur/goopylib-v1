@@ -4,14 +4,13 @@ from goopylib.styles import *
 from goopylib.math.triangulation import triangulate_modified_earclip
 from math import radians, sin, cos
 
+from copy import deepcopy
+
 class Polygon(GraphicsObject):
     def __init__(self, *points, style=None, fill=None, outline=None, outline_width=None, is_rounded=False, roundness=5,
                  layer=0, tag=None):
 
-        # if points passed as a list, extract it
-        if len(points) == 1 and isinstance(points[0], list):
-            points = points[0]
-        self.points = points
+        self.points = deepcopy(list(points))
         if len(self.points) < 3:
             raise GraphicsError(f"\n\nGraphicsError: there must be at least 3 points for the polygon")
 
@@ -51,7 +50,6 @@ class Polygon(GraphicsObject):
                 f"\n\nGraphicsError: The rectangle outline width must be an integer, not {outline_width}")
 
         self.triangles = None
-        self.triangulate()
 
     def __repr__(self):
         return f"Polygon({self.points})"
@@ -132,6 +130,9 @@ class Polygon(GraphicsObject):
         return self.outline_width
 
     def is_clicked(self, pos):
+        if self.triangles is None:
+            self.triangulate()
+
         if pos is None:
             return False
         else:

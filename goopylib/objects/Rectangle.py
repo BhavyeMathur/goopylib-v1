@@ -20,10 +20,10 @@ class Rectangle(gpBBox.BBox):
                                 f"not {roundness}")
 
         # A call to the super class to initialize important variables of the Rectangle class.
-        gpBBox.BBox.__init__(self, p1, p2, bounds=bounds, fill=fill, outline=outline, outline_width=outline_width,
-                             cursor=cursor, layer=layer, tag=tag)
+        gpBBox.BBox.__init__(self, p1.copy(), p2.copy(), bounds=bounds, fill=fill, outline=outline,
+                             outline_width=outline_width, cursor=cursor, layer=layer, tag=tag)
 
-        self.is_rounded = is_rounded  # A variable defining whether the rectangle is rounded
+        self.is_rounded = [is_rounded, is_rounded, is_rounded, is_rounded]
         self.roundness = roundness
 
     def __repr__(self):
@@ -97,22 +97,50 @@ class Rectangle(gpBBox.BBox):
                                      f"GraphicsObject or tag referencing a GraphicsObject, not {top_bounds}")
 
     def _draw(self, canvas, options):
-        if self.is_rounded:  # The rectangle is rounded, so we draw a polygon
+        if any(self.is_rounded):  # The rectangle is rounded, so we draw a polygon
+            points = [self.p1[0], self.p1[1]]
 
-            points = [self.p1[0], self.p1[1],
-                      self.p1[0] + self.roundness, self.p1[1],
-                      self.p2[0] - self.roundness, self.p1[1],
-                      self.p2[0], self.p1[1],
-                      self.p2[0], self.p1[1] + self.roundness,
-                      self.p2[0], self.p2[1] - self.roundness,
-                      self.p2[0], self.p2[1],
-                      self.p2[0] - self.roundness, self.p2[1],
-                      self.p1[0] + self.roundness, self.p2[1],
-                      self.p1[0], self.p2[1],
-                      self.p1[0], self.p2[1] - self.roundness,
-                      self.p1[0], self.p1[1] + self.roundness]
+            if self.is_rounded[0]:
+                points += [self.p1[0] + self.roundness, self.p1[1]]
+            else:
+                points += [self.p1[0], self.p1[1]]
 
-            for point in range(12):
+            if self.is_rounded[1]:
+                points += [self.p2[0] - self.roundness, self.p1[1]]
+            else:
+                points += [self.p2[0], self.p1[1]]
+            points += [self.p2[0], self.p1[1]]
+            if self.is_rounded[1]:
+                points += [self.p2[0], self.p1[1] + self.roundness]
+            else:
+                points += [self.p2[0], self.p1[1]]
+
+            if self.is_rounded[2]:
+                points += [self.p2[0], self.p2[1] - self.roundness]
+            else:
+                points += self.p2[0], self.p2[1]
+            points += self.p2[0], self.p2[1]
+            if self.is_rounded[2]:
+                points += self.p2[0] - self.roundness, self.p2[1]
+            else:
+                points += self.p2[0], self.p2[1]
+
+            if self.is_rounded[3]:
+                points += self.p1[0] + self.roundness, self.p2[1]
+            else:
+                points += self.p1[0], self.p2[1]
+            points += self.p1[0], self.p2[1]
+            if self.is_rounded[3]:
+                points += self.p1[0], self.p2[1] - self.roundness
+            else:
+                points += self.p1[0], self.p2[1]
+
+            if self.is_rounded[0]:
+                points += [self.p1[0], self.p1[1] + self.roundness]
+            else:
+                points += [self.p1[0], self.p1[1]]
+
+            for point in range(0, 12, 2):
                 points[point * 2], points[point * 2 + 1] = canvas.to_screen(points[point * 2], points[point * 2 + 1])
 
             # Code modified from Francisco Gomes, https://stackoverflow.com/users/9139005/francisco-gomes
@@ -164,7 +192,7 @@ class Rectangle(gpBBox.BBox):
             """
             return canvas.create_polygon(points, width=self.outline_width, fill=self.fill,
                                          outline=self.fill if self.outline_width == 0 else self.outline,
-                                         smooth=self.is_rounded)
+                                         smooth=True)
 
         else:  # The rectangle is not rounded, so we draw a rectangle to the window
             x1, y1 = canvas.to_screen(self.p1[0], self.p1[1])  # Transforms the 2 points to match with the scaling of
@@ -173,10 +201,14 @@ class Rectangle(gpBBox.BBox):
             return canvas.create_rectangle(x1, y1, x2, y2, fill=self.fill,  # actually creates the rectangle
                                            outline=self.outline, width=self.outline_width)
 
+    def set_rounded(self, top_left=True, top_right=True, bottom_left=True, bottom_right=True):
+        self.is_rounded = [top_left, top_right, bottom_left, bottom_right]
+        return self
+
     def clone(self, new_tag=None):
         other = Rectangle(self.p1, self.p2, fill=self.fill, outline=self.outline, outline_width=self.outline_width,
-                          layer=self.layer, cursor=self.cursor, is_rounded=self.is_rounded, roundness=self.roundness,
-                          tag=new_tag, bounds=None if self.bounds is None else self.bounds.clone())
+                          layer=self.layer, cursor=self.cursor, roundness=self.roundness,
+                          tag=new_tag, bounds=None if self.bounds is None else self.bounds.clone()).set_rounded(*self.is_rounded)
         return other
 
     def is_clicked(self, pos):

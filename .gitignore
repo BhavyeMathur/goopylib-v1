@@ -1,21 +1,8 @@
 .idea/
-*.log
 .vs/
-PolygonTriangulation.fla
-sound_test.py
-triangulation_test.py
-test.py
 dist/
 build/
-media/
-goopylib.egg-info/
-Documentation/YouTube/Music/
-Documentation/YouTube/Adobe Premiere Pro Auto-Save/
-Documentation/YouTube/Adobe Premiere Pro Captured Audio/
-Documentation/YouTube/*/*.mp4
-Documentation/YouTube/*/*.wav
-Documentation/YouTube/*/*/*.mp4
-Documentation/YouTube/*.prproj
-CColours.egg-info/
-CEasing.egg-info/
-*.cfa
+**/goopylib.egg-info/
+*.log
+*.fla
+*.pyc

@@ -177,6 +177,52 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython & C and also building a Sound Engine for goopylib 1.2
 
+#### 1.1.313-alpha25 5th May - 25th May 2021
+
+* Fixed bug with the `Rectangle` class's `copy()` function not creating a copy of the position lists and just creating a 
+new reference
+* Fixed bug with the `Colour` class's `__eq__()` and `__nq__()` functions raising an `AttributeError` when comparing 
+against a non-`Colour` object
+* Fixed the `hex_to_rgb()` and `_hex_to_rgb()` functions to return a tuple, not generator
+* Fixed bug with the `hex_to_hsl()` and `hex_to_hsv()` functions both returning CMYK values
+* Created new colour converter testing functions
+
+* Changed `Window` `__repr__()` function to use `"Window"` and not `"GraphWin"`
+* Renamed the `Window` `is_resizable()`, `is_width_resizable()`, and `is_height_resizable()` to use `get` instead
+* The `Window` `get_resizable()` function now returns a `tuple` not a `list`
+* Removed the `Window` `__str__()` function since `__repr__()` defined the same thing
+* Added `Window` getter function testing functions
+* Fixed bugs with all the CMYK colour conversion functions
+
+* Changed the `GraphicsError` in the `Window`'s `__check_open()` function to include the string `"GraphicsError"` at the
+ start and return `True` if the window is open
+ * Added `_check__check_open()` and `_check__autoflush()` methods to the `Window` class to check the functionality of 
+ private methods
+ 
+ * Removed the `Window` `start_move()` and `stop_move()` methods until I can figure out what they do
+ * Removed the `Window` `draw_bounds()` function because it wasn't required.
+ * Fixed the `Window` `get_pos()`, `get_x_pos()`, and `get_y_pos()` functions to return the value relative to 0, 0
+ * Replaced all instances of the deprecated `Point` class usages with lists in `Window.py`
+ * The `Window` `set_background()` method no longer uses styles
+ * Changed `Window` `get_bk_colour()` method to `get_background()` to be consistent with the setter
+ * `Window` background colours can not be inputted as hex strings
+ * Removed all auto-flush checks in the `Window` methods because its private method `__autoflush()` also does that
+ 
+ * Renamed the variable `RELIEF` to `BORDER_RELIEFS`
+ * The `Window` `set_icon()` method now accepts icons in the local folder too
+ * Added 3 getter methods to the `Window` class: `get_draggable()`, `get_x_draggable_x()`, `get_y_draggable()`
+ * Added 5 getter methods to the `Window` class: `get_top_right()`, `get_top_left()`, `get_bottom_right()`,
+ `get_bottom_left()`, and `get_center()`
+ * Fixed bug with the `GraphicsObject` get animation time left functions raising a `TypeError`
+ 
+ * Fixed error with the `Text` `clone()` method trying to clone a `None` type bounds object
+ * Added 5 getter methods to the `_BBox` classes: `get_top_right()`, `get_top_left()`, `get_bottom_right()`,
+ `get_bottom_left()`, `get_left()`, `get_right()`, `get_bottom()`, `get_top()`
+ 
+ * Fixed the colour definition of `DARKISH_TURQUOISE` from a purple colour to a turquoise colour
+ * Internally changed how the button `Button` class keeps a track of its current state (normal, hover, or clicked)
+ * Redefined the `_update_lasttime` variable which was removed for an unknown reason
+ 
 #### 1.1.282-alpha24 29th March - 7th April 2021
 
 * Fixed bug with the `Line` requiring a type `list` for dashes, not `tuple`

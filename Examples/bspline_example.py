@@ -7,15 +7,17 @@ spline_points = []
 
 resolution = 0.1
 
+Line(*control_points, outline=RED).draw()
+
 for point in control_points:
-    Circle(point, 5, fill=RED).draw()
+    Circle(point, 5, fill=RED, outline_width=0).draw()
 
 for t in range(0, int(1 / resolution) * len(control_points)):
     t *= resolution
     spline_point = list(uniform_bspline(t, control_points, 2, is_open=False))
-    spline_points.append(Circle(spline_point, 3).draw())
+    spline_points.append(Circle(spline_point, 3, outline_width=0, layer=1).draw())
 
-Line(*map(Circle.get_anchor, spline_points)).draw()
+Line(*map(Circle.get_anchor, spline_points), outline=CHROME_YELLOW).draw()
 
-while True:
+while window.is_open():
     window.update()

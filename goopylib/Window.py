@@ -9,8 +9,8 @@ from time import time as timetime
 
 from goopylib.styles import *
 from goopylib.util import GraphicsError, GraphicsWarning, resource_path
-from goopylib.constants import _root, RELIEF, CURSORS
-from goopylib.math.py_easing import *
+from goopylib.constants import _root, BORDER_RELIEFS, CURSORS
+from goopylib.math.easing import *
 
 from goopylib._internal_classes import Transform
 
@@ -106,8 +106,8 @@ class Window(tkCanvas):
 
         if not isinstance(border_relief, str):
             raise GraphicsError(f"\n\nThe border relief (border_relief) must be a string, not {border_relief}")
-        if not border_relief.lower() in RELIEF:
-            raise GraphicsError(f"\n\nThe relief for the window border must be one of {RELIEF}, not {border_relief}")
+        if not border_relief.lower() in BORDER_RELIEFS:
+            raise GraphicsError(f"\n\nThe relief for the window border must be one of {BORDER_RELIEFS}, not {border_relief}")
         if not isinstance(border_width, int):
             raise GraphicsError(f"\n\nThe window's border width must be an integer, not {border_width}")
 
@@ -158,9 +158,6 @@ class Window(tkCanvas):
         self.height = height
         self.width = width
         self.center = [width / 2, height / 2]
-
-        self.x_pos = x_pos
-        self.y_pos = y_pos
 
         self.min_width = min_width
         self.min_height = min_height
@@ -292,7 +289,10 @@ class Window(tkCanvas):
         Window.instances.append(self)
 
         _root.update_idletasks()
+
         self.set_coords(0, 0, width, height)
+        self.x_pos = x_pos
+        self.y_pos = y_pos
 
         if remove_title_bar:
             master.overrideredirect(True)
@@ -301,16 +301,23 @@ class Window(tkCanvas):
 
     def __repr__(self):
         if self.closed:
-            return f"Closed GraphWin({self.title})"
+            return f"Closed Window({self.title})"
         else:
-            return f"GraphWin('{self.master.title()}', {self.master.winfo_width()}x{self.master.winfo_height()})"
+            return f"Window('{self.master.title()}', {self.master.winfo_width()}x{self.master.winfo_height()})"
 
-    def __str__(self):
-        return repr(self)
+    def _check__check_open(self):
+        try:
+            return self.__check_open()
+        except GraphicsError:
+            return False
+
+    def _check__autoflush(self):
+        return self.__autoflush()
 
     def __check_open(self):
         if self.closed:
-            raise GraphicsError("\n\nwindow is closed")
+            raise GraphicsError("\n\nGraphicsError: window is closed")
+        return True
 
     def is_closed(self):
         return self.closed
@@ -321,10 +328,11 @@ class Window(tkCanvas):
     # This is called automatically whenever the window needs to update
     def __autoflush(self):
         if self.autoflush:
-            _root.update()
+            return _root.update()
+        return False
 
     def __set_mouse_handler(self, func):
-        self._mouse_callback = func\
+        self._mouse_callback = func
         
     # -------------------------------------------------------------------------
     # CALLBACK KEYBOARD FUNCTIONS
@@ -525,6 +533,7 @@ class Window(tkCanvas):
     def _on_mouse_out(self, e):
         self.mouse_in_window = False
 
+    """
     def start_move(self, event):
         self.x = event.x
         self.y = event.y
@@ -536,6 +545,8 @@ class Window(tkCanvas):
     def draw_bounds(self):
         self.bounds.draw(self)
         return self
+    
+    """
 
     # WINDOW MOVING & GLIDING FUNCTIONS
     # -------------------------------------------------------------------------
@@ -585,9 +596,9 @@ class Window(tkCanvas):
         return self
 
     def move_to_point(self, p):
-        if not isinstance(p, Point):
-            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
-        self.move_to(p.x, p.y)
+        if not isinstance(p, list):
+            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a list in the form [x, y] , not {p}")
+        self.move_to(p[0], p[1])
         return self
 
     # Gliding Functions
@@ -685,25 +696,28 @@ class Window(tkCanvas):
         return self.glide_y(time=time, dy=y - self.y_pos, easing=easing)
 
     def glide_to_point(self, p, time=1, easing_x=py_ease_linear(), easing_y=None):
-        if not isinstance(p, Point):
-            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a Point object, not {p}")
-        return self.glide_to(x=p.x, y=p.y, time=time, easing_x=easing_x, easing_y=easing_y)
+        if not isinstance(p, list):
+            raise GraphicsError(f"\n\nGraphicsError: point argument (p) must be a list in the form [x, y] , not {p}")
+        return self.glide_to(x=p[0], y=p[1], time=time, easing_x=easing_x, easing_y=easing_y)
 
     # GETTER FUNCTIONS
     # -------------------------------------------------------------------------
 
     # Returns the position of the window on the display of the computer
     def get_pos(self):
-        return self.master.winfo_rootx(), self.master.winfo_rooty()
+        return self.x_pos, self.y_pos
 
     def get_x_pos(self):
-        return self.master.winfo_rootx()
+        return self.x_pos
     
     def get_y_pos(self):
-        return self.master.winfo_rooty()
+        return self.y_pos
+
+    def get_background(self):
+        return self.bk_colour
 
     def get_bk_colour(self):
-        return self.bk_colour
+        raise GraphicsError("\n\nGraphicsError: deprecated function get_bk_colour(), use get_background() instead")
 
     def get_border_width(self):
         return self.border_width
@@ -717,14 +731,23 @@ class Window(tkCanvas):
     def get_current_cursor(self):
         return self.current_cursor
 
-    def is_resizable(self):
-        return self.is_resizable.copy()
+    def get_resizable(self):
+        return self.is_resizable[0], self.is_resizable[1]
 
-    def is_width_resizable(self):
+    def get_width_resizable(self):
         return self.is_resizable[0]
 
-    def is_height_resizable(self):
+    def get_height_resizable(self):
         return self.is_resizable[1]
+
+    def get_draggable(self):
+        return self.is_draggable_x, self.is_draggable_y
+
+    def get_x_draggable(self):
+        return self.is_draggable_x
+
+    def get_y_draggable(self):
+        return self.is_draggable_y
 
     def get_size(self):
         return self.get_width(), self.get_height()
@@ -761,7 +784,22 @@ class Window(tkCanvas):
         return self.title
 
     def get_coords(self):
-        return [self.trans.x_base, self.trans.other_y], [self.trans.other_x, self.trans.y_base]
+        return [self.trans.x_base, self.trans.y_base], [self.trans.other_x, self.trans.other_x]
+
+    def get_top_left(self):
+        return [self.trans.x_base, self.trans.y_base]
+
+    def get_top_right(self):
+        return [self.trans.other_x, self.trans.y_base]
+
+    def get_bottom_right(self):
+        return [self.trans.other_x, self.trans.other_y]
+
+    def get_bottom_left(self):
+        return [self.trans.x_base, self.trans.other_y]
+
+    def get_center(self):
+        return [abs(self.trans.other_x - self.trans.x_base) // 2, abs(self.trans.other_y - self.trans.y_base) // 2]
 
     # SETTER FUNCTIONS
     # -------------------------------------------------------------------------
@@ -770,13 +808,12 @@ class Window(tkCanvas):
     def set_background(self, colour):
         """Set background colour of the window"""
 
-        if not isinstance(colour, Colour):
-            if colour in STYLES[self.style].keys():
-                self.bk_colour = STYLES[self.style]["background"]
-            elif colour is None:
-                self.bk_colour = STYLES["default"]["background"]
-        else:
+        if isinstance(colour, Colour):
             self.bk_colour = colour
+        elif isinstance(colour, str):
+            self.bk_colour = ColourHex(colour)
+        else:
+            raise GraphicsError(f"\n\nGraphicsError: invalid background colour {colour}, must be a Colour object")
 
         self.__check_open()
         self.master.config(bg=self.bk_colour)
@@ -784,7 +821,7 @@ class Window(tkCanvas):
 
     def set_border_width(self, width):
 
-        if not (isinstance(width, int) or isinstance(width, float)):
+        if not (isinstance(width, (float, int))):
             raise GraphicsError(f"\n\nThe window's border's width must be a number (integer or float), not {width}")
         if not width > 0:
             raise GraphicsError(f"\n\nThe window's border's width must be greater than 0, not {width}")
@@ -792,22 +829,20 @@ class Window(tkCanvas):
         self.border_width = width
         self.__check_open()
         self.master.config(bd=width)
-        if self.autoflush:
-            self.__autoflush()
+        self.__autoflush()
         return self
 
     def set_border_relief(self, relief):
-
         if not isinstance(relief, str):
             raise GraphicsError(f"\n\nThe border relief (relief) must be a string, not {relief}")
-        if not relief.lower() in RELIEF:
-            raise GraphicsError(f"\n\nThe relief for the window border must be one of {RELIEF}, not {relief}")
+        relief = relief.lower()
+        if not relief in BORDER_RELIEFS:
+            raise GraphicsError(f"\n\nThe relief for the window border must be one of {BORDER_RELIEFS}, not {relief}")
 
-        self.border_relief = relief.lower()
+        self.border_relief = relief
         self.__check_open()
         self.master.config(relief=relief)
-        if self.autoflush:
-            self.__autoflush()
+        self.__autoflush()
         return self
 
     def set_cursor(self, cursor, _internal_call=False):
@@ -823,14 +858,13 @@ class Window(tkCanvas):
             self.cursor = cursor.lower()
 
         self.config(cursor=CURSORS[cursor])
-        if self.autoflush:
-            self.__autoflush()
+        self.__autoflush()
         return self
 
     def set_icon(self, icon):
         if not isinstance(icon, str):
             raise GraphicsError(f"The window icon must be a string (path to .ico texture) or None, not {icon}")
-        if not osisfile(f"textures/{icon}"):
+        if not (osisfile(f"textures/{icon}") or osisfile(f"{icon}")):
             raise GraphicsError(f"The icon path you have specified ({icon}) does not exist. "
                                 f"Check for spelling and make sure this is in the correct directory.")
         if not icon.endswith(".ico"):
@@ -839,8 +873,7 @@ class Window(tkCanvas):
 
         self.__check_open()
         self.master.iconbitmap(icon)
-        if self.autoflush:
-            self.__autoflush()
+        self.__autoflush()
         return self
 
     def set_title(self, title):
@@ -850,8 +883,7 @@ class Window(tkCanvas):
         self.title = title
         self.__check_open()
         self.master.title(title)
-        if self.autoflush:
-            self.__autoflush()
+        self.__autoflush()
         return self
     
     def set_draggable(self, draggable=True):
@@ -866,7 +898,7 @@ class Window(tkCanvas):
     def set_draggable_y(self, draggable=True):
         self.is_draggable_y = draggable
         return self
-    
+
     def set_bounds(self, bounds):
         if not isinstance(bounds, GraphicsObject):
             raise GraphicsError(f"\n\nThe window's bounds must be a GraphicsObject, not {bounds}")
@@ -896,8 +928,7 @@ class Window(tkCanvas):
         self.width = width
         self.__check_open()
         self.master.config(width=self.width)
-        if self.autoflush:
-            self.__autoflush()
+        self.__autoflush()
         return self
 
     def set_height(self, height):
@@ -921,8 +952,7 @@ class Window(tkCanvas):
         self.height = height
         self.__check_open()
         self.master.config(height=height)
-        if self.autoflush:
-            self.__autoflush()
+        self.__autoflush()
         return self
 
     def set_min_height(self, min_height):
@@ -1126,8 +1156,8 @@ class Window(tkCanvas):
 
                 # Check if the window should still be gliding
                 if t - self.glide_queue[0]["Start"] >= self.glide_queue[0]["Time"]:
-                    self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x,
-                                 self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y)
+                    self.move_to(self.glide_queue[0]["Initial"][0] + self.glide_queue[0]["Dist"][0],
+                                 self.glide_queue[0]["Initial"][1] + self.glide_queue[0]["Dist"][1])
 
                     self.glide_queue.pop(0)  # Remove the object from the gliding queue
                     if len(self.glide_queue) == 0:
@@ -1137,8 +1167,8 @@ class Window(tkCanvas):
                     perX = self.glide_queue[0]["EasingX"]((t - self.glide_queue[0]['Start']) / self.glide_queue[0]['Time'])
                     perY = self.glide_queue[0]["EasingY"]((t - self.glide_queue[0]['Start']) / self.glide_queue[0]['Time'])
 
-                    self.move_to(self.glide_queue[0]["Initial"].x + self.glide_queue[0]["Dist"].x * perX,
-                                 self.glide_queue[0]["Initial"].y + self.glide_queue[0]["Dist"].y * perY)
+                    self.move_to(self.glide_queue[0]["Initial"][0] + self.glide_queue[0]["Dist"][0] * perX,
+                                 self.glide_queue[0]["Initial"][1] + self.glide_queue[0]["Dist"][1] * perY)
 
                     self.glide_queue[0]["Update"] = timetime()
 

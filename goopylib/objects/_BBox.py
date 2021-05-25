@@ -95,6 +95,30 @@ class BBox(GraphicsObject):
     def get_p2(self):
         return self.p2.copy()
 
+    def get_top_right(self):
+        return self.p1.copy()
+
+    def get_top_left(self):
+        return [self.p2[0], self.p1[1]]
+
+    def get_bottom_left(self):
+        return [self.p1[0], self.p2[1]]
+
+    def get_bottom_right(self):
+        return self.p2.copy()
+
+    def get_top(self):
+        return [(self.p2[0] + self.p1[0]) / 2, self.p1[1]]
+
+    def get_bottom(self):
+        return [(self.p2[0] + self.p1[0]) / 2, self.p2[1]]
+
+    def get_left(self):
+        return [self.p1[0], (self.p1[1] + self.p2[1]) / 2]
+
+    def get_right(self):
+        return [self.p2[0], (self.p1[1] + self.p2[1]) / 2]
+
     def get_width(self):
         return self.width
 

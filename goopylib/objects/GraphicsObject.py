@@ -1,7 +1,7 @@
 from goopylib.styles import *
 from goopylib.constants import *
 
-from goopylib.math.py_easing import *
+from goopylib.math.easing import *
 from math import cos, sin, atan2, degrees
 
 
@@ -1962,56 +1962,56 @@ class GraphicsObject:
 
     def gliding_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["glide"][-1]["Initial"] + self.animation_queues["glide"][-1][
+            return (self.animation_queues["glide"][-1]["Start"] + self.animation_queues["glide"][-1][
                 "Time"]) - timetime()
         else:
             return 0
 
     def rotating_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["rotate"][-1]["Initial"] + self.animation_queues["rotate"][-1][
+            return (self.animation_queues["rotate"][-1]["Start"] + self.animation_queues["rotate"][-1][
                 "Time"]) - timetime()
         else:
             return 0
 
     def animating_fill_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["fill"][-1]["Initial"] + self.animation_queues["fill"][-1][
+            return (self.animation_queues["fill"][-1]["Start"] + self.animation_queues["fill"][-1][
                 "Time"]) - timetime()
         else:
             return 0
 
     def animating_outline_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["outline"][-1]["Initial"] + self.animation_queues["outline"][-1][
+            return (self.animation_queues["outline"][-1]["Start"] + self.animation_queues["outline"][-1][
                 "Time"]) - timetime()
         else:
             return 0
 
     def animating_outline_width_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["width"][-1]["Initial"] + self.animation_queues["width"][-1][
+            return (self.animation_queues["width"][-1]["Start"] + self.animation_queues["width"][-1][
                 "Time"]) - timetime()
         else:
             return 0
 
     def skewing_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["skew"][-1]["Initial"] + self.animation_queues["skew"][-1][
+            return (self.animation_queues["skew"][-1]["Start"] + self.animation_queues["skew"][-1][
                 "Time"]) - timetime()
         else:
             return 0
 
     def animating_contrast_time_left(self):
         if self.is_gliding:
-            return (self.animation_queues["contrast"][-1]["Initial"] + self.animation_queues["contrast"][-1][
+            return (self.animation_queues["contrast"][-1]["Start"] + self.animation_queues["contrast"][-1][
                 "Time"]) - timetime()
         else:
             return 0
 
     def animating_blur_time_left(self):
         if self.is_animating_blur:
-            return (self.animation_queues["blur"][-1]["Initial"] + self.animation_queues["blur"][-1][
+            return (self.animation_queues["blur"][-1]["Start"] + self.animation_queues["blur"][-1][
                 "Time"]) - timetime()
         else:
             return 0
@@ -2292,10 +2292,11 @@ class GraphicsObject:
 
                 obj.set_selected(False)
 
-        for obj in GraphicsObject.button_instances:
-            if obj.graphwin == graphwin and obj.graphic == obj.clicked_graphic and obj.drawn:
+        for obj in GraphicsObject.button_instances: 
+            if obj.graphwin == graphwin and obj.current_graphic == "clicked" and obj.drawn:
                 if not obj.is_disabled():
                     obj.graphic = obj.normal_graphic
+                    obj.current_graphic = "normal"
                     obj._update_layer()
 
         for obj in GraphicsObject.cyclebutton_instances:
@@ -2333,6 +2334,7 @@ class GraphicsObject:
             if obj.graphwin == graphwin and obj.drawn:
                 if obj.is_clicked(mouse_pos):
                     obj.graphic = obj.clicked_graphic
+                    obj.current_graphic = "clicked"
                     obj._update_layer()
 
         for obj in GraphicsObject.resizing_objects:
@@ -2367,16 +2369,19 @@ class GraphicsObject:
                 if obj.graphwin == graphwin and obj.drawn:
                     if obj.is_clicked(mouse_pos):
                         if graphwin.left_mouse_down:
-                            if obj.graphic != obj.clicked_graphic:
+                            if obj.current_graphic != "clicked":
                                 obj.graphic = obj.clicked_graphic
+                                obj.current_graphic = "clicked"
                                 obj._update_layer()
                         else:
-                            if obj.graphic != obj.hover_graphic:
+                            if obj.current_graphic != "hover":
                                 obj.graphic = obj.hover_graphic
+                                obj.current_graphic = "hover"
                                 obj._update_layer()
 
-                    elif obj.graphic != obj.normal_graphic and not obj.is_disabled():
+                    elif obj.current_graphic != "normal" and not obj.is_disabled():
                         obj.graphic = obj.normal_graphic
+                        obj.current_graphic = "normal"
                         obj._update_layer()
 
             for obj in GraphicsObject.slider_instances:

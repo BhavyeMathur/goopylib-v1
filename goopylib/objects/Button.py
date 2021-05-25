@@ -32,6 +32,8 @@ class Button(GraphicsObject):
         self.anchor = self.graphic.anchor
         self.drawn_graphic = self.graphic
 
+        self.current_graphic = "normal"
+
         self.label = label
         self.is_object_disabled = disable
 
@@ -120,12 +122,16 @@ class Button(GraphicsObject):
         self.undraw()
         if graphic == "Normal":
             self.graphic = self.normal_graphic
+            self.current_graphic = "normal"
         elif graphic == "Hover":
             self.graphic = self.hover_graphic
+            self.current_graphic = "hover"
         elif graphic == "Clicked":
             self.graphic = self.clicked_graphic
+            self.current_graphic = "clicked"
         elif graphic == "Disabled":
             self.graphic = self.disabled_graphic
+            self.current_graphic = "disabled"
 
         return self.draw(self.graphwin)
 
@@ -143,6 +149,7 @@ class Button(GraphicsObject):
 
         self.undraw()
         self.graphic = self.disabled_graphic
+        self.current_graphic = "disabled"
         return self.draw(self.graphwin)
 
     def enable(self):
@@ -150,6 +157,7 @@ class Button(GraphicsObject):
 
         self.undraw()
         self.graphic = self.normal_graphic
+        self.current_graphic = "normal"
         return self.draw(self.graphwin)
 
     def is_enabled(self):

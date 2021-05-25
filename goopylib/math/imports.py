@@ -7,7 +7,7 @@ except ImportError as e:
 
 from goopylib.math.b_spline import *
 
-from goopylib.math.py_easing import *
+from goopylib.math.easing import *
 
 from goopylib.math.triangulation import *
 

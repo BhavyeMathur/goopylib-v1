@@ -54,7 +54,7 @@ CURSORS = {"x": "x_cursor", "arrow": "arrow", "based-down-arrow": "based_arrow_d
 CURSORS_WINDOWS = {"cancel": "no"}
 CURSORS_MACOSX = {}
 
-RELIEF = {"flat", "sunken", "raised", "groove", "ridge"}
+BORDER_RELIEFS = {"flat", "sunken", "raised", "groove", "ridge"}
 ARROWS = {"both", "none", "first", "last"}
 
 CAPSTYLES = {"round", "butt", "projecting"}

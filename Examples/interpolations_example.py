@@ -19,11 +19,11 @@ for t in range(int(1 / resolution) + 1):
     cubic_interpolated_points.append(cubic_curve(t, control_points))
     hermite_interpolated_points.append(hermite_curve(t, control_points, 0.5, 1))
 
-#Line(*control_points).draw()
-#CurvedLine(*control_points).draw()  # B-spline curve
-#CurvedLine(*cosine_interpolated_points, outline=BLUE).draw()
+Line(*control_points).draw()
+CurvedLine(*control_points).draw()  # B-spline curve
+CurvedLine(*cosine_interpolated_points, outline=BLUE).draw()
 CurvedLine(*cubic_interpolated_points, outline=GREEN).draw()
 CurvedLine(*hermite_interpolated_points, outline=PURPLE).draw()
 
-while True:
+while window.is_open():
     window.update()

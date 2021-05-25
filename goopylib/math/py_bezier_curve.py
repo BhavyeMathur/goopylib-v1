@@ -2,6 +2,7 @@ import math
 
 # References for this: https://www.youtube.com/watch?v=qhQrRCJ-mVg
 
+
 def py_bezier_curve(t, control_points):
     size = len(control_points)
     if size > 5:

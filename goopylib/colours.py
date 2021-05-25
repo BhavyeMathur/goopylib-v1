@@ -4273,7 +4273,7 @@ def hex_to_rgb(hexstring):
     else:
         raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
 
-    return (int(hexstring[i:i + 2], 16) for i in (1, 3, 5))
+    return (int(hexstring[1:3], 16), int(hexstring[3:5], 16), int(hexstring[5:7], 16))
 
 
 def hex_to_cmyk(hexstring):
@@ -4305,7 +4305,7 @@ def hex_to_hsl(hexstring):
     else:
         raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
 
-    return _hex_to_cmyk(hexstring)
+    return _hex_to_hsl(hexstring)
 
 
 def hex_to_hsv(hexstring):
@@ -4321,7 +4321,7 @@ def hex_to_hsv(hexstring):
     else:
         raise GraphicsError(f"\n\nGraphicsError: Hex value must be a string in format: #rrggbb, not {hexstring}")
 
-    return _hex_to_cmyk(hexstring)
+    return _hex_to_hsv(hexstring)
 
 
 # CMYK to other format
@@ -4745,7 +4745,7 @@ def _rgb_to_hsv(red, green, blue):
 # Hex to other format
 
 def _hex_to_rgb(hexstring):
-    return (int(hexstring[i:i + 2], 16) for i in (1, 3, 5))
+    return (int(hexstring[1:3], 16), int(hexstring[3:5], 16), int(hexstring[5:7], 16))
 
 
 def _hex_to_cmyk(hexstring):
@@ -4823,21 +4823,21 @@ def _hex_to_hsv(hexstring):
 # CMYK to other format
 
 def _cmyk_to_rgb(cyan, magenta, yellow, key):
-    return round(255 * (1 - (cyan + key) / 100)), \
-           round(255 * (1 - (magenta + key) / 100)), \
-           round(255 * (1 - (yellow + key) / 100))
+    return round(0.0255 * (100 - cyan) * (100 - key)), \
+           round(0.0255 * (100 - magenta) * (100 - key)), \
+           round(0.0255 * (100 - yellow) * (100 - key))
 
 
 def _cmyk_to_hex(cyan, magenta, yellow, key):
-    return "#%02x%02x%02x" % (round(255 * (1 - (cyan + key) / 100)),
-                              round(255 * (1 - (magenta + key) / 100)),
-                              round(255 * (1 - (yellow + key) / 100)))
+    return "#%02x%02x%02x" % (round(.0255 * (100 - cyan) * (100 - key)),
+                              round(.0255 * (100 - magenta) * (100 - key)),
+                              round(.0255 * (100 - yellow) * (100 - key)))
 
 
 def _cmyk_to_hsl(cyan, magenta, yellow, key):
-    red = 1 - (cyan + key) / 100
-    green = 1 - (magenta + key) / 100
-    blue = 1 - (yellow + key) / 100
+    red = .0001 * (100 - cyan) * (100 - key)
+    green = .0001 * (100 - magenta) * (100 - key)
+    blue = .0001 * (100 - yellow) * (100 - key)
 
     cmax = max(red, green, blue)
     cmin = min(red, green, blue)
@@ -4863,9 +4863,9 @@ def _cmyk_to_hsl(cyan, magenta, yellow, key):
 
 
 def _cmyk_to_hsv(cyan, magenta, yellow, key):
-    red = 1 - (cyan + key) / 100
-    green = 1 - (magenta + key) / 100
-    blue = 1 - (yellow + key) / 100
+    red = .0001 * (100 - cyan) * (100 - key)
+    green = .0001 * (100 - magenta) * (100 - key)
+    blue = .0001 * (100 - yellow) * (100 - key)
 
     cmax = max(red, green, blue)
     cmin = min(red, green, blue)
@@ -5227,7 +5227,7 @@ ABSOLUTE_BLUE = ColourRGB(0, 0, 255)
 DARKEST_TURQUOISE = ColourRGB(0, 56, 41)
 DARKER_TURQUOISE = ColourRGB(0, 106, 78)
 DARK_TURQUOISE = ColourRGB(46, 133, 110)
-DARKISH_TURQUOISE = ColourRGB(68, 51, 153)
+DARKISH_TURQUOISE = ColourRGB(69, 146, 126)
 TURQUOISE = ColourRGB(92, 160, 142)
 LIGHTISH_TURQUOISE = ColourRGB(115, 173, 158)
 LIGHT_TURQUOISE = ColourRGB(138, 186, 174)

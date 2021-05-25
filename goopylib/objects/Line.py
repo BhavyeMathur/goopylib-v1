@@ -4,6 +4,7 @@ from goopylib.styles import *
 from goopylib.constants import ARROWS, CAPSTYLES, JOINSTYLES, DASHES
 
 from math import sin, cos, radians, atan
+from copy import deepcopy
 
 # The Line class is used for drawing straight lines segments between 2 or more points
 class Line(GraphicsObject):
@@ -11,11 +12,12 @@ class Line(GraphicsObject):
     def __init__(self, *p, style=None, outline=None, outline_width=None, arrow=None, capstyle=None, joinstyle=None,
                  cursor="arrow", arrow_shape=None, arrow_scale=None, dash=None, bounds_width=None, layer=0, tag=None):
 
-        self.points = list(p)  # The list of points that define the line segment
-        for p in self.points:
-            if not isinstance(p, list):  # Checking if all the points specified are indeed list objects
+        for point in p:
+            if not isinstance(point, list):  # Checking if all the points specified are indeed list objects
                 raise GraphicsError("\n\nGraphicsError: Points for Line class must be lists in the form [x, y], "
                                     f"not {p}")
+
+        self.points = deepcopy(list(p))
 
         if len(p) < 2:  # Making sure there are at least 2 points
             raise GraphicsError(f"\n\nGraphicsError: There must be at least two points to create the line")
@@ -96,15 +98,15 @@ class Line(GraphicsObject):
             if dash in DASHES:
                 self.dash = DASHES[dash]
 
-            elif isinstance(dash, list):
+            elif isinstance(dash, tuple):
                 for num in dash:
-                    if 0 < num < 266 and isinstance(num, int):
+                    if 0 < num < 256 and isinstance(num, int):
                         continue
                     else:
                         raise GraphicsError(f"\n\nGraphicsError: custom dash numbers must be integers within 1 & 255")
                 self.dash = dash
             else:
-                raise GraphicsError(f"\n\nLine dash must be a tuple or a string referencing a dash "
+                raise GraphicsError(f"\n\nGraphicsError: Line dash must be a tuple or a string referencing a dash "
                                     f"(one of {DASHES.keys()}), not {dash}")
 
         self.bounds_width = None
