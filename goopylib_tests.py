@@ -14,11 +14,12 @@ def countlines(start, lines=0, _header=True, _begin_start=None):
         file = os.path.join(start, file)
         if os.path.isfile(file):
             if any(file.endswith(end) for end in (".py", ".c", ".h", ".cfg", ".toml", ".in")):
-                with open(file, 'r') as f:
-                    newlines = len(f.readlines())
-                    lines += newlines
+                if not any(folder in file for folder in ("build", "Examples")):
+                    with open(file, 'r') as f:
+                        newlines = len(f.readlines())
+                        lines += newlines
 
-                    print('{:>10} |{:>10} | {}'.format(newlines, lines, file))
+                        print('{:>10} |{:>10} | {}'.format(newlines, lines, file))
 
     for file in os.listdir(start):
         file = os.path.join(start, file)
@@ -741,7 +742,7 @@ while True:
     print()
 """
 
-test_all_functions()
-test_all_examples()
+# test_all_functions()
+# test_all_examples()
 
-# countlines(".")
+countlines(".")

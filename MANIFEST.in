@@ -1,1 +1,4 @@
-graft goopylib*
+graft goopylib
+global-include *.pyd
+global-include *.so
+recursive-include goopylib *.pyd

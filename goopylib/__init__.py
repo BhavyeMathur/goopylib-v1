@@ -8,7 +8,7 @@ import goopylib.colors
 from goopylib.Window import Window
 
 __all__ = ['Window', 'util', 'styles', 'constants', 'colours']
-__version__ = "1.1.318a25"
+__version__ = "1.1.319a25"
 
 from platform import system as platform_system
 if platform_system() == "Windows":

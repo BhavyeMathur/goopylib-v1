@@ -177,6 +177,10 @@ https://stackoverflow.com/questions/63978464/error-when-compiling-cpython-cannot
 There are probably still a lot of bugs in the release version, but I moved onto Version 1.1 because I started working 
 on converting goopylib code to Cython & C and also building a Sound Engine for goopylib 1.2
 
+#### 1.1.319-alpha25 27th May 2021 - 24,385 lines of code
+
+* Fixed bug with goopylib installing incorrectly using pip
+
 #### 1.1.318-alpha25 5th May - 25th May 2021 - 25,061 lines of code
 
 * Fixed bug with the `Rectangle` class's `copy()` function not creating a copy of the position lists and just creating a 

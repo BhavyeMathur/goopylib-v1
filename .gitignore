@@ -1,6 +1,5 @@
 .idea/
 .vs/
-dist/
 build/
 **/goopylib.egg-info/
 *.log

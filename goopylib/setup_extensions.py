@@ -9,33 +9,8 @@ Install MinGW C Compiler for Windows
 
 Tested on Python 3.7.9 (Windows) and Python 3.8.6 (MacOSX)
 
-pip install twine
 pip install --upgrade setuptools
-
 pip install build
-
-CREATING RELEASES-------------------------------------------------------------------------------------------------------
-    - Update README.md version number
-    - Update setup.cfg version number
-    - Update goopylib/__init__.py __version__ variable
-    - Run setup_extensions.py and build goopylib .pyd C extensions
-    - Test all Example python files, run goopylib_tests.py and test functions on Windows
-    - Run goopylib_tests.py countlines() function and update README.md with line count
-    - Push to GitHub, pull from MacOS computer
-    - Run setup_extensions.py and build goopylib .so C extensions
-    - Test all Example python files, run goopylib_tests.py and test functions on MacOS
-    - Push files to GitHub
-    - Create GitHub Release
-    - Build goopylib Release
-    - Upload goopylib Release on PyPi
-    - Test goopylib installation on Windows
-    - Test goopylib installation on MacOS
-    
-    To create release: python setup_extensions.py sdist bdist_wheel
-    sdist bdist_wheel
-
-    To check release: twine check dist/*
-    To upload release: twine upload dist/*
 
 BUILDING EXTENSIONS-----------------------------------------------------------------------------------------------------
     To build Extension: python setup_extensions.py build -c mingw32
