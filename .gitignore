@@ -1,0 +1,14 @@
+# general things to ignore
+build/
+docs/_build/
+dist/
+*.egg-info/
+*.egg
+*.py[cod]
+__pycache__/
+*~
+venv/
+main.py
+main.cpp
+empty.cpp
+*.log
