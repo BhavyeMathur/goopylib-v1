@@ -5,8 +5,7 @@
 
 #include "pch.h"
 #include "util.h"
-#include "easing.h"
-#include "window.h"
+#include "goopylib/Core/Base.h"
 
 // TODO monitor getter functions
 // TODO mouse events
@@ -150,6 +149,7 @@ static PyMethodDef CoreMethods[] = {
         {nullptr, nullptr, 0, nullptr}
 };
 
+
 static struct PyModuleDef coremodule = {
         PyModuleDef_HEAD_INIT,
         .m_name = "core",
@@ -161,9 +161,6 @@ PyMODINIT_FUNC PyInit_core(void) {
     PyObject *m;
     m = PyModule_Create(&coremodule);
     if (m == nullptr) { return nullptr; }
-
-    if (PyInit_easing(m)) { return nullptr; }
-    if (PyInit_window(m)) { return nullptr; }
 
     return m;
 }

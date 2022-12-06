@@ -6,6 +6,10 @@
 namespace gp {
     struct WindowConfig;
 
+    struct AspectRatio;
+    struct WindowFrame;
+    struct ContentScale;
+
     std::vector<BaseWindow *> BaseWindow::s_Instances;
 
     BaseWindow::BaseWindow(const WindowConfig &config) {
@@ -13,6 +17,13 @@ namespace gp {
         m_Data.width = config.width;
         m_Data.height = config.height;
         m_Data.title = config.title;
+
+        m_WindowedWidth = m_Data.width;
+        m_WindowedHeight = m_Data.height;
+        m_WindowedXPos = m_Data.xPos;
+        m_WindowedYPos = m_Data.yPos;
+
+        m_KeyModifiers = 0;
 
         m_Projection = glm::scale(glm::mat4(1),
                                   glm::vec3(2.0f / (float) config.width, 2.0f / (float) config.height, 1));
@@ -208,6 +219,17 @@ namespace gp {
 
         _updatePosition();
     }
+
+    void BaseWindow::setAspectRatio(int numerator, int denominator) {
+        int g = gcd(numerator, denominator);
+        _updateAspectRatio(numerator / g, denominator / g);
+
+    }
+
+    AspectRatio BaseWindow::getAspectRatio() const {
+        unsigned int g = gcd(m_Data.width, m_Data.height);
+        return AspectRatio{m_Data.width / g, m_Data.height / g};
+    }
 }
 
 // BaseWindow state methods
@@ -218,6 +240,66 @@ namespace gp {
 
     bool BaseWindow::isClosed() const {
         return _isClosed() or m_isDestroyed;
+    }
+
+    void BaseWindow::restore() {
+        if (isFullscreen()) {
+            _unfullscreen(m_WindowedWidth, m_WindowedHeight,m_WindowedXPos, m_WindowedYPos);
+        }
+        else {
+            _restore();
+        }
+    }
+
+    void BaseWindow::fullscreen() {
+        m_WindowedWidth = m_Data.width;
+        m_WindowedHeight = m_Data.height;
+        m_WindowedXPos = m_Data.xPos;
+        m_WindowedYPos = m_Data.yPos;
+
+        _fullscreen();
+    }
+
+    void BaseWindow::maximize() {
+        _maximize();
+    }
+
+    void BaseWindow::minimize() {
+        _minimize();
+    }
+
+    void BaseWindow::show() {
+        _show();
+    }
+
+    void BaseWindow::hide() {
+        _hide();
+    }
+
+    void BaseWindow::focus() {
+        _focus();
+    }
+}
+
+// BaseWindow events
+namespace gp {
+    void BaseWindow::onKeyPress(int key, int UNUSED(scancode), int action, int mods) {
+        m_KeyModifiers = mods;
+        if (m_KeyCallbacks.find(key) != m_KeyCallbacks.end()) {
+            m_KeyCallbacks[key]((Window *) this, action);
+        }
+    }
+
+    void BaseWindow::setKeyCallback(int key, std::function<void(Window *window, int action)> callback) {
+        GP_WINDOW_TRACE("Set '{0}' key ({1}) callback", m_Data.title, key);
+
+        if (callback) {
+            m_KeyCallbacks[key] = std::move(callback);
+        }
+        else if (m_KeyCallbacks.find(key) != m_KeyCallbacks.end()) {
+            m_KeyCallbacks.erase(key);
+        }
+        // _setKeyCallback(); // Not required as it is already set in super()
     }
 }
 
@@ -240,7 +322,7 @@ namespace gp {
         GP_WINDOW_TRACE("Set '{0}' resize callback", m_Data.title);
 
         m_ResizeCallback = std::move(callback);
-        _setResizeCallback();
+        // _setResizeCallback(); // Not required as it is already set in super()
     }
 
     // Close
@@ -273,14 +355,16 @@ namespace gp {
         m_Data.xPos = xPos;
         m_Data.yPos = yPos;
 
-        m_PositionCallback((Window *) this, xPos, yPos);
+        if (m_PositionCallback) {
+            m_PositionCallback((Window *) this, xPos, yPos);
+        }
     }
 
     void BaseWindow::setPositionCallback(std::function<void(Window *window, int xPos, int yPos)> callback) {
         GP_WINDOW_TRACE("Set '{0}' position callback", m_Data.title);
 
         m_PositionCallback = std::move(callback);
-        _setPositionCallback();
+        // _setPositionCallback(); // Not required as it is already set in super()
     }
 
     // Minimize

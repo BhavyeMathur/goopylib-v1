@@ -29,7 +29,9 @@
 #include <GLFW/glfw3.h>
 #endif
 
-#include "goopylib/Core/Log.h"
+#include "goopylib/Debug/Log.h"
 
 #define MAX_WIDTH 65535
 #define MAX_HEIGHT 65535
+
+#define UNUSED(parameter) __attribute__((unused)) parameter

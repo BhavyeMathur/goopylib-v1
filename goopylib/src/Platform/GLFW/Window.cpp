@@ -73,24 +73,50 @@ namespace gp {
         GP_WINDOW_TRACE("Set '{0}' focused on show -> {1}", m_Data.title, value);
         glfwSetWindowAttrib(m_Window, GLFW_FOCUS_ON_SHOW, value ? GLFW_TRUE : GLFW_FALSE);
     }
+
+    WindowFrame Window::getFrameSize() const {
+        WindowFrame value{};
+        glfwGetWindowFrameSize(m_Window, &value.left, &value.top, &value.right, &value.bottom);
+        return value;
+    }
+
+    ContentScale Window::getContentScale() const {
+        ContentScale value{};
+        glfwGetWindowContentScale(m_Window, &value.xScale, &value.yScale);
+        return value;
+    }
+
+    FramebufferSize Window::getFramebufferSize() const {
+        FramebufferSize value{};
+        glfwGetFramebufferSize(m_Window, &value.width, &value.height);
+        return value;
+    }
 }
 
 // Window state methods
 namespace gp {
     bool Window::isFullscreen() const {
-        return glfwGetWindowMonitor(m_Window);
+        return (bool) glfwGetWindowMonitor(m_Window);
     }
 
     bool Window::isMaximized() const {
-        return glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED);
+        return (bool) glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED);
     }
 
     bool Window::isMinimized() const {
-        return glfwGetWindowAttrib(m_Window, GLFW_ICONIFIED);
+        return (bool) glfwGetWindowAttrib(m_Window, GLFW_ICONIFIED);
     }
 
     bool Window::isVisible() const {
-        return glfwGetWindowAttrib(m_Window, GLFW_VISIBLE);
+        return (bool) glfwGetWindowAttrib(m_Window, GLFW_VISIBLE);
+    }
+
+    bool Window::hasFocus() const {
+        return (bool) glfwGetWindowAttrib(m_Window, GLFW_FOCUSED);
+    }
+
+    void Window::requestAttention() const {
+        glfwRequestWindowAttention(m_Window);
     }
 }
 
@@ -158,6 +184,41 @@ namespace gp {
             windowObject->onFramebufferSize(width, height);
         });
     }
+
+    void Window::_setKeyCallback() const {
+        glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
+            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            windowObject->onKeyPress(key, scancode, action, mods);
+        });
+    }
+}
+
+// Window input events
+
+namespace gp {
+    bool Window::isMouseHovering() const {
+        return (bool) glfwGetWindowAttrib(m_Window, GLFW_HOVERED);
+    }
+
+    bool Window::checkShiftKey() const {
+        return m_KeyModifiers & (1 << 0);
+    }
+
+    bool Window::checkControlKey() const {
+        return m_KeyModifiers & (1 << 1);
+    }
+
+    bool Window::checkAltKey() const {
+        return m_KeyModifiers & (1 << 2);
+    }
+
+    bool Window::checkSuperKey() const {
+        return m_KeyModifiers & (1 << 3);
+    }
+
+    int Window::checkKey(int key) const {
+        return glfwGetKey(m_Window, key);
+    }
 }
 
 // Window private methods
@@ -177,6 +238,42 @@ namespace gp {
         glfwDestroyWindow(m_Window);
     }
 
+    void Window::_fullscreen() const {
+        if (!isFullscreen()) {
+            GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+            const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+            glfwSetWindowMonitor(m_Window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+        }
+    }
+
+    void Window::_unfullscreen(unsigned int width, unsigned int height, int xPos, int yPos) const {
+        glfwSetWindowMonitor(m_Window, nullptr, xPos, yPos, (int) width, (int) height, 0);
+    }
+
+    void Window::_restore() const {
+        glfwRestoreWindow(m_Window);
+    }
+
+    void Window::_maximize() const {
+        glfwMaximizeWindow(m_Window);
+    }
+
+    void Window::_minimize() const {
+        glfwIconifyWindow(m_Window);
+    }
+
+    void Window::_show() const {
+        glfwShowWindow(m_Window);
+    }
+
+    void Window::_hide() const {
+        glfwHideWindow(m_Window);
+    }
+
+    void Window::_focus() const {
+        glfwFocusWindow(m_Window);
+    }
+
     void Window::_updateSize() const {
         glfwSetWindowSize(m_Window, (int) m_Data.width, (int) m_Data.height);
     }
@@ -192,6 +289,10 @@ namespace gp {
     void Window::_updateSizeLimits() const {
         glfwSetWindowSizeLimits(m_Window, (int) m_Data.minWidth, (int) m_Data.minHeight,
                                 (int) m_Data.maxWidth, (int) m_Data.maxHeight);
+    }
+
+    void Window::_updateAspectRatio(int numerator, int denominator) const {
+        glfwSetWindowAspectRatio(m_Window, numerator, denominator);
     }
 }
 

@@ -43,6 +43,28 @@ namespace gp {
         }
     };
 
+    struct AspectRatio {
+        unsigned int numerator;
+        unsigned int denominator;
+    };
+
+    struct WindowFrame {
+        int left;
+        int top;
+        int right;
+        int bottom;
+    };
+
+    struct ContentScale {
+        float xScale;
+        float yScale;
+    };
+
+    struct FramebufferSize {
+        int width;
+        int height;
+    };
+
     class BaseWindow {
     public:
         explicit BaseWindow(const WindowConfig &config);
@@ -58,6 +80,7 @@ namespace gp {
         void destroy();
 
         // Getters & Setters
+
         unsigned int getWidth() const;
 
         void setWidth(unsigned int value);
@@ -107,7 +130,18 @@ namespace gp {
 
         void setPosition(int xPos, int yPos);
 
+        void setAspectRatio(int numerator, int denominator);
+
+        AspectRatio getAspectRatio() const;
+
+        virtual WindowFrame getFrameSize() const = 0;
+
+        virtual ContentScale getContentScale() const = 0;
+
+        virtual FramebufferSize getFramebufferSize() const = 0;
+
         // Attributes
+
         virtual bool isResizable() const = 0;
 
         virtual void setResizable(bool value) = 0;
@@ -129,13 +163,48 @@ namespace gp {
         virtual void setFocusedOnShow(bool value) = 0;
 
         // State Methods
+
+        void restore();
+
+        void fullscreen();
+
         virtual bool isFullscreen() const = 0;
+
+        void maximize();
 
         virtual bool isMaximized() const = 0;
 
+        void minimize();
+
         virtual bool isMinimized() const = 0;
 
+        void show();
+
+        void hide();
+
         virtual bool isVisible() const = 0;
+
+        void focus();
+
+        virtual bool hasFocus() const = 0;
+
+        virtual void requestAttention() const = 0;
+
+        // Input Events
+
+        virtual bool isMouseHovering() const = 0;
+
+        virtual bool checkShiftKey() const = 0;
+
+        virtual bool checkControlKey() const = 0;
+
+        virtual bool checkAltKey() const = 0;
+
+        virtual bool checkSuperKey() const = 0;
+
+        virtual int checkKey(int key) const = 0;
+
+        void setKeyCallback(int key, std::function<void(Window *window, int action)> callback);
 
         // Callback Functions
 
@@ -160,6 +229,7 @@ namespace gp {
         void setFramebufferSizeCallback(std::function<void(Window *window, int width, int height)> callback);
 
         // Static Methods
+
         static void updateAll();
 
         static void destroyAll();
@@ -169,11 +239,15 @@ namespace gp {
         glm::mat4 m_Projection{};
 
         bool m_isDestroyed;
+        int m_KeyModifiers;  // check if shift, control, alt, and super keys are pressed
 
         void super() {
             _updatePosition();
             _updateSizeLimits();
+
             _setResizeCallback();
+            _setPositionCallback();
+            _setKeyCallback();
         }
 
         // Callback Functions
@@ -197,10 +271,18 @@ namespace gp {
 
         void onFramebufferSize(int width, int height);
 
+        void onKeyPress(int key, int scancode, int action, int mods);
+
     private:
         static std::vector<BaseWindow *> s_Instances;
 
+        unsigned int m_WindowedWidth;
+        unsigned int m_WindowedHeight;
+        int m_WindowedXPos;
+        int m_WindowedYPos;
+
         // Callback Functions
+
         std::function<void(Window *window, int width, int height)> m_ResizeCallback;
         std::function<void(Window *window)> m_CloseCallback;
         std::function<void(Window *window)> m_DestroyCallback;
@@ -211,6 +293,9 @@ namespace gp {
         std::function<void(Window *window)> m_RefreshCallback;
         std::function<void(Window *window, float xScale, float yScale)> m_ContentScaleCallback;
         std::function<void(Window *window, int width, int height)> m_FramebufferSizeCallback;
+
+        // TODO test with std::vector instead of unordered map
+        std::unordered_map<int, std::function<void(Window *window, int action)>> m_KeyCallbacks;
 
         virtual bool _isClosed() const = 0;
 
@@ -225,6 +310,26 @@ namespace gp {
         virtual void _updateTitle() const = 0;
 
         virtual void _updateSizeLimits() const = 0;
+
+        virtual void _updateAspectRatio(int numerator, int denominator) const = 0;
+
+        // Window State Methods
+
+        virtual void _fullscreen() const = 0;
+
+        virtual void _unfullscreen(unsigned int width, unsigned int height, int xPos, int yPos) const = 0;
+
+        virtual void _maximize() const = 0;
+
+        virtual void _minimize() const = 0;
+
+        virtual void _restore() const = 0;
+
+        virtual void _hide() const = 0;
+
+        virtual void _show() const = 0;
+
+        virtual void _focus() const = 0;
 
         // Callback Functions
 
@@ -245,5 +350,7 @@ namespace gp {
         virtual void _setContentScaleCallback() const = 0;
 
         virtual void _setFramebufferSizeCallback() const = 0;
+
+        virtual void _setKeyCallback() const = 0;
     };
 }

@@ -31,7 +31,30 @@ namespace gp {
 
         void setFocusedOnShow(bool value) override;
 
+        // Window Get & Set Methods
+
+        WindowFrame getFrameSize() const override;
+
+        ContentScale getContentScale() const override;
+
+        FramebufferSize getFramebufferSize() const override;
+        
+        // Window Input Events
+
+        bool isMouseHovering() const override;
+
+        bool checkShiftKey() const override;
+
+        bool checkControlKey() const override;
+
+        bool checkAltKey() const override;
+
+        bool checkSuperKey() const override;
+
+        int checkKey(int key) const override;
+
         // Window States
+        
         bool isFullscreen() const override;
 
         bool isMaximized() const override;
@@ -39,6 +62,10 @@ namespace gp {
         bool isMinimized() const override;
 
         bool isVisible() const override;
+
+        bool hasFocus() const override;
+
+        void requestAttention() const override;
 
     private:
         #if GP_USING_GLFW
@@ -59,6 +86,26 @@ namespace gp {
 
         void _updateSizeLimits() const override;
 
+        void _updateAspectRatio(int numerator, int denominator) const override;
+
+        // Window State Methods
+
+        void _fullscreen() const override;
+
+        void _unfullscreen(unsigned int width, unsigned int height, int xPos, int yPos) const override;
+
+        void _maximize() const override;
+
+        void _minimize() const override;
+
+        void _restore() const override;
+
+        void _hide() const override;
+
+        void _show() const override;
+
+        void _focus() const override;
+
         // Callback Functions
 
         void _setResizeCallback() const override;
@@ -78,5 +125,7 @@ namespace gp {
         void _setContentScaleCallback() const override;
 
         void _setFramebufferSizeCallback() const override;
+
+        void _setKeyCallback() const override;
     };
 }

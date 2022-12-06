@@ -658,8 +658,7 @@ class Window:
         raise NotImplementedError()
 
     # Framebuffer Size
-    @property
-    def framebuffer_size(self) -> tuple[int, int]:
+    def get_framebuffer_size(self) -> tuple[int, int]:
         """The size of the framebuffer for the Window.
 
         Returns:
@@ -681,10 +680,6 @@ class Window:
                 >>> window.framebuffer_size
                 (1000, 1000)
         """
-        raise NotImplementedError()
-
-    @framebuffer_size.setter
-    def framebuffer_size(self, framebuffer_size: tuple[int, int]) -> NoReturn:
         raise NotImplementedError()
 
     # Background Color

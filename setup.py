@@ -12,14 +12,24 @@ def build_release():
 
 
 def build_c_extensions():
-    ext_kwargs = {"extra_link_args": ["-framework", "OpenGL", "-framework", "Cocoa",
-                                      "-framework", "IOKit", "-framework", "CoreVideo",
-                                      "-framework", "CoreFoundation",
-                                      f"{path}/goopylib/vendor/GLFW/libglfw.3.3.dylib"],
-                  "include_dirs": ["goopylib/src", "goopylib/vendor"],
+    opengl_kwargs = {"extra_link_args": ["-framework", "OpenGL", "-framework", "Cocoa",
+                                         "-framework", "IOKit", "-framework", "CoreVideo",
+                                         "-framework", "CoreFoundation",
+                                         f"{path}/goopylib/vendor/GLFW/libglfw.3.3.dylib"],}
+    ext_kwargs = {"include_dirs": ["goopylib/src", "goopylib/vendor"],
                   "extra_objects": ["goopylib/goopylib.a"],
                   "extra_compile_args": ["-std=c++11"]}
-    setup(ext_modules=[Extension(name="goopylib.core", sources=["goopylib/src/extension/core.cpp"], **ext_kwargs)],
+
+    setup(ext_modules=[Extension(name="goopylib.core", sources=["goopylib/src/extension/core.cpp"], **ext_kwargs,
+                                 **opengl_kwargs)], options={"build": {"build_lib": "."}})
+
+    setup(ext_modules=[Extension(name="goopylib.window", sources=["goopylib/src/extension/window.cpp"], **ext_kwargs,
+                                 **opengl_kwargs)], options={"build": {"build_lib": "."}})
+
+    setup(ext_modules=[Extension(name="goopylib.easing", sources=["goopylib/src/extension/easing.cpp"], **ext_kwargs)],
+          options={"build": {"build_lib": "."}})
+
+    setup(ext_modules=[Extension(name="goopylib.color", sources=["goopylib/src/extension/color.cpp"], **ext_kwargs)],
           options={"build": {"build_lib": "."}})
 
 
@@ -100,7 +110,7 @@ if __name__ == "__main__":
         if arg == "1":
             subprocess.run(["python3", "setup.py", "sdist", "bdist_wheel"])
         elif arg == "2":
-            subprocess.run(["python3", "setup.py", "build", "--force"])
+            subprocess.run(["python3", "setup.py", "build"])
         elif arg == "3":
             countlines(".")
         elif arg == "4":

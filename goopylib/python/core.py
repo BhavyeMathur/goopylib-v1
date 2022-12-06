@@ -13,6 +13,7 @@ def init():
     Raises:
         ImportError: if the initialization fails
     """
+    raise NotImplementedError()
 
 
 def terminate():
@@ -21,6 +22,7 @@ def terminate():
     Note:
         You can reinitialize the library using :func:`gp.init()<goopylib.init>`
     """
+    raise NotImplementedError()
 
 
 def update():
@@ -39,6 +41,7 @@ def update():
             while window.is_open():
                 gp.update()
     """
+    raise NotImplementedError()
 
 
 def update_on_event():
@@ -47,6 +50,7 @@ def update_on_event():
     Note:
         Internally calls ``glfwWaitEvents()`` in C++
     """
+    raise NotImplementedError()
 
 
 # noinspection PyUnusedLocal
@@ -59,21 +63,25 @@ def update_timeout(timeout: Union[float, int] = None):
     Note:
         Internally calls ``glfwWaitEventsTimeout()`` in C++
     """
+    raise NotImplementedError()
 
 
 def glfw_compiled_version() -> str:
     """Returns the version of GLFW that goopylib was compiled with.
     """
+    raise NotImplementedError()
 
 
 def glfw_current_version() -> str:
     """Returns the version of GLFW that is currently running.
     """
+    raise NotImplementedError()
 
 
 def opengl_version() -> str:
     """Returns the version of OpenGL being used.
     """
+    raise NotImplementedError()
 
 
 # noinspection PyUnresolvedReferences
@@ -93,6 +101,7 @@ def get_refresh_rate() -> int:
     Note:
         Internally calls ``glfwGetVideoMode(...)->refreshRate`` in C++
     """
+    raise NotImplementedError()
 
 
 # noinspection PyUnresolvedReferences
@@ -112,6 +121,7 @@ def get_screen_width() -> int:
     Note:
         Internally calls ``glfwGetVideoMode(...)->width`` in C++
     """
+    raise NotImplementedError()
 
 
 # noinspection PyUnresolvedReferences
@@ -131,6 +141,7 @@ def get_screen_height() -> int:
     Note:
         Internally calls ``glfwGetVideoMode(...)->height`` in C++
     """
+    raise NotImplementedError()
 
 
 # noinspection PyUnresolvedReferences
@@ -147,3 +158,4 @@ def number_of_monitors() -> int:
     Note:
         Internally calls ``glfwGetMonitors(&count)`` in C++
     """
+    raise NotImplementedError()

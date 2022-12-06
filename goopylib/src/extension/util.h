@@ -36,13 +36,13 @@ return val;
 
 #define EXPOSE_CLASS(ObjectType, name) \
 if (PyType_Ready(&(ObjectType)) < 0) { \
-    return -1; \
+    return nullptr; \
 } \
 Py_INCREF(&(ObjectType)); \
 if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
     Py_DECREF(&(ObjectType)); \
     Py_DECREF(m); \
-    return -1; \
+    return nullptr; \
 }
 
 #define SET_PYOBJECT_ATTRIBUTE(attribute, value) \

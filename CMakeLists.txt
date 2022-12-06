@@ -9,17 +9,20 @@ set(GOOPYLIB_PATH goopylib/src/goopylib/)
 set(PLATFORM_PATH goopylib/src/Platform/)
 set(SOURCE_FILES
         ${GOOPYLIB_PATH}/Core/Base.cpp
-        ${GOOPYLIB_PATH}/Core/Log.cpp
-        ${PLATFORM_PATH}/GLFW/Window.cpp
+        ${GOOPYLIB_PATH}/Debug/Log.cpp
         ${GOOPYLIB_PATH}/Math/Easing.cpp
+        ${GOOPYLIB_PATH}/Renderer/Color.cpp
+        ${PLATFORM_PATH}/GLFW/Window.cpp
         ${PLATFORM_PATH}/Independent/BaseWindow.cpp)
 
 set(HEADER_FILES
         ${GOOPYLIB_PATH}/Core/Base.h
-        ${GOOPYLIB_PATH}/Core/Log.h
         ${GOOPYLIB_PATH}/Core/Window.h
+        ${GOOPYLIB_PATH}/Debug/Log.h
+        ${GOOPYLIB_PATH}/Events/KeyboardCodes.h
         ${GOOPYLIB_PATH}/Math/Easing.h
         ${GOOPYLIB_PATH}/Math/gpmath.h
+        ${GOOPYLIB_PATH}/Renderer/Color.h
         ${PLATFORM_PATH}/Independent/BaseWindow.h)
 
 add_library(goopylib ${SOURCE_FILES})
