@@ -15,22 +15,22 @@ def build_c_extensions():
     opengl_kwargs = {"extra_link_args": ["-framework", "OpenGL", "-framework", "Cocoa",
                                          "-framework", "IOKit", "-framework", "CoreVideo",
                                          "-framework", "CoreFoundation",
-                                         f"{path}/goopylib/vendor/GLFW/libglfw.3.3.dylib"],}
+                                         f"{path}/goopylib/vendor/GLFW/libglfw.3.3.dylib"], }
     ext_kwargs = {"include_dirs": ["goopylib/src", "goopylib/vendor"],
                   "extra_objects": ["goopylib/goopylib.a"],
                   "extra_compile_args": ["-std=c++11"]}
 
-    setup(ext_modules=[Extension(name="goopylib.core", sources=["goopylib/src/extension/core.cpp"], **ext_kwargs,
+    setup(ext_modules=[Extension(name="goopylib.ext.core", sources=["goopylib/src/extension/core.cpp",
+                                                                    "goopylib/src/extension/window.cpp"], **ext_kwargs,
                                  **opengl_kwargs)], options={"build": {"build_lib": "."}})
 
-    setup(ext_modules=[Extension(name="goopylib.window", sources=["goopylib/src/extension/window.cpp"], **ext_kwargs,
-                                 **opengl_kwargs)], options={"build": {"build_lib": "."}})
-
-    setup(ext_modules=[Extension(name="goopylib.easing", sources=["goopylib/src/extension/easing.cpp"], **ext_kwargs)],
+    setup(ext_modules=[
+        Extension(name="goopylib.ext.easing", sources=["goopylib/src/extension/easing.cpp"], **ext_kwargs)],
           options={"build": {"build_lib": "."}})
 
-    setup(ext_modules=[Extension(name="goopylib.color", sources=["goopylib/src/extension/color.cpp"], **ext_kwargs)],
-          options={"build": {"build_lib": "."}})
+    setup(
+        ext_modules=[Extension(name="goopylib.ext.color", sources=["goopylib/src/extension/color.cpp"], **ext_kwargs)],
+        options={"build": {"build_lib": "."}})
 
 
 def build_html_documentation():
@@ -52,11 +52,11 @@ def build_html_documentation():
 
     move_extensions("goopylib")
 
-    with open("goopylib/python/easing.py", "r") as fp:
+    with open("goopylib/easing.py", "r") as fp:
         new = map(lambda line: line.replace(" -> EASING_TYPE", ""), fp.readlines())
-    os.rename("goopylib/python/easing.py", f"build/_easing.py")
+    os.rename("goopylib/easing.py", f"build/_easing.py")
 
-    with open("goopylib/python/easing.py", "w+") as fp:
+    with open("goopylib/easing.py", "w+") as fp:
         fp.writelines(new)
 
     # noinspection PyBroadException
@@ -68,7 +68,7 @@ def build_html_documentation():
     finally:
         for i in range(i):
             os.rename(f"build/{i}.so", extensions[i])
-        os.rename("build/_easing.py", f"goopylib/python/easing.py")
+        os.rename("build/_easing.py", f"goopylib/easing.py")
 
 
 def countlines(start, lines=0, _header=True, _begin_start=None):
@@ -79,8 +79,8 @@ def countlines(start, lines=0, _header=True, _begin_start=None):
     for file in os.listdir(start):
         file = os.path.join(start, file)
         if os.path.isfile(file):
-            if any(file.endswith(end) for end in (".py", ".c", ".cpp", ".h", ".cfg", ".hpp")):
-                if not any(folder in file for folder in {"vendor", "venv", "cmake-build-debug", "build", "docs"}):
+            if any(file.endswith(end) for end in (".py", ".c", ".cpp", ".h", ".hpp")):
+                if not any(folder in file for folder in {"vendor", "venv", "build", "docs"}):
                     with open(file, 'r') as f:
                         newlines = len(f.readlines())
                         lines += newlines

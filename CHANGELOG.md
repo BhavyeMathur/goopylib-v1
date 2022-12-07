@@ -2,6 +2,13 @@
 
 ## v2.0.0
 
+#### 7 December, 2022 - 13012 lines of code
+
+* Fixed bug with Window callbacks being deallocated just before being called
+* Split Python extension sources into .cpp and .h files
+* Implemented a submodule to work with colors
+* Added functions to get random colors
+
 #### 6 December, 2022 - 10798 lines of code
 
 * Added key press callbacks to the Window

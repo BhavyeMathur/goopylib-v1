@@ -70,7 +70,7 @@ namespace triangle {
                 self->scaleMatrix = glm::mat4(1.0);
 
                 self->window = (WindowObject *) Py_None;
-                self->fill = (TextureObject *) PyObject_CallObject((PyObject *) &texture::type::TextureType,
+                self->fill = (TextureObject *) PyObject_CallObject((PyObject * ) & texture::type::TextureType,
                                                                    Py_BuildValue("((iii))", 255, 255, 255));
             }
             return (PyObject *) self;
@@ -80,7 +80,7 @@ namespace triangle {
             CHECK_GLFW_CONTEXT(-1)
 
             float x1, y1, x2, y2, x3, y3;
-            if (!PyArg_ParseTuple(args, "(ff)(ff)(ff)", &x1, &y1, &x2, &y2 ,&x3, &y3)) {
+            if (!PyArg_ParseTuple(args, "(ff)(ff)(ff)", &x1, &y1, &x2, &y2, &x3, &y3)) {
                 return -1;
             }
 
@@ -164,7 +164,7 @@ namespace triangle {
 
             glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
             glEnableVertexAttribArray(0);
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) (2 * sizeof(float)));
             glEnableVertexAttribArray(1);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -177,18 +177,18 @@ namespace triangle {
             return PyUnicode_FromString("Triangle()");
         }
     }
-    
+
     namespace attributes {
         // X Position
         static int set_x(TriangleObject *self, PyObject *value, void *Py_UNUSED(closure)) {
             if (!PyNumber_Check(value)) {
                 RAISE_TYPE_ERROR(-1, "number argument expected, got %S", PyObject_Type(value))
             }
-            
+
             auto x = (float) PyFloat_AsDouble(value);
             self->translationMatrix = glm::translate(self->translationMatrix, glm::vec3(x - self->x, 0, 0));
             self->x = x;
-            
+
             return 0;
         }
 
@@ -223,7 +223,7 @@ namespace triangle {
 
             auto angle = glm::radians((float) PyFloat_AsDouble(value));
             self->rotationMatrix = glm::rotate(self->rotationMatrix,
-                                            angle - self->rotation,
+                                               angle - self->rotation,
                                                glm::vec3(0.0f, 0.0f, 1.0f));
             self->rotation = angle;
 
@@ -279,7 +279,7 @@ namespace triangle {
                 Py_DECREF(tmp);
             }
             else {
-                self->fill = (TextureObject *) PyObject_CallObject((PyObject *) &texture::type::TextureType,
+                self->fill = (TextureObject *) PyObject_CallObject((PyObject * ) & texture::type::TextureType,
                                                                    PyTuple_Pack(1, value));
             }
 
@@ -337,9 +337,9 @@ namespace triangle {
 
     namespace type {
         static PyMethodDef methods[] = {
-                {"draw", (PyCFunction) methods::draw, METH_O,
+                {"draw",  (PyCFunction) methods::draw,  METH_O,
                         "Draws the triangle to a Window"},
-                {"move", (PyCFunction) methods::move, METH_VARARGS,
+                {"move",  (PyCFunction) methods::move,  METH_VARARGS,
                         "Moves the triangle"},
                 {"scale", (PyCFunction) methods::scale, METH_VARARGS,
                         "Scales the triangle"},
@@ -347,20 +347,20 @@ namespace triangle {
         };
 
         static PyGetSetDef getsetters[] = {
-                {"x", (getter) triangle::attributes::get_x, (setter) triangle::attributes::set_x, "triangle x-position", nullptr},
-                {"y", (getter) triangle::attributes::get_y, (setter) triangle::attributes::set_y, "triangle y-position", nullptr},
-                {"rotation", (getter) triangle::attributes::get_rotation, (setter) triangle::attributes::set_rotation, "triangle rotation", nullptr},
-                {"xscale", (getter) triangle::attributes::get_xscale, (setter) triangle::attributes::set_xscale, "triangle x-scale", nullptr},
-                {"yscale", (getter) triangle::attributes::get_yscale, (setter) triangle::attributes::set_yscale, "triangle y-scale", nullptr},
+                {"x",        (getter) triangle::attributes::get_x,        (setter) triangle::attributes::set_x,        "triangle x-position", nullptr},
+                {"y",        (getter) triangle::attributes::get_y,        (setter) triangle::attributes::set_y,        "triangle y-position", nullptr},
+                {"rotation", (getter) triangle::attributes::get_rotation, (setter) triangle::attributes::set_rotation, "triangle rotation",   nullptr},
+                {"xscale",   (getter) triangle::attributes::get_xscale,   (setter) triangle::attributes::set_xscale,   "triangle x-scale",    nullptr},
+                {"yscale",   (getter) triangle::attributes::get_yscale,   (setter) triangle::attributes::set_yscale,   "triangle y-scale",    nullptr},
 
-                {"fill", (getter) triangle::attributes::get_fill, (setter) triangle::attributes::set_fill, "triangle fill", nullptr},
+                {"fill",     (getter) triangle::attributes::get_fill,     (setter) triangle::attributes::set_fill,     "triangle fill",       nullptr},
 
                 {nullptr}
         };
 
         static PyTypeObject TriangleType = {
                 PyVarObject_HEAD_INIT(nullptr, 0)
-                .tp_name = "goopylib.Triangle",
+                        .tp_name = "goopylib.Triangle",
                 .tp_doc = PyDoc_STR("Triangle objects"),
                 .tp_basicsize = sizeof(TriangleObject),
                 .tp_itemsize = 0,
@@ -380,7 +380,8 @@ namespace triangle {
 namespace triangle_ {
     void draw(TriangleObject *self, glm::mat4 projection) {
         glUseProgram(self->shader);
-        glUniformMatrix4fv(self->transformMatrixLocation, 1, GL_FALSE, glm::value_ptr(projection * (self->translationMatrix * (self->scaleMatrix * self->rotationMatrix))));
+        glUniformMatrix4fv(self->transformMatrixLocation, 1, GL_FALSE, glm::value_ptr(
+                projection * (self->translationMatrix * (self->scaleMatrix * self->rotationMatrix))));
         glBindTexture(GL_TEXTURE_2D, self->fill->id);
         glBindVertexArray(self->VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);

@@ -19,13 +19,9 @@ namespace gp {
 
     Window::~Window() {
         GP_WINDOW_INFO("Deallocating window '{0}'", m_Data.title);
-
-        if (!m_isDestroyed) {
-            destroy();
-        }
+        destroy();
     }
 }
-
 
 // Window attribute methods
 namespace gp {
@@ -235,6 +231,7 @@ namespace gp {
     }
 
     void Window::_destroy() const {
+        GP_WINDOW_TRACE("_destroy() '{0}'", m_Data.title);
         glfwDestroyWindow(m_Window);
     }
 

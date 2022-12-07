@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "BaseWindow.h"
 
-#include <utility>
-
 namespace gp {
     struct WindowConfig;
 
@@ -244,7 +242,7 @@ namespace gp {
 
     void BaseWindow::restore() {
         if (isFullscreen()) {
-            _unfullscreen(m_WindowedWidth, m_WindowedHeight,m_WindowedXPos, m_WindowedYPos);
+            _unfullscreen(m_WindowedWidth, m_WindowedHeight, m_WindowedXPos, m_WindowedYPos);
         }
         else {
             _restore();
@@ -327,6 +325,7 @@ namespace gp {
 
     // Close
     void BaseWindow::onClose() {
+        GP_WINDOW_TRACE("OnClose()");
         m_CloseCallback((Window *) this);
     }
 
@@ -339,6 +338,7 @@ namespace gp {
 
     // Destroy
     void BaseWindow::onDestroy() {
+        GP_WINDOW_TRACE("OnDestroy()");
         if (m_DestroyCallback) {
             m_DestroyCallback((Window *) this);
         }
@@ -369,6 +369,7 @@ namespace gp {
 
     // Minimize
     void BaseWindow::onMinimize(bool iconified) {
+        GP_WINDOW_TRACE("OnMinimize()");
         m_MinimizeCallback((Window *) this, iconified);
     }
 
@@ -381,6 +382,7 @@ namespace gp {
 
     // Maximize
     void BaseWindow::onMaximize(bool maximized) {
+        GP_WINDOW_TRACE("OnMaximize()");
         m_MaximizeCallback((Window *) this, maximized);
     }
 
@@ -393,6 +395,7 @@ namespace gp {
 
     // Focus
     void BaseWindow::onFocus(bool focused) {
+        GP_WINDOW_TRACE("OnFocus()");
         m_FocusedCallback((Window *) this, focused);
     }
 

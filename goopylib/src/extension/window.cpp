@@ -1,21 +1,10 @@
-#define PY_SSIZE_T_CLEAN
+#include "window.h"
 
-#include <Python.h>
-#include "pch.h"
-#include "util.h"
-
-#include <goopylib/Core/Window.h>
-#include <Platform/Independent/BaseWindow.h>
-
-#if GP_ERROR_CHECKING
-#define CHECK_WINDOW_ACTIVE(val) \
-if (self->window->isDestroyed()) { \
-    PyErr_SetString(PyExc_RuntimeError, "window has been destroyed"); \
-    return val; \
-}
-#else
-#define CHECK_WINDOW_ACTIVE(val)
-#endif
+// TODO window pointer
+// TODO make window key callback compatible with Python lambda functions (raises SIGSEGV error right now)
+// TODO window maximize callback does not work
+// TODO mouse events
+// TODO implement window icons
 
 struct KeyCallback {
     PyObject *callback;
@@ -44,7 +33,7 @@ struct WindowObject {
 // Window Core
 namespace window {
     static int init(WindowObject *self, PyObject *args, PyObject *kwds) {
-        GP_PY_INFO("Initializing gp.Window()");
+        GP_PY_WINDOW_INFO("Initializing gp.Window()");
 
         static const char *kwlist[] = {"width", "height", "title", nullptr};
 
@@ -58,9 +47,9 @@ namespace window {
             self->config.title = PyUnicode_AsUTF8(tmp);
         }
 
-        self->window = std::unique_ptr<gp::Window>(new gp::Window(self->config));
+        self->window = gp::make_unique<gp::Window>(self->config);
 
-        GP_PY_TRACE("Initialized gp.Window()");
+        GP_PY_WINDOW_TRACE("Initialized gp.Window()");
 
         return 0;
     }
@@ -68,7 +57,8 @@ namespace window {
     static PyObject *repr(WindowObject *self) {
         if (self->window->isDestroyed()) {
             return PyUnicode_FromString("Destroyed Window()");
-        } else {
+        }
+        else {
             return PyUnicode_FromFormat("Window(width=%i, height=%i, title='%s')",
                                         self->window->getWidth(), self->window->getHeight(), self->window->getTitle());
         }
@@ -94,7 +84,9 @@ namespace window {
     }
 
     static int clear(WindowObject *self) {
-        GP_PY_TRACE("Clearing gp.Window()");
+        GP_PY_WINDOW_TRACE("Clearing gp.Window()");
+
+        self->window.reset();
 
         Py_CLEAR(self->resize_callback);
         Py_CLEAR(self->close_callback);
@@ -111,12 +103,13 @@ namespace window {
             Py_CLEAR(key.callback);
         }
 
-        self->window.reset();
         return 0;
     }
 
     static void dealloc(WindowObject *self) {
-        GP_PY_INFO("Deallocating gp.Window()");
+        GP_PY_WINDOW_INFO("Deallocating gp.Window()");
+
+        self->window.reset();
 
         Py_XDECREF(self->resize_callback);
         Py_XDECREF(self->close_callback);
@@ -136,18 +129,24 @@ namespace window {
         PyObject_GC_UnTrack(self);
         clear(self);
         Py_TYPE(self)->tp_free((PyObject *) self);
+
+        GP_WINDOW_INFO("Deallocated gp.Window()");
     }
 }
 
 // Window Methods
 namespace window {
     static PyObject *is_open(WindowObject *self, PyObject *Py_UNUSED(args)) {
-        if (self->window->isClosed()) { Py_RETURN_FALSE; }
+        if (self->window->isClosed()) {
+            Py_RETURN_FALSE;
+        }
         Py_RETURN_TRUE;
     }
 
     static PyObject *is_closed(WindowObject *self, PyObject *Py_UNUSED(args)) {
-        if (self->window->isClosed()) { Py_RETURN_TRUE; }
+        if (self->window->isClosed()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -176,7 +175,9 @@ namespace window {
     static PyObject *is_fullscreen(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isFullscreen()) { Py_RETURN_TRUE; }
+        if (self->window->isFullscreen()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -190,7 +191,9 @@ namespace window {
     static PyObject *is_maximized(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isMaximized()) { Py_RETURN_TRUE; }
+        if (self->window->isMaximized()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -204,7 +207,9 @@ namespace window {
     static PyObject *is_minimized(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isMinimized()) { Py_RETURN_TRUE; }
+        if (self->window->isMinimized()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -218,7 +223,9 @@ namespace window {
     static PyObject *is_visible(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isVisible()) { Py_RETURN_TRUE; }
+        if (self->window->isVisible()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -246,7 +253,9 @@ namespace window {
     static PyObject *has_focus(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->hasFocus()) { Py_RETURN_TRUE; }
+        if (self->window->hasFocus()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -277,7 +286,9 @@ namespace window {
     static PyObject *is_resizable(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isResizable()) { Py_RETURN_TRUE; }
+        if (self->window->isResizable()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -298,7 +309,9 @@ namespace window {
     static PyObject *is_decorated(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isDecorated()) { Py_RETURN_TRUE; }
+        if (self->window->isDecorated()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -319,7 +332,9 @@ namespace window {
     static PyObject *is_floating(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isFloating()) { Py_RETURN_TRUE; }
+        if (self->window->isFloating()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -340,7 +355,9 @@ namespace window {
     static PyObject *is_auto_minimized(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isAutoMinimized()) { Py_RETURN_TRUE; }
+        if (self->window->isAutoMinimized()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -362,7 +379,9 @@ namespace window {
     static PyObject *is_focused_on_show(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isFocusedOnShow()) { Py_RETURN_TRUE; }
+        if (self->window->isFocusedOnShow()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -441,9 +460,11 @@ namespace window {
             #endif
 
             self->window->setMinimumWidth(minWidth);
-        } else if (value == Py_None) {
+        }
+        else if (value == Py_None) {
             self->window->setMinimumWidth(0);
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(-1, "integer", value)
         }
         return 0;
@@ -467,9 +488,11 @@ namespace window {
             #endif
 
             self->window->setMinimumHeight(minHeight);
-        } else if (value == Py_None) {
+        }
+        else if (value == Py_None) {
             self->window->setMinimumHeight(0);
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(-1, "integer", value)
         }
         return 0;
@@ -499,9 +522,11 @@ namespace window {
             #endif
 
             self->window->setMaximumWidth(maxWidth);
-        } else if (value == Py_None) {
+        }
+        else if (value == Py_None) {
             self->window->setMaximumWidth(MAX_WIDTH);
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(-1, "integer", value)
         }
         return 0;
@@ -531,9 +556,11 @@ namespace window {
             #endif
 
             self->window->setMaximumHeight(maxHeight);
-        } else if (value == Py_None) {
+        }
+        else if (value == Py_None) {
             self->window->setMaximumHeight(MAX_HEIGHT);
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(-1, "integer", value)
         }
         return 0;
@@ -660,33 +687,41 @@ namespace window {
         unsigned int tmp_min_width, tmp_min_height, tmp_max_width, tmp_max_height;
         if (PyLong_Check(min_width)) {
             tmp_min_width = (unsigned int) PyLong_AsLong(min_width);
-        } else if (min_width == Py_None) {
+        }
+        else if (min_width == Py_None) {
             tmp_min_width = 0;
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(nullptr, "integer", min_width)
         }
 
         if (PyLong_Check(max_width)) {
             tmp_max_width = (unsigned int) PyLong_AsLong(max_width);
-        } else if (max_width == Py_None) {
+        }
+        else if (max_width == Py_None) {
             tmp_max_width = MAX_WIDTH;
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(nullptr, "integer", max_width)
         }
 
         if (PyLong_Check(min_height)) {
             tmp_min_height = (int) PyLong_AsLong(min_height);
-        } else if (min_height == Py_None) {
+        }
+        else if (min_height == Py_None) {
             tmp_min_height = 0;
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(nullptr, "integer", min_height)
         }
 
         if (PyLong_Check(max_height)) {
             tmp_max_height = (int) PyLong_AsLong(max_height);
-        } else if (max_height == Py_None) {
+        }
+        else if (max_height == Py_None) {
             tmp_max_height = MAX_HEIGHT;
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(nullptr, "integer", max_height)
         }
 
@@ -730,17 +765,21 @@ namespace window {
 
         if (PyLong_Check(min_width)) {
             tmp_width = (unsigned int) PyLong_AsLong(min_width);
-        } else if (min_width == Py_None) {
+        }
+        else if (min_width == Py_None) {
             tmp_width = 0;
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(nullptr, "integer", min_width)
         }
 
         if (PyLong_Check(min_height)) {
             tmp_height = (unsigned int) PyLong_AsLong(min_height);
-        } else if (min_height == Py_None) {
+        }
+        else if (min_height == Py_None) {
             tmp_height = 0;
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(nullptr, "integer", min_height)
         }
 
@@ -777,17 +816,21 @@ namespace window {
 
         if (PyLong_Check(max_width)) {
             tmp_width = (unsigned int) PyLong_AsLong(max_width);
-        } else if (max_width == Py_None) {
+        }
+        else if (max_width == Py_None) {
             tmp_width = MAX_WIDTH;
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(nullptr, "integer", max_width)
         }
 
         if (PyLong_Check(max_height)) {
             tmp_height = (int) PyLong_AsLong(max_height);
-        } else if (max_height == Py_None) {
+        }
+        else if (max_height == Py_None) {
             tmp_height = MAX_HEIGHT;
-        } else {
+        }
+        else {
             RAISE_TYPE_ERROR(nullptr, "integer", max_height)
         }
 
@@ -893,35 +936,45 @@ namespace window {
     static PyObject *is_mouse_hovering(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->isMouseHovering()) { Py_RETURN_TRUE; }
+        if (self->window->isMouseHovering()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
     static PyObject *check_shift_key(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->checkShiftKey()) { Py_RETURN_TRUE; }
+        if (self->window->checkShiftKey()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
     static PyObject *check_control_key(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->checkControlKey()) { Py_RETURN_TRUE; }
+        if (self->window->checkControlKey()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
     static PyObject *check_alt_key(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->checkAltKey()) { Py_RETURN_TRUE; }
+        if (self->window->checkAltKey()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
     static PyObject *check_super_key(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        if (self->window->checkSuperKey()) { Py_RETURN_TRUE; }
+        if (self->window->checkSuperKey()) {
+            Py_RETURN_TRUE;
+        }
         Py_RETURN_FALSE;
     }
 
@@ -969,7 +1022,8 @@ namespace window {
         }
         else if (PyCallable_Check(callback)) {
             #if GP_ERROR_CHECKING
-            if (PyFunction_Check(callback) and PyLong_AsLong(PyObject_GetAttrString(PyFunction_GetCode(callback), "co_argcount")) != 1) {
+            if (PyFunction_Check(callback) and
+                PyLong_AsLong(PyObject_GetAttrString(PyFunction_GetCode(callback), "co_argcount")) != 1) {
                 RAISE_VALUE_ERROR(nullptr, "callback must take 1 argument: action")
             }
             #endif
@@ -1293,132 +1347,132 @@ namespace window {
 
             // Core Window Methods
 
-            {"update",               (PyCFunction) window::update,               METH_NOARGS,
+            {"update",               (PyCFunction) update,               METH_NOARGS,
                     "Update the Window"},
-            {"destroy",              (PyCFunction) window::destroy,              METH_NOARGS,
+            {"destroy",              (PyCFunction) destroy,              METH_NOARGS,
                     "Destroys the Window"},
 
-            {"is_open",              (PyCFunction) window::is_open,              METH_NOARGS,
+            {"is_open",              (PyCFunction) is_open,              METH_NOARGS,
                     "Returns whether the Window is open"},
-            {"is_closed",            (PyCFunction) window::is_closed,            METH_NOARGS,
+            {"is_closed",            (PyCFunction) is_closed,            METH_NOARGS,
                     "Returns whether the Window is closed"},
 
             // Window State Methods
 
-            {"restore",              (PyCFunction) window::restore,              METH_NOARGS,
+            {"restore",              (PyCFunction) restore,              METH_NOARGS,
                     "Restores the Window"},
-            {"fullscreen",           (PyCFunction) window::fullscreen,           METH_NOARGS,
+            {"fullscreen",           (PyCFunction) fullscreen,           METH_NOARGS,
                     "Makes the Window fullscreen"},
-            {"is_fullscreen",        (PyCFunction) window::is_fullscreen,        METH_NOARGS,
+            {"is_fullscreen",        (PyCFunction) is_fullscreen,        METH_NOARGS,
                     "Returns if the Window is fullscreen"},
-            {"maximize",             (PyCFunction) window::maximize,             METH_NOARGS,
+            {"maximize",             (PyCFunction) maximize,             METH_NOARGS,
                     "Maximizes the Window"},
-            {"is_maximized",         (PyCFunction) window::is_maximized,         METH_NOARGS,
+            {"is_maximized",         (PyCFunction) is_maximized,         METH_NOARGS,
                     "Returns if the Window is maximized"},
-            {"minimize",             (PyCFunction) window::minimize,             METH_NOARGS,
+            {"minimize",             (PyCFunction) minimize,             METH_NOARGS,
                     "Minimizes the Window"},
-            {"is_minimized",         (PyCFunction) window::is_minimized,         METH_NOARGS,
+            {"is_minimized",         (PyCFunction) is_minimized,         METH_NOARGS,
                     "Returns if the Window is minimized"},
 
-            {"show",                 (PyCFunction) window::show,                 METH_NOARGS,
+            {"show",                 (PyCFunction) show,                 METH_NOARGS,
                     "Makes the Window visible"},
-            {"hide",                 (PyCFunction) window::hide,                 METH_NOARGS,
+            {"hide",                 (PyCFunction) hide,                 METH_NOARGS,
                     "Makes the Window invisible"},
-            {"is_visible",           (PyCFunction) window::is_visible,           METH_NOARGS,
+            {"is_visible",           (PyCFunction) is_visible,           METH_NOARGS,
                     "Returns if the Window is visible"},
 
-            {"set_focus",            (PyCFunction) window::set_focus,            METH_NOARGS,
+            {"set_focus",            (PyCFunction) set_focus,            METH_NOARGS,
                     "Sets the input focus to the Window"},
-            {"has_focus",            (PyCFunction) window::has_focus,            METH_NOARGS,
+            {"has_focus",            (PyCFunction) has_focus,            METH_NOARGS,
                     "Returns whether the Window has input focus"},
-            {"request_attention",    (PyCFunction) window::request_attention,    METH_NOARGS,
+            {"request_attention",    (PyCFunction) request_attention,    METH_NOARGS,
                     "Requests for user attention on the window"},
 
             // Window Get & Set Methods
 
-            {"set_size_limits",      (PyCFunction) window::set_size_limits,      METH_VARARGS | METH_KEYWORDS,
+            {"set_size_limits",      (PyCFunction) set_size_limits,      METH_VARARGS | METH_KEYWORDS,
                     "Sets the minimum and maximum size for the window"},
-            {"set_minimum_size",     (PyCFunction) window::set_minimum_size,     METH_VARARGS,
+            {"set_minimum_size",     (PyCFunction) set_minimum_size,     METH_VARARGS,
                     "Sets the minimum size for the window"},
-            {"set_maximum_size",     (PyCFunction) window::set_maximum_size,     METH_VARARGS,
+            {"set_maximum_size",     (PyCFunction) set_maximum_size,     METH_VARARGS,
                     "Sets the maximum size for the window"},
-            {"get_minimum_size",     (PyCFunction) window::get_minimum_size,     METH_NOARGS,
+            {"get_minimum_size",     (PyCFunction) get_minimum_size,     METH_NOARGS,
                     "Returns a tuple (width, height) containing the minimum size for the window"},
-            {"get_maximum_size",     (PyCFunction) window::get_maximum_size,     METH_NOARGS,
+            {"get_maximum_size",     (PyCFunction) get_maximum_size,     METH_NOARGS,
                     "Returns a tuple (width, height) containing the maximum size for the window"},
 
-            {"get_size",             (PyCFunction) window::get_size,             METH_NOARGS,
+            {"get_size",             (PyCFunction) get_size,             METH_NOARGS,
                     "Returns the Window's width and height as a tuple"},
-            {"set_size",             (PyCFunction) window::set_size,             METH_VARARGS,
+            {"set_size",             (PyCFunction) set_size,             METH_VARARGS,
                     "Sets the Window's width and height"},
-            {"get_position",         (PyCFunction) window::get_position,         METH_NOARGS,
+            {"get_position",         (PyCFunction) get_position,         METH_NOARGS,
                     "Returns the Window's x and y position as a tuple"},
-            {"set_position",         (PyCFunction) window::set_position,         METH_VARARGS,
+            {"set_position",         (PyCFunction) set_position,         METH_VARARGS,
                     "Sets the Window's x and y position"},
 
-            {"set_aspect_ratio",     (PyCFunction) window::set_aspect_ratio,     METH_VARARGS,
+            {"set_aspect_ratio",     (PyCFunction) set_aspect_ratio,     METH_VARARGS,
                     "Sets the aspect ratio of the window"},
-            {"get_aspect_ratio",     (PyCFunction) window::get_aspect_ratio,     METH_NOARGS,
+            {"get_aspect_ratio",     (PyCFunction) get_aspect_ratio,     METH_NOARGS,
                     "Returns a tuple (numerator, denominator) containing the aspect ratio of the window"},
 
-            {"get_frame_size",       (PyCFunction) window::get_frame_size,       METH_NOARGS,
+            {"get_frame_size",       (PyCFunction) get_frame_size,       METH_NOARGS,
                     "Returns a tuple (left, top, right, bottom) containing the frame size of the window"},
-            {"get_content_scale",    (PyCFunction) window::get_content_scale,    METH_NOARGS,
+            {"get_content_scale",    (PyCFunction) get_content_scale,    METH_NOARGS,
                     "Returns a tuple (xscale, yscale) containing the scale of the content on the window"},
-            {"get_framebuffer_size", (PyCFunction) window::get_framebuffer_size, METH_NOARGS,
+            {"get_framebuffer_size", (PyCFunction) get_framebuffer_size, METH_NOARGS,
                     "Returns a tuple (width, height) containing the size of the Window's framebuffer"},
 
             // Window Input Events
 
-            {"is_mouse_hovering",    (PyCFunction) window::is_mouse_hovering,    METH_NOARGS,
+            {"is_mouse_hovering",    (PyCFunction) is_mouse_hovering,    METH_NOARGS,
                     "Returns whether the mouse is hovering over the Window"},
-            {"check_shift_key",      (PyCFunction) window::check_shift_key,      METH_NOARGS,
+            {"check_shift_key",      (PyCFunction) check_shift_key,      METH_NOARGS,
                     "Returns whether the shift key is being pressed"},
-            {"check_alt_key",        (PyCFunction) window::check_alt_key,        METH_NOARGS,
+            {"check_alt_key",        (PyCFunction) check_alt_key,        METH_NOARGS,
                     "Returns whether the alt key is being pressed"},
-            {"check_control_key",    (PyCFunction) window::check_control_key,    METH_NOARGS,
+            {"check_control_key",    (PyCFunction) check_control_key,    METH_NOARGS,
                     "Returns whether the control key is being pressed"},
-            {"check_super_key",      (PyCFunction) window::check_super_key,      METH_NOARGS,
-                    "Returns whether the super key is being pressed"},
+            {"check_super_key",      (PyCFunction) check_super_key,      METH_NOARGS,
+                    "Returns whether the fromRGB key is being pressed"},
 
-            {"check_key", (PyCFunction) window::check_key, METH_O,
+            {"check_key",            (PyCFunction) check_key,            METH_O,
                     "Returns whether the key specified is being pressed"},
-            {"set_key_callback", (PyCFunction) window::set_key_callback, METH_VARARGS | METH_KEYWORDS,
+            {"set_key_callback",     (PyCFunction) set_key_callback,     METH_VARARGS | METH_KEYWORDS,
                     "Sets a callback function for a keyboard event"},
 
             {nullptr}
     };
 
     static PyGetSetDef getsetters[] = {
-            {"width",                     (getter) window::get_width,                     (setter) window::set_width,                     "width",                     nullptr},
-            {"height",                    (getter) window::get_height,                    (setter) window::set_height,                    "height",                    nullptr},
+            {"width",                     (getter) get_width,                     (setter) set_width,                     "width",                     nullptr},
+            {"height",                    (getter) get_height,                    (setter) set_height,                    "height",                    nullptr},
 
-            {"title",                     (getter) window::get_title,                     (setter) window::set_title,                     "title",                     nullptr},
+            {"title",                     (getter) get_title,                     (setter) set_title,                     "title",                     nullptr},
 
-            {"min_width",                 (getter) window::get_min_width,                 (setter) window::set_min_width,                 "minimum width",             nullptr},
-            {"max_width",                 (getter) window::get_max_width,                 (setter) window::set_max_width,                 "maximum width",             nullptr},
-            {"min_height",                (getter) window::get_min_height,                (setter) window::set_min_height,                "minimum height",            nullptr},
-            {"max_height",                (getter) window::get_max_height,                (setter) window::set_max_height,                "maximum height",            nullptr},
+            {"min_width",                 (getter) get_min_width,                 (setter) set_min_width,                 "minimum width",             nullptr},
+            {"max_width",                 (getter) get_max_width,                 (setter) set_max_width,                 "maximum width",             nullptr},
+            {"min_height",                (getter) get_min_height,                (setter) set_min_height,                "minimum height",            nullptr},
+            {"max_height",                (getter) get_max_height,                (setter) set_max_height,                "maximum height",            nullptr},
 
-            {"x_position",                (getter) window::get_x_position,                (setter) window::set_x_position,                "x position",                nullptr},
-            {"y_position",                (getter) window::get_y_position,                (setter) window::set_y_position,                "y position",                nullptr},
+            {"x_position",                (getter) get_x_position,                (setter) set_x_position,                "x position",                nullptr},
+            {"y_position",                (getter) get_y_position,                (setter) set_y_position,                "y position",                nullptr},
 
-            {"resizable",                 (getter) window::is_resizable,                  (setter) window::set_resizable,                 "resizable",                 nullptr},
-            {"decorated",                 (getter) window::is_decorated,                  (setter) window::set_decorated,                 "decorated",                 nullptr},
-            {"auto_minimized",            (getter) window::is_auto_minimized,             (setter) window::set_auto_minimized,            "auto minimized",            nullptr},
-            {"floating",                  (getter) window::is_floating,                   (setter) window::set_floating,                  "floating",                  nullptr},
-            {"focused_on_show",           (getter) window::is_focused_on_show,            (setter) window::set_focused_on_show,           "focused on show",           nullptr},
+            {"resizable",                 (getter) is_resizable,                  (setter) set_resizable,                 "resizable",                 nullptr},
+            {"decorated",                 (getter) is_decorated,                  (setter) set_decorated,                 "decorated",                 nullptr},
+            {"auto_minimized",            (getter) is_auto_minimized,             (setter) set_auto_minimized,            "auto minimized",            nullptr},
+            {"floating",                  (getter) is_floating,                   (setter) set_floating,                  "floating",                  nullptr},
+            {"focused_on_show",           (getter) is_focused_on_show,            (setter) set_focused_on_show,           "focused on show",           nullptr},
 
-            {"resize_callback",           (getter) window::get_resize_callback,           (setter) window::set_resize_callback,           "resize callback",           nullptr},
-            {"position_callback",         (getter) window::get_position_callback,         (setter) window::set_position_callback,         "position callback",         nullptr},
-            {"framebuffer_size_callback", (getter) window::get_framebuffer_size_callback, (setter) window::set_framebuffer_size_callback, "framebuffer size callback", nullptr},
-            {"close_callback",            (getter) window::get_close_callback,            (setter) window::set_close_callback,            "close callback",            nullptr},
-            {"content_scale_callback",    (getter) window::get_content_scale_callback,    (setter) window::set_content_scale_callback,    "content scale callback",    nullptr},
-            {"destroy_callback",          (getter) window::get_destroy_callback,          (setter) window::set_destroy_callback,          "destroy callback",          nullptr},
-            {"minimize_callback",         (getter) window::get_minimize_callback,         (setter) window::set_minimize_callback,         "minimize callback",         nullptr},
-            {"maximize_callback",         (getter) window::get_maximize_callback,         (setter) window::set_maximize_callback,         "maximize callback",         nullptr},
-            {"focus_callback",            (getter) window::get_focus_callback,            (setter) window::set_focus_callback,            "focus callback",            nullptr},
-            {"refresh_callback",          (getter) window::get_refresh_callback,          (setter) window::set_refresh_callback,          "refresh callback",          nullptr},
+            {"resize_callback",           (getter) get_resize_callback,           (setter) set_resize_callback,           "resize callback",           nullptr},
+            {"position_callback",         (getter) get_position_callback,         (setter) set_position_callback,         "position callback",         nullptr},
+            {"framebuffer_size_callback", (getter) get_framebuffer_size_callback, (setter) set_framebuffer_size_callback, "framebuffer size callback", nullptr},
+            {"close_callback",            (getter) get_close_callback,            (setter) set_close_callback,            "close callback",            nullptr},
+            {"content_scale_callback",    (getter) get_content_scale_callback,    (setter) set_content_scale_callback,    "content scale callback",    nullptr},
+            {"destroy_callback",          (getter) get_destroy_callback,          (setter) set_destroy_callback,          "destroy callback",          nullptr},
+            {"minimize_callback",         (getter) get_minimize_callback,         (setter) set_minimize_callback,         "minimize callback",         nullptr},
+            {"maximize_callback",         (getter) get_maximize_callback,         (setter) set_maximize_callback,         "maximize callback",         nullptr},
+            {"focus_callback",            (getter) get_focus_callback,            (setter) set_focus_callback,            "focus callback",            nullptr},
+            {"refresh_callback",          (getter) get_refresh_callback,          (setter) set_refresh_callback,          "refresh callback",          nullptr},
 
             {nullptr}
     };
@@ -1450,21 +1504,8 @@ namespace window {
     }
 }
 
-static PyMethodDef WindowMethods[] = {
-        {nullptr, nullptr, 0, nullptr}
-};
-
-static struct PyModuleDef windowmodule = {
-        PyModuleDef_HEAD_INIT,
-        .m_name = "window",
-        .m_size = -1,
-        .m_methods = WindowMethods,
-};
-
-PyMODINIT_FUNC PyInit_window() {
-    PyObject *m;
-    m = PyModule_Create(&windowmodule);
-    if (m == nullptr) { return nullptr; }
+PyObject *PyInit_window(PyObject *m) {
+    GP_PY_WINDOW_TRACE("Initializing window module");
 
     EXPOSE_CLASS(WindowType, "Window")
 

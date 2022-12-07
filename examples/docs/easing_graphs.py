@@ -1,7 +1,7 @@
 import goopylib as gp
 import plot
 
-# plot.plot_easing("Combined", gp.combine_easing(gp.ease_elastic_in(), gp.ease_bounce_out()))
+plot.plot_easing("Combined", gp.combine_easing(gp.ease_elastic_in(), gp.ease_bounce_out()))
 
 plot.plot_all_easing([("Polynomial In", gp.ease_poly_in()), ("Polynomial Out", gp.ease_poly_out()),
                       ("Polynomial", gp.ease_poly()),

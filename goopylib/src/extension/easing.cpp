@@ -1,28 +1,4 @@
-#define PY_SSIZE_T_CLEAN
-
-#include <Python.h>
-#include "pch.h"
-#include "util.h"
-
-#include <goopylib/Math/Easing.h>
-
-#define EASING_TYPE(name) \
-static PyTypeObject type = { \
-    PyVarObject_HEAD_INIT(nullptr, 0) \
-    .tp_itemsize = 0, \
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, \
-    .tp_new = PyType_GenericNew, \
-    .tp_init = (initproc) init, \
-    .tp_call = (ternaryfunc) call, \
-    .tp_repr = (reprfunc) repr, \
-    .tp_basicsize = sizeof(EasingObject), \
-    .tp_name = name, \
-    .tp_traverse = (traverseproc) traverse, \
-    .tp_clear = (inquiry) clear, \
-    .tp_dealloc = (destructor) dealloc \
-};
-
-#define PyEasing_HEAD PyObject_HEAD std::function<float(float)> easing; PyObject *string;
+#include "easing.h"
 
 struct EasingObject {
     PyEasing_HEAD
@@ -51,7 +27,9 @@ namespace easing {
             return nullptr;
         }
         #ifdef GP_ERROR_CHECKING
-        if (t > 1 or t < 0) { RAISE_VALUE_ERROR(nullptr, "easing argument must be between 0 and 1 (inclusive)") }
+        if (t > 1 or t < 0) {
+            RAISE_VALUE_ERROR(nullptr, "easing argument must be between 0 and 1 (inclusive)")
+        }
         #endif
 
         return PyFloat_FromDouble(self->easing(t));
@@ -502,9 +480,17 @@ static struct PyModuleDef easingmodule = {
 };
 
 PyMODINIT_FUNC PyInit_easing() {
+    gp::CoreLogger = spdlog::get("GOOPYLIB");
+    gp::PythonLogger = spdlog::get("PYTHON");
+    gp::ClientLogger = spdlog::get("CLIENT");
+
+    GP_PY_TRACE("Initializing easing module");
+
     PyObject *m;
     m = PyModule_Create(&easingmodule);
-    if (m == nullptr) { return nullptr; }
+    if (m == nullptr) {
+        return nullptr;
+    }
 
     EXPOSE_CLASS(easing::linear::type, "ease_linear")
 

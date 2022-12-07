@@ -38,7 +38,7 @@ namespace gp {
         ContentScale getContentScale() const override;
 
         FramebufferSize getFramebufferSize() const override;
-        
+
         // Window Input Events
 
         bool isMouseHovering() const override;
@@ -54,7 +54,7 @@ namespace gp {
         int checkKey(int key) const override;
 
         // Window States
-        
+
         bool isFullscreen() const override;
 
         bool isMaximized() const override;

@@ -85,7 +85,8 @@ namespace gp {
 
     std::function<float(float)> EaseElasticInOut(int factor);
 
-    float inline EaseBounce(float t, float damping, int bounces, float scale, const std::vector<float>& zeroes, const std::vector<float>& derivatives);
+    float inline EaseBounce(float t, float damping, int bounces, float scale, const std::vector<float> &zeroes,
+                            const std::vector<float> &derivatives);
 
     std::function<float(float)> EaseBounceIn(int bounces, float damping);
 

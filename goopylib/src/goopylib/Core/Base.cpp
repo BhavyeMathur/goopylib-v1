@@ -1,12 +1,7 @@
 #include "pch.h"
 #include "Base.h"
+#include "goopylib/Debug/Log.h"
 #include "Platform/Independent/BaseWindow.h"
-
-#if GP_USING_GLFW
-
-#include <GLFW/glfw3.h>
-
-#endif
 
 namespace {
     void OnUpdate() {
@@ -26,7 +21,14 @@ namespace gp {
 
     int Initialize() {
         #if GP_LOGGING
-        gp::Log::init();
+        if (!spdlog::get("GOOPYLIB")) {
+            loggerInit();
+        }
+        else {
+            gp::CoreLogger = spdlog::get("GOOPYLIB");
+            gp::PythonLogger = spdlog::get("PYTHON");
+            gp::ClientLogger = spdlog::get("CLIENT");
+        }
         #endif
 
         GP_CORE_INFO("Initializing goopylib");
@@ -55,7 +57,7 @@ namespace gp {
     void Terminate() {
         GP_CORE_INFO("Terminating goopylib");
 
-        gp::BaseWindow::destroyAll();
+        BaseWindow::destroyAll();
 
         #if GP_USING_GLFW
         GP_CORE_TRACE("Terminating GLFW");
