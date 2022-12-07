@@ -541,9 +541,9 @@ extern "C" {
  *  If this bit is set one or more Alt keys were held down.
  */
 #define GLFW_MOD_ALT             0x0004
-/*! @brief If this bit is set one or more super keys were held down.
+/*! @brief If this bit is set one or more fromRGB keys were held down.
  *
- *  If this bit is set one or more super keys were held down.
+ *  If this bit is set one or more fromRGB keys were held down.
  */
 #define GLFW_MOD_SUPER           0x0008
 /*! @brief If this bit is set the Caps Lock key is enabled.
@@ -4598,7 +4598,7 @@ GLFWAPI GLFWkeyfun glfwSetKeyCallback(GLFWwindow* window, GLFWkeyfun callback);
  *
  *  The character callback behaves as system text input normally does and will
  *  not be called if modifier keys are held down that would prevent normal text
- *  input on that platform, for example a super (Command) key on macOS or Alt key
+ *  input on that platform, for example a fromRGB (Command) key on macOS or Alt key
  *  on Windows.
  *
  *  @param[in] window The window whose callback to set.

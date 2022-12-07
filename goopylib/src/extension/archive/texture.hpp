@@ -43,17 +43,17 @@ namespace texture {
             ColorObject *rgb;
 
             if (PyArg_ParseTuple(args, "iii|fii", &red, &green, &blue, &alpha, &width, &height) or
-            PyArg_ParseTuple(args, "(iii)|fii", &red, &green, &blue, &alpha, &width, &height) or
-            PyArg_ParseTuple(args, "(iiif)|ii", &red, &green, &blue, &alpha, &width, &height)) {
+                PyArg_ParseTuple(args, "(iii)|fii", &red, &green, &blue, &alpha, &width, &height) or
+                PyArg_ParseTuple(args, "(iiif)|ii", &red, &green, &blue, &alpha, &width, &height)) {
                 PyErr_Clear();
-                rgb = (ColorObject *) PyObject_CallOneArg((PyObject *) &color::type::ColorType,
+                rgb = (ColorObject *) PyObject_CallOneArg((PyObject * ) & color::type::ColorType,
                                                           Py_BuildValue("iiif", red, green, blue, alpha));
             }
             else if (PyArg_ParseTuple(args, "U|fii", &arg, &alpha, &width, &height) or
-            PyArg_ParseTuple(args, "(Uf)|ii", &arg, &alpha, &width, &height)) {
+                     PyArg_ParseTuple(args, "(Uf)|ii", &arg, &alpha, &width, &height)) {
                 PyErr_Clear();
-                rgb = (ColorObject *) PyObject_Call((PyObject *) &color::type::ColorType,
-                                                          Py_BuildValue("Of", arg, alpha), nullptr);
+                rgb = (ColorObject *) PyObject_Call((PyObject * ) & color::type::ColorType,
+                                                    Py_BuildValue("Of", arg, alpha), nullptr);
             }
             else if (PyArg_ParseTuple(args, "O|ii", &arg, &width, &height) and color::isInstance(arg)) {
                 PyErr_Clear();
@@ -83,7 +83,7 @@ namespace texture {
     namespace type {
         static PyTypeObject TextureType = {
                 PyVarObject_HEAD_INIT(nullptr, 0)
-                .tp_name = "goopylib.Texture",
+                        .tp_name = "goopylib.Texture",
                 .tp_doc = PyDoc_STR("Texture object"),
                 .tp_basicsize = sizeof(TextureObject),
                 .tp_itemsize = 0,
@@ -98,7 +98,7 @@ namespace texture {
 
     namespace {
         bool isInstance(PyObject *object) {
-            return PyObject_IsInstance(object, (PyObject *) &texture::type::TextureType);
+            return PyObject_IsInstance(object, (PyObject * ) & texture::type::TextureType);
         }
     }
 }

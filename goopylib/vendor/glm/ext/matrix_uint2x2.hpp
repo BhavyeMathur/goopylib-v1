@@ -19,20 +19,19 @@
 #	pragma message("GLM: GLM_EXT_matrix_uint2x2 extension included")
 #endif
 
-namespace glm
-{
-	/// @addtogroup ext_matrix_uint2x2
-	/// @{
+namespace glm {
+    /// @addtogroup ext_matrix_uint2x2
+    /// @{
 
-	/// Unsigned integer 2x2 matrix.
-	///
-	/// @see ext_matrix_uint2x2
-	typedef mat<2, 2, uint, defaultp>	umat2x2;
+    /// Unsigned integer 2x2 matrix.
+    ///
+    /// @see ext_matrix_uint2x2
+    typedef mat<2, 2, uint, defaultp> umat2x2;
 
-	/// Unsigned integer 2x2 matrix.
-	///
-	/// @see ext_matrix_uint2x2
-	typedef mat<2, 2, uint, defaultp>	umat2;
+    /// Unsigned integer 2x2 matrix.
+    ///
+    /// @see ext_matrix_uint2x2
+    typedef mat<2, 2, uint, defaultp> umat2;
 
-	/// @}
+    /// @}
 }//namespace glm

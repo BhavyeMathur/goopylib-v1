@@ -1,9 +1,7 @@
 #pragma once
 
 #include "pch.h"
-
-#define GP_WINDOW_TRACE(...) GP_CORE_TRACE("WINDOW: " __VA_ARGS__)
-#define GP_WINDOW_INFO(...) GP_CORE_INFO("WINDOW: " __VA_ARGS__)
+#include "goopylib/Color/Color.h"
 
 namespace gp {
     class Window;

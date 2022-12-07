@@ -6,7 +6,8 @@
 #define EASE_INOUT(func, ...) t < 0.5 ? func(2 * t, ##__VA_ARGS__) / 2 : 1 - func(2 * (1 - t), ##__VA_ARGS__) / 2
 
 namespace {
-    void ProcessEaseBounce(int bounces, float *damping, float *scale, std::vector<float> &zeroes, std::vector<float> &derivatives) {
+    void ProcessEaseBounce(int bounces, float *damping, float *scale, std::vector<float> &zeroes,
+                           std::vector<float> &derivatives) {
         *damping = -sqrt(*damping);
         zeroes.push_back(1);
         derivatives.push_back(-2);
@@ -25,7 +26,9 @@ namespace {
 
 namespace gp {
     std::function<float(float)> EaseLinear() {
-        return [](float t) { return t; };
+        return [](float t) {
+            return t;
+        };
     }
 
     float inline EasePoly(float t, float power) {
@@ -33,15 +36,21 @@ namespace gp {
     }
 
     std::function<float(float)> EasePolyIn(float power) {
-        return [power](float t) { return EASE_IN(EasePoly, power); };
+        return [power](float t) {
+            return EASE_IN(EasePoly, power);
+        };
     }
 
     std::function<float(float)> EasePolyOut(float power) {
-        return [power](float t) { return EASE_OUT(EasePoly, power); };
+        return [power](float t) {
+            return EASE_OUT(EasePoly, power);
+        };
     }
 
     std::function<float(float)> EasePolyInOut(float power) {
-        return [power](float t) { return EASE_INOUT(EasePoly, power); };
+        return [power](float t) {
+            return EASE_INOUT(EasePoly, power);
+        };
     }
 
     float inline EaseQuad(float t) {
@@ -49,15 +58,21 @@ namespace gp {
     }
 
     std::function<float(float)> EaseQuadIn() {
-        return [](float t) { return EASE_IN(EaseQuad); };
+        return [](float t) {
+            return EASE_IN(EaseQuad);
+        };
     }
 
     std::function<float(float)> EaseQuadOut() {
-        return [](float t) { return EASE_OUT(EaseQuad); };
+        return [](float t) {
+            return EASE_OUT(EaseQuad);
+        };
     }
 
     std::function<float(float)> EaseQuadInOut() {
-        return [](float t) { return EASE_INOUT(EaseQuad); };
+        return [](float t) {
+            return EASE_INOUT(EaseQuad);
+        };
     }
 
     float inline EaseCubic(float t) {
@@ -65,15 +80,21 @@ namespace gp {
     }
 
     std::function<float(float)> EaseCubicIn() {
-        return [](float t) { return EASE_IN(EaseCubic); };
+        return [](float t) {
+            return EASE_IN(EaseCubic);
+        };
     }
 
     std::function<float(float)> EaseCubicOut() {
-        return [](float t) { return EASE_OUT(EaseCubic); };
+        return [](float t) {
+            return EASE_OUT(EaseCubic);
+        };
     }
 
     std::function<float(float)> EaseCubicInOut() {
-        return [](float t) { return EASE_INOUT(EaseCubic); };
+        return [](float t) {
+            return EASE_INOUT(EaseCubic);
+        };
     }
 
     float inline EaseQuart(float t) {
@@ -81,15 +102,21 @@ namespace gp {
     }
 
     std::function<float(float)> EaseQuartIn() {
-        return [](float t) { return EASE_IN(EaseQuart); };
+        return [](float t) {
+            return EASE_IN(EaseQuart);
+        };
     }
 
     std::function<float(float)> EaseQuartOut() {
-        return [](float t) { return EASE_OUT(EaseQuart); };
+        return [](float t) {
+            return EASE_OUT(EaseQuart);
+        };
     }
 
     std::function<float(float)> EaseQuartInOut() {
-        return [](float t) { return EASE_INOUT(EaseQuart); };
+        return [](float t) {
+            return EASE_INOUT(EaseQuart);
+        };
     }
 
     float inline EaseQuint(float t) {
@@ -97,15 +124,21 @@ namespace gp {
     }
 
     std::function<float(float)> EaseQuintIn() {
-        return [](float t) { return EASE_IN(EaseQuint); };
+        return [](float t) {
+            return EASE_IN(EaseQuint);
+        };
     }
 
     std::function<float(float)> EaseQuintOut() {
-        return [](float t) { return EASE_OUT(EaseQuint); };
+        return [](float t) {
+            return EASE_OUT(EaseQuint);
+        };
     }
 
     std::function<float(float)> EaseQuintInOut() {
-        return [](float t) { return EASE_INOUT(EaseQuint); };
+        return [](float t) {
+            return EASE_INOUT(EaseQuint);
+        };
     }
 
     float inline EaseCircle(float t) {
@@ -113,15 +146,21 @@ namespace gp {
     }
 
     std::function<float(float)> EaseCircleIn() {
-        return [](float t) { return EASE_IN(EaseCircle); };
+        return [](float t) {
+            return EASE_IN(EaseCircle);
+        };
     }
 
     std::function<float(float)> EaseCircleOut() {
-        return [](float t) { return EASE_OUT(EaseCircle); };
+        return [](float t) {
+            return EASE_OUT(EaseCircle);
+        };
     }
 
     std::function<float(float)> EaseCircleInOut() {
-        return [](float t) { return EASE_INOUT(EaseCircle); };
+        return [](float t) {
+            return EASE_INOUT(EaseCircle);
+        };
     }
 
     float inline EaseSin(float t) {
@@ -129,31 +168,43 @@ namespace gp {
     }
 
     std::function<float(float)> EaseSinIn() {
-        return [](float t) { return EASE_IN(EaseSin); };
+        return [](float t) {
+            return EASE_IN(EaseSin);
+        };
     }
 
     std::function<float(float)> EaseSinOut() {
-        return [](float t) { return EASE_OUT(EaseSin); };
+        return [](float t) {
+            return EASE_OUT(EaseSin);
+        };
     }
 
     std::function<float(float)> EaseSinInOut() {
-        return [](float t) { return EASE_INOUT(EaseSin); };
+        return [](float t) {
+            return EASE_INOUT(EaseSin);
+        };
     }
 
     float inline EaseExp(float t, float base) {
-        return pow(base, 10 *  t - 10);
+        return pow(base, 10 * t - 10);
     }
 
     std::function<float(float)> EaseExpIn(float base) {
-        return [base](float t) { return EASE_IN(EaseExp, base); };
+        return [base](float t) {
+            return EASE_IN(EaseExp, base);
+        };
     }
 
     std::function<float(float)> EaseExpOut(float base) {
-        return [base](float t) { return EASE_OUT(EaseExp, base); };
+        return [base](float t) {
+            return EASE_OUT(EaseExp, base);
+        };
     }
 
     std::function<float(float)> EaseExpInOut(float base) {
-        return [base](float t) { return EASE_INOUT(EaseExp, base); };
+        return [base](float t) {
+            return EASE_INOUT(EaseExp, base);
+        };
     }
 
     float inline EaseBack(float t, float factor) {
@@ -161,15 +212,21 @@ namespace gp {
     }
 
     std::function<float(float)> EaseBackIn(float factor) {
-        return [factor](float t) { return EASE_IN(EaseBack, factor); };
+        return [factor](float t) {
+            return EASE_IN(EaseBack, factor);
+        };
     }
 
     std::function<float(float)> EaseBackOut(float factor) {
-        return [factor](float t) { return EASE_OUT(EaseBack, factor); };
+        return [factor](float t) {
+            return EASE_OUT(EaseBack, factor);
+        };
     }
 
     std::function<float(float)> EaseBackInOut(float factor) {
-        return [factor](float t) { return EASE_INOUT(EaseBack, factor); };
+        return [factor](float t) {
+            return EASE_INOUT(EaseBack, factor);
+        };
     }
 
     float inline EaseElastic(float t, int factor) {
@@ -177,18 +234,25 @@ namespace gp {
     }
 
     std::function<float(float)> EaseElasticIn(int factor) {
-        return [factor](float t) { return EASE_IN(EaseElastic, factor); };
+        return [factor](float t) {
+            return EASE_IN(EaseElastic, factor);
+        };
     }
 
     std::function<float(float)> EaseElasticOut(int factor) {
-        return [factor](float t) { return EASE_OUT(EaseElastic, factor); };
+        return [factor](float t) {
+            return EASE_OUT(EaseElastic, factor);
+        };
     }
 
     std::function<float(float)> EaseElasticInOut(int factor) {
-        return [factor](float t) { return EASE_INOUT(EaseElastic, factor); };
+        return [factor](float t) {
+            return EASE_INOUT(EaseElastic, factor);
+        };
     }
 
-    float inline EaseBounce(float t, float damping, int bounces, float scale, const std::vector<float>& zeroes, const std::vector<float>& derivatives) {
+    float inline EaseBounce(float t, float damping, int bounces, float scale, const std::vector<float> &zeroes,
+                            const std::vector<float> &derivatives) {
         t = scale * (1 - t);
         for (int i = 0; i < bounces; i++) {
             if (zeroes[i] >= t) {
@@ -208,8 +272,10 @@ namespace gp {
         std::vector<float> zeroes, derivatives;
         float scale;
         ProcessEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
-        
-        return [damping, bounces, scale, zeroes, derivatives](float t) { return EASE_IN(EaseBounce, damping, bounces, scale, zeroes, derivatives); };
+
+        return [damping, bounces, scale, zeroes, derivatives](float t) {
+            return EASE_IN(EaseBounce, damping, bounces, scale, zeroes, derivatives);
+        };
     }
 
     std::function<float(float)> EaseBounceOut(int bounces, float damping) {
@@ -217,7 +283,9 @@ namespace gp {
         float scale;
         ProcessEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
 
-        return [damping, bounces, scale, zeroes, derivatives](float t) { return EASE_OUT(EaseBounce, damping, bounces, scale, zeroes, derivatives); };
+        return [damping, bounces, scale, zeroes, derivatives](float t) {
+            return EASE_OUT(EaseBounce, damping, bounces, scale, zeroes, derivatives);
+        };
     }
 
     std::function<float(float)> EaseBounceInOut(int bounces, float damping) {
@@ -225,6 +293,8 @@ namespace gp {
         float scale;
         ProcessEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
 
-        return [damping, bounces, scale, zeroes, derivatives](float t) { return EASE_INOUT(EaseBounce, damping, bounces, scale, zeroes, derivatives); };
+        return [damping, bounces, scale, zeroes, derivatives](float t) {
+            return EASE_INOUT(EaseBounce, damping, bounces, scale, zeroes, derivatives);
+        };
     }
 }

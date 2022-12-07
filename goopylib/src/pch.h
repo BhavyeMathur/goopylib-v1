@@ -1,13 +1,27 @@
 #pragma once
 
+#ifndef GP_PCH
+#define GP_PCH
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cmath>
+#include <utility>
+#include <type_traits>
+#include <random>
+
+#define GLM_ENABLE_EXPERIMENTAL
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "glm/gtx/string_cast.hpp"
+
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/sinks/basic_file_sink.h"
 
 #include "goopylib/Math/gpmath.h"
 
@@ -15,8 +29,10 @@
 #define __gl_h_
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 #define GL_SILENCE_DEPRECATION
+
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
+
 #endif
 
 #define UNSUPPORTED_PLATFORM_ERROR #error Unsupported Platform
@@ -24,14 +40,66 @@
 #define GP_USING_OPENGL true
 #define GP_ERROR_CHECKING true
 #define GP_LOGGING true
+#define GP_LOGGING_WINDOW true
+#define GP_LOGGING_COLORS false
 
 #if GP_USING_GLFW
-#include <GLFW/glfw3.h>
-#endif
 
-#include "goopylib/Debug/Log.h"
+#include <GLFW/glfw3.h>
+
+#endif
 
 #define MAX_WIDTH 65535
 #define MAX_HEIGHT 65535
 
 #define UNUSED(parameter) __attribute__((unused)) parameter
+
+#include "goopylib/Debug/Log.h"
+
+#endif
+
+template<typename ... Args>
+    std::string strformat(const std::string &format, Args ... args) {
+        int size_s = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1; // Extra space for '\0'
+        if (size_s <= 0) {
+            throw std::runtime_error("Error during formatting.");
+        }
+        auto size = static_cast<size_t>( size_s );
+        std::unique_ptr<char[]> buf(new char[size]);
+        std::snprintf(buf.get(), size, format.c_str(), args ...);
+        return {buf.get(), buf.get() + size - 1}; // We don't want the '\0' inside
+    }
+
+namespace gp {
+    template<class T>
+        struct _Unique_if {
+            typedef std::unique_ptr<T> _Single_object;
+        };
+
+    template<class T>
+        struct _Unique_if<T[]> {
+            typedef std::unique_ptr<T[]> _Unknown_bound;
+        };
+
+    template<class T, size_t N>
+        struct _Unique_if<T[N]> {
+            typedef void _Known_bound;
+        };
+
+    template<class T, class... Args>
+        typename _Unique_if<T>::_Single_object
+        make_unique(Args &&... args) {
+            return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+        }
+
+    template<class T>
+        typename _Unique_if<T>::_Unknown_bound
+        make_unique(size_t n) {
+            typedef typename std::remove_extent<T>::type U;
+            return std::unique_ptr<T>(new U[n]());
+        }
+
+    template<class T, class... Args>
+        typename _Unique_if<T>::_Known_bound
+        make_unique(Args &&...) = delete;
+}

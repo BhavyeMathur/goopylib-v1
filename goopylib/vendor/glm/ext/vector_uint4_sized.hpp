@@ -20,30 +20,29 @@
 #	pragma message("GLM: GLM_EXT_vector_uint4_sized extension included")
 #endif
 
-namespace glm
-{
-	/// @addtogroup ext_vector_uint4_sized
-	/// @{
+namespace glm {
+    /// @addtogroup ext_vector_uint4_sized
+    /// @{
 
-	/// 8 bit unsigned integer vector of 4 components type.
-	///
-	/// @see ext_vector_uint4_sized
-	typedef vec<4, uint8, defaultp>		u8vec4;
+    /// 8 bit unsigned integer vector of 4 components type.
+    ///
+    /// @see ext_vector_uint4_sized
+    typedef vec<4, uint8, defaultp> u8vec4;
 
-	/// 16 bit unsigned integer vector of 4 components type.
-	///
-	/// @see ext_vector_uint4_sized
-	typedef vec<4, uint16, defaultp>	u16vec4;
+    /// 16 bit unsigned integer vector of 4 components type.
+    ///
+    /// @see ext_vector_uint4_sized
+    typedef vec<4, uint16, defaultp> u16vec4;
 
-	/// 32 bit unsigned integer vector of 4 components type.
-	///
-	/// @see ext_vector_uint4_sized
-	typedef vec<4, uint32, defaultp>	u32vec4;
+    /// 32 bit unsigned integer vector of 4 components type.
+    ///
+    /// @see ext_vector_uint4_sized
+    typedef vec<4, uint32, defaultp> u32vec4;
 
-	/// 64 bit unsigned integer vector of 4 components type.
-	///
-	/// @see ext_vector_uint4_sized
-	typedef vec<4, uint64, defaultp>	u64vec4;
+    /// 64 bit unsigned integer vector of 4 components type.
+    ///
+    /// @see ext_vector_uint4_sized
+    typedef vec<4, uint64, defaultp> u64vec4;
 
-	/// @}
+    /// @}
 }//namespace glm

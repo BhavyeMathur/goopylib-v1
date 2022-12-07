@@ -10,19 +10,35 @@ set(PLATFORM_PATH goopylib/src/Platform/)
 set(SOURCE_FILES
         ${GOOPYLIB_PATH}/Core/Base.cpp
         ${GOOPYLIB_PATH}/Debug/Log.cpp
+
         ${GOOPYLIB_PATH}/Math/Easing.cpp
-        ${GOOPYLIB_PATH}/Renderer/Color.cpp
+        ${GOOPYLIB_PATH}/Math/Interpolation.cpp
+
+        ${GOOPYLIB_PATH}/Color/Color.cpp
+        ${GOOPYLIB_PATH}/Color/ColorConversions.cpp
+        ${GOOPYLIB_PATH}/Color/Util.cpp
+
         ${PLATFORM_PATH}/GLFW/Window.cpp
         ${PLATFORM_PATH}/Independent/BaseWindow.cpp)
 
 set(HEADER_FILES
+        ${GOOPYLIB_PATH}/pch.h
+
         ${GOOPYLIB_PATH}/Core/Base.h
         ${GOOPYLIB_PATH}/Core/Window.h
+
         ${GOOPYLIB_PATH}/Debug/Log.h
         ${GOOPYLIB_PATH}/Events/KeyboardCodes.h
+
         ${GOOPYLIB_PATH}/Math/Easing.h
+        ${GOOPYLIB_PATH}/Math/Interpolation.h
         ${GOOPYLIB_PATH}/Math/gpmath.h
-        ${GOOPYLIB_PATH}/Renderer/Color.h
+
+        ${GOOPYLIB_PATH}/Color/Color.h
+        ${GOOPYLIB_PATH}/Color/ColorConversions.h
+        ${GOOPYLIB_PATH}/Color/W3CX11.h
+        ${GOOPYLIB_PATH}/Color/Util.h
+
         ${PLATFORM_PATH}/Independent/BaseWindow.h)
 
 add_library(goopylib ${SOURCE_FILES})

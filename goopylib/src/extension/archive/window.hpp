@@ -15,7 +15,7 @@ namespace window {
             Py_DECREF(tmp);
         }
         else {
-            self->background = (ColorObject *) PyObject_CallOneArg((PyObject *) &color::type::ColorType, value);
+            self->background = (ColorObject *) PyObject_CallOneArg((PyObject * ) & color::type::ColorType, value);
             Py_DECREF(tmp);
 
             if (self->background == nullptr) {
@@ -33,20 +33,23 @@ namespace window {
     }
 
     static PyGetSetDef getsetters[] = {
-            {"background", (getter) window::attributes::get_background, (setter) window::attributes::set_background, "window background", nullptr},
+            {"background", (getter) window::attributes::get_background, (setter) window::attributes::set_background,
+             "window background", nullptr},
     };
 }
 
 namespace window_ {
-    void drawTriangle(WindowObject * self, TriangleObject * triangle) {
-        if (std::find(self->triangleInstances.begin(), self->triangleInstances.end(), triangle) == self->triangleInstances.end()) {
+    void drawTriangle(WindowObject *self, TriangleObject *triangle) {
+        if (std::find(self->triangleInstances.begin(), self->triangleInstances.end(), triangle) ==
+            self->triangleInstances.end()) {
             Py_INCREF(triangle);
             self->triangleInstances.push_back(triangle);
         }
     }
 
-    void destroyTriangle(WindowObject * self, TriangleObject * triangle) {
+    void destroyTriangle(WindowObject *self, TriangleObject *triangle) {
         Py_DECREF(triangle);
-        self->triangleInstances.erase(std::find(self->triangleInstances.begin(), self->triangleInstances.end(), triangle));
+        self->triangleInstances.erase(
+                std::find(self->triangleInstances.begin(), self->triangleInstances.end(), triangle));
     }
 }

@@ -2,30 +2,18 @@
 goopylib module initialization
 """
 
-# noinspection PyUnresolvedReferences
-from python.core import *
-# noinspection PyUnresolvedReferences
-from python.window import *
-# noinspection PyUnresolvedReferences
-from python.keyboard import *
+from core import *
 
-# noinspection PyUnresolvedReferences
-from python.triangle import *
+import color
+from easing import *
 
-# noinspection PyUnresolvedReferences
-import python.easing as easing
-# noinspection PyUnresolvedReferences
-import python.color as color
+from keyboard import *
+from window import *
 
-try:
-    # noinspection PyUnresolvedReferences
-    import goopylib.easing as easing
-    # noinspection PyUnresolvedReferences
-    import goopylib.color as color
-    # noinspection PyUnresolvedReferences
-    from goopylib.core import *
-    # noinspection PyUnresolvedReferences
-    from goopylib.window import *
-    init()
-except ModuleNotFoundError:  # Exception is raised when building the goopylib documentation with sphinx
-    print("Building Documentation")
+from ext.core import *
+import ext.color as color
+from ext.easing import *
+
+Color = color.Color
+
+from w3cx11 import *

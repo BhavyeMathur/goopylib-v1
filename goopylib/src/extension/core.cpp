@@ -1,18 +1,6 @@
-#define PY_SSIZE_T_CLEAN
-
-#include <Python.h>
-#include <GLFW/glfw3.h>
-
-#include "pch.h"
-#include "util.h"
-#include "goopylib/Core/Base.h"
+#include "core.h"
 
 // TODO monitor getter functions
-// TODO mouse events
-// TODO implement window icons
-// TODO window pointer
-// TODO make window key callback compatible with Python lambda functions (raises SIGSEGV error right now)
-// TODO window maximize callback does not work
 
 namespace core {
     static PyObject *init(PyObject *Py_UNUSED(self)) {
@@ -158,9 +146,19 @@ static struct PyModuleDef coremodule = {
 };
 
 PyMODINIT_FUNC PyInit_core(void) {
+    gp::Initialize();
+
+    GP_PY_TRACE("Initializing core module");
+
     PyObject *m;
     m = PyModule_Create(&coremodule);
-    if (m == nullptr) { return nullptr; }
+    if (m == nullptr) {
+        return nullptr;
+    }
+
+    if (PyInit_window(m) == nullptr) {
+        return nullptr;
+    }
 
     return m;
 }

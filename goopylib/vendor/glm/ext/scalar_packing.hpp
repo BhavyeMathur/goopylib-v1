@@ -20,13 +20,12 @@
 #	pragma message("GLM: GLM_EXT_scalar_packing extension included")
 #endif
 
-namespace glm
-{
-	/// @addtogroup ext_scalar_packing
-	/// @{
+namespace glm {
+    /// @addtogroup ext_scalar_packing
+    /// @{
 
 
-	/// @}
+    /// @}
 }// namespace glm
 
 #include "scalar_packing.inl"
