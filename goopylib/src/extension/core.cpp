@@ -91,7 +91,7 @@ namespace window {
         }
         #endif
 
-        gp::SetBufferSwapInterval((int) PyLong_AsLong(arg));
+        gp::SetBufferSwapInterval(PyLong_AsLong(arg));
         Py_RETURN_NONE;
     }
 
@@ -146,21 +146,17 @@ static struct PyModuleDef coremodule = {
 };
 
 PyMODINIT_FUNC PyInit_core(void) {
+    #if GP_LOGGING
+    std::cout << "Initializing core logger" << std::endl;
+    #endif
     gp::Initialize();
 
     GP_PY_TRACE("Initializing core module");
 
-    PyObject *m;
-    m = PyModule_Create(&coremodule);
+    PyObject *m = PyModule_Create(&coremodule);
     if (m == nullptr) {
-        return nullptr;
-    }
-
-    if (PyInit_window(m) == nullptr) {
         return nullptr;
     }
 
     return m;
 }
-
-

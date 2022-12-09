@@ -6,27 +6,27 @@
 
 namespace gp {
 
-    struct RGB {
-        unsigned int red;
-        unsigned int green;
-        unsigned int blue;
+    struct GPAPI RGB {
+        int red;
+        int green;
+        int blue;
     };
 
-    struct CMYK {
+    struct GPAPI CMYK {
         float cyan;
         float magenta;
         float yellow;
         float key;
     };
 
-    struct HSV {
-        unsigned int hue;
+    struct GPAPI HSV {
+        int hue;
         float saturation;
         float value;
     };
 
-    struct HSL {
-        unsigned int hue;
+    struct GPAPI HSL {
+        int hue;
         float saturation;
         float luminance;
     };
@@ -34,61 +34,60 @@ namespace gp {
     // RGB to other format
 
     namespace rgb {
-        const char *toHex(unsigned int red, unsigned int green, unsigned int blue);
+        GPAPI const char *toHex(int red, int green, int blue);
 
-        CMYK toCMYK(unsigned int red, unsigned int green, unsigned int blue);
+        GPAPI CMYK toCMYK(int red, int green, int blue);
 
-        HSL toHSL(unsigned int red, unsigned int green, unsigned int blue);
+        GPAPI HSL toHSL(int red, int green, int blue);
 
-        HSV toHSV(unsigned int red, unsigned int green, unsigned int blue);
+        GPAPI HSV toHSV(int red, int green, int blue);
     }
 
     // Hex to other format
 
     namespace hex {
-        RGB toRGB(const char *hexstring);
+        GPAPI RGB toRGB(const char *hexstring);
 
-        CMYK toCMYK(const char *hexstring);
+        GPAPI CMYK toCMYK(const char *hexstring);
 
-        HSL toHSL(const char *hexstring);
+        GPAPI HSL toHSL(const char *hexstring);
 
-        HSV toHSV(const char *hexstring);
+        GPAPI HSV toHSV(const char *hexstring);
     }
 
     // CMYK to other format
 
     namespace cmyk {
-        RGB toRGB(float cyan, float magenta, float yellow, float key);
+        GPAPI RGB toRGB(float cyan, float magenta, float yellow, float key);
 
-        const char *toHex(float cyan, float magenta, float yellow, float key);
+        GPAPI const char *toHex(float cyan, float magenta, float yellow, float key);
 
-        HSL toHSL(float cyan, float magenta, float yellow, float key);
+        GPAPI HSL toHSL(float cyan, float magenta, float yellow, float key);
 
-        HSV toHSV(float cyan, float magenta, float yellow, float key);
+        GPAPI HSV toHSV(float cyan, float magenta, float yellow, float key);
     }
 
     // HSL to other format
 
     namespace hsl {
-        RGB toRGB(unsigned int hue, float saturation, float luminance);
+        GPAPI RGB toRGB(int hue, float saturation, float luminance);
 
-        const char *toHex(unsigned int hue, float saturation, float luminance);
+        GPAPI const char *toHex(int hue, float saturation, float luminance);
 
-        CMYK toCMYK(unsigned int hue, float saturation, float luminance);
+        GPAPI CMYK toCMYK(int hue, float saturation, float luminance);
 
-        HSV toHSV(unsigned int hue, float saturation, float luminance);
+        GPAPI HSV toHSV(int hue, float saturation, float luminance);
     }
 
     // HSV to other format
 
     namespace hsv {
-        RGB toRGB(unsigned int hue, float saturation, float value);
+        GPAPI RGB toRGB(int hue, float saturation, float value);
 
-        const char *toHex(unsigned int hue, float saturation, float value);
+        GPAPI const char *toHex(int hue, float saturation, float value);
 
-        CMYK toCMYK(unsigned int hue, float saturation, float value);
+        GPAPI CMYK toCMYK(int hue, float saturation, float value);
 
-        HSL toHSL(unsigned int hue, float saturation, float value);
+        GPAPI HSL toHSL(int hue, float saturation, float value);
     }
 }
-

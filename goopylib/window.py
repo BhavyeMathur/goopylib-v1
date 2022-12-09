@@ -3,10 +3,10 @@ Module that defines the Window class.
 """
 
 from typing import Optional
+
 from color import Color
 
 
-# noinspection PyUnresolvedReferences, PyPep8
 class Window:
     """Creates a Window that can be used to draw widgets and graphics.
 
@@ -16,7 +16,6 @@ class Window:
         title: The title displayed in the title bar of the Window
     """
 
-    # noinspection PyUnusedLocal
     def __init__(self, width: int, height: int, title: str = "New Window"):
         raise NotImplementedError()
 
@@ -503,13 +502,12 @@ class Window:
         raise NotImplementedError()
 
     def set_maximum_size(self, max_width: Optional[int], max_height: Optional[int]):
-        # noinspection PyPep8
         """Sets the maximum resizable dimensions of the Window.
 
-                        Raises:
-                            TypeError: ``max_width`` and ``max_height`` must be :obj:`int` or :obj:`None`
-                            ValueError: ``max_width`` and ``max_height`` must be greater than or equal to :func:`Window.min_width<goopylib.min_width>` and :func:`Window.min_height<goopylib.min_height>`
-                        """
+        Raises:
+            TypeError: ``max_width`` and ``max_height`` must be :obj:`int` or :obj:`None`
+            ValueError: ``max_width`` and ``max_height`` must be greater than or equal to :func:`Window.min_width<goopylib.min_width>` and :func:`Window.min_height<goopylib.min_height>`
+        """
         raise NotImplementedError()
 
     # Decorated
@@ -1328,7 +1326,6 @@ class Window:
         raise NotImplementedError()
 
 
-# noinspection PyUnusedLocal
 def set_buffer_swap_interval(value: int):
     """Sets the minimum number of monitor refreshes the driver should wait from the time before swapping Window buffers.
 

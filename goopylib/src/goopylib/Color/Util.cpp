@@ -9,33 +9,33 @@ static std::uniform_int_distribution<int> angle_distribution(0, 360);
 static std::uniform_real_distribution<float> normalized_distribution(0.0f, 1.0f);
 
 namespace gp {
-    ColorRGB randomRGB() {
-        return {(unsigned int) rgb_distribution(generator),
-                (unsigned int) rgb_distribution(generator),
-                (unsigned int) rgb_distribution(generator)};
+    GPAPI ColorRGB randomRGB() {
+        return {rgb_distribution(generator),
+                rgb_distribution(generator),
+                rgb_distribution(generator)};
     }
 
-    ColorHex randomHex() {
-        return ColorHex(rgb::toHex((unsigned int) rgb_distribution(generator),
-                                   (unsigned int) rgb_distribution(generator),
-                                   (unsigned int) rgb_distribution(generator)));
+    GPAPI ColorHex randomHex() {
+        return ColorHex(rgb::toHex(rgb_distribution(generator),
+                                   rgb_distribution(generator),
+                                   rgb_distribution(generator)));
     }
 
-    ColorCMYK randomCMYK() {
+    GPAPI ColorCMYK randomCMYK() {
         return {normalized_distribution(generator),
                 normalized_distribution(generator),
                 normalized_distribution(generator),
                 normalized_distribution(generator)};
     }
 
-    ColorHSV randomHSV() {
-        return {(unsigned int) angle_distribution(generator),
+    GPAPI ColorHSV randomHSV() {
+        return {angle_distribution(generator),
                 normalized_distribution(generator),
                 normalized_distribution(generator)};
     }
 
-    ColorHSL randomHSL() {
-        return {(unsigned int) angle_distribution(generator),
+    GPAPI ColorHSL randomHSL() {
+        return {angle_distribution(generator),
                 normalized_distribution(generator),
                 normalized_distribution(generator)};
     }

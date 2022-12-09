@@ -2,6 +2,9 @@
 
 #include "util.h"
 
+#include "color/colormodule.h"
+
+#include <goopylib/Core/Base.h>
 #include <goopylib/Core/Window.h>
 #include <Platform/Independent/BaseWindow.h>
 

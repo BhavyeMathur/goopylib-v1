@@ -1,7 +1,7 @@
 #pragma once
 
-unsigned int createShader(const char *vertexShaderSource, const char *fragmentShaderSource) {
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+int createShader(const char *vertexShaderSource, const char *fragmentShaderSource) {
+    int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
     glCompileShader(vertexShader);
 
@@ -15,7 +15,7 @@ unsigned int createShader(const char *vertexShaderSource, const char *fragmentSh
         return 0;
     }
 
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
     glCompileShader(fragmentShader);
 
@@ -30,7 +30,7 @@ unsigned int createShader(const char *vertexShaderSource, const char *fragmentSh
         return 0;
     }
 
-    unsigned int shaderProgram = glCreateProgram();
+    int shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);

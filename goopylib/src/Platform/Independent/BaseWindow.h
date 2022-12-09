@@ -7,43 +7,53 @@ namespace gp {
     class Window;
 
     struct WindowConfig {
-        unsigned int width;
-        unsigned int height;
-        unsigned int minWidth;
-        unsigned int minHeight;
-        unsigned int maxWidth;
-        unsigned int maxHeight;
+        int width;
+        int height;
+        const char *title;
 
         int xPos;
         int yPos;
 
-        const char *title;
+        Color background;
 
-        explicit WindowConfig(unsigned int width = 800,
-                              unsigned int height = 450,
-                              unsigned int minWidth = 0,
-                              unsigned int minHeight = 0,
-                              unsigned int maxWidth = MAX_WIDTH,
-                              unsigned int maxHeight = MAX_HEIGHT,
+        int minWidth;
+        int minHeight;
+        int maxWidth;
+        int maxHeight;
+
+        explicit WindowConfig(int width = 800,
+                              int height = 450,
+                              const char *title = "goopylib Window",
+
                               int xPos = 0,
                               int yPos = 0,
-                              const char *title = "goopylib Window") :
+
+                              const Color &background = Color(),
+
+                              int minWidth = 0,
+                              int minHeight = 0,
+                              int maxWidth = MAX_WIDTH,
+                              int maxHeight = MAX_HEIGHT) :
 
                 width(width),
                 height(height),
+                title(title),
+
+                xPos(xPos),
+                yPos(yPos),
+
+                background(background),
+
                 minWidth(minWidth),
                 minHeight(minHeight),
                 maxWidth(maxWidth),
-                maxHeight(maxHeight),
-                xPos(xPos),
-                yPos(yPos),
-                title(title) {
+                maxHeight(maxHeight) {
         }
     };
 
     struct AspectRatio {
-        unsigned int numerator;
-        unsigned int denominator;
+        int numerator;
+        int denominator;
     };
 
     struct WindowFrame {
@@ -79,55 +89,70 @@ namespace gp {
 
         // Getters & Setters
 
-        unsigned int getWidth() const;
+        // Width
+        int getWidth() const;
 
-        void setWidth(unsigned int value);
+        void setWidth(int value);
 
-        unsigned int getHeight() const;
+        // Height
+        int getHeight() const;
 
-        void setHeight(unsigned int value);
+        void setHeight(int value);
 
-        unsigned int getMinimumWidth() const;
-
-        void setMinimumWidth(unsigned int value);
-
-        unsigned int getMinimumHeight() const;
-
-        void setMinimumHeight(unsigned int value);
-
-        unsigned int getMaximumWidth() const;
-
-        void setMaximumWidth(unsigned int value);
-
-        unsigned int getMaximumHeight() const;
-
-        void setMaximumHeight(unsigned int value);
-
-        int getXPos() const;
-
-        void setXPos(int value);
-
-        int getYPos() const;
-
-        void setYPos(int value);
-
+        // Title
         const char *getTitle() const;
 
         void setTitle(const char *title);
 
+        // X Position
+        int getXPos() const;
+
+        void setXPos(int value);
+
+        // Y Position
+        int getYPos() const;
+
+        void setYPos(int value);
+
+        // Background
+        Color& getBackground() const;
+
+        void setBackground(const Color &background);
+
+        // Minimum Width
+        int getMinimumWidth() const;
+
+        void setMinimumWidth(int value);
+
+        // Minimum Height
+        int getMinimumHeight() const;
+
+        void setMinimumHeight(int value);
+
+        // Maximum Width
+        int getMaximumWidth() const;
+
+        void setMaximumWidth(int value);
+
+        // Maximum Height
+        int getMaximumHeight() const;
+
+        void setMaximumHeight(int value);
+
         // Get & Set Methods
 
-        void setSize(unsigned int width, unsigned int height);
+        void setSize(int width, int height);
 
-        void setSizeLimits(unsigned int minWidth, unsigned int minHeight,
-                           unsigned int maxWidth, unsigned int maxHeight);
+        void setSizeLimits(int minWidth, int minHeight,
+                           int maxWidth, int maxHeight);
 
-        void setMinimumSize(unsigned int minWidth, unsigned int minHeight);
+        void setMinimumSize(int minWidth, int minHeight);
 
-        void setMaximumSize(unsigned int maxWidth, unsigned int maxHeight);
+        void setMaximumSize(int maxWidth, int maxHeight);
 
         void setPosition(int xPos, int yPos);
 
+        // Aspect Ratio
         void setAspectRatio(int numerator, int denominator);
 
         AspectRatio getAspectRatio() const;
@@ -274,8 +299,8 @@ namespace gp {
     private:
         static std::vector<BaseWindow *> s_Instances;
 
-        unsigned int m_WindowedWidth;
-        unsigned int m_WindowedHeight;
+        int m_WindowedWidth;
+        int m_WindowedHeight;
         int m_WindowedXPos;
         int m_WindowedYPos;
 
@@ -303,9 +328,11 @@ namespace gp {
 
         virtual void _updateSize() const = 0;
 
+        virtual void _updateTitle() const = 0;
+
         virtual void _updatePosition() const = 0;
 
-        virtual void _updateTitle() const = 0;
+        virtual void _updateBackground() const = 0;
 
         virtual void _updateSizeLimits() const = 0;
 
@@ -315,7 +342,7 @@ namespace gp {
 
         virtual void _fullscreen() const = 0;
 
-        virtual void _unfullscreen(unsigned int width, unsigned int height, int xPos, int yPos) const = 0;
+        virtual void _unfullscreen(int width, int height, int xPos, int yPos) const = 0;
 
         virtual void _maximize() const = 0;
 

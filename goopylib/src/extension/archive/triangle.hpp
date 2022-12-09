@@ -3,11 +3,11 @@
 
 struct TriangleObject {
     PyObject_HEAD
-    unsigned int VBO;
-    unsigned int VAO;
+    int VBO;
+    int VAO;
     bool buffersInitialised;
 
-    unsigned int shader;
+    int shader;
 
     float rotation;
     float scaleX;
@@ -25,7 +25,7 @@ struct TriangleObject {
 
 namespace triangle {
     namespace {
-        const unsigned int triangleIndices[3] = {0, 1, 2};
+        const int triangleIndices[3] = {0, 1, 2};
     }
 
     namespace object {

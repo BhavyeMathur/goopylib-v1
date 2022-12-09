@@ -10,11 +10,10 @@ namespace gp {
 
     std::vector<BaseWindow *> BaseWindow::s_Instances;
 
-    BaseWindow::BaseWindow(const WindowConfig &config) {
+    BaseWindow::BaseWindow(const WindowConfig &config)
+    : m_Data(config)
+    {
         GP_WINDOW_TRACE("Initializing BaseWindow '{0}'", m_Data.title);
-        m_Data.width = config.width;
-        m_Data.height = config.height;
-        m_Data.title = config.title;
 
         m_WindowedWidth = m_Data.width;
         m_WindowedHeight = m_Data.height;
@@ -36,9 +35,10 @@ namespace gp {
     }
 
     void BaseWindow::update() {
-        // GP_WINDOW_TRACE("Updating window '{0}'", m_Data.Title);
+        // GP_WINDOW_TRACE("Updating window '{0}'", m_Data.title);
 
         _update();
+        _updateBackground();
     }
 
     void BaseWindow::destroy() {
@@ -55,75 +55,39 @@ namespace gp {
 // BaseWindow getters & setters
 namespace gp {
     // Width
-    void BaseWindow::setWidth(unsigned int value) {
+    void BaseWindow::setWidth(int value) {
         GP_WINDOW_TRACE("Set '{0}' width -> {1}", m_Data.title, value);
 
         m_Data.width = value;
         _updateSize();
     }
 
-    unsigned int BaseWindow::getWidth() const {
+    int BaseWindow::getWidth() const {
         return m_Data.width;
     }
 
     // Height
-    void BaseWindow::setHeight(unsigned int value) {
+    void BaseWindow::setHeight(int value) {
         GP_WINDOW_TRACE("Set '{0}' height -> {1}", m_Data.title, value);
 
         m_Data.height = value;
         _updateSize();
     }
 
-    unsigned int BaseWindow::getHeight() const {
+    int BaseWindow::getHeight() const {
         return m_Data.height;
     }
 
-    // Minimum Width
-    void BaseWindow::setMinimumWidth(unsigned int value) {
-        GP_WINDOW_TRACE("Set '{0}' minimum width -> {1}", m_Data.title, value);
+    // Title
+    void BaseWindow::setTitle(const char *title) {
+        GP_WINDOW_TRACE("Set '{0}' title -> '{1}'", m_Data.title, title);
 
-        m_Data.minWidth = value;
-        _updateSizeLimits();
+        m_Data.title = title;
+        _updateTitle();
     }
 
-    unsigned int BaseWindow::getMinimumWidth() const {
-        return m_Data.minWidth;
-    }
-
-    // Minimum Height
-    void BaseWindow::setMinimumHeight(unsigned int value) {
-        GP_WINDOW_TRACE("Set '{0}' minimum height -> {1}", m_Data.title, value);
-
-        m_Data.minHeight = value;
-        _updateSizeLimits();
-    }
-
-    unsigned int BaseWindow::getMinimumHeight() const {
-        return m_Data.minHeight;
-    }
-
-    // Maximum Width
-    void BaseWindow::setMaximumWidth(unsigned int value) {
-        GP_WINDOW_TRACE("Set '{0}' maximum width -> {1}", m_Data.title, value);
-
-        m_Data.maxWidth = value;
-        _updateSizeLimits();
-    }
-
-    unsigned int BaseWindow::getMaximumWidth() const {
-        return m_Data.maxWidth;
-    }
-
-    // Maximum Height
-    void BaseWindow::setMaximumHeight(unsigned int value) {
-        GP_WINDOW_TRACE("Set '{0}' maximum height -> {1}", m_Data.title, value);
-
-        m_Data.maxHeight = value;
-        _updateSizeLimits();
-    }
-
-    unsigned int BaseWindow::getMaximumHeight() const {
-        return m_Data.maxHeight;
+    const char *BaseWindow::getTitle() const {
+        return m_Data.title;
     }
 
     // X Position
@@ -150,16 +114,63 @@ namespace gp {
         return m_Data.yPos;
     }
 
-    // Title
-    void BaseWindow::setTitle(const char *title) {
-        GP_WINDOW_TRACE("Set '{0}' title -> '{1}'", m_Data.title, title);
+    // Minimum Width
+    void BaseWindow::setMinimumWidth(int value) {
+        GP_WINDOW_TRACE("Set '{0}' minimum width -> {1}", m_Data.title, value);
 
-        m_Data.title = title;
-        _updateTitle();
+        m_Data.minWidth = value;
+        _updateSizeLimits();
     }
 
-    const char *BaseWindow::getTitle() const {
-        return m_Data.title;
+    int BaseWindow::getMinimumWidth() const {
+        return m_Data.minWidth;
+    }
+
+    // Minimum Height
+    void BaseWindow::setMinimumHeight(int value) {
+        GP_WINDOW_TRACE("Set '{0}' minimum height -> {1}", m_Data.title, value);
+
+        m_Data.minHeight = value;
+        _updateSizeLimits();
+    }
+
+    int BaseWindow::getMinimumHeight() const {
+        return m_Data.minHeight;
+    }
+
+    // Maximum Width
+    void BaseWindow::setMaximumWidth(int value) {
+        GP_WINDOW_TRACE("Set '{0}' maximum width -> {1}", m_Data.title, value);
+
+        m_Data.maxWidth = value;
+        _updateSizeLimits();
+    }
+
+    int BaseWindow::getMaximumWidth() const {
+        return m_Data.maxWidth;
+    }
+
+    // Maximum Height
+    void BaseWindow::setMaximumHeight(int value) {
+        GP_WINDOW_TRACE("Set '{0}' maximum height -> {1}", m_Data.title, value);
+
+        m_Data.maxHeight = value;
+        _updateSizeLimits();
+    }
+
+    int BaseWindow::getMaximumHeight() const {
+        return m_Data.maxHeight;
+    }
+
+    void BaseWindow::setBackground(const Color &background) {
+        GP_WINDOW_TRACE("Set '{0}' background -> {1}", m_Data.title, background.toString());
+
+        m_Data.background = background;
+        _updateBackground();
+    }
+
+    Color& BaseWindow::getBackground() const {
+        return const_cast<Color&>(m_Data.background);
     }
 }
 
@@ -167,7 +178,7 @@ namespace gp {
 namespace gp {
 
     // Size
-    void BaseWindow::setSize(unsigned int width, unsigned int height) {
+    void BaseWindow::setSize(int width, int height) {
         GP_WINDOW_TRACE("Set '{0}' size -> ({1}, {2})", m_Data.title, width, height);
 
         m_Data.width = width;
@@ -177,8 +188,8 @@ namespace gp {
     }
 
     // Size Limits
-    void BaseWindow::setSizeLimits(unsigned int minWidth, unsigned int minHeight, unsigned int maxWidth,
-                                   unsigned int maxHeight) {
+    void BaseWindow::setSizeLimits(int minWidth, int minHeight, int maxWidth,
+                                   int maxHeight) {
         GP_WINDOW_TRACE("Set '{0}' size limits -> ({1}, {2}), ({3}, {4})", m_Data.title, minWidth, minHeight, maxWidth,
                         maxHeight);
 
@@ -190,7 +201,7 @@ namespace gp {
         _updateSizeLimits();
     }
 
-    void BaseWindow::setMinimumSize(unsigned int minWidth, unsigned int minHeight) {
+    void BaseWindow::setMinimumSize(int minWidth, int minHeight) {
         GP_WINDOW_TRACE("Set '{0}' minimum size -> ({1}, {2})", m_Data.title, minWidth, minHeight);
 
         m_Data.minWidth = minWidth;
@@ -199,7 +210,7 @@ namespace gp {
         _updateSizeLimits();
     }
 
-    void BaseWindow::setMaximumSize(unsigned int maxWidth, unsigned int maxHeight) {
+    void BaseWindow::setMaximumSize(int maxWidth, int maxHeight) {
         GP_WINDOW_TRACE("Set '{0}' maximum size -> ({1}, {2})", m_Data.title, maxWidth, maxHeight);
 
         m_Data.maxWidth = maxWidth;
@@ -225,7 +236,7 @@ namespace gp {
     }
 
     AspectRatio BaseWindow::getAspectRatio() const {
-        unsigned int g = gcd(m_Data.width, m_Data.height);
+        int g = gcd(m_Data.width, m_Data.height);
         return AspectRatio{m_Data.width / g, m_Data.height / g};
     }
 }

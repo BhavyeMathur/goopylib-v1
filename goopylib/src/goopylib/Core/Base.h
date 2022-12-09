@@ -1,39 +1,43 @@
 #pragma once
 
+#include "goopylib/Debug/Log.h"
+#include "goopylib/Color/W3CX11.h"
+#include "Platform/Independent/BaseWindow.h"
+
 namespace gp {
-    extern bool glfw_initialized;
+    GPAPI extern bool glfw_initialized;
 
-    int Initialize();
+    GPAPI int Initialize();
 
-    void Terminate();
+    GPAPI void Terminate();
 
-    void Update();
+    GPAPI void Update();
 
     #if GP_USING_GLFW
 
-    void UpdateOnEvent();
+    GPAPI void UpdateOnEvent();
 
-    void UpdateTimeout(double timeout);
+    GPAPI void UpdateTimeout(double timeout);
 
-    std::string GLFWCompiledVersion();
+    GPAPI std::string GLFWCompiledVersion();
 
-    std::string GLFWCurrentVersion();
+    GPAPI std::string GLFWCurrentVersion();
 
-    int GetRefreshRate();
+    GPAPI int GetRefreshRate();
 
-    int GetScreenWidth();
+    GPAPI int GetScreenWidth();
 
-    int GetScreenHeight();
+    GPAPI int GetScreenHeight();
 
-    int GetNumberOfMonitors();
+    GPAPI int GetNumberOfMonitors();
 
-    void SetBufferSwapInterval(int interval);
+    GPAPI void SetBufferSwapInterval(int interval);
 
     #endif
 
     #if GP_USING_OPENGL
 
-    std::string OpenGLVersion();
+    GPAPI std::string OpenGLVersion();
 
     #endif
 }

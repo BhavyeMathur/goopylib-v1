@@ -28,7 +28,7 @@ namespace gp {
             m_Redf((float) m_Red / 255.0f),
             m_Greenf((float) m_Green / 255.0f),
             m_Bluef((float) m_Blue / 255.0f) {
-        GP_COLOR_TRACE("Initializing Color()");
+        GP_COLOR_TRACE("Initializing Color() from struct", alpha);
     }
 
     Color::Color(const Color &color) :
@@ -70,35 +70,37 @@ namespace gp {
         GP_COLOR_TRACE("Initializing Color() from {0}", color.toString());
     }
 
-    Color::Color(unsigned int red, unsigned int green, unsigned int blue) {
+    Color::Color(int red, int green, int blue) :
+            m_Red(red),
+            m_Green(green),
+            m_Blue(blue),
+
+            m_Alpha(1.0f),
+
+            m_Redf((float) m_Red / 255.0f),
+            m_Greenf((float) m_Green / 255.0f),
+            m_Bluef((float) m_Blue / 255.0f) {
         GP_COLOR_TRACE("Initializing Color({0}, {1}, {2})", red, green, blue);
 
-        m_Red = red;
-        m_Green = green;
-        m_Blue = blue;
-
-        m_Alpha = 1.0f;
-
-        m_Redf = (float) red / 255.0f;
-        m_Greenf = (float) green / 255.0f;
-        m_Bluef = (float) blue / 255.0f;
+        clampRGBA();
     }
 
-    Color::Color(unsigned int red, unsigned int green, unsigned int blue, float alpha) {
+    Color::Color(int red, int green, int blue, float alpha) :
+            m_Red(red),
+            m_Green(green),
+            m_Blue(blue),
+
+            m_Alpha(1.0f),
+
+            m_Redf((float) m_Red / 255.0f),
+            m_Greenf((float) m_Green / 255.0f),
+            m_Bluef((float) m_Blue / 255.0f) {
         GP_COLOR_TRACE("Initializing Color({0}, {1}, {2}, {3})", red, green, blue, alpha);
 
-        m_Red = red;
-        m_Green = green;
-        m_Blue = blue;
-
-        m_Alpha = alpha;
-
-        m_Redf = (float) m_Red / 255.0f;
-        m_Greenf = (float) m_Green / 255.0f;
-        m_Bluef = (float) m_Blue / 255.0f;
+        clampRGBA();
     }
 
-    void Color::fromRGB(unsigned int red, unsigned int green, unsigned int blue, float alpha) {
+    void Color::fromRGB(int red, int green, int blue, float alpha) {
         m_Red = red;
         m_Green = green;
         m_Blue = blue;
@@ -122,6 +124,46 @@ namespace gp {
         m_Bluef = (float) m_Blue / 255.0f;
     }
 
+    void Color::update() {
+        m_Redf = (float) m_Red / 255.0f;
+        m_Greenf = (float) m_Green / 255.0f;
+        m_Bluef = (float) m_Blue / 255.0f;
+    }
+
+    void Color::clampRGBA() {
+        this->m_Red = m_Red > 255 ? 255 : (m_Red < 0 ? 0 : m_Red);
+        this->m_Green = m_Green > 255 ? 255 : (m_Green < 0 ? 0 : m_Green);
+        this->m_Blue = m_Blue > 255 ? 255 : (m_Blue < 0 ? 0 : m_Blue);
+
+        this->m_Alpha = m_Alpha > 255 ? 255 : (m_Alpha < 0 ? 0 : m_Alpha);
+
+        update();
+    }
+
+    void Color::clampRGB() {
+        this->m_Red = m_Red > 255 ? 255 : (m_Red < 0 ? 0 : m_Red);
+        this->m_Green = m_Green > 255 ? 255 : (m_Green < 0 ? 0 : m_Green);
+        this->m_Blue = m_Blue > 255 ? 255 : (m_Blue < 0 ? 0 : m_Blue);
+
+        update();
+    }
+
+    void Color::clampUpperRGB() {
+        this->m_Red = m_Red > 255 ? 255 : m_Red;
+        this->m_Green = m_Green > 255 ? 255 : m_Green;
+        this->m_Blue = m_Blue > 255 ? 255 : m_Blue;
+
+        update();
+    }
+
+    void Color::clampLowerRGB() {
+        this->m_Red = m_Red < 0 ? 0 : m_Red;
+        this->m_Green = m_Green < 0 ? 0 : m_Green;
+        this->m_Blue = m_Blue < 0 ? 0 : m_Blue;
+
+        update();
+    }
+
     void Color::fromColor(const Color &color) {
         m_Red = color.m_Red;
         m_Green = color.m_Green;
@@ -138,29 +180,29 @@ namespace gp {
         return strformat("ColorRGB(%i, %i, %i)", m_Red, m_Green, m_Blue);
     }
 
-    unsigned int Color::getRed() const {
+    int Color::getRed() const {
         return m_Red;
     }
 
-    void Color::setRed(unsigned int red) {
+    void Color::setRed(int red) {
         m_Red = red;
         m_Redf = (float) red / 255.0f;
     }
 
-    unsigned int Color::getGreen() const {
+    int Color::getGreen() const {
         return m_Green;
     }
 
-    void Color::setGreen(unsigned int green) {
+    void Color::setGreen(int green) {
         m_Green = green;
         m_Greenf = (float) green / 255.0f;
     }
 
-    unsigned int Color::getBlue() const {
+    int Color::getBlue() const {
         return m_Blue;
     }
 
-    void Color::setBlue(unsigned int blue) {
+    void Color::setBlue(int blue) {
         m_Blue = blue;
         m_Bluef = (float) blue / 255.0f;
     }
@@ -186,6 +228,82 @@ namespace gp {
     }
 }
 
+// Color Operator Overloading
+namespace gp {
+    Color Color::operator+(int value) const {
+        return {m_Red + value, m_Green + value, m_Blue + value, m_Alpha};
+    }
+
+    Color Color::operator+(const Color& value) const {
+        return {m_Red + value.m_Red, m_Green + value.m_Green, m_Blue + value.m_Blue, m_Alpha};
+    }
+
+    Color Color::operator-(int value) const {
+        return {m_Red - value, m_Green - value, m_Blue - value, m_Alpha};
+    }
+
+    Color Color::operator-(const Color& value) const {
+        return {m_Red - value.m_Red, m_Green - value.m_Green, m_Blue - value.m_Blue, m_Alpha};
+    }
+
+    Color &Color::operator+=(int value) {
+        this->m_Red += value;
+        this->m_Green += value;
+        this->m_Blue += value;
+
+        this->m_Red = m_Red > 255 ? 255 : m_Red;
+        this->m_Green = m_Green > 255 ? 255 : m_Green;
+        this->m_Blue = m_Blue > 255 ? 255 : m_Blue;
+
+        clampRGB();
+
+        return *this;
+    }
+
+    Color &Color::operator+=(const Color& value) {
+        this->m_Red += value.m_Red;
+        this->m_Green += value.m_Green;
+        this->m_Blue += value.m_Blue;
+
+        this->m_Red = m_Red > 255 ? 255 : m_Red;
+        this->m_Green = m_Green > 255 ? 255 : m_Green;
+        this->m_Blue = m_Blue > 255 ? 255 : m_Blue;
+
+        clampRGB();
+
+        return *this;
+    }
+
+    Color &Color::operator-=(int value) {
+        this->m_Red -= value;
+        this->m_Green -= value;
+        this->m_Blue -= value;
+
+        clampRGB();
+
+        return *this;
+    }
+
+    Color &Color::operator-=(const Color& value) {
+        this->m_Red -= value.m_Red;
+        this->m_Green -= value.m_Green;
+        this->m_Blue -= value.m_Blue;
+
+        this->m_Red = m_Red > 255 ? 255 : m_Red;
+        this->m_Green = m_Green > 255 ? 255 : m_Green;
+        this->m_Blue = m_Blue > 255 ? 255 : m_Blue;
+
+        clampRGB();
+
+        return *this;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const Color& color) {
+        return os << color.toString();
+    }
+}
+
+
 // Color RGB Class
 namespace gp {
     ColorRGB::ColorRGB(const Color &color)
@@ -193,12 +311,12 @@ namespace gp {
         GP_COLOR_TRACE("Initializing ColorRGB() from {0}", color.toString());
     }
 
-    ColorRGB::ColorRGB(unsigned int red, unsigned int green, unsigned int blue)
+    ColorRGB::ColorRGB(int red, int green, int blue)
             : Color(red, green, blue) {
         GP_COLOR_TRACE("Initializing ColorRGB({0}, {1}, {2})", red, green, blue);
     }
 
-    ColorRGB::ColorRGB(unsigned int red, unsigned int green, unsigned int blue, float alpha)
+    ColorRGB::ColorRGB(int red, int green, int blue, float alpha)
             : Color(red, green, blue) {
         GP_COLOR_TRACE("Initializing ColorRGBA({0}, {1}, {2}, {3})", red, green, blue, alpha);
     }
@@ -330,7 +448,7 @@ namespace gp {
         m_Value = data.value;
     }
 
-    ColorHSV::ColorHSV(unsigned int hue, float saturation, float value)
+    ColorHSV::ColorHSV(int hue, float saturation, float value)
             : Color(hsv::toRGB(hue, saturation, value), 1.0f),
               m_Hue(hue),
               m_Saturation(saturation),
@@ -338,7 +456,7 @@ namespace gp {
         GP_COLOR_TRACE("Initializing ColorHSV({0}, {1}, {2})", hue, saturation, value);
     }
 
-    ColorHSV::ColorHSV(unsigned int hue, float saturation, float value, float alpha)
+    ColorHSV::ColorHSV(int hue, float saturation, float value, float alpha)
             : Color(hsv::toRGB(hue, saturation, value), alpha),
               m_Hue(hue),
               m_Saturation(saturation),
@@ -350,11 +468,11 @@ namespace gp {
         return strformat("ColorHSV(%i, %g, %g)", m_Hue, m_Saturation, m_Value);
     }
 
-    unsigned int ColorHSV::getHue() const {
+    int ColorHSV::getHue() const {
         return m_Hue;
     }
 
-    void ColorHSV::setHue(unsigned int value) {
+    void ColorHSV::setHue(int value) {
         m_Hue = value;
         RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
         fromRGB(data, m_Alpha);
@@ -405,7 +523,7 @@ namespace gp {
         m_Luminance = data.luminance;
     }
 
-    ColorHSL::ColorHSL(unsigned int hue, float saturation, float luminance)
+    ColorHSL::ColorHSL(int hue, float saturation, float luminance)
             : Color(hsl::toRGB(hue, saturation, luminance), 1.0f),
               m_Hue(hue),
               m_Saturation(saturation),
@@ -413,7 +531,7 @@ namespace gp {
         GP_COLOR_TRACE("Initializing ColorHSL({0}, {1}, {2})", hue, saturation, luminance);
     }
 
-    ColorHSL::ColorHSL(unsigned int hue, float saturation, float luminance, float alpha)
+    ColorHSL::ColorHSL(int hue, float saturation, float luminance, float alpha)
             : Color(hsl::toRGB(hue, saturation, luminance), alpha),
               m_Hue(hue),
               m_Saturation(saturation),
@@ -425,11 +543,11 @@ namespace gp {
         return strformat("ColorHSL(%i, %g, %g)", m_Hue, m_Saturation, m_Luminance);
     }
 
-    unsigned int ColorHSL::getHue() const {
+    int ColorHSL::getHue() const {
         return m_Hue;
     }
 
-    void ColorHSL::setHue(unsigned int value) {
+    void ColorHSL::setHue(int value) {
         m_Hue = value;
         RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
         fromRGB(data, m_Alpha);

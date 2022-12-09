@@ -4,7 +4,7 @@
 struct TextureObject {
     PyObject_HEAD
     unsigned char *data;
-    unsigned int id;
+    int id;
 };
 
 namespace texture {

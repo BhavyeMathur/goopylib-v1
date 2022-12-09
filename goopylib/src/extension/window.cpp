@@ -14,7 +14,6 @@ struct KeyCallback {
 struct WindowObject {
     PyObject_HEAD
     std::unique_ptr<gp::Window> window;
-    gp::WindowConfig config;
 
     PyObject *resize_callback;
     PyObject *close_callback;
@@ -27,6 +26,8 @@ struct WindowObject {
     PyObject *focus_callback;
     PyObject *refresh_callback;
 
+    PyObject *background;
+
     std::vector<KeyCallback> key_callbacks;
 };
 
@@ -38,16 +39,23 @@ namespace window {
         static const char *kwlist[] = {"width", "height", "title", nullptr};
 
         PyObject *tmp = nullptr;
-        self->config = gp::WindowConfig();
-        if (!PyArg_ParseTupleAndKeywords(args, kwds, "II|U", (char **) kwlist, &self->config.width,
-                                         &self->config.height, &tmp)) {
+        int width, height;
+        if (!PyArg_ParseTupleAndKeywords(args, kwds, "II|U", (char **) kwlist, &width, &height, &tmp)) {
             return -1;
         }
-        if (tmp) {
-            self->config.title = PyUnicode_AsUTF8(tmp);
-        }
 
-        self->window = gp::make_unique<gp::Window>(self->config);
+        self->background = Color_create(PyTuple_New(0));
+        gp::WindowConfig config;
+
+        if (tmp) {
+            config = gp::WindowConfig(width, height, PyUnicode_AsUTF8(tmp), 0, 0,
+            Color_get_pointer(self->background));
+        }
+        else {
+            config = gp::WindowConfig(width, height, "goopylib Window", 0, 0,
+            Color_get_pointer(self->background));
+        }
+        self->window = gp::make_unique<gp::Window>(config);
 
         GP_PY_WINDOW_TRACE("Initialized gp.Window()");
 
@@ -76,6 +84,8 @@ namespace window {
         Py_VISIT(self->focus_callback);
         Py_VISIT(self->refresh_callback);
 
+        Py_VISIT(self->background);
+
         for (auto key: self->key_callbacks) {
             Py_VISIT(key.callback);
         }
@@ -99,6 +109,8 @@ namespace window {
         Py_CLEAR(self->focus_callback);
         Py_CLEAR(self->refresh_callback);
 
+        Py_CLEAR(self->background);
+
         for (auto key: self->key_callbacks) {
             Py_CLEAR(key.callback);
         }
@@ -121,6 +133,8 @@ namespace window {
         Py_XDECREF(self->maximize_callback);
         Py_XDECREF(self->focus_callback);
         Py_XDECREF(self->refresh_callback);
+
+        Py_XDECREF(self->background);
 
         for (auto key: self->key_callbacks) {
             Py_XDECREF(key.callback);
@@ -402,7 +416,7 @@ namespace window {
         }
         #endif
 
-        unsigned int width = (unsigned int) PyLong_AsLong(value);
+        int width = (int) PyLong_AsLong(value);
 
         #if GP_ERROR_CHECKING
         if (width <= 0) {
@@ -429,7 +443,7 @@ namespace window {
         }
         #endif
 
-        unsigned int height = (unsigned int) PyLong_AsLong(value);
+        int height = (int) PyLong_AsLong(value);
 
         #if GP_ERROR_CHECKING
         if (height <= 0) {
@@ -439,6 +453,90 @@ namespace window {
 
         self->window->setHeight(height);
         return 0;
+    }
+
+    // Title
+    static int set_title(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(-1)
+
+        #if GP_ERROR_CHECKING
+        if (!PyUnicode_Check(value)) {
+            RAISE_TYPE_ERROR(-1, "string argument expected, got %S", PyObject_Type(value))
+        }
+        #endif
+
+        self->window->setTitle(PyUnicode_AsUTF8(value));
+        return 0;
+    }
+
+    static PyObject *get_title(WindowObject *self, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(nullptr)
+
+        return PyUnicode_FromString(self->window->getTitle());
+    }
+
+    // X Position
+    static int set_x_position(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(-1)
+
+        if (!PyLong_Check(value)) {
+            RAISE_TYPE_ERROR(-1, "integer", value)
+        }
+
+        self->window->setXPos((int) PyLong_AsLong(value));
+        return 0;
+    }
+
+    static PyObject *get_x_position(WindowObject *self, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(nullptr)
+
+        return PyLong_FromLong(self->window->getXPos());
+    }
+
+    // Y Position
+    static int set_y_position(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(-1)
+
+        if (!PyLong_Check(value)) {
+            RAISE_TYPE_ERROR(-1, "integer", value)
+        }
+
+        self->window->setYPos((int) PyLong_AsLong(value));
+        return 0;
+    }
+
+    static PyObject *get_y_position(WindowObject *self, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(nullptr)
+
+        return PyLong_FromLong(self->window->getYPos());
+    }
+
+    // Background
+    static int set_background(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(-1)
+
+        if (Color_isinstance(value)) {
+            SET_PYOBJECT_ATTRIBUTE(self->background, value)
+        }
+        else {
+            PyObject *tmp = self->background;
+            self->background = Color_create(value);
+            Py_XDECREF(tmp);
+
+            if (self->background == nullptr) {
+                RAISE_TYPE_ERROR(-1, "color", value)
+            }
+        }
+
+        self->window->setBackground(Color_get_pointer(self->background));
+
+        return 0;
+    }
+
+    static PyObject *get_background(WindowObject *self, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(nullptr)
+
+        RETURN_PYOBJECT(self->background);
     }
 
     // Minimum Width
@@ -451,7 +549,7 @@ namespace window {
         CHECK_WINDOW_ACTIVE(-1)
 
         if (PyLong_Check(value)) {
-            unsigned int minWidth = (unsigned int) PyLong_AsLong(value);
+            int minWidth = (int) PyLong_AsLong(value);
 
             #if GP_ERROR_CHECKING
             if (minWidth < 0) {
@@ -480,7 +578,7 @@ namespace window {
         CHECK_WINDOW_ACTIVE(-1)
 
         if (PyLong_Check(value)) {
-            unsigned int minHeight = (unsigned int) PyLong_AsLong(value);
+            int minHeight = (int) PyLong_AsLong(value);
             #if GP_ERROR_CHECKING
             if (minHeight < 0) {
                 RAISE_VALUE_ERROR(-1, "minimum height must be greater than or equal to 0")
@@ -565,85 +663,10 @@ namespace window {
         }
         return 0;
     }
-
-    // X Position
-    static int set_x_position(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
-        CHECK_WINDOW_ACTIVE(-1)
-
-        if (!PyLong_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "integer", value)
-        }
-
-        self->window->setXPos((int) PyLong_AsLong(value));
-        return 0;
-    }
-
-    static PyObject *get_x_position(WindowObject *self, void *Py_UNUSED(closure)) {
-        CHECK_WINDOW_ACTIVE(nullptr)
-
-        return PyLong_FromLong(self->window->getXPos());
-    }
-
-    // Y Position
-    static int set_y_position(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
-        CHECK_WINDOW_ACTIVE(-1)
-
-        if (!PyLong_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "integer", value)
-        }
-
-        self->window->setYPos((int) PyLong_AsLong(value));
-        return 0;
-    }
-
-    static PyObject *get_y_position(WindowObject *self, void *Py_UNUSED(closure)) {
-        CHECK_WINDOW_ACTIVE(nullptr)
-
-        return PyLong_FromLong(self->window->getYPos());
-    }
-
-    // Title
-    static int set_title(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
-        CHECK_WINDOW_ACTIVE(-1)
-
-        #if GP_ERROR_CHECKING
-        if (!PyUnicode_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "string argument expected, got %S", PyObject_Type(value))
-        }
-        #endif
-
-        self->window->setTitle(PyUnicode_AsUTF8(value));
-        return 0;
-    }
-
-    static PyObject *get_title(WindowObject *self, void *Py_UNUSED(closure)) {
-        CHECK_WINDOW_ACTIVE(nullptr)
-
-        return PyUnicode_FromString(self->window->getTitle());
-    }
 }
 
 // Window Get & Set functions
 namespace window {
-    // Position
-    static PyObject *set_position(WindowObject *self, PyObject *args) {
-        CHECK_WINDOW_ACTIVE(nullptr)
-
-        int x_position, y_position;
-        if (!PyArg_ParseTuple(args, "ii", &x_position, &y_position)) {
-            return nullptr;
-        }
-
-        self->window->setPosition(x_position, y_position);
-        Py_RETURN_NONE;
-    }
-
-    static PyObject *get_position(WindowObject *self, void *Py_UNUSED(closure)) {
-        CHECK_WINDOW_ACTIVE(nullptr)
-
-        return PyTuple_Pack(2, PyLong_FromLong(self->window->getXPos()), PyLong_FromLong(self->window->getYPos()));
-    }
-
     // Size
     static PyObject *set_size(WindowObject *self, PyObject *args) {
         CHECK_WINDOW_ACTIVE(nullptr)
@@ -672,6 +695,25 @@ namespace window {
         return PyTuple_Pack(2, PyLong_FromLong(self->window->getWidth()), PyLong_FromLong(self->window->getHeight()));
     }
 
+    // Position
+    static PyObject *set_position(WindowObject *self, PyObject *args) {
+        CHECK_WINDOW_ACTIVE(nullptr)
+
+        int x_position, y_position;
+        if (!PyArg_ParseTuple(args, "ii", &x_position, &y_position)) {
+            return nullptr;
+        }
+
+        self->window->setPosition(x_position, y_position);
+        Py_RETURN_NONE;
+    }
+
+    static PyObject *get_position(WindowObject *self, void *Py_UNUSED(closure)) {
+        CHECK_WINDOW_ACTIVE(nullptr)
+
+        return PyTuple_Pack(2, PyLong_FromLong(self->window->getXPos()), PyLong_FromLong(self->window->getYPos()));
+    }
+
     // Size Limits
     static PyObject *set_size_limits(WindowObject *self, PyObject *args, PyObject *kwds) {
         CHECK_WINDOW_ACTIVE(nullptr)
@@ -684,9 +726,9 @@ namespace window {
             return nullptr;
         }
 
-        unsigned int tmp_min_width, tmp_min_height, tmp_max_width, tmp_max_height;
+        int tmp_min_width, tmp_min_height, tmp_max_width, tmp_max_height;
         if (PyLong_Check(min_width)) {
-            tmp_min_width = (unsigned int) PyLong_AsLong(min_width);
+            tmp_min_width = (int) PyLong_AsLong(min_width);
         }
         else if (min_width == Py_None) {
             tmp_min_width = 0;
@@ -696,7 +738,7 @@ namespace window {
         }
 
         if (PyLong_Check(max_width)) {
-            tmp_max_width = (unsigned int) PyLong_AsLong(max_width);
+            tmp_max_width = (int) PyLong_AsLong(max_width);
         }
         else if (max_width == Py_None) {
             tmp_max_width = MAX_WIDTH;
@@ -761,10 +803,10 @@ namespace window {
             return nullptr;
         }
 
-        unsigned int tmp_width, tmp_height;
+        int tmp_width, tmp_height;
 
         if (PyLong_Check(min_width)) {
-            tmp_width = (unsigned int) PyLong_AsLong(min_width);
+            tmp_width = (int) PyLong_AsLong(min_width);
         }
         else if (min_width == Py_None) {
             tmp_width = 0;
@@ -774,7 +816,7 @@ namespace window {
         }
 
         if (PyLong_Check(min_height)) {
-            tmp_height = (unsigned int) PyLong_AsLong(min_height);
+            tmp_height = (int) PyLong_AsLong(min_height);
         }
         else if (min_height == Py_None) {
             tmp_height = 0;
@@ -812,10 +854,10 @@ namespace window {
             return nullptr;
         }
 
-        unsigned int tmp_width, tmp_height;
+        int tmp_width, tmp_height;
 
         if (PyLong_Check(max_width)) {
-            tmp_width = (unsigned int) PyLong_AsLong(max_width);
+            tmp_width = (int) PyLong_AsLong(max_width);
         }
         else if (max_width == Py_None) {
             tmp_width = MAX_WIDTH;
@@ -1446,16 +1488,17 @@ namespace window {
     static PyGetSetDef getsetters[] = {
             {"width",                     (getter) get_width,                     (setter) set_width,                     "width",                     nullptr},
             {"height",                    (getter) get_height,                    (setter) set_height,                    "height",                    nullptr},
-
             {"title",                     (getter) get_title,                     (setter) set_title,                     "title",                     nullptr},
+
+            {"x_position",                (getter) get_x_position,                (setter) set_x_position,                "x position",                nullptr},
+            {"y_position",                (getter) get_y_position,                (setter) set_y_position,                "y position",                nullptr},
+
+            {"background",                (getter) window::get_background,        (setter) window::set_background,        "background",                nullptr},
 
             {"min_width",                 (getter) get_min_width,                 (setter) set_min_width,                 "minimum width",             nullptr},
             {"max_width",                 (getter) get_max_width,                 (setter) set_max_width,                 "maximum width",             nullptr},
             {"min_height",                (getter) get_min_height,                (setter) set_min_height,                "minimum height",            nullptr},
             {"max_height",                (getter) get_max_height,                (setter) set_max_height,                "maximum height",            nullptr},
-
-            {"x_position",                (getter) get_x_position,                (setter) set_x_position,                "x position",                nullptr},
-            {"y_position",                (getter) get_y_position,                (setter) set_y_position,                "y position",                nullptr},
 
             {"resizable",                 (getter) is_resizable,                  (setter) set_resizable,                 "resizable",                 nullptr},
             {"decorated",                 (getter) is_decorated,                  (setter) set_decorated,                 "decorated",                 nullptr},
@@ -1504,10 +1547,31 @@ namespace window {
     }
 }
 
-PyObject *PyInit_window(PyObject *m) {
-    GP_PY_WINDOW_TRACE("Initializing window module");
+static struct PyModuleDef windowmodule = {
+        PyModuleDef_HEAD_INIT,
+        .m_name = "core",
+        .m_size = -1,
+        .m_methods = nullptr,
+};
+
+PyMODINIT_FUNC PyInit_window(void) {
+    #if GP_LOGGING
+    std::cout << "Initializing window logger" << std::endl;
+    #endif
+    gp::Initialize();
+
+    GP_PY_TRACE("Initializing window module");
+
+    PyObject *m = PyModule_Create(&windowmodule);
+    if (m == nullptr) {
+        return nullptr;
+    }
 
     EXPOSE_CLASS(WindowType, "Window")
+
+    if (import_color() < 0) {
+        return nullptr;
+    }
 
     return m;
 }

@@ -480,9 +480,10 @@ static struct PyModuleDef easingmodule = {
 };
 
 PyMODINIT_FUNC PyInit_easing() {
-    gp::CoreLogger = spdlog::get("GOOPYLIB");
-    gp::PythonLogger = spdlog::get("PYTHON");
-    gp::ClientLogger = spdlog::get("CLIENT");
+    #if GP_LOGGING
+    std::cout << "Initializing easing logger" << std::endl;
+    gp::Log::Init();
+    #endif
 
     GP_PY_TRACE("Initializing easing module");
 

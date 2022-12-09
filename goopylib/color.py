@@ -11,6 +11,18 @@ class Color:
     def __repr__(self) -> str:
         return self.__not_implemented()
 
+    def __add__(self, other: Union[int, Color]) -> Color:
+        return self.__not_implemented()
+
+    def __sub__(self, other: Union[int, Color]) -> Color:
+        return self.__not_implemented()
+
+    def __iadd__(self, other: Union[int, Color]):
+        self.__not_implemented()
+
+    def __isub__(self, other: Union[int, Color]):
+        self.__not_implemented()
+
     @property
     def red(self) -> int:
         return self.__not_implemented()
@@ -244,4 +256,20 @@ def hsl_to_hsl(hue: int, saturation: float, luminance: float) -> tuple[int, floa
 # Random Colors
 
 def random_rgb() -> ColorRGB:
+    raise NotImplementedError()
+
+
+def random_hex() -> ColorHex:
+    raise NotImplementedError()
+
+
+def random_cmyk() -> ColorCMYK:
+    raise NotImplementedError()
+
+
+def random_hsv() -> ColorHSV:
+    raise NotImplementedError()
+
+
+def random_hsl() -> ColorHSL:
     raise NotImplementedError()

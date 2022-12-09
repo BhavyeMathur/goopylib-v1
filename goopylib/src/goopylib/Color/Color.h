@@ -1,30 +1,30 @@
 #pragma once
 
 namespace gp {
-    struct RGB;
+    struct GPAPI RGB;
 
-    class ColorRGB;
+    class GPAPI ColorRGB;
 
-    class ColorHex;
+    class GPAPI ColorHex;
 
-    class ColorCMYK;
+    class GPAPI ColorCMYK;
 
-    class ColorHSV;
+    class GPAPI ColorHSV;
 
-    class ColorHSL;
+    class GPAPI ColorHSL;
 }
 
 
 namespace gp {
-    class Color {
+    class GPAPI Color {
     public:
         Color();
 
         Color(Color const &color);
 
-        Color(ColorHSV const &color);
+        explicit Color(ColorHSV const &color);
 
-        Color(ColorHSL const &color);
+        explicit Color(ColorHSL const &color);
 
         Color(const RGB &color, float alpha);
 
@@ -32,23 +32,23 @@ namespace gp {
             GP_COLOR_TRACE("Deallocating Color");
         }
 
-        Color(unsigned int red, unsigned int green, unsigned int blue);
+        Color(int red, int green, int blue);
 
-        Color(unsigned int red, unsigned int green, unsigned int blue, float alpha);
+        Color(int red, int green, int blue, float alpha);
 
         virtual std::string toString() const;
 
-        unsigned int getRed() const;
+        int getRed() const;
 
-        void setRed(unsigned int red);
+        void setRed(int red);
 
-        unsigned int getGreen() const;
+        int getGreen() const;
 
-        void setGreen(unsigned int red);
+        void setGreen(int red);
 
-        unsigned int getBlue() const;
+        int getBlue() const;
 
-        void setBlue(unsigned int red);
+        void setBlue(int red);
 
         float getRedf() const;
 
@@ -60,33 +60,61 @@ namespace gp {
 
         void setAlpha(float alpha);
 
+        // Operator Overloads
+
+        Color operator+(int value) const;
+
+        Color operator+(const Color &value) const;
+
+        Color operator-(int value) const;
+
+        Color operator-(const Color &value) const;
+
+        Color &operator+=(int value);
+
+        Color &operator+=(const Color &value);
+
+        Color &operator-=(int value);
+
+        Color &operator-=(const Color& value);
+
     protected:
-        unsigned int m_Red;
-        unsigned int m_Green;
-        unsigned int m_Blue;
+        int m_Red;
+        int m_Green;
+        int m_Blue;
         float m_Alpha;
 
-        void fromRGB(unsigned int red, unsigned int green, unsigned blue, float alpha);
+        void fromRGB(int red, int green, int blue, float alpha);
 
         void fromRGB(const RGB &color, float alpha);
 
         void fromColor(const Color &color);
 
+        void update();
+
+        void clampRGBA();
+
+        void clampRGB();
+
+        void clampUpperRGB();
+
+        void clampLowerRGB();
+
     private:
-        float m_Redf;
-        float m_Greenf;
-        float m_Bluef;
+        mutable float m_Redf;
+        mutable float m_Greenf;
+        mutable float m_Bluef;
     };
 }
 
 namespace gp {
-    class ColorRGB final : public Color {
+    class GPAPI ColorRGB final : public Color {
     public:
         explicit ColorRGB(Color const &color);
 
-        ColorRGB(unsigned int red, unsigned int green, unsigned int blue);
+        ColorRGB(int red, int green, int blue);
 
-        ColorRGB(unsigned int red, unsigned int green, unsigned int blue, float alpha);
+        ColorRGB(int red, int green, int blue, float alpha);
 
         ~ColorRGB() {
             GP_COLOR_TRACE("Deallocating ColorRGB");
@@ -100,7 +128,7 @@ namespace gp {
 }
 
 namespace gp {
-    class ColorHex final : public Color {
+    class GPAPI ColorHex final : public Color {
     public:
         explicit ColorHex(Color const &color);
 
@@ -122,7 +150,7 @@ namespace gp {
 }
 
 namespace gp {
-    class ColorCMYK final : public Color {
+    class GPAPI ColorCMYK final : public Color {
     public:
         explicit ColorCMYK(Color const &color);
 
@@ -163,15 +191,15 @@ namespace gp {
 }
 
 namespace gp {
-    class ColorHSV final : public Color {
+    class GPAPI ColorHSV final : public Color {
     public:
         explicit ColorHSV(Color const &color);
 
         explicit ColorHSV(ColorHSL const &color);
 
-        ColorHSV(unsigned int hue, float saturation, float value);
+        ColorHSV(int hue, float saturation, float value);
 
-        ColorHSV(unsigned int hue, float saturation, float value, float alpha);
+        ColorHSV(int hue, float saturation, float value, float alpha);
 
         ~ColorHSV() {
             GP_COLOR_TRACE("Deallocating ColorHSV");
@@ -179,9 +207,9 @@ namespace gp {
 
         std::string toString() const override;
 
-        unsigned int getHue() const;
+        int getHue() const;
 
-        void setHue(unsigned int value);
+        void setHue(int value);
 
         float getSaturation() const;
 
@@ -194,22 +222,22 @@ namespace gp {
     protected:
 
     private:
-        unsigned int m_Hue;
+        int m_Hue;
         float m_Saturation;
         float m_Value;
     };
 }
 
 namespace gp {
-    class ColorHSL final : public Color {
+    class GPAPI ColorHSL final : public Color {
     public:
         explicit ColorHSL(Color const &color);
 
         explicit ColorHSL(ColorHSV const &color);
 
-        ColorHSL(unsigned int hue, float saturation, float luminance);
+        ColorHSL(int hue, float saturation, float luminance);
 
-        ColorHSL(unsigned int hue, float saturation, float luminance, float alpha);
+        ColorHSL(int hue, float saturation, float luminance, float alpha);
 
         ~ColorHSL() {
             GP_COLOR_TRACE("Deallocating ColorHSL");
@@ -217,9 +245,9 @@ namespace gp {
 
         std::string toString() const override;
 
-        unsigned int getHue() const;
+        int getHue() const;
 
-        void setHue(unsigned int value);
+        void setHue(int value);
 
         float getSaturation() const;
 
@@ -232,8 +260,12 @@ namespace gp {
     protected:
 
     private:
-        unsigned int m_Hue;
+        int m_Hue;
         float m_Saturation;
         float m_Luminance;
     };
+}
+
+namespace gp {
+    std::ostream &operator<<(std::ostream &os, const Color &color);
 }

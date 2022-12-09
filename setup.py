@@ -1,9 +1,12 @@
-from distutils.core import setup, Extension
+import os
 import subprocess
 import sys
-import os
+from distutils.core import Extension, setup
 
 path = os.path.abspath(os.getcwd())
+
+
+# regex to replace function body: \) \{[^}]*\} with );
 
 
 def build_release():
@@ -12,25 +15,36 @@ def build_release():
 
 
 def build_c_extensions():
-    opengl_kwargs = {"extra_link_args": ["-framework", "OpenGL", "-framework", "Cocoa",
-                                         "-framework", "IOKit", "-framework", "CoreVideo",
-                                         "-framework", "CoreFoundation",
-                                         f"{path}/goopylib/vendor/GLFW/libglfw.3.3.dylib"], }
-    ext_kwargs = {"include_dirs": ["goopylib/src", "goopylib/vendor"],
-                  "extra_objects": ["goopylib/goopylib.a"],
-                  "extra_compile_args": ["-std=c++11"]}
+    ext_kwargs = {"include_dirs":         ["goopylib/src", "goopylib/vendor"],
+                  "extra_compile_args":   ["-std=c++11", "-v"],
+                  "extra_link_args":      [],
+                  "runtime_library_dirs": [f"{path}/goopylib"],
+                  "extra_objects":        ["goopylib/goopylib.dylib"]}
+    setup_kwargs = {"options": {"build": {"build_lib": "."}}}
 
-    setup(ext_modules=[Extension(name="goopylib.ext.core", sources=["goopylib/src/extension/core.cpp",
-                                                                    "goopylib/src/extension/window.cpp"], **ext_kwargs,
-                                 **opengl_kwargs)], options={"build": {"build_lib": "."}})
+    setup(ext_modules=[Extension(name="goopylib.ext.easing",
+                                 sources=["goopylib/src/extension/easing.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
 
-    setup(ext_modules=[
-        Extension(name="goopylib.ext.easing", sources=["goopylib/src/extension/easing.cpp"], **ext_kwargs)],
-          options={"build": {"build_lib": "."}})
+    setup(ext_modules=[Extension(name="goopylib.ext.color",
+                                 sources=["goopylib/src/extension/color/module.cpp",
+                                          "goopylib/src/extension/color/color.cpp",
+                                          "goopylib/src/extension/color/conversions.cpp",
+                                          "goopylib/src/extension/color/random.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
 
-    setup(
-        ext_modules=[Extension(name="goopylib.ext.color", sources=["goopylib/src/extension/color.cpp"], **ext_kwargs)],
-        options={"build": {"build_lib": "."}})
+    ext_kwargs["extra_link_args"] += ["-framework", "OpenGL", "-framework", "Cocoa",
+                                      "-framework", "IOKit", "-framework", "CoreVideo",
+                                      "-framework", "CoreFoundation",
+                                      f"{path}/goopylib/vendor/GLFW/libglfw.3.3.dylib"]
+
+    setup(ext_modules=[Extension(name="goopylib.ext.core",
+                                 sources=["goopylib/src/extension/core.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.window",
+                                 sources=["goopylib/src/extension/window.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
 
 
 def build_html_documentation():
@@ -59,7 +73,6 @@ def build_html_documentation():
     with open("goopylib/easing.py", "w+") as fp:
         fp.writelines(new)
 
-    # noinspection PyBroadException
     try:
         p = subprocess.Popen(["make", "clean", "html"], cwd="docs")
         p.wait()
@@ -77,20 +90,17 @@ def countlines(start, lines=0, _header=True, _begin_start=None):
         print('{:->11}|{:->11}|{:->20}'.format('', '', ''))
 
     for file in os.listdir(start):
-        file = os.path.join(start, file)
-        if os.path.isfile(file):
-            if any(file.endswith(end) for end in (".py", ".c", ".cpp", ".h", ".hpp")):
-                if not any(folder in file for folder in {"vendor", "venv", "build", "docs"}):
-                    with open(file, 'r') as f:
-                        newlines = len(f.readlines())
-                        lines += newlines
+        filepath = os.path.join(start, file)
+        if any(file.endswith(end) for end in (".py", ".c", ".cpp", ".h", ".hpp")):
 
-                        print('{:>10} |{:>10} | {}'.format(newlines, lines, file))
+            with open(filepath, 'r') as f:
+                newlines = len(f.readlines())
+                lines += newlines
 
-    for file in os.listdir(start):
-        file = os.path.join(start, file)
-        if os.path.isdir(file):
-            lines = countlines(file, lines, _header=False, _begin_start=start)
+                print('{:>10} |{:>10} | {}'.format(newlines, lines, filepath))
+
+        elif os.path.isdir(filepath) and file not in {"vendor", "venv", "build", "docs"}:
+            lines = countlines(filepath, lines, _header=False, _begin_start=start)
 
     return lines
 
@@ -105,18 +115,25 @@ Choose a task to perform:
 
 Enter option: """
 
+
+def run_subprocess(arg):
+    if arg == "1":
+        subprocess.run(["python3", "setup.py", "sdist", "bdist_wheel"])
+    elif arg == "2":
+        subprocess.run(["python3", "setup.py", "build"])
+    elif arg == "3":
+        countlines(".")
+    elif arg == "4":
+        build_html_documentation()
+    else:
+        raise ValueError(f"Unknown configuration '{arg}'")
+
+
 if __name__ == "__main__":
-    if ((len(sys.argv) == 1) and (arg := input(arg_text))) or (arg := sys.argv[-1]) in {"1", "2", "3", "4"}:
-        if arg == "1":
-            subprocess.run(["python3", "setup.py", "sdist", "bdist_wheel"])
-        elif arg == "2":
-            subprocess.run(["python3", "setup.py", "build"])
-        elif arg == "3":
-            countlines(".")
-        elif arg == "4":
-            build_html_documentation()
-        else:
-            raise ValueError(f"Unknown configuration '{arg}'")
+    if len(sys.argv) == 1:
+        run_subprocess(input(arg_text))
+    elif sys.argv[-1] in {"1", "2", "3", "4"}:
+        run_subprocess(sys.argv[-1])
     else:
         if sys.argv[1] == "sdist" and sys.argv[2] == "bdist_wheel":
             build_release()

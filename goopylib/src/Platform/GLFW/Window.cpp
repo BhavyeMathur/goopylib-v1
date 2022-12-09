@@ -7,8 +7,8 @@ namespace gp {
     Window::Window(const WindowConfig &config) : BaseWindow(config) {
         GP_WINDOW_INFO("Creating window '{0}' ({1}, {2})", config.title, config.width, config.height);
 
-        m_Window = glfwCreateWindow((int) m_Data.width,
-                                    (int) m_Data.height,
+        m_Window = glfwCreateWindow(m_Data.width,
+                                    m_Data.height,
                                     m_Data.title, nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
 
@@ -20,6 +20,10 @@ namespace gp {
     Window::~Window() {
         GP_WINDOW_INFO("Deallocating window '{0}'", m_Data.title);
         destroy();
+    }
+
+    GLFWwindow* Window::getWindowGLFW() {
+        return m_Window;
     }
 }
 
@@ -225,8 +229,6 @@ namespace gp {
 
     void Window::_update() const {
         glfwMakeContextCurrent(m_Window);
-        glClear(GL_COLOR_BUFFER_BIT);
-
         glfwSwapBuffers(m_Window);
     }
 
@@ -243,8 +245,8 @@ namespace gp {
         }
     }
 
-    void Window::_unfullscreen(unsigned int width, unsigned int height, int xPos, int yPos) const {
-        glfwSetWindowMonitor(m_Window, nullptr, xPos, yPos, (int) width, (int) height, 0);
+    void Window::_unfullscreen(int width, int height, int xPos, int yPos) const {
+        glfwSetWindowMonitor(m_Window, nullptr, xPos, yPos, width, height, 0);
     }
 
     void Window::_restore() const {
@@ -270,22 +272,32 @@ namespace gp {
     void Window::_focus() const {
         glfwFocusWindow(m_Window);
     }
+}
 
+// Window private update methods
+namespace gp {
     void Window::_updateSize() const {
-        glfwSetWindowSize(m_Window, (int) m_Data.width, (int) m_Data.height);
-    }
-
-    void Window::_updatePosition() const {
-        glfwSetWindowPos(m_Window, m_Data.xPos, m_Data.yPos);
+        glfwSetWindowSize(m_Window, m_Data.width, m_Data.height);
     }
 
     void Window::_updateTitle() const {
         glfwSetWindowTitle(m_Window, m_Data.title);
     }
 
+    void Window::_updatePosition() const {
+        glfwSetWindowPos(m_Window, m_Data.xPos, m_Data.yPos);
+    }
+
+    void Window::_updateBackground() const {
+        glClearColor(m_Data.background.getRedf(),
+                     m_Data.background.getGreenf(),
+                     m_Data.background.getBluef(), 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+
     void Window::_updateSizeLimits() const {
-        glfwSetWindowSizeLimits(m_Window, (int) m_Data.minWidth, (int) m_Data.minHeight,
-                                (int) m_Data.maxWidth, (int) m_Data.maxHeight);
+        glfwSetWindowSizeLimits(m_Window, m_Data.minWidth, m_Data.minHeight,
+                                m_Data.maxWidth, m_Data.maxHeight);
     }
 
     void Window::_updateAspectRatio(int numerator, int denominator) const {

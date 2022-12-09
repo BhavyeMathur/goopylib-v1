@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "Base.h"
-#include "goopylib/Debug/Log.h"
-#include "Platform/Independent/BaseWindow.h"
 
 namespace {
     void OnUpdate() {
@@ -19,17 +17,12 @@ namespace {
 namespace gp {
     bool glfw_initialized = false;
 
-    int Initialize() {
+    GPAPI int Initialize() {
         #if GP_LOGGING
-        if (!spdlog::get("GOOPYLIB")) {
-            loggerInit();
-        }
-        else {
-            gp::CoreLogger = spdlog::get("GOOPYLIB");
-            gp::PythonLogger = spdlog::get("PYTHON");
-            gp::ClientLogger = spdlog::get("CLIENT");
-        }
+        gp::Log::Init();
         #endif
+
+        gp::InitializeW3CX11();
 
         GP_CORE_INFO("Initializing goopylib");
 
@@ -54,10 +47,12 @@ namespace gp {
         return 0;
     }
 
-    void Terminate() {
+    GPAPI void Terminate() {
         GP_CORE_INFO("Terminating goopylib");
 
         BaseWindow::destroyAll();
+
+        DeallocateW3CX11();
 
         #if GP_USING_GLFW
         GP_CORE_TRACE("Terminating GLFW");
@@ -66,55 +61,55 @@ namespace gp {
         #endif
     }
 
-    void Update() {
+    GPAPI void Update() {
+        OnUpdate();
         #if GP_USING_GLFW
         glfwPollEvents();
         #endif
-        OnUpdate();
     }
 
     #if GP_USING_GLFW
 
-    void UpdateOnEvent() {
+    GPAPI void UpdateOnEvent() {
         glfwWaitEvents();
         OnUpdate();
     }
 
-    void UpdateTimeout(double timeout) {
+    GPAPI void UpdateTimeout(double timeout) {
         glfwWaitEventsTimeout(timeout);
         OnUpdate();
     }
 
-    std::string GLFWCompiledVersion() {
+    GPAPI std::string GLFWCompiledVersion() {
         return {glfwGetVersionString()};
     }
 
-    std::string GLFWCurrentVersion() {
+    GPAPI std::string GLFWCurrentVersion() {
         int major, minor, revision;
         glfwGetVersion(&major, &minor, &revision);
 
         return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(revision);
     }
 
-    int GetRefreshRate() {
+    GPAPI int GetRefreshRate() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->refreshRate;
     }
 
-    int GetScreenWidth() {
+    GPAPI int GetScreenWidth() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
     }
 
-    int GetScreenHeight() {
+    GPAPI int GetScreenHeight() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
     }
 
-    int GetNumberOfMonitors() {
+    GPAPI int GetNumberOfMonitors() {
         int count;
         glfwGetMonitors(&count);
         return count;
     }
 
-    void SetBufferSwapInterval(int interval) {
+    GPAPI void SetBufferSwapInterval(int interval) {
         glfwSwapInterval(interval);
     }
 
@@ -122,7 +117,7 @@ namespace gp {
 
     #if GP_USING_OPENGL
 
-    std::string OpenGLVersion() {
+    GPAPI std::string OpenGLVersion() {
         return {(char *) glGetString(GL_VERSION)};
     }
 

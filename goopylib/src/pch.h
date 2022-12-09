@@ -1,7 +1,11 @@
 #pragma once
 
-#ifndef GP_PCH
-#define GP_PCH
+#define GP_USING_GLFW true
+#define GP_USING_OPENGL true
+#define GP_ERROR_CHECKING true
+#define GP_LOGGING true
+#define GP_LOGGING_WINDOW true
+#define GP_LOGGING_COLORS false
 
 #include <iostream>
 #include <string>
@@ -23,40 +27,40 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
-#include "goopylib/Math/gpmath.h"
-
+#include <OpenGL/gl.h>
 #ifdef __APPLE__
 #define __gl_h_
-#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
-#define GL_SILENCE_DEPRECATION
-
+# define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
-
 #endif
 
-#define UNSUPPORTED_PLATFORM_ERROR #error Unsupported Platform
-#define GP_USING_GLFW true
-#define GP_USING_OPENGL true
-#define GP_ERROR_CHECKING true
-#define GP_LOGGING true
-#define GP_LOGGING_WINDOW true
-#define GP_LOGGING_COLORS false
-
 #if GP_USING_GLFW
-
 #include <GLFW/glfw3.h>
-
 #endif
 
 #define MAX_WIDTH 65535
 #define MAX_HEIGHT 65535
 
+#define _GP_BUILD_DLL
+
 #define UNUSED(parameter) __attribute__((unused)) parameter
 
-#include "goopylib/Debug/Log.h"
-
+#if defined(_WIN32) && defined(_GP_BUILD_DLL)
+/* We are building goopylib as a Win32 DLL */
+ #define GPAPI __declspec(dllexport)
+#elif defined(_WIN32) && defined(GP_DLL)
+/* We are calling a goopylib Win32 DLL */
+ #define GPAPI __declspec(dllimport)
+#elif defined(__GNUC__) && defined(_GP_BUILD_DLL)
+/* We are building GP as a Unix shared library */
+#define GPAPI __attribute__((visibility("default")))
+#else
+#define GPAPI
 #endif
+
+#include "goopylib/Debug/Log.h"
+#include "goopylib/Math/gpmath.h"
 
 template<typename ... Args>
     std::string strformat(const std::string &format, Args ... args) {

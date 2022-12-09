@@ -1,7 +1,5 @@
 #pragma once
 
-#define PY_SSIZE_T_CLEAN
-
 #include <Python.h>
 #include "pch.h"
 
@@ -57,3 +55,5 @@ Py_XDECREF(tmp);
 #define RETURN_PYOBJECT(name) \
 Py_INCREF(name); \
 return name;
+
+#define TYPE_NAME(object) object->ob_type->tp_name

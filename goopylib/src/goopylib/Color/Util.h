@@ -4,13 +4,13 @@
 #include "ColorConversions.h"
 
 namespace gp {
-    ColorRGB randomRGB();
+    GPAPI ColorRGB randomRGB();
 
-    ColorHex randomHex();
+    GPAPI ColorHex randomHex();
 
-    ColorCMYK randomCMYK();
+    GPAPI ColorCMYK randomCMYK();
 
-    ColorHSV randomHSV();
+    GPAPI ColorHSV randomHSV();
 
-    ColorHSL randomHSL();
+    GPAPI ColorHSL randomHSL();
 }

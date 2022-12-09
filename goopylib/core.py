@@ -53,7 +53,6 @@ def update_on_event():
     raise NotImplementedError()
 
 
-# noinspection PyUnusedLocal
 def update_timeout(timeout: Union[float, int] = None):
     """Updates goopylib after a duration has passed.
 
@@ -84,7 +83,6 @@ def opengl_version() -> str:
     raise NotImplementedError()
 
 
-# noinspection PyUnresolvedReferences
 def get_refresh_rate() -> int:
     """Returns the refresh rate of the primary monitor.
 
@@ -104,7 +102,6 @@ def get_refresh_rate() -> int:
     raise NotImplementedError()
 
 
-# noinspection PyUnresolvedReferences
 def get_screen_width() -> int:
     """Returns the width of the primary monitor.
 
@@ -124,7 +121,6 @@ def get_screen_width() -> int:
     raise NotImplementedError()
 
 
-# noinspection PyUnresolvedReferences
 def get_screen_height() -> int:
     """Returns the height of the primary monitor.
 
@@ -144,7 +140,6 @@ def get_screen_height() -> int:
     raise NotImplementedError()
 
 
-# noinspection PyUnresolvedReferences
 def number_of_monitors() -> int:
     """Returns the number of monitors connected.
 

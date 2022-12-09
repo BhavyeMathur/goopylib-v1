@@ -3,7 +3,6 @@ from typing import Callable
 EASING_TYPE = Callable[[float], float]
 
 
-# noinspection PyUnresolvedReferences
 def ease_linear() -> EASING_TYPE:
     r"""Returns a linear easing function
 
@@ -31,7 +30,6 @@ def ease_linear() -> EASING_TYPE:
     """
 
 
-# noinspection PyUnusedLocal, PyUnresolvedReferences
 def ease_poly(power: float = 6) -> EASING_TYPE:
     r"""Returns a polynomial easing function
 
@@ -65,17 +63,14 @@ def ease_poly(power: float = 6) -> EASING_TYPE:
     """
 
 
-# noinspection PyUnusedLocal
 def ease_poly_in(power: float = 6) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal
 def ease_poly_out(power: float = 6) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnresolvedReferences
 def ease_quad() -> EASING_TYPE:
     r"""Returns a quadratic easing function
 
@@ -114,7 +109,6 @@ def ease_quad_out() -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnresolvedReferences
 def ease_cubic() -> EASING_TYPE:
     r"""Returns a cubic easing function
 
@@ -153,7 +147,6 @@ def ease_cubic_out() -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnresolvedReferences
 def ease_quart() -> EASING_TYPE:
     r"""Returns a quartic easing function
 
@@ -192,7 +185,6 @@ def ease_quart_out() -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnresolvedReferences
 def ease_quint() -> EASING_TYPE:
     r"""Returns a quintic easing function
 
@@ -231,7 +223,6 @@ def ease_quint_out() -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnresolvedReferences
 def ease_sin() -> EASING_TYPE:
     r"""Returns a sine easing function
 
@@ -270,7 +261,6 @@ def ease_sin_out() -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal, PyUnresolvedReferences
 def ease_exp(base: float = 2.718281828459045) -> EASING_TYPE:
     r"""Returns an exponential easing function
 
@@ -304,17 +294,14 @@ def ease_exp(base: float = 2.718281828459045) -> EASING_TYPE:
     """
 
 
-# noinspection PyUnusedLocal
 def ease_exp_in(base: float = 2.718281828459045) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal
 def ease_exp_out(base: float = 2.718281828459045) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnresolvedReferences
 def ease_circle() -> EASING_TYPE:
     r"""Returns a circular easing function
 
@@ -353,7 +340,6 @@ def ease_circle_out() -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal, PyUnresolvedReferences
 def ease_back(factor: float = 1.70158) -> EASING_TYPE:
     r"""Returns a back easing function
 
@@ -388,17 +374,14 @@ def ease_back(factor: float = 1.70158) -> EASING_TYPE:
     """
 
 
-# noinspection PyUnusedLocal
 def ease_back_in(factor: float = 1.70158) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal
 def ease_back_out(factor: float = 1.70158) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal, PyUnresolvedReferences
 def ease_elastic(factor: int = 3) -> EASING_TYPE:
     r"""Returns an elastic easing function
 
@@ -433,17 +416,14 @@ def ease_elastic(factor: int = 3) -> EASING_TYPE:
     """
 
 
-# noinspection PyUnusedLocal
 def ease_elastic_in(factor: int = 3) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal
 def ease_elastic_out(factor: int = 3) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal, PyUnresolvedReferences
 def ease_bounce(bounces: int = 4, damping: float = 0.4) -> EASING_TYPE:
     r"""Returns a bounce easing function
 
@@ -474,18 +454,15 @@ def ease_bounce(bounces: int = 4, damping: float = 0.4) -> EASING_TYPE:
         """
 
 
-# noinspection PyUnusedLocal
 def ease_bounce_in(bounces: int = 4, damping: float = 0.4) -> EASING_TYPE:
     pass
 
 
-# noinspection PyUnusedLocal
 def ease_bounce_out(bounces: int = 4, damping: float = 0.4) -> EASING_TYPE:
     pass
 
 
 # TODO move to C++ API
-# noinspection PyUnusedLocal,PyUnresolvedReferences
 def combine_easing(easing1: EASING_TYPE, easing2: EASING_TYPE) -> EASING_TYPE:
     """Combines 2 easing functions together.
 

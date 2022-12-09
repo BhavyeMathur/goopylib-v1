@@ -3,12 +3,16 @@
 #include "Platform/Independent/BaseWindow.h"
 
 namespace gp {
-    class Window final : public BaseWindow {
+    class GPAPI Window final : public BaseWindow {
 
     public:
         explicit Window(const WindowConfig &config);
 
         ~Window() override;
+
+        #if GP_USING_GLFW
+        GLFWwindow* getWindowGLFW();
+        #endif
 
         // Window Attributes
         bool isResizable() const override;
@@ -80,9 +84,11 @@ namespace gp {
 
         void _updateSize() const override;
 
+        void _updateTitle() const override;
+
         void _updatePosition() const override;
 
-        void _updateTitle() const override;
+        void _updateBackground() const override;
 
         void _updateSizeLimits() const override;
 
@@ -92,7 +98,7 @@ namespace gp {
 
         void _fullscreen() const override;
 
-        void _unfullscreen(unsigned int width, unsigned int height, int xPos, int yPos) const override;
+        void _unfullscreen(int width, int height, int xPos, int yPos) const override;
 
         void _maximize() const override;
 
