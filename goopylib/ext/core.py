@@ -1,1 +1,1 @@
-# File to silence IDE errors
+"""File to silence IDE errors"""

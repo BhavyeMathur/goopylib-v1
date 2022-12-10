@@ -34,8 +34,8 @@ namespace gp {
         }
     }
 
-    BufferElement::BufferElement(ShaderDataType type, std::string name, bool normalized)
-            : m_Name(std::move(name)),
+    BufferElement::BufferElement(ShaderDataType type, const char *name, bool normalized)
+            : m_Name(name),
               m_Type(type),
               m_Size(shaderTypeSize(type)),
               m_Offset(0),
@@ -70,6 +70,10 @@ namespace gp {
                 GP_CORE_ERROR("Unrecognised Shader Type");
                 return 0;
         }
+    }
+
+    const char* BufferElement::getName() const {
+        return m_Name;
     }
 
     ShaderDataType BufferElement::getType() const {

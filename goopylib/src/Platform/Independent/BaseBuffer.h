@@ -4,7 +4,7 @@
 
 // Buffer Layout
 namespace gp {
-    enum class ShaderDataType {
+    enum class GPAPI ShaderDataType {
         None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
     };
 
@@ -14,9 +14,11 @@ namespace gp {
 
     int shaderTypeSize(ShaderDataType type);
 
-    class BufferElement {
+    class GPAPI BufferElement {
     public:
-        BufferElement(ShaderDataType type, std::string name, bool normalized = false);
+        BufferElement(ShaderDataType type, const char *name, bool normalized = false);
+
+        const char* getName() const;
 
         int getCount() const;
 
@@ -28,12 +30,12 @@ namespace gp {
         size_t m_Offset;
 
     private:
-        std::string m_Name;
+        const char *m_Name;
         ShaderDataType m_Type;
         bool m_Normalized;
     };
 
-    class BufferLayout {
+    class GPAPI BufferLayout {
     public:
         BufferLayout(std::initializer_list<BufferElement> elements);
 

@@ -23,7 +23,7 @@ def build_c_extensions():
     setup_kwargs = {"options": {"build": {"build_lib": "."}}}
 
     setup(ext_modules=[Extension(name="goopylib.ext.easing",
-                                 sources=["goopylib/src/extension/easing.cpp"],
+                                 sources=["goopylib/src/extension/math/easing.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.color",
@@ -44,6 +44,10 @@ def build_c_extensions():
 
     setup(ext_modules=[Extension(name="goopylib.ext.window",
                                  sources=["goopylib/src/extension/window.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.buffers",
+                                 sources=["goopylib/src/extension/buffers/buffers.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
 
