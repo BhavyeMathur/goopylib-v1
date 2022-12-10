@@ -9,7 +9,7 @@ namespace gp {
         GP_CORE_INFO("Deallocating Vertex Array");
     }
 
-    const std::vector<std::shared_ptr<BaseVertexBuffer>> &BaseVertexArray::getVertexBuffers() const {
+    const std::vector<const BaseVertexBuffer*> & BaseVertexArray::getVertexBuffers() const {
         return m_VertexBuffers;
     }
 

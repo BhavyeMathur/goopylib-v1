@@ -75,22 +75,6 @@ namespace gp {
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(const BufferLayout& layout, float *vertices, int count) {
-        return std::make_shared<VertexBuffer>(layout, vertices, count);
-    }
-
-    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(float *vertices, int count) {
-        return std::make_shared<VertexBuffer>(vertices, count);
-    }
-
-    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(const BufferLayout& layout, std::initializer_list<float> vertices) {
-        return std::make_shared<VertexBuffer>(layout, vertices);
-    }
-
-    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(std::initializer_list<float> vertices) {
-        return std::make_shared<VertexBuffer>(vertices);
-    }
-
     void VertexBuffer::bind() const {
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     }

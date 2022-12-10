@@ -9,7 +9,7 @@ namespace gp {
 
         virtual ~BaseVertexArray();
 
-        const std::vector<std::shared_ptr<BaseVertexBuffer>> &getVertexBuffers() const;
+        const std::vector<const BaseVertexBuffer*> & getVertexBuffers() const;
 
         const std::shared_ptr<BaseIndexBuffer> &getIndexBuffer() const;
 
@@ -19,12 +19,12 @@ namespace gp {
 
         virtual void draw() const = 0;
 
-        virtual void addVertexBuffer(const std::shared_ptr<BaseVertexBuffer> &vertexBuffer) = 0;
+        virtual void addVertexBuffer(const BaseVertexBuffer &vertexBuffer) = 0;
 
         virtual void setIndexBuffer(const std::shared_ptr<BaseIndexBuffer> &indexBuffer) = 0;
 
     protected:
-        std::vector<std::shared_ptr<BaseVertexBuffer>> m_VertexBuffers;
+        std::vector<const BaseVertexBuffer*> m_VertexBuffers;
         std::shared_ptr<BaseIndexBuffer> m_IndexBuffer;
         uint32_t m_VertexBufferIndex = 0;
     };
