@@ -116,14 +116,6 @@ namespace gp {
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    std::shared_ptr<BaseIndexBuffer> IndexBuffer::create(uint32_t *vertices, int count) {
-        return std::make_shared<IndexBuffer>(vertices, count);
-    }
-
-    std::shared_ptr<BaseIndexBuffer> IndexBuffer::create(std::initializer_list<uint32_t> vertices) {
-        return std::make_shared<IndexBuffer>(vertices);
-    }
-
     void IndexBuffer::bind() const {
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     }

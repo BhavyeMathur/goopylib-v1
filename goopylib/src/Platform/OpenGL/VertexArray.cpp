@@ -11,16 +11,14 @@ namespace gp {
         glGenVertexArrays(1, &m_RendererID);
         glBindVertexArray(m_RendererID);
 
-        setIndexBuffer(gp::IndexBuffer::create(indices, count));
+        setIndexBuffer(std::make_shared<IndexBuffer>(indices, count));
     }
 
     VertexArray::VertexArray(std::initializer_list<uint32_t> indices) {
         glGenVertexArrays(1, &m_RendererID);
         glBindVertexArray(m_RendererID);
 
-        uint32_t indexBufferIndices[indices.size()];
-        std::copy(indices.begin(), indices.end(), indexBufferIndices);
-        setIndexBuffer(gp::IndexBuffer::create(indexBufferIndices, (int) indices.size()));
+        setIndexBuffer(std::make_shared<IndexBuffer>(indices));
     }
 
     VertexArray::~VertexArray() {
@@ -116,6 +114,6 @@ namespace gp {
     void VertexArray::setIndexBuffer(std::initializer_list<uint32_t> indices) {
         glBindVertexArray(m_RendererID);
 
-        m_IndexBuffer = IndexBuffer::create(indices);
+        m_IndexBuffer = std::make_shared<IndexBuffer>(indices);
     }
 }

@@ -43,10 +43,6 @@ namespace gp {
 
         void unbind() const override;
 
-        static std::shared_ptr<BaseIndexBuffer> create(uint32_t *vertices, int count);
-
-        static std::shared_ptr<BaseIndexBuffer> create(std::initializer_list<uint32_t> vertices);
-
     private:
         uint32_t m_RendererID{};
     };
