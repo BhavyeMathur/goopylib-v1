@@ -17,6 +17,8 @@ namespace gp {
             case ShaderDataType::Int2:
             case ShaderDataType::Int3:
             case ShaderDataType::Int4:
+                return GL_INT;
+
             case ShaderDataType::Bool:
                 return GL_BOOL;
 
@@ -33,6 +35,8 @@ namespace gp {
             : BaseVertexBuffer(count) {
         glGenBuffers(1, &m_RendererID);
 
+        GP_CORE_TRACE("Initializing Vertex Buffer {0}, count={1}", m_RendererID, count);
+
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), vertices, GL_STATIC_DRAW);
 
@@ -43,6 +47,8 @@ namespace gp {
             : BaseVertexBuffer(count) {
         glGenBuffers(1, &m_RendererID);
 
+        GP_CORE_TRACE("Initializing Vertex Buffer {0}, count={1}", m_RendererID, count);
+
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), vertices, GL_STATIC_DRAW);
     }
@@ -50,6 +56,8 @@ namespace gp {
     VertexBuffer::VertexBuffer(BufferLayout layout, std::initializer_list<float> vertices)
             : BaseVertexBuffer((int) vertices.size()) {
         glGenBuffers(1, &m_RendererID);
+
+        GP_CORE_TRACE("Initializing Vertex Buffer {0}, count={1}", m_RendererID, vertices.size());
 
         float bufferData[vertices.size()];
         std::copy(vertices.begin(), vertices.end(), bufferData);
@@ -64,6 +72,8 @@ namespace gp {
             : BaseVertexBuffer((int) vertices.size()) {
         glGenBuffers(1, &m_RendererID);
 
+        GP_CORE_TRACE("Initializing Vertex Buffer {0}, count={1}", m_RendererID, vertices.size());
+
         float bufferData[vertices.size()];
         std::copy(vertices.begin(), vertices.end(), bufferData);
 
@@ -72,6 +82,7 @@ namespace gp {
     }
 
     VertexBuffer::~VertexBuffer() {
+        GP_CORE_TRACE("Deallocating Vertex Buffer {0}", m_RendererID);
         glDeleteBuffers(1, &m_RendererID);
     }
 
@@ -80,6 +91,7 @@ namespace gp {
     }
 
     void VertexBuffer::unbind() const {
+        GP_CORE_WARN("Unbinding Array Buffers");
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -96,6 +108,8 @@ namespace gp {
     {
         glGenBuffers(1, &m_RendererID);
 
+        GP_CORE_TRACE("Initializing Index Buffer {0}", m_RendererID);
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, (long) (count * sizeof(uint32_t)), indices, GL_STATIC_DRAW);
     }
@@ -105,6 +119,8 @@ namespace gp {
     {
         glGenBuffers(1, &m_RendererID);
 
+        GP_CORE_TRACE("Initializing Index Buffer {0}", m_RendererID);
+
         uint32_t bufferData[indices.size()];
         std::copy(indices.begin(), indices.end(), bufferData);
 
@@ -113,6 +129,7 @@ namespace gp {
     }
 
     IndexBuffer::~IndexBuffer() {
+        GP_CORE_TRACE("Deallocating Index Buffer {0}", m_RendererID);
         glDeleteBuffers(1, &m_RendererID);
     }
 
@@ -121,6 +138,7 @@ namespace gp {
     }
 
     void IndexBuffer::unbind() const {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        GP_CORE_WARN("Unbinding Element Array Buffers");
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 }

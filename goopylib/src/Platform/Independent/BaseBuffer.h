@@ -9,7 +9,9 @@ namespace gp {
     };
 
     #if GP_USING_OPENGL
+
     GLenum shaderOpenGLType(ShaderDataType type);
+
     #endif
 
     int shaderTypeSize(ShaderDataType type);
@@ -20,7 +22,7 @@ namespace gp {
 
         BufferElement(ShaderDataType type, const char *name, bool normalized = false);
 
-        const char* getName() const;
+        const char *getName() const;
 
         int getCount() const;
 
@@ -39,7 +41,7 @@ namespace gp {
 
     class GPAPI BufferLayout {
     public:
-        BufferLayout(BufferElement* elements, int count);
+        BufferLayout(BufferElement *elements, int count);
 
         BufferLayout(std::initializer_list<BufferElement> elements);
 
@@ -68,7 +70,10 @@ namespace gp {
 namespace gp {
     class BaseBuffer {
     public:
-        explicit BaseBuffer(int count) : m_Count(count) {};
+        BaseBuffer() = default;
+
+        explicit BaseBuffer(int count) : m_Count(count) {
+        };
 
         virtual ~BaseBuffer() = default;
 
@@ -81,7 +86,7 @@ namespace gp {
         };
 
     private:
-        int m_Count;
+        int m_Count = 0;
     };
 }
 
@@ -89,6 +94,8 @@ namespace gp {
 namespace gp {
     class BaseVertexBuffer : public BaseBuffer {
     public:
+        BaseVertexBuffer() = default;
+
         explicit BaseVertexBuffer(int count);
 
         ~BaseVertexBuffer() override;

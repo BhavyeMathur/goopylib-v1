@@ -139,11 +139,11 @@ namespace gp {
 namespace gp {
     BaseVertexBuffer::BaseVertexBuffer(int count)
             : BaseBuffer(count) {
-        GP_CORE_TRACE("Initializing Vertex Buffer");
+        GP_CORE_INFO("Initializing BaseVertex Buffer");
     }
 
     BaseVertexBuffer::~BaseVertexBuffer() {
-        GP_CORE_TRACE("Deallocating Vertex Buffer");
+        GP_CORE_INFO("Deallocating BaseVertex Buffer");
     }
 
     const BufferLayout &BaseVertexBuffer::getLayout() const {
@@ -159,10 +159,10 @@ namespace gp {
 namespace gp {
     BaseIndexBuffer::BaseIndexBuffer(int count)
             : BaseBuffer(count) {
-        GP_CORE_TRACE("Initializing Index Buffer");
+        GP_CORE_INFO("Initializing BaseIndex Buffer");
     }
 
     BaseIndexBuffer::~BaseIndexBuffer() {
-        GP_CORE_TRACE("Deallocating Index Buffer");
+        GP_CORE_INFO("Deallocating BaseIndex Buffer");
     }
 }

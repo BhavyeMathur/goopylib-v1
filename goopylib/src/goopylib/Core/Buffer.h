@@ -25,7 +25,7 @@ namespace gp {
         void setData(const void *data, uint32_t size) override;
 
     private:
-        uint32_t m_RendererID{};
+        uint32_t m_RendererID = 0;
     };
 }
 

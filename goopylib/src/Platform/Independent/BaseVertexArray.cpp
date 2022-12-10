@@ -2,11 +2,11 @@
 
 namespace gp {
     BaseVertexArray::BaseVertexArray() {
-        GP_CORE_INFO("Initializing Vertex Array");
+        GP_CORE_INFO("Initializing BaseVertex Array");
     }
 
     BaseVertexArray::~BaseVertexArray() {
-        GP_CORE_INFO("Deallocating Vertex Array");
+        GP_CORE_INFO("Deallocating BaseVertex Array");
     }
 
     const std::vector<const BaseVertexBuffer*> & BaseVertexArray::getVertexBuffers() const {

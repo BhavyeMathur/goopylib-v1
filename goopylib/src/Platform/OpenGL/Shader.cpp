@@ -12,7 +12,7 @@ namespace gp {
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
         if (success == GL_FALSE) {
             glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-            GP_CORE_ERROR("SHADER: Vertex Shader Compilation Failed {0}\n", infoLog);
+            GP_CORE_ERROR("SHADER: Vertex Shader Compilation Failed {0}", infoLog);
             glDeleteShader(vertexShader);
         }
 
@@ -23,13 +23,16 @@ namespace gp {
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
         if (success == GL_FALSE) {
             glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-            GP_CORE_ERROR("SHADER: Fragment Shader Compilation Failed {0}\n", infoLog);
+            GP_CORE_ERROR("SHADER: Fragment Shader Compilation Failed {0}", infoLog);
 
             glDeleteShader(vertexShader);
             glDeleteShader(fragmentShader);
         }
 
         m_RendererID = glCreateProgram();
+
+        GP_CORE_TRACE("Linking Shader {0}", m_RendererID);
+
         glAttachShader(m_RendererID, vertexShader);
         glAttachShader(m_RendererID, fragmentShader);
         glLinkProgram(m_RendererID);
@@ -45,7 +48,9 @@ namespace gp {
     }
 
     Shader::~Shader() {
+        GP_CORE_TRACE("Deallocating Shader {0}", m_RendererID);
         glDeleteProgram(m_RendererID);
+        m_RendererID = 0;
     }
 
     void Shader::bind() const {
@@ -53,6 +58,7 @@ namespace gp {
     }
 
     void Shader::unbind() const {
+        GP_CORE_WARN("Unbinding Shaders");
         glUseProgram(0);
     }
 }

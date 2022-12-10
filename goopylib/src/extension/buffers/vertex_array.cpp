@@ -3,32 +3,25 @@
 struct VertexArrayObject {
     PyObject_HEAD
     std::shared_ptr<gp::VertexArray> vertex_array;
+    PyObject *index_buffer;
     PyObject *vertex_buffers;
 };
 
 // Vertex Array Object
 namespace VertexArray {
     static int init(VertexArrayObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        GP_PY_TRACE("Initializing gp.VertexArray()");
-
-        IndexBufferObject *index_buffer;
-
-        if (!PyArg_ParseTuple(args, "|O!", &IndexBufferType, &index_buffer)) {
-            return -1;
-        }
+        GP_PY_INFO("Initializing gp.VertexArray()");
 
         self->vertex_buffers = PyList_New(0);
 
         self->vertex_array = std::make_shared<gp::VertexArray>();
-        if (index_buffer) {
-            self->vertex_array->setIndexBuffer(index_buffer->buffer);
-        }
 
         return 0;
     }
 
     static int traverse(VertexArrayObject *self, visitproc visit, void *arg) {
         Py_VISIT(self->vertex_buffers);
+        Py_VISIT(self->index_buffer);
 
         return 0;
     }
@@ -37,14 +30,16 @@ namespace VertexArray {
         GP_PY_TRACE("Clearing gp.VertexArray()");
 
         Py_CLEAR(self->vertex_buffers);
+        Py_CLEAR(self->index_buffer);
 
         return 0;
     }
 
     static void dealloc(VertexArrayObject *self) {
-        GP_PY_TRACE("Deallocating gp.VertexArray()");
+        GP_PY_INFO("Deallocating gp.VertexArray()");
 
         Py_XDECREF(self->vertex_buffers);
+        Py_XDECREF(self->index_buffer);
 
         PyObject_GC_UnTrack(self);
         clear(self);
@@ -79,6 +74,7 @@ namespace VertexArray {
         }
 
         self->vertex_array->setIndexBuffer(((IndexBufferObject *) index_buffer)->buffer);
+        SET_PYOBJECT_ATTRIBUTE(self->index_buffer, index_buffer)
         Py_RETURN_NONE;
     }
 

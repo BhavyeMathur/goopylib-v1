@@ -246,9 +246,7 @@ namespace VertexBuffer {
         }
 
         SET_PYOBJECT_ATTRIBUTE(self->layout, value)
-        gp::BufferLayout layout = gp::BufferLayout(elements, count);
-
-        self->buffer->setLayout(layout);
+        self->buffer->setLayout(gp::BufferLayout(elements, count));
         return 0;
     }
 
