@@ -7,6 +7,13 @@ namespace gp {
         glBindVertexArray(m_RendererID);
     }
 
+    VertexArray::VertexArray(uint32_t *indices, int count) : BaseVertexArray() {
+        glGenVertexArrays(1, &m_RendererID);
+        glBindVertexArray(m_RendererID);
+
+        setIndexBuffer(gp::IndexBuffer::create(indices, count));
+    }
+
     VertexArray::~VertexArray() {
         glDeleteVertexArrays(1, &m_RendererID);
     }

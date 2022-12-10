@@ -7,6 +7,7 @@
 * Added a Shader class
 * Added log mesages to the Buffer classes
 * Added a Vertex Array draw method
+* Vertex Arrays can now create their own Index Buffers
 
 #### 9 December, 2022 - 14290 lines of code
 

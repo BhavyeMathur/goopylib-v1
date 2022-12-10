@@ -9,6 +9,8 @@ namespace gp {
     public:
         VertexArray();
 
+        VertexArray(uint32_t *indices, int count);
+
         ~VertexArray() override;
 
         void bind() const override;
