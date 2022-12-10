@@ -5,7 +5,8 @@
 #### 10 December, 2022 - ? lines of code
 
 * Added a Shader class
-
+* Added log mesages to the Buffer classes
+* Added a Vertex Array draw method
 
 #### 9 December, 2022 - 14290 lines of code
 

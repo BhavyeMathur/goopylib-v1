@@ -83,17 +83,16 @@ namespace gp {
 namespace gp {
     class BaseVertexBuffer : public BaseBuffer {
     public:
-        BaseVertexBuffer(float *indices, int count)
-                : BaseBuffer(count) {};
+        BaseVertexBuffer(BufferLayout layout, float *indices, int count);
+
+        ~BaseVertexBuffer() override;
 
         const BufferLayout &getLayout() const;
-
-        void setLayout(const BufferLayout &layout);
 
         virtual void setData(const void *data, uint32_t size) = 0;
 
     private:
-        BufferLayout m_Layout{};
+        BufferLayout m_Layout;
     };
 }
 
@@ -101,7 +100,8 @@ namespace gp {
 namespace gp {
     class BaseIndexBuffer : public BaseBuffer {
     public:
-        BaseIndexBuffer(uint32_t *indices, int count)
-        : BaseBuffer(count) {};
+        BaseIndexBuffer(uint32_t *indices, int count);
+
+        ~BaseIndexBuffer() override;
     };
 }

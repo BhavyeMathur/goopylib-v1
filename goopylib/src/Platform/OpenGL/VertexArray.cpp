@@ -19,6 +19,11 @@ namespace gp {
         glBindVertexArray(0);
     }
 
+    void VertexArray::draw() const {
+        bind();
+        glDrawElements(GL_TRIANGLES, m_IndexBuffer->count(), GL_UNSIGNED_INT, nullptr);
+    }
+
     void VertexArray::addVertexBuffer(const std::shared_ptr<BaseVertexBuffer> &vertexBuffer) {
         bind();
         vertexBuffer->bind();
@@ -33,12 +38,6 @@ namespace gp {
                 case ShaderDataType::Float2:
                 case ShaderDataType::Float3:
                 case ShaderDataType::Float4: {
-
-                    std::cout << m_VertexBufferIndex << std::endl;
-                    std::cout << element.getCount() << std::endl;
-                    std::cout << element.isNormalized() << std::endl;
-                    std::cout << layout.getStride() << std::endl;
-                    std::cout << element.m_Offset << std::endl;
 
                     glEnableVertexAttribArray(m_VertexBufferIndex);
                     glVertexAttribPointer(m_VertexBufferIndex,

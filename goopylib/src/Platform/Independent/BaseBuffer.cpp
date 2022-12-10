@@ -1,5 +1,7 @@
 #include "BaseBuffer.h"
 
+#include <utility>
+
 // Buffer Layout
 namespace gp {
     int shaderTypeSize(ShaderDataType type) {
@@ -118,11 +120,29 @@ namespace gp {
 
 // Base Vertex Buffer
 namespace gp {
+    BaseVertexBuffer::BaseVertexBuffer(BufferLayout layout, float *indices, int count)
+    : BaseBuffer(count),
+      m_Layout(std::move(layout)) {
+        GP_CORE_TRACE("Initializing Vertex Buffer");
+    }
+
+    BaseVertexBuffer::~BaseVertexBuffer() {
+        GP_CORE_TRACE("Deallocating Vertex Buffer");
+    }
+
     const BufferLayout &BaseVertexBuffer::getLayout() const {
         return m_Layout;
     }
+}
 
-    void BaseVertexBuffer::setLayout(const BufferLayout &layout) {
-        m_Layout = layout;
+// Base Index Buffer
+namespace gp {
+    BaseIndexBuffer::BaseIndexBuffer(uint32_t *indices, int count)
+    : BaseBuffer(count) {
+        GP_CORE_TRACE("Initializing Index Buffer");
+    }
+
+    BaseIndexBuffer::~BaseIndexBuffer() {
+        GP_CORE_TRACE("Deallocating Index Buffer");
     }
 }

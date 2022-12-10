@@ -1,5 +1,7 @@
 #include "goopylib/Core/Buffer.h"
 
+#include <utility>
+
 namespace gp {
     GLenum shaderOpenGLType(ShaderDataType type) {
         switch (type) {
@@ -27,8 +29,8 @@ namespace gp {
 
 // Vertex Buffer
 namespace gp {
-    VertexBuffer::VertexBuffer(float *vertices, int count)
-            : BaseVertexBuffer(vertices, count) {
+    VertexBuffer::VertexBuffer(BufferLayout layout, float *vertices, int count)
+            : BaseVertexBuffer(std::move(layout), vertices, count) {
         glGenBuffers(1, &m_RendererID);
 
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -39,8 +41,8 @@ namespace gp {
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(float *vertices, int count) {
-        return std::make_shared<VertexBuffer>(vertices, count);
+    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(BufferLayout layout, float *vertices, int count) {
+        return std::make_shared<VertexBuffer>(layout, vertices, count);
     }
 
     void VertexBuffer::bind() const {

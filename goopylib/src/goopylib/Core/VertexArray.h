@@ -15,6 +15,8 @@ namespace gp {
 
         void unbind() const override;
 
+        void draw() const override;
+
         void addVertexBuffer(const std::shared_ptr<BaseVertexBuffer> &vertexBuffer) override;
 
         void setIndexBuffer(const std::shared_ptr<BaseIndexBuffer> &indexBuffer) override;

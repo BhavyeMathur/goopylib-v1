@@ -8,7 +8,7 @@
 namespace gp {
     class GPAPI VertexBuffer final : public BaseVertexBuffer {
     public:
-        VertexBuffer(float *vertices, int count);
+        VertexBuffer(BufferLayout layout, float *vertices, int count);
 
         ~VertexBuffer() override;
 
@@ -18,7 +18,7 @@ namespace gp {
 
         void setData(const void *data, uint32_t size) override;
 
-        static std::shared_ptr<BaseVertexBuffer> create(float *vertices, int count);
+        static std::shared_ptr<BaseVertexBuffer> create(BufferLayout layout, float *vertices, int count);
 
     private:
         uint32_t m_RendererID{};

@@ -5,9 +5,9 @@
 namespace gp {
     class BaseVertexArray {
     public:
-        BaseVertexArray() = default;
+        BaseVertexArray();
 
-        virtual ~BaseVertexArray() = default;
+        virtual ~BaseVertexArray();
 
         const std::vector<std::shared_ptr<BaseVertexBuffer>> &getVertexBuffers() const;
 
@@ -16,6 +16,8 @@ namespace gp {
         virtual void bind() const = 0;
 
         virtual void unbind() const = 0;
+
+        virtual void draw() const = 0;
 
         virtual void addVertexBuffer(const std::shared_ptr<BaseVertexBuffer> &vertexBuffer) = 0;
 
