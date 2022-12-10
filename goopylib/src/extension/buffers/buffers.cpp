@@ -6,20 +6,6 @@ struct BufferElementObject {
     const char *dtype;
 };
 
-struct VertexBufferObject {
-    PyObject_HEAD
-    std::unique_ptr<gp::VertexBuffer> buffer;
-    PyObject *data;
-    PyObject *layout;
-    const char *repr;
-};
-
-struct IndexBufferObject {
-    PyObject_HEAD
-    std::unique_ptr<gp::IndexBuffer> buffer;
-    const char *repr;
-};
-
 namespace BufferElement {
     static int init(BufferElementObject *self, PyObject *args, PyObject *kwds) {
         GP_PY_TRACE("Initializing gp.BufferElement()");
@@ -142,7 +128,7 @@ namespace VertexBuffer {
         }
 
         self->repr = PyUnicode_AsUTF8(PyObject_Repr(data));
-        self->buffer = gp::make_unique<gp::VertexBuffer>(vertices, count);
+        self->buffer = std::make_shared<gp::VertexBuffer>(vertices, count);
 
         delete[] vertices;
 
@@ -304,7 +290,7 @@ namespace IndexBuffer {
         }
 
         self->repr = PyUnicode_AsUTF8(PyObject_Repr(data));
-        self->buffer = gp::make_unique<gp::IndexBuffer>(indices, count);
+        self->buffer = std::make_shared<gp::IndexBuffer>(indices, count);
 
         delete[] indices;
 
@@ -398,36 +384,3 @@ PyTypeObject IndexBufferType = {
         .tp_methods = IndexBuffer::methods,
         .tp_as_sequence = &IndexBuffer::sequence_methods,
 };
-
-static PyMethodDef BufferMethods[] = {
-        {nullptr, nullptr, 0, nullptr}
-};
-
-static struct PyModuleDef buffersmodule = {
-        PyModuleDef_HEAD_INIT,
-        .m_name = "buffers",
-        .m_size = -1,
-        .m_methods = BufferMethods,
-};
-
-
-PyMODINIT_FUNC PyInit_buffers() {
-    #if GP_LOGGING
-    std::cout << "Initializing buffers logger" << std::endl;
-    gp::Log::Init();
-    #endif
-
-    GP_PY_TRACE("Initializing buffers module");
-
-    PyObject *m;
-    m = PyModule_Create(&buffersmodule);
-    if (m == nullptr) {
-        return nullptr;
-    }
-
-    EXPOSE_CLASS(BufferElementType, "BufferElement")
-    EXPOSE_CLASS(VertexBufferType, "VertexBuffer")
-    EXPOSE_CLASS(IndexBufferType, "IndexBuffer")
-
-    return m;
-}

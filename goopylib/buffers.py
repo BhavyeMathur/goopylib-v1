@@ -1,4 +1,5 @@
 from typing import Literal, Union
+from vertex_array import *
 
 
 ShaderDataType = Literal["float", "float2", "float3", "float4",

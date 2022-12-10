@@ -47,7 +47,9 @@ def build_c_extensions():
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.buffers",
-                                 sources=["goopylib/src/extension/buffers/buffers.cpp"],
+                                 sources=["goopylib/src/extension/buffers/module.cpp",
+                                          "goopylib/src/extension/buffers/buffers.cpp",
+                                          "goopylib/src/extension/buffers/vertex_array.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
 
