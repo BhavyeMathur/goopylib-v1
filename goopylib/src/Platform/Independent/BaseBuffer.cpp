@@ -2,7 +2,7 @@
 
 #include <utility>
 
-// Buffer Layout
+// Buffer Layout Element
 namespace gp {
     int shaderTypeSize(ShaderDataType type) {
         switch (type) {
@@ -72,7 +72,7 @@ namespace gp {
         }
     }
 
-    const char* BufferElement::getName() const {
+    const char *BufferElement::getName() const {
         return m_Name;
     }
 
@@ -82,6 +82,19 @@ namespace gp {
 
     bool BufferElement::isNormalized() const {
         return m_Normalized;
+    }
+}
+
+// Buffer Layout
+namespace gp {
+    BufferLayout::BufferLayout(BufferElement *elements, int count) {
+        const gp::BufferElement *end = &elements[count];
+
+        for (gp::BufferElement *element = elements; element != end; element++) {
+            m_Elements.push_back(*element);
+        }
+
+        calculateOffsetAndStride();
     }
 
     BufferLayout::BufferLayout(std::initializer_list<BufferElement> elements)
@@ -125,7 +138,7 @@ namespace gp {
 // Base Vertex Buffer
 namespace gp {
     BaseVertexBuffer::BaseVertexBuffer(int count)
-    : BaseBuffer(count) {
+            : BaseBuffer(count) {
         GP_CORE_TRACE("Initializing Vertex Buffer");
     }
 
@@ -145,7 +158,7 @@ namespace gp {
 // Base Index Buffer
 namespace gp {
     BaseIndexBuffer::BaseIndexBuffer(int count)
-    : BaseBuffer(count) {
+            : BaseBuffer(count) {
         GP_CORE_TRACE("Initializing Index Buffer");
     }
 

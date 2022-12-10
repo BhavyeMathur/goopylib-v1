@@ -16,7 +16,7 @@ class BufferElement:
 
 
 class VertexBuffer():
-    def __init__(self, vertices: tuple):
+    def __init__(self, *args: Union[tuple[float, ...], float]):
         raise NotImplementedError()
 
     def __repr__(self) -> str:

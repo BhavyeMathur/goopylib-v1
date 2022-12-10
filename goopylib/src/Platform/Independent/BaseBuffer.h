@@ -16,6 +16,8 @@ namespace gp {
 
     class GPAPI BufferElement {
     public:
+        BufferElement() = default;
+
         BufferElement(ShaderDataType type, const char *name, bool normalized = false);
 
         const char* getName() const;
@@ -26,17 +28,19 @@ namespace gp {
 
         bool isNormalized() const;
 
-        int m_Size;
-        size_t m_Offset;
+        int m_Size{};
+        size_t m_Offset{};
 
     private:
-        const char *m_Name;
-        ShaderDataType m_Type;
-        bool m_Normalized;
+        const char *m_Name{};
+        ShaderDataType m_Type{};
+        bool m_Normalized{};
     };
 
     class GPAPI BufferLayout {
     public:
+        BufferLayout(BufferElement* elements, int count);
+
         BufferLayout(std::initializer_list<BufferElement> elements);
 
         int getStride() const;

@@ -2,13 +2,15 @@
 
 struct BufferElementObject {
     PyObject_HEAD
-    std::unique_ptr<gp::BufferElement> buffer_element;
+    std::shared_ptr<gp::BufferElement> buffer_element;
     const char *dtype;
 };
 
 struct VertexBufferObject {
     PyObject_HEAD
     std::unique_ptr<gp::VertexBuffer> buffer;
+    PyObject *data;
+    PyObject *layout;
     const char *repr;
 };
 
@@ -69,7 +71,7 @@ namespace BufferElement {
             RAISE_VALUE_ERROR(-1, "invalid BufferElement dtype")
         }
 
-        self->buffer_element = gp::make_unique<gp::BufferElement>(type, name, normalized);
+        self->buffer_element = std::make_shared<gp::BufferElement>(type, name, normalized);
 
         return 0;
     }
@@ -98,31 +100,83 @@ namespace BufferElement {
     }
 }
 
+PyTypeObject BufferElementType = {
+        PyVarObject_HEAD_INIT(nullptr, 0)
+        .tp_basicsize = sizeof(BufferElementObject),
+        .tp_itemsize = 0,
+        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        .tp_new = PyType_GenericNew,
+        .tp_name = "goopylib.BufferElement",
+        .tp_init = (initproc) BufferElement::init,
+
+        .tp_traverse = (traverseproc) BufferElement::traverse,
+        .tp_clear = (inquiry) BufferElement::clear,
+        .tp_dealloc = (destructor) BufferElement::dealloc,
+
+        .tp_repr = (reprfunc) BufferElement::repr,
+};
+
 namespace VertexBuffer {
     static int init(VertexBufferObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_TRACE("Initializing gp.VertexBuffer()");
 
+        PyObject *data;
+        if (!PyArg_ParseTuple(args, "O!", &PyTuple_Type, &data)) {
+            PyErr_Clear();
+
+            Py_INCREF(args);
+            data = args;
+        }
+
+        int count = PyTuple_GET_SIZE(data);
+        float *vertices = new float[count];
+
+        for (int i = 0; i < count; i++) {
+            PyObject *element = PyTuple_GET_ITEM(data, i);
+            #if GP_ERROR_CHECKING
+            if (!PyFloat_Check(element)) {
+                RAISE_TYPE_ERROR(-1, "tuple of floats", data)
+            }
+            #endif
+            vertices[i] = (float) PyFloat_AsDouble(element);
+        }
+
+        self->repr = PyUnicode_AsUTF8(PyObject_Repr(data));
+        self->buffer = gp::make_unique<gp::VertexBuffer>(vertices, count);
+
+        delete[] vertices;
+
         return 0;
     }
 
-    static int traverse(VertexBufferObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
+    static int traverse(VertexBufferObject *self, visitproc visit, void *arg) {
+        Py_VISIT(self->data);
+        Py_VISIT(self->layout);
+
         return 0;
     }
 
-    static int clear(VertexBufferObject *Py_UNUSED(self)) {
+    static int clear(VertexBufferObject *self) {
         GP_PY_TRACE("Clearing gp.VertexBuffer()");
+
+        Py_CLEAR(self->data);
+        Py_CLEAR(self->layout);
+
         return 0;
     }
 
     static void dealloc(VertexBufferObject *self) {
         GP_PY_TRACE("Deallocating gp.VertexBuffer()");
 
+        Py_XDECREF(self->data);
+        Py_XDECREF(self->layout);
+
         PyObject_GC_UnTrack(self);
         clear(self);
         Py_TYPE(self)->tp_free((PyObject *) self);
     }
 
-    static PyObject *repr(IndexBufferObject *self) {
+    static PyObject *repr(VertexBufferObject *self) {
         return PyUnicode_FromFormat("VertexBuffer%s", self->repr);
     }
 
@@ -149,6 +203,76 @@ namespace VertexBuffer {
                     "Binds the Vertex Buffer"},
             {"unbind", (PyCFunction) unbind, METH_NOARGS,
                     "Unbinds the Vertex Buffer"},
+
+            {nullptr}
+    };
+
+    // Buffer Data
+    static int set_data(VertexBufferObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        if (!PyTuple_Check(value)) {
+            RAISE_TYPE_ERROR(-1, "tuple", value)
+        }
+
+        int count = PyTuple_GET_SIZE(value);
+        float *vertices = new float[count];
+
+        for (int i = 0; i < count; i++) {
+            PyObject *element = PyTuple_GET_ITEM(vertices, i);
+            #if GP_ERROR_CHECKING
+            if (!PyFloat_Check(element)) {
+                RAISE_TYPE_ERROR(-1, "tuple of floats", value)
+            }
+            #endif
+            vertices[i] = (float) PyFloat_AsDouble(element);
+        }
+
+        SET_PYOBJECT_ATTRIBUTE(self->data, value)
+        self->buffer->setData(vertices, count);
+
+        delete[] vertices;
+
+        return 0;
+    }
+
+    static PyObject *get_data(VertexBufferObject *self, void *Py_UNUSED(closure)) {
+        RETURN_PYOBJECT(self->data)
+    }
+
+    // Buffer Layout
+    static int set_layout(VertexBufferObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        if (!PyTuple_Check(value)) {
+            RAISE_TYPE_ERROR(-1, "tuple", value)
+        }
+
+        int count = PyTuple_GET_SIZE(value);
+        gp::BufferElement *elements = new gp::BufferElement[count];
+
+        for (int i = 0; i < count; i++) {
+            PyObject *element = PyTuple_GET_ITEM(value, i);
+
+            #if GP_ERROR_CHECKING
+            if (!PyObject_IsInstance(element, (PyObject *) &BufferElementType)) {
+                RAISE_TYPE_ERROR(-1, "tuple of BufferElements", value)
+            }
+            #endif
+
+            elements[i] = *((BufferElementObject *) element)->buffer_element;
+        }
+
+        SET_PYOBJECT_ATTRIBUTE(self->layout, value)
+        gp::BufferLayout layout = gp::BufferLayout(elements, count);
+
+        self->buffer->setLayout(layout);
+        return 0;
+    }
+
+    static PyObject *get_layout(VertexBufferObject *self, void *Py_UNUSED(closure)) {
+        RETURN_PYOBJECT(self->layout)
+    }
+
+    static PyGetSetDef getsetters[] = {
+            {"data",   (getter) get_data,   (setter) set_data,   "buffer data",   nullptr},
+            {"layout", (getter) get_layout, (setter) set_layout, "buffer layout", nullptr},
 
             {nullptr}
     };
@@ -236,22 +360,6 @@ namespace IndexBuffer {
     };
 }
 
-PyTypeObject BufferElementType = {
-        PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_basicsize = sizeof(BufferElementObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-        .tp_new = PyType_GenericNew,
-        .tp_name = "goopylib.BufferElement",
-        .tp_init = (initproc) BufferElement::init,
-
-        .tp_traverse = (traverseproc) BufferElement::traverse,
-        .tp_clear = (inquiry) BufferElement::clear,
-        .tp_dealloc = (destructor) BufferElement::dealloc,
-
-        .tp_repr = (reprfunc) BufferElement::repr,
-};
-
 PyTypeObject VertexBufferType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
         .tp_basicsize = sizeof(VertexBufferObject),
@@ -267,7 +375,8 @@ PyTypeObject VertexBufferType = {
 
         .tp_repr = (reprfunc) VertexBuffer::repr,
 
-        .tp_methods = IndexBuffer::methods,
+        .tp_methods = VertexBuffer::methods,
+        .tp_getset = VertexBuffer::getsetters,
         .tp_as_sequence = &VertexBuffer::sequence_methods,
 };
 
