@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Union
 
 
 ShaderDataType = Literal["float", "float2", "float3", "float4",
@@ -49,7 +49,7 @@ class VertexBuffer():
 
 
 class IndexBuffer:
-    def __init__(self, indices: tuple[int, ...]):
+    def __init__(self, *args: Union[tuple[int, ...], int]):
         raise NotImplementedError()
 
     def __repr__(self) -> str:

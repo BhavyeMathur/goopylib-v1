@@ -9,11 +9,13 @@ struct BufferElementObject {
 struct VertexBufferObject {
     PyObject_HEAD
     std::unique_ptr<gp::VertexBuffer> buffer;
+    const char *repr;
 };
 
 struct IndexBufferObject {
     PyObject_HEAD
     std::unique_ptr<gp::IndexBuffer> buffer;
+    const char *repr;
 };
 
 namespace BufferElement {
@@ -119,11 +121,68 @@ namespace VertexBuffer {
         clear(self);
         Py_TYPE(self)->tp_free((PyObject *) self);
     }
+
+    static PyObject *repr(IndexBufferObject *self) {
+        return PyUnicode_FromFormat("VertexBuffer%s", self->repr);
+    }
+
+    static Py_ssize_t length(VertexBufferObject *self) {
+        return self->buffer->count();
+    }
+
+    static PySequenceMethods sequence_methods = {
+            .sq_length = (lenfunc) length
+    };
+
+    static PyObject *bind(VertexBufferObject *self, PyObject *Py_UNUSED(args)) {
+        self->buffer->bind();
+        Py_RETURN_NONE;
+    }
+
+    static PyObject *unbind(VertexBufferObject *self, PyObject *Py_UNUSED(args)) {
+        self->buffer->unbind();
+        Py_RETURN_NONE;
+    }
+
+    static PyMethodDef methods[] = {
+            {"bind",   (PyCFunction) bind,   METH_NOARGS,
+                    "Binds the Vertex Buffer"},
+            {"unbind", (PyCFunction) unbind, METH_NOARGS,
+                    "Unbinds the Vertex Buffer"},
+
+            {nullptr}
+    };
 }
 
 namespace IndexBuffer {
-    static int init(VertexBufferObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+    static int init(IndexBufferObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_TRACE("Initializing gp.IndexBuffer()");
+
+        PyObject *data;
+        if (!PyArg_ParseTuple(args, "O!", &PyTuple_Type, &data)) {
+            PyErr_Clear();
+
+            Py_INCREF(args);
+            data = args;
+        }
+
+        int count = PyTuple_GET_SIZE(data);
+        uint32_t *indices = new uint32_t[count];
+
+        for (int i = 0; i < count; i++) {
+            PyObject *element = PyTuple_GET_ITEM(data, i);
+            #if GP_ERROR_CHECKING
+            if (!PyLong_Check(element)) {
+                RAISE_TYPE_ERROR(-1, "tuple of integers", data)
+            }
+            #endif
+            indices[i] = PyLong_AsLong(element);
+        }
+
+        self->repr = PyUnicode_AsUTF8(PyObject_Repr(data));
+        self->buffer = gp::make_unique<gp::IndexBuffer>(indices, count);
+
+        delete[] indices;
 
         return 0;
     }
@@ -144,6 +203,37 @@ namespace IndexBuffer {
         clear(self);
         Py_TYPE(self)->tp_free((PyObject *) self);
     }
+
+    static PyObject *repr(IndexBufferObject *self) {
+        return PyUnicode_FromFormat("IndexBuffer%s", self->repr);
+    }
+
+    static Py_ssize_t length(IndexBufferObject *self) {
+        return self->buffer->count();
+    }
+
+    static PySequenceMethods sequence_methods = {
+            .sq_length = (lenfunc) length
+    };
+
+    static PyObject *bind(IndexBufferObject *self, PyObject *Py_UNUSED(args)) {
+        self->buffer->bind();
+        Py_RETURN_NONE;
+    }
+
+    static PyObject *unbind(IndexBufferObject *self, PyObject *Py_UNUSED(args)) {
+        self->buffer->unbind();
+        Py_RETURN_NONE;
+    }
+
+    static PyMethodDef methods[] = {
+            {"bind",   (PyCFunction) bind,   METH_NOARGS,
+                    "Binds the Index Buffer"},
+            {"unbind", (PyCFunction) unbind, METH_NOARGS,
+                    "Unbinds the Index Buffer"},
+
+            {nullptr}
+    };
 }
 
 PyTypeObject BufferElementType = {
@@ -174,6 +264,11 @@ PyTypeObject VertexBufferType = {
         .tp_traverse = (traverseproc) VertexBuffer::traverse,
         .tp_clear = (inquiry) VertexBuffer::clear,
         .tp_dealloc = (destructor) VertexBuffer::dealloc,
+
+        .tp_repr = (reprfunc) VertexBuffer::repr,
+
+        .tp_methods = IndexBuffer::methods,
+        .tp_as_sequence = &VertexBuffer::sequence_methods,
 };
 
 PyTypeObject IndexBufferType = {
@@ -188,6 +283,11 @@ PyTypeObject IndexBufferType = {
         .tp_traverse = (traverseproc) IndexBuffer::traverse,
         .tp_clear = (inquiry) IndexBuffer::clear,
         .tp_dealloc = (destructor) IndexBuffer::dealloc,
+
+        .tp_repr = (reprfunc) IndexBuffer::repr,
+
+        .tp_methods = IndexBuffer::methods,
+        .tp_as_sequence = &IndexBuffer::sequence_methods,
 };
 
 static PyMethodDef BufferMethods[] = {
