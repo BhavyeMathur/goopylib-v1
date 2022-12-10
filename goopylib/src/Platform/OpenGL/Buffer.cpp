@@ -30,19 +30,65 @@ namespace gp {
 // Vertex Buffer
 namespace gp {
     VertexBuffer::VertexBuffer(BufferLayout layout, float *vertices, int count)
-            : BaseVertexBuffer(std::move(layout), vertices, count) {
+            : BaseVertexBuffer(count) {
+        glGenBuffers(1, &m_RendererID);
+
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), vertices, GL_STATIC_DRAW);
+
+        setLayout(std::move(layout));
+    }
+
+    VertexBuffer::VertexBuffer(float *vertices, int count)
+            : BaseVertexBuffer(count) {
         glGenBuffers(1, &m_RendererID);
 
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), vertices, GL_STATIC_DRAW);
     }
 
+    VertexBuffer::VertexBuffer(BufferLayout layout, std::initializer_list<float> vertices)
+            : BaseVertexBuffer((int) vertices.size()) {
+        glGenBuffers(1, &m_RendererID);
+
+        float bufferData[vertices.size()];
+        std::copy(vertices.begin(), vertices.end(), bufferData);
+
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferData(GL_ARRAY_BUFFER, (long) (vertices.size() * sizeof(float)), bufferData, GL_STATIC_DRAW);
+
+        setLayout(std::move(layout));
+    }
+
+    VertexBuffer::VertexBuffer(std::initializer_list<float> vertices)
+            : BaseVertexBuffer((int) vertices.size()) {
+        glGenBuffers(1, &m_RendererID);
+
+        float bufferData[vertices.size()];
+        std::copy(vertices.begin(), vertices.end(), bufferData);
+
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferData(GL_ARRAY_BUFFER, (long) (vertices.size() * sizeof(float)), bufferData, GL_STATIC_DRAW);
+    }
+
     VertexBuffer::~VertexBuffer() {
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(BufferLayout layout, float *vertices, int count) {
+    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(const BufferLayout& layout, float *vertices, int count) {
         return std::make_shared<VertexBuffer>(layout, vertices, count);
+    }
+
+    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(float *vertices, int count) {
+        return std::make_shared<VertexBuffer>(vertices, count);
+    }
+
+    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(const BufferLayout& layout, std::initializer_list<float> vertices) {
+        return std::make_shared<VertexBuffer>(layout, vertices);
+    }
+
+    std::shared_ptr<BaseVertexBuffer> VertexBuffer::create(std::initializer_list<float> vertices) {
+        return std::make_shared<VertexBuffer>(vertices);
     }
 
     void VertexBuffer::bind() const {

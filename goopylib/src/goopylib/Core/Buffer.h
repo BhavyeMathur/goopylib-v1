@@ -10,6 +10,12 @@ namespace gp {
     public:
         VertexBuffer(BufferLayout layout, float *vertices, int count);
 
+        VertexBuffer(float *vertices, int count);
+
+        VertexBuffer(BufferLayout layout, std::initializer_list<float> vertices);
+
+        VertexBuffer(std::initializer_list<float> vertices);
+
         ~VertexBuffer() override;
 
         void bind() const override;
@@ -18,7 +24,13 @@ namespace gp {
 
         void setData(const void *data, uint32_t size) override;
 
-        static std::shared_ptr<BaseVertexBuffer> create(BufferLayout layout, float *vertices, int count);
+        static std::shared_ptr<BaseVertexBuffer> create(const BufferLayout& layout, float *vertices, int count);
+
+        static std::shared_ptr<BaseVertexBuffer> create(float *vertices, int count);
+
+        static std::shared_ptr<BaseVertexBuffer> create(const BufferLayout& layout, std::initializer_list<float> vertices);
+
+        static std::shared_ptr<BaseVertexBuffer> create(std::initializer_list<float> vertices);
 
     private:
         uint32_t m_RendererID{};

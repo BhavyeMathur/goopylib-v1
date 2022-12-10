@@ -11,6 +11,8 @@ namespace gp {
 
         VertexArray(uint32_t *indices, int count);
 
+        VertexArray(std::initializer_list<uint32_t> indices);
+
         ~VertexArray() override;
 
         void bind() const override;

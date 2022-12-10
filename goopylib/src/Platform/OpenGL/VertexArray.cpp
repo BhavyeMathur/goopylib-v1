@@ -14,6 +14,15 @@ namespace gp {
         setIndexBuffer(gp::IndexBuffer::create(indices, count));
     }
 
+    VertexArray::VertexArray(std::initializer_list<uint32_t> indices) {
+        glGenVertexArrays(1, &m_RendererID);
+        glBindVertexArray(m_RendererID);
+
+        uint32_t indexBufferIndices[indices.size()];
+        std::copy(indices.begin(), indices.end(), indexBufferIndices);
+        setIndexBuffer(gp::IndexBuffer::create(indexBufferIndices, (int) indices.size()));
+    }
+
     VertexArray::~VertexArray() {
         glDeleteVertexArrays(1, &m_RendererID);
     }

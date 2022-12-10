@@ -120,9 +120,8 @@ namespace gp {
 
 // Base Vertex Buffer
 namespace gp {
-    BaseVertexBuffer::BaseVertexBuffer(BufferLayout layout, float *indices, int count)
-    : BaseBuffer(count),
-      m_Layout(std::move(layout)) {
+    BaseVertexBuffer::BaseVertexBuffer(int count)
+    : BaseBuffer(count) {
         GP_CORE_TRACE("Initializing Vertex Buffer");
     }
 
@@ -132,6 +131,10 @@ namespace gp {
 
     const BufferLayout &BaseVertexBuffer::getLayout() const {
         return m_Layout;
+    }
+
+    void BaseVertexBuffer::setLayout(BufferLayout layout) {
+        m_Layout = std::move(layout);
     }
 }
 
