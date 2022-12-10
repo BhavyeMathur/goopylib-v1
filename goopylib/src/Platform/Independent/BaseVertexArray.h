@@ -23,6 +23,8 @@ namespace gp {
 
         virtual void setIndexBuffer(const std::shared_ptr<BaseIndexBuffer> &indexBuffer) = 0;
 
+        virtual void setIndexBuffer(std::initializer_list<uint32_t> indices) = 0;
+
     protected:
         std::vector<const BaseVertexBuffer*> m_VertexBuffers;
         std::shared_ptr<BaseIndexBuffer> m_IndexBuffer;

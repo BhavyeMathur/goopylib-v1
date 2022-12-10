@@ -140,7 +140,7 @@ namespace gp {
 
 // Base Index Buffer
 namespace gp {
-    BaseIndexBuffer::BaseIndexBuffer(uint32_t *indices, int count)
+    BaseIndexBuffer::BaseIndexBuffer(int count)
     : BaseBuffer(count) {
         GP_CORE_TRACE("Initializing Index Buffer");
     }

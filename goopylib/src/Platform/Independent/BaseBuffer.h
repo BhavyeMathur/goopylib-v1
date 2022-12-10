@@ -102,7 +102,7 @@ namespace gp {
 namespace gp {
     class BaseIndexBuffer : public BaseBuffer {
     public:
-        BaseIndexBuffer(uint32_t *indices, int count);
+        explicit BaseIndexBuffer(int count);
 
         ~BaseIndexBuffer() override;
     };

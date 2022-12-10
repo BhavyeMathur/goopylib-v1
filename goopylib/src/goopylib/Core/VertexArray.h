@@ -25,6 +25,8 @@ namespace gp {
 
         void setIndexBuffer(const std::shared_ptr<BaseIndexBuffer> &indexBuffer) override;
 
+        void setIndexBuffer(std::initializer_list<uint32_t> indices) override;
+
     private:
         uint32_t m_RendererID = 0;
     };

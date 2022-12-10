@@ -112,4 +112,10 @@ namespace gp {
 
         m_IndexBuffer = indexBuffer;
     }
+
+    void VertexArray::setIndexBuffer(std::initializer_list<uint32_t> indices) {
+        glBindVertexArray(m_RendererID);
+
+        m_IndexBuffer = IndexBuffer::create(indices);
+    }
 }
