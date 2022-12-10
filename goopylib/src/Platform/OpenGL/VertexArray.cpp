@@ -11,10 +11,6 @@ namespace gp {
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
-    std::shared_ptr<BaseVertexArray> VertexArray::create() {
-        return std::make_shared<VertexArray>();
-    }
-
     void VertexArray::bind() const {
         glBindVertexArray(m_RendererID);
     }

@@ -5,6 +5,7 @@
 #include "goopylib/Core/Window.h"
 #include "goopylib/Core/Buffer.h"
 #include "goopylib/Core/VertexArray.h"
+#include "goopylib/Core/Shader.h"
 
 #include "goopylib/Debug/Log.h"
 #include "goopylib/Events/KeyboardCodes.h"

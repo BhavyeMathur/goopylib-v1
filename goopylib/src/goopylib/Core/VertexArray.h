@@ -19,8 +19,6 @@ namespace gp {
 
         void setIndexBuffer(const std::shared_ptr<BaseIndexBuffer> &indexBuffer) override;
 
-        static std::shared_ptr<BaseVertexArray> create();
-
     private:
         uint32_t m_RendererID = 0;
     };

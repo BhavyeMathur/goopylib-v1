@@ -23,6 +23,8 @@ set(SOURCE_FILES
     ${PLATFORM_PATH}/GLFW/Window.cpp
     ${PLATFORM_PATH}/OpenGL/Buffer.cpp
     ${PLATFORM_PATH}/OpenGL/VertexArray.cpp
+    ${PLATFORM_PATH}/OpenGL/Shader.cpp
+
     ${PLATFORM_PATH}/Independent/BaseWindow.cpp
     ${PLATFORM_PATH}/Independent/BaseBuffer.cpp
     ${PLATFORM_PATH}/Independent/BaseVertexArray.cpp)

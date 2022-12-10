@@ -2,6 +2,11 @@
 
 ## v2.0.0
 
+#### 10 December, 2022 - ? lines of code
+
+* Added a Shader class
+
+
 #### 9 December, 2022 - 14290 lines of code
 
 * Added Color operator overloading to the Python API

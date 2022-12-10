@@ -97,7 +97,6 @@ namespace gp {
     };
 }
 
-
 // Index Buffer
 namespace gp {
     class BaseIndexBuffer : public BaseBuffer {
