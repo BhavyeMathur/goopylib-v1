@@ -105,3 +105,18 @@ template<typename OStream, typename T, glm::qualifier Q>
 #define GP_PY_COLOR_TRACE(...)
 #define GP_PY_COLOR_INFO(...)
 #endif
+
+
+#if GP_LOGGING_SHADERS
+#define GP_SHADERS_TRACE(...) GP_CORE_TRACE("SHADERS: " __VA_ARGS__)
+#define GP_SHADERS_INFO(...) GP_CORE_INFO("SHADERS: " __VA_ARGS__)
+
+#define GP_PY_SHADERS_TRACE(...) GP_PY_TRACE("SHADERS: " __VA_ARGS__)
+#define GP_PY_SHADERS_INFO(...) GP_PY_INFO("SHADERS: " __VA_ARGS__)
+#else
+#define GP_SHADERS_TRACE(...)
+#define GP_SHADERS_INFO(...)
+
+#define GP_PY_SHADERS_TRACE(...)
+#define GP_PY_SHADERS_INFO(...)
+#endif

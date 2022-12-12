@@ -2,7 +2,11 @@
 
 ## v2.0.0
 
-#### 10 December, 2022 - ? lines of code
+#### 12 December, 2022 - ? lines of code
+
+* Added a C++ API to set Shader Uniforms
+
+#### 10 December, 2022 - ~15400 lines of code
 
 * Added a Shader class
 * Added log mesages to the Buffer classes

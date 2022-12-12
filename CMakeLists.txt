@@ -27,7 +27,8 @@ set(SOURCE_FILES
 
     ${PLATFORM_PATH}/Independent/BaseWindow.cpp
     ${PLATFORM_PATH}/Independent/BaseBuffer.cpp
-    ${PLATFORM_PATH}/Independent/BaseVertexArray.cpp)
+    ${PLATFORM_PATH}/Independent/BaseVertexArray.cpp
+    ${PLATFORM_PATH}/Independent/BaseShader.cpp)
 
 include_directories(goopylib)
 include_directories(goopylib/src)

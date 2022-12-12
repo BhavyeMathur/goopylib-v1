@@ -6,6 +6,7 @@
 #define GP_LOGGING true
 #define GP_LOGGING_WINDOW true
 #define GP_LOGGING_COLORS false
+#define GP_LOGGING_SHADERS false
 
 #include <iostream>
 #include <string>
@@ -20,7 +21,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#if GP_LOGGING
 #include "glm/gtx/string_cast.hpp"
+#endif
 
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
