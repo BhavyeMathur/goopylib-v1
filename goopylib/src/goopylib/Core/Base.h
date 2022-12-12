@@ -7,37 +7,37 @@
 namespace gp {
     GPAPI extern bool glfw_initialized;
 
-    GPAPI int Initialize();
+    GPAPI int initialize();
 
-    GPAPI void Terminate();
+    GPAPI void terminate();
 
-    GPAPI void Update();
+    GPAPI void update();
 
     #if GP_USING_GLFW
 
-    GPAPI void UpdateOnEvent();
+    GPAPI void updateOnEvent();
 
-    GPAPI void UpdateTimeout(double timeout);
+    GPAPI void updateTimeout(double timeout);
 
-    GPAPI std::string GLFWCompiledVersion();
+    GPAPI std::string glfwCompiledVersion();
 
-    GPAPI std::string GLFWCurrentVersion();
+    GPAPI std::string glfwCurrentVersion();
 
-    GPAPI int GetRefreshRate();
+    GPAPI int getRefreshRate();
 
-    GPAPI int GetScreenWidth();
+    GPAPI int getScreenWidth();
 
-    GPAPI int GetScreenHeight();
+    GPAPI int getScreenHeight();
 
-    GPAPI int GetNumberOfMonitors();
+    GPAPI int getNumberOfMonitors();
 
-    GPAPI void SetBufferSwapInterval(int interval);
+    GPAPI void setBufferSwapInterval(int interval);
 
     #endif
 
     #if GP_USING_OPENGL
 
-    GPAPI std::string OpenGLVersion();
+    GPAPI std::string openglVersion();
 
     #endif
 }

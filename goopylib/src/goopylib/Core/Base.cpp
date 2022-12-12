@@ -17,7 +17,7 @@ namespace {
 namespace gp {
     bool glfw_initialized = false;
 
-    GPAPI int Initialize() {
+    GPAPI int initialize() {
         #if GP_LOGGING
         gp::Log::Init();
         #endif
@@ -47,7 +47,7 @@ namespace gp {
         return 0;
     }
 
-    GPAPI void Terminate() {
+    GPAPI void terminate() {
         GP_CORE_INFO("Terminating goopylib");
 
         BaseWindow::destroyAll();
@@ -61,7 +61,7 @@ namespace gp {
         #endif
     }
 
-    GPAPI void Update() {
+    GPAPI void update() {
         OnUpdate();
         #if GP_USING_GLFW
         glfwPollEvents();
@@ -70,46 +70,46 @@ namespace gp {
 
     #if GP_USING_GLFW
 
-    GPAPI void UpdateOnEvent() {
+    GPAPI void updateOnEvent() {
         glfwWaitEvents();
         OnUpdate();
     }
 
-    GPAPI void UpdateTimeout(double timeout) {
+    GPAPI void updateTimeout(double timeout) {
         glfwWaitEventsTimeout(timeout);
         OnUpdate();
     }
 
-    GPAPI std::string GLFWCompiledVersion() {
+    GPAPI std::string glfwCompiledVersion() {
         return {glfwGetVersionString()};
     }
 
-    GPAPI std::string GLFWCurrentVersion() {
+    GPAPI std::string glfwCurrentVersion() {
         int major, minor, revision;
         glfwGetVersion(&major, &minor, &revision);
 
         return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(revision);
     }
 
-    GPAPI int GetRefreshRate() {
+    GPAPI int getRefreshRate() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->refreshRate;
     }
 
-    GPAPI int GetScreenWidth() {
+    GPAPI int getScreenWidth() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
     }
 
-    GPAPI int GetScreenHeight() {
+    GPAPI int getScreenHeight() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
     }
 
-    GPAPI int GetNumberOfMonitors() {
+    GPAPI int getNumberOfMonitors() {
         int count;
         glfwGetMonitors(&count);
         return count;
     }
 
-    GPAPI void SetBufferSwapInterval(int interval) {
+    GPAPI void setBufferSwapInterval(int interval) {
         glfwSwapInterval(interval);
     }
 
@@ -117,7 +117,7 @@ namespace gp {
 
     #if GP_USING_OPENGL
 
-    GPAPI std::string OpenGLVersion() {
+    GPAPI std::string openglVersion() {
         return {(char *) glGetString(GL_VERSION)};
     }
 

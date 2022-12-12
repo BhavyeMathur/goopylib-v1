@@ -1558,7 +1558,7 @@ PyMODINIT_FUNC PyInit_window(void) {
     #if GP_LOGGING
     std::cout << "Initializing window logger" << std::endl;
     #endif
-    gp::Initialize();
+    gp::initialize();
 
     GP_PY_TRACE("Initializing window module");
 

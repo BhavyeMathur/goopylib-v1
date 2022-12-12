@@ -4,7 +4,7 @@
 
 namespace core {
     static PyObject *init(PyObject *Py_UNUSED(self)) {
-        if (gp::Initialize()) {
+        if (gp::initialize()) {
             PyErr_SetString(PyExc_ImportError, "Failed to initialise goopylib!");
             return nullptr;
         }
@@ -12,19 +12,19 @@ namespace core {
     }
 
     static PyObject *terminate(PyObject *Py_UNUSED(self)) {
-        gp::Terminate();
+        gp::terminate();
         Py_RETURN_NONE;
     }
 
     static PyObject *update(PyObject *Py_UNUSED(self)) {
-        gp::Update();
+        gp::update();
         Py_RETURN_NONE;
     }
 
     #if GP_USING_GLFW
 
     static PyObject *update_on_event(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
-        gp::UpdateOnEvent();
+        gp::updateOnEvent();
         Py_RETURN_NONE;
     }
 
@@ -36,37 +36,37 @@ namespace core {
         #endif
 
         double timeout = PyFloat_AsDouble(arg);
-        gp::UpdateTimeout(timeout);
+        gp::updateTimeout(timeout);
 
         Py_RETURN_NONE;
     }
 
     static PyObject *glfw_compiled_version(PyObject *Py_UNUSED(self)) {
-        return PyUnicode_FromString(gp::GLFWCompiledVersion().c_str());
+        return PyUnicode_FromString(gp::glfwCompiledVersion().c_str());
     }
 
     static PyObject *glfw_current_version(PyObject *Py_UNUSED(self)) {
-        return PyUnicode_FromString(gp::GLFWCurrentVersion().c_str());
+        return PyUnicode_FromString(gp::glfwCurrentVersion().c_str());
     }
 
     static PyObject *get_refresh_rate(PyObject *Py_UNUSED(self)) {
         CHECK_GLFW_INITIALIZED(nullptr)
-        return PyLong_FromLong(gp::GetRefreshRate());
+        return PyLong_FromLong(gp::getRefreshRate());
     }
 
     static PyObject *get_screen_width(PyObject *Py_UNUSED(self)) {
         CHECK_GLFW_INITIALIZED(nullptr)
-        return PyLong_FromLong(gp::GetScreenWidth());
+        return PyLong_FromLong(gp::getScreenWidth());
     }
 
     static PyObject *get_screen_height(PyObject *Py_UNUSED(self)) {
         CHECK_GLFW_INITIALIZED(nullptr)
-        return PyLong_FromLong(gp::GetScreenHeight());
+        return PyLong_FromLong(gp::getScreenHeight());
     }
 
     static PyObject *number_of_monitors(PyObject *Py_UNUSED(self)) {
         CHECK_GLFW_INITIALIZED(nullptr)
-        return PyLong_FromLong(gp::GetNumberOfMonitors());
+        return PyLong_FromLong(gp::getNumberOfMonitors());
     }
 
     #endif
@@ -75,7 +75,7 @@ namespace core {
 
     static PyObject *opengl_version(PyObject *Py_UNUSED(self)) {
         CHECK_GLFW_CONTEXT(nullptr)
-        return PyUnicode_FromString(gp::OpenGLVersion().c_str());
+        return PyUnicode_FromString(gp::openglVersion().c_str());
     }
 
     #endif
@@ -91,7 +91,7 @@ namespace window {
         }
         #endif
 
-        gp::SetBufferSwapInterval(PyLong_AsLong(arg));
+        gp::setBufferSwapInterval(PyLong_AsLong(arg));
         Py_RETURN_NONE;
     }
 
@@ -149,7 +149,7 @@ PyMODINIT_FUNC PyInit_core(void) {
     #if GP_LOGGING
     std::cout << "Initializing core logger" << std::endl;
     #endif
-    gp::Initialize();
+    gp::initialize();
 
     GP_PY_TRACE("Initializing core module");
 
