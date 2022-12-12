@@ -58,11 +58,163 @@ namespace shader {
         Py_RETURN_NONE;
     }
 
+    static PyObject *set(ShaderObject *self, PyObject *args) {
+
+        const char *name;
+        float f1, f2, f3, f4;
+        if (PyArg_ParseTuple(args, "sf|fff", &name, &f1, &f2, &f3, &f4)) {
+            switch (PyTuple_GET_SIZE(args)) {
+                case 2:
+                    self->shader->set(name, f1);
+                case 3:
+                    self->shader->set(name, f1, f2);
+                case 4:
+                    self->shader->set(name, f1, f2, f3);
+                case 5:
+                    self->shader->set(name, f1, f2, f3, f4);
+                default:
+                    RAISE_VALUE_ERROR(nullptr, "invalid number of arguments provided")
+            }
+        }
+        PyErr_Clear();
+
+        int i1, i2, i3, i4;
+        if (PyArg_ParseTuple(args, "si|iii", &name, &i1, &i2, &i3, &i4)) {
+            switch (PyTuple_GET_SIZE(args)) {
+                case 2:
+                    self->shader->set(name, i1);
+                case 3:
+                    self->shader->set(name, i2, i2);
+                case 4:
+                    self->shader->set(name, i1, i2, i3);
+                case 5:
+                    self->shader->set(name, i1, i2, i3, i4);
+                default:
+                    RAISE_VALUE_ERROR(nullptr, "invalid number of arguments provided")
+            }
+        }
+        PyErr_Clear();
+
+        PyObject *matrix;
+        if (!PyArg_ParseTuple(args, "sO", &name, &matrix)) {
+            RAISE_VALUE_ERROR(nullptr, "invalid shader set uniform arguments")
+        }
+
+        PyObject *rowIterator, *colIterator;
+        PyObject *matrixRow, *matrixCol;
+
+        if (!(rowIterator = PyObject_GetIter(matrix))) {
+            return nullptr;
+        }
+
+        int rows = 0;
+        int cols = -1;
+        int curCols = 0;
+
+        std::vector<float> data;
+
+        while ((matrixRow = PyIter_Next(rowIterator))) {
+            if (!(colIterator = PyObject_GetIter(matrixRow))) {
+                Py_DECREF(matrixRow);
+                return nullptr;
+            }
+
+            while ((matrixCol = PyIter_Next(colIterator))) {
+                if (!PyNumber_Check(matrixCol)) {
+                    Py_DECREF(matrixCol);
+                    RAISE_VALUE_ERROR(nullptr, "matrix must only contain floats")
+                }
+
+                data.push_back((float) PyFloat_AsDouble(matrixCol));
+
+                curCols++;
+                Py_DECREF(matrixCol);
+            }
+
+            if (cols == -1) {
+                cols = curCols;
+            }
+            else if (cols != curCols) {
+                RAISE_VALUE_ERROR(nullptr, "matrix columns must be the same size")
+            }
+            curCols = 0;
+
+            rows++;
+            Py_DECREF(matrixRow);
+        }
+        
+        double arr[rows * cols];
+        std::copy(data.begin(), data.end(), arr);
+
+        switch (rows) {
+            case 2:
+                switch (cols) {
+                    case 2:
+                        self->shader->set(name, glm::make_mat2x2(arr));
+                        Py_RETURN_NONE;
+
+                    case 3:
+                        self->shader->set(name, glm::make_mat3x2(arr));
+                        Py_RETURN_NONE;
+
+                    case 4:
+                        self->shader->set(name, glm::make_mat4x2(arr));
+                        Py_RETURN_NONE;
+
+                    default:
+                        RAISE_VALUE_ERROR(nullptr, "invalid matrix size")
+                }
+
+            case 3:
+                switch (cols) {
+                    case 2:
+                        self->shader->set(name, glm::make_mat2x3(arr));
+                        Py_RETURN_NONE;
+
+                    case 3:
+                        self->shader->set(name, glm::make_mat3x3(arr));
+                        Py_RETURN_NONE;
+
+                    case 4:
+                        self->shader->set(name, glm::make_mat4x3(arr));
+                        Py_RETURN_NONE;
+
+                    default:
+                        RAISE_VALUE_ERROR(nullptr, "invalid matrix size")
+                }
+
+            case 4:
+                switch (cols) {
+                    case 2:
+                        self->shader->set(name, glm::make_mat2x4(arr));
+                        Py_RETURN_NONE;
+
+                    case 3:
+                        self->shader->set(name, glm::make_mat3x4(arr));
+                        Py_RETURN_NONE;
+
+                    case 4:
+                        self->shader->set(name, glm::make_mat4x4(arr));
+                        Py_RETURN_NONE;
+
+                    default:
+                        RAISE_VALUE_ERROR(nullptr, "invalid matrix size")
+                }
+            default:
+                RAISE_VALUE_ERROR(nullptr, "invalid matrix size")
+        }
+
+        Py_RETURN_NONE;
+    }
+
     static PyMethodDef methods[] = {
             {"bind",   (PyCFunction) bind,   METH_NOARGS,
                     "Binds the Shader"},
             {"unbind", (PyCFunction) unbind, METH_NOARGS,
                     "Unbinds the Shader"},
+
+            {"set", (PyCFunction) set, METH_VARARGS,
+                    "Sets a Shader uniform"},
 
             {nullptr}
     };

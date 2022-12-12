@@ -11,5 +11,8 @@ class Shader:
     def unbind(self):
         raise NotImplementedError()
 
+    def set(self, name: str, *args):
+        raise NotImplementedError()
+
 
 from ext.shader import *
