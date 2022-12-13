@@ -134,7 +134,7 @@ namespace gp {
     }
 
     void IndexBuffer::bind() const {
-        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
     }
 
     void IndexBuffer::unbind() const {

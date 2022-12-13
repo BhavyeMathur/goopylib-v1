@@ -37,6 +37,11 @@ namespace gp {
     void BaseWindow::update() {
         // GP_WINDOW_TRACE("Updating window '{0}'", m_Data.title);
 
+        Triangle::bindShader();
+        for (const auto& triangle: m_TriangleInstances) {
+            triangle->draw();
+        }
+
         _update();
         _updateBackground();
     }
@@ -49,6 +54,14 @@ namespace gp {
             m_isDestroyed = true;
             onDestroy();
         }
+    }
+}
+
+// BaseWindow draw methods
+
+namespace gp {
+    void BaseWindow::draw(const std::shared_ptr<Triangle>& triangle) {
+        m_TriangleInstances.push_back(triangle);
     }
 }
 

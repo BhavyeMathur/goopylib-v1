@@ -1,7 +1,8 @@
 #pragma once
 
 #include "pch.h"
-#include "goopylib/Color/Color.h"
+#include "src/goopylib/Color/Color.h"
+#include "src/goopylib/Objects/Triangle.h"
 
 namespace gp {
     class Window;
@@ -259,6 +260,10 @@ namespace gp {
 
         static void destroyAll();
 
+        // Draw Methods
+
+        void draw(const std::shared_ptr<Triangle>& triangle);
+
     protected:
         WindowConfig m_Data;
         glm::mat4 m_Projection{};
@@ -297,6 +302,8 @@ namespace gp {
         void onFramebufferSize(int width, int height);
 
         void onKeyPress(int key, int scancode, int action, int mods);
+
+        std::vector<std::shared_ptr<Triangle>> m_TriangleInstances;
 
     private:
         static std::vector<BaseWindow *> s_Instances;

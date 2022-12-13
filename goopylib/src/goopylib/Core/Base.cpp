@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Base.h"
 
+#include "src/goopylib/Objects/Triangle.h"
+
 namespace {
     void onUpdate() {
         gp::BaseWindow::updateAll();
@@ -19,10 +21,10 @@ namespace gp {
 
     GPAPI int initialize() {
         #if GP_LOGGING
-        gp::Log::Init();
+        Log::Init();
         #endif
 
-        gp::InitializeW3CX11();
+        InitializeW3CX11();
 
         GP_CORE_INFO("Initializing goopylib");
 
@@ -30,7 +32,7 @@ namespace gp {
         GP_CORE_TRACE("Initializing GLFW");
 
         glfwSetErrorCallback([](int error, const char *description) {
-            std::cout << "ERROR: " << description << std::endl;
+            GP_CORE_ERROR("GLFW Error Code {0}: {1}" , error, description);
         });
         if (!glfwInit()) {
             return -1;

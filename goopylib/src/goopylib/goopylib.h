@@ -14,3 +14,5 @@
 #include "goopylib/Color/ColorConversions.h"
 #include "goopylib/Color/Color.h"
 #include "goopylib/Color/W3CX11.h"
+
+#include "goopylib/Objects/Triangle.h"

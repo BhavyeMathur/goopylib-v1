@@ -20,6 +20,8 @@ set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Color/ColorConversions.cpp
     ${GOOPYLIB_PATH}/Color/Util.cpp
 
+    ${GOOPYLIB_PATH}/Objects/Triangle.cpp
+
     ${PLATFORM_PATH}/GLFW/Window.cpp
     ${PLATFORM_PATH}/OpenGL/Buffer.cpp
     ${PLATFORM_PATH}/OpenGL/VertexArray.cpp
