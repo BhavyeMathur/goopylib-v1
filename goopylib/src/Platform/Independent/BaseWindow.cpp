@@ -251,6 +251,10 @@ namespace gp {
         return _isClosed() or m_isDestroyed;
     }
 
+    bool BaseWindow::isOpen() const {
+        return !isClosed();
+    }
+
     void BaseWindow::restore() {
         if (isFullscreen()) {
             _unfullscreen(m_WindowedWidth, m_WindowedHeight, m_WindowedXPos, m_WindowedYPos);

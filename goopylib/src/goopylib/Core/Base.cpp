@@ -2,7 +2,7 @@
 #include "Base.h"
 
 namespace {
-    void OnUpdate() {
+    void onUpdate() {
         gp::BaseWindow::updateAll();
 
         #if (GP_DEBUGGING)
@@ -62,7 +62,7 @@ namespace gp {
     }
 
     GPAPI void update() {
-        OnUpdate();
+        onUpdate();
         #if GP_USING_GLFW
         glfwPollEvents();
         #endif
@@ -72,12 +72,12 @@ namespace gp {
 
     GPAPI void updateOnEvent() {
         glfwWaitEvents();
-        OnUpdate();
+        onUpdate();
     }
 
     GPAPI void updateTimeout(double timeout) {
         glfwWaitEventsTimeout(timeout);
-        OnUpdate();
+        onUpdate();
     }
 
     GPAPI std::string glfwCompiledVersion() {

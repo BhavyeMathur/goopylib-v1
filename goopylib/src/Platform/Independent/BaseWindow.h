@@ -81,6 +81,8 @@ namespace gp {
 
         bool isClosed() const;
 
+        bool isOpen() const;
+
         bool isDestroyed() const;
 
         void update();
