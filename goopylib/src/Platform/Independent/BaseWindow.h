@@ -2,7 +2,7 @@
 
 #include "pch.h"
 #include "src/goopylib/Color/Color.h"
-#include "src/goopylib/Objects/Triangle.h"
+#include "src/goopylib/Renderer/Renderer.h"
 
 namespace gp {
     class Window;
@@ -260,9 +260,7 @@ namespace gp {
 
         static void destroyAll();
 
-        // Draw Methods
-
-        void draw(const std::shared_ptr<Triangle>& triangle);
+        Renderer m_Renderer;
 
     protected:
         WindowConfig m_Data;
@@ -302,8 +300,6 @@ namespace gp {
         void onFramebufferSize(int width, int height);
 
         void onKeyPress(int key, int scancode, int action, int mods);
-
-        std::vector<std::shared_ptr<Triangle>> m_TriangleInstances;
 
     private:
         static std::vector<BaseWindow *> s_Instances;

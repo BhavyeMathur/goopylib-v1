@@ -31,6 +31,28 @@ namespace gp {
 
 // Vertex Buffer
 namespace gp {
+    VertexBuffer::VertexBuffer(BufferLayout layout, int count)
+    : BaseVertexBuffer(count) {
+        glGenBuffers(1, &m_RendererID);
+
+        GP_CORE_TRACE("Initializing Vertex Buffer {0}, count={1}", m_RendererID, count);
+
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), nullptr, GL_DYNAMIC_DRAW);
+
+        setLayout(std::move(layout));
+    }
+
+    VertexBuffer::VertexBuffer(int count)
+            : BaseVertexBuffer(count) {
+        glGenBuffers(1, &m_RendererID);
+
+        GP_CORE_TRACE("Initializing Vertex Buffer {0}, count={1}", m_RendererID, count);
+
+        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), nullptr, GL_DYNAMIC_DRAW);
+    }
+
     VertexBuffer::VertexBuffer(BufferLayout layout, float *vertices, int count)
             : BaseVertexBuffer(count) {
         glGenBuffers(1, &m_RendererID);

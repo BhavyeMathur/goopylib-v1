@@ -8,6 +8,10 @@
 namespace gp {
     class GPAPI VertexBuffer final : public BaseVertexBuffer {
     public:
+        VertexBuffer(BufferLayout layout, int count);
+
+        explicit VertexBuffer(int count);
+
         VertexBuffer(BufferLayout layout, float *vertices, int count);
 
         VertexBuffer(float *vertices, int count);

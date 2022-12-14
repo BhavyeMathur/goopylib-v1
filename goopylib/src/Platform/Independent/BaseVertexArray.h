@@ -9,9 +9,9 @@ namespace gp {
 
         virtual ~BaseVertexArray();
 
-        const std::vector<const BaseVertexBuffer*> & getVertexBuffers() const;
+        const std::vector<const Ref<BaseVertexBuffer>> & getVertexBuffers() const;
 
-        const std::shared_ptr<BaseIndexBuffer> &getIndexBuffer() const;
+        const Ref<BaseIndexBuffer> &getIndexBuffer() const;
 
         virtual void bind() const = 0;
 
@@ -19,14 +19,14 @@ namespace gp {
 
         virtual void draw() const = 0;
 
-        virtual void addVertexBuffer(const BaseVertexBuffer &vertexBuffer) = 0;
+        virtual void addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) = 0;
 
-        virtual void setIndexBuffer(const std::shared_ptr<BaseIndexBuffer> &indexBuffer) = 0;
+        virtual void setIndexBuffer(const Ref<BaseIndexBuffer> &indexBuffer) = 0;
 
         virtual void setIndexBuffer(std::initializer_list<uint32_t> indices) = 0;
 
     protected:
-        std::vector<const BaseVertexBuffer*> m_VertexBuffers;
+        std::vector<const Ref<BaseVertexBuffer>> m_VertexBuffers;
         std::shared_ptr<BaseIndexBuffer> m_IndexBuffer;
         uint32_t m_VertexBufferIndex = 0;
     };

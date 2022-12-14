@@ -20,7 +20,8 @@ set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Color/ColorConversions.cpp
     ${GOOPYLIB_PATH}/Color/Util.cpp
 
-    ${GOOPYLIB_PATH}/Objects/Triangle.cpp
+    ${GOOPYLIB_PATH}/Renderer/Triangle.cpp
+    ${GOOPYLIB_PATH}/Renderer/Renderer.cpp
 
     ${PLATFORM_PATH}/GLFW/Window.cpp
     ${PLATFORM_PATH}/OpenGL/Buffer.cpp

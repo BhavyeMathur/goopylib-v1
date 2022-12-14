@@ -15,4 +15,4 @@
 #include "goopylib/Color/Color.h"
 #include "goopylib/Color/W3CX11.h"
 
-#include "goopylib/Objects/Triangle.h"
+#include "goopylib/Renderer/Triangle.h"

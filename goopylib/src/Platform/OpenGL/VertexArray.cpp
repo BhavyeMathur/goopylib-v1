@@ -46,11 +46,11 @@ namespace gp {
         glDrawElements(GL_TRIANGLES, m_IndexBuffer->count(), GL_UNSIGNED_INT, nullptr);
     }
 
-    void VertexArray::addVertexBuffer(const BaseVertexBuffer &vertexBuffer) {
+    void VertexArray::addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) {
         bind();
-        vertexBuffer.bind();
+        vertexBuffer->bind();
 
-        const auto layout = vertexBuffer.getLayout();
+        const auto layout = vertexBuffer->getLayout();
 
         for (const auto element: layout) {
             ShaderDataType type = element.getType();
@@ -120,10 +120,10 @@ namespace gp {
             }
         }
 
-        m_VertexBuffers.push_back(&vertexBuffer);
+        m_VertexBuffers.push_back(vertexBuffer);
     }
 
-    void VertexArray::setIndexBuffer(const std::shared_ptr<BaseIndexBuffer> &indexBuffer) {
+    void VertexArray::setIndexBuffer(const Ref<BaseIndexBuffer> &indexBuffer) {
         glBindVertexArray(m_RendererID);
         indexBuffer->bind();
 

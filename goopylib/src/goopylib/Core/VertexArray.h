@@ -21,9 +21,9 @@ namespace gp {
 
         void draw() const override;
 
-        void addVertexBuffer(const BaseVertexBuffer &vertexBuffer) override;
+        void addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) override;
 
-        void setIndexBuffer(const std::shared_ptr<BaseIndexBuffer> &indexBuffer) override;
+        void setIndexBuffer(const Ref<BaseIndexBuffer> &indexBuffer) override;
 
         void setIndexBuffer(std::initializer_list<uint32_t> indices) override;
 

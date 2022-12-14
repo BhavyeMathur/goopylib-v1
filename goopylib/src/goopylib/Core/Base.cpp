@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Base.h"
 
-#include "src/goopylib/Objects/Triangle.h"
-
 namespace {
     void onUpdate() {
         gp::BaseWindow::updateAll();
