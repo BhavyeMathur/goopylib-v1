@@ -19,6 +19,8 @@ namespace gp {
 
         virtual void draw() const = 0;
 
+        virtual void draw(int count) const = 0;
+
         virtual void addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) = 0;
 
         virtual void setIndexBuffer(const Ref<BaseIndexBuffer> &indexBuffer) = 0;

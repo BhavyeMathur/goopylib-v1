@@ -13,8 +13,6 @@ namespace gp {
         Triangle(Point p1, Point p2, Point p3);
         ~Triangle();
 
-        void draw() const;
-
         static void bindShader();
 
         static std::shared_ptr<Triangle> create(Point p1, Point p2, Point p3);

@@ -2,6 +2,15 @@
 
 ## v2.0.0
 
+#### 14 December, 2022 - 16129 lines of code
+
+* Basic batch rendering for Triangles
+
+#### 13 December, 2022 - ? lines of code
+
+* `isOpen()` method for C++ Window
+* Abstracted a Triangle class
+
 #### 12 December, 2022 - ? lines of code
 
 * Added a C++ API to set Shader Uniforms

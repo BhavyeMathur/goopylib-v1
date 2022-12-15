@@ -48,7 +48,7 @@ namespace gp {
             }
 
             Triangle::bindShader();
-            m_TriangleVAO->draw();
+            m_TriangleVAO->draw(m_Triangles * 3);
 
             GP_CORE_TRACE("Drawing {0} triangles", m_Triangles);
         }

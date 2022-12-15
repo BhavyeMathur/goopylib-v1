@@ -46,6 +46,11 @@ namespace gp {
         glDrawElements(GL_TRIANGLES, m_IndexBuffer->count(), GL_UNSIGNED_INT, nullptr);
     }
 
+    void VertexArray::draw(int count) const {
+        bind();
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+    }
+
     void VertexArray::addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) {
         bind();
         vertexBuffer->bind();

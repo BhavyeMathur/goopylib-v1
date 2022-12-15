@@ -21,6 +21,8 @@ namespace gp {
 
         void draw() const override;
 
+        void draw(int count) const override;
+
         void addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) override;
 
         void setIndexBuffer(const Ref<BaseIndexBuffer> &indexBuffer) override;
