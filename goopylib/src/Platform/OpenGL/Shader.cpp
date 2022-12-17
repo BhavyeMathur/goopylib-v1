@@ -1,20 +1,25 @@
-#include "goopylib/Core/Shader.h"
+#include "src/goopylib/Core/Shader.h"
 
 namespace gp {
     Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource) {
+        int32_t success;
+        char infoLog[512];
+
+        GP_CORE_DEBUG("Compiling Vertex Shader {0}", m_RendererID);
+
         uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
         glCompileShader(vertexShader);
-
-        int32_t success;
-        char infoLog[512];
 
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
         if (success == GL_FALSE) {
             glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
             GP_CORE_ERROR("SHADER: Vertex Shader Compilation Failed {0}", infoLog);
+
             glDeleteShader(vertexShader);
         }
+
+        GP_CORE_DEBUG("Compiling Fragment Shader {0}", m_RendererID);
 
         uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
@@ -48,11 +53,12 @@ namespace gp {
     }
 
     Shader::~Shader() {
-        GP_DEBUG("Deallocating Shader {0}", m_RendererID);
+        GP_CORE_DEBUG("Deallocating Shader {0}", m_RendererID);
         glDeleteProgram(m_RendererID);
     }
 
     void Shader::bind() const {
+        GP_CORE_TRACE("Binding Shader {0}", m_RendererID);
         glUseProgram(m_RendererID);
     }
 
@@ -62,7 +68,7 @@ namespace gp {
     }
 
     void Shader::_setUniform(int32_t location, float value) const {
-        GP_CORE_DEBUG("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, value);
+        GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, value);
         glUniform1f(location, value);
     }
 

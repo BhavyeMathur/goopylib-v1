@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Platform/Independent/BaseShader.h"
+#include "src/Platform/Independent/BaseShader.h"
 
 namespace gp {
     class Shader final : public BaseShader {

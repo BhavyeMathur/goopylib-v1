@@ -17,6 +17,7 @@ namespace gp {
                 GP_CORE_ERROR("Uniform '{0}' not found!", name);
             }
             else {
+                GP_CORE_INFO("Adding '{0}' uniform at {1} to cache", name, location);
                 m_Uniforms[name] = location;
             }
 
