@@ -15,9 +15,9 @@ namespace gp {
         static Ref<spdlog::logger> getPythonLogger();
 
     private:
-        static Ref<spdlog::logger> CoreLogger;
-        static Ref<spdlog::logger> PythonLogger;
-        static Ref<spdlog::logger> ClientLogger;
+        static Ref<spdlog::logger> s_CoreLogger;
+        static Ref<spdlog::logger> s_PythonLogger;
+        static Ref<spdlog::logger> s_ClientLogger;
     };
 }
 
