@@ -39,10 +39,12 @@
 
 #ifdef __APPLE__
 #define __gl_h_
-# define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
+
+#define GL_SILENCE_DEPRECATION
 
 #endif
 

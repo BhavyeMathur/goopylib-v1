@@ -12,10 +12,10 @@ namespace gp {
     void Renderer::init() {
         m_TriangleVAO = CreateRef<VertexArray>();
 
-        BufferLayout layout = {{ShaderDataType::Float2, "vertices"}};
-        m_TriangleVBO = CreateRef<VertexBuffer>(layout, 0);
+        m_TriangleVBO = CreateRef<VertexBuffer>();
+        m_TriangleVBO->setLayout({{ShaderDataType::Float2, "vertices"}});
 
-        m_TriangleVAO->addVertexBuffer(m_TriangleVBO);
+        m_TriangleVAO->setVertexBuffer(m_TriangleVBO);
     }
 
     uint32_t Renderer::drawTriangle(Point p1, Point p2, Point p3) {

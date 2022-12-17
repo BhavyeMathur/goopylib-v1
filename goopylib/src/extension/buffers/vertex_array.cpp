@@ -85,7 +85,7 @@ namespace VertexArray {
 
         PyList_Append(self->vertex_buffers, (PyObject *) vertex_buffer);
 
-        self->vertex_array->addVertexBuffer(*((VertexBufferObject *) vertex_buffer)->buffer);
+        self->vertex_array->setVertexBuffer(*((VertexBufferObject *) vertex_buffer)->buffer);
         Py_RETURN_NONE;
     }
 

@@ -53,7 +53,7 @@ namespace gp {
 
 // Index Buffer
 namespace gp {
-    IndexBuffer::IndexBuffer(uint32_t *indices, int32_t count)
+    IndexBuffer::IndexBuffer(int32_t count, uint32_t *indices)
             : BaseIndexBuffer(count) {
         glGenBuffers(1, &m_RendererID);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseBuffer.h"
+#include "src/goopylib/Core/Buffer.h"
 
 namespace gp {
     class BaseVertexArray {
@@ -9,27 +10,24 @@ namespace gp {
 
         virtual ~BaseVertexArray();
 
-        const std::vector<const Ref<BaseVertexBuffer>> &getVertexBuffers() const;
-
-        const Ref<BaseIndexBuffer> &getIndexBuffer() const;
-
         virtual void bind() const = 0;
 
         virtual void unbind() const = 0;
 
-        virtual void draw() const = 0;
+        virtual void draw(int32_t count = 0) const = 0;
 
-        virtual void draw(int32_t count) const = 0;
+        virtual void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) = 0;
 
-        virtual void addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) = 0;
+        const Ref<VertexBuffer> &getVertexBuffer() const;
 
-        virtual void setIndexBuffer(const Ref<BaseIndexBuffer> &indexBuffer) = 0;
+        void setIndexBuffer(const Ref<IndexBuffer> &indexBuffer);
 
-        virtual void setIndexBuffer(std::initializer_list<uint32_t> indices) = 0;
+        void setIndexBuffer(std::initializer_list<uint32_t> indices);
+
+        const Ref<IndexBuffer> &getIndexBuffer() const;
 
     protected:
-        std::vector<const Ref<BaseVertexBuffer>> m_VertexBuffers;
-        Ref<BaseIndexBuffer> m_IndexBuffer;
-        uint32_t m_VertexBufferIndex = 0;
+        Ref<VertexBuffer> m_VertexBuffer;
+        Ref<IndexBuffer> m_IndexBuffer;
     };
 }

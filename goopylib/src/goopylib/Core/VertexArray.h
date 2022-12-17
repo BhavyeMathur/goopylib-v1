@@ -1,15 +1,15 @@
 #pragma once
 
-#include "pch.h"
-#include "Buffer.h"
-#include "Platform/Independent/BaseVertexArray.h"
+#include "src/pch.h"
+#include "src/goopylib/Core/Buffer.h"
+#include "src/Platform/Independent/BaseVertexArray.h"
 
 namespace gp {
     class VertexArray final : public BaseVertexArray {
     public:
         VertexArray();
 
-        VertexArray(uint32_t *indices, int32_t count);
+        VertexArray(int32_t count, uint32_t *indices);
 
         VertexArray(std::initializer_list<uint32_t> indices);
 
@@ -19,15 +19,23 @@ namespace gp {
 
         void unbind() const override;
 
-        void draw() const override;
+        void draw(int32_t count = 0) const override;
 
-        void draw(int32_t count) const override;
+        void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) override;
 
-        void addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) override;
+        // Static Methods
 
-        void setIndexBuffer(const Ref<BaseIndexBuffer> &indexBuffer) override;
+        static Ref<VertexArray> create() {
+            return CreateRef<VertexArray>();
+        }
 
-        void setIndexBuffer(std::initializer_list<uint32_t> indices) override;
+        static Ref<VertexArray> create(int32_t count, uint32_t *indices) {
+            return CreateRef<VertexArray>(count, indices);
+        }
+
+        static Ref<VertexArray> create(std::initializer_list<uint32_t> indices) {
+            return CreateRef<VertexArray>(indices);
+        }
 
     private:
         uint32_t m_RendererID = 0;

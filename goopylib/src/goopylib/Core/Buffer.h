@@ -20,6 +20,16 @@ namespace gp {
 
         void setData(const float *data, int32_t count) override;
 
+        // Static Methods
+
+        static Ref<VertexBuffer> create(int32_t count = 0, float *vertices = nullptr) {
+            return CreateRef<VertexBuffer>(count, vertices);
+        }
+
+        static Ref<VertexBuffer> create(std::initializer_list<float> vertices) {
+            return CreateRef<VertexBuffer>(vertices);
+        }
+
     private:
         uint32_t m_RendererID = 0;
     };
@@ -29,7 +39,7 @@ namespace gp {
 namespace gp {
     class GPAPI IndexBuffer final : public BaseIndexBuffer {
     public:
-        IndexBuffer(uint32_t *indices, int32_t count);
+        IndexBuffer(int32_t count, uint32_t *indices);
 
         IndexBuffer(std::initializer_list<uint32_t> indices);
 
@@ -38,6 +48,16 @@ namespace gp {
         void bind() const override;
 
         void unbind() const override;
+
+        // Static Methods
+
+        static Ref<IndexBuffer> create(int32_t count, uint32_t *indices) {
+            return CreateRef<IndexBuffer>(count, indices);
+        }
+
+        static Ref<IndexBuffer> create(std::initializer_list<uint32_t> indices) {
+            return CreateRef<IndexBuffer>(indices);
+        }
 
     private:
         uint32_t m_RendererID = 0;
