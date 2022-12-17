@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-#include "goopylib/Core/Base.h"
+#include "goopylib/Core/Core.h"
 #include "goopylib/Core/Window.h"
 #include "goopylib/Core/Buffer.h"
 #include "goopylib/Core/VertexArray.h"

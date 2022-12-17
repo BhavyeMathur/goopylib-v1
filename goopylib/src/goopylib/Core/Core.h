@@ -1,8 +1,6 @@
 #pragma once
 
 #include "src/goopylib/Debug/Log.h"
-#include "src/goopylib/Color/W3CX11.h"
-#include "src/Platform/Independent/BaseWindow.h"
 
 namespace gp {
     GPAPI extern bool glfw_initialized;

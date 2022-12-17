@@ -1,14 +1,17 @@
-#include "pch.h"
-#include "Base.h"
+#include "src/pch.h"
+
+#include "src/goopylib/Core/Core.h"
+#include "src/goopylib/Color/W3CX11.h"
+#include "src/Platform/Independent/BaseWindow.h"
 
 namespace {
     void onUpdate() {
         gp::BaseWindow::updateAll();
 
-        #if (GP_DEBUGGING)
+        #if (GP_DEBUGGING and GP_USING_OPENGL)
         GLenum error;
         while ((error = glGetError()) != GL_NO_ERROR) {
-            printf("Unknown Error: 0x%x\n", error);
+            GP_CORE_ERROR("OpenGL Error: {0}", error);
         }
         #endif
     }
@@ -20,9 +23,10 @@ namespace gp {
     GPAPI int initialize() {
         Log::init();
 
-        InitializeW3CX11();
-
         GP_CORE_INFO("Initializing goopylib");
+
+        GP_CORE_DEBUG("Initializing W3CX11");
+        InitializeW3CX11();
 
         #if GP_USING_GLFW
         GP_CORE_DEBUG("Initializing GLFW");
@@ -50,6 +54,7 @@ namespace gp {
 
         BaseWindow::destroyAll();
 
+        GP_CORE_DEBUG("Deallocating W3CX11");
         DeallocateW3CX11();
 
         #if GP_USING_GLFW
