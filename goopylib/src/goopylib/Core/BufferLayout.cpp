@@ -1,6 +1,33 @@
 #include "BufferLayout.h"
 
 
+namespace gp {
+    GLenum shaderOpenGLType(ShaderDataType type) {
+        switch (type) {
+            case ShaderDataType::Float:
+            case ShaderDataType::Float2:
+            case ShaderDataType::Float3:
+            case ShaderDataType::Float4:
+            case ShaderDataType::Mat3:
+            case ShaderDataType::Mat4:
+                return GL_FLOAT;
+
+            case ShaderDataType::Int:
+            case ShaderDataType::Int2:
+            case ShaderDataType::Int3:
+            case ShaderDataType::Int4:
+                return GL_INT;
+
+            case ShaderDataType::Bool:
+                return GL_BOOL;
+
+            case ShaderDataType::None:
+                GP_CORE_ERROR("Unrecognised Shader Type");
+                return 0;
+        }
+    }
+}
+
 // Buffer Layout Element
 namespace gp {
     int32_t shaderTypeSize(ShaderDataType type) {

@@ -1,12 +1,19 @@
 #include "BaseBuffer.h"
 
-// Base Vertex Buffer
+// Generic Buffer
 namespace gp {
-    BaseVertexBuffer::BaseVertexBuffer()
-    : m_Layout({}) {
-        GP_CORE_INFO("Initializing Empty BaseVertexBuffer");
+    BaseBuffer::BaseBuffer(int32_t count)
+            : m_Count(count) {
+
     }
 
+    int32_t BaseBuffer::count() const {
+        return m_Count;
+    }
+}
+
+// Base Vertex Buffer
+namespace gp {
     BaseVertexBuffer::BaseVertexBuffer(int32_t count)
             : BaseBuffer(count),
               m_Layout({}) {

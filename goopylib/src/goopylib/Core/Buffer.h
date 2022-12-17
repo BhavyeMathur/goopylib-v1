@@ -1,22 +1,14 @@
 #pragma once
 
-#include <utility>
+#include "src/Platform/Independent/BaseBuffer.h"
 
-#include "Platform/Independent/BaseBuffer.h"
+// TODO Vertex Buffer with non-float data
 
 // Vertex Buffer
 namespace gp {
     class GPAPI VertexBuffer final : public BaseVertexBuffer {
     public:
-        VertexBuffer(const BufferLayout& layout, int32_t count);
-
-        explicit VertexBuffer(int32_t count = 0);
-
-        VertexBuffer(const BufferLayout& layout, float *vertices, int32_t count);
-
-        VertexBuffer(float *vertices, int32_t count);
-
-        VertexBuffer(const BufferLayout& layout, std::initializer_list<float> vertices);
+        explicit VertexBuffer(int32_t count = 0, float *vertices = nullptr);
 
         VertexBuffer(std::initializer_list<float> vertices);
 
@@ -26,7 +18,7 @@ namespace gp {
 
         void unbind() const override;
 
-        void setData(const void *data, int32_t count) override;
+        void setData(const float *data, int32_t count) override;
 
     private:
         uint32_t m_RendererID = 0;

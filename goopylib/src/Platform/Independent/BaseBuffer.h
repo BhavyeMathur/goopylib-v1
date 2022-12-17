@@ -9,8 +9,7 @@ namespace gp {
     public:
         BaseBuffer() = default;
 
-        explicit BaseBuffer(int32_t count) : m_Count(count) {
-        };
+        explicit BaseBuffer(int32_t count);
 
         virtual ~BaseBuffer() = default;
 
@@ -18,11 +17,9 @@ namespace gp {
 
         virtual void unbind() const = 0;
 
-        int32_t count() const {
-            return m_Count;
-        };
+        int32_t count() const;
 
-    private:
+    protected:
         int32_t m_Count = 0;
     };
 }
@@ -31,17 +28,19 @@ namespace gp {
 namespace gp {
     class BaseVertexBuffer : public BaseBuffer {
     public:
-        BaseVertexBuffer();
-
-        explicit BaseVertexBuffer(int32_t count);
+        explicit BaseVertexBuffer(int32_t count = 0);
 
         ~BaseVertexBuffer() override;
+
+        void bind() const override = 0;
+
+        void unbind() const override = 0;
 
         const BufferLayout &getLayout() const;
 
         void setLayout(const BufferLayout &layout);
 
-        virtual void setData(const void *data, int32_t count) = 0;
+        virtual void setData(const float *data, int32_t count) = 0;
 
     private:
         BufferLayout m_Layout;
@@ -55,5 +54,9 @@ namespace gp {
         explicit BaseIndexBuffer(int32_t count);
 
         ~BaseIndexBuffer() override;
+
+        void bind() const override = 0;
+
+        void unbind() const override = 0;
     };
 }
