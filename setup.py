@@ -110,7 +110,7 @@ def countlines(start, lines=0, _header=True, _begin_start=None):
 
                 print('{:>10} |{:>10} | {}'.format(newlines, lines, filepath))
 
-        elif os.path.isdir(filepath) and file not in {"vendor", "venv", "build", "docs"}:
+        elif os.path.isdir(filepath) and file not in {"vendor", "venv", "build", "docs", "examples"}:
             lines = countlines(filepath, lines, _header=False, _begin_start=start)
 
     return lines

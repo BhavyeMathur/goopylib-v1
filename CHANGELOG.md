@@ -2,6 +2,14 @@
 
 ## v2.0.0
 
+#### 17 December, 2022 - 15723 lines of code
+
+* Moved buffer layouts and elements into a separate file
+* Introduced configuration for logging level
+* Added a destroy triangle method & new Triangle class
+* Code maintenance and clean-up for Vertex Arrays, Buffers, Shader, Log, and Core
+* `Base.h/cpp` is now `Core.h/cpp`
+
 #### 14 December, 2022 - 16129 lines of code
 
 * Basic batch rendering for Triangles
