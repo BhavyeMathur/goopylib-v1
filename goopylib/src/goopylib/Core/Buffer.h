@@ -8,15 +8,15 @@
 namespace gp {
     class GPAPI VertexBuffer final : public BaseVertexBuffer {
     public:
-        VertexBuffer(BufferLayout layout, int count);
+        VertexBuffer(const BufferLayout& layout, int32_t count);
 
-        explicit VertexBuffer(int count);
+        explicit VertexBuffer(int32_t count = 0);
 
-        VertexBuffer(BufferLayout layout, float *vertices, int count);
+        VertexBuffer(const BufferLayout& layout, float *vertices, int32_t count);
 
-        VertexBuffer(float *vertices, int count);
+        VertexBuffer(float *vertices, int32_t count);
 
-        VertexBuffer(BufferLayout layout, std::initializer_list<float> vertices);
+        VertexBuffer(const BufferLayout& layout, std::initializer_list<float> vertices);
 
         VertexBuffer(std::initializer_list<float> vertices);
 
@@ -26,7 +26,7 @@ namespace gp {
 
         void unbind() const override;
 
-        void setData(const void *data, uint32_t size) override;
+        void setData(const void *data, int32_t count) override;
 
     private:
         uint32_t m_RendererID = 0;
@@ -37,7 +37,7 @@ namespace gp {
 namespace gp {
     class GPAPI IndexBuffer final : public BaseIndexBuffer {
     public:
-        IndexBuffer(uint32_t *indices, int count);
+        IndexBuffer(uint32_t *indices, int32_t count);
 
         IndexBuffer(std::initializer_list<uint32_t> indices);
 
@@ -48,6 +48,6 @@ namespace gp {
         void unbind() const override;
 
     private:
-        uint32_t m_RendererID{};
+        uint32_t m_RendererID = 0;
     };
 }

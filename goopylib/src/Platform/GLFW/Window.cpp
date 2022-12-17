@@ -5,7 +5,7 @@
 
 namespace gp {
     Window::Window(const WindowConfig &config) : BaseWindow(config) {
-        GP_WINDOW_INFO("Creating window '{0}' ({1}, {2})", config.title, config.width, config.height);
+        GP_CORE_INFO("Creating window '{0}' ({1}, {2})", config.title, config.width, config.height);
 
         m_Window = glfwCreateWindow(m_Data.width,
                                     m_Data.height,
@@ -18,7 +18,7 @@ namespace gp {
     }
 
     Window::~Window() {
-        GP_WINDOW_INFO("Deallocating window '{0}'", m_Data.title);
+        GP_CORE_INFO("Deallocating window '{0}'", m_Data.title);
         destroy();
     }
 
@@ -34,7 +34,7 @@ namespace gp {
     }
 
     void Window::setResizable(bool value) {
-        GP_WINDOW_TRACE("Set '{0}' resizable -> {1}", m_Data.title, value);
+        GP_CORE_TRACE("Set '{0}' resizable -> {1}", m_Data.title, value);
         glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -43,7 +43,7 @@ namespace gp {
     }
 
     void Window::setDecorated(bool value) {
-        GP_WINDOW_TRACE("Set '{0}' decorated -> {1}", m_Data.title, value);
+        GP_CORE_TRACE("Set '{0}' decorated -> {1}", m_Data.title, value);
         glfwSetWindowAttrib(m_Window, GLFW_DECORATED, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -52,7 +52,7 @@ namespace gp {
     }
 
     void Window::setFloating(bool value) {
-        GP_WINDOW_TRACE("Set '{0}' floating -> {1}", m_Data.title, value);
+        GP_CORE_TRACE("Set '{0}' floating -> {1}", m_Data.title, value);
         glfwSetWindowAttrib(m_Window, GLFW_FLOATING, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -61,7 +61,7 @@ namespace gp {
     }
 
     void Window::setAutoMinimized(bool value) {
-        GP_WINDOW_TRACE("Set '{0}' auto minimized -> {1}", m_Data.title, value);
+        GP_CORE_TRACE("Set '{0}' auto minimized -> {1}", m_Data.title, value);
         glfwSetWindowAttrib(m_Window, GLFW_AUTO_ICONIFY, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -70,7 +70,7 @@ namespace gp {
     }
 
     void Window::setFocusedOnShow(bool value) {
-        GP_WINDOW_TRACE("Set '{0}' focused on show -> {1}", m_Data.title, value);
+        GP_CORE_TRACE("Set '{0}' focused on show -> {1}", m_Data.title, value);
         glfwSetWindowAttrib(m_Window, GLFW_FOCUS_ON_SHOW, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -233,7 +233,7 @@ namespace gp {
     }
 
     void Window::_destroy() const {
-        GP_WINDOW_TRACE("_destroy() '{0}'", m_Data.title);
+        GP_CORE_TRACE("_destroy() '{0}'", m_Data.title);
         glfwDestroyWindow(m_Window);
     }
 

@@ -482,7 +482,7 @@ static struct PyModuleDef easingmodule = {
 PyMODINIT_FUNC PyInit_easing() {
     #if GP_LOGGING
     std::cout << "Initializing easing logger" << std::endl;
-    gp::Log::Init();
+    gp::Log::init();
     #endif
 
     GP_PY_TRACE("Initializing easing module");

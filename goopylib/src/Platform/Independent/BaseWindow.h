@@ -254,13 +254,17 @@ namespace gp {
 
         void setFramebufferSizeCallback(std::function<void(Window *window, int width, int height)> callback);
 
+        // Rendering
+
+        uint32_t drawTriangle(Point p1, Point p2, Point p3);
+
+        void destroyTriangle(uint32_t ID);
+
         // Static Methods
 
         static void updateAll();
 
         static void destroyAll();
-
-        Renderer m_Renderer;
 
     protected:
         WindowConfig m_Data;
@@ -270,6 +274,8 @@ namespace gp {
         int m_KeyModifiers;  // check if shift, control, alt, and super keys are pressed
 
         void super() {
+            m_Renderer.init();
+
             _updatePosition();
             _updateSizeLimits();
 
@@ -303,6 +309,8 @@ namespace gp {
 
     private:
         static std::vector<BaseWindow *> s_Instances;
+
+        Renderer m_Renderer;
 
         int m_WindowedWidth;
         int m_WindowedHeight;

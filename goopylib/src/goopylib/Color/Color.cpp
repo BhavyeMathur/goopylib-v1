@@ -15,7 +15,7 @@ namespace gp {
             m_Redf(1.0f),
             m_Greenf(1.0f),
             m_Bluef(1.0f) {
-        GP_COLOR_TRACE("Initializing Color()");
+        GP_CORE_TRACE("Initializing Color()");
     }
 
     Color::Color(const RGB &color, float alpha) :
@@ -28,7 +28,7 @@ namespace gp {
             m_Redf((float) m_Red / 255.0f),
             m_Greenf((float) m_Green / 255.0f),
             m_Bluef((float) m_Blue / 255.0f) {
-        GP_COLOR_TRACE("Initializing Color() from struct", alpha);
+        GP_CORE_TRACE("Initializing Color() from struct", alpha);
     }
 
     Color::Color(const Color &color) :
@@ -41,7 +41,7 @@ namespace gp {
             m_Redf(color.m_Redf),
             m_Greenf(color.m_Greenf),
             m_Bluef(color.m_Bluef) {
-        GP_COLOR_TRACE("Initializing Color() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing Color() from {0}", color.toString());
     }
 
     Color::Color(const ColorHSV &color) :
@@ -54,7 +54,7 @@ namespace gp {
             m_Redf(color.m_Redf),
             m_Greenf(color.m_Greenf),
             m_Bluef(color.m_Bluef) {
-        GP_COLOR_TRACE("Initializing Color() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing Color() from {0}", color.toString());
     }
 
     Color::Color(const ColorHSL &color) :
@@ -67,7 +67,7 @@ namespace gp {
             m_Redf(color.m_Redf),
             m_Greenf(color.m_Greenf),
             m_Bluef(color.m_Bluef) {
-        GP_COLOR_TRACE("Initializing Color() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing Color() from {0}", color.toString());
     }
 
     Color::Color(int red, int green, int blue) :
@@ -80,7 +80,7 @@ namespace gp {
             m_Redf((float) m_Red / 255.0f),
             m_Greenf((float) m_Green / 255.0f),
             m_Bluef((float) m_Blue / 255.0f) {
-        GP_COLOR_TRACE("Initializing Color({0}, {1}, {2})", red, green, blue);
+        GP_CORE_TRACE("Initializing Color({0}, {1}, {2})", red, green, blue);
 
         clampRGBA();
     }
@@ -95,7 +95,7 @@ namespace gp {
             m_Redf((float) m_Red / 255.0f),
             m_Greenf((float) m_Green / 255.0f),
             m_Bluef((float) m_Blue / 255.0f) {
-        GP_COLOR_TRACE("Initializing Color({0}, {1}, {2}, {3})", red, green, blue, alpha);
+        GP_CORE_TRACE("Initializing Color({0}, {1}, {2}, {3})", red, green, blue, alpha);
 
         clampRGBA();
     }
@@ -308,17 +308,17 @@ namespace gp {
 namespace gp {
     ColorRGB::ColorRGB(const Color &color)
             : Color(color) {
-        GP_COLOR_TRACE("Initializing ColorRGB() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing ColorRGB() from {0}", color.toString());
     }
 
     ColorRGB::ColorRGB(int red, int green, int blue)
             : Color(red, green, blue) {
-        GP_COLOR_TRACE("Initializing ColorRGB({0}, {1}, {2})", red, green, blue);
+        GP_CORE_TRACE("Initializing ColorRGB({0}, {1}, {2})", red, green, blue);
     }
 
     ColorRGB::ColorRGB(int red, int green, int blue, float alpha)
             : Color(red, green, blue) {
-        GP_COLOR_TRACE("Initializing ColorRGBA({0}, {1}, {2}, {3})", red, green, blue, alpha);
+        GP_CORE_TRACE("Initializing ColorRGBA({0}, {1}, {2}, {3})", red, green, blue, alpha);
     }
 }
 
@@ -327,19 +327,19 @@ namespace gp {
     ColorHex::ColorHex(const Color &color)
             : Color(color),
               m_String(rgb::toHex(color.getRed(), color.getGreen(), color.getBlue())) {
-        GP_COLOR_TRACE("Initializing ColorHex() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing ColorHex() from {0}", color.toString());
     }
 
     ColorHex::ColorHex(const char *hexstring)
             : Color(hex::toRGB(hexstring), 1.0f),
               m_String(hexstring) {
-        GP_COLOR_TRACE("Initializing ColorHex({0})", hexstring);
+        GP_CORE_TRACE("Initializing ColorHex({0})", hexstring);
     }
 
     ColorHex::ColorHex(const char *hexstring, float alpha)
             : Color(hex::toRGB(hexstring), alpha),
               m_String(hexstring) {
-        GP_COLOR_TRACE("Initializing ColorHexA({0}, {1})", hexstring, alpha);
+        GP_CORE_TRACE("Initializing ColorHexA({0}, {1})", hexstring, alpha);
     }
 
     std::string ColorHex::toString() const {
@@ -351,7 +351,7 @@ namespace gp {
 namespace gp {
     ColorCMYK::ColorCMYK(const Color &color)
             : Color(color) {
-        GP_COLOR_TRACE("Initializing ColorCMYK() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing ColorCMYK() from {0}", color.toString());
 
         CMYK data = rgb::toCMYK(color.getRed(), color.getGreen(), color.getBlue());
 
@@ -367,7 +367,7 @@ namespace gp {
               m_Magenta(magenta),
               m_Yellow(yellow),
               m_Key(key) {
-        GP_COLOR_TRACE("Initializing ColorCMYK({0}, {1}, {2}, {3})", cyan, magenta, yellow, key);
+        GP_CORE_TRACE("Initializing ColorCMYK({0}, {1}, {2}, {3})", cyan, magenta, yellow, key);
     }
 
     ColorCMYK::ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha)
@@ -376,7 +376,7 @@ namespace gp {
               m_Magenta(magenta),
               m_Yellow(yellow),
               m_Key(key) {
-        GP_COLOR_TRACE("Initializing ColorCMYKA({0}, {1}, {2}, {3}, {4})", cyan, magenta, yellow, key, alpha);
+        GP_CORE_TRACE("Initializing ColorCMYKA({0}, {1}, {2}, {3}, {4})", cyan, magenta, yellow, key, alpha);
     }
 
     std::string ColorCMYK::toString() const {
@@ -428,7 +428,7 @@ namespace gp {
 namespace gp {
     ColorHSV::ColorHSV(const Color &color)
             : Color(color) {
-        GP_COLOR_TRACE("Initializing ColorHSV() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing ColorHSV() from {0}", color.toString());
 
         HSV data = rgb::toHSV(color.getRed(), color.getGreen(), color.getBlue());
 
@@ -439,7 +439,7 @@ namespace gp {
 
     ColorHSV::ColorHSV(const ColorHSL &color)
             : Color(color) {
-        GP_COLOR_TRACE("Initializing ColorHSV() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing ColorHSV() from {0}", color.toString());
 
         HSV data = hsl::toHSV(color.getHue(), color.getSaturation(), color.getLuminance());
 
@@ -453,7 +453,7 @@ namespace gp {
               m_Hue(hue),
               m_Saturation(saturation),
               m_Value(value) {
-        GP_COLOR_TRACE("Initializing ColorHSV({0}, {1}, {2})", hue, saturation, value);
+        GP_CORE_TRACE("Initializing ColorHSV({0}, {1}, {2})", hue, saturation, value);
     }
 
     ColorHSV::ColorHSV(int hue, float saturation, float value, float alpha)
@@ -461,7 +461,7 @@ namespace gp {
               m_Hue(hue),
               m_Saturation(saturation),
               m_Value(value) {
-        GP_COLOR_TRACE("Initializing ColorHSVA({0}, {1}, {2}, {3})", hue, saturation, value, alpha);
+        GP_CORE_TRACE("Initializing ColorHSVA({0}, {1}, {2}, {3})", hue, saturation, value, alpha);
     }
 
     std::string ColorHSV::toString() const {
@@ -503,7 +503,7 @@ namespace gp {
 namespace gp {
     ColorHSL::ColorHSL(const Color &color)
             : Color(color) {
-        GP_COLOR_TRACE("Initializing ColorHSL() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing ColorHSL() from {0}", color.toString());
 
         HSL data = rgb::toHSL(color.getRed(), color.getGreen(), color.getBlue());
 
@@ -514,7 +514,7 @@ namespace gp {
 
     ColorHSL::ColorHSL(const ColorHSV &color)
             : Color(color) {
-        GP_COLOR_TRACE("Initializing ColorHSL() from {0}", color.toString());
+        GP_CORE_TRACE("Initializing ColorHSL() from {0}", color.toString());
 
         HSL data = hsv::toHSL(color.getHue(), color.getSaturation(), color.getValue());
 
@@ -528,7 +528,7 @@ namespace gp {
               m_Hue(hue),
               m_Saturation(saturation),
               m_Luminance(luminance) {
-        GP_COLOR_TRACE("Initializing ColorHSL({0}, {1}, {2})", hue, saturation, luminance);
+        GP_CORE_TRACE("Initializing ColorHSL({0}, {1}, {2})", hue, saturation, luminance);
     }
 
     ColorHSL::ColorHSL(int hue, float saturation, float luminance, float alpha)
@@ -536,7 +536,7 @@ namespace gp {
               m_Hue(hue),
               m_Saturation(saturation),
               m_Luminance(luminance) {
-        GP_COLOR_TRACE("Initializing ColorHSLA({0}, {1}, {2}, {3})", hue, saturation, luminance, alpha);
+        GP_CORE_TRACE("Initializing ColorHSLA({0}, {1}, {2}, {3})", hue, saturation, luminance, alpha);
     }
 
     std::string ColorHSL::toString() const {

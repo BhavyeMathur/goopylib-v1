@@ -4,7 +4,7 @@ namespace gp {
     class GPAPI Log {
 
     public:
-        static void Init();
+        static void init();
 
         static std::shared_ptr<spdlog::logger> getCoreLogger();
 
@@ -37,6 +37,7 @@ template<typename OStream, typename T, glm::qualifier Q>
 #if GP_LOGGING
 // Core log macros
 #define GP_CORE_TRACE(...)    gp::Log::getCoreLogger()->trace(__VA_ARGS__)
+#define GP_CORE_DEBUG(...)    gp::Log::getCoreLogger()->debug(__VA_ARGS__)
 #define GP_CORE_INFO(...)     gp::Log::getCoreLogger()->info(__VA_ARGS__)
 #define GP_CORE_WARN(...)     gp::Log::getCoreLogger()->warn(__VA_ARGS__)
 #define GP_CORE_ERROR(...)    gp::Log::getCoreLogger()->error(__VA_ARGS__)
@@ -44,6 +45,7 @@ template<typename OStream, typename T, glm::qualifier Q>
 
 // Python log macros
 #define GP_PY_TRACE(...)    gp::Log::getPythonLogger()->trace(__VA_ARGS__)
+#define GP_PY_DEBUG(...)    gp::Log::getPythonLogger()->debug(__VA_ARGS__)
 #define GP_PY_INFO(...)     gp::Log::getPythonLogger()->info(__VA_ARGS__)
 #define GP_PY_WARN(...)     gp::Log::getPythonLogger()->warn(__VA_ARGS__)
 #define GP_PY_ERROR(...)    gp::Log::getPythonLogger()->error(__VA_ARGS__)
@@ -51,13 +53,16 @@ template<typename OStream, typename T, glm::qualifier Q>
 
 // Client log macros
 #define GP_TRACE(...)         gp::Log::getClientLogger()->trace(__VA_ARGS__)
+#define GP_DEBUG(...)         gp::Log::getClientLogger()->debug(__VA_ARGS__)
 #define GP_INFO(...)          gp::Log::getClientLogger()->info(__VA_ARGS__)
 #define GP_WARN(...)          gp::Log::getClientLogger()->warn(__VA_ARGS__)
 #define GP_ERROR(...)         gp::Log::getClientLogger()->error(__VA_ARGS__)
 #define GP_CRITICAL(...)      gp::Log::ClientLogger()->critical(__VA_ARGS__)
+
 #else
 // Core log macros
 #define GP_CORE_TRACE(...)
+#define GP_CORE_DEBUG(...)
 #define GP_CORE_INFO(...)
 #define GP_CORE_WARN(...)
 #define GP_CORE_ERROR(...)
@@ -65,6 +70,7 @@ template<typename OStream, typename T, glm::qualifier Q>
 
 // Python log macros
 #define GP_PY_TRACE(...)
+#define GP_PY_DEBUG(...)
 #define GP_PY_INFO(...)
 #define GP_PY_WARN(...)
 #define GP_PY_ERROR(...)
@@ -72,51 +78,9 @@ template<typename OStream, typename T, glm::qualifier Q>
 
 // Client log macros
 #define GP_TRACE(...)
+#define GP_DEBUG(...)
 #define GP_INFO(...)
 #define GP_WARN(...)
 #define GP_ERROR(...)
 #define GP_CRITICAL(...)
-#endif
-
-#if GP_LOGGING_WINDOW
-#define GP_WINDOW_TRACE(...) GP_CORE_TRACE("WINDOW: " __VA_ARGS__)
-#define GP_WINDOW_INFO(...) GP_CORE_INFO("WINDOW: " __VA_ARGS__)
-
-#define GP_PY_WINDOW_TRACE(...) GP_PY_TRACE("WINDOW: " __VA_ARGS__)
-#define GP_PY_WINDOW_INFO(...) GP_PY_INFO("WINDOW: " __VA_ARGS__)
-#else
-#define GP_WINDOW_TRACE(...)
-#define GP_WINDOW_INFO(...)
-
-#define GP_PY_WINDOW_TRACE(...)
-#define GP_PY_WINDOW_INFO(...)
-#endif
-
-#if GP_LOGGING_COLORS
-#define GP_COLOR_TRACE(...) GP_CORE_TRACE("COLOR: " __VA_ARGS__)
-#define GP_COLOR_INFO(...) GP_CORE_INFO("COLOR: " __VA_ARGS__)
-
-#define GP_PY_COLOR_TRACE(...) GP_PY_TRACE("COLOR: " __VA_ARGS__)
-#define GP_PY_COLOR_INFO(...) GP_PY_INFO("COLOR: " __VA_ARGS__)
-#else
-#define GP_COLOR_TRACE(...)
-#define GP_COLOR_INFO(...)
-
-#define GP_PY_COLOR_TRACE(...)
-#define GP_PY_COLOR_INFO(...)
-#endif
-
-
-#if GP_LOGGING_SHADERS
-#define GP_SHADERS_TRACE(...) GP_CORE_TRACE("SHADERS: " __VA_ARGS__)
-#define GP_SHADERS_INFO(...) GP_CORE_INFO("SHADERS: " __VA_ARGS__)
-
-#define GP_PY_SHADERS_TRACE(...) GP_PY_TRACE("SHADERS: " __VA_ARGS__)
-#define GP_PY_SHADERS_INFO(...) GP_PY_INFO("SHADERS: " __VA_ARGS__)
-#else
-#define GP_SHADERS_TRACE(...)
-#define GP_SHADERS_INFO(...)
-
-#define GP_PY_SHADERS_TRACE(...)
-#define GP_PY_SHADERS_INFO(...)
 #endif

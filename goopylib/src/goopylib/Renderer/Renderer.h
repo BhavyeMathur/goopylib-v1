@@ -2,35 +2,34 @@
 
 #include "pch.h"
 #include "Point.h"
-#include "Triangle.h"
 #include "src/goopylib/Core/Buffer.h"
 #include "src/goopylib/Core/VertexArray.h"
-
-namespace gp {
-    struct TriangleVertex {
-        float x;
-        float y;
-    };
-}
 
 namespace gp {
     class Renderer {
     public:
         Renderer();
 
-        void drawTriangle(Point p1, Point p2, Point p3);
+        ~Renderer();
+
+        void init();
+
+        uint32_t drawTriangle(Point p1, Point p2, Point p3);
+
+        void destroyTriangle(uint32_t ID);
 
         void flush();
 
     private:
-        float* m_TriangleVertices;
-        int m_Triangles = 0;
+        std::vector<float> m_TriangleVertices;
+        std::vector<uint32_t> m_TriangleIDs;
+        int32_t m_Triangles = 0;
 
         Ref<VertexArray> m_TriangleVAO;
         Ref<VertexBuffer> m_TriangleVBO;
-        bool m_UpdateTriangleVAO = false;
+        bool m_UpdateTriangleVBO = false;
 
-        static const int s_MaxTriangles = 1000000;
-        static const int s_MaxTriangleVertices = s_MaxTriangles * 6;
+        static int32_t s_MaxTriangles;
+        static uint32_t s_MaxTriangleIndices;
     };
 }

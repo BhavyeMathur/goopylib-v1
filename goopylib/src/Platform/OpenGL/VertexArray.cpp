@@ -4,31 +4,34 @@ namespace gp {
     VertexArray::VertexArray()
             : BaseVertexArray() {
         glGenVertexArrays(1, &m_RendererID);
-        glBindVertexArray(m_RendererID);
 
-        GP_CORE_TRACE("Initialising Vertex Array {0}", m_RendererID);
+        GP_CORE_DEBUG("Initialising Vertex Array {0}", m_RendererID);
+
+        glBindVertexArray(m_RendererID);
     }
 
-    VertexArray::VertexArray(uint32_t *indices, int count) : BaseVertexArray() {
+    VertexArray::VertexArray(uint32_t *indices, int32_t count) : BaseVertexArray() {
+        GP_CORE_DEBUG("Generating Vertex Array");
+
         glGenVertexArrays(1, &m_RendererID);
+
+        GP_CORE_DEBUG("Initialising Vertex Array {0}", m_RendererID);
+
         glBindVertexArray(m_RendererID);
-
-        GP_CORE_TRACE("Initialising Vertex Array {0}", m_RendererID);
-
-        setIndexBuffer(std::make_shared<IndexBuffer>(indices, count));
+        setIndexBuffer(CreateRef<IndexBuffer>(indices, count));
     }
 
     VertexArray::VertexArray(std::initializer_list<uint32_t> indices) {
         glGenVertexArrays(1, &m_RendererID);
+
+        GP_CORE_DEBUG("Initialising Vertex Array {0}", m_RendererID);
+
         glBindVertexArray(m_RendererID);
-
-        GP_CORE_TRACE("Initialising Vertex Array {0}", m_RendererID);
-
-        setIndexBuffer(std::make_shared<IndexBuffer>(indices));
+        setIndexBuffer(CreateRef<IndexBuffer>(indices));
     }
 
     VertexArray::~VertexArray() {
-        GP_CORE_TRACE("Deallocating Vertex Array {0}", m_RendererID);
+        GP_CORE_DEBUG("Deallocating Vertex Array {0}", m_RendererID);
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
@@ -43,21 +46,31 @@ namespace gp {
 
     void VertexArray::draw() const {
         bind();
-        glDrawElements(GL_TRIANGLES, m_IndexBuffer->count(), GL_UNSIGNED_INT, nullptr);
+        if (m_IndexBuffer) {
+            glDrawElements(GL_TRIANGLES, m_IndexBuffer->count(), GL_UNSIGNED_INT, nullptr);
+        }
+        else {
+            glDrawArrays(GL_TRIANGLES, 0, m_IndexBuffer->count());
+        }
     }
 
-    void VertexArray::draw(int count) const {
+    void VertexArray::draw(int32_t count) const {
         bind();
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+        if (m_IndexBuffer) {
+            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+        }
+        else {
+            glDrawArrays(GL_TRIANGLES, 0, count);
+        }
     }
 
     void VertexArray::addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) {
         bind();
         vertexBuffer->bind();
 
-        const auto layout = vertexBuffer->getLayout();
+        const BufferLayout layout = vertexBuffer->getLayout();
 
-        for (const auto element: layout) {
+        for (const BufferElement element: layout) {
             ShaderDataType type = element.getType();
 
             switch (type) {
@@ -66,8 +79,10 @@ namespace gp {
                 case ShaderDataType::Float3:
                 case ShaderDataType::Float4: {
 
-                    GP_CORE_TRACE("Vertex Array Attribute index={0}, size={1}, type=GL_FLOAT, normalized={2}, stride={3}, offset={4}",
-                                  m_VertexBufferIndex, element.getCount(), element.isNormalized(), layout.getStride(), (const void *) element.m_Offset);
+                    GP_CORE_DEBUG(
+                            "Vertex Array Attribute index={0}, size={1}, type=GL_FLOAT, normalized={2}, stride={3}, offset={4}",
+                            m_VertexBufferIndex, element.getCount(), element.isNormalized(), layout.getStride(),
+                            (const void *) element.m_Offset);
 
                     glEnableVertexAttribArray(m_VertexBufferIndex);
                     glVertexAttribPointer(m_VertexBufferIndex,
@@ -85,8 +100,9 @@ namespace gp {
                 case ShaderDataType::Int4:
                 case ShaderDataType::Bool: {
 
-                    GP_CORE_TRACE("Vertex Array Attribute index={0}, size={1}, type={2}, stride={3}, offset={4}",
-                                  m_VertexBufferIndex, element.getCount(), shaderOpenGLType(type), layout.getStride(), (const void *) element.m_Offset);
+                    GP_CORE_DEBUG("Vertex Array Attribute index={0}, size={1}, type={2}, stride={3}, offset={4}",
+                                  m_VertexBufferIndex, element.getCount(), shaderOpenGLType(type), layout.getStride(),
+                                  (const void *) element.m_Offset);
 
                     glEnableVertexAttribArray(m_VertexBufferIndex);
                     glVertexAttribIPointer(m_VertexBufferIndex,
@@ -99,20 +115,24 @@ namespace gp {
                 }
                 case ShaderDataType::Mat3:
                 case ShaderDataType::Mat4: {
-                    int count = element.getCount();
-
                     GLenum glType = shaderOpenGLType(element.getType());
-                    bool normalized = element.isNormalized() ? GL_TRUE : GL_FALSE;
-                    int stride = layout.getStride();
+                    bool isNormalized = element.isNormalized() ? GL_TRUE : GL_FALSE;
+                    int32_t strideSize = layout.getStride();
+                    int32_t count = element.getCount();
 
-                    for (int i = 0; i < count; i++) {
+                    for (int32_t i = 0; i < count; i++) {
 
-                        GP_CORE_TRACE("Vertex Array Attribute index={0}, size={1}, type={2}, normalized={3}, stride={4}, offset={5}",
-                                      m_VertexBufferIndex, element.getCount(), shaderOpenGLType(type), normalized, layout.getStride(), (const void *) (element.m_Offset + sizeof(float) * count * i));
+                        GP_CORE_DEBUG(
+                                "Vertex Array Attribute index={0}, size={1}, type={2}, isNormalized={3}, strideSize={4}, offset={5}",
+                                m_VertexBufferIndex, element.getCount(), shaderOpenGLType(type), isNormalized,
+                                layout.getStride(), (const void *) (element.m_Offset + sizeof(float) * count * i));
 
                         glEnableVertexAttribArray(m_VertexBufferIndex);
                         glVertexAttribPointer(m_VertexBufferIndex,
-                                              count, glType, normalized, stride,
+                                              count,
+                                              glType,
+                                              isNormalized,
+                                              strideSize,
                                               (const void *) (element.m_Offset + sizeof(float) * count * i));
                         glVertexAttribDivisor(m_VertexBufferIndex, 1);
                         m_VertexBufferIndex++;
@@ -138,6 +158,6 @@ namespace gp {
     void VertexArray::setIndexBuffer(std::initializer_list<uint32_t> indices) {
         glBindVertexArray(m_RendererID);
 
-        m_IndexBuffer = std::make_shared<IndexBuffer>(indices);
+        m_IndexBuffer = CreateRef<IndexBuffer>(indices);
     }
 }

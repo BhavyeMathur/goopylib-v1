@@ -4,7 +4,7 @@
 
 // Buffer Layout Element
 namespace gp {
-    int shaderTypeSize(ShaderDataType type) {
+    int32_t shaderTypeSize(ShaderDataType type) {
         switch (type) {
             case ShaderDataType::Float:
                 return 4;
@@ -42,7 +42,7 @@ namespace gp {
               m_Normalized(normalized) {
     }
 
-    int BufferElement::getCount() const {
+    int32_t BufferElement::getCount() const {
         switch (m_Type) {
             case ShaderDataType::Float:
                 return 1;
@@ -87,7 +87,9 @@ namespace gp {
 
 // Buffer Layout
 namespace gp {
-    BufferLayout::BufferLayout(BufferElement *elements, int count) {
+    BufferLayout::BufferLayout(BufferElement *elements, int32_t count) {
+        GP_CORE_INFO("Initializing BufferLayout");
+
         const gp::BufferElement *end = &elements[count];
 
         for (gp::BufferElement *element = elements; element != end; element++) {
@@ -99,10 +101,12 @@ namespace gp {
 
     BufferLayout::BufferLayout(std::initializer_list<BufferElement> elements)
             : m_Elements(elements) {
+        GP_CORE_INFO("Initializing BufferLayout");
+
         calculateOffsetAndStride();
     }
 
-    int BufferLayout::getStride() const {
+    int32_t BufferLayout::getStride() const {
         return m_Stride;
     }
 
@@ -137,27 +141,34 @@ namespace gp {
 
 // Base Vertex Buffer
 namespace gp {
-    BaseVertexBuffer::BaseVertexBuffer(int count)
-            : BaseBuffer(count) {
-        GP_CORE_INFO("Initializing BaseVertex Buffer");
+    BaseVertexBuffer::BaseVertexBuffer()
+    : m_Layout({}) {
+        GP_CORE_INFO("Initializing Empty BaseVertexBuffer");
+    }
+
+    BaseVertexBuffer::BaseVertexBuffer(int32_t count)
+            : BaseBuffer(count),
+              m_Layout({}) {
+        GP_CORE_INFO("Initializing BaseVertexBuffer, count={0}", count);
     }
 
     BaseVertexBuffer::~BaseVertexBuffer() {
-        GP_CORE_INFO("Deallocating BaseVertex Buffer");
+        GP_CORE_INFO("Deallocating BaseVertexBuffer");
     }
 
     const BufferLayout &BaseVertexBuffer::getLayout() const {
         return m_Layout;
     }
 
-    void BaseVertexBuffer::setLayout(BufferLayout layout) {
-        m_Layout = std::move(layout);
+    void BaseVertexBuffer::setLayout(const BufferLayout &layout) {
+        GP_CORE_DEBUG("Setting BaseVertexBuffer layout");
+        m_Layout = layout;
     }
 }
 
 // Base Index Buffer
 namespace gp {
-    BaseIndexBuffer::BaseIndexBuffer(int count)
+    BaseIndexBuffer::BaseIndexBuffer(int32_t count)
             : BaseBuffer(count) {
         GP_CORE_INFO("Initializing BaseIndex Buffer");
     }

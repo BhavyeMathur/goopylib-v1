@@ -9,7 +9,7 @@ namespace gp {
     public:
         VertexArray();
 
-        VertexArray(uint32_t *indices, int count);
+        VertexArray(uint32_t *indices, int32_t count);
 
         VertexArray(std::initializer_list<uint32_t> indices);
 
@@ -21,7 +21,7 @@ namespace gp {
 
         void draw() const override;
 
-        void draw(int count) const override;
+        void draw(int32_t count) const override;
 
         void addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) override;
 

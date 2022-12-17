@@ -145,6 +145,4 @@
 #define GP_KEY_MENU 348
 #endif
 
-
-
 #pragma clang diagnostic pop

@@ -71,6 +71,12 @@ namespace gp {
 
         void requestAttention() const override;
 
+        // Static Methods
+
+        static Ref<Window> create(const WindowConfig& config) {
+            return CreateRef<Window>(config);
+        }
+
     private:
         #if GP_USING_GLFW
         GLFWwindow *m_Window;

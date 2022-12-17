@@ -14,38 +14,36 @@ namespace gp {
 
     #endif
 
-    int shaderTypeSize(ShaderDataType type);
+    int32_t shaderTypeSize(ShaderDataType type);
 
     class GPAPI BufferElement {
     public:
-        BufferElement() = default;
-
         BufferElement(ShaderDataType type, const char *name, bool normalized = false);
 
         const char *getName() const;
 
-        int getCount() const;
+        int32_t getCount() const;
 
         ShaderDataType getType() const;
 
         bool isNormalized() const;
 
-        int m_Size{};
-        size_t m_Offset{};
+        int32_t m_Size = 0;
+        size_t m_Offset = 0;
 
     private:
-        const char *m_Name{};
-        ShaderDataType m_Type{};
-        bool m_Normalized{};
+        const char *m_Name;
+        ShaderDataType m_Type;
+        bool m_Normalized;
     };
 
     class GPAPI BufferLayout {
     public:
-        BufferLayout(BufferElement *elements, int count);
+        BufferLayout(BufferElement *elements, int32_t count);
 
         BufferLayout(std::initializer_list<BufferElement> elements);
 
-        int getStride() const;
+        int32_t getStride() const;
 
         const std::vector<BufferElement> &getElements() const;
 
@@ -62,7 +60,7 @@ namespace gp {
 
     private:
         std::vector<BufferElement> m_Elements;
-        int m_Stride{};
+        int32_t m_Stride = 0;
     };
 }
 
@@ -72,7 +70,7 @@ namespace gp {
     public:
         BaseBuffer() = default;
 
-        explicit BaseBuffer(int count) : m_Count(count) {
+        explicit BaseBuffer(int32_t count) : m_Count(count) {
         };
 
         virtual ~BaseBuffer() = default;
@@ -81,12 +79,12 @@ namespace gp {
 
         virtual void unbind() const = 0;
 
-        int count() const {
+        int32_t count() const {
             return m_Count;
         };
 
     private:
-        int m_Count = 0;
+        int32_t m_Count = 0;
     };
 }
 
@@ -94,20 +92,20 @@ namespace gp {
 namespace gp {
     class BaseVertexBuffer : public BaseBuffer {
     public:
-        BaseVertexBuffer() = default;
+        BaseVertexBuffer();
 
-        explicit BaseVertexBuffer(int count);
+        explicit BaseVertexBuffer(int32_t count);
 
         ~BaseVertexBuffer() override;
 
         const BufferLayout &getLayout() const;
 
-        void setLayout(BufferLayout layout);
+        void setLayout(const BufferLayout &layout);
 
-        virtual void setData(const void *data, uint32_t size) = 0;
+        virtual void setData(const void *data, int32_t count) = 0;
 
     private:
-        BufferLayout m_Layout{};
+        BufferLayout m_Layout;
     };
 }
 
@@ -115,7 +113,7 @@ namespace gp {
 namespace gp {
     class BaseIndexBuffer : public BaseBuffer {
     public:
-        explicit BaseIndexBuffer(int count);
+        explicit BaseIndexBuffer(int32_t count);
 
         ~BaseIndexBuffer() override;
     };

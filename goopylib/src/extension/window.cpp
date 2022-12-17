@@ -144,7 +144,7 @@ namespace window {
         clear(self);
         Py_TYPE(self)->tp_free((PyObject *) self);
 
-        GP_WINDOW_INFO("Deallocated gp.Window()");
+        GP_CORE_INFO("Deallocated gp.Window()");
     }
 }
 
@@ -536,7 +536,7 @@ namespace window {
     static PyObject *get_background(WindowObject *self, void *Py_UNUSED(closure)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        RETURN_PYOBJECT(self->background);
+        RETURN_PYOBJECT(self->background)
     }
 
     // Minimum Width

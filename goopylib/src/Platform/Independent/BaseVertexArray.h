@@ -9,7 +9,7 @@ namespace gp {
 
         virtual ~BaseVertexArray();
 
-        const std::vector<const Ref<BaseVertexBuffer>> & getVertexBuffers() const;
+        const std::vector<const Ref<BaseVertexBuffer>> &getVertexBuffers() const;
 
         const Ref<BaseIndexBuffer> &getIndexBuffer() const;
 
@@ -19,7 +19,7 @@ namespace gp {
 
         virtual void draw() const = 0;
 
-        virtual void draw(int count) const = 0;
+        virtual void draw(int32_t count) const = 0;
 
         virtual void addVertexBuffer(const Ref<BaseVertexBuffer> &vertexBuffer) = 0;
 
@@ -29,7 +29,7 @@ namespace gp {
 
     protected:
         std::vector<const Ref<BaseVertexBuffer>> m_VertexBuffers;
-        std::shared_ptr<BaseIndexBuffer> m_IndexBuffer;
+        Ref<BaseIndexBuffer> m_IndexBuffer;
         uint32_t m_VertexBufferIndex = 0;
     };
 }

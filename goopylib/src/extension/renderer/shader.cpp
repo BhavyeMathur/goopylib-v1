@@ -253,7 +253,7 @@ static struct PyModuleDef shadermodule = {
 PyMODINIT_FUNC PyInit_shader() {
     #if GP_LOGGING
     std::cout << "Initializing shader logger" << std::endl;
-    gp::Log::Init();
+    gp::Log::init();
     #endif
 
     GP_PY_TRACE("Initializing shader module");

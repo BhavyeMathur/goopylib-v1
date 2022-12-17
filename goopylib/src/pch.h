@@ -3,10 +3,7 @@
 #define GP_USING_GLFW true
 #define GP_USING_OPENGL true
 #define GP_ERROR_CHECKING true
-#define GP_LOGGING false
-#define GP_LOGGING_WINDOW true
-#define GP_LOGGING_COLORS false
-#define GP_LOGGING_SHADERS false
+#define GP_LOGGING true
 
 #include <iostream>
 #include <string>

@@ -18,16 +18,14 @@ namespace gp {
     bool glfw_initialized = false;
 
     GPAPI int initialize() {
-        #if GP_LOGGING
-        Log::Init();
-        #endif
+        Log::init();
 
         InitializeW3CX11();
 
         GP_CORE_INFO("Initializing goopylib");
 
         #if GP_USING_GLFW
-        GP_CORE_TRACE("Initializing GLFW");
+        GP_CORE_DEBUG("Initializing GLFW");
 
         glfwSetErrorCallback([](int error, const char *description) {
             GP_CORE_ERROR("GLFW Error Code {0}: {1}" , error, description);
@@ -55,7 +53,7 @@ namespace gp {
         DeallocateW3CX11();
 
         #if GP_USING_GLFW
-        GP_CORE_TRACE("Terminating GLFW");
+        GP_CORE_DEBUG("Terminating GLFW");
         glfwTerminate();
         glfw_initialized = false;
         #endif

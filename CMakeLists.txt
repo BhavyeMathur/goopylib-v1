@@ -14,7 +14,6 @@ set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Debug/Log.cpp
 
     ${GOOPYLIB_PATH}/Math/Easing.cpp
-    ${GOOPYLIB_PATH}/Math/Interpolation.cpp
 
     ${GOOPYLIB_PATH}/Color/Color.cpp
     ${GOOPYLIB_PATH}/Color/ColorConversions.cpp

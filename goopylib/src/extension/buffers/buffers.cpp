@@ -231,7 +231,8 @@ namespace VertexBuffer {
         }
 
         int count = PyTuple_GET_SIZE(value);
-        gp::BufferElement *elements = new gp::BufferElement[count];
+        std::vector<gp::BufferElement> elements;
+        elements.reserve(count);
 
         for (int i = 0; i < count; i++) {
             PyObject *element = PyTuple_GET_ITEM(value, i);
@@ -242,11 +243,12 @@ namespace VertexBuffer {
             }
             #endif
 
-            elements[i] = *((BufferElementObject *) element)->buffer_element;
+            elements.push_back(*((BufferElementObject *) element)->buffer_element);
         }
 
         SET_PYOBJECT_ATTRIBUTE(self->layout, value)
-        self->buffer->setLayout(gp::BufferLayout(elements, count));
+        self->buffer->setLayout(gp::BufferLayout(&elements[0], count));
+
         return 0;
     }
 
@@ -275,7 +277,7 @@ namespace IndexBuffer {
         }
 
         int count = PyTuple_GET_SIZE(data);
-        uint32_t *indices = new uint32_t[count];
+        int *indices = new int[count];
 
         for (int i = 0; i < count; i++) {
             PyObject *element = PyTuple_GET_ITEM(data, i);
@@ -284,7 +286,7 @@ namespace IndexBuffer {
                 RAISE_TYPE_ERROR(-1, "tuple of integers", data)
             }
             #endif
-            indices[i] = PyLong_AsLong(element);
+            indices[i] = (int) PyLong_AsLong(element);
         }
 
         self->repr = PyUnicode_AsUTF8(PyObject_Repr(data));
