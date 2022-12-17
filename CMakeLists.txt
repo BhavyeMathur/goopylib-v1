@@ -11,6 +11,7 @@ set(GOOPYLIB_PATH goopylib/src/goopylib/)
 set(PLATFORM_PATH goopylib/src/Platform/)
 set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Core/Core.cpp
+    ${GOOPYLIB_PATH}/Core/BufferLayout.cpp
     ${GOOPYLIB_PATH}/Debug/Log.cpp
 
     ${GOOPYLIB_PATH}/Math/Easing.cpp

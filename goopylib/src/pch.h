@@ -72,9 +72,6 @@
 #define GPAPI
 #endif
 
-#include "goopylib/Debug/Log.h"
-#include "goopylib/Math/gpmath.h"
-
 template<typename ... Args>
     std::string strformat(const std::string &format, Args ... args) {
         int size_s = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1; // Extra space for '\0'
@@ -141,3 +138,6 @@ namespace gp {
         }
 
 }
+
+#include "src/goopylib/Debug/Log.h"
+#include "src/goopylib/Math/gpmath.h"
