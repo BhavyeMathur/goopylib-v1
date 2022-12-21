@@ -5,7 +5,6 @@
 // Color Conversion Functions
 
 namespace gp {
-
     struct GPAPI RGB {
         int red;
         int green;

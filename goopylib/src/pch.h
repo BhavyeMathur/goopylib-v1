@@ -14,7 +14,7 @@
  6 - Trace Enabled
  7 - All Enabled
  */
-#define GP_LOGGING 6
+#define GP_LOGGING 4
 
 #include <iostream>
 #include <cmath>
@@ -23,6 +23,7 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <utility>
 
 #define GLM_ENABLE_EXPERIMENTAL
 

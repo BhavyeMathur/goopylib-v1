@@ -11,20 +11,18 @@ namespace gp {
     std::vector<BaseWindow *> BaseWindow::s_Instances;
 
     BaseWindow::BaseWindow(const WindowConfig &config)
-    : m_Data(config)
-    {
-        GP_CORE_DEBUG("Initializing BaseWindow '{0}'", m_Data.title);
+            : m_Data(config),
+              m_Projection(glm::scale(glm::mat4(1),
+                                      glm::vec3(2.0f / (float) config.width,
+                                                2.0f / (float) config.height, 1))),
+              m_KeyModifiers(0),
+              m_isDestroyed(false),
 
-        m_WindowedWidth = m_Data.width;
-        m_WindowedHeight = m_Data.height;
-        m_WindowedXPos = m_Data.xPos;
-        m_WindowedYPos = m_Data.yPos;
-
-        m_KeyModifiers = 0;
-
-        m_Projection = glm::scale(glm::mat4(1),
-                                  glm::vec3(2.0f / (float) config.width, 2.0f / (float) config.height, 1));
-        m_isDestroyed = false;
+              m_WindowedWidth(config.width),
+              m_WindowedHeight(config.height),
+              m_WindowedXPos(config.xPos),
+              m_WindowedYPos(config.yPos) {
+        GP_CORE_DEBUG("Initializing BaseWindow '{0}'", config.title);
 
         s_Instances.push_back(this);
     }
@@ -53,12 +51,6 @@ namespace gp {
             onDestroy();
         }
     }
-}
-
-// BaseWindow draw methods
-
-namespace gp {
-
 }
 
 // BaseWindow getters & setters
@@ -178,8 +170,8 @@ namespace gp {
         _updateBackground();
     }
 
-    Color& BaseWindow::getBackground() const {
-        return const_cast<Color&>(m_Data.background);
+    Color &BaseWindow::getBackground() const {
+        return const_cast<Color &>(m_Data.background);
     }
 }
 
@@ -200,7 +192,7 @@ namespace gp {
     void BaseWindow::setSizeLimits(int minWidth, int minHeight, int maxWidth,
                                    int maxHeight) {
         GP_CORE_DEBUG("Set '{0}' size limits -> ({1}, {2}), ({3}, {4})", m_Data.title, minWidth, minHeight, maxWidth,
-                        maxHeight);
+                      maxHeight);
 
         m_Data.minWidth = minWidth;
         m_Data.minHeight = minHeight;
@@ -472,12 +464,16 @@ namespace gp {
 // BaseWindow Rendering
 
 namespace gp {
-    uint32_t BaseWindow::drawTriangle(Point p1, Point p2, Point p3) {
-        return m_Renderer.drawTriangle(p1, p2, p3);
+    uint32_t BaseWindow::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
+        return m_Renderer.drawTriangle(v1, v2, v3);
     }
 
     void BaseWindow::destroyTriangle(uint32_t ID) {
         m_Renderer.destroyTriangle(ID);
+    }
+
+    void BaseWindow::updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
+        m_Renderer.updateTriangle(ID, v1, v2, v3);
     }
 }
 

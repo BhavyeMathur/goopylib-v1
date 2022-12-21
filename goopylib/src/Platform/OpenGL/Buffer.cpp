@@ -3,7 +3,9 @@
 
 // Vertex Buffer
 namespace gp {
-    VertexBuffer::VertexBuffer(int32_t count, float *vertices)
+    // TODO allow non-float data types in VertexBuffer
+
+    VertexBuffer::VertexBuffer(int32_t count, void *vertices)
             : BaseVertexBuffer(count) {
         glGenBuffers(1, &m_RendererID);
 
@@ -41,7 +43,7 @@ namespace gp {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    void VertexBuffer::setData(const float *data, int32_t count) {
+    void VertexBuffer::setData(const void *data, int32_t count) {
         GP_CORE_DEBUG("Setting Vertex Buffer {0} Data", m_RendererID);
 
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);

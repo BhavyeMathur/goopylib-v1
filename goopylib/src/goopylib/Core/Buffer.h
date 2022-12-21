@@ -14,7 +14,7 @@ namespace gp {
 
         void unbind() const override;
 
-        void setData(const float *data, int32_t count) override;
+        void setData(const void *data, int32_t count) override;
 
         // Static Methods
 
@@ -29,7 +29,7 @@ namespace gp {
     private:
         uint32_t m_RendererID = 0;
 
-        explicit VertexBuffer(int32_t count = 0, float *vertices = nullptr);
+        explicit VertexBuffer(int32_t count = 0, void *vertices = nullptr);
 
         VertexBuffer(std::initializer_list<float> vertices);
     };

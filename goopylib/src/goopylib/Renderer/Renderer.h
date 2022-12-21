@@ -1,7 +1,5 @@
 #pragma once
 
-#include <utility>
-
 #include "pch.h"
 #include "Point.h"
 #include "src/goopylib/Core/Buffer.h"
@@ -32,14 +30,16 @@ namespace gp {
 
         void init();
 
-        uint32_t drawTriangle(Point p1, Point p2, Point p3);
+        uint32_t drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
 
         void destroyTriangle(uint32_t ID);
+
+        void updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
 
         void flush();
 
     private:
-        std::vector<float> m_TriangleVertices;
+        std::vector<TriangleVertex> m_TriangleVertices;
         std::vector<uint32_t> m_TriangleIDs;
 
         int32_t m_Triangles = 0;

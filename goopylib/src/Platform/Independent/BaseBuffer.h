@@ -38,7 +38,7 @@ namespace gp {
 
         void setLayout(const BufferLayout &layout);
 
-        virtual void setData(const float *data, int32_t count) = 0;
+        virtual void setData(const void *data, int32_t count) = 0;
 
     protected:
         explicit BaseVertexBuffer(int32_t count = 0);

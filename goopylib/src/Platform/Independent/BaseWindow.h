@@ -2,6 +2,7 @@
 
 #include "pch.h"
 #include "src/goopylib/Color/Color.h"
+#include "goopylib/Renderer/Point.h"
 #include "src/goopylib/Renderer/Renderer.h"
 
 namespace gp {
@@ -254,9 +255,11 @@ namespace gp {
 
         // Rendering
 
-        uint32_t drawTriangle(Point p1, Point p2, Point p3);
+        uint32_t drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
 
         void destroyTriangle(uint32_t ID);
+
+        void updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
 
         // Static Methods
 
