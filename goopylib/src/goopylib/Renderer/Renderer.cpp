@@ -18,8 +18,6 @@ namespace gp {
     }
 
     uint32_t Renderer::drawTriangle(Point p1, Point p2, Point p3) {
-        GP_CORE_DEBUG("0");
-
         uint32_t ID = m_TriangleIDs.empty() ? 0 : m_TriangleIDs.back() + 1;
         m_TriangleIDs.push_back(ID);
 

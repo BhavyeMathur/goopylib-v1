@@ -10,9 +10,10 @@ namespace gp {
     class Triangle {
     public:
         Triangle(Point p1, Point p2, Point p3);
+
         ~Triangle();
 
-        void draw(const Ref<Window>& window);
+        void draw(const Ref<Window> &window);
 
         void destroy();
 

@@ -6,8 +6,6 @@
 namespace gp {
     class BaseVertexArray {
     public:
-        BaseVertexArray();
-
         virtual ~BaseVertexArray();
 
         virtual void bind() const = 0;
@@ -29,5 +27,7 @@ namespace gp {
     protected:
         Ref<VertexBuffer> m_VertexBuffer;
         Ref<IndexBuffer> m_IndexBuffer;
+
+        BaseVertexArray();
     };
 }

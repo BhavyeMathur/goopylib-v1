@@ -76,8 +76,6 @@ namespace gp {
 
     class BaseWindow {
     public:
-        explicit BaseWindow(const WindowConfig &config);
-
         virtual ~BaseWindow();
 
         bool isClosed() const;
@@ -272,6 +270,8 @@ namespace gp {
 
         bool m_isDestroyed;
         int m_KeyModifiers;  // check if shift, control, alt, and super keys are pressed
+
+        explicit BaseWindow(const WindowConfig &config);
 
         void super() {
             m_Renderer.init();

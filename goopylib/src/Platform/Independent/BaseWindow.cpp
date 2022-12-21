@@ -473,7 +473,6 @@ namespace gp {
 
 namespace gp {
     uint32_t BaseWindow::drawTriangle(Point p1, Point p2, Point p3) {
-        GP_CORE_DEBUG("2");
         return m_Renderer.drawTriangle(p1, p2, p3);
     }
 

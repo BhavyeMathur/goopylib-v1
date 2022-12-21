@@ -6,8 +6,6 @@ namespace gp {
     class GPAPI Window final : public BaseWindow {
 
     public:
-        explicit Window(const WindowConfig &config);
-
         ~Window() override;
 
         #if GP_USING_GLFW
@@ -74,13 +72,16 @@ namespace gp {
         // Static Methods
 
         static Ref<Window> create(const WindowConfig& config) {
-            return CreateRef<Window>(config);
+            return Ref<Window>(new Window(config));
         }
+
 
     private:
         #if GP_USING_GLFW
         GLFWwindow *m_Window;
         #endif
+
+        explicit Window(const WindowConfig &config);
 
         bool _isClosed() const override;
 

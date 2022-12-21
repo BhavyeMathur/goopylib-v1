@@ -14,8 +14,6 @@ namespace gp {
     Triangle::~Triangle() = default;
 
     void Triangle::draw(const Ref<Window> &window) {
-        GP_CORE_DEBUG("1");
-
         m_Window = window;
         m_Drawn = true;
         m_RendererID = window->drawTriangle(m_P1, m_P2, m_P3);

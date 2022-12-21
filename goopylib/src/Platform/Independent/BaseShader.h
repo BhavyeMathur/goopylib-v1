@@ -8,8 +8,6 @@ namespace gp {
 
     class BaseShader {
     public:
-        BaseShader();
-
         virtual ~BaseShader();
 
         virtual void bind() const = 0;
@@ -21,6 +19,9 @@ namespace gp {
                 bind();
                 _setUniform(_getLocation(name), std::forward<T>(args)...);
             }
+
+    protected:
+        BaseShader();
 
     private:
         std::unordered_map<const char *, int32_t> m_Uniforms;

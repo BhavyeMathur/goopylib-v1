@@ -22,7 +22,7 @@ namespace gp {
         destroy();
     }
 
-    GLFWwindow* Window::getWindowGLFW() {
+    GLFWwindow *Window::getWindowGLFW() {
         return m_Window;
     }
 }
