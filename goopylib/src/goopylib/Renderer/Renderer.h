@@ -46,8 +46,5 @@ namespace gp {
         bool m_UpdateTriangleVBO = false;
 
         std::unordered_map<const char *, RenderingData> m_RenderingObjects;
-
-        static const int32_t s_MaxTriangles = 1000000;
-        static const uint32_t s_MaxTriangleIndices = s_MaxTriangles * 3;
     };
 }

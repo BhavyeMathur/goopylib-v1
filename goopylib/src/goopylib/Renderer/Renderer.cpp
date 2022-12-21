@@ -9,7 +9,7 @@ namespace gp {
 
     void Renderer::init() {
         auto shader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
-                                          GP_DIRECTORY "goopylib/Shader/solid.frag");
+                                        GP_DIRECTORY "goopylib/Shader/solid.frag");
         auto VAO = CreateRef<VertexArray>();
         auto VBO = VertexBuffer::create();
 
@@ -24,10 +24,6 @@ namespace gp {
         GP_CORE_DEBUG("Drawing Triangle {0}", ID);
 
         m_TriangleIDs.push_back(ID);
-
-        if (m_Triangles == s_MaxTriangles) {
-            GP_CORE_ERROR("More than {0} triangles not supported yet", m_Triangles);
-        }
 
         m_TriangleVertices.push_back(p1.x);
         m_TriangleVertices.push_back(p1.y);
@@ -45,10 +41,12 @@ namespace gp {
     void Renderer::destroyTriangle(uint32_t ID) {
         auto indexi = std::find(m_TriangleIDs.begin(), m_TriangleIDs.end(), ID);
 
+        #if GP_ERROR_CHECKING
         if (indexi == m_TriangleIDs.end()) {
             GP_CORE_WARN("Triangle {0} does not exist and cannot be destroyed", ID);
             return;
         }
+        #endif
 
         uint32_t index = indexi - m_TriangleIDs.begin();
 
