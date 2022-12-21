@@ -8,20 +8,22 @@ namespace gp {
     Renderer::~Renderer() = default;
 
     void Renderer::init() {
-        m_RenderingObjects["triangle"] = {VertexArray::create(),
-                                          VertexBuffer::create(),
-                                          Shader::load(GP_DIRECTORY "goopylib/Shader/vec2.vert",
-                                                       GP_DIRECTORY "goopylib/Shader/solid.frag"), 0};
+        auto shader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
+                                          GP_DIRECTORY "goopylib/Shader/solid.frag");
+        auto VAO = CreateRef<VertexArray>();
+        auto VBO = VertexBuffer::create();
 
-        m_RenderingObjects["triangle"].VBO->setLayout({{ShaderDataType::Float2, "vertices"}});
-        m_RenderingObjects["triangle"].VAO->setVertexBuffer(m_RenderingObjects["triangle"].VBO);
+        VBO->setLayout({{ShaderDataType::Float2, "vertices"}});
+        VAO->setVertexBuffer(VBO);
+
+        m_RenderingObjects.insert({"triangle", RenderingData(VAO, VBO, shader)});
     }
 
     uint32_t Renderer::drawTriangle(Point p1, Point p2, Point p3) {
         uint32_t ID = m_TriangleIDs.empty() ? 0 : m_TriangleIDs.back() + 1;
-        m_TriangleIDs.push_back(ID);
-
         GP_CORE_DEBUG("Drawing Triangle {0}", ID);
+
+        m_TriangleIDs.push_back(ID);
 
         if (m_Triangles == s_MaxTriangles) {
             GP_CORE_ERROR("More than {0} triangles not supported yet", m_Triangles);
@@ -60,9 +62,12 @@ namespace gp {
 
     void Renderer::flush() {
         if (m_UpdateTriangleVBO) {
+            m_RenderingObjects.at("triangle").count = m_Triangles * 6;
+
+            GP_CORE_TRACE("Updating triangle VertexBuffer, count={0}", m_RenderingObjects.at("triangle").count);
+
+            m_RenderingObjects.at("triangle").VBO->setData(&m_TriangleVertices[0], m_Triangles * 6);
             m_UpdateTriangleVBO = false;
-            m_RenderingObjects["triangle"].VBO->setData(&m_TriangleVertices[0], m_Triangles * 6);
-            m_RenderingObjects["triangle"].count = m_Triangles * 6;
         }
 
         for (const auto &object: m_RenderingObjects) {

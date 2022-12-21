@@ -6,24 +6,15 @@
 namespace gp {
     class Shader final : public BaseShader {
     public:
+        Shader(const char *vertexShaderPath, const char *fragmentShaderPath);
+
         ~Shader() override;
 
         void bind() const override;
 
         void unbind() const override;
 
-        static Ref<Shader> create(const char *vertexShaderSource, const char *fragmentShaderSource) {
-            return Ref<Shader>(new Shader(vertexShaderSource, fragmentShaderSource));
-        }
-
-        static Ref<Shader> load(const char *vertexShaderPath, const char *fragmentShaderPath) {
-            return Ref<Shader>(new Shader(readFile(vertexShaderPath).c_str(),
-                                          readFile(fragmentShaderPath).c_str()));
-        }
-
     private:
-        Shader(const char *vertexShaderSource, const char *fragmentShaderSource);
-
         uint32_t m_RendererID = 0;
 
         void _setUniform(int32_t location, float value) const override;

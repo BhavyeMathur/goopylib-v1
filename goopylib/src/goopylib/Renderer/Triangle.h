@@ -13,17 +13,15 @@ namespace gp {
 
         ~Triangle();
 
-        void draw(const Ref<Window> &window);
+        void draw(Window *window);
 
         void destroy();
-
-        static Ref<Triangle> create(Point p1, Point p2, Point p3);
 
     private:
         Point m_Position;
         Point m_P1, m_P2, m_P3;
 
-        Ref<Window> m_Window;
+        Window *m_Window = nullptr;
         uint32_t m_RendererID = 0;
         bool m_Drawn = false;
     };

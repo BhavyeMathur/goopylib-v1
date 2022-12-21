@@ -6,10 +6,14 @@ namespace gp {
     class GPAPI Window final : public BaseWindow {
 
     public:
+        explicit Window(const WindowConfig &config);
+
         ~Window() override;
 
         #if GP_USING_GLFW
-        GLFWwindow* getWindowGLFW();
+
+        GLFWwindow *getWindowGLFW();
+
         #endif
 
         // Window Attributes
@@ -69,19 +73,11 @@ namespace gp {
 
         void requestAttention() const override;
 
-        // Static Methods
-
-        static Ref<Window> create(const WindowConfig& config) {
-            return Ref<Window>(new Window(config));
-        }
-
 
     private:
         #if GP_USING_GLFW
-        GLFWwindow *m_Window;
+        GLFWwindow *m_Window = nullptr;
         #endif
-
-        explicit Window(const WindowConfig &config);
 
         bool _isClosed() const override;
 

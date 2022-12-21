@@ -35,7 +35,7 @@ namespace gp {
     }
 
     void BaseWindow::update() {
-        GP_CORE_TRACE("Updating window '{0}'", m_Data.title);
+        GP_CORE_TRACE_ALL("Updating window '{0}'", m_Data.title);
 
         _updateBackground();
 

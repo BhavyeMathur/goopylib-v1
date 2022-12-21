@@ -266,7 +266,7 @@ namespace gp {
 
     protected:
         WindowConfig m_Data;
-        glm::mat4 m_Projection{};
+        glm::mat4 m_Projection;
 
         bool m_isDestroyed;
         int m_KeyModifiers;  // check if shift, control, alt, and super keys are pressed

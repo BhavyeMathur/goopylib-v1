@@ -32,7 +32,7 @@ namespace gp {
     }
 
     void VertexBuffer::bind() const {
-        GP_CORE_TRACE("Binding Vertex Buffer {0}", m_RendererID);
+        GP_CORE_TRACE_ALL("Binding Vertex Buffer {0}", m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     }
 
@@ -82,7 +82,7 @@ namespace gp {
     }
 
     void IndexBuffer::bind() const {
-        GP_CORE_TRACE("Binding Index Buffer {0}", m_RendererID);
+        GP_CORE_TRACE_ALL("Binding Index Buffer {0}", m_RendererID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
     }
 

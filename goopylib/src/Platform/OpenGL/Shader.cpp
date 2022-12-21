@@ -1,11 +1,16 @@
 #include "src/goopylib/Shader/Shader.h"
 
 namespace gp {
-    Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource) {
+    Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath) {
         int32_t success;
         char infoLog[512];
 
-        GP_CORE_DEBUG("Compiling Vertex Shader {0}", m_RendererID);
+        GP_CORE_DEBUG("Compiling Vertex Shader");
+
+        auto vertexShaderString = readFile(vertexShaderPath);
+        const char *vertexShaderSource = vertexShaderString.c_str();
+
+        GP_CORE_TRACE("\n{0}", vertexShaderSource);
 
         uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
@@ -19,7 +24,12 @@ namespace gp {
             glDeleteShader(vertexShader);
         }
 
-        GP_CORE_DEBUG("Compiling Fragment Shader {0}", m_RendererID);
+        GP_CORE_DEBUG("Compiling Fragment Shader");
+
+        auto fragmentShaderString = readFile(fragmentShaderPath);
+        const char *fragmentShaderSource = fragmentShaderString.c_str();
+
+        GP_CORE_TRACE("\n{0}", fragmentShaderSource);
 
         uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
@@ -58,7 +68,7 @@ namespace gp {
     }
 
     void Shader::bind() const {
-        GP_CORE_TRACE("Binding Shader {0}", m_RendererID);
+        GP_CORE_TRACE_ALL("Binding Shader {0}", m_RendererID);
         glUseProgram(m_RendererID);
     }
 

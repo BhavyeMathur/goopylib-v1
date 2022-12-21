@@ -95,3 +95,13 @@ template<typename OStream, typename T, glm::qualifier Q>
 #define GP_PY_TRACE(...) nullptr
 #define GP_TRACE(...) nullptr
 #endif
+
+#if (GP_LOGGING >= 7)
+#define GP_CORE_TRACE_ALL(...)    gp::Log::getCoreLogger()->trace(__VA_ARGS__)
+#define GP_PY_TRACE_ALL(...)    gp::Log::getPythonLogger()->trace(__VA_ARGS__)
+#define GP_TRACE_ALL(...)         gp::Log::getClientLogger()->trace(__VA_ARGS__)
+#else
+#define GP_CORE_TRACE_ALL(...) nullptr
+#define GP_PY_TRACE_ALL(...) nullptr
+#define GP_TRACE_ALL(...) nullptr
+#endif

@@ -29,7 +29,7 @@ namespace gp {
         Color(const RGB &color, float alpha);
 
         ~Color() {
-            GP_CORE_TRACE("Deallocating Color");
+            GP_CORE_TRACE_ALL("Deallocating Color");
         }
 
         Color(int red, int green, int blue);
@@ -117,7 +117,7 @@ namespace gp {
         ColorRGB(int red, int green, int blue, float alpha);
 
         ~ColorRGB() {
-            GP_CORE_TRACE("Deallocating ColorRGB");
+            GP_CORE_TRACE_ALL("Deallocating ColorRGB");
         }
 
     protected:
@@ -137,7 +137,7 @@ namespace gp {
         ColorHex(const char *hexstring, float alpha);
 
         ~ColorHex() {
-            GP_CORE_TRACE("Deallocating ColorHex");
+            GP_CORE_TRACE_ALL("Deallocating ColorHex");
         }
 
         std::string toString() const override;
@@ -159,7 +159,7 @@ namespace gp {
         ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha);
 
         ~ColorCMYK() {
-            GP_CORE_TRACE("Deallocating ColorCMYK");
+            GP_CORE_TRACE_ALL("Deallocating ColorCMYK");
         }
 
         std::string toString() const override;
@@ -202,7 +202,7 @@ namespace gp {
         ColorHSV(int hue, float saturation, float value, float alpha);
 
         ~ColorHSV() {
-            GP_CORE_TRACE("Deallocating ColorHSV");
+            GP_CORE_TRACE_ALL("Deallocating ColorHSV");
         }
 
         std::string toString() const override;
@@ -240,7 +240,7 @@ namespace gp {
         ColorHSL(int hue, float saturation, float luminance, float alpha);
 
         ~ColorHSL() {
-            GP_CORE_TRACE("Deallocating ColorHSL");
+            GP_CORE_TRACE_ALL("Deallocating ColorHSL");
         }
 
         std::string toString() const override;

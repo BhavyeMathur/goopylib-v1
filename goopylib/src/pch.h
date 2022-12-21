@@ -12,8 +12,9 @@
  4 - Info Enabled
  5 - Debug Enabled
  6 - Trace Enabled
+ 7 - All Enabled
  */
-#define GP_LOGGING 5
+#define GP_LOGGING 6
 
 #include <iostream>
 #include <cmath>

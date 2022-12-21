@@ -14,7 +14,7 @@ namespace gp {
     }
 
     void BaseVertexArray::setIndexBuffer(const Ref<IndexBuffer> &indexBuffer) {
-        GP_CORE_TRACE("Setting VertexArray's Index Buffer");
+        GP_CORE_TRACE_ALL("Setting VertexArray's Index Buffer");
 
         bind();
         indexBuffer->bind();
@@ -23,7 +23,7 @@ namespace gp {
     }
 
     void BaseVertexArray::setIndexBuffer(std::initializer_list<uint32_t> indices) {
-        GP_CORE_TRACE("Setting VertexArray's Index Buffer");
+        GP_CORE_TRACE_ALL("Setting VertexArray's Index Buffer");
 
         bind();
         m_IndexBuffer = IndexBuffer::create(indices);

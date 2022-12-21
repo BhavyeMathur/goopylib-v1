@@ -13,7 +13,7 @@ namespace gp {
 
     Triangle::~Triangle() = default;
 
-    void Triangle::draw(const Ref<Window> &window) {
+    void Triangle::draw(Window *window) {
         m_Window = window;
         m_Drawn = true;
         m_RendererID = window->drawTriangle(m_P1, m_P2, m_P3);
@@ -25,9 +25,5 @@ namespace gp {
         m_Window = nullptr;
         m_Drawn = false;
         m_RendererID = 0;
-    }
-
-    Ref<Triangle> Triangle::create(Point p1, Point p2, Point p3) {
-        return CreateRef<Triangle>(p1, p2, p3);
     }
 }

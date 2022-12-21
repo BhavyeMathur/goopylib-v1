@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "pch.h"
 #include "Point.h"
 #include "src/goopylib/Core/Buffer.h"
@@ -8,12 +10,18 @@
 
 namespace gp {
     struct RenderingData {
+        Ref<Shader> shader;
         Ref<VertexArray> VAO;
         Ref<VertexBuffer> VBO;
-        Ref<Shader> shader;
 
-        int32_t count;
+        int32_t count = 0;
 
+        RenderingData(const Ref<VertexArray> &VAO, const Ref<VertexBuffer> &VBO, const Ref<Shader> &shader)
+                : VAO(VAO),
+                  VBO(VBO),
+                  shader(shader),
+                  count(0) {
+        }
     };
 
     class Renderer {

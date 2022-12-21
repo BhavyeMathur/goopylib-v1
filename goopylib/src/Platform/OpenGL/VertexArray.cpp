@@ -10,33 +10,13 @@ namespace gp {
         glBindVertexArray(m_RendererID);
     }
 
-    VertexArray::VertexArray(int32_t count, uint32_t *indices) : BaseVertexArray() {
-        GP_CORE_DEBUG("Generating Vertex Array");
-
-        glGenVertexArrays(1, &m_RendererID);
-
-        GP_CORE_DEBUG("Initialising Vertex Array {0}", m_RendererID);
-
-        glBindVertexArray(m_RendererID);
-        setIndexBuffer(IndexBuffer::create(count, indices));
-    }
-
-    VertexArray::VertexArray(std::initializer_list<uint32_t> indices) {
-        glGenVertexArrays(1, &m_RendererID);
-
-        GP_CORE_DEBUG("Initialising Vertex Array {0}", m_RendererID);
-
-        glBindVertexArray(m_RendererID);
-        setIndexBuffer(IndexBuffer::create(indices));
-    }
-
     VertexArray::~VertexArray() {
         GP_CORE_DEBUG("Deallocating Vertex Array {0}", m_RendererID);
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
     void VertexArray::bind() const {
-        GP_CORE_TRACE("Binding Vertex Array {0}", m_RendererID);
+        GP_CORE_TRACE_ALL("Binding Vertex Array {0}", m_RendererID);
         glBindVertexArray(m_RendererID);
     }
 

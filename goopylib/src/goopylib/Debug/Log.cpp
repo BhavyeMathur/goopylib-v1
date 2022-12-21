@@ -17,14 +17,17 @@ namespace gp {
             s_CoreLogger = CreateRef<spdlog::logger>("GOOPYLIB", begin(logSinks), end(logSinks));
             spdlog::register_logger(s_CoreLogger);
             s_CoreLogger->flush_on(spdlog::level::trace);
+            s_CoreLogger->set_level(spdlog::level::trace);
 
             s_PythonLogger = CreateRef<spdlog::logger>("PYTHON", begin(logSinks), end(logSinks));
             spdlog::register_logger(s_PythonLogger);
             s_PythonLogger->flush_on(spdlog::level::trace);
+            s_PythonLogger->set_level(spdlog::level::trace);
 
             s_ClientLogger = CreateRef<spdlog::logger>("APP", begin(logSinks), end(logSinks));
             spdlog::register_logger(s_ClientLogger);
             s_ClientLogger->flush_on(spdlog::level::trace);
+            s_ClientLogger->set_level(spdlog::level::trace);
 
             GP_CORE_INFO("Initialized logger");
         }
