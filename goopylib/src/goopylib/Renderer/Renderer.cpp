@@ -1,21 +1,20 @@
 #include "Renderer.h"
-#include "Triangle.h"
+
+#include <filesystem>
 
 namespace gp {
-    int32_t Renderer::s_MaxTriangles = 1000000;
-    uint32_t Renderer::s_MaxTriangleIndices = Renderer::s_MaxTriangles * 3;
-
     Renderer::Renderer() = default;
 
     Renderer::~Renderer() = default;
 
     void Renderer::init() {
-        m_TriangleVAO = CreateRef<VertexArray>();
+        m_RenderingObjects["triangle"] = {CreateRef<VertexArray>(),
+                                          CreateRef<VertexBuffer>(),
+                                          Shader::load(GP_DIRECTORY "goopylib/Shader/vec2.vert",
+                                                       GP_DIRECTORY "goopylib/Shader/solid.frag"), 0};
 
-        m_TriangleVBO = CreateRef<VertexBuffer>();
-        m_TriangleVBO->setLayout({{ShaderDataType::Float2, "vertices"}});
-
-        m_TriangleVAO->setVertexBuffer(m_TriangleVBO);
+        m_RenderingObjects["triangle"].VBO->setLayout({{ShaderDataType::Float2, "vertices"}});
+        m_RenderingObjects["triangle"].VAO->setVertexBuffer(m_RenderingObjects["triangle"].VBO);
     }
 
     uint32_t Renderer::drawTriangle(Point p1, Point p2, Point p3) {
@@ -62,15 +61,15 @@ namespace gp {
     }
 
     void Renderer::flush() {
-        if (m_Triangles) {
+        if (m_UpdateTriangleVBO) {
+            m_UpdateTriangleVBO = false;
+            m_RenderingObjects["triangle"].VBO->setData(&m_TriangleVertices[0], m_Triangles * 6);
+            m_RenderingObjects["triangle"].count = m_Triangles * 6;
+        }
 
-            if (m_UpdateTriangleVBO) {
-                m_UpdateTriangleVBO = false;
-                m_TriangleVBO->setData(&m_TriangleVertices[0], m_Triangles * 6);
-            }
-
-            Triangle::bindShader();
-            m_TriangleVAO->draw(m_Triangles * 6);
+        for (const auto &object: m_RenderingObjects) {
+            object.second.shader->bind();
+            object.second.VAO->draw(object.second.count);
         }
     }
 }

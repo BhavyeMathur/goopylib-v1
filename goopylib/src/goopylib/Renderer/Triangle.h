@@ -2,7 +2,7 @@
 
 #include "Point.h"
 #include "src/goopylib/Core/Window.h"
-#include "src/goopylib/Core/Shader.h"
+#include "src/goopylib/Shader/Shader.h"
 
 
 namespace gp {
@@ -16,8 +16,6 @@ namespace gp {
 
         void destroy();
 
-        static void bindShader();
-
         static Ref<Triangle> create(Point p1, Point p2, Point p3);
 
     private:
@@ -27,7 +25,5 @@ namespace gp {
         Ref<Window> m_Window;
         uint32_t m_RendererID = 0;
         bool m_Drawn = false;
-
-        static Scope<Shader> s_Shader;
     };
 }

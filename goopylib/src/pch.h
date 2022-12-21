@@ -16,12 +16,12 @@
 #define GP_LOGGING 5
 
 #include <iostream>
-#include <string>
-#include <vector>
 #include <cmath>
 #include <utility>
 #include <type_traits>
 #include <random>
+#include <string>
+#include <vector>
 
 #define GLM_ENABLE_EXPERIMENTAL
 
@@ -30,10 +30,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-#include "spdlog/spdlog.h"
-#include "spdlog/fmt/ostr.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
-#include "spdlog/sinks/basic_file_sink.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/basic_file_sink.h>
+
+#if GP_USING_OPENGL
+
+#define GL_SILENCE_DEPRECATION
 
 #include <OpenGL/gl.h>
 
@@ -44,8 +48,7 @@
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
 
-#define GL_SILENCE_DEPRECATION
-
+#endif
 #endif
 
 #if GP_USING_GLFW
@@ -122,7 +125,6 @@ namespace gp {
 
 // Smart Pointers
 namespace gp {
-
     template<typename T>
         using Scope = std::unique_ptr<T>;
 
@@ -138,7 +140,6 @@ namespace gp {
         constexpr Ref<T> CreateRef(Args &&... args) {
             return std::make_shared<T>(std::forward<Args>(args)...);
         }
-
 }
 
 #include "src/goopylib/Debug/Log.h"

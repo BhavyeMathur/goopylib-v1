@@ -7,6 +7,14 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../goopylib)
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
+add_compile_definitions(GP_DIRECTORY="${PROJECT_BINARY_DIR}/../goopylib/src/")
+
+# Precompiled Header File
+#add_library(pch STATIC goopylib/src/pch.cpp goopylib/src/pch.h)
+#add_custom_command(TARGET pch
+#                   PRE_BUILD COMMAND ${CMAKE_CXX_COMMAND} -x c++-header goopylib/src/pch.h -o goopylib/src/pch.h.pch)
+#set_source_files_properties(goopylib/src/pch.cpp PROPERTIES COMPILE_FLAGS "-include pch.h")
+
 set(GOOPYLIB_PATH goopylib/src/goopylib/)
 set(PLATFORM_PATH goopylib/src/Platform/)
 set(SOURCE_FILES
@@ -56,6 +64,8 @@ endif ()
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
 endif ()
+
+#target_link_libraries(goopylib pch)
 
 target_link_libraries(goopylib ${PROJECT_BINARY_DIR}/../goopylib/vendor/GLFW/libglfw.3.3.dylib)
 target_link_libraries(main ${CMAKE_SOURCE_DIR}/goopylib/vendor/GLFW/libglfw.3.3.dylib)

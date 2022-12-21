@@ -2,4 +2,4 @@
 
 #include "extension/util.h"
 
-#include "goopylib/Core/Shader.h"
+#include "src/goopylib/Shader/Shader.h"

@@ -4,6 +4,8 @@
 
 
 namespace gp {
+    std::string readFile(const char *filePath);
+
     class BaseShader {
     public:
         BaseShader();

@@ -1,4 +1,4 @@
-#include "src/goopylib/Core/Shader.h"
+#include "src/goopylib/Shader/Shader.h"
 
 namespace gp {
     Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource) {
