@@ -8,8 +8,8 @@ namespace gp {
     Renderer::~Renderer() = default;
 
     void Renderer::init() {
-        m_RenderingObjects["triangle"] = {CreateRef<VertexArray>(),
-                                          CreateRef<VertexBuffer>(),
+        m_RenderingObjects["triangle"] = {VertexArray::create(),
+                                          VertexBuffer::create(),
                                           Shader::load(GP_DIRECTORY "goopylib/Shader/vec2.vert",
                                                        GP_DIRECTORY "goopylib/Shader/solid.frag"), 0};
 

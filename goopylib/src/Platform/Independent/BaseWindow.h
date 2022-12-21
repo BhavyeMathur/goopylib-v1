@@ -22,9 +22,9 @@ namespace gp {
         int maxWidth;
         int maxHeight;
 
-        explicit WindowConfig(int width = 800,
-                              int height = 450,
-                              const char *title = "goopylib Window",
+        WindowConfig(int width,
+                     int height,
+                     const char *title = "goopylib Window",
 
                               int xPos = 0,
                               int yPos = 0,

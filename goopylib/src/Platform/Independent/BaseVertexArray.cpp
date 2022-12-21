@@ -26,7 +26,7 @@ namespace gp {
         GP_CORE_TRACE("Setting VertexArray's Index Buffer");
 
         bind();
-        m_IndexBuffer = CreateRef<IndexBuffer>(indices);
+        m_IndexBuffer = IndexBuffer::create(indices);
     }
 
     const Ref<IndexBuffer> &BaseVertexArray::getIndexBuffer() const {
