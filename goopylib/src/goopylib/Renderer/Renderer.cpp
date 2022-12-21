@@ -17,7 +17,7 @@ namespace gp {
                         {ShaderDataType::Float3, "color"}});
         VAO->setVertexBuffer(VBO);
 
-        m_RenderingObjects.insert({"triangle", RenderingData(VAO, VBO, shader)});
+        m_RenderingObjects.insert({"triangle", RenderingData(VAO, VBO, nullptr, shader)});
     }
 
     uint32_t Renderer::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
@@ -31,7 +31,10 @@ namespace gp {
         m_TriangleVertices.push_back(v3);
 
         m_Triangles++;
-        m_UpdateTriangleVBO = true;
+        m_RenderingObjects.at("triangle").count = m_Triangles * 3;
+        m_RenderingObjects.at("triangle").bufferData = &m_TriangleVertices[0];
+
+        m_RenderingObjects.at("triangle").reallocateBufferData = true;
 
         return ID;
     }
@@ -53,33 +56,34 @@ namespace gp {
         m_TriangleIDs.erase(std::next(m_TriangleIDs.begin(), index));
 
         m_Triangles--;
-        m_UpdateTriangleVBO = true;
+        m_RenderingObjects.at("triangle").count = m_Triangles * 3;
+        m_RenderingObjects.at("triangle").bufferData = &m_TriangleVertices[0];
+
+        m_RenderingObjects.at("triangle").reallocateBufferData = true;
     }
 
     void Renderer::updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
         auto indexi = std::find(m_TriangleIDs.begin(), m_TriangleIDs.end(), ID);
-        uint32_t index = indexi - m_TriangleIDs.begin();
+        uint32_t index = 3 * (indexi - m_TriangleIDs.begin());
 
-        m_TriangleVertices[index * 3 + 0] = v1;
-        m_TriangleVertices[index * 3 + 1] = v2;
-        m_TriangleVertices[index * 3 + 2] = v3;
+        m_TriangleVertices[index + 0] = v1;
+        m_TriangleVertices[index + 1] = v2;
+        m_TriangleVertices[index + 2] = v3;
 
-        m_UpdateTriangleVBO = true;
+        m_RenderingObjects.at("triangle").VBO->setData(&m_TriangleVertices[index], 3, index);
     }
 
     void Renderer::flush() {
-        if (m_UpdateTriangleVBO) {
-            m_RenderingObjects.at("triangle").count = m_Triangles * 3;
+        for (auto &object: m_RenderingObjects) {
+            if (object.second.reallocateBufferData) {
+                GP_CORE_TRACE("Reallocating '{0}' VertexBuffer", object.first);
 
-            GP_CORE_TRACE("Updating triangle VertexBuffer, count={0}", m_RenderingObjects.at("triangle").count);
+                object.second.VBO->setData(object.second.bufferData, object.second.count);
+                object.second.reallocateBufferData = false;
+            }
 
-            m_RenderingObjects.at("triangle").VBO->setData(&m_TriangleVertices[0],m_Triangles * 15);
-            m_UpdateTriangleVBO = false;
-        }
-
-        for (const auto &object: m_RenderingObjects) {
             object.second.shader->bind();
-            object.second.VAO->draw(object.second.count);
+            object.second.VAO->draw();
         }
     }
 }

@@ -28,10 +28,10 @@ namespace gp {
     void VertexArray::draw(int32_t count) const {
         bind();
         if (m_IndexBuffer) {
-            glDrawElements(GL_TRIANGLES, count ? count : m_IndexBuffer->count(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, count ? count : (int32_t) m_IndexBuffer->count(), GL_UNSIGNED_INT, nullptr);
         }
         else {
-            glDrawArrays(GL_TRIANGLES, 0, count ? count : m_VertexBuffer->count());
+            glDrawArrays(GL_TRIANGLES, 0, count ? count : (int32_t) m_VertexBuffer->count());
         }
     }
 

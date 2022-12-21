@@ -102,7 +102,7 @@ def countlines(start, lines=0, _header=True, _begin_start=None):
 
     for file in os.listdir(start):
         filepath = os.path.join(start, file)
-        if any(file.endswith(end) for end in (".py", ".c", ".cpp", ".h", ".hpp")):
+        if any(file.endswith(end) for end in (".py", ".c", ".cpp", ".h", ".hpp", ".glsl", ".frag", ".vert")):
 
             with open(filepath, 'r') as f:
                 newlines = len(f.readlines())

@@ -5,7 +5,7 @@
 namespace gp {
     // TODO allow non-float data types in VertexBuffer
 
-    VertexBuffer::VertexBuffer(int32_t count, void *vertices)
+    VertexBuffer::VertexBuffer(uint32_t count, void *vertices)
             : BaseVertexBuffer(count) {
         glGenBuffers(1, &m_RendererID);
 
@@ -16,7 +16,7 @@ namespace gp {
     }
 
     VertexBuffer::VertexBuffer(std::initializer_list<float> vertices)
-            : BaseVertexBuffer((int32_t) vertices.size()) {
+            : BaseVertexBuffer(vertices.size()) {
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Vertex Buffer {0}, count={1}", m_RendererID, vertices.size());
@@ -43,19 +43,27 @@ namespace gp {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    void VertexBuffer::setData(const void *data, int32_t count) {
+    void VertexBuffer::setData(const void *data, uint32_t count) {
         GP_CORE_DEBUG("Setting Vertex Buffer {0} Data", m_RendererID);
 
-        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), data, GL_DYNAMIC_DRAW);
+        bind();
+        glBufferData(GL_ARRAY_BUFFER, count * m_Layout.getStride(), data, GL_DYNAMIC_DRAW);
 
         m_Count = count;
+    }
+
+    void VertexBuffer::setData(const void *data, uint32_t count, uint32_t offset) {
+        GP_CORE_DEBUG("Setting Vertex Buffer {0} Data", m_RendererID);
+
+        bind();
+        glBufferSubData(GL_ARRAY_BUFFER, offset * m_Layout.getStride(),
+                        count * m_Layout.getStride(), data);
     }
 }
 
 // Index Buffer
 namespace gp {
-    IndexBuffer::IndexBuffer(int32_t count, uint32_t *indices)
+    IndexBuffer::IndexBuffer(uint32_t count, uint32_t *indices)
             : BaseIndexBuffer(count) {
         glGenBuffers(1, &m_RendererID);
 
@@ -66,7 +74,7 @@ namespace gp {
     }
 
     IndexBuffer::IndexBuffer(std::initializer_list<uint32_t> indices)
-            : BaseIndexBuffer((int32_t) indices.size()) {
+            : BaseIndexBuffer(indices.size()) {
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Index Buffer {0}", m_RendererID);

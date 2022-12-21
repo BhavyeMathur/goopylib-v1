@@ -12,13 +12,16 @@ namespace gp {
         Ref<VertexArray> VAO;
         Ref<VertexBuffer> VBO;
 
-        int32_t count = 0;
+        uint32_t count = 0;
+        void *bufferData;
+        bool reallocateBufferData = false;
 
-        RenderingData(const Ref<VertexArray> &VAO, const Ref<VertexBuffer> &VBO, const Ref<Shader> &shader)
+        RenderingData(const Ref<VertexArray> &VAO, const Ref<VertexBuffer> &VBO, void *bufferData,
+                      const Ref<Shader> &shader)
                 : VAO(VAO),
                   VBO(VBO),
-                  shader(shader),
-                  count(0) {
+                  bufferData(bufferData),
+                  shader(shader) {
         }
     };
 
@@ -43,7 +46,6 @@ namespace gp {
         std::vector<uint32_t> m_TriangleIDs;
 
         int32_t m_Triangles = 0;
-        bool m_UpdateTriangleVBO = false;
 
         std::unordered_map<const char *, RenderingData> m_RenderingObjects;
     };

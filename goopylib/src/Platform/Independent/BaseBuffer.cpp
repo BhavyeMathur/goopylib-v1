@@ -2,19 +2,19 @@
 
 // Generic Buffer
 namespace gp {
-    BaseBuffer::BaseBuffer(int32_t count)
+    BaseBuffer::BaseBuffer(uint32_t count)
             : m_Count(count) {
 
     }
 
-    int32_t BaseBuffer::count() const {
+    uint32_t BaseBuffer::count() const {
         return m_Count;
     }
 }
 
 // Base Vertex Buffer
 namespace gp {
-    BaseVertexBuffer::BaseVertexBuffer(int32_t count)
+    BaseVertexBuffer::BaseVertexBuffer(uint32_t count)
             : BaseBuffer(count),
               m_Layout({}) {
         GP_CORE_INFO("Initializing BaseVertexBuffer, count={0}", count);
@@ -36,7 +36,7 @@ namespace gp {
 
 // Base Index Buffer
 namespace gp {
-    BaseIndexBuffer::BaseIndexBuffer(int32_t count)
+    BaseIndexBuffer::BaseIndexBuffer(uint32_t count)
             : BaseBuffer(count) {
         GP_CORE_INFO("Initializing BaseIndex Buffer");
     }

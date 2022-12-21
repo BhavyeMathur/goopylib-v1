@@ -28,17 +28,20 @@ namespace gp {
 
         int32_t getCount() const;
 
+        int32_t getSize() const;
+
         ShaderDataType getType() const;
 
         bool isNormalized() const;
 
-        int32_t m_Size = 0;
         size_t m_Offset = 0;
 
     private:
         const char *m_Name;
         ShaderDataType m_Type;
         bool m_Normalized;
+
+        int32_t m_Size = 0;
     };
 }
 
@@ -51,6 +54,8 @@ namespace gp {
         BufferLayout(std::initializer_list<BufferElement> elements);
 
         int32_t getStride() const;
+
+        uint32_t getCount() const;
 
         const std::vector<BufferElement> &getElements() const;
 
@@ -65,6 +70,7 @@ namespace gp {
     private:
         std::vector<BufferElement> m_Elements;
         int32_t m_Stride = 0;
+        uint32_t m_Count = 0;
 
         void calculateOffsetAndStride();
     };

@@ -98,6 +98,10 @@ namespace gp {
         }
     }
 
+    int32_t BufferElement::getSize() const {
+        return m_Size;
+    }
+
     const char *BufferElement::getName() const {
         return m_Name;
     }
@@ -136,6 +140,10 @@ namespace gp {
         return m_Stride;
     }
 
+    uint32_t BufferLayout::getCount() const {
+        return m_Count;
+    }
+
     const std::vector<BufferElement> &BufferLayout::getElements() const {
         return m_Elements;
     }
@@ -158,9 +166,12 @@ namespace gp {
 
     void BufferLayout::calculateOffsetAndStride() {
         m_Stride = 0;
+        m_Count = 0;
+
         for (auto &element: m_Elements) {
             element.m_Offset = m_Stride;
-            m_Stride += element.m_Size;
+            m_Stride += element.getSize();
+            m_Count += element.getCount();
         }
     }
 }
