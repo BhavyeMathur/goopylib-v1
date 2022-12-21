@@ -7,12 +7,6 @@
 namespace gp {
     class VertexArray final : public BaseVertexArray {
     public:
-        VertexArray();
-
-        VertexArray(int32_t count, uint32_t *indices);
-
-        VertexArray(std::initializer_list<uint32_t> indices);
-
         ~VertexArray() override;
 
         void bind() const override;
@@ -26,18 +20,24 @@ namespace gp {
         // Static Methods
 
         static Ref<VertexArray> create() {
-            return CreateRef<VertexArray>();
+            return Ref<VertexArray>(new VertexArray());
         }
 
         static Ref<VertexArray> create(int32_t count, uint32_t *indices) {
-            return CreateRef<VertexArray>(count, indices);
+            return Ref<VertexArray>(new VertexArray(count, indices));
         }
 
         static Ref<VertexArray> create(std::initializer_list<uint32_t> indices) {
-            return CreateRef<VertexArray>(indices);
+            return Ref<VertexArray>(new VertexArray(indices));
         }
 
     private:
+        VertexArray();
+
+        VertexArray(int32_t count, uint32_t *indices);
+
+        VertexArray(std::initializer_list<uint32_t> indices);
+
         uint32_t m_RendererID = 0;
     };
 }
