@@ -64,7 +64,7 @@ namespace VertexArray {
     }
 
     static PyObject *draw(VertexArrayObject *self, PyObject *Py_UNUSED(args)) {
-        self->vertex_array->draw();
+        self->vertex_array->_draw();
         Py_RETURN_NONE;
     }
 
@@ -99,7 +99,7 @@ namespace VertexArray {
             {"unbind", (PyCFunction) unbind, METH_NOARGS,
                     "Unbinds the Vertex Array"},
 
-            {"draw", (PyCFunction) draw, METH_NOARGS,
+            {"_draw", (PyCFunction) draw, METH_NOARGS,
                     "Draws the Vertex Buffer"},
 
             {"set_index_buffer", (PyCFunction) set_index_buffer, METH_O,

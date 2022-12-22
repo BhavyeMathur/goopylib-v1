@@ -29,6 +29,8 @@ namespace gp {
     class Renderer {
 
         friend class BaseWindow;
+        friend class VertexArray;
+        friend class Triangle;
 
     private:
         std::vector<TriangleVertex> m_TriangleVertices;

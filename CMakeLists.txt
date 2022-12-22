@@ -31,6 +31,7 @@ set(SOURCE_FILES
 
     ${GOOPYLIB_PATH}/Renderer/Triangle.cpp
     ${GOOPYLIB_PATH}/Renderer/Renderer.cpp
+    ${GOOPYLIB_PATH}/Renderer/RenderableObject.cpp
 
     ${PLATFORM_PATH}/GLFW/Window.cpp
     ${PLATFORM_PATH}/OpenGL/Buffer.cpp

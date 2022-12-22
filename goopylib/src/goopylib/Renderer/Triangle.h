@@ -1,30 +1,26 @@
 #pragma once
 
-#include "Point.h"
-#include "src/goopylib/Core/Window.h"
+#include "RenderableObject.h"
 
 
 namespace gp {
-    class Triangle {
+    class Triangle : public RenderableObject {
     public:
         Triangle(Point p1, Point p2, Point p3);
-
-        ~Triangle();
-
-        void draw(Window *window);
-
-        void destroy();
 
         void setColor(const Color& color);
 
         void setColor(const Color& color1, const Color& color2, const Color& color3);
 
+        void move(float dx, float dy) override {}
+
+        void setPosition(float dx, float dy) override {}
+
     private:
-        Point m_Position;
         TriangleVertex m_V1, m_V2, m_V3;
 
-        Window *m_Window = nullptr;
-        uint32_t m_RendererID = 0;
-        bool m_Drawn = false;
+        uint32_t _draw(Window *window) const override;
+
+        void _destroy() const override;
     };
 }

@@ -32,6 +32,6 @@ namespace gp {
 
         virtual void unbind() const = 0;
 
-        virtual void draw(int32_t count = 0) const = 0;
+        virtual void _draw(int32_t count = 0) const = 0;
     };
 }

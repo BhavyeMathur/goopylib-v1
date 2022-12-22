@@ -81,7 +81,7 @@ namespace gp {
             }
 
             object.second.shader->bind();
-            object.second.VAO->draw(object.second.count);
+            object.second.VAO->_draw(object.second.count);
         }
     }
 }
