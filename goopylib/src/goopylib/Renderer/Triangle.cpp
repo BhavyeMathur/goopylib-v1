@@ -33,6 +33,17 @@ namespace gp {
         m_V3.point.x += dx;
         m_V3.point.y += dy;
     }
+
+    void Triangle::_rotate(float sin, float cos) {
+        m_V1.point = {m_V1.point.x * cos - m_V1.point.y * sin, 
+                      m_V1.point.x * sin+ m_V1.point.y * cos};
+
+        m_V2.point = {m_V2.point.x * cos - m_V2.point.y * sin,
+                      m_V2.point.x * sin+ m_V2.point.y * cos};
+
+        m_V3.point = {m_V3.point.x * cos - m_V3.point.y * sin,
+                      m_V3.point.x * sin+ m_V3.point.y * cos};
+    }
 }
 
 // Triangle Methods

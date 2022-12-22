@@ -22,5 +22,7 @@ namespace gp {
         void _update() const override;
 
         void _move(float dx, float dy) override;
+
+        void _rotate(float sin, float cos) override;
     };
 }

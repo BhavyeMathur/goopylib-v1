@@ -17,6 +17,10 @@ namespace gp {
 
         void move(float dx, float dy);
 
+        void rotate(float angle);
+
+        void rotate(float angle, Point pivot);
+
         void setPosition(float dx, float dy);
 
     protected:
@@ -29,6 +33,7 @@ namespace gp {
 
     private:
         Point m_Position;
+        float m_Angle = 0;
         bool m_Drawn = false;
 
         virtual uint32_t _draw(Window *window) const = 0;
@@ -38,5 +43,7 @@ namespace gp {
         virtual void _update() const = 0;
 
         virtual void _move(float dx, float dy) = 0;
+
+        virtual void _rotate(float sin, float cos) = 0;
     };
 }
