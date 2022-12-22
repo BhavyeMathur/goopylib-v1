@@ -12,9 +12,6 @@ namespace gp {
 
     BaseWindow::BaseWindow(const WindowConfig &config)
             : m_Data(config),
-              m_Projection(glm::scale(glm::mat4(1),
-                                      glm::vec3(2.0f / (float) config.width,
-                                                2.0f / (float) config.height, 1))),
               m_KeyModifiers(0),
               m_isDestroyed(false),
 
@@ -328,7 +325,6 @@ namespace gp {
             m_ResizeCallback((Window *) this, width, height);
         }
 
-        m_Projection = glm::scale(glm::mat4(1), glm::vec3(2.0f / (float) width, 2.0f / (float) height, 1));
         update();
     }
 

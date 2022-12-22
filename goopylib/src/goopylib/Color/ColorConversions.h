@@ -1,35 +1,11 @@
 #pragma once
 
-#include "Color.h"
+#include "pch.h"
+#include "ColorStructs.h"
 
 // Color Conversion Functions
 
 namespace gp {
-    struct GPAPI RGB {
-        int red;
-        int green;
-        int blue;
-    };
-
-    struct GPAPI CMYK {
-        float cyan;
-        float magenta;
-        float yellow;
-        float key;
-    };
-
-    struct GPAPI HSV {
-        int hue;
-        float saturation;
-        float value;
-    };
-
-    struct GPAPI HSL {
-        int hue;
-        float saturation;
-        float luminance;
-    };
-
     // RGB to other format
 
     namespace rgb {

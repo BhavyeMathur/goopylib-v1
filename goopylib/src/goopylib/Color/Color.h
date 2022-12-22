@@ -1,22 +1,23 @@
 #pragma once
 
+#include "pch.h"
+#include "ColorStructs.h"
+
 namespace gp {
-    struct GPAPI RGB;
+    class ColorRGB;
 
-    class GPAPI ColorRGB;
+    class ColorHex;
 
-    class GPAPI ColorHex;
+    class ColorCMYK;
 
-    class GPAPI ColorCMYK;
+    class ColorHSV;
 
-    class GPAPI ColorHSV;
-
-    class GPAPI ColorHSL;
+    class ColorHSL;
 }
 
 
 namespace gp {
-    class GPAPI Color {
+    class Color {
     public:
         Color();
 
@@ -76,7 +77,7 @@ namespace gp {
 
         Color &operator-=(int value);
 
-        Color &operator-=(const Color& value);
+        Color &operator-=(const Color &value);
 
     protected:
         int m_Red;
@@ -108,7 +109,7 @@ namespace gp {
 }
 
 namespace gp {
-    class GPAPI ColorRGB final : public Color {
+    class ColorRGB final : public Color {
     public:
         explicit ColorRGB(Color const &color);
 
@@ -128,7 +129,7 @@ namespace gp {
 }
 
 namespace gp {
-    class GPAPI ColorHex final : public Color {
+    class ColorHex final : public Color {
     public:
         explicit ColorHex(Color const &color);
 
@@ -150,7 +151,7 @@ namespace gp {
 }
 
 namespace gp {
-    class GPAPI ColorCMYK final : public Color {
+    class ColorCMYK final : public Color {
     public:
         explicit ColorCMYK(Color const &color);
 
@@ -191,7 +192,7 @@ namespace gp {
 }
 
 namespace gp {
-    class GPAPI ColorHSV final : public Color {
+    class ColorHSV final : public Color {
     public:
         explicit ColorHSV(Color const &color);
 
@@ -229,7 +230,7 @@ namespace gp {
 }
 
 namespace gp {
-    class GPAPI ColorHSL final : public Color {
+    class ColorHSL final : public Color {
     public:
         explicit ColorHSL(Color const &color);
 

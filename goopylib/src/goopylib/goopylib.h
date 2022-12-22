@@ -11,8 +11,8 @@
 #include "goopylib/Events/KeyboardCodes.h"
 #include "goopylib/Math/Easing.h"
 
-#include "goopylib/Color/ColorConversions.h"
 #include "goopylib/Color/Color.h"
+#include "goopylib/Color/ColorConversions.h"
 #include "goopylib/Color/Util.h"
 #include "goopylib/Color/W3CX11.h"
 
