@@ -17,8 +17,6 @@ namespace gp {
 
         ~VertexArray() override;
 
-        void draw(Window *window, const Ref<Shader> &shader, int32_t count = 0);
-
         void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) override;
 
     private:
@@ -26,7 +24,7 @@ namespace gp {
 
         void unbind() const override;
 
-        void _draw(int32_t count = 0) const override;
+        void draw(int32_t count = 0) const override;
 
     private:
         uint32_t m_RendererID = 0;

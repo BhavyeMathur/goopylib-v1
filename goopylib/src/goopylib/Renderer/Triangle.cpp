@@ -32,8 +32,6 @@ namespace gp {
 
         m_V3.point.x += dx;
         m_V3.point.y += dy;
-
-        update();
     }
 }
 

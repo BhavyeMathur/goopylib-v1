@@ -31,6 +31,8 @@ namespace gp {
 
         m_Position.x += dx;
         m_Position.y += dy;
+
+        update();
     }
 
     void RenderableObject::setPosition(float x, float y) {
@@ -38,6 +40,8 @@ namespace gp {
 
         m_Position.x = x;
         m_Position.y = y;
+
+        update();
     }
 }
 

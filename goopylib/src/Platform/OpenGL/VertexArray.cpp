@@ -26,11 +26,7 @@ namespace gp {
         glBindVertexArray(0);
     }
 
-    void VertexArray::draw(Window *window, const Ref<Shader> &shader, int32_t count) {
-        window->m_Renderer.drawVertexArray(Ref<VertexArray>(this), shader, count);
-    }
-
-    void VertexArray::_draw(int32_t count) const {
+    void VertexArray::draw(int32_t count) const {
         bind();
         if (m_IndexBuffer) {
             glDrawElements(GL_TRIANGLES, count ? count : (int32_t) m_IndexBuffer->count(), GL_UNSIGNED_INT, nullptr);
