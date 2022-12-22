@@ -1,7 +1,8 @@
 #pragma once
 
-#include "BaseBuffer.h"
+#include "src/pch.h"
 #include "src/goopylib/Core/Buffer.h"
+#include "src/Platform/Independent/Buffer.h"
 
 namespace gp {
     class BaseVertexArray {
@@ -10,6 +11,12 @@ namespace gp {
 
     public:
         virtual ~BaseVertexArray();
+
+        virtual void bind() const = 0;
+
+        virtual void unbind() const = 0;
+
+        virtual void draw(int32_t count = 0) const = 0;
 
         virtual void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) = 0;
 
@@ -23,15 +30,6 @@ namespace gp {
         Ref<VertexBuffer> m_VertexBuffer;
         Ref<IndexBuffer> m_IndexBuffer;
 
-        bool m_Drawn = false;
-
         BaseVertexArray();
-
-    private:
-        virtual void bind() const = 0;
-
-        virtual void unbind() const = 0;
-
-        virtual void draw(int32_t count = 0) const = 0;
     };
 }

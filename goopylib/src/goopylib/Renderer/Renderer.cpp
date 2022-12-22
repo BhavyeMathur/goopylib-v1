@@ -10,8 +10,8 @@ namespace gp {
     void Renderer::init() {
         auto shader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
                                         GP_DIRECTORY "goopylib/Shader/solid.frag");
-        auto VAO = CreateRef<VertexArray>();
-        auto VBO = VertexBuffer::create();
+        auto VAO = Ref<VertexArray>(new VertexArray());
+        auto VBO = Ref<VertexBuffer>(new VertexBuffer());
 
         VBO->setLayout({{ShaderDataType::Float2, "vertices"},
                         {ShaderDataType::Float3, "color"}});

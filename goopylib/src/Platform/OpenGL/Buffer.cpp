@@ -6,7 +6,7 @@ namespace gp {
     // TODO allow non-float data types in VertexBuffer
 
     VertexBuffer::VertexBuffer(uint32_t count, void *vertices)
-            : BaseVertexBuffer(count) {
+            : Buffer(count) {
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Vertex Buffer {0}, count={1}", m_RendererID, count);
@@ -16,7 +16,7 @@ namespace gp {
     }
 
     VertexBuffer::VertexBuffer(std::initializer_list<float> vertices)
-            : BaseVertexBuffer(vertices.size()) {
+            : Buffer(vertices.size()) {
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Vertex Buffer {0}, count={1}", m_RendererID, vertices.size());
@@ -52,7 +52,7 @@ namespace gp {
         m_Count = count;
     }
 
-    void VertexBuffer::setData(const void *data, uint32_t count, uint32_t offset) {
+    void VertexBuffer::setData(const void *data, uint32_t count, uint32_t offset) const {
         GP_CORE_DEBUG("Setting Vertex Buffer {0} Data", m_RendererID);
 
         bind();

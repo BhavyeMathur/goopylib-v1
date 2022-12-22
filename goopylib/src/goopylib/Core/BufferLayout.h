@@ -5,7 +5,7 @@
 
 // Buffer Layout Data Types
 namespace gp {
-    enum class GPAPI ShaderDataType {
+    enum class ShaderDataType {
         None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
     };
 
@@ -20,7 +20,7 @@ namespace gp {
 
 // Buffer Layout Element
 namespace gp {
-    class GPAPI BufferElement {
+    class BufferElement {
 
         friend class BufferLayout;
         friend class VertexArray;
@@ -43,7 +43,7 @@ namespace gp {
 
 // Buffer Layout
 namespace gp {
-    class GPAPI BufferLayout {
+    class BufferLayout {
 
         friend class VertexArray;
         friend class VertexBuffer;

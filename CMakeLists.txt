@@ -39,7 +39,7 @@ set(SOURCE_FILES
     ${PLATFORM_PATH}/OpenGL/Shader.cpp
 
     ${PLATFORM_PATH}/Independent/BaseWindow.cpp
-    ${PLATFORM_PATH}/Independent/BaseBuffer.cpp
+    ${PLATFORM_PATH}/Independent/Buffer.cpp
     ${PLATFORM_PATH}/Independent/BaseVertexArray.cpp
     ${PLATFORM_PATH}/Independent/BaseShader.cpp)
 

@@ -13,10 +13,6 @@ namespace gp {
 
         ~Shader() override;
 
-        static Ref<Shader> create(const char *vertexShaderPath, const char *fragmentShaderPath) {
-            return Ref<Shader>(new Shader(vertexShaderPath, fragmentShaderPath));
-        }
-
     private:
         void bind() const override;
 

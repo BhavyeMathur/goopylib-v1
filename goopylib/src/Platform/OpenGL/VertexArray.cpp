@@ -1,5 +1,4 @@
 #include "src/goopylib/Core/VertexArray.h"
-#include "src/goopylib/Core/Window.h"
 
 namespace gp {
     VertexArray::VertexArray()

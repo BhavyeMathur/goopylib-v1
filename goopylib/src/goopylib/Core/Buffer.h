@@ -1,12 +1,15 @@
 #pragma once
 
-#include "src/Platform/Independent/BaseBuffer.h"
+#include "src/Platform/Independent/Buffer.h"
 
 // TODO Vertex Buffer with non-float data
 
 // Vertex Buffer
 namespace gp {
-    class GPAPI VertexBuffer final : public BaseVertexBuffer {
+    class VertexBuffer final : public Buffer {
+
+        friend class Renderer;
+
     public:
         ~VertexBuffer() override;
 
@@ -14,22 +17,16 @@ namespace gp {
 
         void unbind() const override;
 
-        void setData(const void *data, uint32_t count) override;
+        void setData(const void *data, uint32_t count);
 
-        void setData(const void *data, uint32_t count, uint32_t offset) override;
+        void setData(const void *data, uint32_t count, uint32_t offset) const;
 
-        // Static Methods
+        const BufferLayout &getLayout() const;
 
-        static Ref<VertexBuffer> create(int32_t count = 0, float *vertices = nullptr) {
-            return Ref<VertexBuffer>(new VertexBuffer(count, vertices));
-        }
-
-        static Ref<VertexBuffer> create(std::initializer_list<float> vertices) {
-            return Ref<VertexBuffer>(new VertexBuffer(vertices));
-        }
+        void setLayout(const BufferLayout &layout);
 
     private:
-        uint32_t m_RendererID = 0;
+        BufferLayout m_Layout{};
 
         explicit VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
 
@@ -39,23 +36,16 @@ namespace gp {
 
 // Index Buffer
 namespace gp {
-    class GPAPI IndexBuffer final : public BaseIndexBuffer {
+    class IndexBuffer final : public BaseIndexBuffer {
+
+        friend class Renderer;
+
     public:
         ~IndexBuffer() override;
 
         void bind() const override;
 
         void unbind() const override;
-
-        // Static Methods
-
-        static Ref<IndexBuffer> create(int32_t count, uint32_t *indices) {
-            return Ref<IndexBuffer>(new IndexBuffer(count, indices));
-        }
-
-        static Ref<IndexBuffer> create(std::initializer_list<uint32_t> indices) {
-            return Ref<IndexBuffer>(new IndexBuffer(indices));
-        }
 
     private:
         uint32_t m_RendererID = 0;
