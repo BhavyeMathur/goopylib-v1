@@ -17,3 +17,4 @@
 #include "goopylib/Color/W3CX11.h"
 
 #include "goopylib/Renderer/Triangle.h"
+#include "goopylib/Renderer/Quad.h"

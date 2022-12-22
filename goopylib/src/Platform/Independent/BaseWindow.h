@@ -76,7 +76,7 @@ namespace gp {
     class BaseWindow {
 
         friend class Triangle;
-        friend class VertexArray;
+        friend class Quad;
 
     public:
         virtual ~BaseWindow();

@@ -11,16 +11,20 @@ namespace gp {
         Ref<Shader> shader;
         Ref<VertexArray> VAO;
         Ref<VertexBuffer> VBO;
+        Ref<IndexBuffer> EBO;
 
         int32_t count;
         void *bufferData;
         bool reallocateBufferData = false;
         bool updateBufferData = false;
 
-        RenderingData(const Ref<VertexArray> &VAO, const Ref<VertexBuffer> &VBO, void *bufferData,
+        DrawMode mode = DrawMode::Triangles;
+
+        RenderingData(const Ref<VertexArray> &VAO, void *bufferData,
                       const Ref<Shader> &shader, int32_t count = 0)
                 : VAO(VAO),
-                  VBO(VBO),
+                  VBO(VAO->getVertexBuffer()),
+                  EBO(VAO->getIndexBuffer()),
                   bufferData(bufferData),
                   shader(shader),
                   count(count) {
@@ -30,13 +34,17 @@ namespace gp {
     class Renderer {
 
         friend class BaseWindow;
-        friend class VertexArray;
         friend class Triangle;
+        friend class Quad;
 
     private:
         std::vector<TriangleVertex> m_TriangleVertices;
         uint32_t m_NextTriangleID = 0;
         std::unordered_map<uint32_t, uint32_t> m_TriangleIDs;
+
+        std::vector<QuadVertex> m_QuadVertices;
+        uint32_t m_NextQuadID = 0;
+        std::unordered_map<uint32_t, uint32_t> m_QuadIDs;
 
         std::unordered_map<const char *, RenderingData> m_RenderingObjects;
 
@@ -51,6 +59,12 @@ namespace gp {
         void destroyTriangle(uint32_t ID);
 
         void updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
+
+        uint32_t drawQuad(QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4);
+
+        void destroyQuad(uint32_t ID);
+
+        void updateQuad(uint32_t ID, QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4);
 
         void flush();
     };
