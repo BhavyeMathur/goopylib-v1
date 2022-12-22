@@ -27,14 +27,23 @@ namespace gp {
     };
 
     class Renderer {
-    public:
+
+        friend class BaseWindow;
+
+    private:
+        std::vector<TriangleVertex> m_TriangleVertices;
+        uint32_t m_NextTriangleID = 0;
+        std::unordered_map<uint32_t, uint32_t> m_TriangleIDs;
+
+        std::unordered_map<const char *, RenderingData> m_RenderingObjects;
+
         Renderer();
 
         ~Renderer();
 
         void init();
 
-        void drawVertexArray(const Ref<VertexArray>& VAO, const Ref<Shader>& shader, int32_t count = 0);
+        void drawVertexArray(const Ref<VertexArray> &VAO, const Ref<Shader> &shader, int32_t count = 0);
 
         uint32_t drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
 
@@ -43,12 +52,5 @@ namespace gp {
         void updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
 
         void flush();
-
-    private:
-        std::vector<TriangleVertex> m_TriangleVertices;
-        uint32_t m_NextTriangleID = 0;
-        std::unordered_map<uint32_t, uint32_t> m_TriangleIDs;
-
-        std::unordered_map<const char *, RenderingData> m_RenderingObjects;
     };
 }

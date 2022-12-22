@@ -5,14 +5,11 @@
 
 namespace gp {
     class BaseVertexArray {
+
+        friend class Renderer;
+
     public:
         virtual ~BaseVertexArray();
-
-        virtual void bind() const = 0;
-
-        virtual void unbind() const = 0;
-
-        virtual void draw(int32_t count = 0) const = 0;
 
         virtual void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) = 0;
 
@@ -29,5 +26,12 @@ namespace gp {
         Ref<IndexBuffer> m_IndexBuffer;
 
         BaseVertexArray();
+
+    private:
+        virtual void bind() const = 0;
+
+        virtual void unbind() const = 0;
+
+        virtual void draw(int32_t count = 0) const = 0;
     };
 }

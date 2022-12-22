@@ -45,7 +45,7 @@ namespace gp {
         const BufferLayout layout = vertexBuffer->getLayout();
 
         for (const BufferElement element: layout) {
-            ShaderDataType type = element.getType();
+            ShaderDataType type = element.m_Type;
 
             switch (type) {
                 case ShaderDataType::Float:
@@ -62,8 +62,8 @@ namespace gp {
                     glVertexAttribPointer(attrIndex,
                                           element.getCount(),
                                           GL_FLOAT,
-                                          element.isNormalized() ? GL_TRUE : GL_FALSE,
-                                          layout.getStride(),
+                                          element.m_Normalized ? GL_TRUE : GL_FALSE,
+                                          layout.m_Stride,
                                           (const void *) element.m_Offset);
                     attrIndex++;
                     break;
@@ -82,7 +82,7 @@ namespace gp {
                     glVertexAttribIPointer(attrIndex,
                                            element.getCount(),
                                            shaderOpenGLType(type),
-                                           layout.getStride(),
+                                           layout.m_Stride,
                                            (const void *) element.m_Offset);
                     attrIndex++;
                     break;
@@ -91,9 +91,9 @@ namespace gp {
                 case ShaderDataType::Mat4: {
 
                     GLenum glType = shaderOpenGLType(type);
-                    bool normalized = element.isNormalized() ? GL_TRUE : GL_FALSE;
+                    bool normalized = element.m_Normalized ? GL_TRUE : GL_FALSE;
                     int32_t count = element.getCount();
-                    int32_t stride = layout.getStride();
+                    int32_t stride = layout.m_Stride;
 
                     for (int32_t i = 0; i < count; i++) {
 

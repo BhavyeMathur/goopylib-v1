@@ -47,7 +47,7 @@ namespace gp {
         GP_CORE_DEBUG("Setting Vertex Buffer {0} Data", m_RendererID);
 
         bind();
-        glBufferData(GL_ARRAY_BUFFER, count * m_Layout.getStride(), data, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, count * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
 
         m_Count = count;
     }
@@ -56,8 +56,8 @@ namespace gp {
         GP_CORE_DEBUG("Setting Vertex Buffer {0} Data", m_RendererID);
 
         bind();
-        glBufferSubData(GL_ARRAY_BUFFER, offset * m_Layout.getStride(),
-                        count * m_Layout.getStride(), data);
+        glBufferSubData(GL_ARRAY_BUFFER, offset * m_Layout.m_Stride,
+                        count * m_Layout.m_Stride, data);
     }
 }
 

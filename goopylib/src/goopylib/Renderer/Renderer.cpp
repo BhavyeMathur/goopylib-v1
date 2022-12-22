@@ -21,7 +21,7 @@ namespace gp {
     }
 
     void Renderer::drawVertexArray(const Ref<VertexArray>& VAO, const Ref<Shader>& shader, int32_t count) {
-        m_RenderingObjects.insert({("VAO" + std::to_string(VAO->getID())).c_str(),
+        m_RenderingObjects.insert({("VAO" + std::to_string(VAO->m_RendererID)).c_str(),
                                    {VAO, VAO->getVertexBuffer(), nullptr, shader, count}});
     }
 

@@ -7,12 +7,11 @@ namespace gp {
     std::string readFile(const char *filePath);
 
     class BaseShader {
+
+        friend class Renderer;
+
     public:
         virtual ~BaseShader();
-
-        virtual void bind() const = 0;
-
-        virtual void unbind() const = 0;
 
         template<typename... T>
             void set(const char *name, T &&... args) {
@@ -22,6 +21,11 @@ namespace gp {
 
     protected:
         BaseShader();
+
+    private:
+        virtual void bind() const = 0;
+
+        virtual void unbind() const = 0;
 
     private:
         std::unordered_map<const char *, int32_t> m_Uniforms;

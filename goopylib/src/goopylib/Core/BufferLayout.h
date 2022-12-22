@@ -21,20 +21,15 @@ namespace gp {
 // Buffer Layout Element
 namespace gp {
     class GPAPI BufferElement {
+
+        friend class BufferLayout;
+        friend class VertexArray;
+
     public:
         BufferElement(ShaderDataType type, const char *name, bool normalized = false);
 
-        const char *getName() const;
-
+    private:
         int32_t getCount() const;
-
-        int32_t getSize() const;
-
-        ShaderDataType getType() const;
-
-        bool isNormalized() const;
-
-        size_t m_Offset = 0;
 
     private:
         const char *m_Name;
@@ -42,23 +37,23 @@ namespace gp {
         bool m_Normalized;
 
         int32_t m_Size = 0;
+        size_t m_Offset = 0;
     };
 }
 
 // Buffer Layout
 namespace gp {
     class GPAPI BufferLayout {
+
+        friend class VertexArray;
+        friend class VertexBuffer;
+
     public:
         BufferLayout(BufferElement *elements, int32_t count);
 
         BufferLayout(std::initializer_list<BufferElement> elements);
 
-        int32_t getStride() const;
-
-        uint32_t getCount() const;
-
-        const std::vector<BufferElement> &getElements() const;
-
+    private:
         std::vector<BufferElement>::iterator begin();
 
         std::vector<BufferElement>::iterator end();

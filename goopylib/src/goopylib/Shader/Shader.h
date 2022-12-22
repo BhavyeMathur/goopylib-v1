@@ -5,18 +5,22 @@
 
 namespace gp {
     class Shader final : public BaseShader {
+
+        friend class Renderer;
+
     public:
         Shader(const char *vertexShaderPath, const char *fragmentShaderPath);
 
         ~Shader() override;
 
-        void bind() const override;
-
-        void unbind() const override;
-
         static Ref<Shader> create(const char *vertexShaderPath, const char *fragmentShaderPath) {
             return Ref<Shader>(new Shader(vertexShaderPath, fragmentShaderPath));
         }
+
+    private:
+        void bind() const override;
+
+        void unbind() const override;
 
     private:
         uint32_t m_RendererID = 0;

@@ -97,22 +97,6 @@ namespace gp {
                 return 0;
         }
     }
-
-    int32_t BufferElement::getSize() const {
-        return m_Size;
-    }
-
-    const char *BufferElement::getName() const {
-        return m_Name;
-    }
-
-    ShaderDataType BufferElement::getType() const {
-        return m_Type;
-    }
-
-    bool BufferElement::isNormalized() const {
-        return m_Normalized;
-    }
 }
 
 // Buffer Layout
@@ -134,18 +118,6 @@ namespace gp {
         GP_CORE_INFO("Initializing BufferLayout");
 
         calculateOffsetAndStride();
-    }
-
-    int32_t BufferLayout::getStride() const {
-        return m_Stride;
-    }
-
-    uint32_t BufferLayout::getCount() const {
-        return m_Count;
-    }
-
-    const std::vector<BufferElement> &BufferLayout::getElements() const {
-        return m_Elements;
     }
 
     std::vector<BufferElement>::iterator BufferLayout::begin() {
@@ -170,7 +142,7 @@ namespace gp {
 
         for (auto &element: m_Elements) {
             element.m_Offset = m_Stride;
-            m_Stride += element.getSize();
+            m_Stride += element.m_Size;
             m_Count += element.getCount();
         }
     }
