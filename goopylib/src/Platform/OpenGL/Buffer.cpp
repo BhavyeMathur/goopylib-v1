@@ -38,7 +38,7 @@ namespace gp {
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     }
 
-    void VertexBuffer::unbind() const {
+    void VertexBuffer::unbind() {
         GP_CORE_WARN("Unbinding Array Buffers");
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
@@ -64,7 +64,7 @@ namespace gp {
 // Index Buffer
 namespace gp {
     IndexBuffer::IndexBuffer(uint32_t count, uint32_t *indices)
-            : BaseIndexBuffer(count) {
+            : Buffer(count) {
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Index Buffer {0}", m_RendererID);
@@ -74,7 +74,7 @@ namespace gp {
     }
 
     IndexBuffer::IndexBuffer(std::initializer_list<uint32_t> indices)
-            : BaseIndexBuffer(indices.size()) {
+            : Buffer(indices.size()) {
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Index Buffer {0}", m_RendererID);
@@ -96,7 +96,7 @@ namespace gp {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
     }
 
-    void IndexBuffer::unbind() const {
+    void IndexBuffer::unbind() {
         GP_CORE_WARN("Unbinding Element Array Buffers");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }

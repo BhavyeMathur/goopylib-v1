@@ -40,8 +40,8 @@ set(SOURCE_FILES
 
     ${PLATFORM_PATH}/Independent/BaseWindow.cpp
     ${PLATFORM_PATH}/Independent/Buffer.cpp
-    ${PLATFORM_PATH}/Independent/BaseVertexArray.cpp
-    ${PLATFORM_PATH}/Independent/BaseShader.cpp)
+    ${PLATFORM_PATH}/Independent/VertexArray.cpp
+    ${PLATFORM_PATH}/Independent/Shader.cpp)
 
 include_directories(goopylib)
 include_directories(goopylib/src)

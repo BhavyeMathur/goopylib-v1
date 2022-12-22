@@ -1,76 +1,89 @@
 #pragma once
 
-#include "src/Platform/Independent/BaseShader.h"
+#include "pch.h"
 
 
 namespace gp {
-    class Shader final : public BaseShader {
+
+    std::string readFile(const char *filePath);
+
+    class Shader final {
 
         friend class Renderer;
 
     public:
         Shader(const char *vertexShaderPath, const char *fragmentShaderPath);
 
-        ~Shader() override;
+        ~Shader();
+
+        template<typename... T>
+            void set(const char *name, T &&... args) {
+                bind();
+                _setUniform(_getLocation(name), std::forward<T>(args)...);
+            }
 
     private:
-        void bind() const override;
+        void bind() const;
 
-        void unbind() const override;
+        static void unbind() ;
 
     private:
         uint32_t m_RendererID = 0;
 
-        void _setUniform(int32_t location, float value) const override;
+        std::unordered_map<const char *, int32_t> m_Uniforms;
 
-        void _setUniform(int32_t location, float v1, float v2) const override;
+        int32_t _getLocation(const char *name);
 
-        void _setUniform(int32_t location, float v1, float v2, float v3) const override;
+        static void _setUniform(int32_t location, float value) ;
 
-        void _setUniform(int32_t location, float v1, float v2, float v3, float v4) const override;
+        static void _setUniform(int32_t location, float v1, float v2) ;
 
-        void _setUniform(int32_t location, double value) const override;
+        static void _setUniform(int32_t location, float v1, float v2, float v3) ;
 
-        void _setUniform(int32_t location, double v1, double v2) const override;
+        static void _setUniform(int32_t location, float v1, float v2, float v3, float v4) ;
 
-        void _setUniform(int32_t location, double v1, double v2, double v3) const override;
+        static void _setUniform(int32_t location, double value) ;
 
-        void _setUniform(int32_t location, double v1, double v2, double v3, double v4) const override;
+        static void _setUniform(int32_t location, double v1, double v2) ;
 
-        void _setUniform(int32_t location, int32_t value) const override;
+        static void _setUniform(int32_t location, double v1, double v2, double v3) ;
 
-        void _setUniform(int32_t location, int32_t v1, int32_t v2) const override;
+        static void _setUniform(int32_t location, double v1, double v2, double v3, double v4) ;
 
-        void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3) const override;
+        static void _setUniform(int32_t location, int32_t value) ;
 
-        void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3, int32_t v4) const override;
+        static void _setUniform(int32_t location, int32_t v1, int32_t v2) ;
 
-        void _setUniform(int32_t location, uint32_t value) const override;
+        static void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3) ;
 
-        void _setUniform(int32_t location, uint32_t v1, uint32_t v2) const override;
+        static void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3, int32_t v4) ;
 
-        void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3) const override;
+        static void _setUniform(int32_t location, uint32_t value) ;
 
-        void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4) const override;
+        static void _setUniform(int32_t location, uint32_t v1, uint32_t v2) ;
 
-        void _setUniform(int32_t location, const glm::mat2 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3) ;
 
-        void _setUniform(int32_t location, const glm::mat3 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4) ;
 
-        void _setUniform(int32_t location, const glm::mat4 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, const glm::mat2 &value, bool transpose) ;
 
-        void _setUniform(int32_t location, const glm::mat2x3 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, const glm::mat3 &value, bool transpose) ;
 
-        void _setUniform(int32_t location, const glm::mat3x2 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, const glm::mat4 &value, bool transpose) ;
 
-        void _setUniform(int32_t location, const glm::mat2x4 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, const glm::mat2x3 &value, bool transpose) ;
 
-        void _setUniform(int32_t location, const glm::mat4x2 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, const glm::mat3x2 &value, bool transpose) ;
 
-        void _setUniform(int32_t location, const glm::mat3x4 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, const glm::mat2x4 &value, bool transpose) ;
 
-        void _setUniform(int32_t location, const glm::mat4x3 &value, bool transpose) const override;
+        static void _setUniform(int32_t location, const glm::mat4x2 &value, bool transpose) ;
 
-        int32_t _getUniform(const char *name) const override;
+        static void _setUniform(int32_t location, const glm::mat3x4 &value, bool transpose) ;
+
+        static void _setUniform(int32_t location, const glm::mat4x3 &value, bool transpose) ;
+
+        int32_t _getUniform(const char *name) const;
     };
 }

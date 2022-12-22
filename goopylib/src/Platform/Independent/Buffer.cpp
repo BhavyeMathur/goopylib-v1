@@ -23,15 +23,3 @@ namespace gp {
         m_Layout = layout;
     }
 }
-
-// Base Index Buffer
-namespace gp {
-    BaseIndexBuffer::BaseIndexBuffer(uint32_t count)
-            : Buffer(count) {
-        GP_CORE_INFO("Initializing BaseIndex Buffer");
-    }
-
-    BaseIndexBuffer::~BaseIndexBuffer() {
-        GP_CORE_INFO("Deallocating BaseIndex Buffer");
-    }
-}

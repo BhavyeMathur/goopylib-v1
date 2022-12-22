@@ -1,8 +1,27 @@
 #pragma once
 
-#include "src/Platform/Independent/Buffer.h"
+#include "pch.h"
+#include "BufferLayout.h"
 
 // TODO Vertex Buffer with non-float data
+
+// Generic Buffer
+namespace gp {
+    class Buffer {
+    public:
+        virtual ~Buffer() = default;
+
+        uint32_t count() const;
+
+    protected:
+        uint32_t m_Count = 0;
+        uint32_t m_RendererID = 0;
+
+        explicit Buffer() = default;
+
+        explicit Buffer(uint32_t count);
+    };
+}
 
 // Vertex Buffer
 namespace gp {
@@ -13,9 +32,9 @@ namespace gp {
     public:
         ~VertexBuffer() override;
 
-        void bind() const override;
+        void bind() const;
 
-        void unbind() const override;
+        static void unbind();
 
         void setData(const void *data, uint32_t count);
 
@@ -36,20 +55,18 @@ namespace gp {
 
 // Index Buffer
 namespace gp {
-    class IndexBuffer final : public BaseIndexBuffer {
+    class IndexBuffer final : public Buffer {
 
         friend class Renderer;
 
     public:
         ~IndexBuffer() override;
 
-        void bind() const override;
+        void bind() const;
 
-        void unbind() const override;
+        static void unbind();
 
     private:
-        uint32_t m_RendererID = 0;
-
         IndexBuffer(uint32_t count, uint32_t *indices);
 
         IndexBuffer(std::initializer_list<uint32_t> indices);

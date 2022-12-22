@@ -1,8 +1,7 @@
 #include "src/goopylib/Core/VertexArray.h"
 
 namespace gp {
-    VertexArray::VertexArray()
-            : BaseVertexArray() {
+    VertexArray::VertexArray() {
         glGenVertexArrays(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initialising Vertex Array {0}", m_RendererID);
@@ -20,7 +19,7 @@ namespace gp {
         glBindVertexArray(m_RendererID);
     }
 
-    void VertexArray::unbind() const {
+    void VertexArray::unbind() {
         GP_CORE_WARN("Unbinding Vertex Arrays");
         glBindVertexArray(0);
     }
