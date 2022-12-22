@@ -12,16 +12,17 @@ namespace gp {
         Ref<VertexArray> VAO;
         Ref<VertexBuffer> VBO;
 
-        int32_t count = 0;
+        int32_t count;
         void *bufferData;
         bool reallocateBufferData = false;
 
         RenderingData(const Ref<VertexArray> &VAO, const Ref<VertexBuffer> &VBO, void *bufferData,
-                      const Ref<Shader> &shader)
+                      const Ref<Shader> &shader, int32_t count = 0)
                 : VAO(VAO),
                   VBO(VBO),
                   bufferData(bufferData),
-                  shader(shader) {
+                  shader(shader),
+                  count(count) {
         }
     };
 
@@ -32,6 +33,8 @@ namespace gp {
         ~Renderer();
 
         void init();
+
+        void drawVertexArray(const Ref<VertexArray>& VAO, const Ref<Shader>& shader, int32_t count = 0);
 
         uint32_t drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
 

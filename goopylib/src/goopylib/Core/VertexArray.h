@@ -19,6 +19,12 @@ namespace gp {
 
         void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) override;
 
+        uint32_t getID() const { return m_RendererID; };
+
+        static Ref<VertexArray> create() {
+            return Ref<VertexArray>(new VertexArray());
+        }
+
     private:
         uint32_t m_RendererID = 0;
     };

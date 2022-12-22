@@ -14,6 +14,10 @@ namespace gp {
 
         void unbind() const override;
 
+        static Ref<Shader> create(const char *vertexShaderPath, const char *fragmentShaderPath) {
+            return Ref<Shader>(new Shader(vertexShaderPath, fragmentShaderPath));
+        }
+
     private:
         uint32_t m_RendererID = 0;
 

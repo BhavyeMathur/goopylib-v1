@@ -464,6 +464,10 @@ namespace gp {
 // BaseWindow Rendering
 
 namespace gp {
+    void BaseWindow::drawVertexArray(const Ref<VertexArray> &VAO, const Ref<Shader> &shader, int32_t count) {
+        m_Renderer.drawVertexArray(VAO, shader, count);
+    }
+
     uint32_t BaseWindow::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
         return m_Renderer.drawTriangle(v1, v2, v3);
     }

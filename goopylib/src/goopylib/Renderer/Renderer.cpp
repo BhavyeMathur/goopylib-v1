@@ -20,6 +20,11 @@ namespace gp {
         m_RenderingObjects.insert({"triangle", {VAO, VBO, nullptr, shader}});
     }
 
+    void Renderer::drawVertexArray(const Ref<VertexArray>& VAO, const Ref<Shader>& shader, int32_t count) {
+        m_RenderingObjects.insert({("VAO" + std::to_string(VAO->getID())).c_str(),
+                                   {VAO, VAO->getVertexBuffer(), nullptr, shader, count}});
+    }
+
     uint32_t Renderer::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
         uint32_t ID = m_NextTriangleID;
         m_NextTriangleID++;
