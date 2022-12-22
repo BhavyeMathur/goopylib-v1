@@ -15,6 +15,7 @@ namespace gp {
         int32_t count;
         void *bufferData;
         bool reallocateBufferData = false;
+        bool updateBufferData = false;
 
         RenderingData(const Ref<VertexArray> &VAO, const Ref<VertexBuffer> &VBO, void *bufferData,
                       const Ref<Shader> &shader, int32_t count = 0)

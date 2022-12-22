@@ -63,7 +63,7 @@ namespace gp {
         m_TriangleVertices[index + 1] = v2;
         m_TriangleVertices[index + 2] = v3;
 
-        m_RenderingObjects.at("triangle").VBO->setData(&m_TriangleVertices[index], 3, index);
+        m_RenderingObjects.at("triangle").updateBufferData = true;
     }
 
     void Renderer::flush() {
@@ -73,6 +73,11 @@ namespace gp {
 
                 object.second.VBO->setData(object.second.bufferData, object.second.count);
                 object.second.reallocateBufferData = false;
+                object.second.updateBufferData = false;
+            }
+            else if (object.second.updateBufferData) {
+                object.second.VBO->setData(object.second.bufferData, object.second.count, 0);
+                object.second.updateBufferData = false;
             }
 
             object.second.shader->bind();
