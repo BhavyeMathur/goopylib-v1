@@ -15,6 +15,8 @@ namespace gp {
     private:
         TriangleVertex m_V1, m_V2, m_V3;
 
+        void _calculateCenter() override;
+
         uint32_t _draw(Window *window) const override;
 
         void _destroy() const override;
@@ -24,5 +26,7 @@ namespace gp {
         void _move(float dx, float dy) override;
 
         void _rotate(float sin, float cos) override;
+
+        void _scale(float xfactor, float yfactor) override;
     };
 }
