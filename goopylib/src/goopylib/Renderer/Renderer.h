@@ -36,7 +36,7 @@ namespace gp {
         friend class BaseWindow;
         friend class Triangle;
         friend class Quad;
-        friend class Circle;
+        friend class Ellipse;
 
     private:
         std::vector<TriangleVertex> m_TriangleVertices;
@@ -47,9 +47,9 @@ namespace gp {
         uint32_t m_NextQuadID = 0;
         std::unordered_map<uint32_t, uint32_t> m_QuadIDs;
 
-        std::vector<CircleVertex> m_CircleVertices;
-        uint32_t m_NextCircleID = 0;
-        std::unordered_map<uint32_t, uint32_t> m_CircleIDs;
+        std::vector<EllipseVertex> m_EllipseVertices;
+        uint32_t m_NextEllipseID = 0;
+        std::unordered_map<uint32_t, uint32_t> m_EllipseIDs;
 
         std::unordered_map<const char *, RenderingData> m_RenderingObjects;
 
@@ -71,11 +71,11 @@ namespace gp {
 
         void updateQuad(uint32_t ID, QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4);
 
-        uint32_t drawCircle(CircleVertex v1, CircleVertex v2, CircleVertex v3, CircleVertex v4);
+        uint32_t drawEllipse(EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4);
 
-        void destroyCircle(uint32_t ID);
+        void destroyEllipse(uint32_t ID);
 
-        void updateCircle(uint32_t ID, CircleVertex v1, CircleVertex v2, CircleVertex v3, CircleVertex v4);
+        void updateEllipse(uint32_t ID, EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4);
 
         void flush();
     };

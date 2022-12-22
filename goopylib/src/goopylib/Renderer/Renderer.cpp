@@ -31,19 +31,19 @@ namespace gp {
 
         m_RenderingObjects.insert({"quad", {quadVAO, nullptr, shader}});
 
-        // Circles
-        auto circleShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/circle.vert",
-                                              GP_DIRECTORY "goopylib/Shader/circle.frag");
+        // Ellipses
+        auto ellipseShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/ellipse.vert",
+                                              GP_DIRECTORY "goopylib/Shader/ellipse.frag");
 
-        auto circleVAO = Ref<VertexArray>(new VertexArray());
-        auto circleVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto ellipseVAO = Ref<VertexArray>(new VertexArray());
+        auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        circleVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+        ellipseVBO->setLayout({{ShaderDataType::Float2, "vertices"},
                               {ShaderDataType::Float2, "localCoord"},
                               {ShaderDataType::Float3, "color"}});
-        circleVAO->setVertexBuffer(circleVBO);
+        ellipseVAO->setVertexBuffer(ellipseVBO);
 
-        m_RenderingObjects.insert({"circle", {circleVAO, nullptr, circleShader}});
+        m_RenderingObjects.insert({"ellipse", {ellipseVAO, nullptr, ellipseShader}});
     }
 
     uint32_t Renderer::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
@@ -140,52 +140,52 @@ namespace gp {
         m_RenderingObjects.at("quad").updateBufferData = true;
     }
 
-    uint32_t Renderer::drawCircle(CircleVertex v1, CircleVertex v2, CircleVertex v3, CircleVertex v4) {
-        uint32_t ID = m_NextCircleID;
-        m_NextCircleID++;
-        GP_CORE_DEBUG("Drawing Circle {0}", ID);
+    uint32_t Renderer::drawEllipse(EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4) {
+        uint32_t ID = m_NextEllipseID;
+        m_NextEllipseID++;
+        GP_CORE_DEBUG("Drawing Ellipse {0}", ID);
 
-        m_CircleIDs.insert({ID, m_CircleVertices.size()});
+        m_EllipseIDs.insert({ID, m_EllipseVertices.size()});
 
-        m_CircleVertices.push_back(v1);
-        m_CircleVertices.push_back(v2);
-        m_CircleVertices.push_back(v3);
-        m_CircleVertices.push_back(v4);
+        m_EllipseVertices.push_back(v1);
+        m_EllipseVertices.push_back(v2);
+        m_EllipseVertices.push_back(v3);
+        m_EllipseVertices.push_back(v4);
 
-        m_RenderingObjects.at("circle").count += 6;
-        m_RenderingObjects.at("circle").bufferData = &m_CircleVertices[0];
-        m_RenderingObjects.at("circle").reallocateBufferData = true;
+        m_RenderingObjects.at("ellipse").count += 6;
+        m_RenderingObjects.at("ellipse").bufferData = &m_EllipseVertices[0];
+        m_RenderingObjects.at("ellipse").reallocateBufferData = true;
 
         return ID;
     }
 
-    void Renderer::destroyCircle(uint32_t ID) {
-        uint32_t index = m_CircleIDs.at(ID);
+    void Renderer::destroyEllipse(uint32_t ID) {
+        uint32_t index = m_EllipseIDs.at(ID);
 
-        m_CircleVertices.erase(std::next(m_CircleVertices.begin(), index),
-                               std::next(m_CircleVertices.begin(), index + 4));
+        m_EllipseVertices.erase(std::next(m_EllipseVertices.begin(), index),
+                               std::next(m_EllipseVertices.begin(), index + 4));
 
-        m_CircleIDs.erase(ID);
-        for (uint32_t i = ID + 1; i < m_CircleIDs.size(); i++) {
-            if (m_CircleIDs.find(i) != m_CircleIDs.end()) {
-                m_CircleIDs.at(i) -= 4;
+        m_EllipseIDs.erase(ID);
+        for (uint32_t i = ID + 1; i < m_EllipseIDs.size(); i++) {
+            if (m_EllipseIDs.find(i) != m_EllipseIDs.end()) {
+                m_EllipseIDs.at(i) -= 4;
             }
         }
 
-        m_RenderingObjects.at("circle").count -= 6;
-        m_RenderingObjects.at("circle").bufferData = &m_CircleVertices[0];
-        m_RenderingObjects.at("circle").reallocateBufferData = true;
+        m_RenderingObjects.at("ellipse").count -= 6;
+        m_RenderingObjects.at("ellipse").bufferData = &m_EllipseVertices[0];
+        m_RenderingObjects.at("ellipse").reallocateBufferData = true;
     }
 
-    void Renderer::updateCircle(uint32_t ID, CircleVertex v1, CircleVertex v2, CircleVertex v3, CircleVertex v4) {
-        uint32_t index = m_CircleIDs.at(ID);
+    void Renderer::updateEllipse(uint32_t ID, EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4) {
+        uint32_t index = m_EllipseIDs.at(ID);
 
-        m_CircleVertices[index + 0] = v1;
-        m_CircleVertices[index + 1] = v2;
-        m_CircleVertices[index + 2] = v3;
-        m_CircleVertices[index + 3] = v4;
+        m_EllipseVertices[index + 0] = v1;
+        m_EllipseVertices[index + 1] = v2;
+        m_EllipseVertices[index + 2] = v3;
+        m_EllipseVertices[index + 3] = v4;
 
-        m_RenderingObjects.at("circle").updateBufferData = true;
+        m_RenderingObjects.at("ellipse").updateBufferData = true;
     }
 
     void Renderer::flush() {
@@ -212,11 +212,11 @@ namespace gp {
             delete[] indices;
         }
 
-        if (m_RenderingObjects.at("circle").reallocateBufferData) {
+        if (m_RenderingObjects.at("ellipse").reallocateBufferData) {
 
-            uint32_t *indices = new uint32_t[6 * m_CircleIDs.size()];
+            uint32_t *indices = new uint32_t[6 * m_EllipseIDs.size()];
 
-            for (uint32_t i = 0; i < m_CircleIDs.size(); i++) {
+            for (uint32_t i = 0; i < m_EllipseIDs.size(); i++) {
                 uint32_t indicesIndex = i * 6;
                 uint32_t vertexIndex = i * 4;
 
@@ -229,27 +229,29 @@ namespace gp {
                 indices[indicesIndex + 5] = vertexIndex + 3;
             }
 
-            auto circleEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_CircleIDs.size(), indices));
-            m_RenderingObjects.at("circle").VAO->setIndexBuffer(circleEBO);
+            auto ellipseEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_EllipseIDs.size(), indices));
+            m_RenderingObjects.at("ellipse").VAO->setIndexBuffer(ellipseEBO);
 
             delete[] indices;
         }
 
         for (auto &object: m_RenderingObjects) {
-            if (object.second.reallocateBufferData) {
-                GP_CORE_TRACE("Reallocating '{0}' VertexBuffer", object.first);
+            if (object.second.count) {
+                if (object.second.reallocateBufferData) {
+                    GP_CORE_DEBUG("Reallocating '{0}' VertexBuffer", object.first);
 
-                object.second.VBO->setData(object.second.bufferData, object.second.count);
-                object.second.reallocateBufferData = false;
-                object.second.updateBufferData = false;
-            }
-            else if (object.second.updateBufferData) {
-                object.second.VBO->setData(object.second.bufferData, object.second.count, 0);
-                object.second.updateBufferData = false;
-            }
+                    object.second.VBO->setData(object.second.bufferData, object.second.count);
+                    object.second.reallocateBufferData = false;
+                    object.second.updateBufferData = false;
+                }
+                else if (object.second.updateBufferData) {
+                    object.second.VBO->setData(object.second.bufferData, object.second.count, 0);
+                    object.second.updateBufferData = false;
+                }
 
-            object.second.shader->bind();
-            object.second.VAO->draw(object.second.count, object.second.mode);
+                object.second.shader->bind();
+                object.second.VAO->draw(object.second.count, object.second.mode);
+            }
         }
     }
 }

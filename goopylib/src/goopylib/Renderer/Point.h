@@ -23,7 +23,7 @@ namespace gp {
         RGBf color;  // TODO pack 3x32-bit float data into 1x32-bit unsigned int
     };
 
-    struct CircleVertex {
+    struct EllipseVertex {
         Point point;
         Point localCoord;
         RGBf color;  // TODO pack 3x32-bit float data into 1x32-bit unsigned int
