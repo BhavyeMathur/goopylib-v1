@@ -11,7 +11,7 @@ namespace gp {
         GP_CORE_DEBUG("Initializing Triangle ({0}, {1}), ({2}, {3}), ({4}, {5})", p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
     }
 
-    void Triangle::_calculateCenter() {
+    void Triangle::resetCenter() {
         m_Position.x = (m_V1.point.x + m_V2.point.x + m_V3.point.x) / 3.0f;
         m_Position.y = (m_V1.point.y + m_V2.point.y + m_V3.point.y) / 3.0f;
     }

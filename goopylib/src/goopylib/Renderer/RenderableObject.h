@@ -4,6 +4,11 @@
 #include "src/goopylib/Core/Window.h"
 
 namespace gp {
+    struct Scale {
+        float xscale;
+        float yscale;
+    };
+
     class RenderableObject {
 
     public:
@@ -13,23 +18,25 @@ namespace gp {
 
         bool isDrawn() const;
 
-        Point getPosition() const;
-
         void move(float dx, float dy);
 
-        void setPosition(float dx, float dy);
+        void setCenter(float x, float y);
+
+        virtual void resetCenter() = 0;
+
+        void setPosition(float x, float y);
+
+        Point getPosition() const;
 
         void rotate(float angle);
 
-        void rotate(float angle, Point pivot);
+        float getRotation() const;
 
         void scale(float factor);
 
         void scale(float xfactor, float yfactor);
 
-        void scale(float factor, Point pivot);
-
-        void scale(float xfactor, float yfactor, Point pivot);
+        Scale getScale() const;
 
     protected:
         Window *m_Window = nullptr;
@@ -47,8 +54,6 @@ namespace gp {
         float m_yScale = 1;
 
         bool m_Drawn = false;
-
-        virtual void _calculateCenter() = 0;
 
         virtual uint32_t _draw(Window *window) const = 0;
 

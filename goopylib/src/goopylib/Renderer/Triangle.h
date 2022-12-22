@@ -12,10 +12,10 @@ namespace gp {
 
         void setColor(const Color& color1, const Color& color2, const Color& color3);
 
+        void resetCenter() override;
+
     private:
         TriangleVertex m_V1, m_V2, m_V3;
-
-        void _calculateCenter() override;
 
         uint32_t _draw(Window *window) const override;
 

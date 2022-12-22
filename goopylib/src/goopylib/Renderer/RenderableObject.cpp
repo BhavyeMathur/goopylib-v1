@@ -35,6 +35,11 @@ namespace gp {
         update();
     }
 
+    void RenderableObject::setCenter(float x, float y) {
+        m_Position.x = x;
+        m_Position.y = y;
+    }
+
     void RenderableObject::setPosition(float x, float y) {
         _move(x - m_Position.x, y - m_Position.y);
 
@@ -56,25 +61,6 @@ namespace gp {
         update();
     }
 
-    void RenderableObject::rotate(float angle, Point pivot) {
-        angle /= 57.2957795131f;
-
-        float sinAngle = sin(angle);
-        float cosAngle = cos(angle);
-
-        _move(-pivot.x, -pivot.y);
-
-        _rotate(sinAngle, cosAngle);
-        m_Position = {m_Position.x * cosAngle - m_Position.y * sinAngle,
-                      m_Position.x * sinAngle + m_Position.y * cosAngle};
-
-        _move(pivot.x, pivot.y);
-
-        m_Angle += angle;
-
-        update();
-    }
-
     void RenderableObject::scale(float factor) {
         scale(factor, factor);
     }
@@ -83,25 +69,6 @@ namespace gp {
         _move(-m_Position.x, -m_Position.y);
         _scale(xfactor, yfactor);
         _move(m_Position.x, m_Position.y);
-
-        m_xScale *= xfactor;
-        m_yScale *= yfactor;
-
-        update();
-    }
-
-    void RenderableObject::scale(float factor, Point pivot) {
-        scale(factor, factor, pivot);
-    }
-
-    void RenderableObject::scale(float xfactor, float yfactor, Point pivot) {
-        _move(-pivot.x, -pivot.y);
-
-        _scale(xfactor, yfactor);
-        m_Position.x *= xfactor;
-        m_Position.y *= yfactor;
-
-        _move(pivot.x, pivot.y);
 
         m_xScale *= xfactor;
         m_yScale *= yfactor;
@@ -118,5 +85,13 @@ namespace gp {
 
     Point RenderableObject::getPosition() const {
         return m_Position;
+    }
+
+    float RenderableObject::getRotation() const {
+        return m_Angle;
+    }
+
+    Scale RenderableObject::getScale() const {
+        return {m_xScale, m_yScale};
     }
 }
