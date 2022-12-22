@@ -22,13 +22,6 @@ namespace gp {
         m_IndexBuffer = indexBuffer;
     }
 
-    void BaseVertexArray::setIndexBuffer(std::initializer_list<uint32_t> indices) {
-        GP_CORE_TRACE_ALL("Setting VertexArray's Index Buffer");
-
-        bind();
-        m_IndexBuffer = IndexBuffer::create(indices);
-    }
-
     const Ref<IndexBuffer> &BaseVertexArray::getIndexBuffer() const {
         return m_IndexBuffer;
     }

@@ -17,8 +17,6 @@ namespace gp {
 
         void setIndexBuffer(const Ref<IndexBuffer> &indexBuffer);
 
-        void setIndexBuffer(std::initializer_list<uint32_t> indices);
-
         const Ref<IndexBuffer> &getIndexBuffer() const;
 
     protected:
