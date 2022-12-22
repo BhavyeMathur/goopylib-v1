@@ -46,6 +46,9 @@ namespace gp {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         #endif
 
+        #if GP_USING_OPENGL
+        #endif
+
         return 0;
     }
 

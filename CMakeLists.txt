@@ -31,6 +31,7 @@ set(SOURCE_FILES
 
     ${GOOPYLIB_PATH}/Renderer/Triangle.cpp
     ${GOOPYLIB_PATH}/Renderer/Quad.cpp
+    ${GOOPYLIB_PATH}/Renderer/Circle.cpp
     ${GOOPYLIB_PATH}/Renderer/Renderer.cpp
     ${GOOPYLIB_PATH}/Renderer/RenderableObject.cpp
 

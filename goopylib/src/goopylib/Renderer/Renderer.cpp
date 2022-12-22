@@ -10,23 +10,40 @@ namespace gp {
     void Renderer::init() {
         auto shader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
                                         GP_DIRECTORY "goopylib/Shader/solid.frag");
+
+        // Triangles
         auto triangleVAO = Ref<VertexArray>(new VertexArray());
         auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         triangleVBO->setLayout({{ShaderDataType::Float2, "vertices"},
-                        {ShaderDataType::Float3, "color"}});
+                                {ShaderDataType::Float3, "color"}});
         triangleVAO->setVertexBuffer(triangleVBO);
 
         m_RenderingObjects.insert({"triangle", {triangleVAO, nullptr, shader}});
 
+        // Quads
         auto quadVAO = Ref<VertexArray>(new VertexArray());
         auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         quadVBO->setLayout({{ShaderDataType::Float2, "vertices"},
-                        {ShaderDataType::Float3, "color"}});
+                            {ShaderDataType::Float3, "color"}});
         quadVAO->setVertexBuffer(quadVBO);
 
         m_RenderingObjects.insert({"quad", {quadVAO, nullptr, shader}});
+
+        // Circles
+        auto circleShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/circle.vert",
+                                              GP_DIRECTORY "goopylib/Shader/circle.frag");
+
+        auto circleVAO = Ref<VertexArray>(new VertexArray());
+        auto circleVBO = Ref<VertexBuffer>(new VertexBuffer());
+
+        circleVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+                              {ShaderDataType::Float2, "localCoord"},
+                              {ShaderDataType::Float3, "color"}});
+        circleVAO->setVertexBuffer(circleVBO);
+
+        m_RenderingObjects.insert({"circle", {circleVAO, nullptr, circleShader}});
     }
 
     uint32_t Renderer::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
@@ -123,6 +140,54 @@ namespace gp {
         m_RenderingObjects.at("quad").updateBufferData = true;
     }
 
+    uint32_t Renderer::drawCircle(CircleVertex v1, CircleVertex v2, CircleVertex v3, CircleVertex v4) {
+        uint32_t ID = m_NextCircleID;
+        m_NextCircleID++;
+        GP_CORE_DEBUG("Drawing Circle {0}", ID);
+
+        m_CircleIDs.insert({ID, m_CircleVertices.size()});
+
+        m_CircleVertices.push_back(v1);
+        m_CircleVertices.push_back(v2);
+        m_CircleVertices.push_back(v3);
+        m_CircleVertices.push_back(v4);
+
+        m_RenderingObjects.at("circle").count += 6;
+        m_RenderingObjects.at("circle").bufferData = &m_CircleVertices[0];
+        m_RenderingObjects.at("circle").reallocateBufferData = true;
+
+        return ID;
+    }
+
+    void Renderer::destroyCircle(uint32_t ID) {
+        uint32_t index = m_CircleIDs.at(ID);
+
+        m_CircleVertices.erase(std::next(m_CircleVertices.begin(), index),
+                               std::next(m_CircleVertices.begin(), index + 4));
+
+        m_CircleIDs.erase(ID);
+        for (uint32_t i = ID + 1; i < m_CircleIDs.size(); i++) {
+            if (m_CircleIDs.find(i) != m_CircleIDs.end()) {
+                m_CircleIDs.at(i) -= 4;
+            }
+        }
+
+        m_RenderingObjects.at("circle").count -= 6;
+        m_RenderingObjects.at("circle").bufferData = &m_CircleVertices[0];
+        m_RenderingObjects.at("circle").reallocateBufferData = true;
+    }
+
+    void Renderer::updateCircle(uint32_t ID, CircleVertex v1, CircleVertex v2, CircleVertex v3, CircleVertex v4) {
+        uint32_t index = m_CircleIDs.at(ID);
+
+        m_CircleVertices[index + 0] = v1;
+        m_CircleVertices[index + 1] = v2;
+        m_CircleVertices[index + 2] = v3;
+        m_CircleVertices[index + 3] = v4;
+
+        m_RenderingObjects.at("circle").updateBufferData = true;
+    }
+
     void Renderer::flush() {
         if (m_RenderingObjects.at("quad").reallocateBufferData) {
 
@@ -143,6 +208,29 @@ namespace gp {
 
             auto quadEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_QuadIDs.size(), indices));
             m_RenderingObjects.at("quad").VAO->setIndexBuffer(quadEBO);
+
+            delete[] indices;
+        }
+
+        if (m_RenderingObjects.at("circle").reallocateBufferData) {
+
+            uint32_t *indices = new uint32_t[6 * m_CircleIDs.size()];
+
+            for (uint32_t i = 0; i < m_CircleIDs.size(); i++) {
+                uint32_t indicesIndex = i * 6;
+                uint32_t vertexIndex = i * 4;
+
+                indices[indicesIndex + 0] = vertexIndex + 0;
+                indices[indicesIndex + 1] = vertexIndex + 1;
+                indices[indicesIndex + 2] = vertexIndex + 2;
+
+                indices[indicesIndex + 3] = vertexIndex + 0;
+                indices[indicesIndex + 4] = vertexIndex + 2;
+                indices[indicesIndex + 5] = vertexIndex + 3;
+            }
+
+            auto circleEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_CircleIDs.size(), indices));
+            m_RenderingObjects.at("circle").VAO->setIndexBuffer(circleEBO);
 
             delete[] indices;
         }

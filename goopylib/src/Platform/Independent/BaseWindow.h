@@ -77,6 +77,7 @@ namespace gp {
 
         friend class Triangle;
         friend class Quad;
+        friend class Circle;
 
     public:
         virtual ~BaseWindow();

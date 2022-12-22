@@ -19,3 +19,4 @@
 #include "goopylib/Renderer/Triangle.h"
 #include "goopylib/Renderer/Quad.h"
 #include "goopylib/Renderer/Rectangle.h"
+#include "goopylib/Renderer/Circle.h"
