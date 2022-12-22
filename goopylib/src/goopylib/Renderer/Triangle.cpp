@@ -1,5 +1,6 @@
 #include "Triangle.h"
 
+// Core Methods
 namespace gp {
     Triangle::Triangle(Point p1, Point p2, Point p3)
             : RenderableObject({(p1.x + p2.x + p3.x) / 3.0f,
@@ -18,14 +19,32 @@ namespace gp {
         m_Window->m_Renderer.destroyTriangle(m_RendererID);
     }
 
+    void Triangle::_update() const {
+        m_Window->m_Renderer.updateTriangle(m_RendererID, m_V1, m_V2, m_V3);
+    }
+
+    void Triangle::_move(float dx, float dy) {
+        m_V1.point.x += dx;
+        m_V1.point.y += dy;
+
+        m_V2.point.x += dx;
+        m_V2.point.y += dy;
+
+        m_V3.point.x += dx;
+        m_V3.point.y += dy;
+
+        update();
+    }
+}
+
+// Triangle Methods
+namespace gp {
     void Triangle::setColor(const Color &color) {
         m_V1.color = {color.getRedf(), color.getGreenf(), color.getBluef()};
         m_V2.color = {color.getRedf(), color.getGreenf(), color.getBluef()};
         m_V3.color = {color.getRedf(), color.getGreenf(), color.getBluef()};
 
-        if (m_Drawn) {
-            m_Window->m_Renderer.updateTriangle(m_RendererID, m_V1, m_V2, m_V3);
-        }
+        update();
     }
 
     void Triangle::setColor(const Color &color1, const Color &color2, const Color &color3) {
@@ -33,8 +52,6 @@ namespace gp {
         m_V2.color = {color2.getRedf(), color2.getGreenf(), color2.getBluef()};
         m_V3.color = {color3.getRedf(), color3.getGreenf(), color3.getBluef()};
 
-        if (m_Drawn) {
-            m_Window->m_Renderer.updateTriangle(m_RendererID, m_V1, m_V2, m_V3);
-        }
+        update();
     }
 }

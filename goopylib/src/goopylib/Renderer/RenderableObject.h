@@ -11,33 +11,32 @@ namespace gp {
 
         void destroy();
 
-        bool isDrawn() const {
-            return m_Drawn;
-        }
+        bool isDrawn() const;
 
-        virtual void move(float dx, float dy) = 0;
+        Point getPosition() const;
 
-        virtual void setPosition(float dx, float dy) = 0;
+        void move(float dx, float dy);
 
-        Point getPosition() const {
-            return m_Position;
-        };
+        void setPosition(float dx, float dy);
 
     protected:
-        Point m_Position;
-
         Window *m_Window = nullptr;
         uint32_t m_RendererID = 0;
-        bool m_Drawn = false;
 
-        explicit RenderableObject(Point position)
-                : m_Position(position) {
-        }
+        explicit RenderableObject(Point position);
+
+        void update() const;
 
     private:
+        Point m_Position;
+        bool m_Drawn = false;
 
         virtual uint32_t _draw(Window *window) const = 0;
 
         virtual void _destroy() const = 0;
+
+        virtual void _update() const = 0;
+
+        virtual void _move(float dx, float dy) = 0;
     };
 }
