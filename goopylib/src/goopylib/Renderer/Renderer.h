@@ -12,7 +12,7 @@ namespace gp {
         Ref<VertexArray> VAO;
         Ref<VertexBuffer> VBO;
 
-        uint32_t count = 0;
+        int32_t count = 0;
         void *bufferData;
         bool reallocateBufferData = false;
 
@@ -43,9 +43,8 @@ namespace gp {
 
     private:
         std::vector<TriangleVertex> m_TriangleVertices;
-        std::vector<uint32_t> m_TriangleIDs;
-
-        int32_t m_Triangles = 0;
+        uint32_t m_NextTriangleID = 0;
+        std::unordered_map<uint32_t, uint32_t> m_TriangleIDs;
 
         std::unordered_map<const char *, RenderingData> m_RenderingObjects;
     };
