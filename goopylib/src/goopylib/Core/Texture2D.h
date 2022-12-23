@@ -15,17 +15,13 @@ namespace gp {
         int32_t m_Height = 0;
         int32_t m_Channels = 0;
 
-        u_char *m_Data;
         const char *m_Path;
 
         uint32_t m_RendererID = 0;
-        uint32_t m_Slot = 0;
 
         explicit Texture2D(const char *path);
 
-        void init(uint32_t slot);
-
-        void bind() const;
+        void bind(uint32_t slot) const;
 
         static void unbind() ;
     };

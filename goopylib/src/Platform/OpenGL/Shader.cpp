@@ -77,145 +77,145 @@ namespace gp {
         glUseProgram(0);
     }
 
-    void Shader::_setUniform(int32_t location, float value) {
+    void Shader::_setUniform(int32_t location, float value) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, value);
         glUniform1f(location, value);
     }
 
-    void Shader::_setUniform(int32_t location, float v1, float v2) {
+    void Shader::_setUniform(int32_t location, float v1, float v2) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}", m_RendererID, location, v1, v2);
         glUniform2f(location, v1, v2);
     }
 
-    void Shader::_setUniform(int32_t location, float v1, float v2, float v3) {
+    void Shader::_setUniform(int32_t location, float v1, float v2, float v3) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}, {4}", m_RendererID, location, v1, v2, v3);
         glUniform3f(location, v1, v2, v3);
     }
 
-    void Shader::_setUniform(int32_t location, float v1, float v2, float v3, float v4) {
+    void Shader::_setUniform(int32_t location, float v1, float v2, float v3, float v4) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}, {4}, {5}", m_RendererID, location, v1, v2, v3,
                       v4);
         glUniform4f(location, v1, v2, v3, v4);
     }
 
-    void Shader::_setUniform(int32_t location, double value) {
+    void Shader::_setUniform(int32_t location, double value) const {
         _setUniform(location, (float) value);
     }
 
-    void Shader::_setUniform(int32_t location, double v1, double v2) {
+    void Shader::_setUniform(int32_t location, double v1, double v2) const {
         _setUniform(location, (float) v1, (float) v2);
     }
 
-    void Shader::_setUniform(int32_t location, double v1, double v2, double v3) {
+    void Shader::_setUniform(int32_t location, double v1, double v2, double v3) const {
         _setUniform(location, (float) v1, (float) v2, (float) v3);
     }
 
-    void Shader::_setUniform(int32_t location, double v1, double v2, double v3, double v4) {
+    void Shader::_setUniform(int32_t location, double v1, double v2, double v3, double v4) const {
         _setUniform(location, (float) v1, (float) v2, (float) v3, (float) v4);
     }
 
-    void Shader::_setUniform(int32_t location, int32_t value) {
+    void Shader::_setUniform(int32_t location, int32_t value) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, value);
         glUniform1i(location, value);
     }
 
-    void Shader::_setUniform(int32_t location, int32_t v1, int32_t v2) {
+    void Shader::_setUniform(int32_t location, int32_t v1, int32_t v2) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}", m_RendererID, location, v1, v2);
         glUniform2i(location, v1, v2);
     }
 
-    void Shader::_setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3) {
+    void Shader::_setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}, {4}", m_RendererID, location, v1, v2, v3);
         glUniform3i(location, v1, v2, v3);
     }
 
-    void Shader::_setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3, int32_t v4) {
+    void Shader::_setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3, int32_t v4) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}, {4}, {5}", m_RendererID, location, v1, v2, v3,
                       v4);
         glUniform4i(location, v1, v2, v3, v4);
     }
 
-    void Shader::_setUniform(int32_t location, uint32_t value) {
+    void Shader::_setUniform(int32_t location, uint32_t value) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, value);
         glUniform1ui(location, value);
     }
 
-    void Shader::_setUniform(int32_t location, uint32_t v1, uint32_t v2) {
+    void Shader::_setUniform(int32_t location, uint32_t v1, uint32_t v2) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}", m_RendererID, location, v1, v2);
         glUniform2ui(location, v1, v2);
     }
 
-    void Shader::_setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3) {
+    void Shader::_setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}, {4}", m_RendererID, location, v1, v2, v3);
         glUniform3ui(location, v1, v2, v3);
     }
 
-    void Shader::_setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4) {
+    void Shader::_setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}, {3}, {4}, {5}", m_RendererID, location, v1, v2, v3,
                       v4);
         glUniform4ui(location, v1, v2, v3, v4);
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat2 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat2 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix2fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat3 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat3 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix3fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat4 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat4 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix4fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat2x3 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat2x3 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix2x3fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat3x2 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat3x2 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix3x2fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat2x4 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat2x4 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix2x4fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat4x2 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat4x2 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix4x2fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat3x4 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat3x4 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix3x4fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, const glm::mat4x3 &value, bool transpose) {
+    void Shader::_setUniform(int32_t location, const glm::mat4x3 &value, bool transpose) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1} to {2}", m_RendererID, location, glm::to_string(value));
         glUniformMatrix4x3fv(location, 1, transpose, glm::value_ptr(value));
     }
 
-    void Shader::_setUniform(int32_t location, int32_t count, float *value) {
+    void Shader::_setUniform(int32_t location, int32_t count, float *value) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1}", m_RendererID, location);
         glUniform1fv(location, count, value);
     }
 
-    void Shader::_setUniform(int32_t location, int32_t count, double *value) {
+    void Shader::_setUniform(int32_t location, int32_t count, double *value) const {
         _setUniform(location, count, (float *) value);
     }
 
-    void Shader::_setUniform(int32_t location, int32_t count, int32_t *value) {
+    void Shader::_setUniform(int32_t location, int32_t count, int32_t *value) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1}", m_RendererID, location);
         glUniform1iv(location, count, value);
     }
 
-    void Shader::_setUniform(int32_t location, int32_t count, uint32_t *value) {
+    void Shader::_setUniform(int32_t location, int32_t count, uint32_t *value) const {
         GP_CORE_TRACE("Shader {0} setting uniform at {1}", m_RendererID, location);
         glUniform1uiv(location, count, value);
     }

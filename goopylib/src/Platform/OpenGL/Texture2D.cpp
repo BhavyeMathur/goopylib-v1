@@ -5,20 +5,7 @@ namespace gp {
             : m_Path(path) {
         GP_CORE_INFO("Initializing texture '{0}'", m_Path);
 
-        m_Data = stbi_load(m_Path, &m_Width, &m_Height, &m_Channels, 0);
-    }
-
-    Texture2D::~Texture2D() {
-        glDeleteTextures(1, &m_RendererID);
-    }
-
-    void Texture2D::init(uint32_t slot) {
-        if (!m_Data) {
-            m_Data = stbi_load(m_Path, &m_Width, &m_Height, &m_Channels, 0);
-        }
-
-        m_Slot = slot;
-        GP_CORE_INFO("Loading texture '{0}' to slot {1}", m_Path, m_Slot);
+        u_char *data = stbi_load(m_Path, &m_Width, &m_Height, &m_Channels, 0);
 
         GLenum dataFormat;
         int32_t internalFormat;
@@ -38,25 +25,30 @@ namespace gp {
         }
 
         glGenTextures(1, &m_RendererID);
-        bind();
+        bind(0);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, m_Data);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
-        stbi_image_free(m_Data);
-        m_Data = nullptr;
+        stbi_image_free(data);
     }
 
-    void Texture2D::bind() const {
-        glActiveTexture(GL_TEXTURE0 + m_Slot);
+    Texture2D::~Texture2D() {
+        glDeleteTextures(1, &m_RendererID);
+    }
+
+    void Texture2D::bind(uint32_t slot) const {
+        GP_CORE_TRACE_ALL("Binding 2D Texture {0} to {1}", m_Path, slot);
+        glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, m_RendererID);
     }
 
     void Texture2D::unbind() {
+        GP_CORE_WARN("Unbinding 2D Textures");
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }

@@ -34,63 +34,63 @@ namespace gp {
 
         int32_t _getLocation(const char *name);
 
-        static void _setUniform(int32_t location, float value);
+        void _setUniform(int32_t location, float value) const;
 
-        static void _setUniform(int32_t location, float v1, float v2);
+        void _setUniform(int32_t location, float v1, float v2) const;
 
-        static void _setUniform(int32_t location, float v1, float v2, float v3);
+        void _setUniform(int32_t location, float v1, float v2, float v3) const;
 
-        static void _setUniform(int32_t location, float v1, float v2, float v3, float v4);
+        void _setUniform(int32_t location, float v1, float v2, float v3, float v4) const;
 
-        static void _setUniform(int32_t location, double value);
+        void _setUniform(int32_t location, double value) const;
 
-        static void _setUniform(int32_t location, double v1, double v2);
+        void _setUniform(int32_t location, double v1, double v2) const;
 
-        static void _setUniform(int32_t location, double v1, double v2, double v3);
+        void _setUniform(int32_t location, double v1, double v2, double v3) const;
 
-        static void _setUniform(int32_t location, double v1, double v2, double v3, double v4);
+        void _setUniform(int32_t location, double v1, double v2, double v3, double v4) const;
 
-        static void _setUniform(int32_t location, int32_t value);
+        void _setUniform(int32_t location, int32_t value) const;
 
-        static void _setUniform(int32_t location, int32_t v1, int32_t v2);
+        void _setUniform(int32_t location, int32_t v1, int32_t v2) const;
 
-        static void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3);
+        void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3) const;
 
-        static void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3, int32_t v4);
+        void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3, int32_t v4) const;
 
-        static void _setUniform(int32_t location, uint32_t value);
+        void _setUniform(int32_t location, uint32_t value) const;
 
-        static void _setUniform(int32_t location, uint32_t v1, uint32_t v2);
+        void _setUniform(int32_t location, uint32_t v1, uint32_t v2) const;
 
-        static void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3);
+        void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3) const;
 
-        static void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4);
+        void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4) const;
 
-        static void _setUniform(int32_t location, const glm::mat2 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat2 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, const glm::mat3 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat3 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, const glm::mat4 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat4 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, const glm::mat2x3 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat2x3 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, const glm::mat3x2 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat3x2 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, const glm::mat2x4 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat2x4 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, const glm::mat4x2 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat4x2 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, const glm::mat3x4 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat3x4 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, const glm::mat4x3 &value, bool transpose);
+        void _setUniform(int32_t location, const glm::mat4x3 &value, bool transpose) const;
 
-        static void _setUniform(int32_t location, int32_t count, float *value);
+        void _setUniform(int32_t location, int32_t count, float *value) const;
 
-        static void _setUniform(int32_t location, int32_t count, double *value);
+        void _setUniform(int32_t location, int32_t count, double *value) const;
 
-        static void _setUniform(int32_t location, int32_t count, uint32_t *value);
+        void _setUniform(int32_t location, int32_t count, uint32_t *value) const;
 
-        static void _setUniform(int32_t location, int32_t count, int32_t *value);
+        void _setUniform(int32_t location, int32_t count, int32_t *value) const;
 
         int32_t _getUniform(const char *name) const;
     };

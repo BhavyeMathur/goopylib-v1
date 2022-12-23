@@ -5,13 +5,18 @@ namespace gp {
         return m_VertexBuffer;
     }
 
-    void VertexArray::setIndexBuffer(const Ref<IndexBuffer> &indexBuffer) {
+    void VertexArray::setIndexBuffer(std::initializer_list<uint32_t> indices) {
         GP_CORE_TRACE_ALL("Setting VertexArray's Index Buffer");
 
         bind();
-        indexBuffer->bind();
+        m_IndexBuffer = Ref<IndexBuffer>(new IndexBuffer(indices));
+    }
 
-        m_IndexBuffer = indexBuffer;
+    void VertexArray::setIndexBuffer(uint32_t count, uint32_t *indices) {
+        GP_CORE_TRACE_ALL("Setting VertexArray's Index Buffer");
+
+        bind();
+        m_IndexBuffer = Ref<IndexBuffer>(new IndexBuffer(count, indices));
     }
 
     const Ref<IndexBuffer> &VertexArray::getIndexBuffer() const {

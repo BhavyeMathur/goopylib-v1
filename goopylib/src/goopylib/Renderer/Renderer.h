@@ -8,16 +8,30 @@
 #include "src/goopylib/Core/VertexArray.h"
 #include "src/goopylib/Shader/Shader.h"
 
+#define TRIANGLES 0
+#define QUADS 1
+#define ELLIPSES 2
+#define IMAGES 3
+
 namespace gp {
     class Image;
+
+    struct BatchID {
+        uint32_t batch;
+        uint32_t index;
+    };
+
+    struct TextureData {
+        Ref<Texture2D> texture;
+        uint32_t index;
+    };
 
     struct RenderingData {
         Ref<Shader> shader;
         Ref<VertexArray> VAO;
-        Ref<VertexBuffer> VBO;
-        Ref<IndexBuffer> EBO;
 
-        int32_t count;
+        int32_t indices = 0;
+        int32_t vertices = 0;
         void *bufferData;
         bool reallocateBufferData = false;
         bool updateBufferData = false;
@@ -25,13 +39,10 @@ namespace gp {
         DrawMode mode = DrawMode::Triangles;
 
         RenderingData(const Ref<VertexArray> &VAO, void *bufferData,
-                      const Ref<Shader> &shader, int32_t count = 0)
+                      const Ref<Shader> &shader)
                 : VAO(VAO),
-                VBO(VAO->getVertexBuffer()),
-                EBO(VAO->getIndexBuffer()),
                 bufferData(bufferData),
-                shader(shader),
-                count(count) {
+                shader(shader) {
         }
     };
 
@@ -62,13 +73,19 @@ namespace gp {
         uint32_t m_NextEllipseID = 0;
         std::unordered_map<uint32_t, uint32_t> m_EllipseIDs;
 
-        std::vector<ImageVertex> m_ImageVertices;
+        std::vector<std::vector<ImageVertex>> m_ImageVertices;
         uint32_t m_NextImageID = 0;
-        std::vector<uint32_t> m_FreeTextureSlots = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-        std::unordered_map<const char *, Ref<Texture2D>> m_Textures;
-        std::unordered_map<uint32_t, uint32_t> m_ImageIDs;
+        std::unordered_map<uint32_t, BatchID> m_ImageIDs;
 
-        std::unordered_map<const char *, RenderingData> m_RenderingObjects;
+        Ref<Shader> m_PolygonShader;
+        Ref<Shader> m_EllipseShader;
+        Ref<Shader> m_ImageShader;
+
+        std::vector<Ref<Texture2D>> m_Textures;
+        std::unordered_map<const char *, TextureData> m_TexturesCache;
+        std::vector<RenderingData> m_RenderingObjects;
+
+        const unsigned int s_TextureSlots = 16;
 
         Renderer();
 
@@ -101,5 +118,22 @@ namespace gp {
         void updateImage(uint32_t ID, const Image *image);
 
         void flush();
+
+    private:
+        void _createTriangleBuffer();
+
+        void _createQuadBuffer();
+
+        void _createEllipseBuffer();
+
+        void _newImageBuffer();
+
+        uint32_t _cacheTexture(const char *path);
+
+        void _bindTextureBatch(uint32_t batch);
+
+        static void _updateRenderingObjectVBO(RenderingData &object);
+
+        static void _updateRenderingObjectEBO(RenderingData &object);
     };
 }

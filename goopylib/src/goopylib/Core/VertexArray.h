@@ -29,7 +29,9 @@ namespace gp {
 
         const Ref<VertexBuffer> &getVertexBuffer() const;
 
-        void setIndexBuffer(const Ref<IndexBuffer> &indexBuffer);
+        void setIndexBuffer(std::initializer_list<uint32_t> indices);
+
+        void setIndexBuffer(uint32_t count, uint32_t *indices);
 
         const Ref<IndexBuffer> &getIndexBuffer() const;
 

@@ -57,7 +57,7 @@ namespace gp {
 namespace gp {
     class IndexBuffer final : public Buffer {
 
-        friend class Renderer;
+        friend class VertexArray;
 
     public:
         ~IndexBuffer() override;

@@ -59,7 +59,7 @@ namespace gp {
 
                     GP_CORE_DEBUG(
                             "Vertex Array Attribute index={0}, size={1}, type=GL_FLOAT, normalized={2}, stride={3}, offset={4}",
-                            attrIndex, element.getCount(), element.isNormalized(), layout.getStride(),
+                            attrIndex, element.getCount(), element.m_Normalized, layout.m_Stride,
                             (const void *) element.m_Offset);
 
                     glEnableVertexAttribArray(attrIndex);
@@ -79,7 +79,7 @@ namespace gp {
                 case ShaderDataType::Bool: {
 
                     GP_CORE_DEBUG("Vertex Array Attribute index={0}, size={1}, type={2}, stride={3}, offset={4}",
-                                  attrIndex, element.getCount(), shaderOpenGLType(type), layout.getStride(),
+                                  attrIndex, element.getCount(), shaderOpenGLType(type), layout.m_Stride,
                                   (const void *) element.m_Offset);
 
                     glEnableVertexAttribArray(attrIndex);

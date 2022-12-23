@@ -44,7 +44,7 @@ namespace gp {
     }
 
     void VertexBuffer::setData(const void *data, uint32_t count) {
-        GP_CORE_DEBUG("Setting Vertex Buffer {0} Data", m_RendererID);
+        GP_CORE_TRACE("Setting Vertex Buffer {0} Data, count={1}", m_RendererID, count);
 
         bind();
         glBufferData(GL_ARRAY_BUFFER, count * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
@@ -53,7 +53,7 @@ namespace gp {
     }
 
     void VertexBuffer::setData(const void *data, uint32_t count, uint32_t offset) const {
-        GP_CORE_DEBUG("Setting Vertex Buffer {0} Data", m_RendererID);
+        GP_CORE_TRACE("Setting Vertex Buffer {0} Data", m_RendererID);
 
         bind();
         glBufferSubData(GL_ARRAY_BUFFER, offset * m_Layout.m_Stride,
@@ -67,7 +67,7 @@ namespace gp {
             : Buffer(count) {
         glGenBuffers(1, &m_RendererID);
 
-        GP_CORE_DEBUG("Initializing Index Buffer {0}", m_RendererID);
+        GP_CORE_DEBUG("Initializing Index Buffer {0}, count={1}", m_RendererID, count);
 
         bind();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, (long) (count * sizeof(uint32_t)), indices, GL_STATIC_DRAW);
@@ -77,7 +77,7 @@ namespace gp {
             : Buffer(indices.size()) {
         glGenBuffers(1, &m_RendererID);
 
-        GP_CORE_DEBUG("Initializing Index Buffer {0}", m_RendererID);
+        GP_CORE_DEBUG("Initializing Index Buffer {0}, count={1}", m_RendererID, indices.size());
 
         uint32_t bufferData[indices.size()];
         std::copy(indices.begin(), indices.end(), bufferData);

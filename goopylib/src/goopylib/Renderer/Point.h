@@ -35,6 +35,6 @@ namespace gp {
     struct ImageVertex {
         Point point;
         Point texCoord;
-        uint32_t texIndex;
+        uint32_t texSlot;
     };
 }

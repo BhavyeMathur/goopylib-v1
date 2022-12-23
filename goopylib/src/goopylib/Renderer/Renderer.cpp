@@ -7,10 +7,32 @@ namespace gp {
     Renderer::~Renderer() = default;
 
     void Renderer::init() {
-        auto shader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
-                                        GP_DIRECTORY "goopylib/Shader/solid.frag");
+        GP_CORE_INFO("Initializing Renderer");
 
-        // Triangles
+        GP_CORE_TRACE("Initializing Polygon Shader");
+        m_PolygonShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
+                                            GP_DIRECTORY "goopylib/Shader/solid.frag");
+
+        GP_CORE_TRACE("Initializing Ellipse Shader");
+        m_EllipseShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/ellipse.vert",
+                                            GP_DIRECTORY "goopylib/Shader/ellipse.frag");
+
+        _createTriangleBuffer();
+        _createQuadBuffer();
+        _createEllipseBuffer();
+
+        GP_CORE_TRACE("Initializing Image Shader");
+        m_ImageShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/image.vert",
+                                          GP_DIRECTORY "goopylib/Shader/image.frag");
+
+        int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
+                                9, 10, 11, 12, 13, 14, 15};
+        m_ImageShader->set("Texture", s_TextureSlots, samplers);
+    }
+
+    void Renderer::_createTriangleBuffer() {
+        GP_CORE_TRACE("Creating Triangle Buffers");
+
         auto triangleVAO = Ref<VertexArray>(new VertexArray());
         auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
 
@@ -18,9 +40,12 @@ namespace gp {
                                 {ShaderDataType::Float3, "color"}});
         triangleVAO->setVertexBuffer(triangleVBO);
 
-        m_RenderingObjects.insert({"triangle", {triangleVAO, nullptr, shader}});
+        m_RenderingObjects.emplace_back(triangleVAO, nullptr, m_PolygonShader);
+    }
 
-        // Quads
+    void Renderer::_createQuadBuffer() {
+        GP_CORE_TRACE("Creating Quad Buffers");
+
         auto quadVAO = Ref<VertexArray>(new VertexArray());
         auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
 
@@ -28,11 +53,11 @@ namespace gp {
                             {ShaderDataType::Float3, "color"}});
         quadVAO->setVertexBuffer(quadVBO);
 
-        m_RenderingObjects.insert({"quad", {quadVAO, nullptr, shader}});
+        m_RenderingObjects.emplace_back(quadVAO, nullptr, m_PolygonShader);
+    }
 
-        // Ellipses
-        auto ellipseShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/ellipse.vert",
-                                               GP_DIRECTORY "goopylib/Shader/ellipse.frag");
+    void Renderer::_createEllipseBuffer() {
+        GP_CORE_TRACE("Creating Ellipse Buffers");
 
         auto ellipseVAO = Ref<VertexArray>(new VertexArray());
         auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
@@ -42,25 +67,22 @@ namespace gp {
                                {ShaderDataType::Float3, "color"}});
         ellipseVAO->setVertexBuffer(ellipseVBO);
 
-        m_RenderingObjects.insert({"ellipse", {ellipseVAO, nullptr, ellipseShader}});
+        m_RenderingObjects.emplace_back(ellipseVAO, nullptr, m_EllipseShader);
+    }
 
-        // Images
-        auto imageShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/image.vert",
-                                             GP_DIRECTORY "goopylib/Shader/image.frag");
+    void Renderer::_newImageBuffer() {
+        GP_CORE_TRACE("Creating New Image Buffer");
 
         auto imageVAO = Ref<VertexArray>(new VertexArray());
         auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         imageVBO->setLayout({{ShaderDataType::Float2, "vertices"},
                              {ShaderDataType::Float2, "texCoord"},
-                             {ShaderDataType::Int, "texIndex"}});
+                             {ShaderDataType::Int, "texSlot"}});
         imageVAO->setVertexBuffer(imageVBO);
 
-        int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
-                                9, 10, 11, 12, 13, 14, 15};
-        imageShader->set("Texture", 16, samplers);
-
-        m_RenderingObjects.insert({"image", {imageVAO, nullptr, imageShader}});
+        m_RenderingObjects.emplace_back(imageVAO, nullptr, m_ImageShader);
+        m_ImageVertices.emplace_back();
     }
 
     uint32_t Renderer::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
@@ -74,9 +96,10 @@ namespace gp {
         m_TriangleVertices.push_back(v2);
         m_TriangleVertices.push_back(v3);
 
-        m_RenderingObjects.at("triangle").count += 3;
-        m_RenderingObjects.at("triangle").bufferData = &m_TriangleVertices[0];
-        m_RenderingObjects.at("triangle").reallocateBufferData = true;
+        m_RenderingObjects[TRIANGLES].indices += 3;
+        m_RenderingObjects[TRIANGLES].vertices += 3;
+        m_RenderingObjects[TRIANGLES].bufferData = &m_TriangleVertices[0];
+        m_RenderingObjects[TRIANGLES].reallocateBufferData = true;
 
         return ID;
     }
@@ -94,9 +117,10 @@ namespace gp {
             }
         }
 
-        m_RenderingObjects.at("triangle").count -= 3;
-        m_RenderingObjects.at("triangle").bufferData = &m_TriangleVertices[0];
-        m_RenderingObjects.at("triangle").reallocateBufferData = true;
+        m_RenderingObjects[TRIANGLES].indices -= 3;
+        m_RenderingObjects[TRIANGLES].vertices -= 3;
+        m_RenderingObjects[TRIANGLES].bufferData = &m_TriangleVertices[0];
+        m_RenderingObjects[TRIANGLES].reallocateBufferData = true;
     }
 
     void Renderer::updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
@@ -106,7 +130,7 @@ namespace gp {
         m_TriangleVertices[index + 1] = v2;
         m_TriangleVertices[index + 2] = v3;
 
-        m_RenderingObjects.at("triangle").updateBufferData = true;
+        m_RenderingObjects[TRIANGLES].updateBufferData = true;
     }
 
     uint32_t Renderer::drawQuad(QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4) {
@@ -121,9 +145,10 @@ namespace gp {
         m_QuadVertices.push_back(v3);
         m_QuadVertices.push_back(v4);
 
-        m_RenderingObjects.at("quad").count += 6;
-        m_RenderingObjects.at("quad").bufferData = &m_QuadVertices[0];
-        m_RenderingObjects.at("quad").reallocateBufferData = true;
+        m_RenderingObjects[QUADS].indices += 6;
+        m_RenderingObjects[QUADS].vertices += 4;
+        m_RenderingObjects[QUADS].bufferData = &m_QuadVertices[0];
+        m_RenderingObjects[QUADS].reallocateBufferData = true;
 
         return ID;
     }
@@ -141,9 +166,10 @@ namespace gp {
             }
         }
 
-        m_RenderingObjects.at("quad").count -= 6;
-        m_RenderingObjects.at("quad").bufferData = &m_QuadVertices[0];
-        m_RenderingObjects.at("quad").reallocateBufferData = true;
+        m_RenderingObjects[QUADS].indices -= 6;
+        m_RenderingObjects[QUADS].vertices -= 4;
+        m_RenderingObjects[QUADS].bufferData = &m_QuadVertices[0];
+        m_RenderingObjects[QUADS].reallocateBufferData = true;
     }
 
     void Renderer::updateQuad(uint32_t ID, QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4) {
@@ -154,7 +180,7 @@ namespace gp {
         m_QuadVertices[index + 2] = v3;
         m_QuadVertices[index + 3] = v4;
 
-        m_RenderingObjects.at("quad").updateBufferData = true;
+        m_RenderingObjects[QUADS].updateBufferData = true;
     }
 
     uint32_t Renderer::drawEllipse(EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4) {
@@ -169,9 +195,10 @@ namespace gp {
         m_EllipseVertices.push_back(v3);
         m_EllipseVertices.push_back(v4);
 
-        m_RenderingObjects.at("ellipse").count += 6;
-        m_RenderingObjects.at("ellipse").bufferData = &m_EllipseVertices[0];
-        m_RenderingObjects.at("ellipse").reallocateBufferData = true;
+        m_RenderingObjects[ELLIPSES].indices += 6;
+        m_RenderingObjects[ELLIPSES].vertices += 4;
+        m_RenderingObjects[ELLIPSES].bufferData = &m_EllipseVertices[0];
+        m_RenderingObjects[ELLIPSES].reallocateBufferData = true;
 
         return ID;
     }
@@ -189,9 +216,10 @@ namespace gp {
             }
         }
 
-        m_RenderingObjects.at("ellipse").count -= 6;
-        m_RenderingObjects.at("ellipse").bufferData = &m_EllipseVertices[0];
-        m_RenderingObjects.at("ellipse").reallocateBufferData = true;
+        m_RenderingObjects[ELLIPSES].indices -= 6;
+        m_RenderingObjects[ELLIPSES].vertices -= 4;
+        m_RenderingObjects[ELLIPSES].bufferData = &m_EllipseVertices[0];
+        m_RenderingObjects[ELLIPSES].reallocateBufferData = true;
     }
 
     void Renderer::updateEllipse(uint32_t ID, EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4) {
@@ -202,7 +230,7 @@ namespace gp {
         m_EllipseVertices[index + 2] = v3;
         m_EllipseVertices[index + 3] = v4;
 
-        m_RenderingObjects.at("ellipse").updateBufferData = true;
+        m_RenderingObjects[ELLIPSES].updateBufferData = true;
     }
 
     uint32_t Renderer::drawImage(Image *image) {
@@ -210,68 +238,144 @@ namespace gp {
         m_NextImageID++;
         GP_CORE_DEBUG("Drawing Image {0}", ID);
 
-        m_ImageIDs.insert({ID, m_ImageVertices.size()});
+        uint32_t texIndex, texSlot;
+        if (m_TexturesCache.find(image->m_Path) == m_TexturesCache.end()) {
+            texIndex = _cacheTexture(image->m_Path);
+            texSlot = texIndex % 16;
 
-        if (m_Textures.find(image->m_Path) == m_Textures.end()) {
-            auto texture = Ref<Texture2D>(new Texture2D(image->m_Path));
-            texture->init(m_FreeTextureSlots.back());
-
-            m_Textures.insert({image->m_Path, texture});
-            m_FreeTextureSlots.pop_back();
+            if (texSlot == 0) {
+                _newImageBuffer();
+            }
+        }
+        else {
+            texIndex = m_TexturesCache.at(image->m_Path).index;
+            texSlot = texIndex % 16;
         }
 
-        image->m_V1.texIndex = m_Textures.at(image->m_Path)->m_Slot;
-        image->m_V2.texIndex = image->m_V1.texIndex;
-        image->m_V3.texIndex = image->m_V1.texIndex;
-        image->m_V4.texIndex = image->m_V1.texIndex;
+        image->m_V1.texSlot = texSlot;
+        image->m_V2.texSlot = texSlot;
+        image->m_V3.texSlot = texSlot;
+        image->m_V4.texSlot = texSlot;
 
-        m_ImageVertices.push_back(image->m_V1);
-        m_ImageVertices.push_back(image->m_V2);
-        m_ImageVertices.push_back(image->m_V3);
-        m_ImageVertices.push_back(image->m_V4);
+        unsigned int batch = texIndex / s_TextureSlots;
+        unsigned int i = IMAGES + batch;
 
-        m_RenderingObjects.at("image").count += 6;
-        m_RenderingObjects.at("image").bufferData = &m_ImageVertices[0];
-        m_RenderingObjects.at("image").reallocateBufferData = true;
+        m_ImageIDs.insert({ID, {batch, (uint32_t) m_ImageVertices[batch].size()}});
+
+        m_ImageVertices[batch].push_back(image->m_V1);
+        m_ImageVertices[batch].push_back(image->m_V2);
+        m_ImageVertices[batch].push_back(image->m_V3);
+        m_ImageVertices[batch].push_back(image->m_V4);
+
+        m_RenderingObjects[i].indices += 6;
+        m_RenderingObjects[i].vertices += 4;
+        m_RenderingObjects[i].bufferData = &m_ImageVertices[batch][0];
+        m_RenderingObjects[i].reallocateBufferData = true;
 
         return ID;
     }
 
     void Renderer::destroyImage(uint32_t ID) {
-        uint32_t index = m_ImageIDs.at(ID);
+        BatchID batchID = m_ImageIDs.at(ID);
 
-        m_ImageVertices.erase(std::next(m_ImageVertices.begin(), index),
-                              std::next(m_ImageVertices.begin(), index + 4));
+        m_ImageVertices[batchID.batch].erase(std::next(m_ImageVertices[batchID.batch].begin(), batchID.index),
+                                             std::next(m_ImageVertices[batchID.batch].begin(), batchID.index + 4));
 
         m_ImageIDs.erase(ID);
         for (uint32_t i = ID + 1; i < m_ImageIDs.size(); i++) {
             if (m_ImageIDs.find(i) != m_ImageIDs.end()) {
-                m_ImageIDs.at(i) -= 4;
+                if (m_ImageIDs.at(i).batch == batchID.batch) {
+                    m_ImageIDs.at(i).index -= 4;
+                }
             }
         }
 
-        m_RenderingObjects.at("image").count -= 6;
-        m_RenderingObjects.at("image").bufferData = &m_ImageVertices[0];
-        m_RenderingObjects.at("image").reallocateBufferData = true;
+        m_RenderingObjects[IMAGES].indices -= 6;
+        m_RenderingObjects[IMAGES].vertices -= 4;
+        m_RenderingObjects[IMAGES].bufferData = &m_ImageVertices[batchID.batch][0];
+        m_RenderingObjects[IMAGES].reallocateBufferData = true;
     }
 
     void Renderer::updateImage(uint32_t ID, const Image *image) {
-        uint32_t index = m_ImageIDs.at(ID);
+        BatchID batchID = m_ImageIDs.at(ID);
 
-        m_ImageVertices[index + 0] = image->m_V1;
-        m_ImageVertices[index + 1] = image->m_V2;
-        m_ImageVertices[index + 2] = image->m_V3;
-        m_ImageVertices[index + 3] = image->m_V4;
+        m_ImageVertices[batchID.batch][batchID.index + 0] = image->m_V1;
+        m_ImageVertices[batchID.batch][batchID.index + 1] = image->m_V2;
+        m_ImageVertices[batchID.batch][batchID.index + 2] = image->m_V3;
+        m_ImageVertices[batchID.batch][batchID.index + 3] = image->m_V4;
 
-        m_RenderingObjects.at("image").updateBufferData = true;
+        m_RenderingObjects[IMAGES + batchID.batch].updateBufferData = true;
     }
 
     void Renderer::flush() {
-        if (m_RenderingObjects.at("quad").reallocateBufferData) {
+        _updateRenderingObjectVBO(m_RenderingObjects[TRIANGLES]);
 
-            uint32_t *indices = new uint32_t[6 * m_QuadIDs.size()];
+        for (int i = QUADS; i < m_RenderingObjects.size(); i++) {
+            auto &object = m_RenderingObjects[i];
 
-            for (uint32_t i = 0; i < m_QuadIDs.size(); i++) {
+            _updateRenderingObjectEBO(object);
+            _updateRenderingObjectVBO(object);
+        }
+
+        for (int i = 0; i < IMAGES; i++) {
+            auto &object = m_RenderingObjects[i];
+
+            if (object.indices) {
+                object.shader->bind();
+                object.VAO->draw(object.indices, object.mode);
+            }
+        }
+
+        m_ImageShader->bind();
+
+        for (int i = IMAGES; i < m_RenderingObjects.size(); i++) {
+            auto &object = m_RenderingObjects[i];
+
+            if (object.indices) {
+                _bindTextureBatch(i - IMAGES);
+                object.VAO->draw(object.indices, object.mode);
+            }
+        }
+    }
+
+    uint32_t Renderer::_cacheTexture(const char *path) {
+        GP_CORE_DEBUG("Adding '{}' to Textures Cache", path);
+
+        auto texture = Ref<Texture2D>(new Texture2D(path));
+        uint32_t texIndex = m_Textures.size();
+
+        m_TexturesCache.insert({path, {texture, texIndex}});
+        m_Textures.push_back(texture);
+
+        return texIndex;
+    }
+
+    void Renderer::_bindTextureBatch(uint32_t batch) {
+        uint32_t textures = min((batch + 1) * s_TextureSlots, (uint32_t) m_Textures.size());
+
+        for (uint32_t i = batch * s_TextureSlots; i < textures; i++) {
+            m_Textures[i]->bind(i % s_TextureSlots);
+        }
+    }
+
+    void Renderer::_updateRenderingObjectVBO(RenderingData &object) {
+        if (object.reallocateBufferData) {
+            object.VAO->m_VertexBuffer->setData(object.bufferData, object.vertices);
+            object.reallocateBufferData = false;
+            object.updateBufferData = false;
+        }
+        else if (object.updateBufferData) {
+            object.VAO->m_VertexBuffer->setData(object.bufferData, object.vertices, 0);
+            object.updateBufferData = false;
+        }
+    }
+
+    void Renderer::_updateRenderingObjectEBO(RenderingData &object) {
+        if (object.reallocateBufferData) {
+
+            uint32_t *indices = new uint32_t[object.indices];
+
+            for (uint32_t i = 0; i < object.vertices / 4; i++) {
                 uint32_t indicesIndex = i * 6;
                 uint32_t vertexIndex = i * 4;
 
@@ -283,76 +387,9 @@ namespace gp {
                 indices[indicesIndex + 4] = vertexIndex + 2;
                 indices[indicesIndex + 5] = vertexIndex + 3;
             }
-
-            auto quadEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_QuadIDs.size(), indices));
-            m_RenderingObjects.at("quad").VAO->setIndexBuffer(quadEBO);
+            object.VAO->setIndexBuffer(object.indices, indices);
 
             delete[] indices;
-        }
-
-        if (m_RenderingObjects.at("ellipse").reallocateBufferData) {
-
-            uint32_t *indices = new uint32_t[6 * m_EllipseIDs.size()];
-
-            for (uint32_t i = 0; i < m_EllipseIDs.size(); i++) {
-                uint32_t indicesIndex = i * 6;
-                uint32_t vertexIndex = i * 4;
-
-                indices[indicesIndex + 0] = vertexIndex + 0;
-                indices[indicesIndex + 1] = vertexIndex + 1;
-                indices[indicesIndex + 2] = vertexIndex + 2;
-
-                indices[indicesIndex + 3] = vertexIndex + 0;
-                indices[indicesIndex + 4] = vertexIndex + 2;
-                indices[indicesIndex + 5] = vertexIndex + 3;
-            }
-
-            auto ellipseEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_EllipseIDs.size(), indices));
-            m_RenderingObjects.at("ellipse").VAO->setIndexBuffer(ellipseEBO);
-
-            delete[] indices;
-        }
-
-        if (m_RenderingObjects.at("image").reallocateBufferData) {
-
-            uint32_t *indices = new uint32_t[6 * m_ImageIDs.size()];
-
-            for (uint32_t i = 0; i < m_ImageIDs.size(); i++) {
-                uint32_t indicesIndex = i * 6;
-                uint32_t vertexIndex = i * 4;
-
-                indices[indicesIndex + 0] = vertexIndex + 0;
-                indices[indicesIndex + 1] = vertexIndex + 1;
-                indices[indicesIndex + 2] = vertexIndex + 2;
-
-                indices[indicesIndex + 3] = vertexIndex + 0;
-                indices[indicesIndex + 4] = vertexIndex + 2;
-                indices[indicesIndex + 5] = vertexIndex + 3;
-            }
-
-            auto imageEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_ImageIDs.size(), indices));
-            m_RenderingObjects.at("image").VAO->setIndexBuffer(imageEBO);
-
-            delete[] indices;
-        }
-
-        for (auto &object: m_RenderingObjects) {
-            if (object.second.count) {
-                if (object.second.reallocateBufferData) {
-                    GP_CORE_DEBUG("Reallocating '{0}' VertexBuffer", object.first);
-
-                    object.second.VBO->setData(object.second.bufferData, object.second.count);
-                    object.second.reallocateBufferData = false;
-                    object.second.updateBufferData = false;
-                }
-                else if (object.second.updateBufferData) {
-                    object.second.VBO->setData(object.second.bufferData, object.second.count, 0);
-                    object.second.updateBufferData = false;
-                }
-
-                object.second.shader->bind();
-                object.second.VAO->draw(object.second.count, object.second.mode);
-            }
         }
     }
 }

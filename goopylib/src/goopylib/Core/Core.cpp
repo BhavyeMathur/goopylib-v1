@@ -118,6 +118,7 @@ namespace gp {
     }
 
     GPAPI void setBufferSwapInterval(int interval) {
+        GP_CORE_INFO("Frame Rate limited to {0}", interval);
         glfwSwapInterval(interval);
     }
 
