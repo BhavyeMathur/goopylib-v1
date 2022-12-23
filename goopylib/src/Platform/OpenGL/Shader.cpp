@@ -201,6 +201,25 @@ namespace gp {
         glUniformMatrix4x3fv(location, 1, transpose, glm::value_ptr(value));
     }
 
+    void Shader::_setUniform(int32_t location, int32_t count, float *value) {
+        GP_CORE_TRACE("Shader {0} setting uniform at {1}", m_RendererID, location);
+        glUniform1fv(location, count, value);
+    }
+
+    void Shader::_setUniform(int32_t location, int32_t count, double *value) {
+        _setUniform(location, count, (float *) value);
+    }
+
+    void Shader::_setUniform(int32_t location, int32_t count, int32_t *value) {
+        GP_CORE_TRACE("Shader {0} setting uniform at {1}", m_RendererID, location);
+        glUniform1iv(location, count, value);
+    }
+
+    void Shader::_setUniform(int32_t location, int32_t count, uint32_t *value) {
+        GP_CORE_TRACE("Shader {0} setting uniform at {1}", m_RendererID, location);
+        glUniform1uiv(location, count, value);
+    }
+
     int32_t Shader::_getUniform(const char *name) const {
         return glGetUniformLocation(m_RendererID, name);
     }

@@ -25,6 +25,8 @@ namespace gp {
 
         GP_CORE_INFO("Initializing goopylib");
 
+        stbi_set_flip_vertically_on_load(1);
+
         GP_CORE_DEBUG("Initializing W3CX11");
         InitializeW3CX11();
 

@@ -1,6 +1,5 @@
 #include "Renderer.h"
-
-#include <filesystem>
+#include "Image.h"
 
 namespace gp {
     Renderer::Renderer() = default;
@@ -33,17 +32,35 @@ namespace gp {
 
         // Ellipses
         auto ellipseShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/ellipse.vert",
-                                              GP_DIRECTORY "goopylib/Shader/ellipse.frag");
+                                               GP_DIRECTORY "goopylib/Shader/ellipse.frag");
 
         auto ellipseVAO = Ref<VertexArray>(new VertexArray());
         auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         ellipseVBO->setLayout({{ShaderDataType::Float2, "vertices"},
-                              {ShaderDataType::Float2, "localCoord"},
-                              {ShaderDataType::Float3, "color"}});
+                               {ShaderDataType::Float2, "localCoord"},
+                               {ShaderDataType::Float3, "color"}});
         ellipseVAO->setVertexBuffer(ellipseVBO);
 
         m_RenderingObjects.insert({"ellipse", {ellipseVAO, nullptr, ellipseShader}});
+
+        // Images
+        auto imageShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/image.vert",
+                                             GP_DIRECTORY "goopylib/Shader/image.frag");
+
+        auto imageVAO = Ref<VertexArray>(new VertexArray());
+        auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
+
+        imageVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+                             {ShaderDataType::Float2, "texCoord"},
+                             {ShaderDataType::Int, "texIndex"}});
+        imageVAO->setVertexBuffer(imageVBO);
+
+        int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
+                                9, 10, 11, 12, 13, 14, 15};
+        imageShader->set("Texture", 16, samplers);
+
+        m_RenderingObjects.insert({"image", {imageVAO, nullptr, imageShader}});
     }
 
     uint32_t Renderer::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
@@ -163,7 +180,7 @@ namespace gp {
         uint32_t index = m_EllipseIDs.at(ID);
 
         m_EllipseVertices.erase(std::next(m_EllipseVertices.begin(), index),
-                               std::next(m_EllipseVertices.begin(), index + 4));
+                                std::next(m_EllipseVertices.begin(), index + 4));
 
         m_EllipseIDs.erase(ID);
         for (uint32_t i = ID + 1; i < m_EllipseIDs.size(); i++) {
@@ -186,6 +203,67 @@ namespace gp {
         m_EllipseVertices[index + 3] = v4;
 
         m_RenderingObjects.at("ellipse").updateBufferData = true;
+    }
+
+    uint32_t Renderer::drawImage(Image *image) {
+        uint32_t ID = m_NextImageID;
+        m_NextImageID++;
+        GP_CORE_DEBUG("Drawing Image {0}", ID);
+
+        m_ImageIDs.insert({ID, m_ImageVertices.size()});
+
+        if (m_Textures.find(image->m_Path) == m_Textures.end()) {
+            auto texture = Ref<Texture2D>(new Texture2D(image->m_Path));
+            texture->init(m_FreeTextureSlots.back());
+
+            m_Textures.insert({image->m_Path, texture});
+            m_FreeTextureSlots.pop_back();
+        }
+
+        image->m_V1.texIndex = m_Textures.at(image->m_Path)->m_Slot;
+        image->m_V2.texIndex = image->m_V1.texIndex;
+        image->m_V3.texIndex = image->m_V1.texIndex;
+        image->m_V4.texIndex = image->m_V1.texIndex;
+
+        m_ImageVertices.push_back(image->m_V1);
+        m_ImageVertices.push_back(image->m_V2);
+        m_ImageVertices.push_back(image->m_V3);
+        m_ImageVertices.push_back(image->m_V4);
+
+        m_RenderingObjects.at("image").count += 6;
+        m_RenderingObjects.at("image").bufferData = &m_ImageVertices[0];
+        m_RenderingObjects.at("image").reallocateBufferData = true;
+
+        return ID;
+    }
+
+    void Renderer::destroyImage(uint32_t ID) {
+        uint32_t index = m_ImageIDs.at(ID);
+
+        m_ImageVertices.erase(std::next(m_ImageVertices.begin(), index),
+                              std::next(m_ImageVertices.begin(), index + 4));
+
+        m_ImageIDs.erase(ID);
+        for (uint32_t i = ID + 1; i < m_ImageIDs.size(); i++) {
+            if (m_ImageIDs.find(i) != m_ImageIDs.end()) {
+                m_ImageIDs.at(i) -= 4;
+            }
+        }
+
+        m_RenderingObjects.at("image").count -= 6;
+        m_RenderingObjects.at("image").bufferData = &m_ImageVertices[0];
+        m_RenderingObjects.at("image").reallocateBufferData = true;
+    }
+
+    void Renderer::updateImage(uint32_t ID, const Image *image) {
+        uint32_t index = m_ImageIDs.at(ID);
+
+        m_ImageVertices[index + 0] = image->m_V1;
+        m_ImageVertices[index + 1] = image->m_V2;
+        m_ImageVertices[index + 2] = image->m_V3;
+        m_ImageVertices[index + 3] = image->m_V4;
+
+        m_RenderingObjects.at("image").updateBufferData = true;
     }
 
     void Renderer::flush() {
@@ -231,6 +309,29 @@ namespace gp {
 
             auto ellipseEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_EllipseIDs.size(), indices));
             m_RenderingObjects.at("ellipse").VAO->setIndexBuffer(ellipseEBO);
+
+            delete[] indices;
+        }
+
+        if (m_RenderingObjects.at("image").reallocateBufferData) {
+
+            uint32_t *indices = new uint32_t[6 * m_ImageIDs.size()];
+
+            for (uint32_t i = 0; i < m_ImageIDs.size(); i++) {
+                uint32_t indicesIndex = i * 6;
+                uint32_t vertexIndex = i * 4;
+
+                indices[indicesIndex + 0] = vertexIndex + 0;
+                indices[indicesIndex + 1] = vertexIndex + 1;
+                indices[indicesIndex + 2] = vertexIndex + 2;
+
+                indices[indicesIndex + 3] = vertexIndex + 0;
+                indices[indicesIndex + 4] = vertexIndex + 2;
+                indices[indicesIndex + 5] = vertexIndex + 3;
+            }
+
+            auto imageEBO = Ref<IndexBuffer>(new IndexBuffer(6 * m_ImageIDs.size(), indices));
+            m_RenderingObjects.at("image").VAO->setIndexBuffer(imageEBO);
 
             delete[] indices;
         }

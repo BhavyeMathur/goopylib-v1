@@ -18,6 +18,7 @@ add_compile_definitions(GP_DIRECTORY="${PROJECT_BINARY_DIR}/../goopylib/src/")
 
 set(GOOPYLIB_PATH goopylib/src/goopylib/)
 set(PLATFORM_PATH goopylib/src/Platform/)
+
 set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Core/Core.cpp
     ${GOOPYLIB_PATH}/Core/BufferLayout.cpp
@@ -32,6 +33,7 @@ set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Renderer/Triangle.cpp
     ${GOOPYLIB_PATH}/Renderer/Quad.cpp
     ${GOOPYLIB_PATH}/Renderer/Ellipse.cpp
+    ${GOOPYLIB_PATH}/Renderer/Image.cpp
     ${GOOPYLIB_PATH}/Renderer/Renderer.cpp
     ${GOOPYLIB_PATH}/Renderer/RenderableObject.cpp
 
@@ -39,11 +41,14 @@ set(SOURCE_FILES
     ${PLATFORM_PATH}/OpenGL/Buffer.cpp
     ${PLATFORM_PATH}/OpenGL/VertexArray.cpp
     ${PLATFORM_PATH}/OpenGL/Shader.cpp
+    ${PLATFORM_PATH}/OpenGL/Texture2D.cpp
 
     ${PLATFORM_PATH}/Independent/BaseWindow.cpp
     ${PLATFORM_PATH}/Independent/Buffer.cpp
     ${PLATFORM_PATH}/Independent/VertexArray.cpp
-    ${PLATFORM_PATH}/Independent/Shader.cpp)
+    ${PLATFORM_PATH}/Independent/Shader.cpp
+
+    goopylib/vendor/stb/stb_image.cpp)
 
 include_directories(goopylib)
 include_directories(goopylib/src)

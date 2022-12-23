@@ -4,19 +4,19 @@
 namespace gp {
     Ellipse::Ellipse(Point position, float xRadius, float yRadius)
             : RenderableObject(position),
-            m_V1({{position.x - xRadius / 2.0f, position.y - yRadius / 2.0f},
+            m_V1({{position.x - xRadius, position.y - yRadius},
                   {-1, -1},
                   {0, 0.55, 0.9}}),
 
-            m_V2({{position.x + xRadius / 2.0f, position.y - yRadius / 2.0f},
+            m_V2({{position.x + xRadius, position.y - yRadius},
                   {1, -1},
                   {0, 0.55, 0.9}}),
 
-            m_V3({{position.x + xRadius / 2.0f, position.y + yRadius / 2.0f},
+            m_V3({{position.x + xRadius, position.y + yRadius},
                   {1, 1},
                   {0, 0.55, 0.9}}),
 
-            m_V4({{position.x - xRadius / 2.0f, position.y + yRadius / 2.0f},
+            m_V4({{position.x - xRadius, position.y + yRadius},
                   {-1, 1},
                   {0, 0.55, 0.9}}) {
         GP_CORE_DEBUG("Initializing Ellipse at ({0}, {1}), xRadius={3}, yRadius={4}",

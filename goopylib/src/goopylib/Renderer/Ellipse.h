@@ -14,7 +14,7 @@ namespace gp {
 
         void setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
 
-        void resetCenter() override;
+        void resetCenter() final;
 
     private:
         EllipseVertex m_V1, m_V2, m_V3, m_V4;
@@ -25,10 +25,10 @@ namespace gp {
 
         void _update() const override;
 
-        void _move(float dx, float dy) override;
+        void _move(float dx, float dy) final;
 
-        void _rotate(float sin, float cos) override;
+        void _rotate(float sin, float cos) final;
 
-        void _scale(float xfactor, float yfactor) override;
+        void _scale(float xfactor, float yfactor) final;
     };
 }

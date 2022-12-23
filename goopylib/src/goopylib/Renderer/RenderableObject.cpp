@@ -7,9 +7,9 @@ namespace gp {
     }
 
     void RenderableObject::draw(Window *window) {
+        m_RendererID = _draw(window);
         m_Window = window;
         m_Drawn = true;
-        m_RendererID = _draw(window);
     }
 
     void RenderableObject::destroy() {

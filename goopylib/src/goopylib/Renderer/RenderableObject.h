@@ -43,16 +43,15 @@ namespace gp {
         uint32_t m_RendererID = 0;
 
         Point m_Position;
+        float m_Angle = 0;
+        float m_xScale = 1;
+        float m_yScale = 1;
 
         explicit RenderableObject(Point position);
 
         void update() const;
 
     private:
-        float m_Angle = 0;
-        float m_xScale = 1;
-        float m_yScale = 1;
-
         bool m_Drawn = false;
 
         virtual uint32_t _draw(Window *window) const = 0;

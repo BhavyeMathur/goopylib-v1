@@ -27,7 +27,6 @@
 #include <unordered_map>
 
 #define GLM_ENABLE_EXPERIMENTAL
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -37,6 +36,8 @@
 #include <spdlog/fmt/ostr.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
+
+#include <stb/stb_image.h>
 
 #if GP_USING_OPENGL
 

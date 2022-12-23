@@ -2,11 +2,15 @@
 
 #include "pch.h"
 #include "Point.h"
+
+#include "src/goopylib/Core/Texture2D.h"
 #include "src/goopylib/Core/Buffer.h"
-#include "src/goopylib/Shader/Shader.h"
 #include "src/goopylib/Core/VertexArray.h"
+#include "src/goopylib/Shader/Shader.h"
 
 namespace gp {
+    class Image;
+
     struct RenderingData {
         Ref<Shader> shader;
         Ref<VertexArray> VAO;
@@ -23,20 +27,27 @@ namespace gp {
         RenderingData(const Ref<VertexArray> &VAO, void *bufferData,
                       const Ref<Shader> &shader, int32_t count = 0)
                 : VAO(VAO),
-                  VBO(VAO->getVertexBuffer()),
-                  EBO(VAO->getIndexBuffer()),
-                  bufferData(bufferData),
-                  shader(shader),
-                  count(count) {
+                VBO(VAO->getVertexBuffer()),
+                EBO(VAO->getIndexBuffer()),
+                bufferData(bufferData),
+                shader(shader),
+                count(count) {
         }
     };
 
     class Renderer {
 
         friend class BaseWindow;
+
+        friend class RenderableObject;
+
         friend class Triangle;
+
         friend class Quad;
+
         friend class Ellipse;
+
+        friend class Image;
 
     private:
         std::vector<TriangleVertex> m_TriangleVertices;
@@ -50,6 +61,12 @@ namespace gp {
         std::vector<EllipseVertex> m_EllipseVertices;
         uint32_t m_NextEllipseID = 0;
         std::unordered_map<uint32_t, uint32_t> m_EllipseIDs;
+
+        std::vector<ImageVertex> m_ImageVertices;
+        uint32_t m_NextImageID = 0;
+        std::vector<uint32_t> m_FreeTextureSlots = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+        std::unordered_map<const char *, Ref<Texture2D>> m_Textures;
+        std::unordered_map<uint32_t, uint32_t> m_ImageIDs;
 
         std::unordered_map<const char *, RenderingData> m_RenderingObjects;
 
@@ -76,6 +93,12 @@ namespace gp {
         void destroyEllipse(uint32_t ID);
 
         void updateEllipse(uint32_t ID, EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4);
+
+        uint32_t drawImage(Image *image);
+
+        void destroyImage(uint32_t ID);
+
+        void updateImage(uint32_t ID, const Image *image);
 
         void flush();
     };

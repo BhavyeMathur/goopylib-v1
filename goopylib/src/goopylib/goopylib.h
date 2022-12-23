@@ -21,3 +21,4 @@
 #include "goopylib/Renderer/Rectangle.h"
 #include "goopylib/Renderer/Ellipse.h"
 #include "goopylib/Renderer/Circle.h"
+#include "goopylib/Renderer/Image.h"

@@ -75,9 +75,11 @@ namespace gp {
 
     class BaseWindow {
 
+        friend class RenderableObject;
         friend class Triangle;
         friend class Quad;
         friend class Ellipse;
+        friend class Image;
 
     public:
         virtual ~BaseWindow();
