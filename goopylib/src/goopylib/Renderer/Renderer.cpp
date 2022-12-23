@@ -7,8 +7,8 @@ namespace gp {
     Renderer::~Renderer() = default;
 
     void Renderer::init() {
-        auto shader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2Vertex.glsl",
-                                        GP_DIRECTORY "goopylib/Shader/vec2Fragment.glsl");
+        auto shader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
+                                        GP_DIRECTORY "goopylib/Shader/solid.frag");
 
         // Triangles
         auto triangleVAO = Ref<VertexArray>(new VertexArray());
@@ -31,8 +31,8 @@ namespace gp {
         m_RenderingObjects.insert({"quad", {quadVAO, nullptr, shader}});
 
         // Ellipses
-        auto ellipseShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/ellipseVertex.glsl",
-                                               GP_DIRECTORY "goopylib/Shader/ellipseFragment.glsl");
+        auto ellipseShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/ellipse.vert",
+                                               GP_DIRECTORY "goopylib/Shader/ellipse.frag");
 
         auto ellipseVAO = Ref<VertexArray>(new VertexArray());
         auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
@@ -45,8 +45,8 @@ namespace gp {
         m_RenderingObjects.insert({"ellipse", {ellipseVAO, nullptr, ellipseShader}});
 
         // Images
-        auto imageShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/imageVertex.glsl",
-                                             GP_DIRECTORY "goopylib/Shader/imageFragment.glsl");
+        auto imageShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/image.vert",
+                                             GP_DIRECTORY "goopylib/Shader/image.frag");
 
         auto imageVAO = Ref<VertexArray>(new VertexArray());
         auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
