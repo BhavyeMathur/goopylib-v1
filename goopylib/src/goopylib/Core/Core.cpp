@@ -2,11 +2,11 @@
 
 #include "src/goopylib/Core/Core.h"
 #include "src/goopylib/Color/W3CX11.h"
-#include "src/Platform/Independent/BaseWindow.h"
+#include "Window.h"
 
 namespace {
     void onUpdate() {
-        gp::BaseWindow::updateAll();
+        gp::Window::updateAll();
 
         #if (GP_DEBUGGING and GP_USING_OPENGL)
         GLenum error;
@@ -57,7 +57,7 @@ namespace gp {
     GPAPI void terminate() {
         GP_CORE_INFO("Terminating goopylib");
 
-        BaseWindow::destroyAll();
+        Window::destroyAll();
 
         GP_CORE_DEBUG("Deallocating W3CX11");
         DeallocateW3CX11();

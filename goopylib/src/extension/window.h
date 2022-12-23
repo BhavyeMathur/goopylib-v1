@@ -6,7 +6,7 @@
 
 #include <goopylib/Core/Core.h>
 #include <goopylib/Core/Window.h>
-#include <Platform/Independent/BaseWindow.h>
+#include "src/goopylib/Core/Window.h"
 
 #if GP_ERROR_CHECKING
 #define CHECK_WINDOW_ACTIVE(val) \

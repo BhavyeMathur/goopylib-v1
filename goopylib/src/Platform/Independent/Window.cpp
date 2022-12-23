@@ -1,35 +1,9 @@
-#include "pch.h"
-#include "BaseWindow.h"
+#include "src/goopylib/Core/Window.h"
 
 namespace gp {
-    struct WindowConfig;
+    std::vector<Window *> Window::s_Instances;
 
-    struct AspectRatio;
-    struct WindowFrame;
-    struct ContentScale;
-
-    std::vector<BaseWindow *> BaseWindow::s_Instances;
-
-    BaseWindow::BaseWindow(const WindowConfig &config)
-            : m_Data(config),
-              m_KeyModifiers(0),
-              m_isDestroyed(false),
-
-              m_WindowedWidth(config.width),
-              m_WindowedHeight(config.height),
-              m_WindowedXPos(config.xPos),
-              m_WindowedYPos(config.yPos) {
-        GP_CORE_DEBUG("Initializing BaseWindow '{0}'", config.title);
-
-        s_Instances.push_back(this);
-    }
-
-    BaseWindow::~BaseWindow() {
-        GP_CORE_DEBUG("Deallocating BaseWindow '{0}'", m_Data.title);
-        s_Instances.erase(std::remove(s_Instances.begin(), s_Instances.end(), this), s_Instances.end());
-    }
-
-    void BaseWindow::update() {
+    void Window::update() {
         GP_CORE_TRACE_ALL("Updating window '{0}'", m_Data.title);
 
         _updateBackground();
@@ -39,7 +13,7 @@ namespace gp {
         _update();
     }
 
-    void BaseWindow::destroy() {
+    void Window::destroy() {
         GP_CORE_INFO("Destroying window '{0}'", m_Data.title);
 
         if (!m_isDestroyed) {
@@ -50,133 +24,133 @@ namespace gp {
     }
 }
 
-// BaseWindow getters & setters
+// Window getters & setters
 namespace gp {
     // Width
-    void BaseWindow::setWidth(int value) {
+    void Window::setWidth(int value) {
         GP_CORE_DEBUG("Set '{0}' width -> {1}", m_Data.title, value);
 
         m_Data.width = value;
         _updateSize();
     }
 
-    int BaseWindow::getWidth() const {
+    int Window::getWidth() const {
         return m_Data.width;
     }
 
     // Height
-    void BaseWindow::setHeight(int value) {
+    void Window::setHeight(int value) {
         GP_CORE_DEBUG("Set '{0}' height -> {1}", m_Data.title, value);
 
         m_Data.height = value;
         _updateSize();
     }
 
-    int BaseWindow::getHeight() const {
+    int Window::getHeight() const {
         return m_Data.height;
     }
 
     // Title
-    void BaseWindow::setTitle(const char *title) {
+    void Window::setTitle(const char *title) {
         GP_CORE_DEBUG("Set '{0}' title -> '{1}'", m_Data.title, title);
 
         m_Data.title = title;
         _updateTitle();
     }
 
-    const char *BaseWindow::getTitle() const {
+    const char *Window::getTitle() const {
         return m_Data.title;
     }
 
     // X Position
-    void BaseWindow::setXPos(int value) {
+    void Window::setXPos(int value) {
         GP_CORE_DEBUG("Set '{0}' x-position -> {1}", m_Data.title, value);
 
         m_Data.xPos = value;
         _updatePosition();
     }
 
-    int BaseWindow::getXPos() const {
+    int Window::getXPos() const {
         return m_Data.xPos;
     }
 
     // Y Position
-    void BaseWindow::setYPos(int value) {
+    void Window::setYPos(int value) {
         GP_CORE_DEBUG("Set '{0}' y-position -> {1}", m_Data.title, value);
 
         m_Data.yPos = value;
         _updatePosition();
     }
 
-    int BaseWindow::getYPos() const {
+    int Window::getYPos() const {
         return m_Data.yPos;
     }
 
     // Minimum Width
-    void BaseWindow::setMinimumWidth(int value) {
+    void Window::setMinimumWidth(int value) {
         GP_CORE_DEBUG("Set '{0}' minimum width -> {1}", m_Data.title, value);
 
         m_Data.minWidth = value;
         _updateSizeLimits();
     }
 
-    int BaseWindow::getMinimumWidth() const {
+    int Window::getMinimumWidth() const {
         return m_Data.minWidth;
     }
 
     // Minimum Height
-    void BaseWindow::setMinimumHeight(int value) {
+    void Window::setMinimumHeight(int value) {
         GP_CORE_DEBUG("Set '{0}' minimum height -> {1}", m_Data.title, value);
 
         m_Data.minHeight = value;
         _updateSizeLimits();
     }
 
-    int BaseWindow::getMinimumHeight() const {
+    int Window::getMinimumHeight() const {
         return m_Data.minHeight;
     }
 
     // Maximum Width
-    void BaseWindow::setMaximumWidth(int value) {
+    void Window::setMaximumWidth(int value) {
         GP_CORE_DEBUG("Set '{0}' maximum width -> {1}", m_Data.title, value);
 
         m_Data.maxWidth = value;
         _updateSizeLimits();
     }
 
-    int BaseWindow::getMaximumWidth() const {
+    int Window::getMaximumWidth() const {
         return m_Data.maxWidth;
     }
 
     // Maximum Height
-    void BaseWindow::setMaximumHeight(int value) {
+    void Window::setMaximumHeight(int value) {
         GP_CORE_DEBUG("Set '{0}' maximum height -> {1}", m_Data.title, value);
 
         m_Data.maxHeight = value;
         _updateSizeLimits();
     }
 
-    int BaseWindow::getMaximumHeight() const {
+    int Window::getMaximumHeight() const {
         return m_Data.maxHeight;
     }
 
-    void BaseWindow::setBackground(const Color &background) {
+    void Window::setBackground(const Color &background) {
         GP_CORE_DEBUG("Set '{0}' background -> {1}", m_Data.title, background.toString());
 
         m_Data.background = background;
         _updateBackground();
     }
 
-    Color &BaseWindow::getBackground() const {
+    Color &Window::getBackground() const {
         return const_cast<Color &>(m_Data.background);
     }
 }
 
-// BaseWindow get & set methods
+// Window get & set methods
 namespace gp {
 
     // Size
-    void BaseWindow::setSize(int width, int height) {
+    void Window::setSize(int width, int height) {
         GP_CORE_DEBUG("Set '{0}' size -> ({1}, {2})", m_Data.title, width, height);
 
         m_Data.width = width;
@@ -186,8 +160,8 @@ namespace gp {
     }
 
     // Size Limits
-    void BaseWindow::setSizeLimits(int minWidth, int minHeight, int maxWidth,
-                                   int maxHeight) {
+    void Window::setSizeLimits(int minWidth, int minHeight, int maxWidth,
+                               int maxHeight) {
         GP_CORE_DEBUG("Set '{0}' size limits -> ({1}, {2}), ({3}, {4})", m_Data.title, minWidth, minHeight, maxWidth,
                       maxHeight);
 
@@ -199,7 +173,7 @@ namespace gp {
         _updateSizeLimits();
     }
 
-    void BaseWindow::setMinimumSize(int minWidth, int minHeight) {
+    void Window::setMinimumSize(int minWidth, int minHeight) {
         GP_CORE_DEBUG("Set '{0}' minimum size -> ({1}, {2})", m_Data.title, minWidth, minHeight);
 
         m_Data.minWidth = minWidth;
@@ -208,7 +182,7 @@ namespace gp {
         _updateSizeLimits();
     }
 
-    void BaseWindow::setMaximumSize(int maxWidth, int maxHeight) {
+    void Window::setMaximumSize(int maxWidth, int maxHeight) {
         GP_CORE_DEBUG("Set '{0}' maximum size -> ({1}, {2})", m_Data.title, maxWidth, maxHeight);
 
         m_Data.maxWidth = maxWidth;
@@ -218,7 +192,7 @@ namespace gp {
     }
 
     // Position
-    void BaseWindow::setPosition(int xPos, int yPos) {
+    void Window::setPosition(int xPos, int yPos) {
         GP_CORE_DEBUG("Set '{0}' position -> ({1}, {2})", m_Data.title, xPos, yPos);
 
         m_Data.xPos = xPos;
@@ -227,33 +201,33 @@ namespace gp {
         _updatePosition();
     }
 
-    void BaseWindow::setAspectRatio(int numerator, int denominator) {
+    void Window::setAspectRatio(int numerator, int denominator) {
         int g = gcd(numerator, denominator);
         _updateAspectRatio(numerator / g, denominator / g);
 
     }
 
-    AspectRatio BaseWindow::getAspectRatio() const {
+    AspectRatio Window::getAspectRatio() const {
         int g = gcd(m_Data.width, m_Data.height);
         return AspectRatio{m_Data.width / g, m_Data.height / g};
     }
 }
 
-// BaseWindow state methods
+// Window state methods
 namespace gp {
-    bool BaseWindow::isDestroyed() const {
+    bool Window::isDestroyed() const {
         return m_isDestroyed;
     }
 
-    bool BaseWindow::isClosed() const {
+    bool Window::isClosed() const {
         return _isClosed() or m_isDestroyed;
     }
 
-    bool BaseWindow::isOpen() const {
+    bool Window::isOpen() const {
         return !isClosed();
     }
 
-    void BaseWindow::restore() {
+    void Window::restore() {
         if (isFullscreen()) {
             _unfullscreen(m_WindowedWidth, m_WindowedHeight, m_WindowedXPos, m_WindowedYPos);
         }
@@ -262,7 +236,7 @@ namespace gp {
         }
     }
 
-    void BaseWindow::fullscreen() {
+    void Window::fullscreen() {
         m_WindowedWidth = m_Data.width;
         m_WindowedHeight = m_Data.height;
         m_WindowedXPos = m_Data.xPos;
@@ -271,37 +245,37 @@ namespace gp {
         _fullscreen();
     }
 
-    void BaseWindow::maximize() {
+    void Window::maximize() {
         _maximize();
     }
 
-    void BaseWindow::minimize() {
+    void Window::minimize() {
         _minimize();
     }
 
-    void BaseWindow::show() {
+    void Window::show() {
         _show();
     }
 
-    void BaseWindow::hide() {
+    void Window::hide() {
         _hide();
     }
 
-    void BaseWindow::focus() {
+    void Window::focus() {
         _focus();
     }
 }
 
-// BaseWindow events
+// Window events
 namespace gp {
-    void BaseWindow::onKeyPress(int key, int UNUSED(scancode), int action, int mods) {
+    void Window::onKeyPress(int key, int UNUSED(scancode), int action, int mods) {
         m_KeyModifiers = mods;
         if (m_KeyCallbacks.find(key) != m_KeyCallbacks.end()) {
             m_KeyCallbacks[key]((Window *) this, action);
         }
     }
 
-    void BaseWindow::setKeyCallback(int key, std::function<void(Window *window, int action)> callback) {
+    void Window::setKeyCallback(int key, std::function<void(Window *window, int action)> callback) {
         GP_CORE_DEBUG("Set '{0}' key ({1}) callback", m_Data.title, key);
 
         if (callback) {
@@ -314,10 +288,10 @@ namespace gp {
     }
 }
 
-// BaseWindow callbacks
+// Window callbacks
 namespace gp {
     // Resize
-    void BaseWindow::onResize(int width, int height) {
+    void Window::onResize(int width, int height) {
         m_Data.width = width;
         m_Data.height = height;
 
@@ -328,7 +302,7 @@ namespace gp {
         update();
     }
 
-    void BaseWindow::setResizeCallback(std::function<void(Window *, int width, int height)> callback) {
+    void Window::setResizeCallback(std::function<void(Window *, int width, int height)> callback) {
         GP_CORE_DEBUG("Set '{0}' resize callback", m_Data.title);
 
         m_ResizeCallback = std::move(callback);
@@ -336,12 +310,12 @@ namespace gp {
     }
 
     // Close
-    void BaseWindow::onClose() {
+    void Window::onClose() {
         GP_CORE_DEBUG("OnClose()");
         m_CloseCallback((Window *) this);
     }
 
-    void BaseWindow::setCloseCallback(std::function<void(Window *window)> callback) {
+    void Window::setCloseCallback(std::function<void(Window *window)> callback) {
         GP_CORE_DEBUG("Set '{0}' close callback", m_Data.title);
 
         m_CloseCallback = std::move(callback);
@@ -349,21 +323,21 @@ namespace gp {
     }
 
     // Destroy
-    void BaseWindow::onDestroy() {
+    void Window::onDestroy() {
         GP_CORE_DEBUG("OnDestroy()");
         if (m_DestroyCallback) {
             m_DestroyCallback((Window *) this);
         }
     }
 
-    void BaseWindow::setDestroyCallback(std::function<void(Window *window)> callback) {
+    void Window::setDestroyCallback(std::function<void(Window *window)> callback) {
         GP_CORE_DEBUG("Set '{0}' destroy callback", m_Data.title);
 
         m_DestroyCallback = std::move(callback);
     }
 
     // Move
-    void BaseWindow::onMove(int xPos, int yPos) {
+    void Window::onMove(int xPos, int yPos) {
         m_Data.xPos = xPos;
         m_Data.yPos = yPos;
 
@@ -372,7 +346,7 @@ namespace gp {
         }
     }
 
-    void BaseWindow::setPositionCallback(std::function<void(Window *window, int xPos, int yPos)> callback) {
+    void Window::setPositionCallback(std::function<void(Window *window, int xPos, int yPos)> callback) {
         GP_CORE_DEBUG("Set '{0}' position callback", m_Data.title);
 
         m_PositionCallback = std::move(callback);
@@ -380,12 +354,12 @@ namespace gp {
     }
 
     // Minimize
-    void BaseWindow::onMinimize(bool iconified) {
+    void Window::onMinimize(bool iconified) {
         GP_CORE_DEBUG("OnMinimize()");
         m_MinimizeCallback((Window *) this, iconified);
     }
 
-    void BaseWindow::setMinimizeCallback(std::function<void(Window *window, bool minimized)> callback) {
+    void Window::setMinimizeCallback(std::function<void(Window *window, bool minimized)> callback) {
         GP_CORE_DEBUG("Set '{0}' minimize callback", m_Data.title);
 
         m_MinimizeCallback = std::move(callback);
@@ -393,12 +367,12 @@ namespace gp {
     }
 
     // Maximize
-    void BaseWindow::onMaximize(bool maximized) {
+    void Window::onMaximize(bool maximized) {
         GP_CORE_DEBUG("OnMaximize()");
         m_MaximizeCallback((Window *) this, maximized);
     }
 
-    void BaseWindow::setMaximizeCallback(std::function<void(Window *window, bool maximized)> callback) {
+    void Window::setMaximizeCallback(std::function<void(Window *window, bool maximized)> callback) {
         GP_CORE_DEBUG("Set '{0}' maximize callback", m_Data.title);
 
         m_MaximizeCallback = std::move(callback);
@@ -406,12 +380,12 @@ namespace gp {
     }
 
     // Focus
-    void BaseWindow::onFocus(bool focused) {
+    void Window::onFocus(bool focused) {
         GP_CORE_DEBUG("OnFocus()");
         m_FocusedCallback((Window *) this, focused);
     }
 
-    void BaseWindow::setFocusCallback(std::function<void(Window *window, bool focused)> callback) {
+    void Window::setFocusCallback(std::function<void(Window *window, bool focused)> callback) {
         GP_CORE_DEBUG("Set '{0}' focus callback", m_Data.title);
 
         m_FocusedCallback = std::move(callback);
@@ -419,11 +393,11 @@ namespace gp {
     }
 
     // Refresh
-    void BaseWindow::onRefreshRequired() {
+    void Window::onRefreshRequired() {
         m_RefreshCallback((Window *) this);
     }
 
-    void BaseWindow::setRefreshCallback(std::function<void(Window *window)> callback) {
+    void Window::setRefreshCallback(std::function<void(Window *window)> callback) {
         GP_CORE_DEBUG("Set '{0}' refresh required callback", m_Data.title);
 
         m_RefreshCallback = std::move(callback);
@@ -431,11 +405,11 @@ namespace gp {
     }
 
     // Content Scale
-    void BaseWindow::onContentScale(float xScale, float yScale) {
+    void Window::onContentScale(float xScale, float yScale) {
         m_ContentScaleCallback((Window *) this, xScale, yScale);
     }
 
-    void BaseWindow::setContentScaleCallback(
+    void Window::setContentScaleCallback(
             std::function<void(Window *window, float xScale, float yScale)> callback) {
         GP_CORE_DEBUG("Set '{0}' content scale callback", m_Data.title);
 
@@ -444,11 +418,11 @@ namespace gp {
     }
 
     // Framebuffer Size
-    void BaseWindow::onFramebufferSize(int width, int height) {
+    void Window::onFramebufferSize(int width, int height) {
         m_FramebufferSizeCallback((Window *) this, width, height);
     }
 
-    void BaseWindow::setFramebufferSizeCallback(
+    void Window::setFramebufferSizeCallback(
             std::function<void(Window *window, int width, int height)> callback) {
         GP_CORE_DEBUG("Set '{0}' framebuffer size callback", m_Data.title);
 
@@ -457,19 +431,19 @@ namespace gp {
     }
 }
 
-// BaseWindow static methods
+// Window static methods
 namespace gp {
-    void BaseWindow::updateAll() {
+    void Window::updateAll() {
         // GP_CORE_DEBUG("Updating all windows");
 
-        for (BaseWindow *&instance: s_Instances) {
+        for (Window *&instance: s_Instances) {
             instance->update();
         }
     }
 
-    void BaseWindow::destroyAll() {
+    void Window::destroyAll() {
         GP_CORE_DEBUG("Destroying all windows");
-        for (BaseWindow *&instance: s_Instances) {
+        for (Window *&instance: s_Instances) {
             instance->destroy();
         }
     }

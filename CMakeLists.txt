@@ -43,7 +43,7 @@ set(SOURCE_FILES
     ${PLATFORM_PATH}/OpenGL/Shader.cpp
     ${PLATFORM_PATH}/OpenGL/Texture2D.cpp
 
-    ${PLATFORM_PATH}/Independent/BaseWindow.cpp
+    ${PLATFORM_PATH}/Independent/Window.cpp
     ${PLATFORM_PATH}/Independent/Buffer.cpp
     ${PLATFORM_PATH}/Independent/VertexArray.cpp
     ${PLATFORM_PATH}/Independent/Shader.cpp

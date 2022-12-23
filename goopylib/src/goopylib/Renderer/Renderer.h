@@ -48,7 +48,7 @@ namespace gp {
 
     class Renderer {
 
-        friend class BaseWindow;
+        friend class Window;
 
         friend class RenderableObject;
 

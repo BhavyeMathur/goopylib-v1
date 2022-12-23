@@ -1,10 +1,17 @@
-#include "pch.h"
-#include "goopylib/Core/Window.h"
+#include "src/goopylib/Core/Window.h"
 
 #if GP_USING_GLFW
 
 namespace gp {
-    Window::Window(const WindowConfig &config) : BaseWindow(config) {
+    Window::Window(const WindowConfig &config)
+            : m_Data(config),
+            m_KeyModifiers(0),
+            m_isDestroyed(false),
+
+            m_WindowedWidth(config.width),
+            m_WindowedHeight(config.height),
+            m_WindowedXPos(config.xPos),
+            m_WindowedYPos(config.yPos) {
         GP_CORE_INFO("Creating window '{0}' ({1}, {2})", config.title, config.width, config.height);
 
         m_Window = glfwCreateWindow(m_Data.width,
@@ -15,11 +22,15 @@ namespace gp {
         glfwSetWindowUserPointer(m_Window, this);
 
         super();
+
+        s_Instances.push_back(this);
     }
 
     Window::~Window() {
         GP_CORE_INFO("Deallocating window '{0}'", m_Data.title);
         destroy();
+
+        s_Instances.erase(std::remove(s_Instances.begin(), s_Instances.end(), this), s_Instances.end());
     }
 
     GLFWwindow *Window::getWindowGLFW() {
