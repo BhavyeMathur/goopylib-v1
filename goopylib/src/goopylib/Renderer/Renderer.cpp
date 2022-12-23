@@ -83,6 +83,7 @@ namespace gp {
 
         m_RenderingObjects.emplace_back(imageVAO, nullptr, m_ImageShader);
         m_ImageVertices.emplace_back();
+        m_ImageIDs.emplace_back();
     }
 
     uint32_t Renderer::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
@@ -260,7 +261,8 @@ namespace gp {
         unsigned int batch = texIndex / s_TextureSlots;
         unsigned int i = IMAGES + batch;
 
-        m_ImageIDs.insert({ID, {batch, (uint32_t) m_ImageVertices[batch].size()}});
+        m_ImageBatches.insert({ID, batch});
+        m_ImageIDs[batch].insert({ID, m_ImageVertices[batch].size()});
 
         m_ImageVertices[batch].push_back(image->m_V1);
         m_ImageVertices[batch].push_back(image->m_V2);
@@ -276,35 +278,36 @@ namespace gp {
     }
 
     void Renderer::destroyImage(uint32_t ID) {
-        BatchID batchID = m_ImageIDs.at(ID);
+        uint32_t batch = m_ImageBatches.at(ID);
+        auto &imageIDs = m_ImageIDs[batch];
+        uint32_t index = imageIDs.at(ID);
 
-        m_ImageVertices[batchID.batch].erase(std::next(m_ImageVertices[batchID.batch].begin(), batchID.index),
-                                             std::next(m_ImageVertices[batchID.batch].begin(), batchID.index + 4));
+        m_ImageVertices[batch].erase(std::next(m_ImageVertices[batch].begin(), index),
+                                             std::next(m_ImageVertices[batch].begin(), index + 4));
 
-        m_ImageIDs.erase(ID);
-        for (uint32_t i = ID + 1; i < m_ImageIDs.size(); i++) {
-            if (m_ImageIDs.find(i) != m_ImageIDs.end()) {
-                if (m_ImageIDs.at(i).batch == batchID.batch) {
-                    m_ImageIDs.at(i).index -= 4;
-                }
+        imageIDs.erase(ID);
+        for (uint32_t i = ID + 1; i < imageIDs.size(); i++) {
+            if (imageIDs.find(i) != imageIDs.end()) {
+               imageIDs.at(ID) -= 4;
             }
         }
 
-        m_RenderingObjects[IMAGES].indices -= 6;
-        m_RenderingObjects[IMAGES].vertices -= 4;
-        m_RenderingObjects[IMAGES].bufferData = &m_ImageVertices[batchID.batch][0];
-        m_RenderingObjects[IMAGES].reallocateBufferData = true;
+        m_RenderingObjects[IMAGES + batch].indices -= 6;
+        m_RenderingObjects[IMAGES + batch].vertices -= 4;
+        m_RenderingObjects[IMAGES + batch].bufferData = &m_ImageVertices[batch][0];
+        m_RenderingObjects[IMAGES + batch].reallocateBufferData = true;
     }
 
     void Renderer::updateImage(uint32_t ID, const Image *image) {
-        BatchID batchID = m_ImageIDs.at(ID);
+        uint32_t batch = m_ImageBatches.at(ID);
+        uint32_t index = m_ImageIDs[batch].at(ID);
 
-        m_ImageVertices[batchID.batch][batchID.index + 0] = image->m_V1;
-        m_ImageVertices[batchID.batch][batchID.index + 1] = image->m_V2;
-        m_ImageVertices[batchID.batch][batchID.index + 2] = image->m_V3;
-        m_ImageVertices[batchID.batch][batchID.index + 3] = image->m_V4;
+        m_ImageVertices[batch][index + 0] = image->m_V1;
+        m_ImageVertices[batch][index + 1] = image->m_V2;
+        m_ImageVertices[batch][index + 2] = image->m_V3;
+        m_ImageVertices[batch][index + 3] = image->m_V4;
 
-        m_RenderingObjects[IMAGES + batchID.batch].updateBufferData = true;
+        m_RenderingObjects[IMAGES + batch].updateBufferData = true;
     }
 
     void Renderer::flush() {

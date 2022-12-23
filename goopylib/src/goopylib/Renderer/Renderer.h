@@ -75,7 +75,8 @@ namespace gp {
 
         std::vector<std::vector<ImageVertex>> m_ImageVertices;
         uint32_t m_NextImageID = 0;
-        std::unordered_map<uint32_t, BatchID> m_ImageIDs;
+        std::unordered_map<uint32_t, uint32_t> m_ImageBatches;
+        std::vector<std::unordered_map<uint32_t, uint32_t>> m_ImageIDs;
 
         Ref<Shader> m_PolygonShader;
         Ref<Shader> m_EllipseShader;
