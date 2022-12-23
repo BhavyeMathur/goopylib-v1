@@ -7,6 +7,10 @@ namespace gp {
     }
 
     void RenderableObject::draw(Window *window) {
+        if (m_Drawn) {
+            _destroy();
+        }
+
         m_RendererID = _draw(window);
         m_Window = window;
         m_Drawn = true;

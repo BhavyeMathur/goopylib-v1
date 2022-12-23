@@ -113,9 +113,9 @@ namespace gp {
                                  std::next(m_TriangleVertices.begin(), index + 3));
 
         m_TriangleIDs.erase(ID);
-        for (uint32_t i = ID + 1; i < m_TriangleIDs.size(); i++) {
-            if (m_TriangleIDs.find(i) != m_TriangleIDs.end()) {
-                m_TriangleIDs.at(i) -= 3;
+        for (auto &i: m_TriangleIDs) {
+            if (i.second > index) {
+                i.second -= 4;
             }
         }
 
@@ -162,9 +162,9 @@ namespace gp {
                              std::next(m_QuadVertices.begin(), index + 4));
 
         m_QuadIDs.erase(ID);
-        for (uint32_t i = ID + 1; i < m_QuadIDs.size(); i++) {
-            if (m_QuadIDs.find(i) != m_QuadIDs.end()) {
-                m_QuadIDs.at(i) -= 4;
+        for (auto &i: m_QuadIDs) {
+            if (i.second > index) {
+                i.second -= 4;
             }
         }
 
@@ -212,9 +212,9 @@ namespace gp {
                                 std::next(m_EllipseVertices.begin(), index + 4));
 
         m_EllipseIDs.erase(ID);
-        for (uint32_t i = ID + 1; i < m_EllipseIDs.size(); i++) {
-            if (m_EllipseIDs.find(i) != m_EllipseIDs.end()) {
-                m_EllipseIDs.at(i) -= 4;
+        for (auto &i: m_EllipseIDs) {
+            if (i.second > index) {
+                i.second -= 4;
             }
         }
 
@@ -284,12 +284,12 @@ namespace gp {
         uint32_t index = imageIDs.at(ID);
 
         m_ImageVertices[batch].erase(std::next(m_ImageVertices[batch].begin(), index),
-                                             std::next(m_ImageVertices[batch].begin(), index + 4));
+                                     std::next(m_ImageVertices[batch].begin(), index + 4));
 
         imageIDs.erase(ID);
-        for (uint32_t i = ID + 1; i < imageIDs.size(); i++) {
-            if (imageIDs.find(i) != imageIDs.end()) {
-               imageIDs.at(ID) -= 4;
+        for (auto &i: imageIDs) {
+            if (i.second > index) {
+                i.second -= 4;
             }
         }
 
