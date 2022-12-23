@@ -20,7 +20,7 @@ namespace gp {
 
         void move(float dx, float dy);
 
-        void setCenter(float x, float y);
+        void setAnchor(float x, float y);
 
         virtual void resetCenter() = 0;
 

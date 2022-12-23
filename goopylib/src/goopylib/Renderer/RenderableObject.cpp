@@ -41,7 +41,7 @@ namespace gp {
         update();
     }
 
-    void RenderableObject::setCenter(float x, float y) {
+    void RenderableObject::setAnchor(float x, float y) {
         m_Position.x = x;
         m_Position.y = y;
     }
