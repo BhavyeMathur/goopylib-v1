@@ -3,6 +3,14 @@
 #if GP_USING_GLFW
 
 namespace gp {
+    enum class CursorMode {
+        Normal = GLFW_CURSOR_NORMAL,
+        Disabled = GLFW_CURSOR_DISABLED,
+        Hidden = GLFW_CURSOR_HIDDEN
+    };
+}
+
+namespace gp {
     Window::Window(const WindowConfig &config)
             : m_Data(config),
             m_KeyModifiers(0),
@@ -209,6 +217,16 @@ namespace gp {
 namespace gp {
     bool Window::isMouseHovering() const {
         return (bool) glfwGetWindowAttrib(m_Window, GLFW_HOVERED);
+    }
+
+    Point Window::getCursorPosition() const {
+        double xPos, yPos;
+        glfwGetCursorPos(m_Window, &xPos, &yPos);
+        return {(float) xPos, (float) yPos};
+    }
+
+    void Window::setCursorMode(CursorMode mode) const {
+        glfwSetInputMode(m_Window, GLFW_CURSOR, (int) mode);
     }
 
     bool Window::checkShiftKey() const {

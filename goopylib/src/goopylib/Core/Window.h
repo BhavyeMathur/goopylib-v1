@@ -3,8 +3,15 @@
 #include "src/goopylib/Color/Color.h"
 #include "src/goopylib/Renderer/Renderer.h"
 
+// TODO cursor callback
+// TODO cursor enter/leave
+// TODO check mouse button
+// TODO mouse button callbacks
+// TODO scroll callback
+// TODO mouse input mode
+
 namespace gp {
-    class Window;
+    enum class CursorMode;
 
     struct WindowConfig {
         int width;
@@ -229,6 +236,10 @@ namespace gp {
         // Input Events
 
         bool isMouseHovering() const;
+
+        Point getCursorPosition() const;
+
+        void setCursorMode(CursorMode mode) const;
 
         bool checkShiftKey() const;
 
