@@ -78,7 +78,8 @@ namespace gp {
 
         imageVBO->setLayout({{ShaderDataType::Float2, "vertices"},
                              {ShaderDataType::Float2, "texCoord"},
-                             {ShaderDataType::Int, "texSlot"}});
+                             {ShaderDataType::Int, "texSlot"},
+                             {ShaderDataType::Float, "transparency"}});
         imageVAO->setVertexBuffer(imageVBO);
 
         m_RenderingObjects.emplace_back(imageVAO, nullptr, m_ImageShader);

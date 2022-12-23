@@ -13,11 +13,13 @@ namespace gp {
     }
 
     void RenderableObject::destroy() {
-        _destroy();
+        if (m_Drawn) {
+            _destroy();
 
-        m_Window = nullptr;
-        m_Drawn = false;
-        m_RendererID = 0;
+            m_Window = nullptr;
+            m_Drawn = false;
+            m_RendererID = 0;
+        }
     }
 
     void RenderableObject::update() const {

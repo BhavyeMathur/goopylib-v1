@@ -36,5 +36,6 @@ namespace gp {
         Point point;
         Point texCoord;
         uint32_t texSlot;
+        float transparency;
     };
 }

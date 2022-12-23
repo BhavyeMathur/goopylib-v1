@@ -17,6 +17,10 @@ namespace gp {
 
         const char *getPath() const;
 
+        void setTransparency(float value);
+
+        void setTransparency(float v1, float v2, float v3, float v4);
+
     private:
         const char *m_Path;
 
