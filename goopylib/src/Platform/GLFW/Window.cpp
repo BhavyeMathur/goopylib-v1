@@ -12,11 +12,6 @@ namespace gp {
                                     m_Data.title, nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
 
-        #if GP_USING_OPENGL
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        #endif
-
         glfwSetWindowUserPointer(m_Window, this);
 
         super();

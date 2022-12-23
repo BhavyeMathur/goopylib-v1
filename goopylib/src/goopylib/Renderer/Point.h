@@ -19,17 +19,45 @@ namespace gp {
     struct TriangleVertex {
         Point point;
         RGBf color;
+        float transparency;
+
+        TriangleVertex() = default;
+
+        TriangleVertex(Point point, RGBf color, float transperency = 1)
+                : point(point),
+                color(color),
+                transparency(transperency) {
+        }
     };
 
     struct QuadVertex {
         Point point;
         RGBf color;
+        float transparency;
+
+        QuadVertex() = default;
+
+        QuadVertex(Point point, RGBf color, float transperency = 1)
+                : point(point),
+                color(color),
+                transparency(transperency) {
+        }
     };
 
     struct EllipseVertex {
         Point point;
         Point localCoord;
         RGBf color;
+        float transparency;
+
+        EllipseVertex() = default;
+
+        EllipseVertex(Point point, Point localCoord, RGBf color, float transperency = 1)
+                : point(point),
+                localCoord(localCoord),
+                color(color),
+                transparency(transperency) {
+        }
     };
 
     struct ImageVertex {
@@ -37,5 +65,14 @@ namespace gp {
         Point texCoord;
         uint32_t texSlot;
         float transparency;
+
+        ImageVertex() = default;
+
+        ImageVertex(Point point, Point texCoord, uint32_t texSlot, float transperency = 1)
+                : point(point),
+                texCoord(texCoord),
+                texSlot(texSlot),
+                transparency(transperency) {
+        }
     };
 }

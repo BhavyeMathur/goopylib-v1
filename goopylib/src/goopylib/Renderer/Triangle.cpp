@@ -69,6 +69,10 @@ namespace gp {
         m_V2.color = {color.getRedf(), color.getGreenf(), color.getBluef()};
         m_V3.color = {color.getRedf(), color.getGreenf(), color.getBluef()};
 
+        m_V1.transparency = color.getAlpha();
+        m_V2.transparency = color.getAlpha();
+        m_V3.transparency = color.getAlpha();
+
         update();
     }
 
@@ -76,6 +80,10 @@ namespace gp {
         m_V1.color = {color1.getRedf(), color1.getGreenf(), color1.getBluef()};
         m_V2.color = {color2.getRedf(), color2.getGreenf(), color2.getBluef()};
         m_V3.color = {color3.getRedf(), color3.getGreenf(), color3.getBluef()};
+
+        m_V1.transparency = color1.getAlpha();
+        m_V2.transparency = color2.getAlpha();
+        m_V3.transparency = color3.getAlpha();
 
         update();
     }

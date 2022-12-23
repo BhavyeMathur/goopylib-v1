@@ -35,6 +35,24 @@ namespace gp {
                 m_Height = height;
             }
 
+            void setTransparency(float value) {
+                m_V1.transparency = value;
+                m_V2.transparency = value;
+                m_V3.transparency = value;
+                m_V4.transparency = value;
+
+                update();
+            }
+
+            void setTransparency(float v1, float v2, float v3, float v4) {
+                m_V1.transparency = v1;
+                m_V2.transparency = v2;
+                m_V3.transparency = v3;
+                m_V4.transparency = v4;
+
+                update();
+            }
+
         protected:
             VertexType m_V1, m_V2, m_V3, m_V4;
 

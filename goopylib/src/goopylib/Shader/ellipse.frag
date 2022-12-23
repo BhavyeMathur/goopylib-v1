@@ -2,6 +2,8 @@
 
 in vec2 LocalCoord;
 in vec3 Color;
+in float Transparency;
+
 out vec4 FragColor;
 
 void main() {
@@ -9,5 +11,5 @@ void main() {
     if (LocalCoord.x * LocalCoord.x + LocalCoord.y * LocalCoord.y > 1)
         discard;
 
-    FragColor = vec4(Color, 1.0f);
+    FragColor = vec4(Color, Transparency);
 }

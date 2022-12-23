@@ -9,6 +9,11 @@ namespace gp {
     void Renderer::init() {
         GP_CORE_INFO("Initializing Renderer");
 
+        #if GP_USING_OPENGL
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        #endif
+
         GP_CORE_TRACE("Initializing Polygon Shader");
         m_PolygonShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
                                             GP_DIRECTORY "goopylib/Shader/solid.frag");
@@ -37,7 +42,8 @@ namespace gp {
         auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         triangleVBO->setLayout({{ShaderDataType::Float2, "vertices"},
-                                {ShaderDataType::Float3, "color"}});
+                                {ShaderDataType::Float3, "color"},
+                                {ShaderDataType::Float, "transparency"}});
         triangleVAO->setVertexBuffer(triangleVBO);
 
         m_RenderingObjects.emplace_back(triangleVAO, nullptr, m_PolygonShader);
@@ -50,7 +56,8 @@ namespace gp {
         auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         quadVBO->setLayout({{ShaderDataType::Float2, "vertices"},
-                            {ShaderDataType::Float3, "color"}});
+                            {ShaderDataType::Float3, "color"},
+                            {ShaderDataType::Float, "transparency"}});
         quadVAO->setVertexBuffer(quadVBO);
 
         m_RenderingObjects.emplace_back(quadVAO, nullptr, m_PolygonShader);
@@ -64,7 +71,8 @@ namespace gp {
 
         ellipseVBO->setLayout({{ShaderDataType::Float2, "vertices"},
                                {ShaderDataType::Float2, "localCoord"},
-                               {ShaderDataType::Float3, "color"}});
+                               {ShaderDataType::Float3, "color"},
+                               {ShaderDataType::Float, "transparency"}});
         ellipseVAO->setVertexBuffer(ellipseVBO);
 
         m_RenderingObjects.emplace_back(ellipseVAO, nullptr, m_EllipseShader);
