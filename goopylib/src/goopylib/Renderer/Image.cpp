@@ -11,11 +11,43 @@ namespace gp {
             m_Path(path) {
         GP_CORE_DEBUG("Initializing Image '{0}' at ({1}, {2})", path, position.x, position.y);
 
-        stbi_info(path, &m_Width, &m_Height, nullptr);
+        int width, height;
+        stbi_info(path, &width, &height, nullptr);
 
-        // TODO remove temporary 0.001 scale after a camera system is created
-        _scale(0.00109649f * (float) m_Width, 0.00109649f * (float) m_Height);
+        m_Width = (float) width;
+        m_Height = (float) height;
+
+        _scale((float) m_Width, (float) m_Height);
         _move(position.x, position.y);
+    }
+
+    Image::Image(Point position, const char *path, float width, float height)
+            : RenderableObject(position),
+            m_V1({{-0.5, -0.5}, {0, 0}, 0}),
+            m_V2({{0.5, -0.5}, {1, 0}, 0}),
+            m_V3({{0.5, 0.5}, {1, 1}, 0}),
+            m_V4({{-0.5, 0.5}, {0, 1}, 0}),
+            m_Path(path),
+            m_Width(width),
+            m_Height(height) {
+        GP_CORE_DEBUG("Initializing Image '{0}' at ({1}, {2}), size=({3}, {4})",
+                      path, position.x, position.y, width, height);
+
+        _scale(m_Width, m_Height);
+        _move(position.x, position.y);
+    }
+
+    Image::Image(Point p1, Point p2, const char *path)
+            : RenderableObject({(p1.x + p2.x) / 2.0f,
+                                (p1.y + p2.y) / 2.0f}),
+            m_V1({{p1.x, p1.y}, {0, 0}, 0}),
+            m_V2({{p2.x, p1.y}, {1, 0}, 0}),
+            m_V3({{p2.x,  p2.y}, {1, 1}, 0}),
+            m_V4({{p1.x, p2.y}, {0, 1}, 0}),
+            m_Path(path),
+            m_Width(abs(p2.x - p1.x)),
+            m_Height(abs(p2.y - p1.y)) {
+        GP_CORE_DEBUG("Initializing Image '{0}' from ({1}, {2}) to ({3}, {4})", path, p1.x, p1.y, p2.x, p2.y);
     }
 
     void Image::resetCenter() {
@@ -78,14 +110,30 @@ namespace gp {
     }
 }
 
-// Getter Methods
+// Getter & Setter Methods
 namespace gp {
-    int32_t Image::getWidth() const {
+    void Image::setWidth(float width) {
+        scale(width / m_Width, 1);
+        m_Width = width;
+    }
+
+    float Image::getWidth() const {
         return m_Width;
     }
 
-    int32_t Image::getHeight() const {
+    void Image::setHeight(float height) {
+        scale(1, height / m_Height);
+        m_Height = height;
+    }
+
+    float Image::getHeight() const {
         return m_Height;
+    }
+
+    void Image::setSize(float width, float height) {
+        scale(width / m_Width, height / m_Height);
+        m_Width = width;
+        m_Height = height;
     }
 
     const char *Image::getPath() const {
