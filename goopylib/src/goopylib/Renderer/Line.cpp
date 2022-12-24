@@ -4,8 +4,8 @@
 namespace gp {
     Line::Line(Point p1, Point p2)
             : RenderableObject({p1, p2}),
-            m_V1({0, 0, 0, 1}),
-            m_V2({0, 0, 0, 1}) {
+            m_V1({{0, 0, 0}}),
+            m_V2({{0, 0, 0}}) {
 
     }
 

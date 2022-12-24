@@ -90,7 +90,7 @@ namespace VertexArray {
     }
 
     static PyObject *get_vertex_buffer(VertexArrayObject *self, PyObject *Py_UNUSED(args)) {
-        RETURN_PYOBJECT(self->vertex_buffers);
+        RETURN_PYOBJECT(self->vertex_buffers)
     }
 
     static PyMethodDef methods[] = {

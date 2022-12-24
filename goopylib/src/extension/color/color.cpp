@@ -203,7 +203,7 @@ namespace color {
             *((ColorObject *) o1)->color += (int) PyLong_AsLong(o2);
         }
 
-        RETURN_PYOBJECT(o1);
+        RETURN_PYOBJECT(o1)
     }
 
     static PyObject *PyNumber_InPlaceSubtract(PyObject *o1, PyObject *o2) {
@@ -228,7 +228,7 @@ namespace color {
             *((ColorObject *) o1)->color -= (int) PyLong_AsLong(o2);
         }
 
-        RETURN_PYOBJECT(o1);
+        RETURN_PYOBJECT(o1)
     }
 }
 

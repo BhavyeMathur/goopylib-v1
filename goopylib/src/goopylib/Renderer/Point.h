@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+#define GP_CREATE_VERTEX(type) struct type##Vertex { Point vertex; type##VertexAttrib attrib; }
+
 namespace gp {
     struct RGBAf {
         float red = 0;
@@ -9,13 +11,7 @@ namespace gp {
         float blue = 0;
         float alpha = 1;
 
-        RGBAf() = default;
-
-        RGBAf(float red, float green, float blue, float alpha = 1)
-                : red(red),
-                green(green),
-                blue(blue),
-                alpha(alpha) {
+        RGBAf(float red, float green, float blue, float alpha = 1) : red(red), green(green), blue(blue), alpha(alpha) {
         }
     };
 
@@ -25,90 +21,40 @@ namespace gp {
 
         Point() = default;
 
-        Point(float x, float y)
-                : x(x),
-                y(y) {
+        Point(float x, float y) : x(x), y(y) {
         }
     };
 
     // TODO pack 3x32-bit float color data into 1x32-bit unsigned int
 
-    struct TriangleVertexAttrib {
+    struct ColorVertexAttrib {
         RGBAf color;
 
-        TriangleVertexAttrib() = default;
-
-        TriangleVertexAttrib(RGBAf color)
-                : color(color) {
+        ColorVertexAttrib(RGBAf color) : color(color) {
         }
-    };
-
-    struct TriangleVertex {
-        Point vertex;
-        TriangleVertexAttrib attrib;
-    };
-
-    struct QuadVertexAttrib {
-        RGBAf color;
-
-        QuadVertexAttrib() = default;
-
-        QuadVertexAttrib(RGBAf color)
-                : color(color) {
-        }
-    };
-
-    struct QuadVertex {
-        Point vertex;
-        QuadVertexAttrib attrib;
     };
 
     struct EllipseVertexAttrib {
         Point localCoord;
         RGBAf color;
-
-        EllipseVertexAttrib() = default;
-
-        EllipseVertexAttrib(Point localCoord, RGBAf color)
-                : localCoord(localCoord),
-                color(color) {
-        }
-    };
-
-    struct EllipseVertex {
-        Point vertex;
-        EllipseVertexAttrib attrib;
     };
 
     struct ImageVertexAttrib {
         Point texCoord;
         uint32_t texSlot = 0;
-        float transparency = 1;
+        float transparency = 0;
 
-        ImageVertexAttrib() = default;
-
-        ImageVertexAttrib(Point texCoord)
-                : texCoord(texCoord) {
+        ImageVertexAttrib(Point texCoord) : texCoord(texCoord) {
         }
     };
 
-    struct ImageVertex {
-        Point vertex;
-        ImageVertexAttrib attrib;
-    };
+    #define LineVertexAttrib ColorVertexAttrib
+    #define TriangleVertexAttrib ColorVertexAttrib
+    #define QuadVertexAttrib ColorVertexAttrib
 
-    struct LineVertexAttrib {
-        RGBAf color;
-
-        LineVertexAttrib() = default;
-
-        LineVertexAttrib(RGBAf color)
-                : color(color) {
-        }
-    };
-
-    struct LineVertex {
-        Point vertex;
-        LineVertexAttrib attrib;
-    };
+    GP_CREATE_VERTEX(Line);
+    GP_CREATE_VERTEX(Triangle);
+    GP_CREATE_VERTEX(Quad);
+    GP_CREATE_VERTEX(Ellipse);
+    GP_CREATE_VERTEX(Image);
 }

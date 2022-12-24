@@ -91,7 +91,7 @@ namespace window {
         }
         #endif
 
-        gp::setBufferSwapInterval(PyLong_AsLong(arg));
+        gp::setBufferSwapInterval((int32_t) PyLong_AsLong(arg));
         Py_RETURN_NONE;
     }
 
