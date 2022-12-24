@@ -61,9 +61,18 @@ namespace gp {
 
         void setSize(float width, float height);
 
-        bool contains(Point point);
+        bool boxContains(Point point) const;
 
-        bool contains(float x, float y);
+        bool contains(Point point) const;
+
+        // Visibility
+        virtual void setTransparency(float value) = 0;
+
+        void hide(bool hidden = true);
+
+        void show();
+
+        bool isHidden() const;
 
     protected:
         Window *m_Window = nullptr;
@@ -85,7 +94,11 @@ namespace gp {
         float m_Width;
         float m_Height;
 
-        float m_Angle = 0;
+        float m_AngleDegrees = 0;
+        float m_AngleRadians = 0;
+        float m_CosAngle = 1;
+        float m_SinAngle = 0;
+
         float m_xScale = 1;
         float m_yScale = 1;
 
@@ -96,17 +109,19 @@ namespace gp {
 
     private:
         bool m_Drawn = false;
+        bool m_Hidden = false;
 
         void _calculateAttributes();
 
-        void _rotate(float sin, float cos);
-
-        virtual bool _contains(float x, float y);
+        virtual bool _contains(float x, float y) const;
 
         virtual uint32_t _draw(Window *window) const = 0;
 
         virtual void _destroy() const = 0;
 
         virtual void _update() const = 0;
+
+        virtual void _onScale(float xfactor, float yfactor) {
+        };
     };
 }

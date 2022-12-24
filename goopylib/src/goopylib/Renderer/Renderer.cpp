@@ -122,10 +122,16 @@ namespace gp {
         m_NextLineID++;
         GP_CORE_DEBUG("Drawing Line {0}", ID);
 
-        m_LineIDs.insert({ID, m_LineVertices.size()});
+        uint32_t index = m_LineVertices.size();
+        m_LineIDs.insert({ID, index});
 
         m_LineVertices.push_back({object->m_Points[0], object->m_V1});
         m_LineVertices.push_back({object->m_Points[1], object->m_V2});
+
+        if (object->isHidden()) {
+            m_LineVertices[index + 0].attrib.color.alpha = 0;
+            m_LineVertices[index + 1].attrib.color.alpha = 0;
+        }
 
         m_RenderingObjects[LINES].indices += 2;
         m_RenderingObjects[LINES].vertices += 2;
@@ -159,6 +165,11 @@ namespace gp {
 
         m_LineVertices[index + 0] = {object->m_Points[0], object->m_V1};
         m_LineVertices[index + 1] = {object->m_Points[1], object->m_V2};
+        
+        if (object->isHidden()) {
+            m_LineVertices[index + 0].attrib.color.alpha = 0;
+            m_LineVertices[index + 1].attrib.color.alpha = 0;
+        }
 
         m_RenderingObjects[LINES].updateBufferData = true;
     }
@@ -168,11 +179,18 @@ namespace gp {
         m_NextTriangleID++;
         GP_CORE_DEBUG("Drawing Triangle {0}", ID);
 
-        m_TriangleIDs.insert({ID, m_TriangleVertices.size()});
+        uint32_t index = m_TriangleVertices.size();
+        m_TriangleIDs.insert({ID, index});
 
         m_TriangleVertices.push_back({object->m_Points[0], object->m_V1});
         m_TriangleVertices.push_back({object->m_Points[1], object->m_V2});
         m_TriangleVertices.push_back({object->m_Points[2], object->m_V3});
+
+        if (object->isHidden()) {
+            m_TriangleVertices[index + 0].attrib.color.alpha = 0;
+            m_TriangleVertices[index + 1].attrib.color.alpha = 0;
+            m_TriangleVertices[index + 2].attrib.color.alpha = 0;
+        }
 
         m_RenderingObjects[TRIANGLES].indices += 3;
         m_RenderingObjects[TRIANGLES].vertices += 3;
@@ -208,6 +226,12 @@ namespace gp {
         m_TriangleVertices[index + 1] = {object->m_Points[1], object->m_V2};
         m_TriangleVertices[index + 2] = {object->m_Points[2], object->m_V3};
 
+        if (object->isHidden()) {
+            m_TriangleVertices[index + 0].attrib.color.alpha = 0;
+            m_TriangleVertices[index + 1].attrib.color.alpha = 0;
+            m_TriangleVertices[index + 2].attrib.color.alpha = 0;
+        }
+
         m_RenderingObjects[TRIANGLES].updateBufferData = true;
     }
 
@@ -216,12 +240,20 @@ namespace gp {
         m_NextQuadID++;
         GP_CORE_DEBUG("Drawing Quad {0}", ID);
 
-        m_QuadIDs.insert({ID, m_QuadVertices.size()});
+        uint32_t index = m_QuadVertices.size();
+        m_QuadIDs.insert({ID, index});
 
         m_QuadVertices.push_back({object->m_Points[0], object->m_V1});
         m_QuadVertices.push_back({object->m_Points[1], object->m_V2});
         m_QuadVertices.push_back({object->m_Points[2], object->m_V3});
         m_QuadVertices.push_back({object->m_Points[3], object->m_V4});
+
+        if (object->isHidden()) {
+            m_QuadVertices[index + 0].attrib.color.alpha = 0;
+            m_QuadVertices[index + 1].attrib.color.alpha = 0;
+            m_QuadVertices[index + 2].attrib.color.alpha = 0;
+            m_QuadVertices[index + 3].attrib.color.alpha = 0;
+        }
 
         m_RenderingObjects[QUADS].indices += 6;
         m_RenderingObjects[QUADS].vertices += 4;
@@ -258,6 +290,14 @@ namespace gp {
         m_QuadVertices[index + 2] = {object->m_Points[2], object->m_V3};
         m_QuadVertices[index + 3] = {object->m_Points[3], object->m_V4};
 
+        if (object->isHidden()) {
+            m_QuadVertices[index + 0].attrib.color.alpha = 0;
+            m_QuadVertices[index + 1].attrib.color.alpha = 0;
+            m_QuadVertices[index + 2].attrib.color.alpha = 0;
+            m_QuadVertices[index + 3].attrib.color.alpha = 0;
+        }
+
+
         m_RenderingObjects[QUADS].updateBufferData = true;
     }
 
@@ -266,12 +306,20 @@ namespace gp {
         m_NextEllipseID++;
         GP_CORE_DEBUG("Drawing Ellipse {0}", ID);
 
-        m_EllipseIDs.insert({ID, m_EllipseVertices.size()});
+        uint32_t index = m_EllipseVertices.size();
+        m_EllipseIDs.insert({ID, index});
 
         m_EllipseVertices.push_back({object->m_Points[0], object->m_V1});
         m_EllipseVertices.push_back({object->m_Points[1], object->m_V2});
         m_EllipseVertices.push_back({object->m_Points[2], object->m_V3});
         m_EllipseVertices.push_back({object->m_Points[3], object->m_V4});
+
+        if (object->isHidden()) {
+            m_EllipseVertices[index + 0].attrib.color.alpha = 0;
+            m_EllipseVertices[index + 1].attrib.color.alpha = 0;
+            m_EllipseVertices[index + 2].attrib.color.alpha = 0;
+            m_EllipseVertices[index + 3].attrib.color.alpha = 0;
+        }
 
         m_RenderingObjects[ELLIPSES].indices += 6;
         m_RenderingObjects[ELLIPSES].vertices += 4;
@@ -308,6 +356,13 @@ namespace gp {
         m_EllipseVertices[index + 2] = {object->m_Points[2], object->m_V3};
         m_EllipseVertices[index + 3] = {object->m_Points[3], object->m_V4};
 
+        if (object->isHidden()) {
+            m_EllipseVertices[index + 0].attrib.color.alpha = 0;
+            m_EllipseVertices[index + 1].attrib.color.alpha = 0;
+            m_EllipseVertices[index + 2].attrib.color.alpha = 0;
+            m_EllipseVertices[index + 3].attrib.color.alpha = 0;
+        }
+
         m_RenderingObjects[ELLIPSES].updateBufferData = true;
     }
 
@@ -338,13 +393,21 @@ namespace gp {
         unsigned int batch = texIndex / s_TextureSlots;
         unsigned int i = IMAGES + batch;
 
+        uint32_t index = m_ImageVertices[batch].size();
         m_ImageBatches.insert({ID, batch});
-        m_ImageIDs[batch].insert({ID, m_ImageVertices[batch].size()});
+        m_ImageIDs[batch].insert({ID, index});
 
         m_ImageVertices[batch].push_back({object->m_Points[0], object->m_V1});
         m_ImageVertices[batch].push_back({object->m_Points[1], object->m_V2});
         m_ImageVertices[batch].push_back({object->m_Points[2], object->m_V3});
         m_ImageVertices[batch].push_back({object->m_Points[3], object->m_V4});
+
+        if (object->isHidden()) {
+            m_ImageVertices[batch][index + 0].attrib.transparency = 0;
+            m_ImageVertices[batch][index + 1].attrib.transparency = 0;
+            m_ImageVertices[batch][index + 2].attrib.transparency = 0;
+            m_ImageVertices[batch][index + 3].attrib.transparency = 0;
+        }
 
         m_RenderingObjects[i].indices += 6;
         m_RenderingObjects[i].vertices += 4;
@@ -383,6 +446,13 @@ namespace gp {
         m_ImageVertices[batch][index + 1] = {object->m_Points[1], object->m_V2};
         m_ImageVertices[batch][index + 2] = {object->m_Points[2], object->m_V3};
         m_ImageVertices[batch][index + 3] = {object->m_Points[3], object->m_V4};
+
+        if (object->isHidden()) {
+            m_ImageVertices[batch][index + 0].attrib.transparency = 0;
+            m_ImageVertices[batch][index + 1].attrib.transparency = 0;
+            m_ImageVertices[batch][index + 2].attrib.transparency = 0;
+            m_ImageVertices[batch][index + 3].attrib.transparency = 0;
+        }
 
         m_RenderingObjects[IMAGES + batch].updateBufferData = true;
     }

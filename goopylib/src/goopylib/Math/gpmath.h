@@ -39,3 +39,18 @@ template<typename T>
     T min(T a, T b, T c, T d) {
         return min(min(a, b), min(c, d));
     }
+
+
+struct Point {
+    float x = 0;
+    float y = 0;
+
+    Point() = default;
+
+    Point(float x, float y) : x(x), y(y) {
+    }
+};
+
+bool checkTriangleContains(Point point, Point a, Point b, Point c);
+
+bool checkQuadContains(Point point, Point a, Point b, Point c, Point d);

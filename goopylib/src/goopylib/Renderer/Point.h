@@ -15,16 +15,6 @@ namespace gp {
         }
     };
 
-    struct Point {
-        float x = 0;
-        float y = 0;
-
-        Point() = default;
-
-        Point(float x, float y) : x(x), y(y) {
-        }
-    };
-
     // TODO pack 3x32-bit float color data into 1x32-bit unsigned int
 
     struct ColorVertexAttrib {

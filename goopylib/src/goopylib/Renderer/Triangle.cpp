@@ -22,8 +22,8 @@ namespace gp {
         m_Window->m_Renderer.updateTriangle(m_RendererID, this);
     }
 
-    bool Triangle::_contains(float x, float y) {
-        return false;
+    bool Triangle::_contains(float x, float y) const {
+        return checkTriangleContains({x, y}, m_Points[0], m_Points[1], m_Points[2]);
     }
 }
 

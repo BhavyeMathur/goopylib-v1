@@ -6,13 +6,17 @@ namespace gp {
             : RenderableObject(position, {{position.x - xRadius, position.y - yRadius},
                                           {position.x + xRadius, position.y - yRadius},
                                           {position.x + xRadius, position.y + yRadius},
-                                          {position.x - xRadius, position.y + yRadius}}) {
+                                          {position.x - xRadius, position.y + yRadius}}),
+            m_Radius1(xRadius),
+            m_Radius2(yRadius) {
         GP_CORE_DEBUG("Initializing Ellipse at ({0}, {1}), xRadius={3}, yRadius={4}",
                       position.x, position.y, xRadius, yRadius);
     }
 
     Ellipse::Ellipse(Point p1, Point p2)
-            : RenderableObject({{p1.x, p1.y}, {p2.x, p1.y}, {p2.x, p2.y}, {p1.x, p2.y}}) {
+            : RenderableObject({{p1.x, p1.y}, {p2.x, p1.y}, {p2.x, p2.y}, {p1.x, p2.y}}),
+            m_Radius1(abs(p2.x - p1.x) / 2),
+            m_Radius2(abs(p2.y - p1.y) / 2){
         GP_CORE_DEBUG("Initializing Ellipse ({0}, {1}), ({2}, {3})", p1.x, p1.y, p2.x, p2.y);
     }
 
@@ -26,6 +30,24 @@ namespace gp {
 
     void Ellipse::_update() const {
         m_Window->m_Renderer.updateEllipse(m_RendererID, this);
+    }
+
+    bool Ellipse::_contains(float x, float y) const {
+        x -= m_Position.x;
+        y -= m_Position.y;
+
+        Point p = {x * m_CosAngle - y * m_SinAngle,
+                   x * m_SinAngle + y * m_CosAngle};
+
+        p.x /= m_Radius1;
+        p.y /= m_Radius2;
+
+        return p.x * p.x + p.y * p.y < 1;
+    }
+
+    void Ellipse::_onScale(float xfactor, float yfactor) {
+        m_Radius1 *= xfactor;  // Since these variables are used only by _contains(),
+        m_Radius2 *= yfactor;  // we do not need to care about the rotation
     }
 }
 

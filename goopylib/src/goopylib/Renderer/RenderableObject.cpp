@@ -62,8 +62,6 @@ namespace gp {
             sumY += p.y;
         }
 
-        GP_CORE_WARN("{0}, {1}", m_MinX, m_MaxX);
-
         m_Position = {sumX / (float) m_Vertices, sumY / (float) m_Vertices};
 
         m_Width = m_MaxX - m_MinX;
@@ -96,16 +94,12 @@ namespace gp {
         }
     }
 
-    bool RenderableObject::contains(Point point) {
-        return contains(point.x, point.y);
+    bool RenderableObject::boxContains(Point point) const {
+        return point.x <= m_MaxX and point.x >= m_MinX and point.y <= m_MaxY and point.y >= m_MinY;
     }
 
-    bool RenderableObject::contains(float x, float y) {
-        if (x <= m_MaxX and x >= m_MinX and y <= m_MaxY and y >= m_MinY) {
-            return true;
-            return _contains(x, y);
-        }
-        return false;
+    bool RenderableObject::contains(Point point) const {
+        return boxContains(point) and _contains(point.x, point.y);  // early exit if box doesn't contain point
     }
 }
 
@@ -160,28 +154,37 @@ namespace gp {
 
     // Rotation
     void RenderableObject::rotate(float angle) {
+        m_AngleDegrees += angle;
         angle /= 57.2957795131f;
+        m_AngleRadians += angle;
 
-        _rotate(sin(angle), cos(angle));
+        float sine = sin(angle);
+        float cosine = cos(angle);
+
+        _move(-m_Position.x, -m_Position.y);
+
+        for (int i = 0; i < m_Vertices; i++) {
+            Point p = m_Points[i];
+
+            m_Points[i] = {p.x * cosine + p.y * sine,
+                           p.y * cosine - p.x * sine};
+        }
+
+        _move(m_Position.x, m_Position.y);
         _calculateAttributes();
 
-        m_Angle += angle;
+        m_SinAngle = sin(m_AngleRadians);
+        m_CosAngle = cos(m_AngleRadians);
 
         update();
     }
 
     void RenderableObject::setRotation(float angle) {
-        angle /= 57.2957795131f;
-
-        _rotate(sin(angle - m_Angle), cos(angle - m_Angle));
-
-        m_Angle = angle;
-
-        update();
+        rotate(angle - m_AngleDegrees);
     }
 
     float RenderableObject::getRotation() const {
-        return m_Angle;
+        return m_AngleDegrees;
     }
 
     // Scale
@@ -218,6 +221,8 @@ namespace gp {
         m_xScale *= xfactor;
         m_yScale *= yfactor;
 
+        _onScale(xfactor, yfactor);
+
         update();
     }
 
@@ -248,6 +253,24 @@ namespace gp {
 
     void RenderableObject::setSize(float width, float height) {
         scale(width / m_Width, height / m_Height);
+    }
+
+    // Visibility
+    void RenderableObject::hide(bool hidden) {
+        if (m_Hidden == hidden) {
+            return;
+        }
+
+        m_Hidden = hidden;
+        update();
+    }
+
+    void RenderableObject::show() {
+        hide(false);
+    }
+
+    bool RenderableObject::isHidden() const {
+        return m_Hidden;
     }
 }
 
@@ -288,20 +311,7 @@ namespace gp {
         }
     }
 
-    void RenderableObject::_rotate(float sin, float cos) {
-        _move(-m_Position.x, -m_Position.y);
-
-        for (int i = 0; i < m_Vertices; i++) {
-            Point p = m_Points[i];
-
-            m_Points[i] = {p.x * cos + p.y * sin,
-                           p.y * cos - p.x * sin};
-        }
-
-        _move(m_Position.x, m_Position.y);
-    }
-
-    bool RenderableObject::_contains(float x, float y) {
-        return false;
+    bool RenderableObject::_contains(float x, float y) const {
+        return true;
     };
 }

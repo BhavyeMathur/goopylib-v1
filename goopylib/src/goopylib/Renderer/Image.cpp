@@ -50,6 +50,10 @@ namespace gp {
     void Image::_update() const {
         m_Window->m_Renderer.updateImage(m_RendererID, this);
     }
+
+    bool Image::_contains(float x, float y) const {
+        return checkQuadContains({x, y}, m_Points[0], m_Points[1], m_Points[2], m_Points[3]);
+    }
 }
 
 // Getter & Setter Methods

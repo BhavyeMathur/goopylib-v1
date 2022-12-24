@@ -15,7 +15,7 @@ namespace gp {
 
         void setColor(const Color& color1, const Color& color2, const Color& color3);
 
-        void setTransparency(float value);
+        void setTransparency(float value) override;
 
         void setTransparency(float v1, float v2, float v3);
 
@@ -28,6 +28,6 @@ namespace gp {
 
         void _update() const override;
 
-        bool _contains(float x, float y) override;
+        bool _contains(float x, float y) const override;
     };
 }

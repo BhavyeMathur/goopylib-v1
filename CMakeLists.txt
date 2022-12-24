@@ -25,18 +25,20 @@ set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Debug/Log.cpp
 
     ${GOOPYLIB_PATH}/Math/Easing.cpp
+    ${GOOPYLIB_PATH}/Math/gpmath.cpp
 
     ${GOOPYLIB_PATH}/Color/Color.cpp
     ${GOOPYLIB_PATH}/Color/ColorConversions.cpp
     ${GOOPYLIB_PATH}/Color/Util.cpp
 
+    ${GOOPYLIB_PATH}/Renderer/RenderableObject.cpp
+    ${GOOPYLIB_PATH}/Renderer/Line.cpp
     ${GOOPYLIB_PATH}/Renderer/Triangle.cpp
     ${GOOPYLIB_PATH}/Renderer/Quad.cpp
     ${GOOPYLIB_PATH}/Renderer/Ellipse.cpp
+    ${GOOPYLIB_PATH}/Renderer/Circle.cpp
     ${GOOPYLIB_PATH}/Renderer/Image.cpp
-    ${GOOPYLIB_PATH}/Renderer/Line.cpp
     ${GOOPYLIB_PATH}/Renderer/Renderer.cpp
-    ${GOOPYLIB_PATH}/Renderer/RenderableObject.cpp
 
     ${PLATFORM_PATH}/GLFW/Window.cpp
     ${PLATFORM_PATH}/OpenGL/Buffer.cpp

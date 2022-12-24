@@ -14,7 +14,7 @@ namespace gp {
 
         void setColor(const Color &color1, const Color &color2);
 
-        void setTransparency(float value);
+        void setTransparency(float value) override;
 
         void setTransparency(float value1, float value2);
 
