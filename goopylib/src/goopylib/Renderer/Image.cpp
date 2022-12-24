@@ -3,7 +3,7 @@
 // Core Methods
 namespace gp {
     Image::Image(Point position, const char *path)
-            : RenderableObject(position, {{-0.5, -0.5}, {0.5, -0.5}, {0.5, 0.5}, {-0.5, 0.5}}),
+            : RenderableObject({0, 0}, {{-0.5, -0.5}, {0.5, -0.5}, {0.5, 0.5}, {-0.5, 0.5}}),
             m_Path(path) {
         GP_CORE_DEBUG("Initializing Image '{0}' at ({1}, {2})", path, position.x, position.y);
 
@@ -13,18 +13,24 @@ namespace gp {
         m_Width = (float) width;
         m_Height = (float) height;
 
-        _scale((float) m_Width, (float) m_Height);
-        _move(position.x, position.y);
+        scale((float) m_Width, (float) m_Height);
+        m_xScale = 1;
+        m_yScale = 1;
+
+        move(position.x, position.y);
     }
 
     Image::Image(Point position, const char *path, float width, float height)
-            : RenderableObject(position, {{-0.5, -0.5}, {0.5, -0.5}, {0.5, 0.5}, {-0.5, 0.5}}),
+            : RenderableObject({0, 0}, {{-0.5, -0.5}, {0.5, -0.5}, {0.5, 0.5}, {-0.5, 0.5}}),
             m_Path(path) {
         GP_CORE_DEBUG("Initializing Image '{0}' at ({1}, {2}), size=({3}, {4})",
                       path, position.x, position.y, width, height);
 
-        _scale(m_Width, m_Height);
-        _move(position.x, position.y);
+        scale(m_Width, m_Height);
+        m_xScale = 1;
+        m_yScale = 1;
+
+        move(position.x, position.y);
     }
 
     Image::Image(Point p1, Point p2, const char *path)

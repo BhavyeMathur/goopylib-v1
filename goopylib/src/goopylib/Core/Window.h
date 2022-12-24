@@ -239,7 +239,7 @@ namespace gp {
 
         bool isMouseHovering() const;
 
-        Point getCursorPosition() const;
+        Point getMousePosition() const;
 
         void setCursorMode(CursorMode mode) const;
 

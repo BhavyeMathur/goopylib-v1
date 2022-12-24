@@ -11,8 +11,6 @@ namespace gp {
 }
 
 namespace gp {
-
-
     class RenderableObject {
 
         friend class Renderer;
@@ -27,29 +25,19 @@ namespace gp {
         // Anchor
         void setAnchor(float x, float y);
 
-        void resetAnchor() {
-            float sumX = 0;
-            float sumY = 0;
-
-            for (int i = 0; i < m_Vertices; i++) {
-                Point p = m_Points[i];
-
-                sumX += p.x;
-                sumY += p.y;
-            }
-
-            m_Position = {sumX / (float) m_Vertices, sumY / (float) m_Vertices};
-        }
+        void resetAnchor();
 
         // Position
+        void move(float dx, float dy);
+
         void setPosition(float x, float y);
 
         Point getPosition() const;
 
-        void move(float dx, float dy);
-
         // Rotation
         void rotate(float angle);
+
+        void setRotation(float angle);
 
         float getRotation() const;
 
@@ -58,32 +46,20 @@ namespace gp {
 
         void scale(float xfactor, float yfactor);
 
+        void setScale(float xfactor, float yfactor);
+
         Scale getScale() const;
 
         // Dimensions
-        void setWidth(float width) {
-            scale(width / m_Width, 1);
-            m_Width = width;
-        }
+        void setWidth(float width);
 
-        float getWidth() const {
-            return m_Width;
-        }
+        float getWidth() const;
 
-        void setHeight(float height) {
-            scale(1, height / m_Height);
-            m_Height = height;
-        }
+        void setHeight(float height);
 
-        float getHeight() const {
-            return m_Height;
-        }
+        float getHeight() const;
 
-        void setSize(float width, float height) {
-            scale(width / m_Width, height / m_Height);
-            m_Width = width;
-            m_Height = height;
-        }
+        void setSize(float width, float height);
 
         bool contains(Point point);
 
@@ -96,19 +72,6 @@ namespace gp {
         Point *m_Points = nullptr;
         uint32_t m_Vertices;
 
-        Point m_Position = {0, 0};
-        float m_Width;
-        float m_Height;
-
-        float m_MaxX = -FLT_MAX;
-        float m_MinX = FLT_MAX;
-        float m_MaxY = -FLT_MAX;
-        float m_MinY = FLT_MAX;
-
-        float m_Angle = 0;
-        float m_xScale = 1;
-        float m_yScale = 1;
-
         RenderableObject(Point position, std::initializer_list<Point> points);
 
         RenderableObject(std::initializer_list<Point> points);
@@ -116,35 +79,29 @@ namespace gp {
         void update() const;
 
     protected:
-        void _move(float dx, float dy) {
-            for (int i = 0; i < m_Vertices; i++) {
-                m_Points[i].x += dx;
-                m_Points[i].y += dy;
-            }
-        }
+        void _move(float x, float y);
 
-        void _rotate(float sin, float cos) {
-            for (int i = 0; i < m_Vertices; i++) {
-                Point p = m_Points[i];
+        Point m_Position = {0, 0};
+        float m_Width;
+        float m_Height;
 
-                m_Points[i] = {p.x * cos + p.y * sin,
-                               p.y * cos - p.x * sin};
-            }
-        }
+        float m_Angle = 0;
+        float m_xScale = 1;
+        float m_yScale = 1;
 
-        void _scale(float xfactor, float yfactor) {
-            for (int i = 0; i < m_Vertices; i++) {
-                m_Points[i].x *= xfactor;
-                m_Points[i].y *= yfactor;
-            }
-        }
-
-        virtual bool _contains(float x, float y) {
-            return false;
-        };
+        float m_MaxX = -FLT_MAX;
+        float m_MinX = FLT_MAX;
+        float m_MaxY = -FLT_MAX;
+        float m_MinY = FLT_MAX;
 
     private:
         bool m_Drawn = false;
+
+        void _calculateAttributes();
+
+        void _rotate(float sin, float cos);
+
+        virtual bool _contains(float x, float y);
 
         virtual uint32_t _draw(Window *window) const = 0;
 

@@ -219,7 +219,7 @@ namespace gp {
         return (bool) glfwGetWindowAttrib(m_Window, GLFW_HOVERED);
     }
 
-    Point Window::getCursorPosition() const {
+    Point Window::getMousePosition() const {
         double xPos, yPos;
         glfwGetCursorPos(m_Window, &xPos, &yPos);
         return {(float) xPos, (float) yPos};
