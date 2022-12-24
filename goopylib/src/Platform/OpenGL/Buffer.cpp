@@ -3,8 +3,6 @@
 
 // Vertex Buffer
 namespace gp {
-    // TODO allow non-float data types in VertexBuffer
-
     VertexBuffer::VertexBuffer(uint32_t count, void *vertices)
             : Buffer(count) {
         glGenBuffers(1, &m_RendererID);
@@ -13,19 +11,6 @@ namespace gp {
 
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), vertices, GL_STATIC_DRAW);
-    }
-
-    VertexBuffer::VertexBuffer(std::initializer_list<float> vertices)
-            : Buffer(vertices.size()) {
-        glGenBuffers(1, &m_RendererID);
-
-        GP_CORE_DEBUG("Initializing Vertex Buffer {0}, count={1}", m_RendererID, vertices.size());
-
-        float bufferData[vertices.size()];
-        std::copy(vertices.begin(), vertices.end(), bufferData);
-
-        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ARRAY_BUFFER, (long) (vertices.size() * sizeof(float)), bufferData, GL_STATIC_DRAW);
     }
 
     VertexBuffer::~VertexBuffer() {

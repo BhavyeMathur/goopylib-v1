@@ -3,8 +3,6 @@
 #include "pch.h"
 #include "BufferLayout.h"
 
-// TODO Vertex Buffer with non-float data
-
 // Generic Buffer
 namespace gp {
     class Buffer {
@@ -48,8 +46,6 @@ namespace gp {
         BufferLayout m_Layout{};
 
         VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
-
-        VertexBuffer(std::initializer_list<float> vertices);
     };
 }
 

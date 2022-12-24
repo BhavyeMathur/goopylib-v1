@@ -354,7 +354,6 @@ namespace gp {
         std::function<void(Window *window, float xScale, float yScale)> m_ContentScaleCallback;
         std::function<void(Window *window, int width, int height)> m_FramebufferSizeCallback;
 
-        // TODO test with std::vector instead of unordered map
         std::unordered_map<int, std::function<void(Window *window, int action)>> m_KeyCallbacks;
 
         bool _isClosed() const;
