@@ -31,14 +31,16 @@ set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Color/ColorConversions.cpp
     ${GOOPYLIB_PATH}/Color/Util.cpp
 
-    ${GOOPYLIB_PATH}/Renderer/RenderableObject.cpp
-    ${GOOPYLIB_PATH}/Renderer/Line.cpp
-    ${GOOPYLIB_PATH}/Renderer/Triangle.cpp
-    ${GOOPYLIB_PATH}/Renderer/Quad.cpp
-    ${GOOPYLIB_PATH}/Renderer/Ellipse.cpp
-    ${GOOPYLIB_PATH}/Renderer/Circle.cpp
-    ${GOOPYLIB_PATH}/Renderer/Image.cpp
-    ${GOOPYLIB_PATH}/Renderer/Renderer.cpp
+    ${GOOPYLIB_PATH}/Objects/Renderable.cpp
+    ${GOOPYLIB_PATH}/Objects/Line.cpp
+    ${GOOPYLIB_PATH}/Objects/Triangle.cpp
+    ${GOOPYLIB_PATH}/Objects/Quad.cpp
+    ${GOOPYLIB_PATH}/Objects/Ellipse.cpp
+    ${GOOPYLIB_PATH}/Objects/Circle.cpp
+    ${GOOPYLIB_PATH}/Objects/Image.cpp
+
+    ${GOOPYLIB_PATH}/Scene/Renderer.cpp
+    ${GOOPYLIB_PATH}/Scene/Camera.cpp
 
     ${PLATFORM_PATH}/GLFW/Window.cpp
     ${PLATFORM_PATH}/OpenGL/Buffer.cpp

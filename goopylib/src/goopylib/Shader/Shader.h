@@ -66,23 +66,23 @@ namespace gp {
 
         void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4) const;
 
-        void _setUniform(int32_t location, const glm::mat2 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat2 &value, bool transpose = false) const;
 
-        void _setUniform(int32_t location, const glm::mat3 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat3 &value, bool transpose = false) const;
 
-        void _setUniform(int32_t location, const glm::mat4 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat4 &value, bool transpose = false) const;
 
-        void _setUniform(int32_t location, const glm::mat2x3 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat2x3 &value, bool transpose = false) const;
 
-        void _setUniform(int32_t location, const glm::mat3x2 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat3x2 &value, bool transpose = false) const;
 
-        void _setUniform(int32_t location, const glm::mat2x4 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat2x4 &value, bool transpose = false) const;
 
-        void _setUniform(int32_t location, const glm::mat4x2 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat4x2 &value, bool transpose = false) const;
 
-        void _setUniform(int32_t location, const glm::mat3x4 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat3x4 &value, bool transpose = false) const;
 
-        void _setUniform(int32_t location, const glm::mat4x3 &value, bool transpose) const;
+        void _setUniform(int32_t location, const glm::mat4x3 &value, bool transpose = false) const;
 
         void _setUniform(int32_t location, int32_t count, float *value) const;
 

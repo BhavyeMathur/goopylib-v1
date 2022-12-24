@@ -13,13 +13,13 @@ namespace gp {
 namespace gp {
     Window::Window(const WindowConfig &config)
             : m_Data(config),
-            m_KeyModifiers(0),
-            m_isDestroyed(false),
 
             m_WindowedWidth(config.width),
             m_WindowedHeight(config.height),
             m_WindowedXPos(config.xPos),
-            m_WindowedYPos(config.yPos) {
+            m_WindowedYPos(config.yPos),
+
+            m_Renderer((float) config.width, (float) config.height) {
         GP_CORE_INFO("Creating window '{0}' ({1}, {2})", config.title, config.width, config.height);
 
         m_Window = glfwCreateWindow(m_Data.width,

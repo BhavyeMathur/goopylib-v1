@@ -1,7 +1,7 @@
 #pragma once
 
 #include "src/goopylib/Color/Color.h"
-#include "src/goopylib/Renderer/Renderer.h"
+#include "src/goopylib/Scene/Renderer.h"
 
 // TODO cursor callback
 // TODO cursor enter/leave
@@ -82,7 +82,7 @@ namespace gp {
 
     class Window {
 
-        friend class RenderableObject;
+        friend class Renderable;
 
         friend class Triangle;
 
@@ -286,19 +286,10 @@ namespace gp {
     private:
         WindowConfig m_Data;
 
-        bool m_isDestroyed;
-        int m_KeyModifiers;  // check if shift, control, alt, and super keys are pressed
+        bool m_isDestroyed = false;
+        int m_KeyModifiers = 0;  // check if shift, control, alt, and super keys are pressed
 
-        void super() {
-            m_Renderer.init();
-
-            _updatePosition();
-            _updateSizeLimits();
-
-            _setResizeCallback();
-            _setPositionCallback();
-            _setKeyCallback();
-        }
+        void super();
 
         // Callback Functions
         void onResize(int width, int height);

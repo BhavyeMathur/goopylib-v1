@@ -3,6 +3,17 @@
 namespace gp {
     std::vector<Window *> Window::s_Instances;
 
+    void Window::super() {
+        m_Renderer.init();
+
+        _updatePosition();
+        _updateSizeLimits();
+
+        _setResizeCallback();
+        _setPositionCallback();
+        _setKeyCallback();
+    }
+
     void Window::update() {
         GP_CORE_TRACE_ALL("Updating window '{0}'", m_Data.title);
 

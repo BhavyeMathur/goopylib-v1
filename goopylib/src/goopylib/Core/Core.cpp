@@ -3,7 +3,6 @@
 #include "src/pch.h"
 #include "src/goopylib/Core/Core.h"
 #include "src/goopylib/Color/W3CX11.h"
-#include "src/goopylib/Renderer/Line.h"
 
 namespace {
     void onUpdate() {

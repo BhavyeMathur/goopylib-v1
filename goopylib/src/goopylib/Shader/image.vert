@@ -5,12 +5,15 @@ layout (location = 1) in vec2 texCoord;
 layout (location = 2) in int texSlot;
 layout (location = 3) in float transparency;
 
+uniform mat4 ProjectionViewMatrix;
+
 out vec2 TexCoord;
 flat out int TexSlot;
 out float Transparency;
 
 void main() {
-    gl_Position = vec4(point, 0.0f, 1.0f);
+    gl_Position = ProjectionViewMatrix * vec4(point, 0.0f, 1.0f);
+
     TexCoord = texCoord;
     TexSlot = texSlot;
     Transparency = transparency;
