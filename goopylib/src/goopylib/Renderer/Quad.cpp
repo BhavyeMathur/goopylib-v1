@@ -3,19 +3,16 @@
 // Core Methods
 namespace gp {
     Quad::Quad(Point p1, Point p2, Point p3, Point p4)
-            : Polygon4({(p1.x + p2.x + p3.x + p4.x) / 4.0f, (p1.y + p2.y + p3.y + p4.y) / 4.0f},
-                       {p1, {0, 0.55, 0.9}},
-                       {p2, {0, 0.55, 0.9}},
-                       {p3, {0, 0.55, 0.9}},
-                       {p4, {0, 0.55, 0.9}},
-                       max(p1.x, p2.x, p3.x, p4.x) - min(p1.x, p2.x, p3.x, p4.x),
-                       max(p1.y, p2.y, p3.y, p4.y) - min(p1.y, p2.y, p3.y, p4.y)) {
+            : Polygon4(p1, QuadVertexAttrib({0, 0.55, 0.9}),
+                       p2, QuadVertexAttrib({0, 0.55, 0.9}),
+                       p3, QuadVertexAttrib({0, 0.55, 0.9}),
+                       p4, QuadVertexAttrib({0, 0.55, 0.9})) {
         GP_CORE_DEBUG("Initializing Quad ({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
     }
 
     uint32_t Quad::_draw(Window *window) const {
-        return window->m_Renderer.drawQuad(m_V1, m_V2, m_V3, m_V4);
+        return window->m_Renderer.drawQuad(const_cast<Quad *>(this));
     }
 
     void Quad::_destroy() const {
@@ -23,7 +20,7 @@ namespace gp {
     }
 
     void Quad::_update() const {
-        m_Window->m_Renderer.updateQuad(m_RendererID, m_V1, m_V2, m_V3, m_V4);
+        m_Window->m_Renderer.updateQuad(m_RendererID, this);
     }
 }
 

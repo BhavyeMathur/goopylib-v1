@@ -4,7 +4,10 @@
 
 
 namespace gp {
-    class Quad : public Polygon4<QuadVertex> {
+    class Quad : public Polygon4<QuadVertexAttrib> {
+
+        friend class Renderer;
+
     public:
         Quad(Point p1, Point p2, Point p3, Point p4);
 

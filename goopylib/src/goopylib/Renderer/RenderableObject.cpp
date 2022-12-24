@@ -1,9 +1,71 @@
 #include "RenderableObject.h"
 
 namespace gp {
-    RenderableObject::RenderableObject(Point position)
-            : m_Position(position) {
+    RenderableObject::RenderableObject(Point position, std::initializer_list<Point> points)
+            : m_Position(position),
+            m_Vertices(points.size()) {
 
+        m_Points = new Point[m_Vertices];
+        int32_t i = 0;
+
+        for (auto p: points) {
+            m_Points[i] = p;
+            i++;
+
+            if (p.x > m_MaxX) {
+                m_MaxX = p.x;
+            }
+            else if (p.x < m_MinX) {
+                m_MinX = p.x;
+            }
+
+            if (p.y > m_MaxY) {
+                m_MaxY = p.y;
+            }
+            else if (p.y < m_MinY) {
+                m_MinY = p.y;
+            }
+        }
+
+        m_Width = m_MaxX - m_MinX;
+        m_Height = m_MaxY - m_MinY;
+    }
+
+    RenderableObject::RenderableObject(std::initializer_list<Point> points)
+            : m_Vertices(points.size()) {
+
+        float sumX = 0;
+        float sumY = 0;
+
+        m_Points = new Point[m_Vertices];
+        int32_t i = 0;
+
+        for (auto p: points) {
+            m_Points[i] = p;
+            i++;
+
+            if (p.x > m_MaxX) {
+                m_MaxX = p.x;
+            }
+            else if (p.x < m_MinX) {
+                m_MinX = p.x;
+            }
+
+            if (p.y > m_MaxY) {
+                m_MaxY = p.y;
+            }
+            else if (p.y < m_MinY) {
+                m_MinY = p.y;
+            }
+
+            sumX += p.x;
+            sumY += p.y;
+        }
+
+        m_Position = {sumX / (float) m_Vertices, sumY / (float) m_Vertices};
+
+        m_Width = m_MaxX - m_MinX;
+        m_Height = m_MaxY - m_MinY;
     }
 
     void RenderableObject::draw(Window *window) {
@@ -38,19 +100,10 @@ namespace gp {
         m_Position.x += dx;
         m_Position.y += dy;
 
-        update();
-    }
-
-    void RenderableObject::setAnchor(float x, float y) {
-        m_Position.x = x;
-        m_Position.y = y;
-    }
-
-    void RenderableObject::setPosition(float x, float y) {
-        _move(x - m_Position.x, y - m_Position.y);
-
-        m_Position.x = x;
-        m_Position.y = y;
+        m_MinX += dx;
+        m_MaxX += dx;
+        m_MinY += dy;
+        m_MaxY += dy;
 
         update();
     }
@@ -79,14 +132,39 @@ namespace gp {
         m_xScale *= xfactor;
         m_yScale *= yfactor;
 
+        m_Width *= xfactor;
+        m_Height *= yfactor;
+
         update();
+    }
+
+    bool RenderableObject::contains(Point point) {
+        return contains(point.x, point.y);
+    }
+
+    bool RenderableObject::contains(float x, float y) {
+        return _contains(x, y);
     }
 }
 
-// Getter Methods
+// Getter & Setter Methods
 namespace gp {
     bool RenderableObject::isDrawn() const {
         return m_Drawn;
+    }
+
+    void RenderableObject::setAnchor(float x, float y) {
+        m_Position.x = x;
+        m_Position.y = y;
+    }
+
+    void RenderableObject::setPosition(float x, float y) {
+        _move(x - m_Position.x, y - m_Position.y);
+
+        m_Position.x = x;
+        m_Position.y = y;
+
+        update();
     }
 
     Point RenderableObject::getPosition() const {

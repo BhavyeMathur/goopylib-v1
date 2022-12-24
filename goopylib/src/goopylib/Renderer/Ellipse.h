@@ -4,7 +4,10 @@
 
 
 namespace gp {
-    class Ellipse : public Polygon4<EllipseVertex> {
+    class Ellipse : public Polygon4<EllipseVertexAttrib> {
+
+        friend class Renderer;
+
     public:
         Ellipse(Point position, float xRadius, float yRadius);
 

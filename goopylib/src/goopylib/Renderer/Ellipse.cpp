@@ -4,11 +4,10 @@
 namespace gp {
     Ellipse::Ellipse(Point position, float xRadius, float yRadius)
             : Polygon4(position,
-                       {{position.x - xRadius, position.y - yRadius}, {-1, -1}, {0, 0.55, 0.9}},
-                       {{position.x + xRadius, position.y - yRadius}, {1, -1}, {0, 0.55, 0.9}},
-                       {{position.x + xRadius, position.y + yRadius}, {1, 1}, {0, 0.55, 0.9}},
-                       {{position.x - xRadius, position.y + yRadius}, {-1, 1}, {0, 0.55, 0.9}},
-                       xRadius * 2, yRadius * 2) {
+                       {position.x - xRadius, position.y - yRadius}, {{-1, -1}, {0, 0.55, 0.9}},
+                       {position.x + xRadius, position.y - yRadius}, {{1, -1}, {0, 0.55, 0.9}},
+                       {position.x + xRadius, position.y + yRadius}, {{1, 1}, {0, 0.55, 0.9}},
+                       {position.x - xRadius, position.y + yRadius}, {{-1, 1}, {0, 0.55, 0.9}}) {
 
         GP_CORE_DEBUG("Initializing Ellipse at ({0}, {1}), xRadius={3}, yRadius={4}",
                       position.x, position.y, xRadius, yRadius);
@@ -18,14 +17,14 @@ namespace gp {
             : Polygon4(p1, p2) {
         GP_CORE_DEBUG("Initializing Ellipse ({0}, {1}), ({2}, {3})", p1.x, p1.y, p2.x, p2.y);
 
-        m_V1 = {{p1.x, p1.y}, {-1, -1}, {0, 0.55, 0.9}};
-        m_V2 = {{p2.x, p1.y}, {1, -1}, {0, 0.55, 0.9}};
-        m_V3 = {{p2.x, p2.y}, {1, 1}, {0, 0.55, 0.9}};
-        m_V4 = {{p1.x, p2.y}, {-1, 1}, {0, 0.55, 0.9}};
+        m_V1 = {{-1, -1}, {0, 0.55, 0.9}};
+        m_V2 = {{1, -1}, {0, 0.55, 0.9}};
+        m_V3 = {{1, 1}, {0, 0.55, 0.9}};
+        m_V4 = {{-1, 1}, {0, 0.55, 0.9}};
     }
 
     uint32_t Ellipse::_draw(Window *window) const {
-        return window->m_Renderer.drawEllipse(m_V1, m_V2, m_V3, m_V4);
+        return window->m_Renderer.drawEllipse(const_cast<Ellipse *>(this));
     }
 
     void Ellipse::_destroy() const {
@@ -33,7 +32,7 @@ namespace gp {
     }
 
     void Ellipse::_update() const {
-        m_Window->m_Renderer.updateEllipse(m_RendererID, m_V1, m_V2, m_V3, m_V4);
+        m_Window->m_Renderer.updateEllipse(m_RendererID, this);
     }
 }
 

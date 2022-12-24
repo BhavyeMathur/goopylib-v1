@@ -15,6 +15,10 @@
 #define IMAGES 4
 
 namespace gp {
+    class Line;
+    class Triangle;
+    class Quad;
+    class Ellipse;
     class Image;
 
     struct TextureData {
@@ -98,35 +102,35 @@ namespace gp {
 
         void init();
 
-        uint32_t drawLine(LineVertex v1, LineVertex v2);
+        uint32_t drawLine(Line *object);
 
         void destroyLine(uint32_t ID);
 
-        void updateLine(uint32_t ID, LineVertex v1, LineVertex v2);
+        void updateLine(uint32_t ID, const Line *object);
 
-        uint32_t drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
+        uint32_t drawTriangle(Triangle *object);
 
         void destroyTriangle(uint32_t ID);
 
-        void updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
+        void updateTriangle(uint32_t ID, const Triangle *object);
 
-        uint32_t drawQuad(QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4);
+        uint32_t drawQuad(Quad *object);
 
         void destroyQuad(uint32_t ID);
 
-        void updateQuad(uint32_t ID, QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4);
+        void updateQuad(uint32_t ID, const Quad *object);
 
-        uint32_t drawEllipse(EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4);
+        uint32_t drawEllipse(Ellipse *object);
 
         void destroyEllipse(uint32_t ID);
 
-        void updateEllipse(uint32_t ID, EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4);
+        void updateEllipse(uint32_t ID, const Ellipse *object);
 
-        uint32_t drawImage(Image *image);
+        uint32_t drawImage(Image *object);
 
         void destroyImage(uint32_t ID);
 
-        void updateImage(uint32_t ID, const Image *image);
+        void updateImage(uint32_t ID, const Image *object);
 
         void flush();
 

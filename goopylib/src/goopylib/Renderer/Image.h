@@ -4,7 +4,7 @@
 
 
 namespace gp {
-    class Image : public Polygon4<ImageVertex> {
+    class Image : public Polygon4<ImageVertexAttrib> {
 
         friend class Renderer;
 

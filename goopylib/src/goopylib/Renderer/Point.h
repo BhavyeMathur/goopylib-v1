@@ -4,94 +4,129 @@
 
 namespace gp {
     struct RGBf {
-        float red;
-        float green;
-        float blue;
+        float red = 0;
+        float green = 0;
+        float blue = 0;
+
+        RGBf() = default;
+
+        RGBf(float red, float green, float blue)
+                : red(red),
+                green(green),
+                blue(blue) {
+        }
     };
 
     struct RGBAf {
-        float red;
-        float green;
-        float blue;
-        float alpha;
+        float red = 0;
+        float green = 0;
+        float blue = 0;
+        float alpha = 1;
+
+        RGBAf() = default;
+
+        RGBAf(float red, float green, float blue, float alpha = 1)
+                : red(red),
+                green(green),
+                blue(blue),
+                alpha(alpha) {
+        }
     };
 
     struct Point {
-        float x;
-        float y;
+        float x = 0;
+        float y = 0;
+
+        Point() = default;
+
+        Point(float x, float y)
+                : x(x),
+                y(y) {
+        }
     };
 
     // TODO pack 3x32-bit float color data into 1x32-bit unsigned int
 
-    struct TriangleVertex {
-        Point point;
+    struct TriangleVertexAttrib {
         RGBf color;
-        float transparency;
+        float transparency = 1;
 
-        TriangleVertex() = default;
+        TriangleVertexAttrib() = default;
 
-        TriangleVertex(Point point, RGBf color, float transperency = 1)
-                : point(point),
-                color(color),
-                transparency(transperency) {
+        explicit TriangleVertexAttrib(RGBf color)
+                : color(color) {
+        }
+    };
+
+    struct TriangleVertex {
+        Point vertex;
+        TriangleVertexAttrib attrib;
+    };
+
+    struct QuadVertexAttrib {
+        RGBf color;
+        float transparency = 1;
+
+        QuadVertexAttrib() = default;
+
+        explicit QuadVertexAttrib(RGBf color)
+                : color(color) {
         }
     };
 
     struct QuadVertex {
-        Point point;
+        Point vertex;
+        QuadVertexAttrib attrib;
+    };
+
+    struct EllipseVertexAttrib {
+        Point localCoord;
         RGBf color;
-        float transparency;
+        float transparency = 1;
 
-        QuadVertex() = default;
+        EllipseVertexAttrib() = default;
 
-        QuadVertex(Point point, RGBf color, float transperency = 1)
-                : point(point),
-                color(color),
-                transparency(transperency) {
+        EllipseVertexAttrib(Point localCoord, RGBf color)
+                : localCoord(localCoord),
+                color(color) {
         }
     };
 
     struct EllipseVertex {
-        Point point;
-        Point localCoord;
-        RGBf color;
-        float transparency;
+        Point vertex;
+        EllipseVertexAttrib attrib;
+    };
 
-        EllipseVertex() = default;
+    struct ImageVertexAttrib {
+        Point texCoord;
+        uint32_t texSlot = 0;
+        float transparency = 1;
 
-        EllipseVertex(Point point, Point localCoord, RGBf color, float transperency = 1)
-                : point(point),
-                localCoord(localCoord),
-                color(color),
-                transparency(transperency) {
+        ImageVertexAttrib() = default;
+
+        ImageVertexAttrib(Point texCoord, uint32_t texSlot)
+                : texCoord(texCoord),
+                texSlot(texSlot) {
         }
     };
 
     struct ImageVertex {
-        Point point;
-        Point texCoord;
-        uint32_t texSlot;
-        float transparency;
+        Point vertex;
+        ImageVertexAttrib attrib;
+    };
 
-        ImageVertex() = default;
+    struct LineVertexAttrib {
+        RGBAf color;
 
-        ImageVertex(Point point, Point texCoord, uint32_t texSlot, float transperency = 1)
-                : point(point),
-                texCoord(texCoord),
-                texSlot(texSlot),
-                transparency(transperency) {
+        LineVertexAttrib() = default;
+
+        explicit LineVertexAttrib(RGBAf color)
+                : color(color) {
         }
     };
 
     struct LineVertex {
-        Point point;
-        RGBAf color;
-
-        LineVertex() = default;
-
-        LineVertex(Point point, RGBAf color)
-                : point(point),
-                color(color) {
-        }
+        Point vertex;
+        LineVertexAttrib attrib;
     };
 }

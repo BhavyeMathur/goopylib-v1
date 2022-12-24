@@ -5,10 +5,10 @@
 namespace gp {
     class Line : public RenderableObject {
 
+        friend class Renderer;
+
     public:
         Line(Point p1, Point p2);
-
-        void resetAnchor() override;
 
         void setColor(const Color &color);
 
@@ -20,14 +20,14 @@ namespace gp {
 
         // Static Methods
 
-        static void setWidth(float value);
+        static void setThickness(float value);
 
-        static float getWidth();
+        static float getThickness();
 
         static void init();
 
     private:
-        LineVertex m_V1, m_V2;
+        LineVertexAttrib m_V1, m_V2;
 
         static float s_Width;
         static float s_MinWidth;
@@ -38,11 +38,5 @@ namespace gp {
         void _destroy() const override;
 
         void _update() const override;
-
-        void _move(float dx, float dy) override;
-
-        void _rotate(float sin, float cos) override;
-
-        void _scale(float xfactor, float yfactor) override;
     };
 }

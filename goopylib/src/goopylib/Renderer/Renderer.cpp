@@ -1,6 +1,9 @@
 #include "Renderer.h"
-#include "Image.h"
 #include "Line.h"
+#include "Triangle.h"
+#include "Quad.h"
+#include "Ellipse.h"
+#include "Image.h"
 
 namespace gp {
     Renderer::Renderer() = default;
@@ -117,16 +120,62 @@ namespace gp {
         m_ImageIDs.emplace_back();
     }
 
-    uint32_t Renderer::drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
+    uint32_t Renderer::drawLine(Line *object) {
+        uint32_t ID = m_NextLineID;
+        m_NextLineID++;
+        GP_CORE_DEBUG("Drawing Line {0}", ID);
+
+        m_LineIDs.insert({ID, m_LineVertices.size()});
+
+        m_LineVertices.push_back({object->m_Points[0], object->m_V1});
+        m_LineVertices.push_back({object->m_Points[1], object->m_V2});
+
+        m_RenderingObjects[LINES].indices += 2;
+        m_RenderingObjects[LINES].vertices += 2;
+        m_RenderingObjects[LINES].bufferData = &m_LineVertices[0];
+        m_RenderingObjects[LINES].reallocateBufferData = true;
+
+        return ID;
+    }
+
+    void Renderer::destroyLine(uint32_t ID) {
+        uint32_t index = m_LineIDs.at(ID);
+
+        m_LineVertices.erase(std::next(m_LineVertices.begin(), index),
+                             std::next(m_LineVertices.begin(), index + 2));
+
+        m_LineIDs.erase(ID);
+        for (auto &i: m_LineIDs) {
+            if (i.second > index) {
+                i.second -= 2;
+            }
+        }
+
+        m_RenderingObjects[LINES].indices -= 2;
+        m_RenderingObjects[LINES].vertices -= 2;
+        m_RenderingObjects[LINES].bufferData = &m_LineVertices[0];
+        m_RenderingObjects[LINES].reallocateBufferData = true;
+    }
+
+    void Renderer::updateLine(uint32_t ID, const Line *object) {
+        uint32_t index = m_LineIDs.at(ID);
+
+        m_LineVertices[index + 0] = {object->m_Points[0], object->m_V1};
+        m_LineVertices[index + 1] = {object->m_Points[1], object->m_V2};
+
+        m_RenderingObjects[LINES].updateBufferData = true;
+    }
+
+    uint32_t Renderer::drawTriangle(Triangle *object) {
         uint32_t ID = m_NextTriangleID;
         m_NextTriangleID++;
         GP_CORE_DEBUG("Drawing Triangle {0}", ID);
 
         m_TriangleIDs.insert({ID, m_TriangleVertices.size()});
 
-        m_TriangleVertices.push_back(v1);
-        m_TriangleVertices.push_back(v2);
-        m_TriangleVertices.push_back(v3);
+        m_TriangleVertices.push_back({object->m_Points[0], object->m_V1});
+        m_TriangleVertices.push_back({object->m_Points[1], object->m_V2});
+        m_TriangleVertices.push_back({object->m_Points[2], object->m_V3});
 
         m_RenderingObjects[TRIANGLES].indices += 3;
         m_RenderingObjects[TRIANGLES].vertices += 3;
@@ -155,27 +204,27 @@ namespace gp {
         m_RenderingObjects[TRIANGLES].reallocateBufferData = true;
     }
 
-    void Renderer::updateTriangle(uint32_t ID, TriangleVertex v1, TriangleVertex v2, TriangleVertex v3) {
+    void Renderer::updateTriangle(uint32_t ID, const Triangle *object) {
         uint32_t index = m_TriangleIDs.at(ID);
 
-        m_TriangleVertices[index + 0] = v1;
-        m_TriangleVertices[index + 1] = v2;
-        m_TriangleVertices[index + 2] = v3;
+        m_TriangleVertices[index + 0] = {object->m_Points[0], object->m_V1};
+        m_TriangleVertices[index + 1] = {object->m_Points[1], object->m_V2};
+        m_TriangleVertices[index + 2] = {object->m_Points[2], object->m_V3};
 
         m_RenderingObjects[TRIANGLES].updateBufferData = true;
     }
 
-    uint32_t Renderer::drawQuad(QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4) {
+    uint32_t Renderer::drawQuad(Quad *object) {
         uint32_t ID = m_NextQuadID;
         m_NextQuadID++;
         GP_CORE_DEBUG("Drawing Quad {0}", ID);
 
         m_QuadIDs.insert({ID, m_QuadVertices.size()});
 
-        m_QuadVertices.push_back(v1);
-        m_QuadVertices.push_back(v2);
-        m_QuadVertices.push_back(v3);
-        m_QuadVertices.push_back(v4);
+        m_QuadVertices.push_back({object->m_Points[0], object->m_V1});
+        m_QuadVertices.push_back({object->m_Points[1], object->m_V2});
+        m_QuadVertices.push_back({object->m_Points[2], object->m_V3});
+        m_QuadVertices.push_back({object->m_Points[3], object->m_V4});
 
         m_RenderingObjects[QUADS].indices += 6;
         m_RenderingObjects[QUADS].vertices += 4;
@@ -204,28 +253,28 @@ namespace gp {
         m_RenderingObjects[QUADS].reallocateBufferData = true;
     }
 
-    void Renderer::updateQuad(uint32_t ID, QuadVertex v1, QuadVertex v2, QuadVertex v3, QuadVertex v4) {
+    void Renderer::updateQuad(uint32_t ID, const Quad *object) {
         uint32_t index = m_QuadIDs.at(ID);
 
-        m_QuadVertices[index + 0] = v1;
-        m_QuadVertices[index + 1] = v2;
-        m_QuadVertices[index + 2] = v3;
-        m_QuadVertices[index + 3] = v4;
+        m_QuadVertices[index + 0] = {object->m_Points[0], object->m_V1};
+        m_QuadVertices[index + 1] = {object->m_Points[1], object->m_V2};
+        m_QuadVertices[index + 2] = {object->m_Points[2], object->m_V3};
+        m_QuadVertices[index + 3] = {object->m_Points[3], object->m_V4};
 
         m_RenderingObjects[QUADS].updateBufferData = true;
     }
 
-    uint32_t Renderer::drawEllipse(EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4) {
+    uint32_t Renderer::drawEllipse(Ellipse *object) {
         uint32_t ID = m_NextEllipseID;
         m_NextEllipseID++;
         GP_CORE_DEBUG("Drawing Ellipse {0}", ID);
 
         m_EllipseIDs.insert({ID, m_EllipseVertices.size()});
 
-        m_EllipseVertices.push_back(v1);
-        m_EllipseVertices.push_back(v2);
-        m_EllipseVertices.push_back(v3);
-        m_EllipseVertices.push_back(v4);
+        m_EllipseVertices.push_back({object->m_Points[0], object->m_V1});
+        m_EllipseVertices.push_back({object->m_Points[1], object->m_V2});
+        m_EllipseVertices.push_back({object->m_Points[2], object->m_V3});
+        m_EllipseVertices.push_back({object->m_Points[3], object->m_V4});
 
         m_RenderingObjects[ELLIPSES].indices += 6;
         m_RenderingObjects[ELLIPSES].vertices += 4;
@@ -254,25 +303,25 @@ namespace gp {
         m_RenderingObjects[ELLIPSES].reallocateBufferData = true;
     }
 
-    void Renderer::updateEllipse(uint32_t ID, EllipseVertex v1, EllipseVertex v2, EllipseVertex v3, EllipseVertex v4) {
+    void Renderer::updateEllipse(uint32_t ID, const Ellipse *object) {
         uint32_t index = m_EllipseIDs.at(ID);
 
-        m_EllipseVertices[index + 0] = v1;
-        m_EllipseVertices[index + 1] = v2;
-        m_EllipseVertices[index + 2] = v3;
-        m_EllipseVertices[index + 3] = v4;
+        m_EllipseVertices[index + 0] = {object->m_Points[0], object->m_V1};
+        m_EllipseVertices[index + 1] = {object->m_Points[1], object->m_V2};
+        m_EllipseVertices[index + 2] = {object->m_Points[2], object->m_V3};
+        m_EllipseVertices[index + 3] = {object->m_Points[3], object->m_V4};
 
         m_RenderingObjects[ELLIPSES].updateBufferData = true;
     }
 
-    uint32_t Renderer::drawImage(Image *image) {
+    uint32_t Renderer::drawImage(Image *object) {
         uint32_t ID = m_NextImageID;
         m_NextImageID++;
         GP_CORE_DEBUG("Drawing Image {0}", ID);
 
         uint32_t texIndex, texSlot;
-        if (m_TexturesCache.find(image->m_Path) == m_TexturesCache.end()) {
-            texIndex = _cacheTexture(image->m_Path);
+        if (m_TexturesCache.find(object->m_Path) == m_TexturesCache.end()) {
+            texIndex = _cacheTexture(object->m_Path);
             texSlot = texIndex % 16;
 
             if (texSlot == 0) {
@@ -280,14 +329,14 @@ namespace gp {
             }
         }
         else {
-            texIndex = m_TexturesCache.at(image->m_Path).index;
+            texIndex = m_TexturesCache.at(object->m_Path).index;
             texSlot = texIndex % 16;
         }
 
-        image->m_V1.texSlot = texSlot;
-        image->m_V2.texSlot = texSlot;
-        image->m_V3.texSlot = texSlot;
-        image->m_V4.texSlot = texSlot;
+        object->m_V1.texSlot = texSlot;
+        object->m_V2.texSlot = texSlot;
+        object->m_V3.texSlot = texSlot;
+        object->m_V4.texSlot = texSlot;
 
         unsigned int batch = texIndex / s_TextureSlots;
         unsigned int i = IMAGES + batch;
@@ -295,10 +344,10 @@ namespace gp {
         m_ImageBatches.insert({ID, batch});
         m_ImageIDs[batch].insert({ID, m_ImageVertices[batch].size()});
 
-        m_ImageVertices[batch].push_back(image->m_V1);
-        m_ImageVertices[batch].push_back(image->m_V2);
-        m_ImageVertices[batch].push_back(image->m_V3);
-        m_ImageVertices[batch].push_back(image->m_V4);
+        m_ImageVertices[batch].push_back({object->m_Points[0], object->m_V1});
+        m_ImageVertices[batch].push_back({object->m_Points[1], object->m_V2});
+        m_ImageVertices[batch].push_back({object->m_Points[2], object->m_V3});
+        m_ImageVertices[batch].push_back({object->m_Points[3], object->m_V4});
 
         m_RenderingObjects[i].indices += 6;
         m_RenderingObjects[i].vertices += 4;
@@ -329,62 +378,16 @@ namespace gp {
         m_RenderingObjects[IMAGES + batch].reallocateBufferData = true;
     }
 
-    void Renderer::updateImage(uint32_t ID, const Image *image) {
+    void Renderer::updateImage(uint32_t ID, const Image *object) {
         uint32_t batch = m_ImageBatches.at(ID);
         uint32_t index = m_ImageIDs[batch].at(ID);
 
-        m_ImageVertices[batch][index + 0] = image->m_V1;
-        m_ImageVertices[batch][index + 1] = image->m_V2;
-        m_ImageVertices[batch][index + 2] = image->m_V3;
-        m_ImageVertices[batch][index + 3] = image->m_V4;
+        m_ImageVertices[batch][index + 0] = {object->m_Points[0], object->m_V1};
+        m_ImageVertices[batch][index + 1] = {object->m_Points[1], object->m_V2};
+        m_ImageVertices[batch][index + 2] = {object->m_Points[2], object->m_V3};
+        m_ImageVertices[batch][index + 3] = {object->m_Points[3], object->m_V4};
 
         m_RenderingObjects[IMAGES + batch].updateBufferData = true;
-    }
-
-    uint32_t Renderer::drawLine(LineVertex v1, LineVertex v2) {
-        uint32_t ID = m_NextLineID;
-        m_NextLineID++;
-        GP_CORE_DEBUG("Drawing Line {0}", ID);
-
-        m_LineIDs.insert({ID, m_LineVertices.size()});
-
-        m_LineVertices.push_back(v1);
-        m_LineVertices.push_back(v2);
-
-        m_RenderingObjects[LINES].indices += 2;
-        m_RenderingObjects[LINES].vertices += 2;
-        m_RenderingObjects[LINES].bufferData = &m_LineVertices[0];
-        m_RenderingObjects[LINES].reallocateBufferData = true;
-
-        return ID;
-    }
-
-    void Renderer::destroyLine(uint32_t ID) {
-        uint32_t index = m_LineIDs.at(ID);
-
-        m_LineVertices.erase(std::next(m_LineVertices.begin(), index),
-                             std::next(m_LineVertices.begin(), index + 2));
-
-        m_LineIDs.erase(ID);
-        for (auto &i: m_LineIDs) {
-            if (i.second > index) {
-                i.second -= 2;
-            }
-        }
-
-        m_RenderingObjects[LINES].indices -= 2;
-        m_RenderingObjects[LINES].vertices -= 2;
-        m_RenderingObjects[LINES].bufferData = &m_LineVertices[0];
-        m_RenderingObjects[LINES].reallocateBufferData = true;
-    }
-
-    void Renderer::updateLine(uint32_t ID, LineVertex v1, LineVertex v2) {
-        uint32_t index = m_LineIDs.at(ID);
-
-        m_LineVertices[index + 0] = v1;
-        m_LineVertices[index + 1] = v2;
-
-        m_RenderingObjects[LINES].updateBufferData = true;
     }
 
     void Renderer::flush() {

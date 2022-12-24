@@ -3,19 +3,14 @@
 // Core Methods
 namespace gp {
     Line::Line(Point p1, Point p2)
-            : RenderableObject({(p1.x + p2.x) / 2, (p1.y + p2.y) / 2}),
-            m_V1(p1, {0, 0, 0, 1}),
-            m_V2(p2, {0, 0, 0, 1}) {
+            : RenderableObject({p1, p2}),
+            m_V1({0, 0, 0, 1}),
+            m_V2({0, 0, 0, 1}) {
 
-    }
-
-    void Line::resetAnchor() {
-        m_Position.x = (m_V1.point.x + m_V2.point.x) / 2.0f;
-        m_Position.y = (m_V1.point.y + m_V2.point.y) / 2.0f;
     }
 
     uint32_t Line::_draw(Window *window) const {
-        return window->m_Renderer.drawLine(m_V1, m_V2);
+        return window->m_Renderer.drawLine(const_cast<Line *>(this));
     }
 
     void Line::_destroy() const {
@@ -23,31 +18,7 @@ namespace gp {
     }
 
     void Line::_update() const {
-        m_Window->m_Renderer.updateLine(m_RendererID, m_V1, m_V2);
-    }
-
-    void Line::_move(float dx, float dy) {
-        m_V1.point.x += dx;
-        m_V1.point.y += dy;
-
-        m_V2.point.x += dx;
-        m_V2.point.y += dy;
-    }
-
-    void Line::_rotate(float sin, float cos) {
-        m_V1.point = {m_V1.point.x * cos + m_V1.point.y * sin,
-                      m_V1.point.y * cos - m_V1.point.x * sin};
-
-        m_V2.point = {m_V2.point.x * cos + m_V2.point.y * sin,
-                      m_V2.point.y * cos - m_V2.point.x * sin};
-    }
-
-    void Line::_scale(float xfactor, float yfactor) {
-        m_V1.point.x *= xfactor;
-        m_V1.point.y *= yfactor;
-
-        m_V2.point.x *= xfactor;
-        m_V2.point.y *= yfactor;
+        m_Window->m_Renderer.updateLine(m_RendererID, this);
     }
 }
 
@@ -99,7 +70,7 @@ namespace gp {
         #endif
     }
 
-    void Line::setWidth(float value) {
+    void Line::setThickness(float value) {
         #if GP_ERROR_CHECKING
         if (value > s_MaxWidth or value < s_MinWidth) {
             GP_CORE_WARN("Line width {0} not supported, must be between {1} and {2}", value, s_MinWidth, s_MaxWidth);
@@ -115,7 +86,7 @@ namespace gp {
         s_Width = value;
     }
 
-    float Line::getWidth() {
+    float Line::getThickness() {
         return s_Width;
     }
 }
