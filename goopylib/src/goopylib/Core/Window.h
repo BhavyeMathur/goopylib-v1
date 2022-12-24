@@ -92,6 +92,8 @@ namespace gp {
 
         friend class Image;
 
+        friend class Line;
+
     public:
         explicit Window(const WindowConfig &config);
 

@@ -22,3 +22,4 @@
 #include "goopylib/Renderer/Ellipse.h"
 #include "goopylib/Renderer/Circle.h"
 #include "goopylib/Renderer/Image.h"
+#include "goopylib/Renderer/Line.h"

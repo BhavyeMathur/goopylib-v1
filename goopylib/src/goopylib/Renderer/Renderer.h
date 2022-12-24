@@ -8,18 +8,14 @@
 #include "src/goopylib/Core/VertexArray.h"
 #include "src/goopylib/Shader/Shader.h"
 
-#define TRIANGLES 0
-#define QUADS 1
-#define ELLIPSES 2
-#define IMAGES 3
+#define LINES 0
+#define TRIANGLES 1
+#define QUADS 2
+#define ELLIPSES 3
+#define IMAGES 4
 
 namespace gp {
     class Image;
-
-    struct BatchID {
-        uint32_t batch;
-        uint32_t index;
-    };
 
     struct TextureData {
         Ref<Texture2D> texture;
@@ -36,13 +32,14 @@ namespace gp {
         bool reallocateBufferData = false;
         bool updateBufferData = false;
 
-        DrawMode mode = DrawMode::Triangles;
+        int32_t mode;
 
         RenderingData(const Ref<VertexArray> &VAO, void *bufferData,
-                      const Ref<Shader> &shader)
+                      const Ref<Shader> &shader, int32_t mode = GP_DRAW_MODE_TRIANGLES)
                 : VAO(VAO),
                 bufferData(bufferData),
-                shader(shader) {
+                shader(shader),
+                mode(mode) {
         }
     };
 
@@ -51,6 +48,8 @@ namespace gp {
         friend class Window;
 
         friend class RenderableObject;
+
+        friend class Line;
 
         friend class Triangle;
 
@@ -61,6 +60,10 @@ namespace gp {
         friend class Image;
 
     private:
+        std::vector<LineVertex> m_LineVertices;
+        uint32_t m_NextLineID = 0;
+        std::unordered_map<uint32_t, uint32_t> m_LineIDs;
+
         std::vector<TriangleVertex> m_TriangleVertices;
         uint32_t m_NextTriangleID = 0;
         std::unordered_map<uint32_t, uint32_t> m_TriangleIDs;
@@ -78,6 +81,7 @@ namespace gp {
         std::unordered_map<uint32_t, uint32_t> m_ImageBatches;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_ImageIDs;
 
+        Ref<Shader> m_LineShader;
         Ref<Shader> m_PolygonShader;
         Ref<Shader> m_EllipseShader;
         Ref<Shader> m_ImageShader;
@@ -93,6 +97,12 @@ namespace gp {
         ~Renderer();
 
         void init();
+
+        uint32_t drawLine(LineVertex v1, LineVertex v2);
+
+        void destroyLine(uint32_t ID);
+
+        void updateLine(uint32_t ID, LineVertex v1, LineVertex v2);
 
         uint32_t drawTriangle(TriangleVertex v1, TriangleVertex v2, TriangleVertex v3);
 
@@ -121,6 +131,8 @@ namespace gp {
         void flush();
 
     private:
+        void _createLineBuffer();
+
         void _createTriangleBuffer();
 
         void _createQuadBuffer();

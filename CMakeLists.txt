@@ -34,6 +34,7 @@ set(SOURCE_FILES
     ${GOOPYLIB_PATH}/Renderer/Quad.cpp
     ${GOOPYLIB_PATH}/Renderer/Ellipse.cpp
     ${GOOPYLIB_PATH}/Renderer/Image.cpp
+    ${GOOPYLIB_PATH}/Renderer/Line.cpp
     ${GOOPYLIB_PATH}/Renderer/Renderer.cpp
     ${GOOPYLIB_PATH}/Renderer/RenderableObject.cpp
 

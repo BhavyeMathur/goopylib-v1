@@ -14,7 +14,7 @@
  6 - Trace Enabled
  7 - All Enabled
  */
-#define GP_LOGGING 3
+#define GP_LOGGING 4
 
 #include <iostream>
 #include <cmath>

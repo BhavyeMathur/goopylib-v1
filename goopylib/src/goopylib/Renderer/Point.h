@@ -9,6 +9,13 @@ namespace gp {
         float blue;
     };
 
+    struct RGBAf {
+        float red;
+        float green;
+        float blue;
+        float alpha;
+    };
+
     struct Point {
         float x;
         float y;
@@ -73,6 +80,18 @@ namespace gp {
                 texCoord(texCoord),
                 texSlot(texSlot),
                 transparency(transperency) {
+        }
+    };
+
+    struct LineVertex {
+        Point point;
+        RGBAf color;
+
+        LineVertex() = default;
+
+        LineVertex(Point point, RGBAf color)
+                : point(point),
+                color(color) {
         }
     };
 }

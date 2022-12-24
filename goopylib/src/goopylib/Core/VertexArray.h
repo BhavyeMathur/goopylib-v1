@@ -2,14 +2,15 @@
 
 #include "Buffer.h"
 
-namespace gp {
-    enum class DrawMode {
-        #if GP_USING_OPENGL
-        Lines = GL_LINE,
-        Triangles = GL_TRIANGLES,
-        #endif
-    };
+#if GP_USING_OPENGL
+#define GP_DRAW_MODE_TRIANGLES GL_TRIANGLES
+#define GP_DRAW_MODE_LINES GL_LINES
+#else
+#define GP_DRAW_MODE_TRIANGLES
+#define GP_DRAW_MODE_LINES
+#endif
 
+namespace gp {
     class Window;
 
     class VertexArray final {
@@ -23,7 +24,7 @@ namespace gp {
 
         static void unbind() ;
 
-        void draw(int32_t count = 0, DrawMode mode = DrawMode::Triangles) const;
+        void draw(int32_t count = 0, int32_t mode = GP_DRAW_MODE_TRIANGLES) const;
 
         void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer);
 

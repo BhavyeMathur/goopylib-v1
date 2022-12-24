@@ -12,7 +12,7 @@ namespace gp {
 
         void setColor(const Color& color1, const Color& color2, const Color& color3);
 
-        void resetCenter() override;
+        void resetAnchor() override;
 
     private:
         TriangleVertex m_V1, m_V2, m_V3;

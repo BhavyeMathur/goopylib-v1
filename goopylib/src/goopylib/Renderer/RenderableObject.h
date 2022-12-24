@@ -22,7 +22,7 @@ namespace gp {
 
         void setAnchor(float x, float y);
 
-        virtual void resetCenter() = 0;
+        virtual void resetAnchor() = 0;
 
         void setPosition(float x, float y);
 

@@ -24,17 +24,16 @@ namespace gp {
         glBindVertexArray(0);
     }
 
-    void VertexArray::draw(int32_t count, DrawMode mode) const {
+    void VertexArray::draw(int32_t count, int32_t mode) const {
         bind();
         if (m_IndexBuffer) {
-            glDrawElements((int) mode,
+            glDrawElements(mode,
                            count and count <= m_IndexBuffer->count() ? count : (int32_t) m_IndexBuffer->count(),
                            GL_UNSIGNED_INT,
                            nullptr);
         }
         else {
-            glDrawArrays((int) mode,
-                         0,
+            glDrawArrays(mode, 0,
                          count and count <= m_VertexBuffer->count() ? count : (int32_t) m_VertexBuffer->count());
         }
     }

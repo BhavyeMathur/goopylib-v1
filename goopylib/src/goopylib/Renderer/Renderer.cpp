@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Image.h"
+#include "Line.h"
 
 namespace gp {
     Renderer::Renderer() = default;
@@ -14,6 +15,9 @@ namespace gp {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         #endif
 
+        GP_CORE_DEBUG("Initializing Line");
+        Line::init();
+
         GP_CORE_TRACE("Initializing Polygon Shader");
         m_PolygonShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
                                             GP_DIRECTORY "goopylib/Shader/solid.frag");
@@ -22,6 +26,11 @@ namespace gp {
         m_EllipseShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/ellipse.vert",
                                             GP_DIRECTORY "goopylib/Shader/ellipse.frag");
 
+        GP_CORE_TRACE("Initializing Line Shader");
+        m_LineShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/line.vert",
+                                         GP_DIRECTORY "goopylib/Shader/line.frag");
+
+        _createLineBuffer();
         _createTriangleBuffer();
         _createQuadBuffer();
         _createEllipseBuffer();
@@ -33,6 +42,19 @@ namespace gp {
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
         m_ImageShader->set("Texture", s_TextureSlots, samplers);
+    }
+
+    void Renderer::_createLineBuffer() {
+        GP_CORE_TRACE("Creating Line Buffers");
+
+        auto lineVAO = Ref<VertexArray>(new VertexArray());
+        auto lineVBO = Ref<VertexBuffer>(new VertexBuffer());
+
+        lineVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+                            {ShaderDataType::Float4, "color"}});
+        lineVAO->setVertexBuffer(lineVBO);
+
+        m_RenderingObjects.emplace_back(lineVAO, nullptr, m_LineShader, GP_DRAW_MODE_LINES);
     }
 
     void Renderer::_createTriangleBuffer() {
@@ -319,7 +341,54 @@ namespace gp {
         m_RenderingObjects[IMAGES + batch].updateBufferData = true;
     }
 
+    uint32_t Renderer::drawLine(LineVertex v1, LineVertex v2) {
+        uint32_t ID = m_NextLineID;
+        m_NextLineID++;
+        GP_CORE_DEBUG("Drawing Line {0}", ID);
+
+        m_LineIDs.insert({ID, m_LineVertices.size()});
+
+        m_LineVertices.push_back(v1);
+        m_LineVertices.push_back(v2);
+
+        m_RenderingObjects[LINES].indices += 2;
+        m_RenderingObjects[LINES].vertices += 2;
+        m_RenderingObjects[LINES].bufferData = &m_LineVertices[0];
+        m_RenderingObjects[LINES].reallocateBufferData = true;
+
+        return ID;
+    }
+
+    void Renderer::destroyLine(uint32_t ID) {
+        uint32_t index = m_LineIDs.at(ID);
+
+        m_LineVertices.erase(std::next(m_LineVertices.begin(), index),
+                             std::next(m_LineVertices.begin(), index + 2));
+
+        m_LineIDs.erase(ID);
+        for (auto &i: m_LineIDs) {
+            if (i.second > index) {
+                i.second -= 2;
+            }
+        }
+
+        m_RenderingObjects[LINES].indices -= 2;
+        m_RenderingObjects[LINES].vertices -= 2;
+        m_RenderingObjects[LINES].bufferData = &m_LineVertices[0];
+        m_RenderingObjects[LINES].reallocateBufferData = true;
+    }
+
+    void Renderer::updateLine(uint32_t ID, LineVertex v1, LineVertex v2) {
+        uint32_t index = m_LineIDs.at(ID);
+
+        m_LineVertices[index + 0] = v1;
+        m_LineVertices[index + 1] = v2;
+
+        m_RenderingObjects[LINES].updateBufferData = true;
+    }
+
     void Renderer::flush() {
+        _updateRenderingObjectVBO(m_RenderingObjects[LINES]);
         _updateRenderingObjectVBO(m_RenderingObjects[TRIANGLES]);
 
         for (int i = QUADS; i < m_RenderingObjects.size(); i++) {

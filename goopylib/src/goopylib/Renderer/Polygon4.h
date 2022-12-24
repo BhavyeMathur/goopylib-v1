@@ -6,7 +6,7 @@ namespace gp {
     template<typename VertexType>
         class Polygon4 : public RenderableObject {
         public:
-            void resetCenter() final {
+            void resetAnchor() final {
                 m_Position.x = (m_V1.point.x + m_V2.point.x + m_V3.point.x + m_V4.point.x) / 4.0f;
                 m_Position.y = (m_V1.point.y + m_V2.point.y + m_V3.point.y + m_V4.point.y) / 4.0f;
             }
