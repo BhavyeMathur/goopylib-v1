@@ -6,6 +6,7 @@ namespace gp {
     class Camera {
 
         friend class Renderer;
+        friend class Window;
 
     public:
         Camera(float left, float right, float bottom, float top);
@@ -30,8 +31,9 @@ namespace gp {
         glm::mat4 m_ProjectionMatrix;
         glm::mat4 m_ViewMatrix;
         glm::mat4 m_ProjectionViewMatrix;
+        glm::mat4 m_InverseProjectionViewMatrix;
 
-        glm::vec3 m_Position = { 0, 0, 0 };
+        glm::vec3 m_Position = {0, 0, 0};
         float m_RotationDegrees = 0;
         float m_RotationRadians = 0;
 

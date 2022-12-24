@@ -162,7 +162,6 @@ namespace gp {
         void setMaximumHeight(int value);
 
         // Get & Set Methods
-
         void setSize(int width, int height);
 
         void setSizeLimits(int minWidth, int minHeight,
@@ -173,6 +172,13 @@ namespace gp {
         void setMaximumSize(int maxWidth, int maxHeight);
 
         void setPosition(int xPos, int yPos);
+
+        // Camera & Projection
+        Camera &getCamera();
+
+        Point toWorld(Point p);
+
+        Point toScreen(Point p);
 
         // Aspect Ratio
         void setAspectRatio(int numerator, int denominator);

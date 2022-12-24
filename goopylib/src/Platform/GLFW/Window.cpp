@@ -222,6 +222,7 @@ namespace gp {
     Point Window::getMousePosition() const {
         double xPos, yPos;
         glfwGetCursorPos(m_Window, &xPos, &yPos);
+
         return {(float) xPos, (float) yPos};
     }
 

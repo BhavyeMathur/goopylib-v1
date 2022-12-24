@@ -159,6 +159,36 @@ namespace gp {
 
 // Window get & set methods
 namespace gp {
+    Camera &Window::getCamera() {
+        return m_Renderer.m_Camera;
+    }
+
+    Point Window::toWorld(Point p) {
+        p.x /= (float) (m_Data.width >> 1);
+        p.y /= (float) (m_Data.height >> 1);
+
+        p.x -= 1;
+        p.y = 1 - p.y;
+
+        auto pos = m_Renderer.m_Camera.m_InverseProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
+
+        return {pos.x, pos.y};
+    }
+
+    Point Window::toScreen(Point p) {
+        auto pos = m_Renderer.m_Camera.m_ProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
+
+        float halfWidth = (float) (m_Data.width >> 1);
+        float halfHeight = (float) (m_Data.height >> 1);
+
+        pos.x *= halfWidth;
+        pos.x += halfWidth;
+
+        pos.y *= halfHeight;
+        pos.y = halfHeight - pos.y;
+
+        return {pos.x, pos.y};
+    }
 
     // Size
     void Window::setSize(int width, int height) {

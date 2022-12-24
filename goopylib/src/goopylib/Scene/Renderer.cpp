@@ -7,7 +7,7 @@
 
 namespace gp {
     Renderer::Renderer(float width, float height)
-    : m_Camera(0, width, height, 0) {
+            : m_Camera(-width / 2, width / 2, -height / 2, height / 2) {
 
     }
 
@@ -168,7 +168,7 @@ namespace gp {
 
         m_LineVertices[index + 0] = {object->m_Points[0], object->m_V1};
         m_LineVertices[index + 1] = {object->m_Points[1], object->m_V2};
-        
+
         if (object->isHidden()) {
             m_LineVertices[index + 0].attrib.color.alpha = 0;
             m_LineVertices[index + 1].attrib.color.alpha = 0;
@@ -461,6 +461,7 @@ namespace gp {
     }
 
     void Renderer::flush() {
+        // TODO Replace with global uniform buffer object
         m_LineShader->set("ProjectionViewMatrix", m_Camera.m_ProjectionViewMatrix);
         m_PolygonShader->set("ProjectionViewMatrix", m_Camera.m_ProjectionViewMatrix);
         m_EllipseShader->set("ProjectionViewMatrix", m_Camera.m_ProjectionViewMatrix);

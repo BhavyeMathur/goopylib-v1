@@ -4,7 +4,8 @@ namespace gp {
     Camera::Camera(float left, float right, float bottom, float top)
             : m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)),
             m_ViewMatrix(1.0f),
-            m_ProjectionViewMatrix(m_ProjectionMatrix * m_ViewMatrix) {
+            m_ProjectionViewMatrix(m_ProjectionMatrix * m_ViewMatrix),
+            m_InverseProjectionViewMatrix(glm::inverse(m_ProjectionViewMatrix)) {
     }
 
     void Camera::setProjection(float left, float right, float bottom, float top) {
@@ -13,11 +14,12 @@ namespace gp {
     }
 
     void Camera::update() {
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Position);
-        transform *= glm::rotate(glm::mat4(1.0f), m_RotationRadians, glm::vec3(0, 0, 1));
+        auto transform = glm::translate(glm::mat4(1.0f), m_Position);
+        transform *= glm::rotate(glm::mat4(1.0f), m_RotationRadians, {0, 0, 1});
 
         m_ViewMatrix = glm::inverse(transform);
         m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
+        m_InverseProjectionViewMatrix = glm::inverse(m_ProjectionViewMatrix);
     }
 
     void Camera::move(float dx, float dy) {
