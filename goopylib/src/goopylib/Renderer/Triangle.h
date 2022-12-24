@@ -15,6 +15,10 @@ namespace gp {
 
         void setColor(const Color& color1, const Color& color2, const Color& color3);
 
+        void setTransparency(float value);
+
+        void setTransparency(float v1, float v2, float v3);
+
     private:
         TriangleVertexAttrib m_V1, m_V2, m_V3;
 

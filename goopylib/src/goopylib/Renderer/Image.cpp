@@ -3,11 +3,7 @@
 // Core Methods
 namespace gp {
     Image::Image(Point position, const char *path)
-            : Polygon4(position,
-                       {-0.5, -0.5}, {{0, 0}, 0},
-                       {0.5, -0.5}, {{1, 0}, 0},
-                       {0.5, 0.5}, {{1, 1}, 0},
-                       {-0.5, 0.5}, {{0, 1}, 0}),
+            : RenderableObject(position, {{-0.5, -0.5}, {0.5, -0.5}, {0.5, 0.5}, {-0.5, 0.5}}),
             m_Path(path) {
         GP_CORE_DEBUG("Initializing Image '{0}' at ({1}, {2})", path, position.x, position.y);
 
@@ -22,11 +18,7 @@ namespace gp {
     }
 
     Image::Image(Point position, const char *path, float width, float height)
-            : Polygon4(position,
-                       {-0.5, -0.5}, {{0, 0}, 0},
-                       {0.5, -0.5}, {{1, 0}, 0},
-                       {0.5, 0.5}, {{1, 1}, 0},
-                       {-0.5, 0.5}, {{0, 1}, 0}),
+            : RenderableObject(position, {{-0.5, -0.5}, {0.5, -0.5}, {0.5, 0.5}, {-0.5, 0.5}}),
             m_Path(path) {
         GP_CORE_DEBUG("Initializing Image '{0}' at ({1}, {2}), size=({3}, {4})",
                       path, position.x, position.y, width, height);
@@ -36,14 +28,9 @@ namespace gp {
     }
 
     Image::Image(Point p1, Point p2, const char *path)
-            : Polygon4(p1, p2),
+            : RenderableObject({{p1.x, p1.y}, {p2.x, p1.y}, {p2.x, p2.y}, {p1.x, p2.y}}),
             m_Path(path) {
         GP_CORE_DEBUG("Initializing Image '{0}' from ({1}, {2}) to ({3}, {4})", path, p1.x, p1.y, p2.x, p2.y);
-
-        m_V1 = {{-1, -1}, 0};
-        m_V2 = {{1, -1}, 0};
-        m_V3 = {{1, 1}, 0};
-        m_V4 = {{-1, 1}, 0};
     }
 
     uint32_t Image::_draw(Window *window) const {
@@ -63,5 +50,18 @@ namespace gp {
 namespace gp {
     const char *Image::getPath() const {
         return m_Path;
+    }
+
+    void Image::setTransparency(float value) {
+        setTransparency(value, value, value, value);
+    }
+
+    void Image::setTransparency(float v1, float v2, float v3, float v4) {
+        m_V1.transparency = v1;
+        m_V2.transparency = v2;
+        m_V3.transparency = v3;
+        m_V4.transparency = v4;
+
+        update();
     }
 }

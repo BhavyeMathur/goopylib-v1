@@ -19,7 +19,7 @@ namespace gp {
 
         uint32_t m_RendererID = 0;
 
-        explicit Texture2D(const char *path);
+        Texture2D(const char *path);
 
         void bind(uint32_t slot) const;
 

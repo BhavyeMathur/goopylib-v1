@@ -95,7 +95,7 @@ namespace gp {
         friend class Line;
 
     public:
-        explicit Window(const WindowConfig &config);
+        Window(const WindowConfig &config);
 
         ~Window();
 

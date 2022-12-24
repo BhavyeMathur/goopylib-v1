@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Polygon4.h"
+#include "RenderableObject.h"
 
 
 namespace gp {
-    class Quad : public Polygon4<QuadVertexAttrib> {
+    class Quad : public RenderableObject {
 
         friend class Renderer;
 
@@ -15,7 +15,16 @@ namespace gp {
 
         void setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
 
+        void setTransparency(float value);
+
+        void setTransparency(float v1, float v2, float v3, float v4);
+
     private:
+        QuadVertexAttrib m_V1 = {{0, 0.55, 0.9}};
+        QuadVertexAttrib m_V2 = {{0, 0.55, 0.9}};
+        QuadVertexAttrib m_V3 = {{0, 0.55, 0.9}};
+        QuadVertexAttrib m_V4 = {{0, 0.55, 0.9}};
+
         uint32_t _draw(Window *window) const override;
 
         void _destroy() const override;

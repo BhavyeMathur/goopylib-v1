@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Polygon4.h"
+#include "RenderableObject.h"
 
 
 namespace gp {
-    class Image : public Polygon4<ImageVertexAttrib> {
+    class Image : public RenderableObject {
 
         friend class Renderer;
 
@@ -17,7 +17,16 @@ namespace gp {
 
         const char *getPath() const;
 
+        void setTransparency(float value);
+
+        void setTransparency(float v1, float v2, float v3, float v4);
+
     private:
+        ImageVertexAttrib m_V1 = {{0, 0}};
+        ImageVertexAttrib m_V2 = {{1, 0}};
+        ImageVertexAttrib m_V3 = {{1, 1}};
+        ImageVertexAttrib m_V4 = {{0, 1}};
+
         const char *m_Path;
 
         uint32_t _draw(Window *window) const override;

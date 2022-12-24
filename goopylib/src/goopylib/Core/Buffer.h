@@ -17,9 +17,9 @@ namespace gp {
         uint32_t m_Count = 0;
         uint32_t m_RendererID = 0;
 
-        explicit Buffer() = default;
+        Buffer() = default;
 
-        explicit Buffer(uint32_t count);
+        Buffer(uint32_t count);
     };
 }
 
@@ -47,7 +47,7 @@ namespace gp {
     private:
         BufferLayout m_Layout{};
 
-        explicit VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
+        VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
 
         VertexBuffer(std::initializer_list<float> vertices);
     };

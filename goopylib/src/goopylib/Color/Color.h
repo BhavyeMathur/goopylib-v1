@@ -23,9 +23,9 @@ namespace gp {
 
         Color(Color const &color);
 
-        explicit Color(ColorHSV const &color);
+        Color(ColorHSV const &color);
 
-        explicit Color(ColorHSL const &color);
+        Color(ColorHSL const &color);
 
         Color(const RGB &color, float alpha);
 
@@ -111,7 +111,7 @@ namespace gp {
 namespace gp {
     class ColorRGB final : public Color {
     public:
-        explicit ColorRGB(Color const &color);
+        ColorRGB(Color const &color);
 
         ColorRGB(int red, int green, int blue);
 
@@ -131,9 +131,9 @@ namespace gp {
 namespace gp {
     class ColorHex final : public Color {
     public:
-        explicit ColorHex(Color const &color);
+        ColorHex(Color const &color);
 
-        explicit ColorHex(const char *hexstring);
+        ColorHex(const char *hexstring);
 
         ColorHex(const char *hexstring, float alpha);
 
@@ -153,7 +153,7 @@ namespace gp {
 namespace gp {
     class ColorCMYK final : public Color {
     public:
-        explicit ColorCMYK(Color const &color);
+        ColorCMYK(Color const &color);
 
         ColorCMYK(float cyan, float magenta, float yellow, float key);
 
@@ -194,9 +194,9 @@ namespace gp {
 namespace gp {
     class ColorHSV final : public Color {
     public:
-        explicit ColorHSV(Color const &color);
+        ColorHSV(Color const &color);
 
-        explicit ColorHSV(ColorHSL const &color);
+        ColorHSV(ColorHSL const &color);
 
         ColorHSV(int hue, float saturation, float value);
 
@@ -232,9 +232,9 @@ namespace gp {
 namespace gp {
     class ColorHSL final : public Color {
     public:
-        explicit ColorHSL(Color const &color);
+        ColorHSL(Color const &color);
 
-        explicit ColorHSL(ColorHSV const &color);
+        ColorHSL(ColorHSV const &color);
 
         ColorHSL(int hue, float saturation, float luminance);
 

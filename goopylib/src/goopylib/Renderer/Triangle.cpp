@@ -30,25 +30,25 @@ namespace gp {
 // Triangle Methods
 namespace gp {
     void Triangle::setColor(const Color &color) {
-        m_V1.color = {color.getRedf(), color.getGreenf(), color.getBluef()};
-        m_V2.color = {color.getRedf(), color.getGreenf(), color.getBluef()};
-        m_V3.color = {color.getRedf(), color.getGreenf(), color.getBluef()};
+        setColor(color, color, color);
+    }
 
-        m_V1.transparency = color.getAlpha();
-        m_V2.transparency = color.getAlpha();
-        m_V3.transparency = color.getAlpha();
+    void Triangle::setColor(const Color &color1, const Color &color2, const Color &color3) {
+        m_V1.color = {color1.getRedf(), color1.getGreenf(), color1.getBluef(), color1.getAlpha()};
+        m_V2.color = {color2.getRedf(), color2.getGreenf(), color2.getBluef(), color2.getAlpha()};
+        m_V3.color = {color3.getRedf(), color3.getGreenf(), color3.getBluef(), color3.getAlpha()};
 
         update();
     }
 
-    void Triangle::setColor(const Color &color1, const Color &color2, const Color &color3) {
-        m_V1.color = {color1.getRedf(), color1.getGreenf(), color1.getBluef()};
-        m_V2.color = {color2.getRedf(), color2.getGreenf(), color2.getBluef()};
-        m_V3.color = {color3.getRedf(), color3.getGreenf(), color3.getBluef()};
+    void Triangle::setTransparency(float value) {
+        setTransparency(value, value, value);
+    }
 
-        m_V1.transparency = color1.getAlpha();
-        m_V2.transparency = color2.getAlpha();
-        m_V3.transparency = color3.getAlpha();
+    void Triangle::setTransparency(float v1, float v2, float v3) {
+        m_V1.color.alpha = v1;
+        m_V2.color.alpha = v2;
+        m_V3.color.alpha = v3;
 
         update();
     }

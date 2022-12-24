@@ -42,6 +42,6 @@ namespace gp {
         Ref<VertexBuffer> m_VertexBuffer;
         Ref<IndexBuffer> m_IndexBuffer;
 
-        explicit VertexArray();
+        VertexArray();
     };
 }

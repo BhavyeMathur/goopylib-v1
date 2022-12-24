@@ -67,8 +67,7 @@ namespace gp {
         auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         triangleVBO->setLayout({{ShaderDataType::Float2, "vertices"},
-                                {ShaderDataType::Float3, "color"},
-                                {ShaderDataType::Float, "transparency"}});
+                                {ShaderDataType::Float4, "color"}});
         triangleVAO->setVertexBuffer(triangleVBO);
 
         m_RenderingObjects.emplace_back(triangleVAO, nullptr, m_PolygonShader);
@@ -81,8 +80,7 @@ namespace gp {
         auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         quadVBO->setLayout({{ShaderDataType::Float2, "vertices"},
-                            {ShaderDataType::Float3, "color"},
-                            {ShaderDataType::Float, "transparency"}});
+                            {ShaderDataType::Float4, "color"}});
         quadVAO->setVertexBuffer(quadVBO);
 
         m_RenderingObjects.emplace_back(quadVAO, nullptr, m_PolygonShader);
@@ -96,8 +94,7 @@ namespace gp {
 
         ellipseVBO->setLayout({{ShaderDataType::Float2, "vertices"},
                                {ShaderDataType::Float2, "localCoord"},
-                               {ShaderDataType::Float3, "color"},
-                               {ShaderDataType::Float, "transparency"}});
+                               {ShaderDataType::Float4, "color"}});
         ellipseVAO->setVertexBuffer(ellipseVBO);
 
         m_RenderingObjects.emplace_back(ellipseVAO, nullptr, m_EllipseShader);

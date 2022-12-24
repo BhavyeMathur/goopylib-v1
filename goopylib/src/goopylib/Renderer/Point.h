@@ -3,20 +3,6 @@
 #include "pch.h"
 
 namespace gp {
-    struct RGBf {
-        float red = 0;
-        float green = 0;
-        float blue = 0;
-
-        RGBf() = default;
-
-        RGBf(float red, float green, float blue)
-                : red(red),
-                green(green),
-                blue(blue) {
-        }
-    };
-
     struct RGBAf {
         float red = 0;
         float green = 0;
@@ -48,12 +34,11 @@ namespace gp {
     // TODO pack 3x32-bit float color data into 1x32-bit unsigned int
 
     struct TriangleVertexAttrib {
-        RGBf color;
-        float transparency = 1;
+        RGBAf color;
 
         TriangleVertexAttrib() = default;
 
-        explicit TriangleVertexAttrib(RGBf color)
+        TriangleVertexAttrib(RGBAf color)
                 : color(color) {
         }
     };
@@ -64,12 +49,11 @@ namespace gp {
     };
 
     struct QuadVertexAttrib {
-        RGBf color;
-        float transparency = 1;
+        RGBAf color;
 
         QuadVertexAttrib() = default;
 
-        explicit QuadVertexAttrib(RGBf color)
+        QuadVertexAttrib(RGBAf color)
                 : color(color) {
         }
     };
@@ -81,12 +65,11 @@ namespace gp {
 
     struct EllipseVertexAttrib {
         Point localCoord;
-        RGBf color;
-        float transparency = 1;
+        RGBAf color;
 
         EllipseVertexAttrib() = default;
 
-        EllipseVertexAttrib(Point localCoord, RGBf color)
+        EllipseVertexAttrib(Point localCoord, RGBAf color)
                 : localCoord(localCoord),
                 color(color) {
         }
@@ -104,9 +87,8 @@ namespace gp {
 
         ImageVertexAttrib() = default;
 
-        ImageVertexAttrib(Point texCoord, uint32_t texSlot)
-                : texCoord(texCoord),
-                texSlot(texSlot) {
+        ImageVertexAttrib(Point texCoord)
+                : texCoord(texCoord) {
         }
     };
 
@@ -120,7 +102,7 @@ namespace gp {
 
         LineVertexAttrib() = default;
 
-        explicit LineVertexAttrib(RGBAf color)
+        LineVertexAttrib(RGBAf color)
                 : color(color) {
         }
     };
