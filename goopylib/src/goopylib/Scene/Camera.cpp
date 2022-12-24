@@ -5,12 +5,23 @@ namespace gp {
             : m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)),
             m_ViewMatrix(1.0f),
             m_ProjectionViewMatrix(m_ProjectionMatrix * m_ViewMatrix),
-            m_InverseProjectionViewMatrix(glm::inverse(m_ProjectionViewMatrix)) {
+            m_InverseProjectionViewMatrix(glm::inverse(m_ProjectionViewMatrix)),
+            m_Left(left),
+            m_Right(right),
+            m_Bottom(bottom),
+            m_Top(top) {
     }
 
     void Camera::setProjection(float left, float right, float bottom, float top) {
-        m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+        m_Left = left;
+        m_Right = right;
+        m_Bottom = bottom;
+        m_Top = top;
+
+        m_ProjectionMatrix = glm::ortho(left / m_Zoom, right / m_Zoom,
+                                        bottom / m_Zoom, top / m_Zoom, -1.0f, 1.0f);
         m_ProjectionViewMatrix = m_ProjectionMatrix * m_ViewMatrix;
+        m_InverseProjectionViewMatrix = glm::inverse(m_ProjectionViewMatrix);
     }
 
     void Camera::update() {
@@ -50,5 +61,19 @@ namespace gp {
 
     float Camera::getRotation() const {
         return m_RotationDegrees;
+    }
+
+    void Camera::zoom(float value) {
+        m_Zoom *= value;
+
+        setProjection(m_Left, m_Right, m_Bottom, m_Top);
+    }
+
+    void Camera::setZoom(float value) {
+        zoom(value / m_Zoom);
+    }
+
+    float Camera::getZoom() const {
+        return m_Zoom;
     }
 }
