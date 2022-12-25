@@ -8,10 +8,10 @@ from typing import Union
 def init():
     """Initializes goopylib internally.
 
-    This function is automatically when goopylib is imported.
+    This function is automatically called when goopylib is imported.
 
     Raises:
-        ImportError: if the initialization fails
+        RuntimeError: if the initialization fails
     """
     raise NotImplementedError()
 
@@ -26,10 +26,7 @@ def terminate():
 
 
 def update():
-    """Updates goopylib.
-
-    Note:
-        Internally calls ``glfwPollEvents()`` in C++
+    """Updates goopylib and its windows.
 
     Examples:
         The following is a standard goopylib mainloop.
@@ -46,21 +43,15 @@ def update():
 
 def update_on_event():
     """Updates goopylib every time an event occurs.
-
-    Note:
-        Internally calls ``glfwWaitEvents()`` in C++
     """
     raise NotImplementedError()
 
 
-def update_timeout(timeout: Union[float, int] = None):
+def update_timeout(timeout: Union[float, int] = 0):
     """Updates goopylib after a duration has passed.
 
     Args:
-        timeout (float): the rate at which to update goopylib. Defaults to :obj:`None`.
-
-    Note:
-        Internally calls ``glfwWaitEventsTimeout()`` in C++
+        timeout: the duration (seconds) to wait between updates. Defaults to `0`.
     """
     raise NotImplementedError()
 
@@ -89,9 +80,6 @@ def get_refresh_rate() -> int:
     Examples:
         >>> gp.get_refresh_rate()
         120
-
-    Note:
-        Internally calls ``glfwGetVideoMode(...)->refreshRate`` in C++
     """
     raise NotImplementedError()
 
@@ -108,9 +96,6 @@ def get_screen_width() -> int:
     Examples:
         >>> gp.get_screen_width()
         1512
-
-    Note:
-        Internally calls ``glfwGetVideoMode(...)->width`` in C++
     """
     raise NotImplementedError()
 
@@ -127,9 +112,6 @@ def get_screen_height() -> int:
     Examples:
         >>> gp.get_screen_height()
         982
-
-    Note:
-        Internally calls ``glfwGetVideoMode(...)->height`` in C++
     """
     raise NotImplementedError()
 
@@ -143,15 +125,15 @@ def number_of_monitors() -> int:
     Examples:
         >>> gp.number_of_monitors()
         1
-
-    Note:
-        Internally calls ``glfwGetMonitors(&count)`` in C++
     """
     raise NotImplementedError()
 
 
 def set_buffer_swap_interval(*args: int):
     """Sets the minimum number of monitor refreshes the driver should wait from the time before swapping Window buffers.
+
+    Raises:
+        TypeError: if a non-integer value is passed.
     """
     raise NotImplementedError()
 

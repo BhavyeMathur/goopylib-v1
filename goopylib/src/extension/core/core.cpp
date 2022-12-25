@@ -60,8 +60,8 @@ namespace core {
         GP_PY_TRACE("core.update_on_timeout()");
 
         #if GP_TYPE_CHECKING
-        if (!PyFloat_Check(arg)) {
-            RAISE_TYPE_ERROR(nullptr, "float", arg);
+        if (!PyNumber_Check(arg)) {
+            RAISE_TYPE_ERROR(nullptr, "number", arg);
         }
         #endif
 
