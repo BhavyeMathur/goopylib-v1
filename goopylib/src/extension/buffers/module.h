@@ -1,6 +1,6 @@
 #pragma once
 
-#include "extension/util.h"
+#include "extension/header.h"
 
 #include "buffers.h"
 #include "vertex_array.h"

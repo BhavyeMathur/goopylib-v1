@@ -212,7 +212,7 @@ namespace VertexBuffer {
             vertices[i] = (float) PyFloat_AsDouble(element);
         }
 
-        SET_PYOBJECT_ATTRIBUTE(self->data, value)
+        SET_PYOBJECT(self->data, value)
         self->buffer->setData(vertices, count);
 
         delete[] vertices;
@@ -246,7 +246,7 @@ namespace VertexBuffer {
             elements.push_back(*((BufferElementObject *) element)->buffer_element);
         }
 
-        SET_PYOBJECT_ATTRIBUTE(self->layout, value)
+        SET_PYOBJECT(self->layout, value)
         self->buffer->setLayout(gp::BufferLayout(&elements[0], count));
 
         return 0;

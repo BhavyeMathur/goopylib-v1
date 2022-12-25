@@ -1,8 +1,8 @@
 #pragma once
 
-#include "extension/util.h"
+#include "extension/header.h"
 #include "buffers.h"
 
-#include "goopylib/Core/VertexArray.h"
+#include "goopylib/core/VertexArray.h"
 
 extern PyTypeObject VertexArrayType;

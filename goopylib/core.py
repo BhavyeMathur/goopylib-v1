@@ -1,5 +1,5 @@
 """
-Module that defines core and miscellaneous functions
+Module defining core and miscellaneous functions
 """
 
 from typing import Union
@@ -8,7 +8,7 @@ from typing import Union
 def init():
     """Initializes goopylib internally.
 
-    You do not need to call this function unless you have called :func:`gp.terminate()<goopylib.terminate>`.
+    This function is automatically when goopylib is imported.
 
     Raises:
         ImportError: if the initialization fails
@@ -73,12 +73,6 @@ def glfw_compiled_version() -> str:
 
 def glfw_current_version() -> str:
     """Returns the version of GLFW that is currently running.
-    """
-    raise NotImplementedError()
-
-
-def opengl_version() -> str:
-    """Returns the version of OpenGL being used.
     """
     raise NotImplementedError()
 
@@ -152,5 +146,17 @@ def number_of_monitors() -> int:
 
     Note:
         Internally calls ``glfwGetMonitors(&count)`` in C++
+    """
+    raise NotImplementedError()
+
+
+def set_buffer_swap_interval(value: int):
+    """Sets the minimum number of monitor refreshes the driver should wait from the time before swapping Window buffers.
+    """
+    raise NotImplementedError()
+
+
+def opengl_version() -> str:
+    """Returns the version of OpenGL being used.
     """
     raise NotImplementedError()

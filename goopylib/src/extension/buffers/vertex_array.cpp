@@ -74,7 +74,7 @@ namespace VertexArray {
         }
 
         self->vertex_array->setIndexBuffer(((IndexBufferObject *) index_buffer)->buffer);
-        SET_PYOBJECT_ATTRIBUTE(self->index_buffer, index_buffer)
+        SET_PYOBJECT(self->index_buffer, index_buffer)
         Py_RETURN_NONE;
     }
 

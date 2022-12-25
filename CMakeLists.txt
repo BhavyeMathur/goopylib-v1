@@ -10,43 +10,42 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 add_compile_definitions(GP_DIRECTORY="${PROJECT_BINARY_DIR}/../goopylib/src/")
 
-set(GOOPYLIB_PATH goopylib/src/goopylib/)
-set(PLATFORM_PATH goopylib/src/Platform/)
-
 set(SOURCE_FILES
-    ${GOOPYLIB_PATH}/Core/Core.cpp
-    ${GOOPYLIB_PATH}/Core/BufferLayout.cpp
-    ${GOOPYLIB_PATH}/Debug/Log.cpp
+    goopylib/src/goopylib/core/Core.cpp
+    goopylib/src/goopylib/core/BufferLayout.cpp
 
-    ${GOOPYLIB_PATH}/Math/Easing.cpp
-    ${GOOPYLIB_PATH}/Math/gpmath.cpp
+    goopylib/src/goopylib/debug/Log.cpp
+    goopylib/src/goopylib/debug/Error.cpp
 
-    ${GOOPYLIB_PATH}/Color/Color.cpp
-    ${GOOPYLIB_PATH}/Color/ColorConversions.cpp
-    ${GOOPYLIB_PATH}/Color/Util.cpp
+    goopylib/src/goopylib/math/Easing.cpp
+    goopylib/src/goopylib/math/gpmath.cpp
 
-    ${GOOPYLIB_PATH}/Objects/Renderable.cpp
-    ${GOOPYLIB_PATH}/Objects/Line.cpp
-    ${GOOPYLIB_PATH}/Objects/Triangle.cpp
-    ${GOOPYLIB_PATH}/Objects/Quad.cpp
-    ${GOOPYLIB_PATH}/Objects/Ellipse.cpp
-    ${GOOPYLIB_PATH}/Objects/Circle.cpp
-    ${GOOPYLIB_PATH}/Objects/Image.cpp
+    goopylib/src/goopylib/color/Color.cpp
+    goopylib/src/goopylib/color/ColorConversions.cpp
+    goopylib/src/goopylib/color/Util.cpp
 
-    ${GOOPYLIB_PATH}/Scene/Renderer.cpp
-    ${GOOPYLIB_PATH}/Scene/Camera.cpp
-    ${GOOPYLIB_PATH}/Scene/CameraController.cpp
+    goopylib/src/goopylib/objects/Renderable.cpp
+    goopylib/src/goopylib/objects/Line.cpp
+    goopylib/src/goopylib/objects/Triangle.cpp
+    goopylib/src/goopylib/objects/Quad.cpp
+    goopylib/src/goopylib/objects/Ellipse.cpp
+    goopylib/src/goopylib/objects/Circle.cpp
+    goopylib/src/goopylib/objects/Image.cpp
 
-    ${PLATFORM_PATH}/GLFW/Window.cpp
-    ${PLATFORM_PATH}/OpenGL/Buffer.cpp
-    ${PLATFORM_PATH}/OpenGL/VertexArray.cpp
-    ${PLATFORM_PATH}/OpenGL/Shader.cpp
-    ${PLATFORM_PATH}/OpenGL/Texture2D.cpp
+    goopylib/src/goopylib/scene/Renderer.cpp
+    goopylib/src/goopylib/scene/Camera.cpp
+    goopylib/src/goopylib/scene/CameraController.cpp
 
-    ${PLATFORM_PATH}/Independent/Window.cpp
-    ${PLATFORM_PATH}/Independent/Buffer.cpp
-    ${PLATFORM_PATH}/Independent/VertexArray.cpp
-    ${PLATFORM_PATH}/Independent/Shader.cpp
+    goopylib/src/platform/GLFW/Window.cpp
+    goopylib/src/platform/OpenGL/Buffer.cpp
+    goopylib/src/platform/OpenGL/VertexArray.cpp
+    goopylib/src/platform/OpenGL/Shader.cpp
+    goopylib/src/platform/OpenGL/Texture2D.cpp
+
+    goopylib/src/platform/Independent/Window.cpp
+    goopylib/src/platform/Independent/Buffer.cpp
+    goopylib/src/platform/Independent/VertexArray.cpp
+    goopylib/src/platform/Independent/Shader.cpp
 
     goopylib/vendor/stb/stb_image.cpp)
 
@@ -59,7 +58,8 @@ find_package(OpenGL REQUIRED)
 option(INCLUDE_PYTHON "Includes the Python header files" true)
 option(DYNAMIC_LIBRARY "Dynamic vs Static Library" true)
 
-add_executable(main main.cpp)
+# add_executable(main main.cpp)
+add_executable(main examples/cpp/core.cpp)
 add_executable(empty empty.cpp)
 
 if (DYNAMIC_LIBRARY)

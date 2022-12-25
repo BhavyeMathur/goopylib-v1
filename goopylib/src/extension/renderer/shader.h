@@ -1,5 +1,5 @@
 #pragma once
 
-#include "extension/util.h"
+#include "extension/header.h"
 
-#include "src/goopylib/Shader/Shader.h"
+#include "src/goopylib/shader/Shader.h"

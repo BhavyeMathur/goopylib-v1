@@ -15,46 +15,21 @@ def build_release():
 
 
 def build_c_extensions():
-    ext_kwargs = {"include_dirs":         ["goopylib/src", "goopylib/vendor"],
+    ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/vendor"],
                   "extra_compile_args":   ["-std=c++11", "-v"],
                   "extra_link_args":      [],
                   "runtime_library_dirs": [f"{path}/goopylib"],
                   "extra_objects":        ["goopylib/goopylib.dylib"]}
     setup_kwargs = {"options": {"build": {"build_lib": "."}}}
 
-    setup(ext_modules=[Extension(name="goopylib.ext.easing",
-                                 sources=["goopylib/src/extension/math/easing.cpp"],
-                                 **ext_kwargs)], **setup_kwargs)
-
-    setup(ext_modules=[Extension(name="goopylib.ext.color",
-                                 sources=["goopylib/src/extension/color/module.cpp",
-                                          "goopylib/src/extension/color/color.cpp",
-                                          "goopylib/src/extension/color/conversions.cpp",
-                                          "goopylib/src/extension/color/random.cpp"],
-                                 **ext_kwargs)], **setup_kwargs)
-
     ext_kwargs["extra_link_args"] += ["-framework", "OpenGL", "-framework", "Cocoa",
                                       "-framework", "IOKit", "-framework", "CoreVideo",
                                       "-framework", "CoreFoundation"]
 
-    setup(ext_modules=[Extension(name="goopylib.ext.shader",
-                                 sources=["goopylib/src/extension/renderer/shader.cpp"],
-                                 **ext_kwargs)], **setup_kwargs)
-
     ext_kwargs["extra_link_args"] += [f"{path}/goopylib/vendor/GLFW/libglfw.3.3.dylib"]
 
-    setup(ext_modules=[Extension(name="goopylib.ext.buffers",
-                                 sources=["goopylib/src/extension/buffers/module.cpp",
-                                          "goopylib/src/extension/buffers/buffers.cpp",
-                                          "goopylib/src/extension/buffers/vertex_array.cpp"],
-                                 **ext_kwargs)], **setup_kwargs)
-
     setup(ext_modules=[Extension(name="goopylib.ext.core",
-                                 sources=["goopylib/src/extension/core.cpp"],
-                                 **ext_kwargs)], **setup_kwargs)
-
-    setup(ext_modules=[Extension(name="goopylib.ext.window",
-                                 sources=["goopylib/src/extension/window.cpp"],
+                                 sources=["goopylib/src/extension/core/core.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
 

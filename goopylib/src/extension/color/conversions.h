@@ -1,9 +1,9 @@
 #pragma once
 
 #include "macros.h"
-#include "extension/util.h"
+#include "extension/header.h"
 
-#include "goopylib/Color/ColorConversions.h"
+#include "goopylib/color/ColorConversions.h"
 
 namespace color {
 

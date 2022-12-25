@@ -14,7 +14,7 @@
  6 - Trace Enabled
  7 - All Enabled
  */
-#define GP_LOGGING 4
+#define GP_LOGGING 6
 
 #include <type_traits>
 #include <memory>
@@ -93,4 +93,5 @@ namespace gp {
         }
 }
 
-#include "src/goopylib/Debug/Log.h"
+#include "src/goopylib/debug/Log.h"
+#include "src/goopylib/debug/Error.h"

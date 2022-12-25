@@ -1,11 +1,11 @@
 #pragma once
 
-#include "extension/util.h"
+#include "extension/header.h"
 
 #include "macros.h"
 
-#include "goopylib/Color/Color.h"
-#include "goopylib/Color/ColorConversions.h"
+#include "goopylib/color/Color.h"
+#include "goopylib/color/ColorConversions.h"
 
 extern PyTypeObject ColorType;
 

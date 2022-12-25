@@ -1,8 +1,8 @@
 #pragma once
 
-#include "src/extension/util.h"
+#include "src/extension/header.h"
 
-#include "src/goopylib/Math/Easing.h"
+#include "src/goopylib/math/Easing.h"
 
 struct EasingObject;
 

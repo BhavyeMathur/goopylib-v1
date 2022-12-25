@@ -1,8 +1,8 @@
 #pragma once
 
-#include "extension/util.h"
+#include "extension/header.h"
 
-#include "goopylib/Core/Buffer.h"
+#include "goopylib/core/Buffer.h"
 
 extern PyTypeObject BufferElementType;
 extern PyTypeObject VertexBufferType;

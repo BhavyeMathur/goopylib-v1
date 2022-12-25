@@ -22,11 +22,22 @@ class Window:
     def __repr__(self) -> str:
         raise NotImplementedError()
 
+    def is_closed(self) -> bool:
+        """Returns ``True`` if the Window is closed.
+        """
+        raise NotImplementedError()
+
+    def is_open(self) -> bool:
+        """Returns ``True`` if the Window is open.
+        """
+        raise NotImplementedError()
+
+    def is_destroyed(self) -> bool:
+        """Returns ``True`` if the Window has been destroyed.
+        """
+
     def update(self):
         """Refreshes the Window.
-
-        Note:
-            Internally calls ``glClear()``, and ``glfwSwapBuffers()``
         """
         raise NotImplementedError()
 
@@ -34,22 +45,12 @@ class Window:
         """Destroys & closes the Window.
 
         Warning:
-            The Window cannot be used once destroyed. You can no longer access its attributes or call its methods.
+            The Window cannot be used once destroyed. Accessing its attributes or calling its methods is undefined.
         """
         raise NotImplementedError()
 
     def close(self):
         """Closes the Window, but does not destroy it.
-        """
-        raise NotImplementedError()
-
-    def is_open(self):
-        """Returns ``True`` if the Window is open.
-        """
-        raise NotImplementedError()
-
-    def is_closed(self):
-        """Returns ``True`` if the Window is closed.
         """
         raise NotImplementedError()
 
@@ -125,118 +126,6 @@ class Window:
     def height(self, value: int):
         raise NotImplementedError()
 
-    # Size
-    def get_size(self) -> tuple[int, int]:
-        """Gets the width and height of the Window.
-
-        Returns:
-            A :obj:`tuple` (width, height) representing the dimensions of the Window
-        """
-        raise NotImplementedError()
-
-    def set_size(self, width: int, height: int):
-        """Sets the width and height, in screen coordinates, of the Window.
-
-        Note:
-            Changing this value will call the Window's :func:`resize_callback<goopylib.resize_callback>`
-            if it has been set
-
-        Raises:
-            TypeError: ``width`` and ``height`` must be of type :obj:`int`
-            ValueError: ``width``  and ``height`` must be greater than 0
-        """
-        raise NotImplementedError()
-
-    # X Position
-    @property
-    def x_position(self) -> int:
-        """The x position of the Window.
-
-        Returns:
-            The x position, in screen coordinates, of the upper-left corner of the Window on the monitor
-
-        Note:
-            Changing this value will call the Window's
-            :func:`position_callback<goopylib.position_callback>` if it has been set
-
-        Raises:
-            TypeError: ``x_position`` must be an :obj:`int`
-            RuntimeError: cannot set the attribute of a destroyed window
-
-        Examples:
-            The following example will change the x position of the Window.
-
-            .. code-block:: python
-
-                >>> window = gp.Window(500, 500)
-                >>> window.x_position
-                506
-                >>> window.x_position = 200
-                >>> window.x_position
-                200
-        """
-        raise NotImplementedError()
-
-    @x_position.setter
-    def x_position(self, value: int):
-        raise NotImplementedError()
-
-    # Y Position
-    @property
-    def y_position(self) -> int:
-        """The y position of the Window.
-
-        Returns:
-            The y position, in screen coordinates, of the upper-left corner of the Window on the monitor
-
-        Note:
-            Changing this value will call the Window's
-            :func:`position_callback<goopylib.position_callback>` if it has been set
-
-        Raises:
-            TypeError: ``y_position`` must be an :obj:`int`
-            RuntimeError: cannot set the attribute of a destroyed window
-
-        Examples:
-            The following example will change the y position of the Window.
-
-            .. code-block:: python
-
-                >>> window = gp.Window(500, 500)
-                >>> window.y_position
-                154
-                >>> window.y_position = 200
-                >>> window.y_position
-                200
-        """
-        raise NotImplementedError()
-
-    @y_position.setter
-    def y_position(self, value: int):
-        raise NotImplementedError()
-
-    # Position
-    def get_position(self) -> tuple[int, int]:
-        """Gets the position of the Window.
-
-        Returns:
-            A :obj:`tuple` (xpos, ypos), in screen coordinates, representing the position of the top-left corner of the
-            Window
-        """
-        raise NotImplementedError()
-
-    def set_position(self, x_position: int, y_position: int):
-        """Sets the position, in screen coordinates, of the top-left of the Window on the screen.
-
-        Note:
-            Changing this value will call the Window's
-            :func:`position_callback<goopylib.position_callback>` if it has been set
-
-        Raises:
-            TypeError: ``x_position`` and ``y_position`` must be of type :obj:`int`
-        """
-        raise NotImplementedError()
-
     # Title
     @property
     def title(self) -> str:
@@ -270,37 +159,81 @@ class Window:
     def title(self, value: str):
         raise NotImplementedError()
 
-    # Resizable
+    # X Position
     @property
-    def resizable(self) -> bool:
-        """Whether the Window is resizable by the user or not.
-
-        Defaults to ``False``.
+    def xpos(self) -> int:
+        """The x position of the Window.
 
         Returns:
-            A boolean representing whether the user can resize the window
+            The x position, in screen coordinates, of the upper-left corner of the Window on the monitor
 
         Note:
-            Internally calls ``glfwGetWindowAttrib(GLFW_RESIZABLE)`` and ``glfwSetWindowAttrib(GLFW_RESIZABLE)`` in C++
+            Changing this value will call the Window's
+            :func:`position_callback<goopylib.position_callback>` if it has been set
 
         Raises:
-            TypeError: ``resizable`` must be a :obj:`bool`
+            TypeError: ``x_position`` must be an :obj:`int`
             RuntimeError: cannot set the attribute of a destroyed window
 
         Examples:
-            The following example will make the Window resizable.
+            The following example will change the x position of the Window.
 
             .. code-block:: python
 
                 >>> window = gp.Window(500, 500)
-                >>> window.resizable
-                False
-                >>> window.resizable = True
+                >>> window.x_position
+                506
+                >>> window.x_position = 200
+                >>> window.x_position
+                200
         """
         raise NotImplementedError()
 
-    @resizable.setter
-    def resizable(self, value: bool):
+    @xpos.setter
+    def xpos(self, value: int):
+        raise NotImplementedError()
+
+    # Y Position
+    @property
+    def ypos(self) -> int:
+        """The y position of the Window.
+
+        Returns:
+            The y position, in screen coordinates, of the upper-left corner of the Window on the monitor
+
+        Note:
+            Changing this value will call the Window's
+            :func:`position_callback<goopylib.position_callback>` if it has been set
+
+        Raises:
+            TypeError: ``y_position`` must be an :obj:`int`
+            RuntimeError: cannot set the attribute of a destroyed window
+
+        Examples:
+            The following example will change the y position of the Window.
+
+            .. code-block:: python
+
+                >>> window = gp.Window(500, 500)
+                >>> window.y_position
+                154
+                >>> window.y_position = 200
+                >>> window.y_position
+                200
+        """
+        raise NotImplementedError()
+
+    @ypos.setter
+    def ypos(self, value: int):
+        raise NotImplementedError()
+
+    # Background Color
+    @property
+    def background(self) -> Color:
+        raise NotImplementedError()
+
+    @background.setter
+    def background(self, background: Color):
         raise NotImplementedError()
 
     # Minimum Width
@@ -461,7 +394,27 @@ class Window:
     def max_height(self, value: int):
         raise NotImplementedError()
 
-    # Size Limits
+    # Get & Set Methods
+    def get_size(self) -> tuple[int, int]:
+        """Gets the width and height of the Window.
+
+        Returns:
+            A :obj:`tuple` (width, height) representing the dimensions of the Window
+        """
+        raise NotImplementedError()
+
+    def set_size(self, width: int, height: int):
+        """Sets the width and height, in screen coordinates, of the Window.
+
+        Note:
+            Changing this value will call the Window's :func:`resize_callback<goopylib.resize_callback>`
+            if it has been set
+
+        Raises:
+            TypeError: ``width`` and ``height`` must be of type :obj:`int`
+            ValueError: ``width``  and ``height`` must be greater than 0
+        """
+        raise NotImplementedError()
 
     def set_size_limits(self, min_width: Optional[int], min_height: Optional[int],
                         max_width: Optional[int], max_height: Optional[int]):
@@ -508,6 +461,142 @@ class Window:
             TypeError: ``max_width`` and ``max_height`` must be :obj:`int` or :obj:`None`
             ValueError: ``max_width`` and ``max_height`` must be greater than or equal to :func:`Window.min_width<goopylib.min_width>` and :func:`Window.min_height<goopylib.min_height>`
         """
+        raise NotImplementedError()
+
+    def get_position(self) -> tuple[int, int]:
+        """Gets the position of the Window.
+
+        Returns:
+            A :obj:`tuple` (xpos, ypos), in screen coordinates, representing the position of the top-left corner of the
+            Window
+        """
+        raise NotImplementedError()
+
+    def set_position(self, x_position: int, y_position: int):
+        """Sets the position, in screen coordinates, of the top-left of the Window on the screen.
+
+        Note:
+            Changing this value will call the Window's
+            :func:`position_callback<goopylib.position_callback>` if it has been set
+
+        Raises:
+            TypeError: ``x_position`` and ``y_position`` must be of type :obj:`int`
+        """
+        raise NotImplementedError()
+
+    # Camera & Projection
+    def get_camera(self):
+        raise NotImplementedError()
+
+    def to_world(self, x: float, y: float):
+        raise NotImplementedError()
+
+    def to_screen(self, x: float, y: float):
+        raise NotImplementedError()
+
+    # Aspect Ratio
+    def set_aspect_ratio(self, numerator: int, denominator: int):
+        """Sets the aspect ratio of the Window.
+
+        The aspect ratio is specified as a numerator and denominator, corresponding to the width and height,
+        respectively. If you want a window to maintain its current aspect ratio, use its current size as the ratio.
+
+        raise NotImplementedError() ``None`` to both arguments to remove any aspect ratio configuration.
+
+        Raises:
+            TypeError: ``numerator`` and ``denominator`` must be :obj:`int` or :obj:`None`
+            ValueError: ``numerator`` and ``denominator`` must be greater than 0
+        """
+        raise NotImplementedError()
+
+    def get_aspect_ratio(self) -> tuple[int, int]:
+        """Gets the current aspect ratio of the Window.
+
+        Returns:
+            A :obj:`tuple` representing the aspect ratio as a (numerator, denominator) pair
+        """
+        raise NotImplementedError()
+
+    # Frame Size & Content Scale
+    def get_frame_size(self) -> tuple[int, int, int, int]:
+        """Gets the size, in screen coordinates, of the Window frame.
+
+        Decorated Windows  have title bars and window frames around them. You can retrieve the sizes of these using this
+        method. The returned values are the distances, in screen coordinates, from the edges of the content area to the
+        corresponding edges of the full window. As they are distances and not coordinates, they are always zero or
+        positive.
+
+        Returns:
+            The size of the Window's frame in order (left, top, right, bottom)
+        """
+        raise NotImplementedError()
+
+    def get_content_scale(self) -> tuple[float, float]:
+        """Gets the scale of the content on the window.
+
+        The content scale is the ratio between the current DPI and the platform's default DPI.
+
+        Returns:
+            A :obj:`tuple` representing the content scale as a (xscale, yscale) pair
+        """
+        raise NotImplementedError()
+
+    def get_framebuffer_size(self) -> tuple[int, int]:
+        """The size of the framebuffer for the Window.
+
+        Returns:
+            A tuple (width, height) representing the dimensions, in pixels, of the OpenGL framebuffer
+
+        Note:
+            Internally calls ``glfwGetFramebufferSize()`` in C++
+
+        Warning:
+            This attribute cannot be set to another value
+
+        Raises:
+            NotImplementedError: cannot set this attribute to another value
+
+        Examples:
+            .. code-block:: python
+
+                >>> window = gp.Window(500, 500)
+                >>> window.framebuffer_size
+                (1000, 1000)
+        """
+        raise NotImplementedError()
+
+    """Window Attributes --------------------------------------------------------------------------------------------"""
+
+    @property
+    def resizable(self) -> bool:
+        """Whether the Window is resizable by the user or not.
+
+        Defaults to ``False``.
+
+        Returns:
+            A boolean representing whether the user can resize the window
+
+        Note:
+            Internally calls ``glfwGetWindowAttrib(GLFW_RESIZABLE)`` and ``glfwSetWindowAttrib(GLFW_RESIZABLE)`` in C++
+
+        Raises:
+            TypeError: ``resizable`` must be a :obj:`bool`
+            RuntimeError: cannot set the attribute of a destroyed window
+
+        Examples:
+            The following example will make the Window resizable.
+
+            .. code-block:: python
+
+                >>> window = gp.Window(500, 500)
+                >>> window.resizable
+                False
+                >>> window.resizable = True
+        """
+        raise NotImplementedError()
+
+    @resizable.setter
+    def resizable(self, value: bool):
         raise NotImplementedError()
 
     # Decorated
@@ -655,138 +744,47 @@ class Window:
     def focused_on_show(self, value: bool):
         raise NotImplementedError()
 
-    # Framebuffer Size
-    def get_framebuffer_size(self) -> tuple[int, int]:
-        """The size of the framebuffer for the Window.
-
-        Returns:
-            A tuple (width, height) representing the dimensions, in pixels, of the OpenGL framebuffer
-
-        Note:
-            Internally calls ``glfwGetFramebufferSize()`` in C++
-
-        Warning:
-            This attribute cannot be set to another value
-
-        Raises:
-            NotImplementedError: cannot set this attribute to another value
-
-        Examples:
-            .. code-block:: python
-
-                >>> window = gp.Window(500, 500)
-                >>> window.framebuffer_size
-                (1000, 1000)
-        """
-        raise NotImplementedError()
-
-    # Background Color
-    @property
-    def background(self) -> Color:
-        raise NotImplementedError()
-
-    @background.setter
-    def background(self, background: Color):
-        raise NotImplementedError()
-
-    # Aspect Ratio
-    def set_aspect_ratio(self, numerator: int, denominator: int):
-        """Sets the aspect ratio of the Window.
-
-        The aspect ratio is specified as a numerator and denominator, corresponding to the width and height,
-        respectively. If you want a window to maintain its current aspect ratio, use its current size as the ratio.
-
-        raise NotImplementedError() ``None`` to both arguments to remove any aspect ratio configuration.
-
-        Raises:
-            TypeError: ``numerator`` and ``denominator`` must be :obj:`int` or :obj:`None`
-            ValueError: ``numerator`` and ``denominator`` must be greater than 0
-        """
-        raise NotImplementedError()
-
-    def get_aspect_ratio(self) -> tuple[int, int]:
-        """Gets the current aspect ratio of the Window.
-
-        Returns:
-            A :obj:`tuple` representing the aspect ratio as a (numerator, denominator) pair
-        """
-        raise NotImplementedError()
-
-    # Frame Size & Content Scale
-    def get_frame_size(self) -> tuple[int, int, int, int]:
-        """Gets the size, in screen coordinates, of the Window frame.
-
-        Decorated Windows  have title bars and window frames around them. You can retrieve the sizes of these using this
-        method. The returned values are the distances, in screen coordinates, from the edges of the content area to the
-        corresponding edges of the full window. As they are distances and not coordinates, they are always zero or
-        positive.
-
-        Returns:
-            The size of the Window's frame in order (left, top, right, bottom)
-        """
-        raise NotImplementedError()
-
-    def get_content_scale(self) -> tuple[float, float]:
-        """Gets the scale of the content on the window.
-
-        The content scale is the ratio between the current DPI and the platform's default DPI.
-
-        Returns:
-            A :obj:`tuple` representing the content scale as a (xscale, yscale) pair
-        """
-        raise NotImplementedError()
-
     """Window State Methods -----------------------------------------------------------------------------------------"""
+
+    def restore(self):
+        """Restores a minimized, maximized, or fullscreen Window back to normal.
+        """
+        raise NotImplementedError()
+
+    # Fullscreen
+    def fullscreen(self):
+        """Makes the Window enter fullscreen mode.
+        """
+        raise NotImplementedError()
 
     def is_fullscreen(self):
         """Returns ``True`` if the Window is in fullscreen mode.
         """
         raise NotImplementedError()
 
-    def fullscreen(self):
-        """Makes the Window enter fullscreen mode.
-        """
-        raise NotImplementedError()
-
-    def unfullscreen(self):
-        """Makes the Window exit fullscreen mode.
-        """
-        raise NotImplementedError()
-
-    # Minimize
-    def is_minimized(self):
-        """Returns ``True`` if the Window is in minimized mode.
-        """
-        raise NotImplementedError()
-
-    def minimize(self):
-        """Minimizes the Window.
-        """
-        raise NotImplementedError()
-
     # Maximize
-    def is_maximized(self):
-        """Returns ``True`` if the Window is in maximized mode.
-        """
-        raise NotImplementedError()
-
     def maximize(self):
         """Maximizes the Window.
         """
         raise NotImplementedError()
 
-    # Restore
-    def restore(self):
-        """Restores a minimized, maximized, or fullscreen Window back to normal.
+    def is_maximized(self):
+        """Returns ``True`` if the Window is in maximized mode.
+        """
+        raise NotImplementedError()
+
+    # Minimize
+    def minimize(self):
+        """Minimizes the Window.
+        """
+        raise NotImplementedError()
+
+    def is_minimized(self):
+        """Returns ``True`` if the Window is in minimized mode.
         """
         raise NotImplementedError()
 
     # Visibility
-    def is_visible(self):
-        """Returns ``True`` if the Window is visible to the user.
-        """
-        raise NotImplementedError()
-
     def show(self):
         """Makes the Window visible to the user.
         """
@@ -797,18 +795,23 @@ class Window:
         """
         raise NotImplementedError()
 
-    # Input Focus
-    def has_focus(self):
-        """Returns ``True`` if the Window has input focus.
+    def is_visible(self):
+        """Returns ``True`` if the Window is visible to the user.
         """
         raise NotImplementedError()
 
-    def set_focus(self):
+    # Input Focus
+    def focus(self):
         """Gives the Window input focus and brings it to the front.
 
         Warning:
             Forcing the Window to the top can be disruptive to the user. For a less disruptive way of getting the user's
             attention to the window, see :func:`request_attention<goopylib.request_attention>`.
+        """
+        raise NotImplementedError()
+
+    def has_focus(self):
+        """Returns ``True`` if the Window has input focus.
         """
         raise NotImplementedError()
 
@@ -820,34 +823,49 @@ class Window:
         """
         raise NotImplementedError()
 
-    """Window Events -----------------------------------------------------------------------------------------"""
+    """Window Input Events ------------------------------------------------------------------------------------------"""
 
     def is_mouse_hovering(self):
         """Returns ``True`` if the mouse is hovering over the Window.
         """
         raise NotImplementedError()
 
-    def check_key(self, keycode: int):
+    def get_mouse_position(self):
+        raise NotImplementedError()
+
+    def set_cursor_mode(self, mode: str):
         raise NotImplementedError()
 
     def check_shift_key(self):
         raise NotImplementedError()
 
-    def check_alt_key(self):
+    def check_control_key(self):
         raise NotImplementedError()
 
-    def check_control_key(self):
+    def check_alt_key(self):
         raise NotImplementedError()
 
     def check_super_key(self):
         raise NotImplementedError()
 
-    def set_key_callback(self, keycode: int, callback: callable):
+    def check_key(self, keycode: int):
+        raise NotImplementedError()
+
+    def check_mouse_button(self, button: int):
+        raise NotImplementedError()
+
+    def check_left_click(self):
+        raise NotImplementedError()
+
+    def check_middle_click(self):
+        raise NotImplementedError()
+
+    def check_right_click(self):
         raise NotImplementedError()
 
     """Window Callback Functions ------------------------------------------------------------------------------------"""
 
-    # Resize callback
+    # Resize Callback
     @property
     def resize_callback(self):
         """Callback executed when the Window is resized.
@@ -901,58 +919,6 @@ class Window:
 
     @resize_callback.setter
     def resize_callback(self, callback: callable):
-        raise NotImplementedError()
-
-    # Position Callback
-    @property
-    def position_callback(self):
-        """Callback executed when the Window is moved.
-
-        The callback function receives the new position, in screen coordinates, of the upper-left corner of the content
-        area when the window is moved. It must follow the following template:
-
-        .. code-block:: python
-
-            def position_callback(xpos: int, ypos: int):
-                \"\"\"
-                xpos - the new x position of the window
-                ypos - the new y position of the window
-                \"\"\"
-
-        Note:
-            Internally calls ``glfwSetWindowPosCallback()`` in C++
-
-        Raises:
-            TypeError: cannot set the callback to a non :obj:`callable`
-            ValueError: callback function must take 2 arguments
-            RuntimeError: cannot set the callback of a destroyed window
-
-        Examples:
-            The following example will print a message whenever the user moves the window.
-
-            .. code-block:: python
-
-                window = gp.Window(500, 500)
-
-                def position_callback(xpos, ypos):
-                    print("Window has been moved to", xpos, ypos)
-
-                window.position_callback = position_callback
-
-                while window.is_open():
-                    window.update()
-
-            The callback function is also called when the code changes the position of the window.
-
-            .. code-block:: python
-
-                window.x_position = 100  # callback function is called
-                window.y_position = 0  # callback function is called
-        """
-        raise NotImplementedError()
-
-    @position_callback.setter
-    def position_callback(self, callback: callable):
         raise NotImplementedError()
 
     # Close Callback
@@ -1021,6 +987,58 @@ class Window:
 
     @destroy_callback.setter
     def destroy_callback(self, callback: callable):
+        raise NotImplementedError()
+
+    # Position Callback
+    @property
+    def position_callback(self):
+        """Callback executed when the Window is moved.
+
+        The callback function receives the new position, in screen coordinates, of the upper-left corner of the content
+        area when the window is moved. It must follow the following template:
+
+        .. code-block:: python
+
+            def position_callback(xpos: int, ypos: int):
+                \"\"\"
+                xpos - the new x position of the window
+                ypos - the new y position of the window
+                \"\"\"
+
+        Note:
+            Internally calls ``glfwSetWindowPosCallback()`` in C++
+
+        Raises:
+            TypeError: cannot set the callback to a non :obj:`callable`
+            ValueError: callback function must take 2 arguments
+            RuntimeError: cannot set the callback of a destroyed window
+
+        Examples:
+            The following example will print a message whenever the user moves the window.
+
+            .. code-block:: python
+
+                window = gp.Window(500, 500)
+
+                def position_callback(xpos, ypos):
+                    print("Window has been moved to", xpos, ypos)
+
+                window.position_callback = position_callback
+
+                while window.is_open():
+                    window.update()
+
+            The callback function is also called when the code changes the position of the window.
+
+            .. code-block:: python
+
+                window.x_position = 100  # callback function is called
+                window.y_position = 0  # callback function is called
+        """
+        raise NotImplementedError()
+
+    @position_callback.setter
+    def position_callback(self, callback: callable):
         raise NotImplementedError()
 
     # Minimize Callback
@@ -1325,11 +1343,72 @@ class Window:
     def framebuffer_size_callback(self, callback: callable):
         raise NotImplementedError()
 
+    # Mouse Motion Callback
+    @property
+    def mouse_motion_callback(self):
+        raise NotImplementedError()
 
-def set_buffer_swap_interval(value: int):
-    """Sets the minimum number of monitor refreshes the driver should wait from the time before swapping Window buffers.
+    @mouse_motion_callback.setter
+    def mouse_motion_callback(self, callback: callable):
+        raise NotImplementedError()
 
-    Note:
-        Internally calls ``glfwSwapInterval(...)`` in C++
-    """
-    raise NotImplementedError()
+    # Mouse Enter Callback
+    @property
+    def mouse_enter_callback(self):
+        raise NotImplementedError()
+
+    @mouse_enter_callback.setter
+    def mouse_enter_callback(self, callback: callable):
+        raise NotImplementedError()
+
+    # Scroll Callback
+    @property
+    def scroll_callback(self):
+        raise NotImplementedError()
+
+    @scroll_callback.setter
+    def scroll_callback(self, callback: callable):
+        raise NotImplementedError()
+
+    # Key Callback
+    def set_key_callback(self, keycode: int, callback: callable):
+        raise NotImplementedError()
+
+    # Mouse Button Callback
+    def set_mouse_button_callback(self, button: int, callback: callable):
+        raise NotImplementedError()
+
+    # Left Click Callback
+    @property
+    def left_click_callback(self):
+        raise NotImplementedError()
+
+    @left_click_callback.setter
+    def left_click_callback(self, callback: callable):
+        raise NotImplementedError()
+
+    # Middle Click Callback
+    @property
+    def middle_click_callback(self):
+        raise NotImplementedError()
+
+    @middle_click_callback.setter
+    def middle_click_callback(self, callback: callable):
+        raise NotImplementedError()
+
+    # Right Click Callback
+    @property
+    def right_click_callback(self):
+        raise NotImplementedError()
+
+    @right_click_callback.setter
+    def right_click_callback(self, callback: callable):
+        raise NotImplementedError()
+
+    @staticmethod
+    def update_all():
+        raise NotImplementedError()
+
+    @staticmethod
+    def destroy_all():
+        raise NotImplementedError()

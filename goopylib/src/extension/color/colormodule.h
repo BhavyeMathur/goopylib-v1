@@ -1,5 +1,5 @@
 #include <Python.h>
-#include <goopylib/Color/Color.h>
+#include <goopylib/color/Color.h>
 
 #ifndef Py_COLORMODULE_H
 #define Py_COLORMODULE_H

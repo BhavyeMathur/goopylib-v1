@@ -1,11 +1,11 @@
 #pragma once
 
-#include "extension/util.h"
+#include "extension/header.h"
 
 #include "macros.h"
 #include "util.h"
 
-#include "goopylib/Color/Util.h"
+#include "goopylib/color/Util.h"
 
 
 namespace color {

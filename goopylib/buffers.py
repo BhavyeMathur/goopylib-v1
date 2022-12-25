@@ -2,20 +2,6 @@ from typing import Literal, Union
 from vertex_array import *
 
 
-ShaderDataType = Literal["float", "float2", "float3", "float4",
-                         "mat3", "mat4",
-                         "int", "int2", "int3", "int4",
-                         "bool"]
-
-
-class BufferElement:
-    def __init__(self, name: str, dtype: ShaderDataType, normalized: bool = False):
-        raise NotImplementedError()
-
-    def __repr__(self) -> str:
-        raise NotImplementedError()
-
-
 class VertexBuffer():
     def __init__(self, *args: Union[tuple[float, ...], float]):
         raise NotImplementedError()
