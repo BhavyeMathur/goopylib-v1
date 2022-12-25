@@ -172,5 +172,6 @@ namespace gp {
         for (auto & color : colors) {
             delete color.second;
         }
+        colors.clear();
     }
 }

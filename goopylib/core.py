@@ -150,7 +150,7 @@ def number_of_monitors() -> int:
     raise NotImplementedError()
 
 
-def set_buffer_swap_interval(value: int):
+def set_buffer_swap_interval(*args: int):
     """Sets the minimum number of monitor refreshes the driver should wait from the time before swapping Window buffers.
     """
     raise NotImplementedError()
