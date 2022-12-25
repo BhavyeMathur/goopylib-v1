@@ -5,6 +5,8 @@ Module defining core and miscellaneous functions
 from typing import Union
 import goopylib.ext.core as __core
 
+__core.init()
+
 
 def init():
     """Initializes goopylib internally.
@@ -53,6 +55,9 @@ def update_timeout(timeout: float = 0):
 
     Args:
         timeout: the duration (seconds) to wait between updates. Defaults to `0`.
+
+    Raises:
+        ValueError: if timeout is less than 0
     """
     __core.update_timeout(timeout)
 
@@ -122,6 +127,7 @@ def set_buffer_swap_interval(interval: int):
 
     Raises:
         TypeError: if a non-integer value is passed.
+        ValueError: if interval is less than 0
     """
     return __core.set_buffer_swap_interval(interval)
 

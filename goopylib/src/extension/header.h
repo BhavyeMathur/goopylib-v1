@@ -1,12 +1,11 @@
 #pragma once
 
-#define GP_PY_LOGGING 3
-
-#include "src/gp.h"
 #include <Python.h>
 #include <iostream>
+#include "debug.h"
 
-#define GP_TYPE_CHECKING true
+#define GP_USING_GLFW true
+#define GP_USING_OPENGL true
 
 #if GP_ERROR_CHECKING
 #define CHECK_GLFW_INITIALIZED(val) \
@@ -62,20 +61,3 @@ Py_INCREF(name); \
 return name
 
 #define TYPE_NAME(object) object->ob_type->tp_name
-
-namespace gp {
-    int checkError() {
-        switch (gp::getErrorCode()) {
-            case gp::ErrorType::RuntimeError:
-                PyErr_SetString(PyExc_RuntimeError, gp::getErrorMessage());
-                return -1;
-
-            case gp::ErrorType::ValueError:
-                PyErr_SetString(PyExc_ValueError, gp::getErrorMessage());
-                return -1;
-
-            default:
-                return 0;
-        }
-    }
-}

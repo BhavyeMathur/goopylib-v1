@@ -9,9 +9,11 @@ namespace core {
     static PyObject *init(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.init()");
 
-        gp::init();
-
-        if (gp::checkError()) {
+        try {
+            gp::init();
+        }
+        catch (const std::runtime_error &e) {
+            PyErr_SetString(PyExc_RuntimeError, e.what());
             return nullptr;
         }
 
@@ -23,10 +25,6 @@ namespace core {
 
         gp::terminate();
 
-        if (gp::checkError()) {
-            return nullptr;
-        }
-
         Py_RETURN_NONE;
     }
 
@@ -34,10 +32,6 @@ namespace core {
         GP_PY_TRACE("core.update()");
 
         gp::update();
-
-        if (gp::checkError()) {
-            return nullptr;
-        }
 
         Py_RETURN_NONE;
     }
@@ -48,10 +42,6 @@ namespace core {
         GP_PY_TRACE("core.update_on_event()");
 
         gp::updateOnEvent();
-
-        if (gp::checkError()) {
-            return nullptr;
-        }
 
         Py_RETURN_NONE;
     }
@@ -66,11 +56,10 @@ namespace core {
         #endif
 
         double timeout = PyFloat_AsDouble(arg);
-        gp::updateTimeout(timeout);
 
-        if (gp::checkError()) {
-            return nullptr;
-        }
+        GP_CHECK_GE(timeout, 0, nullptr, "timeout must be greater than or equal to 0")
+
+        gp::updateTimeout(timeout);
 
         Py_RETURN_NONE;
     }
@@ -124,7 +113,11 @@ namespace core {
         }
         #endif
 
-        gp::setBufferSwapInterval((int32_t) PyLong_AsLong(arg));
+        int32_t interval = (int32_t) PyLong_AsLong(arg);
+
+        GP_CHECK_GE(interval, 0, nullptr, "interval must be greater than or equal to 0")
+
+        gp::setBufferSwapInterval(interval);
         Py_RETURN_NONE;
     }
 
@@ -186,8 +179,6 @@ PyMODINIT_FUNC PyInit_core(void) {
     #if GP_LOGGING >= 5
     std::cout << "[--:--:--] PYTHON: PyInit_core()" << std::endl;
     #endif
-
-    gp::init();
 
     PyObject *m = PyModule_Create(&coremodule);
     if (m == nullptr) {

@@ -1,3 +1,4 @@
+#include "gp.h"
 #include "Log.h"
 
 namespace gp {
@@ -8,11 +9,13 @@ namespace gp {
     void Log::init() {
         if (!spdlog::get("GOOPYLIB")) {
             std::vector<spdlog::sink_ptr> logSinks;
-            logSinks.emplace_back(CreateRef<spdlog::sinks::stdout_color_sink_mt>());
+            auto colorSink = CreateRef<spdlog::sinks::stdout_color_sink_mt>();
+            logSinks.emplace_back(colorSink);
             logSinks.emplace_back(CreateRef<spdlog::sinks::basic_file_sink_mt>("goopylib.log", true));
 
             logSinks[0]->set_pattern("%^[%T] %n: %v%$");
             logSinks[1]->set_pattern("[%T] [%l] %n: %v");
+            colorSink->set_color(spdlog::level::critical, "\033[91m\033[1m");
 
             s_CoreLogger = CreateRef<spdlog::logger>("GOOPYLIB", begin(logSinks), end(logSinks));
             spdlog::register_logger(s_CoreLogger);

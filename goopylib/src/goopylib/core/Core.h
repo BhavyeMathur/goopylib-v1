@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/gp.h"
+#include <cstring>
 
 namespace gp {
     extern bool glfw_initialized;
@@ -8,7 +8,7 @@ namespace gp {
     /**
      * Initializes goopylib internally.
      *
-     * @throws RuntimeError: if the initialization fails
+     * @throws std::runtime_error: if the initialization fails
     */
     void init();
 
@@ -44,6 +44,7 @@ namespace gp {
     /**
      * Updates goopylib after a duration has passed.
      * @param timeout the duration (seconds) to wait between updates. Defaults to 0.
+     * @throws std::invalid_argument: if timeout is less than 0
      */
     void updateTimeout(double timeout = 0);
 
@@ -62,36 +63,37 @@ namespace gp {
     /**
      *
      * @return the refresh rate of the primary monitor in Hertz
-     * @throws RuntimeError: if goopylib has not been initialized
+     * @throws std::runtime_error: if goopylib has not been initialized
      */
     int getRefreshRate();
 
     /**
      *
      * @return the screen width in screen coordinates
-     * @throws RuntimeError: if goopylib has not been initialized
+     * @throws std::runtime_error: if goopylib has not been initialized
      */
     int getScreenWidth();
 
     /**
      *
      * @return the screen height in screen coordinates
-     * @throws RuntimeError: if goopylib has not been initialized
+     * @throws std::runtime_error: if goopylib has not been initialized
      */
     int getScreenHeight();
 
     /**
      *
      * @return the number of monitors connected.
-     * @throws RuntimeError: if goopylib has not been initialized
+     * @throws std::runtime_error: if goopylib has not been initialized
      */
     int getNumberOfMonitors();
 
     /**
      * Sets the rate of swapping Window buffers.
      * @param interval the number of refreshes to wait before swapping buffers.
+     * @throws std::invalid_argument: if interval is less than 0
      */
-    void setBufferSwapInterval(int interval);
+    void setBufferSwapInterval(int32_t interval);
 
     #endif
 
