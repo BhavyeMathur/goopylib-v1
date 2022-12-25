@@ -3,13 +3,6 @@
 #include "src/goopylib/Color/Color.h"
 #include "src/goopylib/Scene/Renderer.h"
 
-// TODO cursor callback
-// TODO cursor enter/leave
-// TODO check mouse button
-// TODO mouse button callbacks
-// TODO scroll callback
-// TODO mouse input mode
-
 class GLFWwindow;
 
 namespace gp {
@@ -81,7 +74,9 @@ namespace gp {
         int width;
         int height;
     };
+}
 
+namespace gp {
     class Window {
 
         friend class Renderable;
@@ -261,7 +256,13 @@ namespace gp {
 
         int checkKey(int key) const;
 
-        void setKeyCallback(int key, std::function<void(Window *window, int action)> callback);
+        bool checkMouseButton(int button) const;
+
+        bool checkLeftClick() const;
+
+        bool checkMiddleClick() const;
+
+        bool checkRightClick() const;
 
         // Callback Functions
 
@@ -284,6 +285,22 @@ namespace gp {
         void setContentScaleCallback(std::function<void(Window *window, float xScale, float yScale)> callback);
 
         void setFramebufferSizeCallback(std::function<void(Window *window, int width, int height)> callback);
+
+        void setMouseMotionCallback(std::function<void(Window *window, float xPos, float yPos)> callback);
+
+        void setMouseEnterCallback(std::function<void(Window *window, bool entered)> callback);
+
+        void setScrollCallback(std::function<void(Window *window, float xScroll, float yScroll)> callback);
+
+        void setKeyCallback(int key, std::function<void(Window *window, int action)> callback);
+
+        void setMouseButtonCallback(int button, std::function<void(Window *window, bool pressed)> callback);
+
+        void setLeftClickCallback(std::function<void(Window *window, bool pressed)> callback);
+
+        void setMiddleClickCallback(std::function<void(Window *window, bool pressed)> callback);
+
+        void setRightClickCallback(std::function<void(Window *window, bool pressed)> callback);
 
         // Static Methods
 
@@ -320,7 +337,15 @@ namespace gp {
 
         void onFramebufferSize(int width, int height);
 
+        void onMouseMotion(float xPos, float yPos);
+
+        void onMouseEnter(bool entered);
+
+        void onScroll(float xScroll, float yScroll);
+
         void onKeyPress(int key, int scancode, int action, int mods);
+
+        void onMousePress(int button, int action, int mods);
 
         #if GP_USING_GLFW
 
@@ -355,8 +380,12 @@ namespace gp {
         std::function<void(Window *window)> m_RefreshCallback;
         std::function<void(Window *window, float xScale, float yScale)> m_ContentScaleCallback;
         std::function<void(Window *window, int width, int height)> m_FramebufferSizeCallback;
+        std::function<void(Window *window, float xPos, float yPos)> m_MouseMotionCallback;
+        std::function<void(Window *window, bool entered)> m_MouseEnterCallback;
+        std::function<void(Window *window, float xScroll, float yScroll)> m_ScrollCallback;
 
         std::unordered_map<int, std::function<void(Window *window, int action)>> m_KeyCallbacks;
+        std::unordered_map<int, std::function<void(Window *window, bool pressed)>> m_MouseCallbacks;
 
         bool _isClosed() const;
 
@@ -414,6 +443,14 @@ namespace gp {
 
         void _setFramebufferSizeCallback() const;
 
+        void _setMouseMotionCallback() const;
+
+        void _setMouseEnterCallback() const;
+
+        void _setScrollCallback() const;
+
         void _setKeyCallback() const;
+
+        void _setMouseButtonCallback() const;
     };
 }

@@ -96,7 +96,6 @@ class WindowMethods(unittest.TestCase):
         self.assertFalse(self.window.is_visible())
         self.assertTrue(self.window.is_hidden())
 
-    # TODO fix window maximize callback & maximize
     def test_maximize(self):
         self.window.restore()
         self.assertFalse(self.window.is_maximized())

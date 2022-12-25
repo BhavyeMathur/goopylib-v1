@@ -1,5 +1,8 @@
 #include "src/goopylib/Core/Window.h"
 
+#include <utility>
+#include "src/goopylib/Events/MouseCodes.h"
+
 namespace gp {
     std::vector<Window *> Window::s_Instances;
 
@@ -12,6 +15,7 @@ namespace gp {
         _setResizeCallback();
         _setPositionCallback();
         _setKeyCallback();
+        _setMouseButtonCallback();
     }
 
     void Window::update() {
@@ -309,10 +313,29 @@ namespace gp {
 
 // Window events
 namespace gp {
+    bool Window::checkLeftClick() const {
+        return checkMouseButton(GP_MOUSE_LEFT_BUTTON);
+    }
+
+    bool Window::checkMiddleClick() const {
+        return checkMouseButton(GP_MOUSE_MIDDLE_BUTTON);
+    }
+
+    bool Window::checkRightClick() const {
+        return checkMouseButton(GP_MOUSE_RIGHT_BUTTON);
+    }
+
     void Window::onKeyPress(int key, int UNUSED(scancode), int action, int mods) {
         m_KeyModifiers = mods;
         if (m_KeyCallbacks.find(key) != m_KeyCallbacks.end()) {
             m_KeyCallbacks[key]((Window *) this, action);
+        }
+    }
+
+    void Window::onMousePress(int button, int action, int mods) {
+        m_KeyModifiers = mods;
+        if (m_MouseCallbacks.find(button) != m_MouseCallbacks.end()) {
+            m_MouseCallbacks[button]((Window *) this, (bool) action);
         }
     }
 
@@ -326,6 +349,30 @@ namespace gp {
             m_KeyCallbacks.erase(key);
         }
         // _setKeyCallback(); // Not required as it is already set in super()
+    }
+
+    void Window::setMouseButtonCallback(int button, std::function<void(Window *window, bool pressed)> callback) {
+        GP_CORE_DEBUG("Set '{0}' button ({1}) callback", m_Data.title, key);
+
+        if (callback) {
+            m_MouseCallbacks[button] = std::move(callback);
+        }
+        else if (m_MouseCallbacks.find(button) != m_MouseCallbacks.end()) {
+            m_MouseCallbacks.erase(button);
+        }
+        // _setMouseButtonCallback(); // Not required as it is already set in super()
+    }
+
+    void Window::setLeftClickCallback(std::function<void(Window *, bool)> callback) {
+        setMouseButtonCallback(GP_MOUSE_LEFT_BUTTON, std::move(callback));
+    }
+
+    void Window::setMiddleClickCallback(std::function<void(Window *, bool)> callback) {
+        setMouseButtonCallback(GP_MOUSE_MIDDLE_BUTTON, std::move(callback));
+    }
+
+    void Window::setRightClickCallback(std::function<void(Window *, bool)> callback) {
+        setMouseButtonCallback(GP_MOUSE_RIGHT_BUTTON, std::move(callback));
     }
 }
 
@@ -469,6 +516,41 @@ namespace gp {
 
         m_FramebufferSizeCallback = std::move(callback);
         _setFramebufferSizeCallback();
+    }
+
+    void Window::onMouseMotion(float xPos, float yPos) {
+        m_MouseMotionCallback((Window *) this, xPos, yPos);
+    }
+
+    void Window::setMouseMotionCallback(
+            std::function<void(Window *window, float xPos, float yPos)> callback) {
+        GP_CORE_DEBUG("Set '{0}' mouse motion callback", m_Data.title);
+
+        m_MouseMotionCallback = std::move(callback);
+        _setMouseMotionCallback();
+    }
+
+    void Window::onMouseEnter(bool entered) {
+        m_MouseEnterCallback((Window *) this, entered);
+    }
+
+    void Window::setMouseEnterCallback(
+            std::function<void(Window *window, bool entered)> callback) {
+        GP_CORE_DEBUG("Set '{0}' mouse enter/exit callback", m_Data.title);
+
+        m_MouseEnterCallback = std::move(callback);
+        _setMouseEnterCallback();
+    }
+
+    void Window::onScroll(float xScroll, float yScroll) {
+        m_ScrollCallback((Window *) this, xScroll, yScroll);
+    }
+
+    void Window::setScrollCallback(std::function<void(Window *window, float xScroll, float yScroll)> callback) {
+        GP_CORE_DEBUG("Set '{0}' scroll callback", m_Data.title);
+
+        m_ScrollCallback = std::move(callback);
+        _setScrollCallback();
     }
 }
 

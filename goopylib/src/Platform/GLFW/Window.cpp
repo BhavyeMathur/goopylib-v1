@@ -1,3 +1,4 @@
+#include "gp.h"
 #include "src/goopylib/Core/Window.h"
 #include <GLFW/glfw3.h>
 
@@ -171,6 +172,7 @@ namespace gp {
     }
 
     void Window::_setMaximizeCallback() const {
+        // TODO fix issue with maximize callback not working. Tested on M1 MacOS Monterey 12.4, 3.3.8 Cocoa NSGL EGL OSMesa dynamic, OpenGL 4.1
         glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *window, int maximized) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMaximize(maximized == GLFW_TRUE);
@@ -205,10 +207,38 @@ namespace gp {
         });
     }
 
+    void Window::_setMouseMotionCallback() const {
+        glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xPos, double yPos) {
+            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            windowObject->onMouseMotion((float) xPos, (float) yPos);
+        });
+    }
+
+    void Window::_setMouseEnterCallback() const {
+        glfwSetCursorEnterCallback(m_Window, [](GLFWwindow *window, int entered) {
+            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            windowObject->onMouseEnter((bool) entered);
+        });
+    }
+
+    void Window::_setScrollCallback() const {
+        glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xScroll, double yScroll) {
+            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            windowObject->onScroll((float) xScroll, (float) yScroll);
+        });
+    }
+
     void Window::_setKeyCallback() const {
         glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onKeyPress(key, scancode, action, mods);
+        });
+    }
+
+    void Window::_setMouseButtonCallback() const {
+        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button, int action, int mods) {
+            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            windowObject->onMousePress(button, action, mods);
         });
     }
 }
@@ -249,6 +279,10 @@ namespace gp {
 
     int Window::checkKey(int key) const {
         return glfwGetKey(m_Window, key);
+    }
+
+    bool Window::checkMouseButton(int button) const {
+        return glfwGetMouseButton(m_Window, button) == GLFW_PRESS;
     }
 }
 
