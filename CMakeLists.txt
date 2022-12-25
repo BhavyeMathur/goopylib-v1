@@ -35,6 +35,7 @@ set(SOURCE_FILES
 
     ${GOOPYLIB_PATH}/Scene/Renderer.cpp
     ${GOOPYLIB_PATH}/Scene/Camera.cpp
+    ${GOOPYLIB_PATH}/Scene/CameraController.cpp
 
     ${PLATFORM_PATH}/GLFW/Window.cpp
     ${PLATFORM_PATH}/OpenGL/Buffer.cpp

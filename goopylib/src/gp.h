@@ -42,6 +42,7 @@
 #define GL_SILENCE_DEPRECATION
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 
+// Smart Pointers
 namespace gp {
     template<class T>
         struct _Unique_if {
@@ -74,10 +75,7 @@ namespace gp {
     template<class T, class... Args>
         typename _Unique_if<T>::_Known_bound
         make_unique(Args &&...) = delete;
-}
 
-// Smart Pointers
-namespace gp {
     template<typename T>
         using Scope = std::unique_ptr<T>;
 

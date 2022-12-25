@@ -8,7 +8,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
 namespace gp {
-    class GPAPI Log {
+    class Log {
 
     public:
         static void init();

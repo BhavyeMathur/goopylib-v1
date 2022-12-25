@@ -1,5 +1,7 @@
 #pragma once
 
+#include "gp.h"
+
 namespace gp {
     extern bool glfw_initialized;
 

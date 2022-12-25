@@ -12,6 +12,7 @@ namespace gp {
             m_Right(right),
             m_Bottom(bottom),
             m_Top(top) {
+        GP_CORE_INFO("Initializing Orthographic Camera");
     }
 
     void Camera::setProjection(float left, float right, float bottom, float top) {

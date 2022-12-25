@@ -1,6 +1,5 @@
 #pragma once
 
-#include "gp.h"
 #include "goopylib/Core/Core.h"
 #include "goopylib/Core/Window.h"
 #include "goopylib/Core/Buffer.h"
@@ -23,3 +22,5 @@
 #include "goopylib/Objects/Circle.h"
 #include "goopylib/Objects/Image.h"
 #include "goopylib/Objects/Line.h"
+
+#include "goopylib/Scene/CameraController.h"
