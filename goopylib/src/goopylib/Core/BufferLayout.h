@@ -53,6 +53,7 @@ namespace gp {
 
         friend class VertexArray;
         friend class VertexBuffer;
+        friend class UniformBuffer;
 
     public:
         BufferLayout(BufferElement *elements, int32_t count);

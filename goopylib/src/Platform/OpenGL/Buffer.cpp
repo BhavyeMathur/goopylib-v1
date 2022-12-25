@@ -1,4 +1,5 @@
 #include "goopylib/Core/Buffer.h"
+#include <OpenGL/gl3.h>
 
 
 // Vertex Buffer
@@ -84,5 +85,51 @@ namespace gp {
     void IndexBuffer::unbind() {
         GP_CORE_WARN("Unbinding Element Array Buffers");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+}
+
+// Uniform Buffer
+namespace gp {
+    UniformBuffer::UniformBuffer(BufferLayout &&layout)
+    : m_Layout(layout) {
+        glGenBuffers(1, &m_RendererID);
+
+        GP_CORE_DEBUG("Initializing Uniform Buffer {0} at binding {1}", count, binding);
+
+        bind();
+    }
+
+    UniformBuffer::~UniformBuffer() {
+        glDeleteBuffers(1, &m_RendererID);
+    }
+
+    void UniformBuffer::bind() const {
+        glBindBuffer(GL_UNIFORM_BUFFER, m_RendererID);
+    }
+
+    void UniformBuffer::unbind() {
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    }
+
+    void UniformBuffer::setData(const void *data, uint32_t count) {
+        GP_CORE_TRACE("Setting Uniform Buffer {0} Data, count={1}", m_RendererID, count);
+
+        bind();
+        glBufferData(GL_UNIFORM_BUFFER, count * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
+
+        m_Count = count;
+    }
+
+    void UniformBuffer::setData(const void *data, uint32_t count, uint32_t offset) const {
+        GP_CORE_TRACE("Setting Uniform Buffer {0} Data", m_RendererID);
+
+        bind();
+        glBufferSubData(GL_UNIFORM_BUFFER, offset * m_Layout.m_Stride,
+                        count * m_Layout.m_Stride, data);
+    }
+
+    void UniformBuffer::setBinding(uint32_t binding) const {
+        bind();
+        glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_RendererID);
     }
 }

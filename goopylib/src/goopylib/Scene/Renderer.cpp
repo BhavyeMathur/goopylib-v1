@@ -24,6 +24,10 @@ namespace gp {
         GP_CORE_DEBUG("Initializing Line");
         Line::init();
 
+        GP_CORE_TRACE("Initializing Line Shader");
+        m_LineShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/line.vert",
+                                         GP_DIRECTORY "goopylib/Shader/line.frag");
+
         GP_CORE_TRACE("Initializing Polygon Shader");
         m_PolygonShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/vec2.vert",
                                             GP_DIRECTORY "goopylib/Shader/solid.frag");
@@ -31,10 +35,6 @@ namespace gp {
         GP_CORE_TRACE("Initializing Ellipse Shader");
         m_EllipseShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/ellipse.vert",
                                             GP_DIRECTORY "goopylib/Shader/ellipse.frag");
-
-        GP_CORE_TRACE("Initializing Line Shader");
-        m_LineShader = CreateRef<Shader>(GP_DIRECTORY "goopylib/Shader/line.vert",
-                                         GP_DIRECTORY "goopylib/Shader/line.frag");
 
         _createLineBuffer();
         _createTriangleBuffer();
@@ -48,6 +48,15 @@ namespace gp {
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
         m_ImageShader->set("Texture", s_TextureSlots, samplers);
+
+
+        m_ShaderUniform = Ref<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
+        m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1);
+
+        m_LineShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        m_PolygonShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        m_EllipseShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        m_ImageShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
     }
 
     void Renderer::_createLineBuffer() {
@@ -461,11 +470,7 @@ namespace gp {
     }
 
     void Renderer::flush() {
-        // TODO Replace with global uniform buffer object
-        m_LineShader->set("ProjectionViewMatrix", m_Camera.m_ProjectionViewMatrix);
-        m_PolygonShader->set("ProjectionViewMatrix", m_Camera.m_ProjectionViewMatrix);
-        m_EllipseShader->set("ProjectionViewMatrix", m_Camera.m_ProjectionViewMatrix);
-        m_ImageShader->set("ProjectionViewMatrix", m_Camera.m_ProjectionViewMatrix);
+        m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
 
         _updateRenderingObjectVBO(m_RenderingObjects[LINES]);
         _updateRenderingObjectVBO(m_RenderingObjects[TRIANGLES]);

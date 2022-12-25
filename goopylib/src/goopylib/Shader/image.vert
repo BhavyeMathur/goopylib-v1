@@ -5,7 +5,9 @@ layout (location = 1) in vec2 texCoord;
 layout (location = 2) in int texSlot;
 layout (location = 3) in float transparency;
 
-uniform mat4 ProjectionViewMatrix;
+layout (std140) uniform Projection {
+    mat4 ProjectionViewMatrix;
+};
 
 out vec2 TexCoord;
 flat out int TexSlot;

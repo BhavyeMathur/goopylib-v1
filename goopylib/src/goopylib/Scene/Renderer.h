@@ -91,6 +91,8 @@ namespace gp {
         Ref<Shader> m_EllipseShader;
         Ref<Shader> m_ImageShader;
 
+        Ref<UniformBuffer> m_ShaderUniform;
+
         std::vector<Ref<Texture2D>> m_Textures;
         std::unordered_map<const char *, TextureData> m_TexturesCache;
 

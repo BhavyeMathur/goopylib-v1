@@ -23,7 +23,7 @@ namespace gp {
 
 // Vertex Buffer
 namespace gp {
-    class VertexBuffer final : public Buffer {
+    class VertexBuffer : public Buffer {
 
         friend class Renderer;
 
@@ -42,10 +42,11 @@ namespace gp {
 
         void setLayout(const BufferLayout &layout);
 
+    protected:
+        VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
+
     private:
         BufferLayout m_Layout{};
-
-        VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
     };
 }
 
@@ -66,5 +67,33 @@ namespace gp {
         IndexBuffer(uint32_t count, uint32_t *indices);
 
         IndexBuffer(std::initializer_list<uint32_t> indices);
+    };
+}
+
+// Uniform Buffer
+namespace gp {
+    class UniformBuffer final : public Buffer {
+
+        friend class Renderer;
+
+    public:
+        ~UniformBuffer() override;
+
+        void bind() const;
+
+        static void unbind();
+
+        void setData(const void *data, uint32_t count);
+
+        void setData(const void *data, uint32_t count, uint32_t offset) const;
+
+        const BufferLayout &getLayout() const;
+
+        void setBinding(uint32_t binding) const;
+
+    private:
+        UniformBuffer(BufferLayout &&layout);
+
+        BufferLayout m_Layout;
     };
 }

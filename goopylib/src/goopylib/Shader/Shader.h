@@ -4,6 +4,7 @@
 #include <glm/fwd.hpp>
 
 namespace gp {
+    class UniformBuffer;
 
     std::string readFile(const char *filePath);
 
@@ -15,6 +16,8 @@ namespace gp {
         Shader(const char *vertexShaderPath, const char *fragmentShaderPath);
 
         ~Shader();
+
+        void setUniformBlock(const Ref<UniformBuffer>& uniform, const char *name, uint32_t binding) const;
 
         template<typename... T>
             void set(const char *name, T &&... args) {

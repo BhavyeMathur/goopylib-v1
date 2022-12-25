@@ -1,4 +1,6 @@
+#include "gp.h"
 #include "src/goopylib/Shader/Shader.h"
+#include "src/goopylib/Core/Buffer.h"
 #include <glm/gtc/type_ptr.hpp>
 
 #if GP_USING_OPENGL
@@ -82,6 +84,13 @@ namespace gp {
     void Shader::unbind() {
         GP_CORE_WARN("Unbinding Shaders");
         glUseProgram(0);
+    }
+
+    void Shader::setUniformBlock(const Ref<UniformBuffer>& uniform, const char *name, uint32_t binding) const {
+        uniform->setBinding(binding);
+
+        uint32_t index = glGetUniformBlockIndex(m_RendererID, name);
+        glUniformBlockBinding(m_RendererID, index, binding);
     }
 
     void Shader::_setUniform(int32_t location, float value) const {
