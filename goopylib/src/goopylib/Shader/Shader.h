@@ -1,7 +1,7 @@
 #pragma once
 
-#include "pch.h"
-
+#include "gp.h"
+#include <glm/fwd.hpp>
 
 namespace gp {
 

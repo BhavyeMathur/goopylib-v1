@@ -4,8 +4,8 @@
 
 #include "color/colormodule.h"
 
-#include <goopylib/Core/Core.h>
-#include <goopylib/Core/Window.h>
+#include "src/goopylib/Core/Core.h"
+#include "src/goopylib/Core/Window.h"
 #include "src/goopylib/Core/Window.h"
 
 #if GP_ERROR_CHECKING

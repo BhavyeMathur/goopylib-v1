@@ -1,8 +1,11 @@
 #include "Window.h"
 
-#include "src/pch.h"
+#include "src/gp.h"
 #include "src/goopylib/Core/Core.h"
 #include "src/goopylib/Color/W3CX11.h"
+
+#include <stb/stb_image.h>
+#include <GLFW/glfw3.h>
 
 namespace {
     void onUpdate() {
@@ -47,7 +50,7 @@ namespace {
 namespace gp {
     bool glfw_initialized = false;
 
-    GPAPI int initialize() {
+    int initialize() {
         Log::init();
 
         GP_CORE_INFO("Initializing goopylib");
@@ -61,7 +64,7 @@ namespace gp {
         GP_CORE_DEBUG("Initializing GLFW");
 
         glfwSetErrorCallback([](int error, const char *description) {
-            GP_CORE_ERROR("GLFW Error Code {0}: {1}" , error, description);
+            GP_CORE_ERROR("GLFW Error Code {0}: {1}", error, description);
         });
         if (!glfwInit()) {
             return -1;
@@ -81,7 +84,7 @@ namespace gp {
         return 0;
     }
 
-    GPAPI void terminate() {
+    void terminate() {
         GP_CORE_INFO("Terminating goopylib");
 
         Window::destroyAll();
@@ -96,7 +99,7 @@ namespace gp {
         #endif
     }
 
-    GPAPI void update() {
+    void update() {
         onUpdate();
         #if GP_USING_GLFW
         glfwPollEvents();
@@ -105,46 +108,46 @@ namespace gp {
 
     #if GP_USING_GLFW
 
-    GPAPI void updateOnEvent() {
+    void updateOnEvent() {
         glfwWaitEvents();
         onUpdate();
     }
 
-    GPAPI void updateTimeout(double timeout) {
+    void updateTimeout(double timeout) {
         glfwWaitEventsTimeout(timeout);
         onUpdate();
     }
 
-    GPAPI std::string glfwCompiledVersion() {
+    std::string glfwCompiledVersion() {
         return {glfwGetVersionString()};
     }
 
-    GPAPI std::string glfwCurrentVersion() {
+    std::string glfwCurrentVersion() {
         int major, minor, revision;
         glfwGetVersion(&major, &minor, &revision);
 
         return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(revision);
     }
 
-    GPAPI int getRefreshRate() {
+    int getRefreshRate() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->refreshRate;
     }
 
-    GPAPI int getScreenWidth() {
+    int getScreenWidth() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
     }
 
-    GPAPI int getScreenHeight() {
+    int getScreenHeight() {
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
     }
 
-    GPAPI int getNumberOfMonitors() {
+    int getNumberOfMonitors() {
         int count;
         glfwGetMonitors(&count);
         return count;
     }
 
-    GPAPI void setBufferSwapInterval(int interval) {
+    void setBufferSwapInterval(int interval) {
         GP_CORE_INFO("Frame Rate limited to {0}", interval);
         glfwSwapInterval(interval);
     }
@@ -153,7 +156,7 @@ namespace gp {
 
     #if GP_USING_OPENGL
 
-    GPAPI std::string openglVersion() {
+    std::string openglVersion() {
         return {(char *) glGetString(GL_VERSION)};
     }
 

@@ -1,4 +1,5 @@
 #include "src/goopylib/Core/Window.h"
+#include <GLFW/glfw3.h>
 
 #if GP_USING_GLFW
 

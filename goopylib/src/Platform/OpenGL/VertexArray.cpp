@@ -1,5 +1,11 @@
 #include "src/goopylib/Core/VertexArray.h"
 
+#if GP_USING_OPENGL
+
+#include <OpenGL/gl3.h>
+
+#endif
+
 namespace gp {
     VertexArray::VertexArray() {
         glGenVertexArrays(1, &m_RendererID);

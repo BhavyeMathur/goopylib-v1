@@ -1,5 +1,7 @@
 #include "Image.h"
 
+#include <stb/stb_image.h>
+
 // Core Methods
 namespace gp {
     Image::Image(Point position, const char *path)

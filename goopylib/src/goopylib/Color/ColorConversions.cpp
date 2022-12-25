@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "gp.h"
 #include "ColorConversions.h"
 
 
@@ -31,7 +31,8 @@ namespace {
             case 'F':
                 return 15;
             default:
-                throw std::invalid_argument("invalid hexstring");
+                GP_CORE_ERROR("invalid hexstring");
+                return 0;
         }
     }
 
@@ -67,14 +68,14 @@ namespace gp {
     // RGB to other format
 
     namespace rgb {
-        GPAPI const char *toHex(int red, int green, int blue) {
+        const char *toHex(int red, int green, int blue) {
             static char *hex_string[8];
 
             sprintf((char *) hex_string, "#%02x%02x%02x", red, green, blue);
             return (const char *) hex_string;
         }
 
-        GPAPI CMYK toCMYK(int red, int green, int blue) {
+        CMYK toCMYK(int red, int green, int blue) {
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
             float bluef = (float) blue / 255.0f;
@@ -92,7 +93,7 @@ namespace gp {
                         k};
         }
 
-        GPAPI HSL toHSL(int red, int green, int blue) {
+        HSL toHSL(int red, int green, int blue) {
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
             float bluef = (float) blue / 255.0f;
@@ -135,7 +136,7 @@ namespace gp {
             }
         }
 
-        GPAPI HSV toHSV(int red, int green, int blue) {
+        HSV toHSV(int red, int green, int blue) {
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
             float bluef = (float) blue / 255.0f;
@@ -181,7 +182,7 @@ namespace gp {
     // Hex to other format
 
     namespace hex {
-        GPAPI RGB toRGB(const char *hexstring) {
+        RGB toRGB(const char *hexstring) {
             switch (strlen(hexstring)) {
                 case 3:
                     return Hex3toRGB(hexstring);
@@ -196,17 +197,17 @@ namespace gp {
             }
         }
 
-        GPAPI CMYK toCMYK(const char *hexstring) {
+        CMYK toCMYK(const char *hexstring) {
             RGB color_rgb = toRGB(hexstring);
             return rgb::toCMYK(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
 
-        GPAPI HSL toHSL(const char *hexstring) {
+        HSL toHSL(const char *hexstring) {
             RGB color_rgb = toRGB(hexstring);
             return rgb::toHSL(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
 
-        GPAPI HSV toHSV(const char *hexstring) {
+        HSV toHSV(const char *hexstring) {
             RGB color_rgb = toRGB(hexstring);
             return rgb::toHSV(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
@@ -215,24 +216,24 @@ namespace gp {
     // CMYK to other format
 
     namespace cmyk {
-        GPAPI RGB toRGB(float cyan, float magenta, float yellow, float key) {
+        RGB toRGB(float cyan, float magenta, float yellow, float key) {
             key = 1 - key;
             return RGB{(int) round(255 * (1 - cyan) * key),
                        (int) round(255 * (1 - magenta) * key),
                        (int) round(255 * (1 - yellow) * key)};
         }
 
-        GPAPI const char *toHex(float cyan, float magenta, float yellow, float key) {
+        const char *toHex(float cyan, float magenta, float yellow, float key) {
             RGB color_rgb = toRGB(cyan, magenta, yellow, key);
             return rgb::toHex(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
 
-        GPAPI HSL toHSL(float cyan, float magenta, float yellow, float key) {
+        HSL toHSL(float cyan, float magenta, float yellow, float key) {
             RGB color_rgb = toRGB(cyan, magenta, yellow, key);
             return rgb::toHSL(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
 
-        GPAPI HSV toHSV(float cyan, float magenta, float yellow, float key) {
+        HSV toHSV(float cyan, float magenta, float yellow, float key) {
             RGB color_rgb = toRGB(cyan, magenta, yellow, key);
             return rgb::toHSV(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
@@ -241,7 +242,7 @@ namespace gp {
     // HSL to other format
 
     namespace hsl {
-        GPAPI RGB toRGB(int hue, float saturation, float luminance) {
+        RGB toRGB(int hue, float saturation, float luminance) {
             float c = (1 - fabsf(2 * luminance - 1)) * saturation;
             float x = c * (1 - fabsf(fmodf((float) hue / 60, 2) - 1));
             float m = luminance - c / 2;
@@ -278,17 +279,17 @@ namespace gp {
             }
         }
 
-        GPAPI const char *toHex(int hue, float saturation, float luminance) {
+        const char *toHex(int hue, float saturation, float luminance) {
             RGB color_rgb = toRGB(hue, saturation, luminance);
             return rgb::toHex(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
 
-        GPAPI CMYK toCMYK(int hue, float saturation, float luminance) {
+        CMYK toCMYK(int hue, float saturation, float luminance) {
             RGB color_rgb = toRGB(hue, saturation, luminance);
             return rgb::toCMYK(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
 
-        GPAPI HSV toHSV(int hue, float saturation, float luminance) {
+        HSV toHSV(int hue, float saturation, float luminance) {
             float v = luminance + saturation * (luminance < 0.5 ? luminance : 1 - luminance);
 
             saturation = v == 0 ? 0 : 2 * (1 - luminance / v);
@@ -300,7 +301,7 @@ namespace gp {
     // HSV to other format
 
     namespace hsv {
-        GPAPI RGB toRGB(int hue, float saturation, float value) {
+        RGB toRGB(int hue, float saturation, float value) {
             float c = value * saturation;
             float x = c * (1 - fabsf(fmodf((float) hue / 60.0f, 2) - 1));
             float m = value - c;
@@ -337,17 +338,17 @@ namespace gp {
             }
         }
 
-        GPAPI const char *toHex(int hue, float saturation, float value) {
+        const char *toHex(int hue, float saturation, float value) {
             RGB color_rgb = toRGB(hue, saturation, value);
             return rgb::toHex(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
 
-        GPAPI CMYK toCMYK(int hue, float saturation, float value) {
+        CMYK toCMYK(int hue, float saturation, float value) {
             RGB color_rgb = toRGB(hue, saturation, value);
             return rgb::toCMYK(color_rgb.red, color_rgb.green, color_rgb.blue);
         }
 
-        GPAPI HSL toHSL(int hue, float saturation, float value) {
+        HSL toHSL(int hue, float saturation, float value) {
             float L = value * (1 - saturation / 2);
 
             if (L == 0 or L == 1) {

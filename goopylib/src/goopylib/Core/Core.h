@@ -1,41 +1,39 @@
 #pragma once
 
-#include "src/goopylib/Debug/Log.h"
-
 namespace gp {
-    GPAPI extern bool glfw_initialized;
+    extern bool glfw_initialized;
 
-    GPAPI int initialize();
+    int initialize();
 
-    GPAPI void terminate();
+    void terminate();
 
-    GPAPI void update();
+    void update();
 
     #if GP_USING_GLFW
 
-    GPAPI void updateOnEvent();
+    void updateOnEvent();
 
-    GPAPI void updateTimeout(double timeout);
+    void updateTimeout(double timeout);
 
-    GPAPI std::string glfwCompiledVersion();
+    std::string glfwCompiledVersion();
 
-    GPAPI std::string glfwCurrentVersion();
+    std::string glfwCurrentVersion();
 
-    GPAPI int getRefreshRate();
+    int getRefreshRate();
 
-    GPAPI int getScreenWidth();
+    int getScreenWidth();
 
-    GPAPI int getScreenHeight();
+    int getScreenHeight();
 
-    GPAPI int getNumberOfMonitors();
+    int getNumberOfMonitors();
 
-    GPAPI void setBufferSwapInterval(int interval);
+    void setBufferSwapInterval(int interval);
 
     #endif
 
     #if GP_USING_OPENGL
 
-    GPAPI std::string openglVersion();
+    std::string openglVersion();
 
     #endif
 }

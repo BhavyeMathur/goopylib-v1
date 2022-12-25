@@ -1,6 +1,12 @@
 #pragma once
 
-#include "src/pch.h"
+#include "src/gp.h"
+
+#if GP_USING_OPENGL
+
+#include <OpenGL/gl.h>
+
+#endif
 
 
 // Buffer Layout Data Types

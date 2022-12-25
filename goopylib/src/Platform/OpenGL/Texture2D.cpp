@@ -1,5 +1,13 @@
 #include "src/goopylib/Core/Texture2D.h"
 
+#include <stb/stb_image.h>
+
+#if GP_USING_OPENGL
+
+#include <OpenGL/gl.h>
+
+#endif
+
 namespace gp {
     Texture2D::Texture2D(const char *path)
             : m_Path(path) {

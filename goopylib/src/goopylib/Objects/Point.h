@@ -1,6 +1,7 @@
 #pragma once
 
-#include "pch.h"
+#include "gp.h"
+#include "src/goopylib/Math/gpmath.h"
 
 #define GP_CREATE_VERTEX(type) struct type##Vertex { Point vertex; type##VertexAttrib attrib; }
 

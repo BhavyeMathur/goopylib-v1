@@ -16,50 +16,8 @@
  */
 #define GP_LOGGING 4
 
-#include <iostream>
-#include <cmath>
-#include <utility>
 #include <type_traits>
-#include <random>
-
-#include <string>
-#include <vector>
-#include <unordered_map>
-
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/string_cast.hpp>
-
-#include <spdlog/spdlog.h>
-#include <spdlog/fmt/ostr.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
-#include <spdlog/sinks/basic_file_sink.h>
-
-#include <stb/stb_image.h>
-
-#if GP_USING_OPENGL
-
-#define GL_SILENCE_DEPRECATION
-
-#include <OpenGL/gl.h>
-
-#ifdef __APPLE__
-#define __gl_h_
-#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
-
-#include <OpenGL/gl3.h>
-#include <OpenGL/gl3ext.h>
-
-#endif
-#endif
-
-#if GP_USING_GLFW
-
-#include <GLFW/glfw3.h>
-
-#endif
+#include <memory>
 
 #define MAX_WIDTH 65535
 #define MAX_HEIGHT 65535
@@ -81,17 +39,8 @@
 #define GPAPI
 #endif
 
-template<typename ... Args>
-    std::string strformat(const std::string &format, Args ... args) {
-        int size_s = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1; // Extra space for '\0'
-        if (size_s <= 0) {
-            throw std::runtime_error("Error during formatting.");
-        }
-        auto size = static_cast<size_t>( size_s );
-        std::unique_ptr<char[]> buf(new char[size]);
-        std::snprintf(buf.get(), size, format.c_str(), args ...);
-        return {buf.get(), buf.get() + size - 1}; // We don't want the '\0' inside
-    }
+#define GL_SILENCE_DEPRECATION
+#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 
 namespace gp {
     template<class T>
@@ -147,4 +96,3 @@ namespace gp {
 }
 
 #include "src/goopylib/Debug/Log.h"
-#include "src/goopylib/Math/gpmath.h"

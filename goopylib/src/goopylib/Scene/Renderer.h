@@ -1,13 +1,13 @@
 #pragma once
 
-#include "pch.h"
-#include "src/goopylib/Objects/Point.h"
+#include "gp.h"
 
+#include "src/goopylib/Objects/Point.h"
 #include "src/goopylib/Core/Texture2D.h"
-#include "src/goopylib/Core/Buffer.h"
 #include "src/goopylib/Core/VertexArray.h"
 #include "src/goopylib/Scene/Camera.h"
 #include "src/goopylib/Shader/Shader.h"
+
 
 #define LINES 0
 #define TRIANGLES 1

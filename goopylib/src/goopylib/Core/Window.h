@@ -10,6 +10,8 @@
 // TODO scroll callback
 // TODO mouse input mode
 
+class GLFWwindow;
+
 namespace gp {
     enum class CursorMode;
 

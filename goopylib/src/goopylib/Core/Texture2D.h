@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pch.h"
+#include "gp.h"
 
 namespace gp {
     class Texture2D {

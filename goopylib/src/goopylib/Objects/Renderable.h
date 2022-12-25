@@ -3,6 +3,9 @@
 #include "Point.h"
 #include "src/goopylib/Core/Window.h"
 
+#include <cfloat>
+
+
 namespace gp {
     struct Scale {
         float xscale;

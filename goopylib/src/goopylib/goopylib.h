@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pch.h"
+#include "gp.h"
 #include "goopylib/Core/Core.h"
 #include "goopylib/Core/Window.h"
 #include "goopylib/Core/Buffer.h"

@@ -1,6 +1,20 @@
-#include "pch.h"
+#include "gp.h"
 #include "Color.h"
 #include "ColorConversions.h"
+
+#include <string>
+
+template<typename ... Args>
+    std::string strformat(const std::string &format, Args ... args) {
+        int size_s = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1; // Extra space for '\0'
+        if (size_s <= 0) {
+            throw std::runtime_error("Error during formatting.");
+        }
+        auto size = static_cast<size_t>( size_s );
+        std::unique_ptr<char[]> buf(new char[size]);
+        std::snprintf(buf.get(), size, format.c_str(), args ...);
+        return {buf.get(), buf.get() + size - 1}; // We don't want the '\0' inside
+    }
 
 
 // Color Base Class
@@ -99,6 +113,10 @@ namespace gp {
 
         clampRGBA();
     }
+
+    Color::~Color() {
+        GP_CORE_TRACE_ALL("Deallocating Color");
+    };
 
     void Color::fromRGB(int red, int green, int blue, float alpha) {
         m_Red = red;

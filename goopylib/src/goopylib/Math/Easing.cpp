@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "gp.h"
 
 #define EASE_IN(func, ...) func(t, ##__VA_ARGS__)
 #define EASE_OUT(func, ...) 1 - func(1 - t, ##__VA_ARGS__)

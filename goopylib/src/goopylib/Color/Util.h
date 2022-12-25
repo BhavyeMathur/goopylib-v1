@@ -1,16 +1,15 @@
 #pragma once
 
 #include "Color.h"
-#include "ColorConversions.h"
 
 namespace gp {
-    GPAPI ColorRGB randomRGB();
+    ColorRGB randomRGB();
 
-    GPAPI ColorHex randomHex();
+    ColorHex randomHex();
 
-    GPAPI ColorCMYK randomCMYK();
+    ColorCMYK randomCMYK();
 
-    GPAPI ColorHSV randomHSV();
+    ColorHSV randomHSV();
 
-    GPAPI ColorHSL randomHSL();
+    ColorHSL randomHSL();
 }

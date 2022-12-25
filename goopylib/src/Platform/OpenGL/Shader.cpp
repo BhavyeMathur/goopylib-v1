@@ -1,4 +1,11 @@
 #include "src/goopylib/Shader/Shader.h"
+#include <glm/gtc/type_ptr.hpp>
+
+#if GP_USING_OPENGL
+
+#include <OpenGL/gl3.h>
+
+#endif
 
 namespace gp {
     Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath) {

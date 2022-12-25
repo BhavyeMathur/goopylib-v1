@@ -1,6 +1,10 @@
 #pragma once
 
-#include "pch.h"
+#include "gp.h"
+#include "src/goopylib/Math/gpmath.h"
+
+#include <glm/detail/type_mat4x4.hpp>
+
 
 namespace gp {
     class Camera {
