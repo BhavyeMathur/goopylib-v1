@@ -462,7 +462,6 @@ def ease_bounce_out(bounces: int = 4, damping: float = 0.4) -> EASING_TYPE:
     pass
 
 
-# TODO move to C++ API
 def combine_easing(easing1: EASING_TYPE, easing2: EASING_TYPE) -> EASING_TYPE:
     """Combines 2 easing functions together.
 
@@ -485,16 +484,4 @@ def combine_easing(easing1: EASING_TYPE, easing2: EASING_TYPE) -> EASING_TYPE:
             :width: 50%
             :align: center
     """
-
-    if callable(easing1):
-        if callable(easing2):
-            def closure(t: float) -> float:
-                if t < 0.5:
-                    return easing1(2 * t) / 2
-                else:
-                    return (1 + easing2(2 * t - 1)) / 2
-
-            return closure
-
-        raise TypeError(f"Easing function expected, got {type(easing2)}")
-    raise TypeError(f"Easing function expected, got {type(easing1)}")
+    raise NotImplementedError()

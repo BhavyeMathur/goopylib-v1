@@ -296,4 +296,14 @@ namespace gp {
             return EASE_INOUT(easeBounce, damping, bounces, scale, zeroes, derivatives);
         };
     }
+
+    std::function<float(float)> combineEasing(const std::function<float(float)> &func1,
+                                              const std::function<float(float)> &func2) {
+        return [func1, func2](float t) {
+            if (t < 0.5) {
+                return func1(2 * t) / 2;
+            }
+            return (1 - func2(2 * t - 1)) / 2;
+        };
+    }
 }

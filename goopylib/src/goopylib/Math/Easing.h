@@ -93,4 +93,7 @@ namespace gp {
     std::function<float(float)> easeBounceOut(int bounces, float damping);
 
     std::function<float(float)> easeBounceInOut(int bounces, float damping);
+
+    std::function<float(float)> combineEasing(const std::function<float(float)> &func1,
+                                              const std::function<float(float)> &func2);
 }
