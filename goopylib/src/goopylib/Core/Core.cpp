@@ -8,10 +8,37 @@ namespace {
     void onUpdate() {
         gp::Window::updateAll();
 
-        #if (GP_DEBUGGING and GP_USING_OPENGL)
+        #if (GP_LOGGING >= 2 and GP_USING_OPENGL)
         GLenum error;
         while ((error = glGetError()) != GL_NO_ERROR) {
-            GP_CORE_ERROR("OpenGL Error: {0}", error);
+            switch (error) {
+                case GL_INVALID_ENUM:
+                    GP_CORE_ERROR("OpenGL Invalid Enum Error");
+                    break;
+
+                case GL_INVALID_OPERATION:
+                    GP_CORE_ERROR("OpenGL Invalid Operation Error");
+                    break;
+
+                case GL_INVALID_VALUE:
+                    GP_CORE_ERROR("OpenGL Invalid Value Error");
+                    break;
+
+                case GL_STACK_OVERFLOW:
+                    GP_CORE_ERROR("OpenGL Stack Overflow Error");
+                    break;
+
+                case GL_STACK_UNDERFLOW:
+                    GP_CORE_ERROR("OpenGL Stack Underflow Error");
+                    break;
+
+                case GL_OUT_OF_MEMORY:
+                    GP_CORE_ERROR("OpenGL Out of Memory Error");
+                    break;
+
+                default:
+                    GP_CORE_ERROR("OpenGL Error: {0}", error);
+            }
         }
         #endif
     }

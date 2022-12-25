@@ -36,3 +36,14 @@ bool checkQuadContains(Point point, Point a, Point b, Point c, Point d) {
 
     return true;
 }
+
+uint32_t uint32_rgb(float red, float green, float blue) {
+    int32_t val = 0;
+
+    val = val | ((int) (1) << 24);
+    val = val | ((int) (blue * 255) << 16);
+    val = val | ((int) (green * 255) << 8);
+    val = val | ((int) (red * 255) << 0);
+
+    return val;
+}

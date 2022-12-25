@@ -1,5 +1,9 @@
 #pragma once
 
+#include "pch.h"
+
+#define B10MAX ((float)((1u << 10) - 1))
+
 template<typename T>
     T gcd(T a, T b) {
         return b == 0 ? a : gcd(b, a % b);
@@ -54,3 +58,5 @@ struct Point {
 bool checkTriangleContains(Point point, Point a, Point b, Point c);
 
 bool checkQuadContains(Point point, Point a, Point b, Point c, Point d);
+
+uint32_t uint32_rgb(float a, float b, float c);
