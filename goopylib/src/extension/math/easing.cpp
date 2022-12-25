@@ -42,7 +42,7 @@ namespace easing {
 
     namespace linear {
         int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-            self->easing = gp::EaseLinear();
+            self->easing = gp::easeLinear();
             self->string = PyUnicode_FromString("ease_linear()");
             return 0;
         }

@@ -5,7 +5,7 @@
 #define EASE_INOUT(func, ...) t < 0.5 ? func(2 * t, ##__VA_ARGS__) / 2 : 1 - func(2 * (1 - t), ##__VA_ARGS__) / 2
 
 namespace {
-    void ProcessEaseBounce(int bounces, float *damping, float *scale, std::vector<float> &zeroes,
+    void processEaseBounce(int bounces, float *damping, float *scale, std::vector<float> &zeroes,
                            std::vector<float> &derivatives) {
         *damping = -sqrt(*damping);
         zeroes.push_back(1);
@@ -24,233 +24,233 @@ namespace {
 }
 
 namespace gp {
-    std::function<float(float)> EaseLinear() {
+    std::function<float(float)> easeLinear() {
         return [](float t) {
             return t;
         };
     }
 
-    float inline EasePoly(float t, float power) {
+    float inline easePoly(float t, float power) {
         return pow(t, power);
     }
 
-    std::function<float(float)> EasePolyIn(float power) {
+    std::function<float(float)> easePolyIn(float power) {
         return [power](float t) {
-            return EASE_IN(EasePoly, power);
+            return EASE_IN(easePoly, power);
         };
     }
 
-    std::function<float(float)> EasePolyOut(float power) {
+    std::function<float(float)> easePolyOut(float power) {
         return [power](float t) {
-            return EASE_OUT(EasePoly, power);
+            return EASE_OUT(easePoly, power);
         };
     }
 
-    std::function<float(float)> EasePolyInOut(float power) {
+    std::function<float(float)> easePolyInOut(float power) {
         return [power](float t) {
-            return EASE_INOUT(EasePoly, power);
+            return EASE_INOUT(easePoly, power);
         };
     }
 
-    float inline EaseQuad(float t) {
+    float inline easeQuad(float t) {
         return t * t;
     }
 
-    std::function<float(float)> EaseQuadIn() {
+    std::function<float(float)> easeQuadIn() {
         return [](float t) {
-            return EASE_IN(EaseQuad);
+            return EASE_IN(easeQuad);
         };
     }
 
-    std::function<float(float)> EaseQuadOut() {
+    std::function<float(float)> easeQuadOut() {
         return [](float t) {
-            return EASE_OUT(EaseQuad);
+            return EASE_OUT(easeQuad);
         };
     }
 
-    std::function<float(float)> EaseQuadInOut() {
+    std::function<float(float)> easeQuadInOut() {
         return [](float t) {
-            return EASE_INOUT(EaseQuad);
+            return EASE_INOUT(easeQuad);
         };
     }
 
-    float inline EaseCubic(float t) {
+    float inline easeCubic(float t) {
         return t * t * t;
     }
 
-    std::function<float(float)> EaseCubicIn() {
+    std::function<float(float)> easeCubicIn() {
         return [](float t) {
-            return EASE_IN(EaseCubic);
+            return EASE_IN(easeCubic);
         };
     }
 
-    std::function<float(float)> EaseCubicOut() {
+    std::function<float(float)> easeCubicOut() {
         return [](float t) {
-            return EASE_OUT(EaseCubic);
+            return EASE_OUT(easeCubic);
         };
     }
 
-    std::function<float(float)> EaseCubicInOut() {
+    std::function<float(float)> easeCubicInOut() {
         return [](float t) {
-            return EASE_INOUT(EaseCubic);
+            return EASE_INOUT(easeCubic);
         };
     }
 
-    float inline EaseQuart(float t) {
+    float inline easeQuart(float t) {
         return t * t * t * t;
     }
 
-    std::function<float(float)> EaseQuartIn() {
+    std::function<float(float)> easeQuartIn() {
         return [](float t) {
-            return EASE_IN(EaseQuart);
+            return EASE_IN(easeQuart);
         };
     }
 
-    std::function<float(float)> EaseQuartOut() {
+    std::function<float(float)> easeQuartOut() {
         return [](float t) {
-            return EASE_OUT(EaseQuart);
+            return EASE_OUT(easeQuart);
         };
     }
 
-    std::function<float(float)> EaseQuartInOut() {
+    std::function<float(float)> easeQuartInOut() {
         return [](float t) {
-            return EASE_INOUT(EaseQuart);
+            return EASE_INOUT(easeQuart);
         };
     }
 
-    float inline EaseQuint(float t) {
+    float inline easeQuint(float t) {
         return t * t * t * t * t;
     }
 
-    std::function<float(float)> EaseQuintIn() {
+    std::function<float(float)> easeQuintIn() {
         return [](float t) {
-            return EASE_IN(EaseQuint);
+            return EASE_IN(easeQuint);
         };
     }
 
-    std::function<float(float)> EaseQuintOut() {
+    std::function<float(float)> easeQuintOut() {
         return [](float t) {
-            return EASE_OUT(EaseQuint);
+            return EASE_OUT(easeQuint);
         };
     }
 
-    std::function<float(float)> EaseQuintInOut() {
+    std::function<float(float)> easeQuintInOut() {
         return [](float t) {
-            return EASE_INOUT(EaseQuint);
+            return EASE_INOUT(easeQuint);
         };
     }
 
-    float inline EaseCircle(float t) {
+    float inline easeCircle(float t) {
         return 1 - sqrt(1 - (float) pow(t, 2));
     }
 
-    std::function<float(float)> EaseCircleIn() {
+    std::function<float(float)> easeCircleIn() {
         return [](float t) {
-            return EASE_IN(EaseCircle);
+            return EASE_IN(easeCircle);
         };
     }
 
-    std::function<float(float)> EaseCircleOut() {
+    std::function<float(float)> easeCircleOut() {
         return [](float t) {
-            return EASE_OUT(EaseCircle);
+            return EASE_OUT(easeCircle);
         };
     }
 
-    std::function<float(float)> EaseCircleInOut() {
+    std::function<float(float)> easeCircleInOut() {
         return [](float t) {
-            return EASE_INOUT(EaseCircle);
+            return EASE_INOUT(easeCircle);
         };
     }
 
-    float inline EaseSin(float t) {
+    float inline easeSin(float t) {
         return 1 - (float) cos(t * 1.57079632679);
     }
 
-    std::function<float(float)> EaseSinIn() {
+    std::function<float(float)> easeSinIn() {
         return [](float t) {
-            return EASE_IN(EaseSin);
+            return EASE_IN(easeSin);
         };
     }
 
-    std::function<float(float)> EaseSinOut() {
+    std::function<float(float)> easeSinOut() {
         return [](float t) {
-            return EASE_OUT(EaseSin);
+            return EASE_OUT(easeSin);
         };
     }
 
-    std::function<float(float)> EaseSinInOut() {
+    std::function<float(float)> easeSinInOut() {
         return [](float t) {
-            return EASE_INOUT(EaseSin);
+            return EASE_INOUT(easeSin);
         };
     }
 
-    float inline EaseExp(float t, float base) {
+    float inline easeExp(float t, float base) {
         return pow(base, 10 * t - 10);
     }
 
-    std::function<float(float)> EaseExpIn(float base) {
+    std::function<float(float)> easeExpIn(float base) {
         return [base](float t) {
-            return EASE_IN(EaseExp, base);
+            return EASE_IN(easeExp, base);
         };
     }
 
-    std::function<float(float)> EaseExpOut(float base) {
+    std::function<float(float)> easeExpOut(float base) {
         return [base](float t) {
-            return EASE_OUT(EaseExp, base);
+            return EASE_OUT(easeExp, base);
         };
     }
 
-    std::function<float(float)> EaseExpInOut(float base) {
+    std::function<float(float)> easeExpInOut(float base) {
         return [base](float t) {
-            return EASE_INOUT(EaseExp, base);
+            return EASE_INOUT(easeExp, base);
         };
     }
 
-    float inline EaseBack(float t, float factor) {
+    float inline easeBack(float t, float factor) {
         return ((factor + 1) * t * t * t - factor * t * t);
     }
 
-    std::function<float(float)> EaseBackIn(float factor) {
+    std::function<float(float)> easeBackIn(float factor) {
         return [factor](float t) {
-            return EASE_IN(EaseBack, factor);
+            return EASE_IN(easeBack, factor);
         };
     }
 
-    std::function<float(float)> EaseBackOut(float factor) {
+    std::function<float(float)> easeBackOut(float factor) {
         return [factor](float t) {
-            return EASE_OUT(EaseBack, factor);
+            return EASE_OUT(easeBack, factor);
         };
     }
 
-    std::function<float(float)> EaseBackInOut(float factor) {
+    std::function<float(float)> easeBackInOut(float factor) {
         return [factor](float t) {
-            return EASE_INOUT(EaseBack, factor);
+            return EASE_INOUT(easeBack, factor);
         };
     }
 
-    float inline EaseElastic(float t, int factor) {
+    float inline easeElastic(float t, int factor) {
         return (float) pow(2, 10 * (t - 1)) * (float) std::sin(1.5707963267 * t * (1 + 4 * factor));
     }
 
-    std::function<float(float)> EaseElasticIn(int factor) {
+    std::function<float(float)> easeElasticIn(int factor) {
         return [factor](float t) {
-            return EASE_IN(EaseElastic, factor);
+            return EASE_IN(easeElastic, factor);
         };
     }
 
-    std::function<float(float)> EaseElasticOut(int factor) {
+    std::function<float(float)> easeElasticOut(int factor) {
         return [factor](float t) {
-            return EASE_OUT(EaseElastic, factor);
+            return EASE_OUT(easeElastic, factor);
         };
     }
 
-    std::function<float(float)> EaseElasticInOut(int factor) {
+    std::function<float(float)> easeElasticInOut(int factor) {
         return [factor](float t) {
-            return EASE_INOUT(EaseElastic, factor);
+            return EASE_INOUT(easeElastic, factor);
         };
     }
 
-    float inline EaseBounce(float t, float damping, int bounces, float scale, const std::vector<float> &zeroes,
+    float inline easeBounce(float t, float damping, int bounces, float scale, const std::vector<float> &zeroes,
                             const std::vector<float> &derivatives) {
         t = scale * (1 - t);
         for (int i = 0; i < bounces; i++) {
@@ -267,33 +267,33 @@ namespace gp {
         return 1;
     }
 
-    std::function<float(float)> EaseBounceIn(int bounces, float damping) {
+    std::function<float(float)> easeBounceIn(int bounces, float damping) {
         std::vector<float> zeroes, derivatives;
         float scale;
-        ProcessEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
+        processEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
 
         return [damping, bounces, scale, zeroes, derivatives](float t) {
-            return EASE_IN(EaseBounce, damping, bounces, scale, zeroes, derivatives);
+            return EASE_IN(easeBounce, damping, bounces, scale, zeroes, derivatives);
         };
     }
 
-    std::function<float(float)> EaseBounceOut(int bounces, float damping) {
+    std::function<float(float)> easeBounceOut(int bounces, float damping) {
         std::vector<float> zeroes, derivatives;
         float scale;
-        ProcessEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
+        processEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
 
         return [damping, bounces, scale, zeroes, derivatives](float t) {
-            return EASE_OUT(EaseBounce, damping, bounces, scale, zeroes, derivatives);
+            return EASE_OUT(easeBounce, damping, bounces, scale, zeroes, derivatives);
         };
     }
 
-    std::function<float(float)> EaseBounceInOut(int bounces, float damping) {
+    std::function<float(float)> easeBounceInOut(int bounces, float damping) {
         std::vector<float> zeroes, derivatives;
         float scale;
-        ProcessEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
+        processEaseBounce(bounces, &damping, &scale, zeroes, derivatives);
 
         return [damping, bounces, scale, zeroes, derivatives](float t) {
-            return EASE_INOUT(EaseBounce, damping, bounces, scale, zeroes, derivatives);
+            return EASE_INOUT(easeBounce, damping, bounces, scale, zeroes, derivatives);
         };
     }
 }

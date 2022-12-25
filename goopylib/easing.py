@@ -24,7 +24,7 @@ def ease_linear() -> EASING_TYPE:
 
         .. code-block:: python
 
-            >>> ease = gp.EaseLinear()
+            >>> ease = gp.easeLinear()
             >>> ease(0.4)
             0.4
     """
