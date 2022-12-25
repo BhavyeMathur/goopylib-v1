@@ -26,11 +26,11 @@ PyMODINIT_FUNC PyInit_buffers() {
         return nullptr;
     }
 
-    EXPOSE_CLASS(BufferElementType, "BufferElement")
-    EXPOSE_CLASS(VertexBufferType, "VertexBuffer")
-    EXPOSE_CLASS(IndexBufferType, "IndexBuffer")
+    EXPOSE_PYOBJECT_CLASS(BufferElementType, "BufferElement")
+    EXPOSE_PYOBJECT_CLASS(VertexBufferType, "VertexBuffer")
+    EXPOSE_PYOBJECT_CLASS(IndexBufferType, "IndexBuffer")
 
-    EXPOSE_CLASS(VertexArrayType, "VertexArray")
+    EXPOSE_PYOBJECT_CLASS(VertexArrayType, "VertexArray")
 
     return m;
 }

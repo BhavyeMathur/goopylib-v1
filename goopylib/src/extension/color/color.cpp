@@ -184,7 +184,7 @@ namespace color {
     static PyObject *PyNumber_InPlaceAdd(PyObject *o1, PyObject *o2) {
         #if GP_ERROR_CHECKING
         if (!color::isinstance(o1)) {
-            PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for +=: '%s' and '%s'", TYPE_NAME(o1), TYPE_NAME(o2));
+            PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for +=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
             return nullptr;
         }
         #endif
@@ -195,7 +195,7 @@ namespace color {
         else {
             #if GP_ERROR_CHECKING
             if (!PyLong_Check(o2)) {
-                PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for +=: '%s' and '%s'", TYPE_NAME(o1), TYPE_NAME(o2));
+                PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for +=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
                 return nullptr;
             }
             #endif
@@ -209,7 +209,7 @@ namespace color {
     static PyObject *PyNumber_InPlaceSubtract(PyObject *o1, PyObject *o2) {
         #if GP_ERROR_CHECKING
         if (!color::isinstance(o1)) {
-            PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for -=: '%s' and '%s'", TYPE_NAME(o1), TYPE_NAME(o2));
+            PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for -=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
             return nullptr;
         }
         #endif
@@ -220,7 +220,7 @@ namespace color {
         else {
             #if GP_ERROR_CHECKING
             if (!PyLong_Check(o2)) {
-                PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for -=: '%s' and '%s'", TYPE_NAME(o1), TYPE_NAME(o2));
+                PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for -=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
                 return nullptr;
             }
             #endif

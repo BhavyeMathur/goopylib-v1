@@ -264,7 +264,7 @@ PyMODINIT_FUNC PyInit_shader() {
         return nullptr;
     }
 
-    EXPOSE_CLASS(ShaderType, "Shader")
+    EXPOSE_PYOBJECT_CLASS(ShaderType, "Shader")
 
     return m;
 }

@@ -107,7 +107,7 @@ PyMODINIT_FUNC PyInit_color() {
         return nullptr;
     }
 
-    EXPOSE_CLASS(ColorType, "Color")
+    EXPOSE_PYOBJECT_CLASS(ColorType, "Color")
 
     ColorRGBType.tp_base = &ColorType;
     ColorHexType.tp_base = &ColorType;
@@ -115,11 +115,11 @@ PyMODINIT_FUNC PyInit_color() {
     ColorHSVType.tp_base = &ColorType;
     ColorHSLType.tp_base = &ColorType;
 
-    EXPOSE_CLASS(ColorRGBType, "ColorRGB")
-    EXPOSE_CLASS(ColorHexType, "ColorHex")
-    EXPOSE_CLASS(ColorCMYKType, "ColorCMYK")
-    EXPOSE_CLASS(ColorHSVType, "ColorHSV")
-    EXPOSE_CLASS(ColorHSLType, "ColorHSL")
+    EXPOSE_PYOBJECT_CLASS(ColorRGBType, "ColorRGB")
+    EXPOSE_PYOBJECT_CLASS(ColorHexType, "ColorHex")
+    EXPOSE_PYOBJECT_CLASS(ColorCMYKType, "ColorCMYK")
+    EXPOSE_PYOBJECT_CLASS(ColorHSVType, "ColorHSV")
+    EXPOSE_PYOBJECT_CLASS(ColorHSLType, "ColorHSL")
 
     static void *PyColor_API[PyColor_API_pointers];
     PyObject *c_api_object;

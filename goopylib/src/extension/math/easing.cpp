@@ -1,10 +1,13 @@
 #include "easing.h"
-
-struct EasingObject {
-    PyEasing_HEAD
-};
+#include "src/goopylib/math/Easing.h"
 
 namespace easing {
+    struct EasingObject {
+        PyObject_HEAD
+        std::function<float(float)> easing;
+        PyObject *string;
+    };
+
     static int traverse(EasingObject *self, visitproc visit, void *arg) {
         Py_VISIT(self->string);
         return 0;
@@ -28,7 +31,7 @@ namespace easing {
         }
         #ifdef GP_ERROR_CHECKING
         if (t > 1 or t < 0) {
-            RAISE_VALUE_ERROR(nullptr, "easing argument must be between 0 and 1 (inclusive)")
+            RAISE_VALUE_ERROR(nullptr, "easing argument must be between 0 and 1 (inclusive)");
         }
         #endif
 
@@ -40,430 +43,430 @@ namespace easing {
         return self->string;
     }
 
-    namespace linear {
-        int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-            self->easing = gp::easeLinear();
-            self->string = PyUnicode_FromString("ease_linear()");
-            return 0;
+    int linear::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeLinear();
+        self->string = PyUnicode_FromString("ease_linear()");
+        return 0;
+    }
+
+    int poly::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float power = 6;
+        if (!PyArg_ParseTuple(args, "|f", &power)) {
+            return -1;
         }
 
-        EASING_TYPE("linear")
+        self->easing = gp::easePolyInOut(power);
+        self->string = PyUnicode_FromFormat("ease_poly(power=%S)", PyFloat_FromDouble(power));
+        return 0;
+    }
+
+    int poly::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float power = 6;
+        if (!PyArg_ParseTuple(args, "|f", &power)) {
+            return -1;
+        }
+
+        self->easing = gp::easePolyIn(power);
+        self->string = PyUnicode_FromFormat("ease_poly_in(power=%S)", PyFloat_FromDouble(power));
+        return 0;
+    }
+
+    int poly::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float power = 6;
+        if (!PyArg_ParseTuple(args, "|f", &power)) {
+            return -1;
+        }
+
+        self->easing = gp::easePolyOut(power);
+        self->string = PyUnicode_FromFormat("ease_poly_out(power=%S)", PyFloat_FromDouble(power));
+        return 0;
+    }
+
+    int quad::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuadInOut();
+        self->string = PyUnicode_FromString("ease_quad()");
+        return 0;
+    }
+
+    int quad::in::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuadIn();
+        self->string = PyUnicode_FromString("ease_quad_in()");
+        return 0;
+    }
+
+    int quad::out::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuadOut();
+        self->string = PyUnicode_FromString("ease_quad_out()");
+        return 0;
+    }
+
+    int cubic::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeCubicInOut();
+        self->string = PyUnicode_FromString("ease_cubic()");
+        return 0;
+    }
+
+    int cubic::in::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeCubicIn();
+        self->string = PyUnicode_FromString("ease_cubic_in()");
+        return 0;
+    }
+
+    int cubic::out::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeCubicOut();
+        self->string = PyUnicode_FromString("ease_cubic_out()");
+        return 0;
+    }
+
+    int quart::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuartInOut();
+        self->string = PyUnicode_FromString("ease_quart()");
+        return 0;
+    }
+
+    int quart::in::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuartIn();
+        self->string = PyUnicode_FromString("ease_quart_in()");
+        return 0;
+    }
+
+    int quart::out::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuartOut();
+        self->string = PyUnicode_FromString("ease_quart_out()");
+        return 0;
+    }
+
+    int quint::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuintInOut();
+        self->string = PyUnicode_FromString("ease_quint()");
+        return 0;
+    }
+
+    int quint::in::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuintIn();
+        self->string = PyUnicode_FromString("ease_quint_in()");
+        return 0;
+    }
+
+    int quint::out::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeQuintOut();
+        self->string = PyUnicode_FromString("ease_quint_out()");
+        return 0;
+    }
+
+    int circle::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeCircleInOut();
+        self->string = PyUnicode_FromString("ease_circle()");
+        return 0;
+    }
+
+    int circle::in::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeCircleIn();
+        self->string = PyUnicode_FromString("ease_circle_in()");
+        return 0;
+    }
+
+    int circle::out::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeCircleOut();
+        self->string = PyUnicode_FromString("ease_circle_out()");
+        return 0;
+    }
+
+    int sin::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeSinInOut();
+        self->string = PyUnicode_FromString("ease_sin()");
+        return 0;
+    }
+
+    int sin::in::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeSinIn();
+        self->string = PyUnicode_FromString("ease_sin_in()");
+        return 0;
+    }
+
+    int sin::out::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+        self->easing = gp::easeSinOut();
+        self->string = PyUnicode_FromString("ease_sin_out()");
+        return 0;
+    }
+
+    int exp::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float base = 2.718281828459045;
+        if (!PyArg_ParseTuple(args, "|f", &base)) {
+            return -1;
+        }
+
+        self->easing = gp::easeExpInOut(base);
+        self->string = PyUnicode_FromFormat("ease_exp(base=%S)", PyFloat_FromDouble(base));
+        return 0;
+    }
+
+    int exp::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float base = 2.718281828459045;
+        if (!PyArg_ParseTuple(args, "|f", &base)) {
+            return -1;
+        }
+
+        self->easing = gp::easeExpIn(base);
+        self->string = PyUnicode_FromFormat("ease_exp_in(base=%S)", PyFloat_FromDouble(base));
+        return 0;
+    }
+
+    int exp::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float base = 2.718281828459045;
+        if (!PyArg_ParseTuple(args, "|f", &base)) {
+            return -1;
+        }
+
+        self->easing = gp::easeExpOut(base);
+        self->string = PyUnicode_FromFormat("ease_exp_out(base=%S)", PyFloat_FromDouble(base));
+        return 0;
+    }
+
+    int back::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float factor = 1.70158;
+        if (!PyArg_ParseTuple(args, "|f", &factor)) {
+            return -1;
+        }
+
+        self->easing = gp::easeBackInOut(factor);
+        self->string = PyUnicode_FromFormat("ease_back(factor=%S)", PyFloat_FromDouble(factor));
+        return 0;
+    }
+
+    int back::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float factor = 1.70158;
+        if (!PyArg_ParseTuple(args, "|f", &factor)) {
+            return -1;
+        }
+
+        self->easing = gp::easeBackIn(factor);
+        self->string = PyUnicode_FromFormat("ease_back_in(factor=%S)", PyFloat_FromDouble(factor));
+        return 0;
+    }
+
+    int back::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        float factor = 1.70158;
+        if (!PyArg_ParseTuple(args, "|f", &factor)) {
+            return -1;
+        }
+
+        self->easing = gp::easeBackOut(factor);
+        self->string = PyUnicode_FromFormat("ease_back_out(factor=%S)", PyFloat_FromDouble(factor));
+        return 0;
+    }
+
+    int elastic::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        int factor = 3;
+        if (!PyArg_ParseTuple(args, "|I", &factor)) {
+            return -1;
+        }
+
+        self->easing = gp::easeElasticInOut(factor);
+        self->string = PyUnicode_FromFormat("ease_elastic(factor=%i)", factor);
+        return 0;
+    }
+
+    int elastic::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        int factor = 3;
+        if (!PyArg_ParseTuple(args, "|I", &factor)) {
+            return -1;
+        }
+
+        self->easing = gp::easeElasticIn(factor);
+        self->string = PyUnicode_FromFormat("ease_elastic_in(factor=%i)", factor);
+        return 0;
+    }
+
+    int elastic::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        int factor = 3;
+        if (!PyArg_ParseTuple(args, "|I", &factor)) {
+            return -1;
+        }
+
+        self->easing = gp::easeElasticOut(factor);
+        self->string = PyUnicode_FromFormat("ease_elastic_out(factor=%i)", factor);
+        return 0;
+    }
+
+    int bounce::init(EasingObject *self, PyObject *args, PyObject *kwds) {
+        static const char *kwlist[] = {"bounces", "damping", nullptr};
+
+        int bounces = 4;
+        float damping = 0.4;
+        if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
+            return -1;
+        }
+
+        self->easing = gp::easeBounceInOut(bounces, damping);
+        self->string = PyUnicode_FromFormat("ease_bounce(bounces=%i, damping=%S)", bounces,
+                                            PyFloat_FromDouble(damping));
+        return 0;
+    }
+
+    int bounce::in::init(EasingObject *self, PyObject *args, PyObject *kwds) {
+        static const char *kwlist[] = {"bounces", "damping", nullptr};
+
+        int bounces = 4;
+        float damping = 0.4;
+        if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
+            return -1;
+        }
+
+        self->easing = gp::easeBounceIn(bounces, damping);
+        self->string = PyUnicode_FromFormat("ease_bounce_in(bounces=%i, damping=%S)", bounces,
+                                            PyFloat_FromDouble(damping));
+        return 0;
+    }
+
+    int bounce::out::init(EasingObject *self, PyObject *args, PyObject *kwds) {
+        static const char *kwlist[] = {"bounces", "damping", nullptr};
+
+        int bounces = 4;
+        float damping = 0.4;
+        if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
+            return -1;
+        }
+
+        self->easing = gp::easeBounceOut(bounces, damping);
+        self->string = PyUnicode_FromFormat("ease_bounce_out(bounces=%i, damping=%S)", bounces,
+                                            PyFloat_FromDouble(damping));
+        return 0;
+    }
+
+    namespace linear {
+        EASING_TYPE("linear");
     }
 
     namespace poly {
-        int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-            float power = 6;
-            if (!PyArg_ParseTuple(args, "|f", &power)) {
-                return -1;
-            }
-
-            self->easing = gp::EasePolyInOut(power);
-            self->string = PyUnicode_FromFormat("ease_poly(power=%S)", PyFloat_FromDouble(power));
-            return 0;
-        }
-
-        EASING_TYPE("poly")
+        EASING_TYPE("poly");
 
         namespace in {
-            int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-                float power = 6;
-                if (!PyArg_ParseTuple(args, "|f", &power)) {
-                    return -1;
-                }
-
-                self->easing = gp::EasePolyIn(power);
-                self->string = PyUnicode_FromFormat("ease_poly_in(power=%S)", PyFloat_FromDouble(power));
-                return 0;
-            }
-
-            EASING_TYPE("poly_in")
+            EASING_TYPE("poly_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-                float power = 6;
-                if (!PyArg_ParseTuple(args, "|f", &power)) {
-                    return -1;
-                }
-
-                self->easing = gp::EasePolyOut(power);
-                self->string = PyUnicode_FromFormat("ease_poly_out(power=%S)", PyFloat_FromDouble(power));
-                return 0;
-            }
-
-            EASING_TYPE("poly_out")
+            EASING_TYPE("poly_out");
         }
     }
 
     namespace quad {
-        int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-            self->easing = gp::EaseQuadInOut();
-            self->string = PyUnicode_FromString("ease_quad()");
-            return 0;
-        }
-
-        EASING_TYPE("quad")
+        EASING_TYPE("quad");
 
         namespace in {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseQuadIn();
-                self->string = PyUnicode_FromString("ease_quad_in()");
-                return 0;
-            }
-
-            EASING_TYPE("quad_in")
+            EASING_TYPE("quad_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseQuadOut();
-                self->string = PyUnicode_FromString("ease_quad_out()");
-                return 0;
-            }
-
-            EASING_TYPE("quad_out")
+            EASING_TYPE("quad_out");
         }
     }
 
     namespace cubic {
-        int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-            self->easing = gp::EaseCubicInOut();
-            self->string = PyUnicode_FromString("ease_cubic()");
-            return 0;
-        }
-
-        EASING_TYPE("cubic")
+        EASING_TYPE("cubic");
 
         namespace in {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseCubicIn();
-                self->string = PyUnicode_FromString("ease_cubic_in()");
-                return 0;
-            }
-
-            EASING_TYPE("cubic_in")
+            EASING_TYPE("cubic_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseCubicOut();
-                self->string = PyUnicode_FromString("ease_cubic_out()");
-                return 0;
-            }
-
-            EASING_TYPE("cubic_out")
+            EASING_TYPE("cubic_out");
         }
     }
 
     namespace quart {
-        int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-            self->easing = gp::EaseQuartInOut();
-            self->string = PyUnicode_FromString("ease_quart()");
-            return 0;
-        }
-
-        EASING_TYPE("quart")
+        EASING_TYPE("quart");
 
         namespace in {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseQuartIn();
-                self->string = PyUnicode_FromString("ease_quart_in()");
-                return 0;
-            }
-
-            EASING_TYPE("quart_in")
+            EASING_TYPE("quart_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseQuartOut();
-                self->string = PyUnicode_FromString("ease_quart_out()");
-                return 0;
-            }
-
-            EASING_TYPE("quart_out")
+            EASING_TYPE("quart_out");
         }
     }
 
     namespace quint {
-        int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-            self->easing = gp::EaseQuintInOut();
-            self->string = PyUnicode_FromString("ease_quint()");
-            return 0;
-        }
-
-        EASING_TYPE("quint")
+        EASING_TYPE("quint");
 
         namespace in {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseQuintIn();
-                self->string = PyUnicode_FromString("ease_quint_in()");
-                return 0;
-            }
-
-            EASING_TYPE("quint_in")
+            EASING_TYPE("quint_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseQuintOut();
-                self->string = PyUnicode_FromString("ease_quint_out()");
-                return 0;
-            }
-
-            EASING_TYPE("quint_out")
+            EASING_TYPE("quint_out");
         }
     }
 
     namespace circle {
-        int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-            self->easing = gp::EaseCircleInOut();
-            self->string = PyUnicode_FromString("ease_circle()");
-            return 0;
-        }
-
-        EASING_TYPE("circle")
+        EASING_TYPE("circle");
 
         namespace in {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseCircleIn();
-                self->string = PyUnicode_FromString("ease_circle_in()");
-                return 0;
-            }
-
-            EASING_TYPE("circle_in")
+            EASING_TYPE("circle_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseCircleOut();
-                self->string = PyUnicode_FromString("ease_circle_out()");
-                return 0;
-            }
-
-            EASING_TYPE("circle_out")
+            EASING_TYPE("circle_out");
         }
     }
 
     namespace sin {
-        int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-            self->easing = gp::EaseSinInOut();
-            self->string = PyUnicode_FromString("ease_sin()");
-            return 0;
-        }
-
-        EASING_TYPE("sin")
+        EASING_TYPE("sin");
 
         namespace in {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseSinIn();
-                self->string = PyUnicode_FromString("ease_sin_in()");
-                return 0;
-            }
-
-            EASING_TYPE("sin_in")
+            EASING_TYPE("sin_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
-                self->easing = gp::EaseSinOut();
-                self->string = PyUnicode_FromString("ease_sin_out()");
-                return 0;
-            }
-
-            EASING_TYPE("sin_out")
+            EASING_TYPE("sin_out");
         }
     }
 
     namespace exp {
-        int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-            float base = 2.718281828459045;
-            if (!PyArg_ParseTuple(args, "|f", &base)) {
-                return -1;
-            }
-
-            self->easing = gp::EaseExpInOut(base);
-            self->string = PyUnicode_FromFormat("ease_exp(base=%S)", PyFloat_FromDouble(base));
-            return 0;
-        }
-
-        EASING_TYPE("exp")
+        EASING_TYPE("exp");
 
         namespace in {
-            int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-                float base = 2.718281828459045;
-                if (!PyArg_ParseTuple(args, "|f", &base)) {
-                    return -1;
-                }
-
-                self->easing = gp::EaseExpIn(base);
-                self->string = PyUnicode_FromFormat("ease_exp_in(base=%S)", PyFloat_FromDouble(base));
-                return 0;
-            }
-
-            EASING_TYPE("exp_in")
+            EASING_TYPE("exp_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-                float base = 2.718281828459045;
-                if (!PyArg_ParseTuple(args, "|f", &base)) {
-                    return -1;
-                }
-
-                self->easing = gp::EaseExpOut(base);
-                self->string = PyUnicode_FromFormat("ease_exp_out(base=%S)", PyFloat_FromDouble(base));
-                return 0;
-            }
-
-            EASING_TYPE("exp_out")
+            EASING_TYPE("exp_out");
         }
     }
 
     namespace back {
-        int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-            float factor = 1.70158;
-            if (!PyArg_ParseTuple(args, "|f", &factor)) {
-                return -1;
-            }
-
-            self->easing = gp::EaseBackInOut(factor);
-            self->string = PyUnicode_FromFormat("ease_back(factor=%S)", PyFloat_FromDouble(factor));
-            return 0;
-        }
-
-        EASING_TYPE("back")
+        EASING_TYPE("back");
 
         namespace in {
-            int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-                float factor = 1.70158;
-                if (!PyArg_ParseTuple(args, "|f", &factor)) {
-                    return -1;
-                }
-
-                self->easing = gp::EaseBackIn(factor);
-                self->string = PyUnicode_FromFormat("ease_back_in(factor=%S)", PyFloat_FromDouble(factor));
-                return 0;
-            }
-
-            EASING_TYPE("back_in")
+            EASING_TYPE("back_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-                float factor = 1.70158;
-                if (!PyArg_ParseTuple(args, "|f", &factor)) {
-                    return -1;
-                }
-
-                self->easing = gp::EaseBackOut(factor);
-                self->string = PyUnicode_FromFormat("ease_back_out(factor=%S)", PyFloat_FromDouble(factor));
-                return 0;
-            }
-
-            EASING_TYPE("back_out")
+            EASING_TYPE("back_out");
         }
     }
 
     namespace elastic {
-        int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-            int factor = 3;
-            if (!PyArg_ParseTuple(args, "|I", &factor)) {
-                return -1;
-            }
-
-            self->easing = gp::EaseElasticInOut(factor);
-            self->string = PyUnicode_FromFormat("ease_elastic(factor=%i)", factor);
-            return 0;
-        }
-
-        EASING_TYPE("elastic")
+        EASING_TYPE("elastic");
 
         namespace in {
-            int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-                int factor = 3;
-                if (!PyArg_ParseTuple(args, "|I", &factor)) {
-                    return -1;
-                }
-
-                self->easing = gp::EaseElasticIn(factor);
-                self->string = PyUnicode_FromFormat("ease_elastic_in(factor=%i)", factor);
-                return 0;
-            }
-
-            EASING_TYPE("elastic_in")
+            EASING_TYPE("elastic_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-                int factor = 3;
-                if (!PyArg_ParseTuple(args, "|I", &factor)) {
-                    return -1;
-                }
-
-                self->easing = gp::EaseElasticOut(factor);
-                self->string = PyUnicode_FromFormat("ease_elastic_out(factor=%i)", factor);
-                return 0;
-            }
-
-            EASING_TYPE("elastic_out")
+            EASING_TYPE("elastic_out");
         }
     }
 
     namespace bounce {
-        int init(EasingObject *self, PyObject *args, PyObject *kwds) {
-            static const char *kwlist[] = {"bounces", "damping", nullptr};
-
-            int bounces = 4;
-            float damping = 0.4;
-            if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
-                return -1;
-            }
-
-            self->easing = gp::EaseBounceInOut(bounces, damping);
-            self->string = PyUnicode_FromFormat("ease_bounce(bounces=%i, damping=%S)", bounces,
-                                                PyFloat_FromDouble(damping));
-            return 0;
-        }
-
-        EASING_TYPE("bounce")
+        EASING_TYPE("bounce");
 
         namespace in {
-            int init(EasingObject *self, PyObject *args, PyObject *kwds) {
-                static const char *kwlist[] = {"bounces", "damping", nullptr};
-
-                int bounces = 4;
-                float damping = 0.4;
-                if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
-                    return -1;
-                }
-
-                self->easing = gp::EaseBounceIn(bounces, damping);
-                self->string = PyUnicode_FromFormat("ease_bounce_in(bounces=%i, damping=%S)", bounces,
-                                                    PyFloat_FromDouble(damping));
-                return 0;
-            }
-
-            EASING_TYPE("bounce_in")
+            EASING_TYPE("bounce_in");
         }
 
         namespace out {
-            int init(EasingObject *self, PyObject *args, PyObject *kwds) {
-                static const char *kwlist[] = {"bounces", "damping", nullptr};
-
-                int bounces = 4;
-                float damping = 0.4;
-                if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
-                    return -1;
-                }
-
-                self->easing = gp::EaseBounceOut(bounces, damping);
-                self->string = PyUnicode_FromFormat("ease_bounce_out(bounces=%i, damping=%S)", bounces,
-                                                    PyFloat_FromDouble(damping));
-                return 0;
-            }
-
-            EASING_TYPE("bounce_out")
+            EASING_TYPE("bounce_out");
         }
     }
 }
@@ -480,12 +483,9 @@ static struct PyModuleDef easingmodule = {
 };
 
 PyMODINIT_FUNC PyInit_easing() {
-    #if GP_LOGGING
-    std::cout << "Initializing easing logger" << std::endl;
-    gp::Log::init();
+    #if GP_LOGGING >= 5
+    std::cout << "[--:--:--] PYTHON: PyInit_easing()" << std::endl;
     #endif
-
-    GP_PY_TRACE("Initializing easing module");
 
     PyObject *m;
     m = PyModule_Create(&easingmodule);
@@ -493,51 +493,51 @@ PyMODINIT_FUNC PyInit_easing() {
         return nullptr;
     }
 
-    EXPOSE_CLASS(easing::linear::type, "ease_linear")
+    EXPOSE_PYOBJECT_CLASS(easing::linear::type, "ease_linear");
 
-    EXPOSE_CLASS(easing::poly::in::type, "ease_poly_in")
-    EXPOSE_CLASS(easing::poly::out::type, "ease_poly_out")
-    EXPOSE_CLASS(easing::poly::type, "ease_poly")
+    EXPOSE_PYOBJECT_CLASS(easing::poly::in::type, "ease_poly_in");
+    EXPOSE_PYOBJECT_CLASS(easing::poly::out::type, "ease_poly_out");
+    EXPOSE_PYOBJECT_CLASS(easing::poly::type, "ease_poly");
 
-    EXPOSE_CLASS(easing::quad::in::type, "ease_quad_in")
-    EXPOSE_CLASS(easing::quad::out::type, "ease_quad_out")
-    EXPOSE_CLASS(easing::quad::type, "ease_quad")
+    EXPOSE_PYOBJECT_CLASS(easing::quad::in::type, "ease_quad_in");
+    EXPOSE_PYOBJECT_CLASS(easing::quad::out::type, "ease_quad_out");
+    EXPOSE_PYOBJECT_CLASS(easing::quad::type, "ease_quad");
 
-    EXPOSE_CLASS(easing::cubic::in::type, "ease_cubic_in")
-    EXPOSE_CLASS(easing::cubic::out::type, "ease_cubic_out")
-    EXPOSE_CLASS(easing::cubic::type, "ease_cubic")
+    EXPOSE_PYOBJECT_CLASS(easing::cubic::in::type, "ease_cubic_in");
+    EXPOSE_PYOBJECT_CLASS(easing::cubic::out::type, "ease_cubic_out");
+    EXPOSE_PYOBJECT_CLASS(easing::cubic::type, "ease_cubic");
 
-    EXPOSE_CLASS(easing::quart::in::type, "ease_quart_in")
-    EXPOSE_CLASS(easing::quart::out::type, "ease_quart_out")
-    EXPOSE_CLASS(easing::quart::type, "ease_quart")
+    EXPOSE_PYOBJECT_CLASS(easing::quart::in::type, "ease_quart_in");
+    EXPOSE_PYOBJECT_CLASS(easing::quart::out::type, "ease_quart_out");
+    EXPOSE_PYOBJECT_CLASS(easing::quart::type, "ease_quart");
 
-    EXPOSE_CLASS(easing::quint::in::type, "ease_quint_in")
-    EXPOSE_CLASS(easing::quint::out::type, "ease_quint_out")
-    EXPOSE_CLASS(easing::quint::type, "ease_quint")
+    EXPOSE_PYOBJECT_CLASS(easing::quint::in::type, "ease_quint_in");
+    EXPOSE_PYOBJECT_CLASS(easing::quint::out::type, "ease_quint_out");
+    EXPOSE_PYOBJECT_CLASS(easing::quint::type, "ease_quint");
 
-    EXPOSE_CLASS(easing::circle::in::type, "ease_circle_in")
-    EXPOSE_CLASS(easing::circle::out::type, "ease_circle_out")
-    EXPOSE_CLASS(easing::circle::type, "ease_circle")
+    EXPOSE_PYOBJECT_CLASS(easing::circle::in::type, "ease_circle_in");
+    EXPOSE_PYOBJECT_CLASS(easing::circle::out::type, "ease_circle_out");
+    EXPOSE_PYOBJECT_CLASS(easing::circle::type, "ease_circle");
 
-    EXPOSE_CLASS(easing::sin::in::type, "ease_sin_in")
-    EXPOSE_CLASS(easing::sin::out::type, "ease_sin_out")
-    EXPOSE_CLASS(easing::sin::type, "ease_sin")
+    EXPOSE_PYOBJECT_CLASS(easing::sin::in::type, "ease_sin_in");
+    EXPOSE_PYOBJECT_CLASS(easing::sin::out::type, "ease_sin_out");
+    EXPOSE_PYOBJECT_CLASS(easing::sin::type, "ease_sin");
 
-    EXPOSE_CLASS(easing::exp::in::type, "ease_exp_in")
-    EXPOSE_CLASS(easing::exp::out::type, "ease_exp_out")
-    EXPOSE_CLASS(easing::exp::type, "ease_exp")
+    EXPOSE_PYOBJECT_CLASS(easing::exp::in::type, "ease_exp_in");
+    EXPOSE_PYOBJECT_CLASS(easing::exp::out::type, "ease_exp_out");
+    EXPOSE_PYOBJECT_CLASS(easing::exp::type, "ease_exp");
 
-    EXPOSE_CLASS(easing::back::in::type, "ease_back_in")
-    EXPOSE_CLASS(easing::back::out::type, "ease_back_out")
-    EXPOSE_CLASS(easing::back::type, "ease_back")
+    EXPOSE_PYOBJECT_CLASS(easing::back::in::type, "ease_back_in");
+    EXPOSE_PYOBJECT_CLASS(easing::back::out::type, "ease_back_out");
+    EXPOSE_PYOBJECT_CLASS(easing::back::type, "ease_back");
 
-    EXPOSE_CLASS(easing::elastic::in::type, "ease_elastic_in")
-    EXPOSE_CLASS(easing::elastic::out::type, "ease_elastic_out")
-    EXPOSE_CLASS(easing::elastic::type, "ease_elastic")
+    EXPOSE_PYOBJECT_CLASS(easing::elastic::in::type, "ease_elastic_in");
+    EXPOSE_PYOBJECT_CLASS(easing::elastic::out::type, "ease_elastic_out");
+    EXPOSE_PYOBJECT_CLASS(easing::elastic::type, "ease_elastic");
 
-    EXPOSE_CLASS(easing::bounce::in::type, "ease_bounce_in")
-    EXPOSE_CLASS(easing::bounce::out::type, "ease_bounce_out")
-    EXPOSE_CLASS(easing::bounce::type, "ease_bounce")
+    EXPOSE_PYOBJECT_CLASS(easing::bounce::in::type, "ease_bounce_in");
+    EXPOSE_PYOBJECT_CLASS(easing::bounce::out::type, "ease_bounce_out");
+    EXPOSE_PYOBJECT_CLASS(easing::bounce::type, "ease_bounce");
 
     return m;
 }

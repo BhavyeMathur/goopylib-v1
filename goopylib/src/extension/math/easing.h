@@ -2,12 +2,8 @@
 
 #include "src/extension/header.h"
 
-#include "src/goopylib/math/Easing.h"
-
-struct EasingObject;
-
 #define EASING_TYPE(name) \
-static PyTypeObject type = { \
+static PyTypeObject type = {\
     PyVarObject_HEAD_INIT(nullptr, 0) \
     .tp_itemsize = 0, \
     .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, \
@@ -20,6 +16,155 @@ static PyTypeObject type = { \
     .tp_traverse = (traverseproc) traverse, \
     .tp_clear = (inquiry) clear, \
     .tp_dealloc = (destructor) dealloc \
-};
+}
 
-#define PyEasing_HEAD PyObject_HEAD std::function<float(float)> easing; PyObject *string;
+namespace easing {
+    struct EasingObject;
+
+    static int traverse(EasingObject *self, visitproc visit, void *arg);
+
+    static int clear(EasingObject *self);
+
+    static void dealloc(EasingObject *self);
+
+    PyObject *call(EasingObject *self, PyObject *args);
+
+    static PyObject *repr(EasingObject *self);
+
+    namespace linear {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+    }
+
+    namespace poly {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace quad {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace cubic {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace quart {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace quint {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace circle {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace sin {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace exp {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace back {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace elastic {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+
+    namespace bounce {
+        int init(EasingObject *self, PyObject *args, PyObject *kwds);
+
+        namespace in {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+
+        namespace out {
+            int init(EasingObject *self, PyObject *args, PyObject *kwds);
+        }
+    }
+}

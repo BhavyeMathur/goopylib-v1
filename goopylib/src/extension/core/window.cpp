@@ -1565,7 +1565,7 @@ PyMODINIT_FUNC PyInit_window(void) {
         return nullptr;
     }
 
-    EXPOSE_CLASS(WindowType, "Window")
+    EXPOSE_PYOBJECT_CLASS(WindowType, "Window")
 
     if (import_color() < 0) {
         return nullptr;

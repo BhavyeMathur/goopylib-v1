@@ -17,10 +17,13 @@ def build_release():
 def build_c_extensions():
     ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/vendor"],
                   "extra_compile_args":   ["-std=c++11", "-v"],
-                  "extra_link_args":      [],
                   "runtime_library_dirs": [f"{path}/goopylib"],
                   "extra_objects":        ["goopylib/goopylib.dylib"]}
     setup_kwargs = {"options": {"build": {"build_lib": "."}}}
+
+    setup(ext_modules=[Extension(name="goopylib.ext.easing",
+                                 sources=["goopylib/src/extension/math/easing.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
 
     ext_kwargs["extra_link_args"] += ["-framework", "OpenGL", "-framework", "Cocoa",
                                       "-framework", "IOKit", "-framework", "CoreVideo",
