@@ -1,5 +1,7 @@
 #pragma once
 
+#define GP_PY_LOGGING 3
+
 #include "src/gp.h"
 #include <Python.h>
 #include <iostream>

@@ -19,7 +19,7 @@ namespace gp {
             s_CoreLogger->flush_on(spdlog::level::trace);
             s_CoreLogger->set_level(spdlog::level::trace);
 
-            GP_CORE_INFO("gp::Log::init()");
+            GP_CORE_DEBUG("gp::Log::init()");
 
             s_PythonLogger = CreateRef<spdlog::logger>("PYTHON", begin(logSinks), end(logSinks));
             spdlog::register_logger(s_PythonLogger);

@@ -143,31 +143,31 @@ namespace core {
 }
 
 static PyMethodDef CoreMethods[] = {
-        {"init", (PyCFunction) core::init, METH_NOARGS, "Initialise goopylib internally"},
-        {"terminate", (PyCFunction) core::terminate, METH_NOARGS, "Terminates goopylib internally"},
+        {"init", (PyCFunction) core::init, METH_NOARGS, ""},
+        {"terminate", (PyCFunction) core::terminate, METH_NOARGS, ""},
 
-        {"update", (PyCFunction) core::update, METH_NOARGS, "Updates and processes events"},
+        {"update", (PyCFunction) core::update, METH_NOARGS, ""},
 
         #if GP_USING_GLFW
 
-        {"update_on_event", (PyCFunction) core::update_on_event, METH_NOARGS, "Updates and processes events"},
-        {"update_timeout", (PyCFunction) core::update_timeout, METH_O, "Updates and processes events"},
+        {"update_on_event", (PyCFunction) core::update_on_event, METH_NOARGS, ""},
+        {"update_timeout", (PyCFunction) core::update_timeout, METH_O, ""},
 
-        {"glfw_compiled_version", (PyCFunction) core::glfw_compiled_version, METH_NOARGS, "Returns the version of GLFW goopylib was compiled with"},
-        {"glfw_current_version", (PyCFunction) core::glfw_current_version, METH_NOARGS, "Returns the version of GLFW currently being used"},
+        {"glfw_compiled_version", (PyCFunction) core::glfw_compiled_version, METH_NOARGS, ""},
+        {"glfw_current_version", (PyCFunction) core::glfw_current_version, METH_NOARGS, ""},
 
-        {"get_refresh_rate", (PyCFunction) core::get_refresh_rate, METH_NOARGS, "Returns the refresh rate of the primary monitor"},
-        {"get_screen_width", (PyCFunction) core::get_screen_width, METH_NOARGS, "Returns the width of the primary monitor"},
-        {"get_screen_height", (PyCFunction) core::get_screen_height, METH_NOARGS, "Returns the height of the primary monitor"},
-        {"number_of_monitors", (PyCFunction) core::number_of_monitors, METH_NOARGS, "Returns the number of monitors connected"},
+        {"get_refresh_rate", (PyCFunction) core::get_refresh_rate, METH_NOARGS, ""},
+        {"get_screen_width", (PyCFunction) core::get_screen_width, METH_NOARGS, ""},
+        {"get_screen_height", (PyCFunction) core::get_screen_height, METH_NOARGS, ""},
+        {"number_of_monitors", (PyCFunction) core::number_of_monitors, METH_NOARGS, ""},
 
-        {"set_buffer_swap_interval", (PyCFunction) core::set_buffer_swap_interval, METH_O, "Sets the swap interval for the window buffers"},
+        {"set_buffer_swap_interval", (PyCFunction) core::set_buffer_swap_interval, METH_O, ""},
 
         #endif
 
         #if GP_USING_OPENGL
 
-        {"opengl_version", (PyCFunction) core::opengl_version, METH_NOARGS, "Returns the version of OpenGL being used"},
+        {"opengl_version", (PyCFunction) core::opengl_version, METH_NOARGS, ""},
 
         #endif
 
@@ -183,9 +183,10 @@ static struct PyModuleDef coremodule = {
 };
 
 PyMODINIT_FUNC PyInit_core(void) {
-    #if GP_LOGGING
-    std::cout << "PyInit_core()" << std::endl;
+    #if GP_LOGGING >= 5
+    std::cout << "[--:--:--] PYTHON: PyInit_core()" << std::endl;
     #endif
+
     gp::init();
 
     PyObject *m = PyModule_Create(&coremodule);

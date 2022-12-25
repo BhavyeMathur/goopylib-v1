@@ -3,6 +3,7 @@ Module defining core and miscellaneous functions
 """
 
 from typing import Union
+import goopylib.ext.core as __core
 
 
 def init():
@@ -13,23 +14,23 @@ def init():
     Raises:
         RuntimeError: if the initialization fails
     """
-    raise NotImplementedError()
+    __core.init()
 
 
 def terminate():
     """Terminates goopylib internally and destroys all open Windows.
 
     Note:
-        You can reinitialize the library using :func:`gp.init()<goopylib.init>`
+        goopylib can be reinitialized using :func:`gp.init()<goopylib.init>`
     """
-    raise NotImplementedError()
+    __core.terminate()
 
 
 def update():
     """Updates goopylib and its windows.
 
     Examples:
-        The following is a standard goopylib mainloop.
+        The following is a standard goopylib mainloop:
 
         .. code-block:: python
 
@@ -38,34 +39,34 @@ def update():
             while window.is_open():
                 gp.update()
     """
-    raise NotImplementedError()
+    __core.update()
 
 
 def update_on_event():
     """Updates goopylib every time an event occurs.
     """
-    raise NotImplementedError()
+    __core.update_on_event()
 
 
-def update_timeout(timeout: Union[float, int] = 0):
+def update_timeout(timeout: float = 0):
     """Updates goopylib after a duration has passed.
 
     Args:
         timeout: the duration (seconds) to wait between updates. Defaults to `0`.
     """
-    raise NotImplementedError()
+    __core.update_timeout(timeout)
 
 
 def glfw_compiled_version() -> str:
     """Returns the version of GLFW that goopylib was compiled with.
     """
-    raise NotImplementedError()
+    return __core.glfw_compiled_version()
 
 
 def glfw_current_version() -> str:
     """Returns the version of GLFW that is currently running.
     """
-    raise NotImplementedError()
+    return __core.glfw_current_version()
 
 
 def get_refresh_rate() -> int:
@@ -77,7 +78,7 @@ def get_refresh_rate() -> int:
     Raises:
         RuntimeError: if goopylib has not been initialized
     """
-    raise NotImplementedError()
+    return __core.get_refresh_rate()
 
 
 def get_screen_width() -> int:
@@ -89,7 +90,7 @@ def get_screen_width() -> int:
     Raises:
         RuntimeError: if goopylib has not been initialized
     """
-    raise NotImplementedError()
+    return __core.get_screen_width()
 
 
 def get_screen_height() -> int:
@@ -101,7 +102,7 @@ def get_screen_height() -> int:
     Raises:
         RuntimeError: if goopylib has not been initialized
     """
-    raise NotImplementedError()
+    return __core.get_screen_height()
 
 
 def number_of_monitors() -> int:
@@ -110,19 +111,22 @@ def number_of_monitors() -> int:
     Raises:
         RuntimeError: if goopylib has not been initialized
     """
-    raise NotImplementedError()
+    return __core.number_of_monitors()
 
 
-def set_buffer_swap_interval(*args: int):
-    """Sets the minimum number of monitor refreshes the driver should wait from the time before swapping Window buffers.
+def set_buffer_swap_interval(interval: int):
+    """Sets the rate of swapping Window buffers.
+
+    Args:
+        interval: the number of refreshes to wait before swapping buffers.
 
     Raises:
         TypeError: if a non-integer value is passed.
     """
-    raise NotImplementedError()
+    return __core.set_buffer_swap_interval(interval)
 
 
 def opengl_version() -> str:
     """Returns the version of OpenGL being used.
     """
-    raise NotImplementedError()
+    return __core.opengl_version()
