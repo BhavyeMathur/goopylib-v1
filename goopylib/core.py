@@ -76,10 +76,6 @@ def get_refresh_rate() -> int:
 
     Raises:
         RuntimeError: if goopylib has not been initialized
-
-    Examples:
-        >>> gp.get_refresh_rate()
-        120
     """
     raise NotImplementedError()
 
@@ -92,10 +88,6 @@ def get_screen_width() -> int:
 
     Raises:
         RuntimeError: if goopylib has not been initialized
-
-    Examples:
-        >>> gp.get_screen_width()
-        1512
     """
     raise NotImplementedError()
 
@@ -108,10 +100,6 @@ def get_screen_height() -> int:
 
     Raises:
         RuntimeError: if goopylib has not been initialized
-
-    Examples:
-        >>> gp.get_screen_height()
-        982
     """
     raise NotImplementedError()
 
@@ -121,10 +109,6 @@ def number_of_monitors() -> int:
 
     Raises:
         RuntimeError: if goopylib has not been initialized
-
-    Examples:
-        >>> gp.number_of_monitors()
-        1
     """
     raise NotImplementedError()
 
