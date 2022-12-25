@@ -63,7 +63,6 @@ namespace {
             GP_CORE_WARN("GLFW Error Code {0}: {1}", error, description);
         });
         if (!glfwInit()) {
-            GP_CORE_CRITICAL("gp::init() failed to initialize GLFW");
             GP_RUNTIME_ERROR("gp::init() failed to initialize GLFW");
         }
         gp::glfw_initialized = true;

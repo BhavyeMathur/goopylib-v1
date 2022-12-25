@@ -5,7 +5,7 @@ namespace gp {
     static const char* errormessage;
     static ErrorType errortype = ErrorType::None;
 
-    void setError(ErrorType type, const char* message) {
+    void _setError(ErrorType type, const char* message) {
         errormessage = message;
         errortype = type;
     }
