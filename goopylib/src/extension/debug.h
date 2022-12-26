@@ -2,10 +2,6 @@
 
 #include "src/goopylib/debug/Log.h"
 
-#define GP_TYPE_CHECKING true
-#define GP_VALUE_CHECKING true
-#define GP_ERROR_CHECKING true
-
 /*
  0 - No Logging
  1 - Fatals Enabled
@@ -13,10 +9,9 @@
  3 - Warnings Enabled
  4 - Info Enabled
  5 - Debug Enabled
- 6 - Trace Enabled
- 7 - All Enabled
+ 6 - Trace Enabledpr
  */
-#define GP_PY_LOGGING_LEVEL 3
+#define GP_PY_LOGGING_LEVEL 6
 
 // Python Extension Logging
 
@@ -59,15 +54,48 @@
 #define GP_CHECK_INCLUSIVE_RANGE(variable, min, max, rtype, error) if ((variable) < (min) or (variable) > (max)) { RAISE_VALUE_ERROR(rtype, error); }
 #define GP_CHECK_EXCLUSIVE_RANGE(variable, min, max, rtype, error) if ((variable) <= (min) or (variable) >= (max)) { RAISE_VALUE_ERROR(rtype, error); }
 #else
-#define GP_CHECK_EQUALS(variable, val, rtype, error)
-#define GP_CHECK_NOT_EQUALS(variable, val, rtype, error)
+#define GP_CHECK_EQUALS(variable, val, rtype, error) {}
+#define GP_CHECK_NOT_EQUALS(variable, val, rtype, error) {}
 
-#define GP_CHECK_GT(variable, val, rtype, error)
-#define GP_CHECK_GE(variable, val, rtype, error)
+#define GP_CHECK_GT(variable, val, rtype, error) {}
+#define GP_CHECK_GE(variable, val, rtype, error) {}
 
-#define GP_CHECK_LT(variable, val, rtype, error)
-#define GP_CHECK_LE(variable, val, rtype, error)
+#define GP_CHECK_LT(variable, val, rtype, error) {}
+#define GP_CHECK_LE(variable, val, rtype, error) {}
 
-#define GP_CHECK_INCLUSIVE_RANGE_INCLUSIVE(variable, min, max, rtype, error)
-#define GP_CHECK_EXCLUSIVE_RANGE(variable, min, max, rtype, error)
+#define GP_CHECK_INCLUSIVE_RANGE(variable, min, max, rtype, error) {}
+#define GP_CHECK_EXCLUSIVE_RANGE(variable, min, max, rtype, error) {}
+#endif
+
+#if GP_ERROR_CHECKING
+#define CHECK_GLFW_INITIALIZED(val) \
+do {                                \
+if (!gp::glfw_initialized) { \
+    PyErr_SetString(PyExc_RuntimeError, "goopylib has not been initialised! Use gp.init() first."); \
+        return val; \
+    } \
+} while (0)
+
+#define CHECK_GLFW_CONTEXT(val) \
+CHECK_GLFW_INITIALIZED(val); \
+do { if (glfwGetCurrentContext() == nullptr) { \
+        PyErr_SetString(PyExc_RuntimeError, "goopylib Window must be created"); \
+        return val; \
+    } \
+} while (0)
+
+#define RAISE_TYPE_ERROR(val, type, value) \
+PyErr_Format(PyExc_TypeError, #type " argument expected, got %S", PyObject_Type(value)); \
+return val
+
+#define RAISE_VALUE_ERROR(val, err) PyErr_SetString(PyExc_ValueError, err); return val
+
+#else
+
+#define CHECK_GLFW_INITIALIZED(val)
+#define CHECK_GLFW_CONTEXT(val)
+
+#define RAISE_TYPE_ERROR(val, type, value)
+#define RAISE_VALUE_ERROR(val, err)
+
 #endif

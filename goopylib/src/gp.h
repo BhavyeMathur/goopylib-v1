@@ -74,3 +74,4 @@ namespace gp {
 }
 
 #include "config.h"
+#include "src/goopylib/debug/Log.h"

@@ -30,6 +30,10 @@ def build_c_extensions():
                                  sources=["goopylib/src/extension/color/conversions.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
+    setup(ext_modules=[Extension(name="goopylib.ext.color",
+                                 sources=["goopylib/src/extension/color/color.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
     ext_kwargs["extra_link_args"] += ["-framework", "OpenGL", "-framework", "Cocoa",
                                       "-framework", "IOKit", "-framework", "CoreVideo",
                                       "-framework", "CoreFoundation"]

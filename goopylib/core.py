@@ -3,9 +3,9 @@ Module defining core and miscellaneous functions
 """
 
 from typing import Union
-import goopylib.ext.core as __core
+import goopylib.ext.core as _core
 
-__core.init()
+_core.init()
 
 
 def init():
@@ -16,7 +16,7 @@ def init():
     Raises:
         RuntimeError: if the initialization fails
     """
-    __core.init()
+    _core.init()
 
 
 def terminate():
@@ -25,7 +25,7 @@ def terminate():
     Note:
         goopylib can be reinitialized using :func:`gp.init()<goopylib.init>`
     """
-    __core.terminate()
+    _core.terminate()
 
 
 def update():
@@ -41,13 +41,13 @@ def update():
             while window.is_open():
                 gp.update()
     """
-    __core.update()
+    _core.update()
 
 
 def update_on_event():
     """Updates goopylib every time an event occurs.
     """
-    __core.update_on_event()
+    _core.update_on_event()
 
 
 def update_timeout(timeout: float = 0):
@@ -59,19 +59,19 @@ def update_timeout(timeout: float = 0):
     Raises:
         ValueError: if timeout is less than 0
     """
-    __core.update_timeout(timeout)
+    _core.update_timeout(timeout)
 
 
 def glfw_compiled_version() -> str:
     """Returns the version of GLFW that goopylib was compiled with.
     """
-    return __core.glfw_compiled_version()
+    return _core.glfw_compiled_version()
 
 
 def glfw_current_version() -> str:
     """Returns the version of GLFW that is currently running.
     """
-    return __core.glfw_current_version()
+    return _core.glfw_current_version()
 
 
 def get_refresh_rate() -> int:
@@ -83,7 +83,7 @@ def get_refresh_rate() -> int:
     Raises:
         RuntimeError: if goopylib has not been initialized
     """
-    return __core.get_refresh_rate()
+    return _core.get_refresh_rate()
 
 
 def get_screen_width() -> int:
@@ -95,7 +95,7 @@ def get_screen_width() -> int:
     Raises:
         RuntimeError: if goopylib has not been initialized
     """
-    return __core.get_screen_width()
+    return _core.get_screen_width()
 
 
 def get_screen_height() -> int:
@@ -107,7 +107,7 @@ def get_screen_height() -> int:
     Raises:
         RuntimeError: if goopylib has not been initialized
     """
-    return __core.get_screen_height()
+    return _core.get_screen_height()
 
 
 def number_of_monitors() -> int:
@@ -116,7 +116,7 @@ def number_of_monitors() -> int:
     Raises:
         RuntimeError: if goopylib has not been initialized
     """
-    return __core.number_of_monitors()
+    return _core.number_of_monitors()
 
 
 def set_buffer_swap_interval(interval: int):
@@ -129,10 +129,10 @@ def set_buffer_swap_interval(interval: int):
         TypeError: if a non-integer value is passed.
         ValueError: if interval is less than 0
     """
-    return __core.set_buffer_swap_interval(interval)
+    return _core.set_buffer_swap_interval(interval)
 
 
 def opengl_version() -> str:
     """Returns the version of OpenGL being used.
     """
-    return __core.opengl_version()
+    return _core.opengl_version()

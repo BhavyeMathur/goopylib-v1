@@ -50,6 +50,6 @@ namespace gp {
 #define GP_CHECK_LT(variable, val, error) {}
 #define GP_CHECK_LE(variable, val, error) {}
 
-#define GP_CHECK_INCLUSIVE_RANGE_INCLUSIVE(variable, min, max, error) {}
+#define GP_CHECK_INCLUSIVE_RANGE(variable, min, max, error) {}
 #define GP_CHECK_EXCLUSIVE_RANGE(variable, min, max, error) {}
 #endif

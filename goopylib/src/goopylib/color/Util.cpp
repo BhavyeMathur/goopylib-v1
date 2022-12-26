@@ -24,18 +24,24 @@ static std::uniform_real_distribution<float> normalized_distribution(0.0f, 1.0f)
 
 namespace gp {
     ColorRGB randomRGB() {
+        GP_CORE_INFO("gp::randomRGB()");
+
         return {rgb_distribution(generator),
                 rgb_distribution(generator),
                 rgb_distribution(generator)};
     }
 
     ColorHex randomHex() {
+        GP_CORE_INFO("gp::randomHex()");
+
         return {rgb::toHex(rgb_distribution(generator),
                            rgb_distribution(generator),
                            rgb_distribution(generator))};
     }
 
     ColorCMYK randomCMYK() {
+        GP_CORE_INFO("gp::randomCMYK()");
+
         return {normalized_distribution(generator),
                 normalized_distribution(generator),
                 normalized_distribution(generator),
@@ -43,12 +49,16 @@ namespace gp {
     }
 
     ColorHSV randomHSV() {
+        GP_CORE_INFO("gp::randomHSV()");
+
         return {angle_distribution(generator),
                 normalized_distribution(generator),
                 normalized_distribution(generator)};
     }
 
     ColorHSL randomHSL() {
+        GP_CORE_INFO("gp::randomHSL()");
+
         return {angle_distribution(generator),
                 normalized_distribution(generator),
                 normalized_distribution(generator)};

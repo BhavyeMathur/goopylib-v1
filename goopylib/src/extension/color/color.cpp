@@ -1,71 +1,106 @@
 #include "color.h"
 
+#if !GP_LOG_COLOR
+#undef GP_LOGGING
+#endif
+
+#if !GP_VALUE_CHECK_COLOR
+#undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
+#endif
+
+#include "macros.h"
+
+struct ColorRGBObject {
+    ColorObject base;
+    std::shared_ptr<gp::ColorRGB> color;
+};
+
+struct ColorHexObject {
+    ColorObject base;
+    std::shared_ptr<gp::ColorHex> color;
+};
+
+struct ColorCMYKObject {
+    ColorObject base;
+    std::shared_ptr<gp::ColorCMYK> color;
+};
+
+struct ColorHSVObject {
+    ColorObject base;
+    std::shared_ptr<gp::ColorHSV> color;
+};
+
+struct ColorHSLObject {
+    ColorObject base;
+    std::shared_ptr<gp::ColorHSL> color;
+};
+
+namespace color {
+    static bool isinstance(PyObject *object) {
+        GP_PY_TRACE("gp.color.isinstance()");
+        return PyObject_IsInstance(object, (PyObject *) &ColorType);
+    }
+
+    // Create color instances
+
+    static PyObject *create(int red, int green, int blue, float alpha = 1.0f) {
+        GP_PY_DEBUG("gp.color.create()");
+
+        red = red > 255 ? 255 : (red < 0 ? 0 : red);
+        green = green > 255 ? 255 : (green < 0 ? 0 : green);
+        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+
+        alpha = alpha > 1 ? 1 : (alpha < 0 ? 0 : alpha);
+
+        return PyObject_Call((PyObject *) &ColorType,
+                             Py_BuildValue("iiif", red, green, blue, alpha), Py_None);
+    }
+}
+
 // Color Object
 namespace color {
     static int init(ColorObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        GP_PY_COLOR_TRACE("Initializing gp.Color()");
+        GP_PY_INFO("gp.Color()");
 
-        switch (PyTuple_GET_SIZE(args)) {
-            case 0:
-                self->color = std::make_shared<gp::Color>();
-                break;
+        const char *hexstring;
+        float alpha = 1.0f;
 
-            // Hexstring
-            case 1:
-            case 2: {
-                PyObject *obj;
-                float alpha = 1.0f;
+        if (PyArg_ParseTuple(args, "s|f", &hexstring, &alpha)) {
+            CHECK_ALPHA(-1)
 
-                if (!PyArg_ParseTuple(args, "O|f", &obj, &alpha)) {
-                    return -1;
-                }
-
-                if (PyUnicode_Check(obj)) {
-                    CHECK_ALPHA(-1)
-
-                    const char *hexstring = PyUnicode_AsUTF8(obj);
-
-                    try {
-                        gp::RGB color = gp::hex::toRGB(hexstring);
-                        self->color = std::make_shared<gp::Color>(color, alpha);
-                    }
-                    catch (const std::invalid_argument &iaex) {
-                        RAISE_VALUE_ERROR(-1, "invalid hexstring format")
-                    }
-                }
-                else if (color::isinstance(obj)) {
-                    self->color = std::make_shared<gp::Color>(*(((ColorObject *) obj)->color));
-                }
-                else {
-                    RAISE_VALUE_ERROR(-1, "invalid color format")
-                }
-
-                break;
+            try {
+                self->color = std::make_shared<gp::Color>(hexstring, alpha);
             }
-                // RGB or RGBA
-            case 3:
-            case 4: {
-                int red, green, blue;
-                float alpha = 1.0f;
-
-                if (!PyArg_ParseTuple(args, "III|f", &red, &green, &blue, &alpha)) {
-                    return -1;
-                }
-
-                CHECK_RGBA(-1)
-
-                self->color = std::make_shared<gp::Color>(red, green, blue, alpha);
-                break;
+            catch (const std::invalid_argument &e) {
+                RAISE_VALUE_ERROR(-1, "invalid hexstring format");
             }
 
-            default:
-            RAISE_VALUE_ERROR(-1, "invalid color format")
+            return 0;
+        }
+        PyErr_Clear();
+
+        PyObject *obj;
+        if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
+            self->color = std::make_shared<gp::Color>(*(((ColorObject *) obj)->color));
+            return 0;
+        }
+        PyErr_Clear();
+
+        int red, green, blue;
+        if (!PyArg_ParseTuple(args, "iii|f", &red, &green, &blue, &alpha)) {
+            RAISE_VALUE_ERROR(-1, "invalid color format");
         }
 
+        CHECK_RGBA(-1)
+
+        self->color = std::make_shared<gp::Color>(red, green, blue, alpha);
         return 0;
     }
 
     static PyObject *repr(ColorObject *self) {
+        GP_PY_TRACE("gp.Color.__repr__()");
         return PyUnicode_FromString(self->color->toString().c_str());
     }
 
@@ -74,12 +109,12 @@ namespace color {
     }
 
     static int clear(ColorObject *Py_UNUSED(self)) {
-        GP_PY_COLOR_TRACE("Clearing gp.Color()");
+        GP_PY_TRACE("gp.Color.clear()");
         return 0;
     }
 
     static void dealloc(ColorObject *self) {
-        GP_PY_COLOR_TRACE("Deallocating gp.Color()");
+        GP_PY_DEBUG("gp.Color.dealloc()");
 
         PyObject_GC_UnTrack(self);
         clear(self);
@@ -90,6 +125,8 @@ namespace color {
 // PyNumber API
 namespace color {
     static PyObject *PyNumber_Add(PyObject *o1, PyObject *o2) {
+        GP_PY_DEBUG("gp.Color.__add__()");
+
         int red, green, blue;
         float alpha = 1.0f;
 
@@ -103,7 +140,7 @@ namespace color {
         else {
             #if GP_ERROR_CHECKING
             if (!PyLong_Check(o2)) {
-                RAISE_TYPE_ERROR(nullptr, "integer or color", o2)
+                RAISE_TYPE_ERROR(nullptr, "integer or color", o2);
             }
             #endif
 
@@ -122,7 +159,7 @@ namespace color {
         else {
             #if GP_ERROR_CHECKING
             if (!PyLong_Check(o1)) {
-                RAISE_TYPE_ERROR(nullptr, "integer or color", o1)
+                RAISE_TYPE_ERROR(nullptr, "integer or color", o1);
             }
             #endif
 
@@ -136,6 +173,8 @@ namespace color {
     }
 
     static PyObject *PyNumber_Subtract(PyObject *o1, PyObject *o2) {
+        GP_PY_DEBUG("gp.Color.__sub__()");
+
         int red, green, blue;
         float alpha = 1.0f;
 
@@ -149,7 +188,7 @@ namespace color {
         else {
             #if GP_ERROR_CHECKING
             if (!PyLong_Check(o2)) {
-                RAISE_TYPE_ERROR(nullptr, "integer or color", o2)
+                RAISE_TYPE_ERROR(nullptr, "integer or color", o2);
             }
             #endif
 
@@ -168,7 +207,7 @@ namespace color {
         else {
             #if GP_ERROR_CHECKING
             if (!PyLong_Check(o1)) {
-                RAISE_TYPE_ERROR(nullptr, "integer or color", o1)
+                RAISE_TYPE_ERROR(nullptr, "integer or color", o1);
             }
             #endif
 
@@ -182,9 +221,12 @@ namespace color {
     }
 
     static PyObject *PyNumber_InPlaceAdd(PyObject *o1, PyObject *o2) {
+        GP_PY_DEBUG("gp.Color.__iadd__()");
+
         #if GP_ERROR_CHECKING
         if (!color::isinstance(o1)) {
-            PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for +=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
+            PyErr_Format(PyExc_TypeError,
+                         "unsupported operand type(s) for +=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
             return nullptr;
         }
         #endif
@@ -195,7 +237,8 @@ namespace color {
         else {
             #if GP_ERROR_CHECKING
             if (!PyLong_Check(o2)) {
-                PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for +=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
+                PyErr_Format(PyExc_TypeError,
+                             "unsupported operand type(s) for +=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
                 return nullptr;
             }
             #endif
@@ -203,13 +246,16 @@ namespace color {
             *((ColorObject *) o1)->color += (int) PyLong_AsLong(o2);
         }
 
-        RETURN_PYOBJECT(o1)
+        RETURN_PYOBJECT(o1);
     }
 
     static PyObject *PyNumber_InPlaceSubtract(PyObject *o1, PyObject *o2) {
+        GP_PY_DEBUG("gp.Color.__isub__()");
+
         #if GP_ERROR_CHECKING
         if (!color::isinstance(o1)) {
-            PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for -=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
+            PyErr_Format(PyExc_TypeError,
+                         "unsupported operand type(s) for -=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
             return nullptr;
         }
         #endif
@@ -220,7 +266,8 @@ namespace color {
         else {
             #if GP_ERROR_CHECKING
             if (!PyLong_Check(o2)) {
-                PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for -=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
+                PyErr_Format(PyExc_TypeError,
+                             "unsupported operand type(s) for -=: '%s' and '%s'", PYOBJECT_NAME(o1), PYOBJECT_NAME(o2));
                 return nullptr;
             }
             #endif
@@ -228,16 +275,18 @@ namespace color {
             *((ColorObject *) o1)->color -= (int) PyLong_AsLong(o2);
         }
 
-        RETURN_PYOBJECT(o1)
+        RETURN_PYOBJECT(o1);
     }
 }
 
 // Getter & Setters
 namespace color {
     static int set_red(ColorObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.Color.set_red()");
+
         #if GP_ERROR_CHECKING
         if (!PyLong_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "integer", value)
+            RAISE_TYPE_ERROR(-1, "integer", value);
         }
         #endif
 
@@ -250,13 +299,16 @@ namespace color {
     }
 
     static PyObject *get_red(ColorObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.Color.get_red()");
         return PyLong_FromLong(self->color->getRed());
     }
 
     static int set_green(ColorObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.Color.set_green()");
+
         #if GP_ERROR_CHECKING
         if (!PyLong_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "integer", value)
+            RAISE_TYPE_ERROR(-1, "integer", value);
         }
         #endif
 
@@ -269,13 +321,16 @@ namespace color {
     }
 
     static PyObject *get_green(ColorObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.Color.get_green()");
         return PyLong_FromLong(self->color->getGreen());
     }
 
     static int set_blue(ColorObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.Color.set_blue()");
+
         #if GP_ERROR_CHECKING
         if (!PyLong_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "integer", value)
+            RAISE_TYPE_ERROR(-1, "integer", value);
         }
         #endif
 
@@ -288,13 +343,16 @@ namespace color {
     }
 
     static PyObject *get_blue(ColorObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.Color.get_blue()");
         return PyLong_FromLong(self->color->getBlue());
     }
 
     static int set_alpha(ColorObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.Color.set_alpha()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "integer", value)
+            RAISE_TYPE_ERROR(-1, "integer", value);
         }
         #endif
 
@@ -307,16 +365,13 @@ namespace color {
     }
 
     static PyObject *get_alpha(ColorObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.Color.get_alpha()");
         return PyFloat_FromDouble(self->color->getAlpha());
     }
 }
 
 // Color Type
 namespace color {
-    static PyMethodDef methods[] = {
-            {nullptr}
-    };
-
     static PyGetSetDef getsetters[] = {
             {"red",   (getter) get_red,   (setter) set_red,   "red",   nullptr},
             {"green", (getter) get_green, (setter) set_green, "green", nullptr},
@@ -336,147 +391,93 @@ namespace color {
 
 namespace color::rgb {
     static int init(ColorRGBObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        GP_PY_COLOR_TRACE("Initializing gp.ColorRGB()");
+        GP_PY_INFO("gp.ColorRGB()");
 
-        if (ColorType.tp_init((PyObject *) self, PyTuple_New(0), Py_None) < 0) {
-            return -1;
-        }
-
-        if (PyTuple_GET_SIZE(args) == 1) {
-            PyObject *obj = PyTuple_GET_ITEM(args, 0);
-            if (color::isinstance(obj)) {
-                self->color = std::make_shared<gp::ColorRGB>(*(((ColorObject *) obj)->color));
-                goto finish_init;
-            }
-        }
-        {
-            int red, green, blue;
-            float alpha = 1.0f;
-
-            if (!PyArg_ParseTuple(args, "III|f", &red, &green, &blue, &alpha)) {
-                PyErr_Clear();
-                if (!PyArg_ParseTuple(args, "(III)|f", &red, &green, &blue, &alpha)) {
-                    PyErr_Clear();
-                    if (!PyArg_ParseTuple(args, "(IIIf)", &red, &green, &blue, &alpha)) {
-
-                        // Sets the appropriate error string
-                        PyArg_ParseTuple(args, "III|f", &red, &green, &blue, &alpha);
-                        return -1;
-                    }
-                }
-            }
-
-            CHECK_RGBA(-1)
-
+        int red, green, blue;
+        float alpha = 1.0f;
+        if (PyArg_ParseTuple(args, "iii|f", &red, &green, &blue, &alpha)) {
             self->color = std::make_shared<gp::ColorRGB>(red, green, blue, alpha);
+            self->base.color = self->color;
+            return 0;
+        }
+        PyErr_Clear();
+
+        PyObject *obj;
+        if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
+            self->color = std::make_shared<gp::ColorRGB>(((ColorObject *) obj)->color.get());
+            self->base.color = self->color;
+            return 0;
         }
 
-        finish_init:
-
-        self->base.color = self->color;
-        return 0;
+        RAISE_VALUE_ERROR(-1, "invalid color format");
     }
-
-    static PyGetSetDef getsetters[] = {
-            {nullptr}
-    };
 }
 
 namespace color::hex {
     static int init(ColorHexObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        GP_PY_COLOR_TRACE("Initializing gp.ColorHex()");
+        GP_PY_INFO("gp.ColorHex()");
 
-        if (ColorType.tp_init((PyObject *) self, PyTuple_New(0), Py_None) < 0) {
-            return -1;
-        }
-
-        PyObject *obj;
+        const char *hexstring;
         float alpha = 1.0f;
 
-        if (!PyArg_ParseTuple(args, "O|f", &obj, &alpha)) {
-            PyErr_Clear();
-            if (!PyArg_ParseTuple(args, "(Of)", &obj, &alpha)) {
-                return -1;
-            }
-        }
-
-        if (PyUnicode_Check(obj)) {
+        if (PyArg_ParseTuple(args, "s|f", &hexstring, &alpha)) {
             CHECK_ALPHA(-1)
-
-            const char *hexstring = PyUnicode_AsUTF8(obj);
 
             try {
                 self->color = std::make_shared<gp::ColorHex>(hexstring, alpha);
             }
-            catch (const std::invalid_argument &iaex) {
-                RAISE_VALUE_ERROR(-1, "invalid hexstring format")
+            catch (const std::invalid_argument &e) {
+                RAISE_VALUE_ERROR(-1, "invalid hexstring format");
             }
+
+            self->base.color = self->color;
+            return 0;
         }
-        else if (color::isinstance(obj)) {
-            self->color = std::make_shared<gp::ColorHex>(*(((ColorObject *) obj)->color));
-        }
-        else {
-            RAISE_VALUE_ERROR(-1, "invalid color format")
+        PyErr_Clear();
+
+        PyObject *obj;
+        if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
+            self->color = std::make_shared<gp::ColorHex>(((ColorObject *) obj)->color.get());
+            self->base.color = self->color;
+            return 0;
         }
 
-        self->base.color = self->color;
-
-        return 0;
+        RAISE_VALUE_ERROR(-1, "invalid hexadecimal color format");
     }
-
-    static PyGetSetDef getsetters[] = {
-            {nullptr}
-    };
 }
 
 namespace color::cmyk {
     static int init(ColorCMYKObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        GP_PY_COLOR_TRACE("Initializing gp.ColorCMYK()");
+        GP_PY_INFO("gp.ColorCMYK()");
 
-        if (ColorType.tp_init((PyObject *) self, PyTuple_New(0), Py_None) < 0) {
-            return -1;
-        }
-
-        if (PyTuple_GET_SIZE(args) == 1) {
-            PyObject *obj = PyTuple_GET_ITEM(args, 0);
-            if (color::isinstance(obj)) {
-                self->color = std::make_shared<gp::ColorCMYK>(*(((ColorObject *) obj)->color));
-                goto finish_init;
-            }
-        }
-        {
-            float cyan, magenta, yellow, key;
-            float alpha = 1.0f;
-            if (!PyArg_ParseTuple(args, "ffff|f", &cyan, &magenta, &yellow, &key, &alpha)) {
-                PyErr_Clear();
-                if (!PyArg_ParseTuple(args, "(ffff)|f", &cyan, &magenta, &yellow, &key, &alpha)) {
-                    PyErr_Clear();
-                    if (!PyArg_ParseTuple(args, "(fffff)", &cyan, &magenta, &yellow, &key, &alpha)) {
-
-                        // Sets the appropriate error string
-                        PyArg_ParseTuple(args, "ffff|f", &cyan, &magenta, &yellow, &key, &alpha);
-                        return -1;
-                    }
-                }
-            }
-
+        float cyan, magenta, yellow, key;
+        float alpha = 1.0f;
+        if (PyArg_ParseTuple(args, "ffff|f", &cyan, &magenta, &yellow, &key, &alpha)) {
             CHECK_CMYKA(-1)
 
             self->color = std::make_shared<gp::ColorCMYK>(cyan, magenta, yellow, key, alpha);
+            self->base.color = self->color;
+            return 0;
+        }
+        PyErr_Clear();
+
+        PyObject *obj;
+        if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
+            self->color = std::make_shared<gp::ColorCMYK>(((ColorObject *) obj)->color.get());
+            self->base.color = self->color;
+            return 0;
         }
 
-        finish_init:
-
-        self->base.color = self->color;
-
-        return 0;
+        RAISE_VALUE_ERROR(-1, "invalid CMYK format");
     }
 
     // Getter & Setters
     static int set_cyan(ColorCMYKObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_INFO("gp.ColorCMYK.set_cyan()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "float", value)
+            RAISE_TYPE_ERROR(-1, "float", value);
         }
         #endif
 
@@ -489,13 +490,16 @@ namespace color::cmyk {
     }
 
     static PyObject *get_cyan(ColorCMYKObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorCMYK.get_cyan()");
         return PyFloat_FromDouble(self->color->getCyan());
     }
 
     static int set_magenta(ColorCMYKObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_INFO("gp.ColorCMYK.set_magenta()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "float", value)
+            RAISE_TYPE_ERROR(-1, "float", value);
         }
         #endif
 
@@ -508,13 +512,16 @@ namespace color::cmyk {
     }
 
     static PyObject *get_magenta(ColorCMYKObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorCMYK.get_magenta()");
         return PyFloat_FromDouble(self->color->getMagenta());
     }
 
     static int set_yellow(ColorCMYKObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_INFO("gp.ColorCMYK.set_yellow()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "float", value)
+            RAISE_TYPE_ERROR(-1, "float", value);
         }
         #endif
 
@@ -527,13 +534,16 @@ namespace color::cmyk {
     }
 
     static PyObject *get_yellow(ColorCMYKObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorCMYK.get_yellow()");
         return PyFloat_FromDouble(self->color->getYellow());
     }
 
     static int set_key(ColorCMYKObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_INFO("gp.ColorCMYK.set_key()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "float", value)
+            RAISE_TYPE_ERROR(-1, "float", value);
         }
         #endif
 
@@ -546,6 +556,7 @@ namespace color::cmyk {
     }
 
     static PyObject *get_key(ColorCMYKObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorCMYK.get_key()");
         return PyFloat_FromDouble(self->color->getKey());
     }
 
@@ -561,53 +572,37 @@ namespace color::cmyk {
 
 namespace color::hsv {
     static int init(ColorHSVObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        GP_PY_COLOR_TRACE("Initializing gp.ColorHSV()");
+        GP_PY_INFO("gp.ColorHSV()");
 
-        if (ColorType.tp_init((PyObject *) self, PyTuple_New(0), Py_None) < 0) {
-            return -1;
-        }
-
-        if (PyTuple_GET_SIZE(args) == 1) {
-            PyObject *obj = PyTuple_GET_ITEM(args, 0);
-            if (color::isinstance(obj)) {
-                self->color = std::make_shared<gp::ColorHSV>(*(((ColorObject *) obj)->color));
-                goto finish_init;
-            }
-        }
-        {
-            int hue;
-            float saturation, value;
-            float alpha = 1.0f;
-            if (!PyArg_ParseTuple(args, "iff|f", &hue, &saturation, &value, &alpha)) {
-                PyErr_Clear();
-                if (!PyArg_ParseTuple(args, "(iff)|f", &hue, &saturation, &value, &alpha)) {
-                    PyErr_Clear();
-                    if (!PyArg_ParseTuple(args, "(ifff)", &hue, &saturation, &value, &alpha)) {
-
-                        // Sets the appropriate error string
-                        PyArg_ParseTuple(args, "iff|f", &hue, &saturation, &value, &alpha);
-                        return -1;
-                    }
-                }
-            }
-
+        int hue;
+        float saturation, value;
+        float alpha = 1.0f;
+        if (PyArg_ParseTuple(args, "iff|f", &hue, &saturation, &value, &alpha)) {
             CHECK_HSVA(-1)
 
             self->color = std::make_shared<gp::ColorHSV>(hue, saturation, value, alpha);
+            self->base.color = self->color;
+            return 0;
+        }
+        PyErr_Clear();
+
+        PyObject *obj;
+        if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
+            self->color = std::make_shared<gp::ColorHSV>(((ColorObject *) obj)->color.get());
+            self->base.color = self->color;
+            return 0;
         }
 
-        finish_init:
-
-        self->base.color = self->color;
-
-        return 0;
+        RAISE_VALUE_ERROR(-1, "invalid HSV format");
     }
 
     // Getter & Setters
     static int set_hue(ColorHSVObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.ColorHSV.set_hue()");
+
         #if GP_ERROR_CHECKING
         if (!PyLong_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "integer", value)
+            RAISE_TYPE_ERROR(-1, "integer", value);
         }
         #endif
 
@@ -620,13 +615,16 @@ namespace color::hsv {
     }
 
     static PyObject *get_hue(ColorHSVObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorHSV.get_hue()");
         return PyLong_FromLong(self->color->getHue());
     }
 
     static int set_saturation(ColorHSVObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.ColorHSV.set_saturation()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "float", value)
+            RAISE_TYPE_ERROR(-1, "float", value);
         }
         #endif
 
@@ -639,13 +637,16 @@ namespace color::hsv {
     }
 
     static PyObject *get_saturation(ColorHSVObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorHSV.get_saturation()");
         return PyFloat_FromDouble(self->color->getSaturation());
     }
 
     static int set_value(ColorHSVObject *self, PyObject *value_, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.ColorHSV.set_value()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value_)) {
-            RAISE_TYPE_ERROR(-1, "float", value_)
+            RAISE_TYPE_ERROR(-1, "float", value_);
         }
         #endif
 
@@ -658,6 +659,7 @@ namespace color::hsv {
     }
 
     static PyObject *get_value(ColorHSVObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorHSV.get_value()");
         return PyFloat_FromDouble(self->color->getValue());
     }
 
@@ -672,53 +674,37 @@ namespace color::hsv {
 
 namespace color::hsl {
     static int init(ColorHSLObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        GP_PY_COLOR_TRACE("Initializing gp.ColorHSL()");
+        GP_PY_TRACE("gp.ColorHSL()");
 
-        if (ColorType.tp_init((PyObject *) self, PyTuple_New(0), Py_None) < 0) {
-            return -1;
-        }
+        int hue;
+        float saturation, luminance, alpha = 1.0f;
 
-        if (PyTuple_GET_SIZE(args) == 1) {
-            PyObject *obj = PyTuple_GET_ITEM(args, 0);
-            if (color::isinstance(obj)) {
-                self->color = std::make_shared<gp::ColorHSL>(*(((ColorObject *) obj)->color));
-                goto finish_init;
-            }
-        }
-        {
-            int hue;
-            float saturation, luminance;
-            float alpha = 1.0f;
-            if (!PyArg_ParseTuple(args, "iff|f", &hue, &saturation, &luminance, &alpha)) {
-                PyErr_Clear();
-                if (!PyArg_ParseTuple(args, "(iff)|f", &hue, &saturation, &luminance, &alpha)) {
-                    PyErr_Clear();
-                    if (!PyArg_ParseTuple(args, "(ifff)", &hue, &saturation, &luminance, &alpha)) {
-
-                        // Sets the appropriate error string
-                        PyArg_ParseTuple(args, "iff|f", &hue, &saturation, &luminance, &alpha);
-                        return -1;
-                    }
-                }
-            }
-
+        if (PyArg_ParseTuple(args, "iff|f", &hue, &saturation, &luminance, &alpha)) {
             CHECK_HSLA(-1)
 
             self->color = std::make_shared<gp::ColorHSL>(hue, saturation, luminance, alpha);
+            self->base.color = self->color;
+            return 0;
+        }
+        PyErr_Clear();
+
+        PyObject *obj;
+        if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
+            self->color = std::make_shared<gp::ColorHSL>(((ColorObject *) obj)->color.get());
+            self->base.color = self->color;
+            return 0;
         }
 
-        finish_init:
-
-        self->base.color = self->color;
-
-        return 0;
+        RAISE_VALUE_ERROR(-1, "invalid HSV format");
     }
 
     // Getter & Setters
     static int set_hue(ColorHSLObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.ColorHSL.set_hue()");
+
         #if GP_ERROR_CHECKING
         if (!PyLong_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "integer", value)
+            RAISE_TYPE_ERROR(-1, "integer", value);
         }
         #endif
 
@@ -731,13 +717,16 @@ namespace color::hsl {
     }
 
     static PyObject *get_hue(ColorHSLObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorHSL.get_hue()");
         return PyLong_FromLong(self->color->getHue());
     }
 
     static int set_saturation(ColorHSLObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.ColorHSL.set_saturation()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "float", value)
+            RAISE_TYPE_ERROR(-1, "float", value);
         }
         #endif
 
@@ -750,13 +739,16 @@ namespace color::hsl {
     }
 
     static PyObject *get_saturation(ColorHSLObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorHSL.get_saturation()");
         return PyFloat_FromDouble(self->color->getSaturation());
     }
 
     static int set_luminance(ColorHSLObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.ColorHSL.set_luminance()");
+
         #if GP_ERROR_CHECKING
         if (!PyFloat_Check(value)) {
-            RAISE_TYPE_ERROR(-1, "float", value)
+            RAISE_TYPE_ERROR(-1, "float", value);
         }
         #endif
 
@@ -770,6 +762,7 @@ namespace color::hsl {
 
     // Color Type
     static PyObject *get_luminance(ColorHSLObject *self, PyObject *Py_UNUSED(args)) {
+        GP_PY_TRACE("gp.ColorHSL.get_luminance()");
         return PyFloat_FromDouble(self->color->getLuminance());
     }
 
@@ -790,7 +783,6 @@ PyTypeObject ColorType = {
         .tp_name = "goopylib.Color",
         .tp_init = (initproc) color::init,
 
-        .tp_methods = color::methods,
         .tp_getset = color::getsetters,
         .tp_as_number = &color::numbermethods,
 
@@ -806,8 +798,6 @@ PyTypeObject ColorRGBType = {
         .tp_basicsize = sizeof(ColorRGBObject),
         .tp_name = "goopylib.ColorRGB",
         .tp_init = (initproc) color::rgb::init,
-
-        .tp_getset = color::rgb::getsetters,
 };
 
 PyTypeObject ColorHexType = {
@@ -815,8 +805,6 @@ PyTypeObject ColorHexType = {
         .tp_basicsize = sizeof(ColorHexObject),
         .tp_name = "goopylib.ColorHex",
         .tp_init = (initproc) color::hex::init,
-
-        .tp_getset = color::hex::getsetters,
 };
 
 PyTypeObject ColorCMYKType = {
@@ -845,3 +833,53 @@ PyTypeObject ColorHSLType = {
 
         .tp_getset = color::hsl::getsetters,
 };
+
+static struct PyModuleDef colormodule = {
+        PyModuleDef_HEAD_INIT,
+        .m_name = "color",
+        .m_size = -1,
+        .m_methods = nullptr,
+};
+
+
+PyMODINIT_FUNC PyInit_color() {
+    #if GP_LOGGING_LEVEL >= 5
+    std::cout << "[--:--:--] PYTHON: PyInit_color()" << std::endl;
+    #endif
+
+    PyObject *m;
+    m = PyModule_Create(&colormodule);
+    if (m == nullptr) {
+        return nullptr;
+    }
+
+    EXPOSE_PYOBJECT_CLASS(ColorType, "Color");
+
+    ColorRGBType.tp_base = &ColorType;
+    ColorHexType.tp_base = &ColorType;
+    ColorCMYKType.tp_base = &ColorType;
+    ColorHSVType.tp_base = &ColorType;
+    ColorHSLType.tp_base = &ColorType;
+
+    EXPOSE_PYOBJECT_CLASS(ColorRGBType, "ColorRGB");
+    EXPOSE_PYOBJECT_CLASS(ColorHexType, "ColorHex");
+    EXPOSE_PYOBJECT_CLASS(ColorCMYKType, "ColorCMYK");
+    EXPOSE_PYOBJECT_CLASS(ColorHSVType, "ColorHSV");
+    EXPOSE_PYOBJECT_CLASS(ColorHSLType, "ColorHSL");
+
+    static void *PyColor_API[PyColor_API_pointers];
+    PyObject *c_api_object;
+
+    PyColor_API[Color_create_NUM] = (void *) Color_create;
+    PyColor_API[Color_isinstance_NUM] = (void *) Color_isinstance;
+    PyColor_API[Color_get_pointer_NUM] = (void *) Color_get_pointer;
+    c_api_object = PyCapsule_New((void *) PyColor_API, "ext.color._C_API", nullptr);
+
+    if (PyModule_AddObject(m, "_C_API", c_api_object) < 0) {
+        Py_XDECREF(c_api_object);
+        Py_DECREF(m);
+        return nullptr;
+    }
+
+    return m;
+}

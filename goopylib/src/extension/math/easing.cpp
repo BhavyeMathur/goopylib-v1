@@ -1,6 +1,8 @@
 #include "easing.h"
 #include "src/goopylib/math/Easing.h"
 
+// TODO Easing base class
+
 namespace easing {
     struct EasingObject {
         PyObject_HEAD

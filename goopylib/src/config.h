@@ -5,7 +5,7 @@
 
 #define GP_ERROR_CHECKING true
 #define GP_TYPE_CHECKING true
-#define GP_VALUE_CHECKING true
+#define GP_VALUE_CHECKING false
 
 /*
  0 - No Logging

@@ -1,165 +1,423 @@
+"""
+Module defining colors and related functions
+"""
+
 from __future__ import annotations
-import goopylib.ext.color_conversions as __conversions
+
+import goopylib.ext.color as _color
+import goopylib.ext.color_conversions as _conversions
+
+
+# The reason docstrings for the class are copied to the __init__() method is because CLion (and presumably PyCharm)
+# renders the 'Raises' section with an odd identation otherwise.
 
 
 class Color:
-    def __init__(self, *args):
-        self.__not_implemented(args)
+    """
+    Create colors by passing RGB arguments or a hexstring.
+    Specify an alpha value by passing a float as the last parameter.
 
-    def __not_implemented(self, *args):
-        raise NotImplementedError()
+    Raises:
+        ValueError: unrecognised or invalid parameters
+
+    Examples:
+        >>> Color(120, 70, 0)
+        Color(120, 70, 0)
+
+        >>> Color("#fff")
+        Color(255, 255, 255)
+
+        >>> Color(60, 180, 90, 0.5)
+        Color(60, 180, 90)
+    """
+
+    def __init__(self, *args):
+        """
+        Create colors by passing RGB arguments or a hexstring.
+        Specify an alpha value by passing a float as the last parameter.
+
+        Raises:
+            ValueError: unrecognised or invalid parameters
+
+        Examples:
+            >>> Color(120, 70, 0)
+            Color(120, 70, 0)
+
+            >>> Color("#fff")
+            Color(255, 255, 255)
+
+            >>> Color(60, 180, 90, 0.5)
+            Color(60, 180, 90)
+        """
+        self._color = _color.Color(*args)
 
     def __repr__(self) -> str:
-        return self.__not_implemented()
+        return self._color.__repr__()
 
     def __add__(self, other: Union[int, Color]) -> Color:
-        return self.__not_implemented()
+        return self._color.__add__(other)
 
     def __sub__(self, other: Union[int, Color]) -> Color:
-        return self.__not_implemented()
+        return self._color.__sub__(other)
 
     def __iadd__(self, other: Union[int, Color]):
-        self.__not_implemented()
+        return self._color.__iadd__(other)
 
     def __isub__(self, other: Union[int, Color]):
-        self.__not_implemented()
+        return self._color.__isub__(other)
 
     @property
     def red(self) -> int:
-        return self.__not_implemented()
+        """
+        Returns: the red component of the color
+        """
+        return self._color.red
 
     @red.setter
     def red(self, value: int):
-        self.__not_implemented(value)
+        self._color.red = value
 
     @property
     def green(self) -> int:
-        return self.__not_implemented()
+        """
+        Returns: the green component of the color
+        """
+        return self._color.green
 
     @green.setter
     def green(self, value: int):
-        self.__not_implemented(value)
+        self._color.green = value
 
     @property
     def blue(self) -> int:
-        return self.__not_implemented()
+        """
+        Returns: the blue component of the color
+        """
+        return self._color.blue
 
     @blue.setter
     def blue(self, value: int):
-        self.__not_implemented(value)
+        self._color.blue = value
 
     @property
     def alpha(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the alpha component of the color
+        """
+        return self._color.alpha
 
     @alpha.setter
     def alpha(self, value: float):
-        self.__not_implemented(value)
+        self._color.alpha = value
 
 
 class ColorRGB(Color):
-    def __not_implemented(self):
-        raise NotImplementedError()
+    """
+    Create an RGB color by passing RGB arguments with an optional alpha parameter.
+    Convert another color object to RGB by passing it as a parameter.
+
+    Raises:
+        TypeError: expected ints for RGB and floats for alpha
+        ValueError: RGB must be between 0-255, alpha must be between 0-1
+
+    Examples:
+        >>> ColorRGB(120, 70, 0)
+        ColorRGB(120, 70, 0)
+
+        >>> ColorRGB(60, 180, 90, 0.5)
+        Color(60, 180, 90)
+
+        >>> ColorRGB(other_color)
+    """
+
+    def __init__(self, *args):
+        """
+        Create an RGB color by passing RGB arguments with an optional alpha parameter.
+        Convert another color object to RGB by passing it as a parameter.
+
+        Raises:
+            TypeError: expected ints for RGB and floats for alpha
+            ValueError: RGB must be between 0-255, alpha must be between 0-1
+
+        Examples:
+            >>> ColorRGB(120, 70, 0)
+            ColorRGB(120, 70, 0)
+
+            >>> ColorRGB(60, 180, 90, 0.5)
+            Color(60, 180, 90)
+
+            >>> ColorRGB(other_color)
+        """
+        self._color = _color.ColorRGB(*args)
 
 
 class ColorHex(Color):
-    def __not_implemented(self):
-        raise NotImplementedError()
+    """
+    Create a Hexadecimal color by passing a hexstring with an optional alpha parameter. The '#' is optional.
+    Convert another color object to Hexadecimal by passing it as a parameter.
+
+    Raises:
+        TypeError: hexstring must be a string, alpha must be a float
+
+    Examples:
+        >>> ColorHex("#000")
+        "#000000"
+
+        >>> ColorHex("a7b7c7")
+        "#a7b7c7"
+
+        >>> ColorHex(other_color)
+    """
+
+    def __init__(self, *args):
+        """
+        Create a Hexadecimal color by passing a hexstring with an optional alpha parameter. The '#' is optional.
+        Convert another color object to Hexadecimal by passing it as a parameter.
+
+        Raises:
+            TypeError: hexstring must be a string, alpha must be a float
+
+        Examples:
+            >>> ColorHex("#000")
+            "#000000"
+
+            >>> ColorHex("a7b7c7")
+            "#a7b7c7"
+
+            >>> ColorHex(other_color)
+        """
+
+        self._color = _color.ColorHex(*args)
 
 
 class ColorCMYK(Color):
-    def __not_implemented(self, *args):
-        raise NotImplementedError()
+    """
+    Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha.
+    Convert another color object to CMYK by passing it as a parameter.
+
+    Raises:
+        TypeError: CMYK, alpha values must be floats
+        ValueError: CMYK, alpha values must be between 0-1
+
+    Examples:
+        >>> ColorCMYK(0.5, 0.4, 0.2, 0.1)
+        ColorCMYK(0.5, 0.4, 0.2, 0.1)
+
+        >>> ColorCMYK(0.6, 0.9, 1, 1, 0.5)
+        ColorCMYK(0.6, 0.9, 1, 1)
+
+        >>> ColorCMYK(other_color)
+    """
+
+    def __init__(self, *args):
+        """
+        Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha. All parameters are between 0-1.
+        Convert another color object to CMYK by passing it as a parameter.
+
+        Raises:
+            TypeError: CMYK, alpha values must be floats
+            ValueError: CMYK, alpha values must be between 0-1
+
+        Examples:
+            >>> ColorCMYK(0.5, 0.4, 0.2, 0.1)
+            ColorCMYK(0.5, 0.4, 0.2, 0.1)
+
+            >>> ColorCMYK(0.6, 0.9, 1, 1, 0.5)
+            ColorCMYK(0.6, 0.9, 1, 1)
+
+            >>> ColorCMYK(other_color)
+        """
+        self._color = _color.ColorCMYK(*args)
 
     @property
     def cyan(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the cyan component of the color
+        """
+        return self._color.cyan
 
     @cyan.setter
     def cyan(self, value: float):
-        self.__not_implemented(value)
+        self._color.cyan = value
 
     @property
     def magenta(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the magenta component of the color
+        """
+        return self._color.magenta
 
     @magenta.setter
     def magenta(self, value: float):
-        self.__not_implemented(value)
+        self._color.magenta = value
 
     @property
     def yellow(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the yellow component of the color
+        """
+        return self._color.yellow
 
     @yellow.setter
     def yellow(self, value: float):
-        self.__not_implemented(value)
+        self._color.yellow = value
 
     @property
     def key(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the key component of the color
+        """
+        return self._color.key
 
     @key.setter
     def key(self, value: float):
-        self.__not_implemented(value)
+        self._color.key = value
 
 
 class ColorHSV(Color):
-    def __not_implemented(self, *args):
-        raise NotImplementedError()
+    """
+    Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)
+    Convert another color object to HSV by passing it as a parameter.
+
+    Raises:
+        TypeError: hue must be an int, saturation, value, and alpha must be floats
+        ValueError: hue must be between 0-360, saturation, value, and alpha must be between 0-1
+
+    Examples:
+        >>> ColorHSV(90, 0.2, 0.2)
+        ColorHSV(90, 0.2, 0.2)
+
+        >>> ColorHSV(240, 0.8, 0.9, 0.5)
+        ColorHSV(240, 0.8, 0.9)
+
+        >>> ColorHSV(other_color)
+    """
+
+    def __init__(self, *args):
+        """
+        Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)
+        Convert another color object to HSV by passing it as a parameter.
+
+        Raises:
+            TypeError: hue must be an int, saturation, value, and alpha must be floats
+            ValueError: hue must be between 0-360, saturation, value, and alpha must be between 0-1
+
+        Examples:
+            >>> ColorHSV(90, 0.2, 0.2)
+            ColorHSV(90, 0.2, 0.2)
+
+            >>> ColorHSV(240, 0.8, 0.9, 0.5)
+            ColorHSV(240, 0.8, 0.9)
+
+            >>> ColorHSV(other_color)
+        """
+        self._color = _color.ColorHSV(*args)
 
     @property
     def hue(self) -> int:
-        return self.__not_implemented()
+        """
+        Returns: the hue component of the color
+        """
+        return self._color.hue
 
     @hue.setter
     def hue(self, value: int):
-        self.__not_implemented(value)
+        self._color.hue = value
 
     @property
     def saturation(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the saturation component of the color
+        """
+        return self._color.saturation
 
     @saturation.setter
     def saturation(self, value: float):
-        self.__not_implemented(value)
+        self._color.saturation = value
 
     @property
     def value(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the value component of the color
+        """
+        return self._color.value
 
     @value.setter
     def value(self, value: float):
-        self.__not_implemented(value)
+        self._color.value = value
 
 
 class ColorHSL(Color):
-    def __not_implemented(self, *args):
-        raise NotImplementedError()
+    """
+    Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)
+    Convert another color object to HSL by passing it as a parameter.
+
+    Raises:
+        TypeError: hue must be an int, saturation, luminance, and alpha must be floats
+        ValueError: hue must be between 0-360, saturation, luminance, and alpha must be between 0-1
+
+    Examples:
+        >>> ColorHSL(90, 0.2, 0.2)
+        ColorHSL(90, 0.2, 0.2)
+
+        >>> ColorHSL(240, 0.8, 0.9, 0.5)
+        ColorHSL(240, 0.8, 0.9)
+
+        >>> ColorHSL(other_color)
+    """
+
+    def __init__(self, *args):
+        """
+        Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)
+        Convert another color object to HSL by passing it as a parameter.
+
+        Raises:
+            TypeError: hue must be an int, saturation, luminance, and alpha must be floats
+            ValueError: hue must be between 0-360, saturation, luminance, and alpha must be between 0-1
+
+        Examples:
+            >>> ColorHSL(90, 0.2, 0.2)
+            ColorHSL(90, 0.2, 0.2)
+
+            >>> ColorHSL(240, 0.8, 0.9, 0.5)
+            ColorHSL(240, 0.8, 0.9)
+
+            >>> ColorHSL(other_color)
+        """
+        self._color = _color.ColorHSL(*args)
 
     @property
     def hue(self) -> int:
-        return self.__not_implemented()
+        """
+        Returns: the hue component of the color
+        """
+        return self._color.hue
 
     @hue.setter
     def hue(self, value: int):
-        self.__not_implemented(value)
+        self._color.hue = value
 
     @property
     def saturation(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the saturation component of the color
+        """
+        return self._color.saturation
 
     @saturation.setter
     def saturation(self, value: float):
-        self.__not_implemented(value)
+        self._color.saturation = value
 
     @property
     def luminance(self) -> float:
-        return self.__not_implemented()
+        """
+        Returns: the luminance component of the color
+        """
+        return self._color.luminance
 
     @luminance.setter
     def luminance(self, value: float):
-        self.__not_implemented(value)
+        self._color.luminance = value
 
 
 # RGB to other format
@@ -179,7 +437,7 @@ def rgb_to_hex(red: int, green: int, blue: int) -> str:
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.rgb_to_hex(red, green, blue)
+    return _conversions.rgb_to_hex(red, green, blue)
 
 
 def rgb_to_cmyk(red: int, green: int, blue: int) -> tuple[float, float, float, float]:
@@ -197,7 +455,7 @@ def rgb_to_cmyk(red: int, green: int, blue: int) -> tuple[float, float, float, f
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.rgb_to_cmyk(red, green, blue)
+    return _conversions.rgb_to_cmyk(red, green, blue)
 
 
 def rgb_to_hsl(red: int, green: int, blue: int) -> tuple[int, float, float]:
@@ -215,7 +473,7 @@ def rgb_to_hsl(red: int, green: int, blue: int) -> tuple[int, float, float]:
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.rgb_to_hsl(red, green, blue)
+    return _conversions.rgb_to_hsl(red, green, blue)
 
 
 def rgb_to_hsv(red: int, green: int, blue: int) -> tuple[int, float, float]:
@@ -233,7 +491,7 @@ def rgb_to_hsv(red: int, green: int, blue: int) -> tuple[int, float, float]:
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.rgb_to_hsv(red, green, blue)
+    return _conversions.rgb_to_hsv(red, green, blue)
 
 
 # Hex to other format
@@ -251,7 +509,7 @@ def hex_to_rgb(hexstring: str) -> tuple[int, int, int]:
     Raises:
         ValueError: if the hexstring is invalid
     """
-    return __conversions.hex_to_rgb(hexstring)
+    return _conversions.hex_to_rgb(hexstring)
 
 
 def hex_to_cmyk(hexstring: str) -> tuple[float, float, float, float]:
@@ -267,7 +525,7 @@ def hex_to_cmyk(hexstring: str) -> tuple[float, float, float, float]:
     Raises:
         ValueError: if the hexstring is invalid
     """
-    return __conversions.hex_to_cmyk(hexstring)
+    return _conversions.hex_to_cmyk(hexstring)
 
 
 def hex_to_hsv(hexstring: str) -> tuple[int, float, float]:
@@ -283,7 +541,7 @@ def hex_to_hsv(hexstring: str) -> tuple[int, float, float]:
     Raises:
         ValueError: if the hexstring is invalid
     """
-    return __conversions.hex_to_hsv(hexstring)
+    return _conversions.hex_to_hsv(hexstring)
 
 
 def hex_to_hsl(hexstring: str) -> tuple[int, float, float]:
@@ -299,7 +557,7 @@ def hex_to_hsl(hexstring: str) -> tuple[int, float, float]:
     Raises:
         ValueError: if the hexstring is invalid
     """
-    return __conversions.hex_to_hsl(hexstring)
+    return _conversions.hex_to_hsl(hexstring)
 
 
 # CMYK to other format
@@ -320,7 +578,7 @@ def cmyk_to_rgb(cyan: float, magenta: float, yellow: float, key: float) -> tuple
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.cmyk_to_rgb(cyan, magenta, yellow, key)
+    return _conversions.cmyk_to_rgb(cyan, magenta, yellow, key)
 
 
 def cmyk_to_hex(cyan: float, magenta: float, yellow: float, key: float) -> str:
@@ -339,7 +597,7 @@ def cmyk_to_hex(cyan: float, magenta: float, yellow: float, key: float) -> str:
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.cmyk_to_hex(cyan, magenta, yellow, key)
+    return _conversions.cmyk_to_hex(cyan, magenta, yellow, key)
 
 
 def cmyk_to_hsv(cyan: float, magenta: float, yellow: float, key: float) -> tuple[int, float, float]:
@@ -358,7 +616,7 @@ def cmyk_to_hsv(cyan: float, magenta: float, yellow: float, key: float) -> tuple
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.cmyk_to_hsv(cyan, magenta, yellow, key)
+    return _conversions.cmyk_to_hsv(cyan, magenta, yellow, key)
 
 
 def cmyk_to_hsl(cyan: float, magenta: float, yellow: float, key: float) -> tuple[int, float, float]:
@@ -377,7 +635,7 @@ def cmyk_to_hsl(cyan: float, magenta: float, yellow: float, key: float) -> tuple
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.cmyk_to_hsl(cyan, magenta, yellow, key)
+    return _conversions.cmyk_to_hsl(cyan, magenta, yellow, key)
 
 
 # HSV to other format
@@ -398,7 +656,7 @@ def hsv_to_rgb(hue: int, saturation: float, value: float) -> tuple[int, int, int
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.hsv_to_rgb(hue, saturation, value)
+    return _conversions.hsv_to_rgb(hue, saturation, value)
 
 
 def hsv_to_hex(hue: int, saturation: float, value: float) -> str:
@@ -416,7 +674,7 @@ def hsv_to_hex(hue: int, saturation: float, value: float) -> str:
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.hsv_to_hex(hue, saturation, value)
+    return _conversions.hsv_to_hex(hue, saturation, value)
 
 
 def hsv_to_cmyk(hue: int, saturation: float, value: float) -> tuple[float, float, float, float]:
@@ -434,7 +692,7 @@ def hsv_to_cmyk(hue: int, saturation: float, value: float) -> tuple[float, float
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.hsv_to_cmyk(hue, saturation, value)
+    return _conversions.hsv_to_cmyk(hue, saturation, value)
 
 
 def hsv_to_hsl(hue: int, saturation: float, value: float) -> tuple[int, float, float]:
@@ -452,7 +710,7 @@ def hsv_to_hsl(hue: int, saturation: float, value: float) -> tuple[int, float, f
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.hsv_to_hsl(hue, saturation, value)
+    return _conversions.hsv_to_hsl(hue, saturation, value)
 
 
 # HSV to other format
@@ -473,7 +731,7 @@ def hsl_to_rgb(hue: int, saturation: float, luminance: float) -> tuple[int, int,
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.hsl_to_rgb(hue, saturation, luminance)
+    return _conversions.hsl_to_rgb(hue, saturation, luminance)
 
 
 def hsl_to_hex(hue: int, saturation: float, luminance: float) -> str:
@@ -491,7 +749,7 @@ def hsl_to_hex(hue: int, saturation: float, luminance: float) -> str:
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.hsl_to_hex(hue, saturation, luminance)
+    return _conversions.hsl_to_hex(hue, saturation, luminance)
 
 
 def hsl_to_cmyk(hue: int, saturation: float, luminance: float) -> tuple[float, float, float, float]:
@@ -509,7 +767,7 @@ def hsl_to_cmyk(hue: int, saturation: float, luminance: float) -> tuple[float, f
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.hsl_to_cmyk(hue, saturation, luminance)
+    return _conversions.hsl_to_cmyk(hue, saturation, luminance)
 
 
 def hsl_to_hsv(hue: int, saturation: float, luminance: float) -> tuple[int, float, float]:
@@ -527,26 +785,41 @@ def hsl_to_hsv(hue: int, saturation: float, luminance: float) -> tuple[int, floa
     Raises:
         ValueError: if the inputs are outside their bounds
     """
-    return __conversions.hsl_to_hsv(hue, saturation, luminance)
+    return _conversions.hsl_to_hsv(hue, saturation, luminance)
 
 
 # Random Colors
 
 def random_rgb() -> ColorRGB:
-    raise NotImplementedError()
+    """
+    Returns: a random RGB color
+    """
+    return ColorRGB(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
 
 def random_hex() -> ColorHex:
-    raise NotImplementedError()
+    """
+    Returns: a random Hexadecimal color
+    """
+    return ColorHex(rgb_to_hex(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
 
 
 def random_cmyk() -> ColorCMYK:
-    raise NotImplementedError()
+    """
+    Returns: a random CMYK color
+    """
+    return ColorCMYK(random.random(), random.random(), random.random(), random.random())
 
 
 def random_hsv() -> ColorHSV:
-    raise NotImplementedError()
+    """
+    Returns: a random HSV color
+    """
+    return ColorHSV(random.randint(0, 360), random.random(), random.random())
 
 
 def random_hsl() -> ColorHSL:
-    raise NotImplementedError()
+    """
+    Returns: a random HSL color
+    """
+    return ColorHSL(random.randint(0, 360), random.random(), random.random())

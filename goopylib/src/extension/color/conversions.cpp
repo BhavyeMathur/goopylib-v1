@@ -1,5 +1,17 @@
 #include "conversions.h"
+
+#if !GP_LOG_COLOR_CONVERSIONS
+#undef GP_LOGGING
+#endif
+
+#if !GP_VALUE_CHECKING_COLOR_CONVERSION
+#undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
+#endif
+
 #include "macros.h"
+
 #include "goopylib/color/ColorConversions.h"
 
 namespace color {
@@ -7,12 +19,16 @@ namespace color {
     // RGB to other format
 
     PyObject *rgb_to_hex(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.rgb_to_hex({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_RGB
 
         return PyUnicode_FromString(gp::rgb::toHex(red, green, blue));
     }
 
     PyObject *rgb_to_cmyk(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.rgb_to_cmyk({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_RGB
 
         gp::CMYK color_cmyk = gp::rgb::toCMYK(red, green, blue);
@@ -21,6 +37,8 @@ namespace color {
     }
 
     PyObject *rgb_to_hsv(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.rgb_to_hsv({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_RGB
 
         gp::HSV color_hsv = gp::rgb::toHSV(red, green, blue);
@@ -29,6 +47,8 @@ namespace color {
     }
 
     PyObject *rgb_to_hsl(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.rgb_to_hsl({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_RGB
 
         gp::HSL color_hsl = gp::rgb::toHSL(red, green, blue);
@@ -39,6 +59,8 @@ namespace color {
     // Hex to other format
 
     PyObject *hex_to_rgb(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hex_to_rgb({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HEX
 
         gp::RGB color_rgb = gp::hex::toRGB(hexstring);
@@ -47,6 +69,8 @@ namespace color {
     }
 
     PyObject *hex_to_cmyk(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hex_to_cmyk({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HEX
 
         gp::CMYK color_cmyk = gp::hex::toCMYK(hexstring);
@@ -55,6 +79,8 @@ namespace color {
     }
 
     PyObject *hex_to_hsl(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hex_to_hsl({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HEX
 
         gp::HSL color_hsl = gp::hex::toHSL(hexstring);
@@ -63,6 +89,8 @@ namespace color {
     }
 
     PyObject *hex_to_hsv(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hex_to_hsv({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HEX
 
         gp::HSV color_hsv = gp::hex::toHSV(hexstring);
@@ -73,6 +101,8 @@ namespace color {
     // CMYK to other format
 
     PyObject *cmyk_to_rgb(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.cmyk_to_rgb({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_CMYK
 
         gp::RGB color_rgb = gp::cmyk::toRGB(cyan, magenta, yellow, key);
@@ -81,12 +111,16 @@ namespace color {
     }
 
     PyObject *cmyk_to_hex(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.cmyk_to_hex({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_CMYK
 
         return PyUnicode_FromString(gp::cmyk::toHex(cyan, magenta, yellow, key));
     }
 
     PyObject *cmyk_to_hsv(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.cmyk_to_hsv({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_CMYK
 
         gp::HSV color_hsv = gp::cmyk::toHSV(cyan, magenta, yellow, key);
@@ -95,6 +129,8 @@ namespace color {
     }
 
     PyObject *cmyk_to_hsl(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.cmyk_to_hsl({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_CMYK
 
         gp::HSL color_hsl = gp::cmyk::toHSL(cyan, magenta, yellow, key);
@@ -105,6 +141,8 @@ namespace color {
     // HSV to other format
 
     PyObject *hsv_to_rgb(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hsv_to_rgb({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HSV
 
         gp::RGB color_rgb = gp::hsv::toRGB(hue, saturation, value);
@@ -113,12 +151,16 @@ namespace color {
     }
 
     PyObject *hsv_to_hex(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hsv_to_hex({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HSV
 
         return PyUnicode_FromString(gp::hsv::toHex(hue, saturation, value));
     }
 
     PyObject *hsv_to_cmyk(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hsv_to_cmyk({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HSV
 
         gp::CMYK color_cmyk = gp::hsv::toCMYK(hue, saturation, value);
@@ -127,6 +169,8 @@ namespace color {
     }
 
     PyObject *hsv_to_hsl(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hsv_to_hsl({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HSV
 
         gp::HSL color_hsl = gp::hsv::toHSL(hue, saturation, value);
@@ -137,6 +181,8 @@ namespace color {
     // HSL to other format
 
     PyObject *hsl_to_rgb(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hsl_to_rgb({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HSL
 
         gp::RGB color_rgb = gp::hsl::toRGB(hue, saturation, luminance);
@@ -145,12 +191,16 @@ namespace color {
     }
 
     PyObject *hsl_to_hex(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hsl_to_hex({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HSL
 
         return PyUnicode_FromString(gp::hsl::toHex(hue, saturation, luminance));
     }
 
     PyObject *hsl_to_cmyk(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hsl_to_cmyk({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HSL
 
         gp::CMYK color_cmyk = gp::hsl::toCMYK(hue, saturation, luminance);
@@ -159,6 +209,8 @@ namespace color {
     }
 
     PyObject *hsl_to_hsv(PyObject *Py_UNUSED(self), PyObject *args) {
+        GP_PY_INFO("gp.hsl_to_hsv({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
         PARSE_HSL
 
         gp::HSV color_hsv = gp::hsl::toHSV(hue, saturation, luminance);
