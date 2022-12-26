@@ -1,6 +1,5 @@
 #pragma once
 
-#include "gp.h"
 #include "Color.h"
 
 namespace gp {

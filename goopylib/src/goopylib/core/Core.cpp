@@ -1,11 +1,21 @@
 #include "Window.h"
-
-#include "src/gp.h"
-#include "src/goopylib/core/Core.h"
+#include "Core.h"
 #include "src/goopylib/color/W3CX11.h"
 
 #include <stb/stb_image.h>
 #include <GLFW/glfw3.h>
+
+#if !GP_LOG_CORE
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_CORE_VALUE_CHECKING
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
 
 namespace {
     void onUpdate() {
@@ -84,8 +94,6 @@ namespace gp {
         GP_CORE_INFO("gp::init()");
 
         stbi_set_flip_vertically_on_load(1);
-
-        initW3CX11();
 
         #if GP_USING_GLFW
         initGLFW();

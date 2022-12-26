@@ -1,6 +1,5 @@
 #pragma once
 
-#include "src/gp.h"
 #include <glm/gtx/string_cast.hpp>
 
 #if (GP_LOGGING >= 1)

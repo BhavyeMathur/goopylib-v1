@@ -1,17 +1,8 @@
 #pragma once
 
-#define GP_USING_GLFW true
-#define GP_USING_OPENGL true
-
-#include <type_traits>
 #include <memory>
 
-#define MAX_WIDTH 65535
-#define MAX_HEIGHT 65535
-
 #define _GP_BUILD_DLL
-
-#define UNUSED(parameter) __attribute__((unused)) parameter
 
 #if defined(_WIN32) && defined(_GP_BUILD_DLL)
 /* We are building goopylib as a Win32 DLL */
@@ -25,6 +16,8 @@
 #else
 #define GPAPI
 #endif
+
+#define UNUSED(parameter) __attribute__((unused)) parameter
 
 #define GL_SILENCE_DEPRECATION
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
@@ -80,18 +73,4 @@ namespace gp {
         }
 }
 
-/*
- 0 - No Logging
- 1 - Fatals Enabled
- 2 - Errors Enabled
- 3 - Warnings Enabled
- 4 - Info Enabled
- 5 - Debug Enabled
- 6 - Trace Enabled
- 7 - All Enabled
- */
-#define GP_LOGGING 6
-
-#include "src/goopylib/debug/Log.h"
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
+#include "config.h"

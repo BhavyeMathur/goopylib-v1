@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gp.h"
 #include <cstring>
 
 namespace gp {

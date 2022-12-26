@@ -56,7 +56,7 @@
 #define GP_CHECK_LT(variable, val, rtype, error) if ((variable) >= (val)) { RAISE_VALUE_ERROR(rtype, error); }
 #define GP_CHECK_LE(variable, val, rtype, error) if ((variable) > (val)) { RAISE_VALUE_ERROR(rtype, error); }
 
-#define GP_CHECK_INCLUSIVE_RANGE_INCLUSIVE(variable, min, max, rtype, error) if ((variable) < (min) or (variable) > (max)) { RAISE_VALUE_ERROR(rtype, error); }
+#define GP_CHECK_INCLUSIVE_RANGE(variable, min, max, rtype, error) if ((variable) < (min) or (variable) > (max)) { RAISE_VALUE_ERROR(rtype, error); }
 #define GP_CHECK_EXCLUSIVE_RANGE(variable, min, max, rtype, error) if ((variable) <= (min) or (variable) >= (max)) { RAISE_VALUE_ERROR(rtype, error); }
 #else
 #define GP_CHECK_EQUALS(variable, val, rtype, error)

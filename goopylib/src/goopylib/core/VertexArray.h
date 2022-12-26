@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gp.h"
 #include "Buffer.h"
 
 #if GP_USING_OPENGL

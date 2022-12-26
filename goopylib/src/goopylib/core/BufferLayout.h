@@ -1,6 +1,8 @@
 #pragma once
 
-#include "src/gp.h"
+#include "gp.h"
+#include <vector>
+#include <memory>
 
 #if GP_USING_OPENGL
 

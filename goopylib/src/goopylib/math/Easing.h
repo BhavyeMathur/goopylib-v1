@@ -5,7 +5,7 @@
 namespace gp {
     std::function<float(float)> easeLinear();
 
-    float inline easePoly(float t, float power);
+    float easePoly(float t, float power);
 
     std::function<float(float)> easePolyIn(float power);
 
@@ -13,7 +13,7 @@ namespace gp {
 
     std::function<float(float)> easePolyInOut(float power);
 
-    float inline easeQuad(float t);
+    float easeQuad(float t);
 
     std::function<float(float)> easeQuadIn();
 
@@ -21,7 +21,7 @@ namespace gp {
 
     std::function<float(float)> easeQuadInOut();
 
-    float inline easeCubic(float t);
+    float easeCubic(float t);
 
     std::function<float(float)> easeCubicIn();
 
@@ -29,7 +29,7 @@ namespace gp {
 
     std::function<float(float)> easeCubicInOut();
 
-    float inline easeQuart(float t);
+    float easeQuart(float t);
 
     std::function<float(float)> easeQuartIn();
 
@@ -37,7 +37,7 @@ namespace gp {
 
     std::function<float(float)> easeQuartInOut();
 
-    float inline easeQuint(float t);
+    float easeQuint(float t);
 
     std::function<float(float)> easeQuintIn();
 
@@ -45,7 +45,7 @@ namespace gp {
 
     std::function<float(float)> easeQuintInOut();
 
-    float inline easeCircle(float t);
+    float easeCircle(float t);
 
     std::function<float(float)> easeCircleIn();
 
@@ -53,7 +53,7 @@ namespace gp {
 
     std::function<float(float)> easeCircleInOut();
 
-    float inline easeSin(float t);
+    float easeSin(float t);
 
     std::function<float(float)> easeSinIn();
 
@@ -61,7 +61,7 @@ namespace gp {
 
     std::function<float(float)> easeSinInOut();
 
-    float inline easeExp(float t, float base);
+    float easeExp(float t, float base);
 
     std::function<float(float)> easeExpIn(float base);
 
@@ -69,7 +69,7 @@ namespace gp {
 
     std::function<float(float)> easeExpInOut(float base);
 
-    float inline easeBack(float t, float factor);
+    float easeBack(float t, float factor);
 
     std::function<float(float)> easeBackIn(float factor);
 
@@ -77,7 +77,7 @@ namespace gp {
 
     std::function<float(float)> easeBackInOut(float factor);
 
-    float inline easeElastic(float t, int factor);
+    float easeElastic(float t, int factor);
 
     std::function<float(float)> easeElasticIn(int factor);
 
@@ -85,7 +85,7 @@ namespace gp {
 
     std::function<float(float)> easeElasticInOut(int factor);
 
-    float inline easeBounce(float t, float damping, int bounces, float scale, const std::vector<float> &zeroes,
+    float easeBounce(float t, float damping, int bounces, float scale, const std::vector<float> &zeroes,
                             const std::vector<float> &derivatives);
 
     std::function<float(float)> easeBounceIn(int bounces, float damping);

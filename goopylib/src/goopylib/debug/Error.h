@@ -2,9 +2,9 @@
 
 #include "Log.h"
 
-#define GP_ERROR_CHECKING true
-#define GP_TYPE_CHECKING true
-#define GP_VALUE_CHECKING true
+#if !GP_VALUE_CHECKING
+#undef GP_EASING_VALUE_CHECKING
+#endif
 
 namespace gp {
     enum class ErrorType {
@@ -38,7 +38,7 @@ namespace gp {
 #define GP_CHECK_LT(variable, val, error) if ((variable) >= (val)) { GP_VALUE_ERROR(error); }
 #define GP_CHECK_LE(variable, val, error) if ((variable) > (val)) { GP_VALUE_ERROR(error); }
 
-#define GP_CHECK_INCLUSIVE_RANGE_INCLUSIVE(variable, min, max, error) if ((variable) < (min) or (variable) > (max)) { GP_VALUE_ERROR(error); }
+#define GP_CHECK_INCLUSIVE_RANGE(variable, min, max, error) if ((variable) < (min) or (variable) > (max)) { GP_VALUE_ERROR(error); }
 #define GP_CHECK_EXCLUSIVE_RANGE(variable, min, max, error) if ((variable) <= (min) or (variable) >= (max)) { GP_VALUE_ERROR(error); }
 #else
 #define GP_CHECK_EQUALS(variable, val, error) {}
