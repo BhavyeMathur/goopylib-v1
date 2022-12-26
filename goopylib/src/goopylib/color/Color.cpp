@@ -122,6 +122,18 @@ namespace gp {
         m_Alpha = alpha > 1.0f ? 1.0f : (alpha < 0.0f ? 0.0f : alpha);
     }
 
+    float Color::getRedf() const {
+        return m_Redf;
+    }
+
+    float Color::getGreenf() const {
+        return m_Greenf;
+    }
+
+    float Color::getBluef() const {
+        return m_Bluef;
+    }
+
     RGBAf Color::getRGBAf() const {
         return {m_Redf, m_Greenf, m_Bluef, m_Alpha};
     }

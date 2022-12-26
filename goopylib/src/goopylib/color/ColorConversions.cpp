@@ -39,7 +39,7 @@ namespace {
             case 'F':
                 return 15;
             default:
-                GP_CORE_ERROR("invalid hexstring");
+                GP_VALUE_ERROR("invalid hexstring character '{0}'", digit);
                 return 0;
         }
     }
@@ -77,6 +77,10 @@ namespace gp {
 
     namespace rgb {
         const char *toHex(int red, int green, int blue) {
+            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+
             static char *hex_string[8];
 
             sprintf((char *) hex_string, "#%02x%02x%02x", red, green, blue);
@@ -84,6 +88,10 @@ namespace gp {
         }
 
         CMYK toCMYK(int red, int green, int blue) {
+            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
             float bluef = (float) blue / 255.0f;
@@ -95,6 +103,10 @@ namespace gp {
 
             float k = 1 - maximum;
 
+            if (maximum == 0) {
+                return CMYK{0, 0, 0, 1};
+            }
+
             return CMYK{(maximum - redf) / maximum,
                         (maximum - greenf) / maximum,
                         (maximum - bluef) / maximum,
@@ -102,6 +114,10 @@ namespace gp {
         }
 
         HSL toHSL(int red, int green, int blue) {
+            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
             float bluef = (float) blue / 255.0f;
@@ -145,6 +161,10 @@ namespace gp {
         }
 
         HSV toHSV(int red, int green, int blue) {
+            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
             float bluef = (float) blue / 255.0f;
@@ -201,7 +221,8 @@ namespace gp {
                 case 7:
                     return Hex7toRGB(hexstring);
                 default:
-                    throw std::invalid_argument("invalid hexstring");
+                    GP_VALUE_ERROR("invalid hexstring '{0}'", hexstring);
+                    return {-1, -1, -1};
             }
         }
 
@@ -225,6 +246,11 @@ namespace gp {
 
     namespace cmyk {
         RGB toRGB(float cyan, float magenta, float yellow, float key) {
+            GP_CHECK_INCLUSIVE_RANGE(cyan, 0, 1, "Color cyan value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(magenta, 0, 1, "Color magenta value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(yellow, 0, 1, "Color yellow value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(key, 0, 1, "Color key value must be between 0 and 1")
+
             key = 1 - key;
             return RGB{(int) round(255 * (1 - cyan) * key),
                        (int) round(255 * (1 - magenta) * key),
@@ -247,69 +273,14 @@ namespace gp {
         }
     }
 
-    // HSL to other format
-
-    namespace hsl {
-        RGB toRGB(int hue, float saturation, float luminance) {
-            float c = (1 - fabsf(2 * luminance - 1)) * saturation;
-            float x = c * (1 - fabsf(fmodf((float) hue / 60, 2) - 1));
-            float m = luminance - c / 2;
-
-            if (hue < 60) {
-                return RGB{(int) round(255 * (c + m)),
-                           (int) round(255 * (x + m)),
-                           (int) round(255 * m)};
-            }
-            else if (hue < 120) {
-                return RGB{(int) round(255 * (x + m)),
-                           (int) round(255 * (c + m)),
-                           (int) round(255 * m)};
-            }
-            else if (hue < 180) {
-                return RGB{(int) round(255 * m),
-                           (int) round(255 * (c + m)),
-                           (int) round(255 * (x + m))};
-            }
-            else if (hue < 240) {
-                return RGB{(int) round(255 * m),
-                           (int) round(255 * (x + m)),
-                           (int) round(255 * (c + m))};
-            }
-            else if (hue < 300) {
-                return RGB{(int) round(255 * (x + m)),
-                           (int) round(255 * m),
-                           (int) round(255 * (c + m))};
-            }
-            else {
-                return RGB{(int) round(255 * (c + m)),
-                           (int) round(255 * m),
-                           (int) round(255 * (x + m))};
-            }
-        }
-
-        const char *toHex(int hue, float saturation, float luminance) {
-            RGB color_rgb = toRGB(hue, saturation, luminance);
-            return rgb::toHex(color_rgb.red, color_rgb.green, color_rgb.blue);
-        }
-
-        CMYK toCMYK(int hue, float saturation, float luminance) {
-            RGB color_rgb = toRGB(hue, saturation, luminance);
-            return rgb::toCMYK(color_rgb.red, color_rgb.green, color_rgb.blue);
-        }
-
-        HSV toHSV(int hue, float saturation, float luminance) {
-            float v = luminance + saturation * (luminance < 0.5 ? luminance : 1 - luminance);
-
-            saturation = v == 0 ? 0 : 2 * (1 - luminance / v);
-
-            return HSV{hue, saturation, v};
-        }
-    }
-
     // HSV to other format
 
     namespace hsv {
         RGB toRGB(int hue, float saturation, float value) {
+            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
+            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color 'value' value must be between 0 and 1")
+
             float c = value * saturation;
             float x = c * (1 - fabsf(fmodf((float) hue / 60.0f, 2) - 1));
             float m = value - c;
@@ -357,6 +328,10 @@ namespace gp {
         }
 
         HSL toHSL(int hue, float saturation, float value) {
+            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
+            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color 'value' value must be between 0 and 1")
+
             float L = value * (1 - saturation / 2);
 
             if (L == 0 or L == 1) {
@@ -368,6 +343,73 @@ namespace gp {
             else {
                 return HSL{hue, (value - L) / (1 - L), L};
             }
+        }
+    }
+
+    // HSL to other format
+
+    namespace hsl {
+        RGB toRGB(int hue, float saturation, float luminance) {
+            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
+            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
+
+            float c = (1 - fabsf(2 * luminance - 1)) * saturation;
+            float x = c * (1 - fabsf(fmodf((float) hue / 60, 2) - 1));
+            float m = luminance - c / 2;
+
+            if (hue < 60) {
+                return RGB{(int) round(255 * (c + m)),
+                           (int) round(255 * (x + m)),
+                           (int) round(255 * m)};
+            }
+            else if (hue < 120) {
+                return RGB{(int) round(255 * (x + m)),
+                           (int) round(255 * (c + m)),
+                           (int) round(255 * m)};
+            }
+            else if (hue < 180) {
+                return RGB{(int) round(255 * m),
+                           (int) round(255 * (c + m)),
+                           (int) round(255 * (x + m))};
+            }
+            else if (hue < 240) {
+                return RGB{(int) round(255 * m),
+                           (int) round(255 * (x + m)),
+                           (int) round(255 * (c + m))};
+            }
+            else if (hue < 300) {
+                return RGB{(int) round(255 * (x + m)),
+                           (int) round(255 * m),
+                           (int) round(255 * (c + m))};
+            }
+            else {
+                return RGB{(int) round(255 * (c + m)),
+                           (int) round(255 * m),
+                           (int) round(255 * (x + m))};
+            }
+        }
+
+        const char *toHex(int hue, float saturation, float luminance) {
+            RGB color_rgb = toRGB(hue, saturation, luminance);
+            return rgb::toHex(color_rgb.red, color_rgb.green, color_rgb.blue);
+        }
+
+        CMYK toCMYK(int hue, float saturation, float luminance) {
+            RGB color_rgb = toRGB(hue, saturation, luminance);
+            return rgb::toCMYK(color_rgb.red, color_rgb.green, color_rgb.blue);
+        }
+
+        HSV toHSV(int hue, float saturation, float luminance) {
+            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
+            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
+
+            float v = luminance + saturation * (luminance < 0.5 ? luminance : 1 - luminance);
+
+            saturation = v == 0 ? 0 : 2 * (1 - luminance / v);
+
+            return HSV{hue, saturation, v};
         }
     }
 }

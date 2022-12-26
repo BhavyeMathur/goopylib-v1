@@ -45,6 +45,12 @@ namespace gp {
 
         void setAlpha(float alpha);
 
+        float getRedf() const;
+
+        float getGreenf() const;
+
+        float getBluef() const;
+
         RGBAf getRGBAf() const;
 
         // Operator Overloads

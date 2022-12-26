@@ -37,15 +37,15 @@ namespace gp {
 // Getter & Setter methods
 namespace gp {
     void Line::setColor(const Color &color) {
-        m_V1.color = {color.getRedf(), color.getGreenf(), color.getBluef(), color.getAlpha()};
-        m_V2.color = {color.getRedf(), color.getGreenf(), color.getBluef(), color.getAlpha()};
+        m_V1.color = color.getRGBAf();
+        m_V2.color = color.getRGBAf();
 
         update();
     }
 
     void Line::setColor(const Color &color1, const Color &color2) {
-        m_V1.color = {color1.getRedf(), color1.getGreenf(), color1.getBluef(), color1.getAlpha()};
-        m_V2.color = {color2.getRedf(), color2.getGreenf(), color2.getBluef(), color2.getAlpha()};
+        m_V1.color = color1.getRGBAf();
+        m_V2.color = color2.getRGBAf();
 
         update();
     }

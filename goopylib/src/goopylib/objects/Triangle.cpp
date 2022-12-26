@@ -46,9 +46,9 @@ namespace gp {
     }
 
     void Triangle::setColor(const Color &color1, const Color &color2, const Color &color3) {
-        m_V1.color = {color1.getRedf(), color1.getGreenf(), color1.getBluef(), color1.getAlpha()};
-        m_V2.color = {color2.getRedf(), color2.getGreenf(), color2.getBluef(), color2.getAlpha()};
-        m_V3.color = {color3.getRedf(), color3.getGreenf(), color3.getBluef(), color3.getAlpha()};
+        m_V1.color = color1.getRGBAf();
+        m_V2.color = color2.getRGBAf();
+        m_V3.color = color3.getRGBAf();
 
         update();
     }

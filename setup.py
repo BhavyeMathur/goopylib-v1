@@ -18,11 +18,16 @@ def build_c_extensions():
     ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/src", "goopylib/vendor"],
                   "extra_compile_args":   ["-std=c++11", "-v"],
                   "runtime_library_dirs": [f"{path}/goopylib"],
-                  "extra_objects":        ["goopylib/goopylib.dylib"]}
+                  "extra_objects":        ["goopylib/goopylib.dylib"],
+                  "extra_link_args":      []}
     setup_kwargs = {"options": {"build": {"build_lib": "."}}}
 
     setup(ext_modules=[Extension(name="goopylib.ext.easing",
                                  sources=["goopylib/src/extension/math/easing.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.color_conversions",
+                                 sources=["goopylib/src/extension/color/conversions.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     ext_kwargs["extra_link_args"] += ["-framework", "OpenGL", "-framework", "Cocoa",
