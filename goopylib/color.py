@@ -7,6 +7,9 @@ from __future__ import annotations
 import goopylib.ext.color as _color
 import goopylib.ext.color_conversions as _conversions
 
+from random import randint as _randint
+from random import random as _random
+
 
 # The reason docstrings for the class are copied to the __init__() method is because CLion (and presumably PyCharm)
 # renders the 'Raises' section with an odd identation otherwise.
@@ -55,15 +58,23 @@ class Color:
         return self._color.__repr__()
 
     def __add__(self, other: Union[int, Color]) -> Color:
+        if isinstance(other, Color):
+            return self._color.__add__(other._color)
         return self._color.__add__(other)
 
     def __sub__(self, other: Union[int, Color]) -> Color:
+        if isinstance(other, Color):
+            return self._color.__sub__(other._color)
         return self._color.__sub__(other)
 
     def __iadd__(self, other: Union[int, Color]):
+        if isinstance(other, Color):
+            return self._color.__iadd__(other._color)
         return self._color.__iadd__(other)
 
     def __isub__(self, other: Union[int, Color]):
+        if isinstance(other, Color):
+            return self._color.__isub__(other._color)
         return self._color.__isub__(other)
 
     @property
@@ -794,32 +805,32 @@ def random_rgb() -> ColorRGB:
     """
     Returns: a random RGB color
     """
-    return ColorRGB(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    return ColorRGB(_randint(0, 255), _randint(0, 255), _randint(0, 255))
 
 
 def random_hex() -> ColorHex:
     """
     Returns: a random Hexadecimal color
     """
-    return ColorHex(rgb_to_hex(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+    return ColorHex(rgb_to_hex(_randint(0, 255), _randint(0, 255), _randint(0, 255)))
 
 
 def random_cmyk() -> ColorCMYK:
     """
     Returns: a random CMYK color
     """
-    return ColorCMYK(random.random(), random.random(), random.random(), random.random())
+    return ColorCMYK(_random(), _random(), _random(), _random())
 
 
 def random_hsv() -> ColorHSV:
     """
     Returns: a random HSV color
     """
-    return ColorHSV(random.randint(0, 360), random.random(), random.random())
+    return ColorHSV(_randint(0, 360), _random(), _random())
 
 
 def random_hsl() -> ColorHSL:
     """
     Returns: a random HSL color
     """
-    return ColorHSL(random.randint(0, 360), random.random(), random.random())
+    return ColorHSL(_randint(0, 360), _random(), _random())

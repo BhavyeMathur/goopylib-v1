@@ -1,11 +1,11 @@
 #pragma once
 
+#include "goopylib/color/Color.h"
+
 #include "extension/header.h"
 
 #define COLOR_MODULE
 #include "colormodule.h"
-
-#include "goopylib/color/Color.h"
 
 extern PyTypeObject ColorType;
 

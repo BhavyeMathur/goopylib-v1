@@ -93,6 +93,7 @@ namespace color {
             RAISE_VALUE_ERROR(-1, "invalid color format");
         }
 
+        CHECK_RED(-1)
         CHECK_RGBA(-1)
 
         self->color = std::make_shared<gp::Color>(red, green, blue, alpha);
@@ -396,6 +397,8 @@ namespace color::rgb {
         int red, green, blue;
         float alpha = 1.0f;
         if (PyArg_ParseTuple(args, "iii|f", &red, &green, &blue, &alpha)) {
+            CHECK_RGBA(-1)
+
             self->color = std::make_shared<gp::ColorRGB>(red, green, blue, alpha);
             self->base.color = self->color;
             return 0;
