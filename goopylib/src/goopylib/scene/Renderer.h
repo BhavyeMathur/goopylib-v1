@@ -1,12 +1,12 @@
 #pragma once
 
 #include "gp.h"
+#include <unordered_map>
 
 #include "src/goopylib/objects/Point.h"
 #include "src/goopylib/core/Texture2D.h"
 #include "src/goopylib/core/VertexArray.h"
 #include "src/goopylib/scene/Camera.h"
-#include "src/goopylib/shader/Shader.h"
 
 
 #define LINES 0
@@ -17,10 +17,17 @@
 
 namespace gp {
     class Line;
+
     class Triangle;
+
     class Quad;
+
     class Ellipse;
+
     class Image;
+
+    class Shader;
+
 
     struct TextureData {
         Ref<Texture2D> texture;
@@ -42,9 +49,9 @@ namespace gp {
         RenderingData(const Ref<VertexArray> &VAO, void *bufferData,
                       const Ref<Shader> &shader, int32_t mode = GP_DRAW_MODE_TRIANGLES)
                 : VAO(VAO),
-                bufferData(bufferData),
-                shader(shader),
-                mode(mode) {
+                  bufferData(bufferData),
+                  shader(shader),
+                  mode(mode) {
         }
     };
 

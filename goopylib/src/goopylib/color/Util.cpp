@@ -1,6 +1,17 @@
-#include "gp.h"
 #include "Util.h"
 #include "ColorConversions.h"
+
+#if !GP_LOG_COLOR_UTIL
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_COLOR_UTIL
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
 
 #include <random>
 

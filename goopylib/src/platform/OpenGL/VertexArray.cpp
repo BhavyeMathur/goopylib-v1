@@ -6,6 +6,19 @@
 
 #endif
 
+#if !GP_LOG_VERTEX_ARRAY
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_VERTEX_ARRAY
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
+
 namespace gp {
     VertexArray::VertexArray() {
         glGenVertexArrays(1, &m_RendererID);

@@ -1,5 +1,17 @@
 #include "Renderable.h"
 
+#if !GP_LOG_RENDERABLE
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_RENDERABLE
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 namespace gp {
     Renderable::Renderable(Point position, std::initializer_list<Point> points)
             : m_Position(position),

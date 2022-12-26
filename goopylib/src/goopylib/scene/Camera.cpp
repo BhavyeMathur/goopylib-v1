@@ -2,6 +2,18 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
+#if !GP_LOG_CAMERA
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_CAMERA
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 namespace gp {
     Camera::Camera(float left, float right, float bottom, float top)
             : m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)),

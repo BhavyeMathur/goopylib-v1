@@ -11,7 +11,7 @@
 
 #include "src/goopylib/debug/LogMacros.h"
 
-#if !GP_CORE_VALUE_CHECKING
+#if !GP_VALUE_CHECK_CORE
 #undef GP_VALUE_CHECKING
 #endif
 

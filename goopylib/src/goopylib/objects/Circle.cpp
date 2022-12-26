@@ -1,5 +1,17 @@
 #include "Circle.h"
 
+#if !GP_LOG_CIRCLE
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_CIRCLE
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 
 namespace gp {
     Circle::Circle(Point position, float radius)

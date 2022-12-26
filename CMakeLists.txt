@@ -23,6 +23,7 @@ set(SOURCE_FILES
     goopylib/src/goopylib/color/Color.cpp
     goopylib/src/goopylib/color/ColorConversions.cpp
     goopylib/src/goopylib/color/Util.cpp
+    goopylib/src/goopylib/color/W3CX11.cpp
 
     goopylib/src/goopylib/objects/Renderable.cpp
     goopylib/src/goopylib/objects/Line.cpp

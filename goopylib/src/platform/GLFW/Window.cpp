@@ -2,6 +2,18 @@
 #include "src/goopylib/core/Window.h"
 #include <GLFW/glfw3.h>
 
+#if !GP_LOG_WINDOW
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_WINDOW
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 #if GP_USING_GLFW
 
 namespace gp {

@@ -1,6 +1,18 @@
 #include "goopylib/core/Buffer.h"
 #include <OpenGL/gl3.h>
 
+#if !GP_LOG_BUFFER
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_BUFFER
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 
 // Vertex Buffer
 namespace gp {

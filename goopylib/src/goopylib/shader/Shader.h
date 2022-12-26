@@ -2,6 +2,7 @@
 
 #include "gp.h"
 #include <glm/fwd.hpp>
+#include <unordered_map>
 
 namespace gp {
     class UniformBuffer;

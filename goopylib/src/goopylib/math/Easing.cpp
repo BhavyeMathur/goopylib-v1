@@ -6,7 +6,7 @@
 
 #include "src/goopylib/debug/LogMacros.h"
 
-#if !GP_EASING_VALUE_CHECKING
+#if !GP_VALUE_CHECK_EASING
 #undef GP_VALUE_CHECKING
 #endif
 

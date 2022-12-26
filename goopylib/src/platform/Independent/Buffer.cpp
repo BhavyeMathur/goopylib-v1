@@ -1,5 +1,18 @@
 #include "src/goopylib/core/Buffer.h"
 
+#if !GP_LOG_BUFFER
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_BUFFER
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
+
 // Generic Buffer
 namespace gp {
     Buffer::Buffer(uint32_t count)

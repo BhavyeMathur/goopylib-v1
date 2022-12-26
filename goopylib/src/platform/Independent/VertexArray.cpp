@@ -1,5 +1,18 @@
 #include "src/goopylib/core/VertexArray.h"
 
+#if !GP_LOG_VERTEX_ARRAY
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_VERTEX_ARRAY
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
+
 namespace gp {
     const Ref<VertexBuffer> &VertexArray::getVertexBuffer() const {
         return m_VertexBuffer;

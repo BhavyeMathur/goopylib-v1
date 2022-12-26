@@ -1,5 +1,18 @@
 #include "Ellipse.h"
 
+#if !GP_LOG_ELLIPSE
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_ELLIPSE
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
+
 // Core Methods
 namespace gp {
     Ellipse::Ellipse(Point position, float xRadius, float yRadius)

@@ -35,8 +35,8 @@ namespace gp {
 
                      int minWidth = 0,
                      int minHeight = 0,
-                     int maxWidth = MAX_WIDTH,
-                     int maxHeight = MAX_HEIGHT) :
+                     int maxWidth = INT_MAX,
+                     int maxHeight = INT_MAX) :
 
                 width(width),
                 height(height),

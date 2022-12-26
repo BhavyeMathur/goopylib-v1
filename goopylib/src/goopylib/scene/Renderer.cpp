@@ -1,9 +1,22 @@
 #include "Renderer.h"
+
 #include "src/goopylib/objects/Line.h"
 #include "src/goopylib/objects/Triangle.h"
 #include "src/goopylib/objects/Quad.h"
 #include "src/goopylib/objects/Ellipse.h"
 #include "src/goopylib/objects/Image.h"
+#include "src/goopylib/shader/Shader.h"
+
+
+#if !GP_LOG_RENDERER
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_RENDERER
+#undef GP_VALUE_CHECKING
+#endif
 
 namespace gp {
     Renderer::Renderer(float width, float height)

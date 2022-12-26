@@ -1,7 +1,7 @@
 #pragma once
 
+#include "gp.h"
 #include "ColorStructs.h"
-#include <string>
 
 namespace gp {
     class ColorRGB;

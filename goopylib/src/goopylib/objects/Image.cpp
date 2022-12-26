@@ -1,6 +1,18 @@
 #include "Image.h"
-
 #include <stb/stb_image.h>
+
+#if !GP_LOG_IMAGE
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_IMAGE
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 
 // Core Methods
 namespace gp {

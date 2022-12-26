@@ -2,6 +2,19 @@
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/events/MouseCodes.h"
 
+#if !GP_LOG_WINDOW
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_WINDOW
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
+
 namespace gp {
     std::vector<Window *> Window::s_Instances;
 

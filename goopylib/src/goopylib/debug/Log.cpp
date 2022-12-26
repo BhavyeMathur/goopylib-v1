@@ -1,5 +1,6 @@
 #include "gp.h"
 #include "Log.h"
+#include "LogMacros.h"
 
 namespace gp {
     Ref<spdlog::logger> Log::s_CoreLogger;

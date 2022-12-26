@@ -1,8 +1,16 @@
-#include "gp.h"
 #include "ColorConversions.h"
 
+#if !GP_LOG_COLOR_CONVERSIONS
+#undef GP_LOGGING
+#endif
 
-// Internal Functions
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECKING_COLOR_CONVERSIONS
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
 
 namespace {
     int digitToInt(char digit) {

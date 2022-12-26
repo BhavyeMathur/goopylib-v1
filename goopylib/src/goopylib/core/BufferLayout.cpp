@@ -1,5 +1,17 @@
 #include "BufferLayout.h"
 
+#if !GP_LOG_BUFFER
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_BUFFER
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 
 namespace gp {
     GLenum shaderOpenGLType(ShaderDataType type) {

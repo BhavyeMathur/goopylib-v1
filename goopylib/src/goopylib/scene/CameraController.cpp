@@ -1,5 +1,17 @@
 #include "CameraController.h"
 
+#if !GP_LOG_CAMERA_CONTROLLER
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_CAMERA_CONTROLLER
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 
 namespace gp {
     CameraController::CameraController(Window &window)

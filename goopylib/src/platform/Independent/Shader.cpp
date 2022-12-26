@@ -1,5 +1,18 @@
 #include "src/goopylib/shader/Shader.h"
 
+#if !GP_LOG_SHADER
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_SHADER
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
+
 namespace gp {
     std::string readFile(const char *filePath) {
         std::string content;

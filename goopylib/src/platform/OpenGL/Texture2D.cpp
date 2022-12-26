@@ -8,6 +8,19 @@
 
 #endif
 
+#if !GP_LOG_TEXTURE2D
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_TEXTURE2D
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
+
 namespace gp {
     Texture2D::Texture2D(const char *path)
             : m_Path(path) {

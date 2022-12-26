@@ -1,5 +1,17 @@
 #include "Line.h"
 
+#if !GP_LOG_LINE
+#undef GP_LOGGING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+
+#if !GP_VALUE_CHECK_LINE
+#undef GP_VALUE_CHECKING
+#endif
+
+#include "src/goopylib/debug/Error.h"
+
 // Core Methods
 namespace gp {
     Line::Line(Point p1, Point p2)

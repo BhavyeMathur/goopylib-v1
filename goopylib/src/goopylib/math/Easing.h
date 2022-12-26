@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gp.h"
+#include <functional>
 
 namespace gp {
     std::function<float(float)> easeLinear();

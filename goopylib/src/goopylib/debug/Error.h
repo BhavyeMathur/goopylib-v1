@@ -3,7 +3,7 @@
 #include "Log.h"
 
 #if !GP_VALUE_CHECKING
-#undef GP_EASING_VALUE_CHECKING
+#undef GP_VALUE_CHECK_EASING
 #endif
 
 namespace gp {
