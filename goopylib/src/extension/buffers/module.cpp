@@ -13,7 +13,7 @@ static struct PyModuleDef buffersmodule = {
 
 
 PyMODINIT_FUNC PyInit_buffers() {
-    #if GP_LOGGING
+    #if GP_LOGGING_LEVEL
     std::cout << "Initializing buffers logger" << std::endl;
     gp::Log::init();
     #endif

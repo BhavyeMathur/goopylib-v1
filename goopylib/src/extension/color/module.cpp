@@ -94,7 +94,7 @@ static struct PyModuleDef colormodule = {
 
 
 PyMODINIT_FUNC PyInit_color() {
-    #if GP_LOGGING
+    #if GP_LOGGING_LEVEL
     std::cout << "Initializing color logger" << std::endl;
     gp::Log::init();
     #endif

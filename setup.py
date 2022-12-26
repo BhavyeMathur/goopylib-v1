@@ -15,7 +15,7 @@ def build_release():
 
 
 def build_c_extensions():
-    ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/vendor"],
+    ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/src", "goopylib/vendor"],
                   "extra_compile_args":   ["-std=c++11", "-v"],
                   "runtime_library_dirs": [f"{path}/goopylib"],
                   "extra_objects":        ["goopylib/goopylib.dylib"]}

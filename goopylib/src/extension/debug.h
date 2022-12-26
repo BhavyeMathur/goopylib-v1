@@ -16,29 +16,29 @@
  6 - Trace Enabled
  7 - All Enabled
  */
-#define GP_PY_LOGGING 3
+#define GP_PY_LOGGING_LEVEL 3
 
 // Python Extension Logging
 
-#if (GP_PY_LOGGING >= 3)
+#if (GP_PY_LOGGING_LEVEL >= 3)
 #define GP_PY_WARN(...)     gp::Log::getPythonLogger()->warn(__VA_ARGS__)
 #else
 #define GP_PY_WARN(...) nullptr
 #endif
 
-#if (GP_PY_LOGGING >= 4)
+#if (GP_PY_LOGGING_LEVEL >= 4)
 #define GP_PY_INFO(...)     gp::Log::getPythonLogger()->info(__VA_ARGS__)
 #else
 #define GP_PY_INFO(...) nullptr
 #endif
 
-#if (GP_PY_LOGGING >= 5)
+#if (GP_PY_LOGGING_LEVEL >= 5)
 #define GP_PY_DEBUG(...)    gp::Log::getPythonLogger()->debug(__VA_ARGS__)
 #else
 #define GP_PY_DEBUG(...) nullptr
 #endif
 
-#if (GP_PY_LOGGING >= 6)
+#if (GP_PY_LOGGING_LEVEL >= 6)
 #define GP_PY_TRACE(...)    gp::Log::getPythonLogger()->trace(__VA_ARGS__)
 #else
 #define GP_PY_TRACE(...) nullptr

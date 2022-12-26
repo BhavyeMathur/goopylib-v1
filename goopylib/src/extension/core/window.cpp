@@ -1553,7 +1553,7 @@ static struct PyModuleDef windowmodule = {
 };
 
 PyMODINIT_FUNC PyInit_window(void) {
-    #if GP_LOGGING
+    #if GP_LOGGING_LEVEL
     std::cout << "Initializing window logger" << std::endl;
     #endif
     gp::init();

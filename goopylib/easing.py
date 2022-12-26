@@ -1,476 +1,521 @@
+"""
+Module defining common easing functions
+"""
+
 from typing import Callable
+import ext.easing as __easing
 
-EASING_TYPE = Callable[[float], float]
 
+class EasingType:
+    """Generic Easing Type"""
 
-def ease_linear() -> EASING_TYPE:
-    r"""Returns a linear easing function
-
-    .. math::
-
-        \text{ease\_linear}(t) = t \qquad \footnotesize{0 \leq t \leq 1}
-
-    .. image:: ../../_static/easing/linear.png
-        :width: 33%
-        :align: center
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.easeLinear()
-            >>> ease(0.4)
-            0.4
-    """
-
-
-def ease_poly(power: float = 6) -> EASING_TYPE:
-    r"""Returns a polynomial easing function
-
-    .. math::
-
-        \text{ease\_easing}(t) = t^{\text{power}} \qquad \footnotesize{0 \leq t \leq 1}
-
-    Args:
-        power (float) -> EASING_TYPE: The exponent defining the easing. Defaults to ``6``.
-
-    Variants:
-
-        .. function:: ease_poly_in()
-        .. function:: ease_poly_out()
-
-    .. image:: ../../_static/easing/polynomial.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_poly()
-            >>> ease(0.5)
-            0.015625
-    """
-
-
-def ease_poly_in(power: float = 6) -> EASING_TYPE:
-    pass
-
-
-def ease_poly_out(power: float = 6) -> EASING_TYPE:
-    pass
-
-
-def ease_quad() -> EASING_TYPE:
-    r"""Returns a quadratic easing function
-
-    .. math::
-
-        \text{ease\_quad}(t) = t^{2} \qquad \footnotesize{0 \leq t \leq 1}
-
-    Variants:
-
-        .. function:: ease_quad_in()
-        .. function:: ease_quad_out()
-
-    .. image:: ../../_static/easing/quadratic.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_quad()
-            >>> ease(0.5)
-            0.025
-    """
-
-
-def ease_quad_in() -> EASING_TYPE:
-    pass
-
-
-def ease_quad_out() -> EASING_TYPE:
-    pass
-
-
-def ease_cubic() -> EASING_TYPE:
-    r"""Returns a cubic easing function
-
-    .. math::
-
-        \text{ease\_cubic}(t) = t^{3} \qquad \footnotesize{0 \leq t \leq 1}
-
-    Variants:
-
-        .. function:: ease_cubic_in()
-        .. function:: ease_cubic_out()
-
-    .. image:: ../../_static/easing/cubic.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_cubic()
-            >>> ease(0.5)
-            0.0125
-    """
-
-
-def ease_cubic_in() -> EASING_TYPE:
-    pass
-
-
-def ease_cubic_out() -> EASING_TYPE:
-    pass
-
-
-def ease_quart() -> EASING_TYPE:
-    r"""Returns a quartic easing function
-
-    .. math::
-
-        \text{ease\_quart}(t) = t^{4} \qquad \footnotesize{0 \leq t \leq 1}
-
-    Variants:
-
-        .. function:: ease_quart_in()
-        .. function:: ease_quart_out()
-
-    .. image:: ../../_static/easing/quartic.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_quart()
-            >>> ease(0.5)
-            0.0625
-    """
-
-
-def ease_quart_in() -> EASING_TYPE:
-    pass
-
-
-def ease_quart_out() -> EASING_TYPE:
-    pass
-
-
-def ease_quint() -> EASING_TYPE:
-    r"""Returns a quintic easing function
-
-    .. math::
-
-        \text{ease\_quint}(t) = t^{5} \qquad \footnotesize{0 \leq t \leq 1}
-
-    Variants:
-
-        .. function:: ease_quint_in()
-        .. function:: ease_quint_out()
-
-    .. image:: ../../_static/easing/quintic.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_quint()
-            >>> ease(0.5)
-            0.03125
-    """
-
-
-def ease_quint_in() -> EASING_TYPE:
-    pass
-
-
-def ease_quint_out() -> EASING_TYPE:
-    pass
-
-
-def ease_sin() -> EASING_TYPE:
-    r"""Returns a sine easing function
-
-    .. math::
-
-        \text{ease\_sin}(t) = 1 - \text{cos}(\frac{\pi}{2}t) \qquad \footnotesize{0 \leq t \leq 1}
-
-    Variants:
-
-        .. function:: ease_sin_in()
-        .. function:: ease_sin_out()
-
-    .. image:: ../../_static/easing/sine.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_sin()
-            >>> ease(0.5)
-            0.29289381
-    """
-
-
-def ease_sin_in() -> EASING_TYPE:
-    pass
-
-
-def ease_sin_out() -> EASING_TYPE:
-    pass
-
-
-def ease_exp(base: float = 2.718281828459045) -> EASING_TYPE:
-    r"""Returns an exponential easing function
-
-    .. math::
-
-        \text{ease\_exp}(t) = \text{base}^{10(t - 1)} \qquad \footnotesize{0 \leq t \leq 1}
-
-    Args:
-        base (float) -> EASING_TYPE: The base of the exponential function. Defaults to ``e``.
-
-    Variants:
-
-        .. function:: ease_exp_in()
-        .. function:: ease_exp_out()
-
-    .. image:: ../../_static/easing/exponential.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_exp()
-            >>> ease(0.2)
-            0.0012393762590363622
-    """
-
-
-def ease_exp_in(base: float = 2.718281828459045) -> EASING_TYPE:
-    pass
-
-
-def ease_exp_out(base: float = 2.718281828459045) -> EASING_TYPE:
-    pass
-
-
-def ease_circle() -> EASING_TYPE:
-    r"""Returns a circular easing function
-
-    .. math::
-
-        \text{ease\_circle}(t) = 1 - \sqrt{1 - t^2} \qquad \footnotesize{0 \leq t \leq 1}
-
-    Variants:
-
-        .. function:: ease_circle_in()
-        .. function:: ease_circle_out()
-
-    .. image:: ../../_static/easing/circle.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_circle()
-            >>> ease(0.2)
-            0.04174243286252022
-    """
-
-
-def ease_circle_in() -> EASING_TYPE:
-    pass
-
-
-def ease_circle_out() -> EASING_TYPE:
-    pass
-
-
-def ease_back(factor: float = 1.70158) -> EASING_TYPE:
-    r"""Returns a back easing function
-
-    .. math::
-
-        \text{ease\_back}(t) = (\text{factor} + 1)\sdot t^3 - \text{factor}\sdot t^2 \qquad \footnotesize{0 \leq t
-        \leq 1}
-
-    Args:
-        factor (float) -> EASING_TYPE: The scale of the easing's stretch. Defaults to ``1.70158``.
-
-    Variants:
-
-        .. function:: ease_back_in()
-        .. function:: ease_back_out()
-
-    .. image:: ../../_static/easing/back.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_back()
-            >>> ease(0.2)
-            -0.0496758408844471
-    """
-
-
-def ease_back_in(factor: float = 1.70158) -> EASING_TYPE:
-    pass
-
-
-def ease_back_out(factor: float = 1.70158) -> EASING_TYPE:
-    pass
-
-
-def ease_elastic(factor: int = 3) -> EASING_TYPE:
-    r"""Returns an elastic easing function
-
-    .. math::
-
-        \text{ease\_back}(t) = 2^{10(t - 1)}\text{sin}(\frac{t\pi}{2}(1 + 4\sdot \text{factor)}) \qquad
-        \footnotesize{0 \leq t \leq 1}
-
-    Args:
-        factor (int) -> EASING_TYPE: The number of elastic oscillations. Defaults to ``3``.
-
-    Variants:
-
-        .. function:: ease_elastic_in()
-        .. function:: ease_elastic_out()
-
-    .. image:: ../../_static/easing/elastic.png
-
-    ----------
-
-    Raises:
-        TypeError: easing argument must be a :obj:`float`
-        ValueError: easing argument must be between 0 and 1 (inclusive)
-
-    Examples:
-
-        .. code-block:: python
-
-            >>> ease = gp.ease_elastic()
-            >>> ease(0.2)
-            0.007430128753185272
-    """
-
-
-def ease_elastic_in(factor: int = 3) -> EASING_TYPE:
-    pass
-
-
-def ease_elastic_out(factor: int = 3) -> EASING_TYPE:
-    pass
-
-
-def ease_bounce(bounces: int = 4, damping: float = 0.4) -> EASING_TYPE:
-    r"""Returns a bounce easing function
-
-        Args:
-            bounces (int) -> EASING_TYPE: The number of bounces in the easing. Defaults to ``4``.
-            damping (float) -> EASING_TYPE: The energy during each bounce. Defaults to ``0.4``.
-
-        Variants:
-
-            .. function:: ease_bounce_in()
-            .. function:: ease_bounce_out()
-
-        .. image:: ../../_static/easing/bounce.png
-
-        ----------
-
+    def __call__(self, *args: float) -> float:
+        """
         Raises:
-            TypeError: easing argument must be a :obj:`float`
-            ValueError: easing argument must be between 0 and 1 (inclusive)
-
-        Examples:
-
-            .. code-block:: python
-
-                >>> ease = gp.ease_bounce()
-                >>> ease(0.2)
-                0.025422684848308563
+            TypeError: easing argument must be a float
         """
 
-
-def ease_bounce_in(bounces: int = 4, damping: float = 0.4) -> EASING_TYPE:
-    pass
+        raise NotImplementedError()
 
 
-def ease_bounce_out(bounces: int = 4, damping: float = 0.4) -> EASING_TYPE:
-    pass
+def ease_linear() -> EasingType:
+    r"""Returns a linear ease
+
+    .. math::
+
+        \text{ease\_linear}(t) = t
+
+    Returns:
+        a linear ease callable
+    """
+    return __easing.ease_linear()
 
 
-def combine_easing(easing1: EASING_TYPE, easing2: EASING_TYPE) -> EASING_TYPE:
-    """Combines 2 easing functions together.
+def ease_poly(power: float = 6) -> EasingType:
+    r"""Returns a polynomial ease
+
+    .. math::
+
+        \text{ease\_poly}(t) = t^{\text{power}}
 
     Args:
-        easing1: the 1st easing function for ``0 ≤ t < 0.5``
-        easing2: the 2nd easing function ``0.5 ≤ t ≤ 1``
+        power (float): The exponent defining the easing.
+
+    Returns:
+        a polynomial in-out ease callable
+    """
+    return __easing.ease_poly(power)
+
+
+def ease_poly_in(power: float = 6) -> EasingType:
+    r"""Returns a polynomial in ease
+
+    .. math::
+
+        \text{ease\_poly}(t) = t^{\text{power}}
+
+    Args:
+        power (float): The exponent defining the easing.
+
+    Returns:
+        a polynomial in ease callable
+    """
+    return __easing.ease_poly_in(power)
+
+
+def ease_poly_out(power: float = 6) -> EasingType:
+    r"""Returns a polynomial out ease
+
+    .. math::
+
+        \text{ease\_poly}(t) = t^{\text{power}}
+
+    Args:
+        power (float): The exponent defining the easing.
+
+    Returns:
+        a polynomial out ease callable
+    """
+    return __easing.ease_poly_out(power)
+
+
+def ease_quad() -> EasingType:
+    r"""Returns a quadratic ease
+
+    .. math::
+
+        \text{ease\_quad}(t) = t^{2}
+
+    Returns:
+        a quadratic in-out ease callable
+    """
+    return __easing.ease_quad()
+
+
+def ease_quad_in() -> EasingType:
+    r"""Returns a quadratic in ease
+
+    .. math::
+
+        \text{ease\_quad}(t) = t^{2}
+
+    Returns:
+        a quadratic in ease callable
+    """
+    return __easing.ease_quad_in()
+
+
+def ease_quad_out() -> EasingType:
+    r"""Returns a quadratic out ease
+
+    .. math::
+
+        \text{ease\_quad}(t) = t^{2}
+
+    Returns:
+        a quadratic out ease callable
+    """
+    return __easing.ease_quad_out()
+
+
+def ease_cubic() -> EasingType:
+    r"""Returns a cubic ease
+
+    .. math::
+
+        \text{ease\_cubic}(t) = t^{3}
+
+    Returns:
+        a cubic in-out ease callable
+    """
+    return __easing.ease_cubic()
+
+
+def ease_cubic_in() -> EasingType:
+    r"""Returns a cubic in ease
+
+    .. math::
+
+        \text{ease\_cubic}(t) = t^{3}
+
+    Returns:
+        a cubic in ease callable
+    """
+    return __easing.ease_cubic_in()
+
+
+def ease_cubic_out() -> EasingType:
+    r"""Returns a cubic out ease
+
+    .. math::
+
+        \text{ease\_cubic}(t) = t^{3}
+
+    Returns:
+        a cubic out ease callable
+    """
+    return __easing.ease_cubic_out()
+
+
+def ease_quart() -> EasingType:
+    r"""Returns a quartic ease
+
+    .. math::
+
+        \text{ease\_quart}(t) = t^{4}
+
+    Returns:
+        a quartic in-out ease callable
+    """
+    return __easing.ease_quart()
+
+
+def ease_quart_in() -> EasingType:
+    r"""Returns a quartic in ease
+
+    .. math::
+
+        \text{ease\_quart}(t) = t^{4}
+
+    Returns:
+        a quartic in ease callable
+    """
+    return __easing.ease_quart_in()
+
+
+def ease_quart_out() -> EasingType:
+    r"""Returns a quartic out ease
+
+    .. math::
+
+        \text{ease\_quart}(t) = t^{4}
+
+    Returns:
+        a quartic out ease callable
+    """
+    return __easing.ease_quart_out()
+
+
+def ease_quint() -> EasingType:
+    r"""Returns a quintic ease
+
+    .. math::
+
+        \text{ease\_quint}(t) = t^{5}
+
+    Returns:
+        a quintic in-out ease callable
+    """
+    return __easing.ease_quint()
+
+
+def ease_quint_in() -> EasingType:
+    r"""Returns a quintic in ease
+
+    .. math::
+
+        \text{ease\_quint}(t) = t^{5}
+
+    Returns:
+        a quintic in ease callable
+    """
+    return __easing.ease_quint_in()
+
+
+def ease_quint_out() -> EasingType:
+    r"""Returns a quintic out ease
+
+    .. math::
+
+        \text{ease\_quint}(t) = t^{5}
+
+    Returns:
+        a quintic out ease callable
+    """
+    return __easing.ease_quint_out()
+
+
+def ease_circle() -> EasingType:
+    r"""Returns a circular ease
+
+    .. math::
+
+        \text{ease\_circle}(t) = 1 - \sqrt{1 - t^2}
+
+    Returns:
+        an circular in-out ease callable
+    """
+    return __easing.ease_circle()
+
+
+def ease_circle_in() -> EasingType:
+    r"""Returns a circular in ease
+
+    .. math::
+
+        \text{ease\_circle}(t) = 1 - \sqrt{1 - t^2}
+
+    Returns:
+        an circular in ease callable
+    """
+    return __easing.ease_circle_in()
+
+
+def ease_circle_out() -> EasingType:
+    r"""Returns a circular out ease
+
+    .. math::
+
+        \text{ease\_circle}(t) = 1 - \sqrt{1 - t^2}
+
+    Returns:
+        an circular out ease callable
+    """
+    return __easing.ease_circle_out()
+
+
+def ease_sin() -> EasingType:
+    r"""Returns a sine ease
+
+    .. math::
+
+        \text{ease\_sin}(t) = 1 - \text{cos}(t\pi/2)
+
+    Returns:
+        a sine in-out ease callable
+    """
+    return __easing.ease_sin()
+
+
+def ease_sin_in() -> EasingType:
+    r"""Returns a sine in ease
+
+    .. math::
+
+        \text{ease\_sin}(t) = 1 - \text{cos}(t\pi/2)
+
+    Returns:
+        a sine in ease callable
+    """
+    return __easing.ease_sin_in()
+
+
+def ease_sin_out() -> EasingType:
+    r"""Returns a sine out ease
+
+    .. math::
+
+        \text{ease\_sin}(t) = 1 - \text{cos}(t\pi/2)
+
+    Returns:
+        a sine out ease callable
+    """
+    return __easing.ease_sin_out()
+
+
+def ease_exp(base: float = 2.718281828459045) -> EasingType:
+    r"""Returns an exponential ease
+
+    .. math::
+
+        \text{ease\_exp}(t) = \text{base}^{10(t - 1)}
+
+    Args:
+        base (float): The base of the exponential function.
+
+    Returns:
+        an exponential in-out ease callable
+    """
+    return __easing.ease_exp(base)
+
+
+def ease_exp_in(base: float = 2.718281828459045) -> EasingType:
+    r"""Returns an exponential in ease
+
+    .. math::
+
+        \text{ease\_exp}(t) = \text{base}^{10(t - 1)}
+
+    Args:
+        base (float): The base of the exponential function.
+
+    Returns:
+        an exponential in ease callable
+    """
+    return __easing.ease_exp_in(base)
+
+
+def ease_exp_out(base: float = 2.718281828459045) -> EasingType:
+    r"""Returns an exponential out ease
+
+    .. math::
+
+        \text{ease\_exp}(t) = \text{base}^{10(t - 1)}
+
+    Args:
+        base (float): The base of the exponential function.
+
+    Returns:
+        an exponential out ease callable
+    """
+    return __easing.ease_exp_out(base)
+
+
+def ease_back(factor: float = 1.70158) -> EasingType:
+    r"""Returns a back ease
+
+    .. math::
+
+        \text{ease\_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
+
+    Args:
+        factor (float): The scale of the easing's stretch.
+
+    Returns:
+        a back in-out ease callable
+    """
+    return __easing.ease_back(factor)
+
+
+def ease_back_in(factor: float = 1.70158) -> EasingType:
+    r"""Returns a back in ease
+
+    .. math::
+
+        \text{ease\_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
+
+    Args:
+        factor (float): The scale of the easing's stretch.
+
+    Returns:
+        a back in ease callable
+    """
+    return __easing.ease_back_in(factor)
+
+
+def ease_back_out(factor: float = 1.70158) -> EasingType:
+    r"""Returns a back out ease
+
+    .. math::
+
+        \text{ease\_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
+
+    Args:
+        factor (float): The scale of the easing's stretch.
+
+    Returns:
+        a back out ease callable
+    """
+    return __easing.ease_back_out(factor)
+
+
+def ease_elastic(factor: int = 3) -> EasingType:
+    r"""Returns an elastic ease
+
+    .. math::
+
+        \text{ease\_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
+
+    Args:
+        factor (int): The number of elastic oscillations.
+
+    Returns:
+        an elastic in-out ease callable
+    """
+    return __easing.ease_elastic(factor)
+
+
+def ease_elastic_in(factor: int = 3) -> EasingType:
+    r"""Returns an elastic in ease
+
+    .. math::
+
+        \text{ease\_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
+
+    Args:
+        factor (int): The number of elastic oscillations.
+
+    Returns:
+        an elastic in ease callable
+    """
+    return __easing.ease_elastic_in(factor)
+
+
+def ease_elastic_out(factor: int = 3) -> EasingType:
+    r"""Returns an elastic out ease
+
+    .. math::
+
+        \text{ease\_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
+
+    Args:
+        factor (int): The number of elastic oscillations.
+
+    Returns:
+        an elastic out ease callable
+    """
+    return __easing.ease_elastic_out(factor)
+
+
+def ease_bounce(bounces: int = 4, damping: float = 0.4) -> EasingType:
+    r"""Returns a bounce ease
+
+    Args:
+        bounces (int): The number of bounces in the easing.
+        damping (float): The energy retained during each bounce.
+
+    Returns:
+        a bounce in-out ease callable
 
     Raises:
-        TypeError: ``easing1`` and ``easing2`` must be easing functions
+        ValueError: damping must be ≥ 0, bounces must be ≥ 1
+    """
+    return __easing.ease_bounce(bounces, damping)
+
+
+def ease_bounce_in(bounces: int = 4, damping: float = 0.4) -> EasingType:
+    r"""Returns a bounce in ease
+
+    Args:
+        bounces (int): The number of bounces in the easing.
+        damping (float): The energy retained during each bounce.
+
+    Returns:
+        a bounce in ease callable
+
+    Raises:
+        ValueError: damping must be ≥ 0, bounces must be ≥ 1
+    """
+    return __easing.ease_bounce_in(bounces, damping)
+
+
+def ease_bounce_out(bounces: int = 4, damping: float = 0.4) -> EasingType:
+    r"""Returns a bounce out ease
+
+    Args:
+        bounces (int): The number of bounces in the easing.
+        damping (float): The energy retained during each bounce.
+
+    Returns:
+        a bounce out ease callable
+
+    Raises:
+        ValueError: damping must be ≥ 0, bounces must be ≥ 1
+    """
+    return __easing.ease_bounce_out(bounces, damping)
+
+
+def combine_easing(easing1: EasingType, easing2: EasingType) -> EasingType:
+    """Combines 2 easing functions together.
+    
+    The 1st easing function is used for t values below 0.5 and the 2nd easing function is used for t values above 0.5
+
+    Args:
+        easing1: the 1st easing function for t < 0.5
+        easing2: the 2nd easing function for t ≥ 0.5
+
+    Raises:
+        TypeError: easing1 and easing2 must be easing functions
 
     Examples:
 
@@ -478,10 +523,19 @@ def combine_easing(easing1: EASING_TYPE, easing2: EASING_TYPE) -> EASING_TYPE:
 
             >>> ease1 = gp.ease_elastic_in()
             >>> ease2 = gp.ease_bounce_out()
-            >>> ease = combine_easing(ease1, ease2)
-
-        .. image:: ../../_static/easing/combined.png
-            :width: 50%
-            :align: center
+            >>> new_ease = combine_easing(ease1, ease2)
     """
-    raise NotImplementedError()
+    if callable(easing1) and callable(easing2):
+        def closure(t: float) -> float:
+            """
+            Args:
+                t: value to use to calculate the easing
+            """
+            if t < 0.5:
+                return easing1(2 * t) / 2
+            else:
+                return (1 + easing2(2 * t - 1)) / 2
+
+        return closure
+
+    raise TypeError(f"Easing functions expected, got {type(easing1)} and {type(easing2)}")

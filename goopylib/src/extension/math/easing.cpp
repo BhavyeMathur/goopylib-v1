@@ -29,11 +29,6 @@ namespace easing {
         if (!PyArg_ParseTuple(args, "f", &t)) {
             return nullptr;
         }
-        #ifdef GP_ERROR_CHECKING
-        if (t > 1 or t < 0) {
-            RAISE_VALUE_ERROR(nullptr, "easing argument must be between 0 and 1 (inclusive)");
-        }
-        #endif
 
         return PyFloat_FromDouble(self->easing(t));
     }
@@ -42,16 +37,20 @@ namespace easing {
         Py_INCREF(self->string);
         return self->string;
     }
+}
 
+namespace easing {
     int linear::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         self->easing = gp::easeLinear();
         self->string = PyUnicode_FromString("ease_linear()");
         return 0;
     }
 
+    EASING_IN_OUT_TYPE(linear);
+
     int poly::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float power = 6;
-        if (!PyArg_ParseTuple(args, "|f", &power)) {
+        float power;
+        if (!PyArg_ParseTuple(args, "f", &power)) {
             return -1;
         }
 
@@ -61,8 +60,8 @@ namespace easing {
     }
 
     int poly::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float power = 6;
-        if (!PyArg_ParseTuple(args, "|f", &power)) {
+        float power;
+        if (!PyArg_ParseTuple(args, "f", &power)) {
             return -1;
         }
 
@@ -72,8 +71,8 @@ namespace easing {
     }
 
     int poly::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float power = 6;
-        if (!PyArg_ParseTuple(args, "|f", &power)) {
+        float power;
+        if (!PyArg_ParseTuple(args, "f", &power)) {
             return -1;
         }
 
@@ -81,6 +80,10 @@ namespace easing {
         self->string = PyUnicode_FromFormat("ease_poly_out(power=%S)", PyFloat_FromDouble(power));
         return 0;
     }
+
+    EASING_IN_OUT_TYPE(poly);
+    EASING_IN_TYPE(poly);
+    EASING_OUT_TYPE(poly);
 
     int quad::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         self->easing = gp::easeQuadInOut();
@@ -100,6 +103,10 @@ namespace easing {
         return 0;
     }
 
+    EASING_IN_OUT_TYPE(quad);
+    EASING_IN_TYPE(quad);
+    EASING_OUT_TYPE(quad);
+
     int cubic::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         self->easing = gp::easeCubicInOut();
         self->string = PyUnicode_FromString("ease_cubic()");
@@ -117,6 +124,10 @@ namespace easing {
         self->string = PyUnicode_FromString("ease_cubic_out()");
         return 0;
     }
+
+    EASING_IN_OUT_TYPE(cubic);
+    EASING_IN_TYPE(cubic);
+    EASING_OUT_TYPE(cubic);
 
     int quart::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         self->easing = gp::easeQuartInOut();
@@ -136,6 +147,10 @@ namespace easing {
         return 0;
     }
 
+    EASING_IN_OUT_TYPE(quart);
+    EASING_IN_TYPE(quart);
+    EASING_OUT_TYPE(quart);
+
     int quint::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         self->easing = gp::easeQuintInOut();
         self->string = PyUnicode_FromString("ease_quint()");
@@ -153,6 +168,10 @@ namespace easing {
         self->string = PyUnicode_FromString("ease_quint_out()");
         return 0;
     }
+
+    EASING_IN_OUT_TYPE(quint);
+    EASING_IN_TYPE(quint);
+    EASING_OUT_TYPE(quint);
 
     int circle::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         self->easing = gp::easeCircleInOut();
@@ -172,6 +191,10 @@ namespace easing {
         return 0;
     }
 
+    EASING_IN_OUT_TYPE(circle);
+    EASING_IN_TYPE(circle);
+    EASING_OUT_TYPE(circle);
+
     int sin::init(EasingObject *self, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         self->easing = gp::easeSinInOut();
         self->string = PyUnicode_FromString("ease_sin()");
@@ -190,9 +213,13 @@ namespace easing {
         return 0;
     }
 
+    EASING_IN_OUT_TYPE(sin);
+    EASING_IN_TYPE(sin);
+    EASING_OUT_TYPE(sin);
+
     int exp::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float base = 2.718281828459045;
-        if (!PyArg_ParseTuple(args, "|f", &base)) {
+        float base;
+        if (!PyArg_ParseTuple(args, "f", &base)) {
             return -1;
         }
 
@@ -202,8 +229,8 @@ namespace easing {
     }
 
     int exp::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float base = 2.718281828459045;
-        if (!PyArg_ParseTuple(args, "|f", &base)) {
+        float base;
+        if (!PyArg_ParseTuple(args, "f", &base)) {
             return -1;
         }
 
@@ -213,8 +240,8 @@ namespace easing {
     }
 
     int exp::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float base = 2.718281828459045;
-        if (!PyArg_ParseTuple(args, "|f", &base)) {
+        float base;
+        if (!PyArg_ParseTuple(args, "f", &base)) {
             return -1;
         }
 
@@ -223,9 +250,13 @@ namespace easing {
         return 0;
     }
 
+    EASING_IN_OUT_TYPE(exp);
+    EASING_IN_TYPE(exp);
+    EASING_OUT_TYPE(exp);
+
     int back::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float factor = 1.70158;
-        if (!PyArg_ParseTuple(args, "|f", &factor)) {
+        float factor;
+        if (!PyArg_ParseTuple(args, "f", &factor)) {
             return -1;
         }
 
@@ -235,8 +266,8 @@ namespace easing {
     }
 
     int back::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float factor = 1.70158;
-        if (!PyArg_ParseTuple(args, "|f", &factor)) {
+        float factor;
+        if (!PyArg_ParseTuple(args, "f", &factor)) {
             return -1;
         }
 
@@ -246,8 +277,8 @@ namespace easing {
     }
 
     int back::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        float factor = 1.70158;
-        if (!PyArg_ParseTuple(args, "|f", &factor)) {
+        float factor;
+        if (!PyArg_ParseTuple(args, "f", &factor)) {
             return -1;
         }
 
@@ -256,9 +287,13 @@ namespace easing {
         return 0;
     }
 
+    EASING_IN_OUT_TYPE(back);
+    EASING_IN_TYPE(back);
+    EASING_OUT_TYPE(back);
+
     int elastic::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        int factor = 3;
-        if (!PyArg_ParseTuple(args, "|I", &factor)) {
+        int factor;
+        if (!PyArg_ParseTuple(args, "i", &factor)) {
             return -1;
         }
 
@@ -268,8 +303,8 @@ namespace easing {
     }
 
     int elastic::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        int factor = 3;
-        if (!PyArg_ParseTuple(args, "|I", &factor)) {
+        int factor;
+        if (!PyArg_ParseTuple(args, "i", &factor)) {
             return -1;
         }
 
@@ -279,8 +314,8 @@ namespace easing {
     }
 
     int elastic::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        int factor = 3;
-        if (!PyArg_ParseTuple(args, "|I", &factor)) {
+        int factor;
+        if (!PyArg_ParseTuple(args, "i", &factor)) {
             return -1;
         }
 
@@ -289,14 +324,19 @@ namespace easing {
         return 0;
     }
 
-    int bounce::init(EasingObject *self, PyObject *args, PyObject *kwds) {
-        static const char *kwlist[] = {"bounces", "damping", nullptr};
+    EASING_IN_OUT_TYPE(elastic);
+    EASING_IN_TYPE(elastic);
+    EASING_OUT_TYPE(elastic);
 
-        int bounces = 4;
-        float damping = 0.4;
-        if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
+    int bounce::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        int bounces;
+        float damping;
+        if (!PyArg_ParseTuple(args, "if", &bounces, &damping)) {
             return -1;
         }
+
+        GP_CHECK_GE(damping, 0, -1, "damping value for easing must be greater than or equal to 0")
+        GP_CHECK_GE(bounces, 1, -1, "bounces value for easing must be greater than or equal to 1")
 
         self->easing = gp::easeBounceInOut(bounces, damping);
         self->string = PyUnicode_FromFormat("ease_bounce(bounces=%i, damping=%S)", bounces,
@@ -304,12 +344,10 @@ namespace easing {
         return 0;
     }
 
-    int bounce::in::init(EasingObject *self, PyObject *args, PyObject *kwds) {
-        static const char *kwlist[] = {"bounces", "damping", nullptr};
-
-        int bounces = 4;
-        float damping = 0.4;
-        if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
+    int bounce::in::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        int bounces;
+        float damping;
+        if (!PyArg_ParseTuple(args, "if", &bounces, &damping)) {
             return -1;
         }
 
@@ -319,12 +357,10 @@ namespace easing {
         return 0;
     }
 
-    int bounce::out::init(EasingObject *self, PyObject *args, PyObject *kwds) {
-        static const char *kwlist[] = {"bounces", "damping", nullptr};
-
-        int bounces = 4;
-        float damping = 0.4;
-        if (!PyArg_ParseTupleAndKeywords(args, kwds, "|if", (char **) kwlist, &bounces, &damping)) {
+    int bounce::out::init(EasingObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+        int bounces;
+        float damping;
+        if (!PyArg_ParseTuple(args, "if", &bounces, &damping)) {
             return -1;
         }
 
@@ -334,141 +370,9 @@ namespace easing {
         return 0;
     }
 
-    namespace linear {
-        EASING_TYPE("linear");
-    }
-
-    namespace poly {
-        EASING_TYPE("poly");
-
-        namespace in {
-            EASING_TYPE("poly_in");
-        }
-
-        namespace out {
-            EASING_TYPE("poly_out");
-        }
-    }
-
-    namespace quad {
-        EASING_TYPE("quad");
-
-        namespace in {
-            EASING_TYPE("quad_in");
-        }
-
-        namespace out {
-            EASING_TYPE("quad_out");
-        }
-    }
-
-    namespace cubic {
-        EASING_TYPE("cubic");
-
-        namespace in {
-            EASING_TYPE("cubic_in");
-        }
-
-        namespace out {
-            EASING_TYPE("cubic_out");
-        }
-    }
-
-    namespace quart {
-        EASING_TYPE("quart");
-
-        namespace in {
-            EASING_TYPE("quart_in");
-        }
-
-        namespace out {
-            EASING_TYPE("quart_out");
-        }
-    }
-
-    namespace quint {
-        EASING_TYPE("quint");
-
-        namespace in {
-            EASING_TYPE("quint_in");
-        }
-
-        namespace out {
-            EASING_TYPE("quint_out");
-        }
-    }
-
-    namespace circle {
-        EASING_TYPE("circle");
-
-        namespace in {
-            EASING_TYPE("circle_in");
-        }
-
-        namespace out {
-            EASING_TYPE("circle_out");
-        }
-    }
-
-    namespace sin {
-        EASING_TYPE("sin");
-
-        namespace in {
-            EASING_TYPE("sin_in");
-        }
-
-        namespace out {
-            EASING_TYPE("sin_out");
-        }
-    }
-
-    namespace exp {
-        EASING_TYPE("exp");
-
-        namespace in {
-            EASING_TYPE("exp_in");
-        }
-
-        namespace out {
-            EASING_TYPE("exp_out");
-        }
-    }
-
-    namespace back {
-        EASING_TYPE("back");
-
-        namespace in {
-            EASING_TYPE("back_in");
-        }
-
-        namespace out {
-            EASING_TYPE("back_out");
-        }
-    }
-
-    namespace elastic {
-        EASING_TYPE("elastic");
-
-        namespace in {
-            EASING_TYPE("elastic_in");
-        }
-
-        namespace out {
-            EASING_TYPE("elastic_out");
-        }
-    }
-
-    namespace bounce {
-        EASING_TYPE("bounce");
-
-        namespace in {
-            EASING_TYPE("bounce_in");
-        }
-
-        namespace out {
-            EASING_TYPE("bounce_out");
-        }
-    }
+    EASING_IN_OUT_TYPE(bounce);
+    EASING_IN_TYPE(bounce);
+    EASING_OUT_TYPE(bounce);
 }
 
 static PyMethodDef EasingMethods[] = {
@@ -483,7 +387,7 @@ static struct PyModuleDef easingmodule = {
 };
 
 PyMODINIT_FUNC PyInit_easing() {
-    #if GP_LOGGING >= 5
+    #if GP_LOGGING_LEVEL >= 5
     std::cout << "[--:--:--] PYTHON: PyInit_easing()" << std::endl;
     #endif
 
@@ -493,51 +397,51 @@ PyMODINIT_FUNC PyInit_easing() {
         return nullptr;
     }
 
-    EXPOSE_PYOBJECT_CLASS(easing::linear::type, "ease_linear");
+    EXPOSE_PYOBJECT_CLASS(easing::linear_type, "ease_linear");
 
-    EXPOSE_PYOBJECT_CLASS(easing::poly::in::type, "ease_poly_in");
-    EXPOSE_PYOBJECT_CLASS(easing::poly::out::type, "ease_poly_out");
-    EXPOSE_PYOBJECT_CLASS(easing::poly::type, "ease_poly");
+    EXPOSE_PYOBJECT_CLASS(easing::poly_in_type, "ease_poly_in");
+    EXPOSE_PYOBJECT_CLASS(easing::poly_out_type, "ease_poly_out");
+    EXPOSE_PYOBJECT_CLASS(easing::poly_type, "ease_poly");
 
-    EXPOSE_PYOBJECT_CLASS(easing::quad::in::type, "ease_quad_in");
-    EXPOSE_PYOBJECT_CLASS(easing::quad::out::type, "ease_quad_out");
-    EXPOSE_PYOBJECT_CLASS(easing::quad::type, "ease_quad");
+    EXPOSE_PYOBJECT_CLASS(easing::quad_in_type, "ease_quad_in");
+    EXPOSE_PYOBJECT_CLASS(easing::quad_out_type, "ease_quad_out");
+    EXPOSE_PYOBJECT_CLASS(easing::quad_type, "ease_quad");
 
-    EXPOSE_PYOBJECT_CLASS(easing::cubic::in::type, "ease_cubic_in");
-    EXPOSE_PYOBJECT_CLASS(easing::cubic::out::type, "ease_cubic_out");
-    EXPOSE_PYOBJECT_CLASS(easing::cubic::type, "ease_cubic");
+    EXPOSE_PYOBJECT_CLASS(easing::cubic_in_type, "ease_cubic_in");
+    EXPOSE_PYOBJECT_CLASS(easing::cubic_out_type, "ease_cubic_out");
+    EXPOSE_PYOBJECT_CLASS(easing::cubic_type, "ease_cubic");
 
-    EXPOSE_PYOBJECT_CLASS(easing::quart::in::type, "ease_quart_in");
-    EXPOSE_PYOBJECT_CLASS(easing::quart::out::type, "ease_quart_out");
-    EXPOSE_PYOBJECT_CLASS(easing::quart::type, "ease_quart");
+    EXPOSE_PYOBJECT_CLASS(easing::quart_in_type, "ease_quart_in");
+    EXPOSE_PYOBJECT_CLASS(easing::quart_out_type, "ease_quart_out");
+    EXPOSE_PYOBJECT_CLASS(easing::quart_type, "ease_quart");
 
-    EXPOSE_PYOBJECT_CLASS(easing::quint::in::type, "ease_quint_in");
-    EXPOSE_PYOBJECT_CLASS(easing::quint::out::type, "ease_quint_out");
-    EXPOSE_PYOBJECT_CLASS(easing::quint::type, "ease_quint");
+    EXPOSE_PYOBJECT_CLASS(easing::quint_in_type, "ease_quint_in");
+    EXPOSE_PYOBJECT_CLASS(easing::quint_out_type, "ease_quint_out");
+    EXPOSE_PYOBJECT_CLASS(easing::quint_type, "ease_quint");
 
-    EXPOSE_PYOBJECT_CLASS(easing::circle::in::type, "ease_circle_in");
-    EXPOSE_PYOBJECT_CLASS(easing::circle::out::type, "ease_circle_out");
-    EXPOSE_PYOBJECT_CLASS(easing::circle::type, "ease_circle");
+    EXPOSE_PYOBJECT_CLASS(easing::circle_in_type, "ease_circle_in");
+    EXPOSE_PYOBJECT_CLASS(easing::circle_out_type, "ease_circle_out");
+    EXPOSE_PYOBJECT_CLASS(easing::circle_type, "ease_circle");
 
-    EXPOSE_PYOBJECT_CLASS(easing::sin::in::type, "ease_sin_in");
-    EXPOSE_PYOBJECT_CLASS(easing::sin::out::type, "ease_sin_out");
-    EXPOSE_PYOBJECT_CLASS(easing::sin::type, "ease_sin");
+    EXPOSE_PYOBJECT_CLASS(easing::sin_in_type, "ease_sin_in");
+    EXPOSE_PYOBJECT_CLASS(easing::sin_out_type, "ease_sin_out");
+    EXPOSE_PYOBJECT_CLASS(easing::sin_type, "ease_sin");
 
-    EXPOSE_PYOBJECT_CLASS(easing::exp::in::type, "ease_exp_in");
-    EXPOSE_PYOBJECT_CLASS(easing::exp::out::type, "ease_exp_out");
-    EXPOSE_PYOBJECT_CLASS(easing::exp::type, "ease_exp");
+    EXPOSE_PYOBJECT_CLASS(easing::exp_in_type, "ease_exp_in");
+    EXPOSE_PYOBJECT_CLASS(easing::exp_out_type, "ease_exp_out");
+    EXPOSE_PYOBJECT_CLASS(easing::exp_type, "ease_exp");
 
-    EXPOSE_PYOBJECT_CLASS(easing::back::in::type, "ease_back_in");
-    EXPOSE_PYOBJECT_CLASS(easing::back::out::type, "ease_back_out");
-    EXPOSE_PYOBJECT_CLASS(easing::back::type, "ease_back");
+    EXPOSE_PYOBJECT_CLASS(easing::back_in_type, "ease_back_in");
+    EXPOSE_PYOBJECT_CLASS(easing::back_out_type, "ease_back_out");
+    EXPOSE_PYOBJECT_CLASS(easing::back_type, "ease_back");
 
-    EXPOSE_PYOBJECT_CLASS(easing::elastic::in::type, "ease_elastic_in");
-    EXPOSE_PYOBJECT_CLASS(easing::elastic::out::type, "ease_elastic_out");
-    EXPOSE_PYOBJECT_CLASS(easing::elastic::type, "ease_elastic");
+    EXPOSE_PYOBJECT_CLASS(easing::elastic_in_type, "ease_elastic_in");
+    EXPOSE_PYOBJECT_CLASS(easing::elastic_out_type, "ease_elastic_out");
+    EXPOSE_PYOBJECT_CLASS(easing::elastic_type, "ease_elastic");
 
-    EXPOSE_PYOBJECT_CLASS(easing::bounce::in::type, "ease_bounce_in");
-    EXPOSE_PYOBJECT_CLASS(easing::bounce::out::type, "ease_bounce_out");
-    EXPOSE_PYOBJECT_CLASS(easing::bounce::type, "ease_bounce");
+    EXPOSE_PYOBJECT_CLASS(easing::bounce_in_type, "ease_bounce_in");
+    EXPOSE_PYOBJECT_CLASS(easing::bounce_out_type, "ease_bounce_out");
+    EXPOSE_PYOBJECT_CLASS(easing::bounce_type, "ease_bounce");
 
     return m;
 }

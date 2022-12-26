@@ -17,7 +17,7 @@ if (!gp::glfw_initialized) { \
 } while (0)
 
 #define CHECK_GLFW_CONTEXT(val) \
-CHECK_GLFW_INITIALIZED(val) \
+CHECK_GLFW_INITIALIZED(val); \
 do { if (glfwGetCurrentContext() == nullptr) { \
         PyErr_SetString(PyExc_RuntimeError, "goopylib Window must be created"); \
         return val; \
