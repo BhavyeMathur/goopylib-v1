@@ -1,4 +1,4 @@
-import goopylib as gp
+import goopylib.imports as gp
 import plot
 
 ease = gp.ease_linear()
