@@ -31,7 +31,7 @@ namespace gp {
                      int xPos = 0,
                      int yPos = 0,
 
-                     const Color &background = Color(),
+                     const Color &background = Color(255, 255, 255),
 
                      int minWidth = 0,
                      int minHeight = 0,

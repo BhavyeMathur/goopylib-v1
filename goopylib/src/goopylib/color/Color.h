@@ -19,21 +19,13 @@ namespace gp {
 namespace gp {
     class Color {
     public:
-        Color();
-
-        Color(Color const &color);
-
-        Color(ColorHSV const &color);
-
-        Color(ColorHSL const &color);
+        Color(Color const *color);
 
         Color(const RGB &color, float alpha);
 
         ~Color();
 
-        Color(int red, int green, int blue);
-
-        Color(int red, int green, int blue, float alpha);
+        Color(int red, int green, int blue, float alpha = 1);
 
         virtual std::string toString() const;
 
@@ -49,15 +41,11 @@ namespace gp {
 
         void setBlue(int red);
 
-        float getRedf() const;
-
-        float getGreenf() const;
-
-        float getBluef() const;
-
         float getAlpha() const;
 
         void setAlpha(float alpha);
+
+        RGBAf getRGBAf() const;
 
         // Operator Overloads
 
@@ -83,37 +71,23 @@ namespace gp {
         int m_Blue;
         float m_Alpha;
 
-        void fromRGB(int red, int green, int blue, float alpha);
-
         void fromRGB(const RGB &color, float alpha);
-
-        void fromColor(const Color &color);
 
         void update();
 
-        void clampRGBA();
-
-        void clampRGB();
-
-        void clampUpperRGB();
-
-        void clampLowerRGB();
-
     private:
-        mutable float m_Redf;
-        mutable float m_Greenf;
-        mutable float m_Bluef;
+        float m_Redf = 0;
+        float m_Greenf = 0;
+        float m_Bluef = 0;
     };
 }
 
 namespace gp {
     class ColorRGB final : public Color {
     public:
-        ColorRGB(Color const &color);
+        ColorRGB(Color const *color);
 
-        ColorRGB(int red, int green, int blue);
-
-        ColorRGB(int red, int green, int blue, float alpha);
+        ColorRGB(int red, int green, int blue, float alpha = 1.0f);
 
     protected:
 
@@ -125,11 +99,9 @@ namespace gp {
 namespace gp {
     class ColorHex final : public Color {
     public:
-        ColorHex(Color const &color);
+        ColorHex(Color const *color);
 
-        ColorHex(const char *hexstring);
-
-        ColorHex(const char *hexstring, float alpha);
+        ColorHex(const char *hexstring, float alpha = 1.0f);
 
         std::string toString() const override;
 
@@ -143,11 +115,9 @@ namespace gp {
 namespace gp {
     class ColorCMYK final : public Color {
     public:
-        ColorCMYK(Color const &color);
+        ColorCMYK(Color const *color);
 
-        ColorCMYK(float cyan, float magenta, float yellow, float key);
-
-        ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha);
+        ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha = 1.0f);
 
         std::string toString() const override;
 
@@ -180,13 +150,9 @@ namespace gp {
 namespace gp {
     class ColorHSV final : public Color {
     public:
-        ColorHSV(Color const &color);
+        ColorHSV(Color const *color);
 
-        ColorHSV(ColorHSL const &color);
-
-        ColorHSV(int hue, float saturation, float value);
-
-        ColorHSV(int hue, float saturation, float value, float alpha);
+        ColorHSV(int hue, float saturation, float value, float alpha = 1.0f);
 
         std::string toString() const override;
 
@@ -214,13 +180,9 @@ namespace gp {
 namespace gp {
     class ColorHSL final : public Color {
     public:
-        ColorHSL(Color const &color);
+        ColorHSL(Color const *color);
 
-        ColorHSL(ColorHSV const &color);
-
-        ColorHSL(int hue, float saturation, float luminance);
-
-        ColorHSL(int hue, float saturation, float luminance, float alpha);
+        ColorHSL(int hue, float saturation, float luminance, float alpha = 1.0f);
 
         std::string toString() const override;
 

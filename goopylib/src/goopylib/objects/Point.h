@@ -1,25 +1,12 @@
 #pragma once
 
 #include "gp.h"
+#include "src/goopylib/color/ColorStructs.h"
 #include "src/goopylib/math/gpmath.h"
 
 #define GP_CREATE_VERTEX(type) struct type##Vertex { Point vertex; type##VertexAttrib attrib; }
 
 namespace gp {
-    struct RGBAf {
-        float red = 0;
-        float green = 0;
-        float blue = 0;
-        float alpha = 1;
-
-        RGBAf(float red, float green, float blue, float alpha = 1)
-                : red(red),
-                green(green),
-                blue(blue),
-                alpha(alpha) {
-        }
-    };
-
     // TODO pack 3x32-bit float color data into 1x32-bit unsigned int
 
     struct ColorVertexAttrib {
