@@ -261,7 +261,7 @@ namespace gp {
             : Color(hex::toRGB(hexstring), alpha) {
         GP_CORE_INFO("gp::ColorHex::ColorHex({0}, alpha={1})", hexstring, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
+        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1");
     }
 
     std::string ColorHex::toString() const {

@@ -59,8 +59,8 @@ find_package(OpenGL REQUIRED)
 option(INCLUDE_PYTHON "Includes the Python header files" true)
 option(DYNAMIC_LIBRARY "Dynamic vs Static Library" true)
 
-# add_executable(main main.cpp)
-add_executable(main examples/cpp/core.cpp)
+add_executable(main main.cpp)
+# add_executable(main examples/cpp/core.cpp)
 add_executable(empty empty.cpp)
 
 if (DYNAMIC_LIBRARY)

@@ -135,7 +135,7 @@ namespace gp {
     void updateTimeout(double timeout) {
         GP_CORE_TRACE_ALL("gp::updateTimeout(timeout={0})", timeout);
 
-        GP_CHECK_GE(timeout, 0, "gp::updateTimeout() timeout must be greater than or equal to 0")
+        GP_CHECK_GE(timeout, 0, "gp::updateTimeout() timeout must be greater than or equal to 0");
 
         glfwWaitEventsTimeout(timeout);
         onUpdate();
@@ -185,7 +185,7 @@ namespace gp {
     void setBufferSwapInterval(int32_t interval) {
         GP_CORE_TRACE("gp::setBufferSwapInterval(interval={0})", interval);
 
-        GP_CHECK_GE(interval, 0, "gp::setBufferSwapInterval() interval must be greater than or equal to 0")
+        GP_CHECK_GE(interval, 0, "gp::setBufferSwapInterval() interval must be greater than or equal to 0");
 
         glfwSwapInterval(interval);
     }

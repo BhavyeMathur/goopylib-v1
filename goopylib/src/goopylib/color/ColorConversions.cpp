@@ -88,9 +88,9 @@ namespace gp {
         const char *toHex(int red, int green, int blue) {
             GP_CORE_INFO("gp::rgb::toHex(red={0}, green={1}, blue={2})", red, green, blue);
 
-            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
-            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
-            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255");
+            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255");
+            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255");
 
             static char *hex_string[8];
 
@@ -101,9 +101,9 @@ namespace gp {
         CMYK toCMYK(int red, int green, int blue) {
             GP_CORE_INFO("gp::rgb::toCMYK(red={0}, green={1}, blue={2})", red, green, blue);
 
-            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
-            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
-            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255");
+            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255");
+            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255");
 
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
@@ -129,9 +129,9 @@ namespace gp {
         HSL toHSL(int red, int green, int blue) {
             GP_CORE_INFO("gp::rgb::toHSL(red={0}, green={1}, blue={2})", red, green, blue);
 
-            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
-            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
-            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255");
+            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255");
+            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255");
 
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
@@ -178,9 +178,9 @@ namespace gp {
         HSV toHSV(int red, int green, int blue) {
             GP_CORE_INFO("gp::rgb::toHSV(red={0}, green={1}, blue={2})", red, green, blue);
 
-            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
-            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
-            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+            GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255");
+            GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255");
+            GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255");
 
             float redf = (float) red / 255.0f;
             float greenf = (float) green / 255.0f;
@@ -273,10 +273,10 @@ namespace gp {
         RGB toRGB(float cyan, float magenta, float yellow, float key) {
             GP_CORE_INFO("gp::cmyk::toRGB(cyan={0}, magenta={1}, yellow={2}, key={3})", cyan, magenta, yellow, key);
 
-            GP_CHECK_INCLUSIVE_RANGE(cyan, 0, 1, "Color cyan value must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(magenta, 0, 1, "Color magenta value must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(yellow, 0, 1, "Color yellow value must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(key, 0, 1, "Color key value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(cyan, 0, 1, "Color cyan value must be between 0 and 1");
+            GP_CHECK_INCLUSIVE_RANGE(magenta, 0, 1, "Color magenta value must be between 0 and 1");
+            GP_CHECK_INCLUSIVE_RANGE(yellow, 0, 1, "Color yellow value must be between 0 and 1");
+            GP_CHECK_INCLUSIVE_RANGE(key, 0, 1, "Color key value must be between 0 and 1");
 
             key = 1 - key;
             return RGB{(int) round(255 * (1 - cyan) * key),
@@ -312,9 +312,9 @@ namespace gp {
         RGB toRGB(int hue, float saturation, float value) {
             GP_CORE_INFO("gp::hsv::toRGB(hue={0}, saturation={1}, value={2})", hue, saturation, value);
 
-            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
-            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color 'value' value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360");
+            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1");
+            GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color 'value' value must be between 0 and 1");
 
             float c = value * saturation;
             float x = c * (1 - fabsf(fmodf((float) hue / 60.0f, 2) - 1));
@@ -369,9 +369,9 @@ namespace gp {
         HSL toHSL(int hue, float saturation, float value) {
             GP_CORE_INFO("gp::hsv::toHSL(hue={0}, saturation={1}, value={2})", hue, saturation, value);
 
-            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
-            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color 'value' value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360");
+            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1");
+            GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color 'value' value must be between 0 and 1");
 
             float L = value * (1 - saturation / 2);
 
@@ -393,9 +393,9 @@ namespace gp {
         RGB toRGB(int hue, float saturation, float luminance) {
             GP_CORE_INFO("gp::hsl::toRGB(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
 
-            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
-            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360");
+            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1");
+            GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1");
 
             float c = (1 - fabsf(2 * luminance - 1)) * saturation;
             float x = c * (1 - fabsf(fmodf((float) hue / 60, 2) - 1));
@@ -450,9 +450,9 @@ namespace gp {
         HSV toHSV(int hue, float saturation, float luminance) {
             GP_CORE_INFO("gp::hsl::toHSV(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
 
-            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
-            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360");
+            GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1");
+            GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1");
 
             float v = luminance + saturation * (luminance < 0.5 ? luminance : 1 - luminance);
 

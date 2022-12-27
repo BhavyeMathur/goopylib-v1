@@ -20,8 +20,8 @@ namespace {
     void processEaseBounce(int bounces, float &damping, float &scale, std::vector<float> &zeroes,
                            std::vector<float> &derivatives) {
 
-        GP_CHECK_GE(damping, 0, "damping value for easing must be greater than or equal to 0")
-        GP_CHECK_GE(bounces, 1, "bounces value for easing must be greater than or equal to 1")
+        GP_CHECK_GE(damping, 0, "damping value for easing must be greater than or equal to 0");
+        GP_CHECK_GE(bounces, 1, "bounces value for easing must be greater than or equal to 1");
 
         damping = -sqrt(damping);
         zeroes.push_back(1);
