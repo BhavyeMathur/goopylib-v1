@@ -25,6 +25,8 @@ namespace gp {
 
         bool isDrawn() const;
 
+        /* Getters & Setters */
+
         // Anchor
         void setAnchor(float x, float y);
 
@@ -64,18 +66,20 @@ namespace gp {
 
         void setSize(float width, float height);
 
-        bool boxContains(Point point) const;
-
-        bool contains(Point point) const;
-
         // Visibility
         virtual void setTransparency(float value) = 0;
 
-        void hide(bool hidden = true);
+        void hide(bool hide = true);
 
         void show();
 
         bool isHidden() const;
+
+        /* Methods */
+
+        bool boxContains(Point point) const;
+
+        bool contains(Point point) const;
 
     protected:
         Window *m_Window = nullptr;

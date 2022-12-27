@@ -1,6 +1,6 @@
 #pragma once
 
-#include "extension/header.h"
+#include "ext/header.h"
 
 #define EASING_TYPE(name, space) \
 static PyTypeObject name##_type = {\

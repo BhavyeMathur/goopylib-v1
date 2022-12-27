@@ -12,7 +12,7 @@
  6 - Trace Enabledpr
  */
 
-// Python Extension Logging
+// Python ext Logging
 
 #if (GP_PY_LOGGING_LEVEL >= 3)
 #define GP_PY_WARN(...)     gp::Log::getPythonLogger()->warn(__VA_ARGS__)

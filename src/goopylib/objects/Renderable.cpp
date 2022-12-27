@@ -268,12 +268,12 @@ namespace gp {
     }
 
     // Visibility
-    void Renderable::hide(bool hidden) {
-        if (m_Hidden == hidden) {
+    void Renderable::hide(bool hide) {
+        if (m_Hidden == hide) {
             return;
         }
 
-        m_Hidden = hidden;
+        m_Hidden = hide;
         update();
     }
 

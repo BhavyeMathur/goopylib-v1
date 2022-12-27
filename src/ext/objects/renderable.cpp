@@ -1,4 +1,3 @@
-#include "goopylib/objects/Renderable.h"
 #include "renderable.h"
 
 #if GP_LOG_RENDERABLE != true
@@ -12,13 +11,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "extension/debug.h"
-
-
-struct RenderableObject {
-    PyObject_HEAD
-    std::shared_ptr<gp::Renderable> renderable;
-};
+#include "ext/debug.h"
 
 
 // Renderable Core
@@ -109,6 +102,8 @@ PyMODINIT_FUNC PyInit_renderable(void) {
     if (m == nullptr) {
         return nullptr;
     }
+
+    EXPOSE_PYOBJECT_CLASS(RenderableType, "Renderable");
 
     return m;
 }

@@ -12,7 +12,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "extension/debug.h"
+#include "ext/debug.h"
 
 
 struct ImageObject {

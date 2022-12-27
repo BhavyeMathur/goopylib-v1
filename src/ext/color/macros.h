@@ -1,6 +1,6 @@
 #pragma once
 
-#include "extension/debug.h"
+#include "ext/debug.h"
 
 #define CHECK_RED(val) GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, val, "Color red value must be between 0 and 255")
 #define CHECK_GREEN(val) GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, val, "Color green value must be between 0 and 255")

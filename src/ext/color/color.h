@@ -2,7 +2,7 @@
 
 #include "goopylib/color/Color.h"
 
-#include "extension/header.h"
+#include "ext/header.h"
 
 #define COLOR_MODULE
 #include "colormodule.h"

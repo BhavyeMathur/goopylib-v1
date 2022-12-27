@@ -1,4 +1,5 @@
 #include "goopylib/objects/Triangle.h"
+#include "renderable.h"
 #include "triangle.h"
 
 #if GP_LOG_TRIANGLE != true
@@ -12,11 +13,11 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "extension/debug.h"
+#include "ext/debug.h"
 
 
 struct TriangleObject {
-    PyObject_HEAD
+    RenderableObject base;
     std::shared_ptr<gp::Triangle> triangle;
 };
 
@@ -35,6 +36,15 @@ namespace triangle {
 
     static int init(TriangleObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.triangle.Triangle()");
+
+        float x1, x2, x3;
+        float y1, y2, y3;
+        if (!PyArg_ParseTuple(args, "(ff)(ff)(ff)", &x1, &y1, &x2, &y2, &x3, &y3)) {
+            return -1;
+        }
+
+        self->triangle = std::shared_ptr<gp::Triangle>(new gp::Triangle({x1, y1}, {x2, y2}, {x3, y3}));
+        self->base.renderable = self->triangle;
 
         return 0;
     }
@@ -78,7 +88,7 @@ PyTypeObject TriangleType = {
         .tp_name = "goopylib.Triangle",
         .tp_basicsize = sizeof(TriangleObject),
         .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
+        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
 
         .tp_new = triangle::new_,
         .tp_init = (initproc) triangle::init,
@@ -109,6 +119,10 @@ PyMODINIT_FUNC PyInit_triangle(void) {
     if (m == nullptr) {
         return nullptr;
     }
+
+    EXPOSE_PYOBJECT_CLASS(TriangleType, "Triangle");
+
+    TriangleType.tp_base = &RenderableType;
 
     return m;
 }

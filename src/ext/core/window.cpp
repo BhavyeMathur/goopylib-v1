@@ -1,6 +1,6 @@
 #include "window.h"
 
-#include "extension/color/colormodule.h"
+#include "ext/color/colormodule.h"
 #include "goopylib/core/Window.h"
 #include "goopylib/events/MouseCodes.h"
 
@@ -14,7 +14,7 @@
 #undef GP_TYPE_CHECKING
 #endif
 
-#include "extension/debug.h"
+#include "ext/debug.h"
 
 #if GP_ERROR_CHECKING
 #define CHECK_ACTIVE(val) \

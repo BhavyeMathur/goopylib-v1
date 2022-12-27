@@ -1,6 +1,6 @@
 #pragma once
 
-#include "extension/header.h"
+#include "ext/header.h"
 
 static void **PyColor_API;
 
