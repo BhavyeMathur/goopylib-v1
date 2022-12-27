@@ -122,7 +122,7 @@ class DestroyedWindowMethods(unittest.TestCase):
 
     def test_set_minimum_size(self):
         with self.assertRaises(RuntimeError):
-            self.window.set_minimum_size(50, 50)
+            self.window.set_min_size(50, 50)
         with self.assertRaises(RuntimeError):
             tmp = self.window.min_width
         with self.assertRaises(RuntimeError):
@@ -130,7 +130,7 @@ class DestroyedWindowMethods(unittest.TestCase):
 
     def test_set_maximum_size(self):
         with self.assertRaises(RuntimeError):
-            self.window.set_maximum_size(1000, 1000)
+            self.window.set_max_size(1000, 1000)
         with self.assertRaises(RuntimeError):
             tmp = self.window.max_width
         with self.assertRaises(RuntimeError):

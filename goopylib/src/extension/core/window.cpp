@@ -1,8 +1,18 @@
 #include "window.h"
 
-// TODO make window key callback compatible with Python lambda functions (raises SIGSEGV error right now)
-// TODO implement window icons
-// TODO window pointer
+#if !GP_LOG_WINDOW
+#undef GP_LOGGING
+#endif
+
+#if !GP_VALUE_CHECK_WINDOW
+#undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
+#endif
+
+#include "extension/debug.h"
+
+// TODO make window callbacks compatible with Python lambda functions (raises SIGSEGV error right now)
 
 struct KeyCallback {
     PyObject *callback;

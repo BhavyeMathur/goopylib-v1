@@ -818,23 +818,23 @@ class WindowMethods(unittest.TestCase):
     # Minimum Size
 
     def test_set_minimum_size1(self):
-        self.assertIsNone(self.window.set_minimum_size(50, 50))
+        self.assertIsNone(self.window.set_min_size(50, 50))
 
     def test_set_minimum_size2(self):
-        self.window.set_minimum_size(50, None)
+        self.window.set_min_size(50, None)
         self.assertEqual(self.window.min_height, 0)
 
     def test_set_minimum_size3(self):
-        self.window.set_minimum_size(None, 50)
+        self.window.set_min_size(None, 50)
         self.assertEqual(self.window.min_width, 0)
 
     def test_set_minimum_size_type_errors(self):
         initial_value = self.window.get_minimum_size()
 
         with self.assertRaises(TypeError):
-            self.window.set_minimum_size("Test", 50)
+            self.window.set_min_size("Test", 50)
         with self.assertRaises(TypeError):
-            self.window.set_minimum_size(50, "Test")
+            self.window.set_min_size(50, "Test")
 
         self.assertEqual(self.window.get_minimum_size(), initial_value)
 
@@ -842,52 +842,52 @@ class WindowMethods(unittest.TestCase):
         initial_value = self.window.get_minimum_size()
 
         with self.assertRaises(ValueError):
-            self.window.set_minimum_size(-1, 50)
+            self.window.set_min_size(-1, 50)
         with self.assertRaises(ValueError):
-            self.window.set_minimum_size(50, -1)
+            self.window.set_min_size(50, -1)
 
         self.assertEqual(self.window.get_minimum_size(), initial_value)
 
     def test_set_minimum_size_keywords(self):
-        self.window.set_minimum_size(min_height=605, min_width=405)
+        self.window.set_min_size(min_height=605, min_width=405)
         self.assertEqual(self.window.get_minimum_size(), (405, 605))
 
     def test_get_minimum_size1(self):
-        self.window.set_minimum_size(100, 200)
+        self.window.set_min_size(100, 200)
         self.assertEqual(self.window.get_minimum_size(), (100, 200))
 
     def test_get_minimum_size2(self):
-        self.window.set_minimum_size(100, None)
+        self.window.set_min_size(100, None)
         self.assertEqual(self.window.get_minimum_size(), (100, 0))
 
     def test_get_minimum_size3(self):
-        self.window.set_minimum_size(None, 200)
+        self.window.set_min_size(None, 200)
         self.assertEqual(self.window.get_minimum_size(), (0, 200))
 
     def test_get_minimum_size4(self):
-        self.window.set_minimum_size(None, None)
+        self.window.set_min_size(None, None)
         self.assertIsNone(self.window.get_minimum_size())
 
     # Maximum Size
 
     def test_set_maximum_size1(self):
-        self.assertIsNone(self.window.set_maximum_size(1000, 1000))
+        self.assertIsNone(self.window.set_max_size(1000, 1000))
 
     def test_set_maximum_size2(self):
-        self.window.set_maximum_size(1000, None)
+        self.window.set_max_size(1000, None)
         self.assertEqual(self.window.max_height, gp.get_screen_height())
 
     def test_set_maximum_size3(self):
-        self.window.set_maximum_size(None, 1000)
+        self.window.set_max_size(None, 1000)
         self.assertEqual(self.window.max_width, gp.get_screen_width())
 
     def test_set_maximum_size_type_errors(self):
         initial_value = self.window.get_maximum_size()
 
         with self.assertRaises(TypeError):
-            self.window.set_maximum_size("Test", 1000)
+            self.window.set_max_size("Test", 1000)
         with self.assertRaises(TypeError):
-            self.window.set_maximum_size(1000, "Test")
+            self.window.set_max_size(1000, "Test")
 
         self.assertEqual(self.window.get_maximum_size(), initial_value)
 
@@ -895,41 +895,41 @@ class WindowMethods(unittest.TestCase):
         initial_value = self.window.get_maximum_size()
 
         with self.assertRaises(ValueError):
-            self.window.set_maximum_size(-1, 1000)
+            self.window.set_max_size(-1, 1000)
         with self.assertRaises(ValueError):
-            self.window.set_maximum_size(1000, -1)
+            self.window.set_max_size(1000, -1)
 
         self.assertEqual(self.window.get_maximum_size(), initial_value)
 
     def test_set_maximum_size_value_errors2(self):
         initial_value = self.window.get_maximum_size()
 
-        self.window.set_minimum_size(100, 100)
+        self.window.set_min_size(100, 100)
         with self.assertRaises(ValueError):
-            self.window.set_maximum_size(50, 1000)
+            self.window.set_max_size(50, 1000)
         with self.assertRaises(ValueError):
-            self.window.set_maximum_size(1000, 50)
+            self.window.set_max_size(1000, 50)
 
         self.assertEqual(self.window.get_maximum_size(), initial_value)
 
     def test_set_maximum_size_keywords(self):
-        self.window.set_maximum_size(max_height=905, max_width=705)
+        self.window.set_max_size(max_height=905, max_width=705)
         self.assertEqual(self.window.get_maximum_size(), (705, 905))
 
     def test_get_maximum_size1(self):
-        self.window.set_maximum_size(1000, 1200)
+        self.window.set_max_size(1000, 1200)
         self.assertEqual(self.window.get_maximum_size(), (1000, 1200))
 
     def test_get_maximum_size2(self):
-        self.window.set_maximum_size(1000, None)
+        self.window.set_max_size(1000, None)
         self.assertEqual(self.window.get_maximum_size(), (1000, gp.get_screen_height()))
 
     def test_get_maximum_size3(self):
-        self.window.set_maximum_size(None, 200)
+        self.window.set_max_size(None, 200)
         self.assertEqual(self.window.get_maximum_size(), (gp.get_screen_width(), 200))
 
     def test_get_maximum_size4(self):
-        self.window.set_maximum_size(None, None)
+        self.window.set_max_size(None, None)
         self.assertIsNone(self.window.get_maximum_size())
 
     # Minimum Width

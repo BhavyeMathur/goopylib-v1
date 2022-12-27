@@ -1,8 +1,6 @@
 #include "src/goopylib/core/Window.h"
 #include <GLFW/glfw3.h>
 
-#include <utility>
-
 #if !GP_LOG_WINDOW
 #undef GP_LOGGING
 #endif

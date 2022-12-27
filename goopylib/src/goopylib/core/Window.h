@@ -3,6 +3,9 @@
 #include "src/goopylib/scene/Renderer.h"
 #include "src/goopylib/color/Color.h"
 
+// TODO implement window icons
+// TODO window autoflush
+
 class GLFWwindow;
 
 namespace gp {
@@ -33,7 +36,6 @@ namespace gp {
     };
 }
 
-// TODO window autoflush
 namespace gp {
     class Window {
 
@@ -125,8 +127,7 @@ namespace gp {
         // Get & Set Methods
         void setSize(int width, int height);
 
-        void setSizeLimits(int minWidth, int minHeight,
-                           int maxWidth, int maxHeight);
+        void setSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight);
 
         void setMinSize(int minWidth, int minHeight);
 
@@ -319,6 +320,12 @@ namespace gp {
         std::unordered_map<int, std::function<void(Window *window, int action)>> m_KeyCallbacks;
         std::unordered_map<int, std::function<void(Window *window, bool pressed)>> m_MouseCallbacks;
 
+        #if GP_USING_GLFW
+
+        GLFWwindow *m_Window = nullptr;
+
+        #endif
+
         static std::vector<Window *> s_Instances;
 
         void super();
@@ -353,12 +360,6 @@ namespace gp {
         void onKeyPress(int key, int scancode, int action, int mods);
 
         void onMousePress(int button, int action, int mods);
-
-        #if GP_USING_GLFW
-
-        GLFWwindow *m_Window = nullptr;
-
-        #endif
 
         void _swapBuffers() const;
 

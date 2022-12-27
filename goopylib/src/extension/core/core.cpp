@@ -3,7 +3,18 @@
 
 #include <GLFW/glfw3.h>
 
-// TODO monitor getter functions
+#if !GP_LOG_CORE
+#undef GP_LOGGING
+#endif
+
+#if !GP_VALUE_CHECK_CORE
+#undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
+#endif
+
+#include "extension/debug.h"
+
 
 namespace core {
     static PyObject *init(PyObject *Py_UNUSED(self)) {
