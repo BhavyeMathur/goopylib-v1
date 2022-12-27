@@ -26,8 +26,6 @@ do { if (self->window->isDestroyed()) { \
 #define CHECK_ACTIVE(val) nullptr
 #endif
 
-static void **PyColor_API;
-
 struct WindowObject {
     PyObject_HEAD
     std::unique_ptr<gp::Window> window;

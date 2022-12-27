@@ -1,6 +1,6 @@
 #include "src/goopylib/core/Core.h"
-
 #include "core.h"
+
 #include <GLFW/glfw3.h>
 
 #if GP_LOG_CORE != true

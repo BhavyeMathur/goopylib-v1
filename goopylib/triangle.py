@@ -1,5 +1,5 @@
 from window import Window
-from texture import Texture
+from src.extension.archive.texture import Texture
 
 
 class Triangle:

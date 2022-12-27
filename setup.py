@@ -41,6 +41,34 @@ def build_c_extensions():
                                  sources=["goopylib/src/extension/core/window.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
+    setup(ext_modules=[Extension(name="goopylib.ext.line",
+                                 sources=["goopylib/src/extension/objects/line.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.triangle",
+                                 sources=["goopylib/src/extension/objects/triangle.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.quad",
+                                 sources=["goopylib/src/extension/objects/quad.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.rectangle",
+                                 sources=["goopylib/src/extension/objects/rectangle.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.ellipse",
+                                 sources=["goopylib/src/extension/objects/ellipse.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.circle",
+                                 sources=["goopylib/src/extension/objects/circle.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.image",
+                                 sources=["goopylib/src/extension/objects/image.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
 
 def build_html_documentation():
     extensions = {}

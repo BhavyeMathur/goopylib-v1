@@ -38,3 +38,8 @@
 
 #define GP_LOG_COLOR_CONVERSIONS true
 #define GP_VALUE_CHECKING_COLOR_CONVERSIONS true
+
+// objects
+
+#define GP_LOG_RENDERABLE true
+#define GP_VALUE_CHECK_RENDERABLE true
