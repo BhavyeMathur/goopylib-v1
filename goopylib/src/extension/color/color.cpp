@@ -1,7 +1,7 @@
 #include "color.h"
 
 #if !GP_LOG_COLOR
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #if !GP_VALUE_CHECK_COLOR

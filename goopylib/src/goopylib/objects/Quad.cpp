@@ -1,7 +1,7 @@
 #include "Quad.h"
 
 #if !GP_LOG_QUAD
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"

@@ -81,8 +81,8 @@ def build_html_documentation():
 
 def countlines(start, lines=0, _header=True, _begin_start=None,
                formats=(".py", ".c", ".cpp", ".h", ".hpp", ".glsl", ".frag", ".vert", ".geom"),
-               excluded_folders=("vendor", "venv", "build", "docs", "examples"),
-               excluded_files=("main.py", "main.cpp", "empty.cpp")):
+               excluded_folders=("vendor", "venv", "build", "docs"),
+               excluded_files=("main.py", "main.cpp")):
 
     if _header:
         print('{:>10} |{:>10} | {:<20}'.format('ADDED', 'TOTAL', 'FILE'))

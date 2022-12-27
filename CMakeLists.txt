@@ -55,34 +55,28 @@ include_directories(goopylib/src)
 include_directories(goopylib/vendor)
 
 find_package(OpenGL REQUIRED)
-
-option(INCLUDE_PYTHON "Includes the Python header files" true)
-option(DYNAMIC_LIBRARY "Dynamic vs Static Library" true)
-
-add_executable(main main.cpp)
-# add_executable(main examples/cpp/core.cpp)
-add_executable(empty empty.cpp)
-
-if (DYNAMIC_LIBRARY)
-    add_library(goopylib SHARED ${SOURCE_FILES})
-    target_link_libraries(main ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
-else ()
-    add_library(goopylib STATIC ${SOURCE_FILES})
-    target_link_libraries(main ${CMAKE_SOURCE_DIR}/goopylib/goopylib.a)
-endif ()
+add_library(goopylib SHARED ${SOURCE_FILES})
+target_link_libraries(goopylib ${PROJECT_BINARY_DIR}/../goopylib/vendor/GLFW/libglfw.3.3.dylib)
 
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
 endif ()
 
-target_link_libraries(goopylib ${PROJECT_BINARY_DIR}/../goopylib/vendor/GLFW/libglfw.3.3.dylib)
-target_link_libraries(main ${CMAKE_SOURCE_DIR}/goopylib/vendor/GLFW/libglfw.3.3.dylib)
-target_link_libraries(main ${OPENGL_gl_LIBRARY})
-
-target_include_directories(main SYSTEM PRIVATE ${OPENGL_INCLUDE_DIR})
-
+option(INCLUDE_PYTHON "Includes the Python header files" true)
 if (INCLUDE_PYTHON)
     find_package(PythonLibs REQUIRED)
     include_directories(${PYTHON_INCLUDE_DIRS})
     target_link_libraries(goopylib ${PYTHON_LIBRARIES})
 endif ()
+
+# Client Programs
+add_executable(main main.cpp)
+add_executable(empty empty.cpp)
+add_executable(core examples/cpp/core.cpp)
+add_executable(window_states examples/cpp/window/window_states.cpp)
+add_executable(window_callbacks examples/cpp/window/window_callbacks.cpp)
+
+target_link_libraries(main ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
+target_link_libraries(core ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
+target_link_libraries(window_states ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
+target_link_libraries(window_callbacks ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)

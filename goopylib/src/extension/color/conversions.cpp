@@ -1,7 +1,7 @@
 #include "conversions.h"
 
 #if !GP_LOG_COLOR_CONVERSIONS
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #if !GP_VALUE_CHECKING_COLOR_CONVERSION

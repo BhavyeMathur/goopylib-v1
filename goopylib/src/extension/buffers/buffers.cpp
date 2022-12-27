@@ -54,7 +54,7 @@ namespace BufferElement {
             type = gp::ShaderDataType::Bool;
         }
         else {
-            RAISE_VALUE_ERROR(-1, "invalid BufferElement dtype")
+            RAISE_VALUE_ERROR(-1, "invalid BufferElement dtype");
         }
 
         self->buffer_element = std::make_shared<gp::BufferElement>(type, name, normalized);

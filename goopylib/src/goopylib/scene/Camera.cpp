@@ -3,7 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 #if !GP_LOG_CAMERA
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"

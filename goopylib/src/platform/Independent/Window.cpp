@@ -2,7 +2,7 @@
 #include "src/goopylib/events/MouseCodes.h"
 
 #if !GP_LOG_WINDOW
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"

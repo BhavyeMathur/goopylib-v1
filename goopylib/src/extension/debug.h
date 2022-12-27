@@ -11,7 +11,6 @@
  5 - Debug Enabled
  6 - Trace Enabledpr
  */
-#define GP_PY_LOGGING_LEVEL 6
 
 // Python Extension Logging
 

@@ -1,10 +1,11 @@
-#include "core.h"
 #include "src/goopylib/core/Core.h"
 
+#include "core.h"
 #include <GLFW/glfw3.h>
 
-#if !GP_LOG_CORE
-#undef GP_LOGGING
+#if GP_LOG_CORE != true
+#undef GP_PY_LOGGING_LEVEL
+#define GP_PY_LOGGING_LEVEL GP_LOG_CORE
 #endif
 
 #if !GP_VALUE_CHECK_CORE

@@ -3,13 +3,19 @@
 #include "src/goopylib/scene/Renderer.h"
 #include "src/goopylib/color/Color.h"
 
+#include <GLFW/glfw3.h>
+
 // TODO implement window icons
 // TODO window autoflush
 
 class GLFWwindow;
 
 namespace gp {
-    enum class CursorMode;
+    enum class CursorMode {
+        Normal = GLFW_CURSOR_NORMAL,
+        Disabled = GLFW_CURSOR_DISABLED,
+        Hidden = GLFW_CURSOR_HIDDEN
+    };
 
     class Color;
 

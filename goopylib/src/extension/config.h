@@ -17,14 +17,14 @@
  6 - Trace Enabled
  7 - All Enabled
  */
-#define GP_LOGGING_LEVEL 6
+#define GP_PY_LOGGING_LEVEL 6
 
 /* Module Specific Config --------------------------------------------------------------------------------------------*/
 
 // core
 
 #define GP_VALUE_CHECK_CORE true
-#define GP_LOG_CORE true
+#define GP_LOG_CORE 5
 
 // math
 

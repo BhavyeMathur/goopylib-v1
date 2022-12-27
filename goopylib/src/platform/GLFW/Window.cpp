@@ -1,8 +1,7 @@
 #include "src/goopylib/core/Window.h"
-#include <GLFW/glfw3.h>
 
 #if !GP_LOG_WINDOW
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"
@@ -12,14 +11,6 @@
 #endif
 
 #include "src/goopylib/debug/Error.h"
-
-namespace gp {
-    enum class CursorMode {
-        Normal = GLFW_CURSOR_NORMAL,
-        Disabled = GLFW_CURSOR_DISABLED,
-        Hidden = GLFW_CURSOR_HIDDEN
-    };
-}
 
 namespace gp {
     Window::Window(int width, int height, const char *title)

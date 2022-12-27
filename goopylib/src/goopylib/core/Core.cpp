@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 
 #if !GP_LOG_CORE
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"

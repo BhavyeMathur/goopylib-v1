@@ -2,7 +2,7 @@
 #include "src/goopylib/math/Easing.h"
 
 #if !GP_LOG_EASING
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #if !GP_VALUE_CHECK_EASING

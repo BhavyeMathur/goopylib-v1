@@ -27,7 +27,7 @@
 #define GP_LOG_CORE true
 
 #define GP_VALUE_CHECK_BUFFER true
-#define GP_LOG_BUFFER true
+#define GP_LOG_BUFFER 5
 
 #define GP_VALUE_CHECK_TEXTURE2D true
 #define GP_LOG_TEXTURE2D true

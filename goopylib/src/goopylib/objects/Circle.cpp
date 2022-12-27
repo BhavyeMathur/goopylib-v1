@@ -1,7 +1,7 @@
 #include "Circle.h"
 
 #if !GP_LOG_CIRCLE
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"

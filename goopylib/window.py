@@ -10,8 +10,6 @@ import goopylib.ext.window as _window
 
 # TODO some of the docstrings (especially the callback functions) are essentially plagiarised from GLFW's docs.
 
-CursorMode = Literal["Normal", "Disabled", "Hidden"]
-
 
 class Window:
     """
@@ -721,7 +719,7 @@ class Window:
         """
         return self._window.get_mouse_position()
 
-    def set_cursor_mode(self, mode: CursorMode):
+    def set_cursor_mode(self, mode: str):
         """
         Normal:
             makes the cursor visible and behave normally.
@@ -738,7 +736,7 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.set_cursor_mode(mode)
+        self._window.set_cursor_mode(mode.lower())
 
     def check_shift_key(self) -> bool:
         """

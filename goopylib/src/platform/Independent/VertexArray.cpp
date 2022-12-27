@@ -1,7 +1,7 @@
 #include "src/goopylib/core/VertexArray.h"
 
 #if !GP_LOG_VERTEX_ARRAY
-#undef GP_LOGGING
+#undef GP_LOGGING_LEVEL
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"
