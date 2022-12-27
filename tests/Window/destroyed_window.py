@@ -2,7 +2,6 @@ import unittest
 import goopylib as gp
 
 
-# noinspection PyTypeChecker
 class DestroyedWindowMethods(unittest.TestCase):
     window = None
     initial_width = 500
@@ -29,16 +28,13 @@ class DestroyedWindowMethods(unittest.TestCase):
     def test_redestroy(self):
         self.assertIsNone(self.window.destroy())
 
-    def test_close(self):
-        with self.assertRaises(RuntimeError):
-            self.window.close()
-
     def test_update(self):
-        self.assertIsNone(self.window.update())
+        with self.assertRaises(RuntimeError):
+            self.window.update()
 
     def test_set_focus(self):
         with self.assertRaises(RuntimeError):
-            self.assertIsNone(self.window.set_focus())
+            self.assertIsNone(self.window.focus())
 
     def test_has_focus(self):
         with self.assertRaises(RuntimeError):
@@ -68,17 +64,9 @@ class DestroyedWindowMethods(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.window.is_visible()
 
-    def test_is_hidden(self):
-        with self.assertRaises(RuntimeError):
-            self.window.is_hidden()
-
     def test_make_fullscreen(self):
         with self.assertRaises(RuntimeError):
             self.window.fullscreen()
-
-    def test_make_windowed(self):
-        with self.assertRaises(RuntimeError):
-            self.window.unfullscreen()
 
     def test_minimize(self):
         with self.assertRaises(RuntimeError):
@@ -265,11 +253,6 @@ class DestroyedWindowMethods(unittest.TestCase):
     def test_height2(self):
         with self.assertRaises(RuntimeError):
             self.window.height = self.initial_height
-    
-    # Size
-    def test_size1(self):
-        with self.assertRaises(RuntimeError):
-            tmp = self.window.get_size()
 
     def test_size2(self):
         with self.assertRaises(RuntimeError):
@@ -292,11 +275,6 @@ class DestroyedWindowMethods(unittest.TestCase):
     def test_y_position2(self):
         with self.assertRaises(RuntimeError):
             self.window.ypos = 50
-    
-    # Position
-    def test_position1(self):
-        with self.assertRaises(RuntimeError):
-            tmp = self.window.get_position()
 
     def test_position2(self):
         with self.assertRaises(RuntimeError):
@@ -310,11 +288,11 @@ class DestroyedWindowMethods(unittest.TestCase):
     def test_title2(self):
         with self.assertRaises(RuntimeError):
             self.window.title = "This is a new title"
-    
+
     # Framebuffer Size
     def test_framebuffer_size(self):
         with self.assertRaises(RuntimeError):
-            tmp = self.window.framebuffer_size
+            self.window.get_framebuffer_size()
     
     # Minimum & Maximum Sizes
     def test_min_width(self):

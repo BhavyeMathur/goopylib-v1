@@ -17,7 +17,7 @@
  6 - Trace Enabled
  7 - All Enabled
  */
-#define GP_LOGGING_LEVEL 5
+#define GP_LOGGING_LEVEL 6
 
 /* Module Specific Config --------------------------------------------------------------------------------------------*/
 

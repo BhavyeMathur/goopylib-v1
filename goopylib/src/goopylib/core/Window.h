@@ -73,6 +73,8 @@ namespace gp {
 
         ~Window();
 
+        std::string toString();
+
         #if GP_USING_GLFW
         
         /**
@@ -86,15 +88,11 @@ namespace gp {
     
         /**
          * @return whether the Window is closed.
-         *
-         * @throws std::runtime_error window has been destroyed
          */
         bool isClosed() const;
 
         /**
          * @return whether the Window is open.
-         *
-         * @throws std::runtime_error window has been destroyed
          */
         bool isOpen() const;
     
@@ -334,9 +332,12 @@ namespace gp {
          * \n\n
          * The aspect ratio is specified as a numerator and denominator, corresponding to the width and height,
          * respectively. If you want a window to maintain its current aspect ratio, use its current size as the ratio.
+         * \n\n
          *
-         * @throws std::invalid_argument numerator must be greater than 0
-         * @throws std::invalid_argument denominator must be greater than 0
+         * Specify -1 to remove any aspect ratio settings.
+         *
+         * @throws std::invalid_argument numerator must be -1 or greater than 0
+         * @throws std::invalid_argument denominator must be -1 or greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
         void setAspectRatio(int numerator, int denominator);

@@ -18,8 +18,7 @@ def build_c_extensions():
     ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/src", "goopylib/vendor"],
                   "extra_compile_args":   ["-std=c++11", "-v"],
                   "runtime_library_dirs": [f"{path}/goopylib"],
-                  "extra_objects":        ["goopylib/goopylib.dylib"],
-                  "extra_link_args":      []}
+                  "extra_objects":        ["goopylib/goopylib.dylib"]}
     setup_kwargs = {"options": {"build": {"build_lib": "."}}}
 
     setup(ext_modules=[Extension(name="goopylib.ext.easing",
@@ -34,14 +33,12 @@ def build_c_extensions():
                                  sources=["goopylib/src/extension/color/color.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
-    ext_kwargs["extra_link_args"] += ["-framework", "OpenGL", "-framework", "Cocoa",
-                                      "-framework", "IOKit", "-framework", "CoreVideo",
-                                      "-framework", "CoreFoundation"]
-
-    ext_kwargs["extra_link_args"] += [f"{path}/goopylib/vendor/GLFW/libglfw.3.3.dylib"]
-
     setup(ext_modules=[Extension(name="goopylib.ext.core",
                                  sources=["goopylib/src/extension/core/core.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
+    setup(ext_modules=[Extension(name="goopylib.ext.window",
+                                 sources=["goopylib/src/extension/core/window.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
 

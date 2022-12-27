@@ -18,7 +18,9 @@
 
 namespace core {
     static PyObject *init(PyObject *Py_UNUSED(self)) {
-        GP_PY_TRACE("core.init()");
+        #if GP_LOGGING_LEVEL >= 6
+        std::cout << "[--:--:--] PYTHON: core.init()" << std::endl;
+        #endif
 
         try {
             gp::init();

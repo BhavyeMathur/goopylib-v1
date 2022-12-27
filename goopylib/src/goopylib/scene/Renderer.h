@@ -49,8 +49,8 @@ namespace gp {
         RenderingData(const Ref<VertexArray> &VAO, void *bufferData,
                       const Ref<Shader> &shader, int32_t mode = GP_DRAW_MODE_TRIANGLES)
                 : VAO(VAO),
-                  bufferData(bufferData),
                   shader(shader),
+                  bufferData(bufferData),
                   mode(mode) {
         }
     };

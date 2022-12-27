@@ -1,5 +1,4 @@
 #include <Python.h>
-#include <goopylib/color/Color.h>
 
 #ifndef Py_COLORMODULE_H
 #define Py_COLORMODULE_H
@@ -31,9 +30,6 @@ extern "C" {
         static Color_get_pointer_RETURN Color_get_pointer Color_get_pointer_PROTO;
 
     #else
-
-        static void **PyColor_API;
-
         #define Color_create \
         (*(Color_create_RETURN (*)Color_create_PROTO) PyColor_API[Color_create_NUM])
 
@@ -42,11 +38,6 @@ extern "C" {
 
         #define Color_get_pointer \
         (*(Color_get_pointer_RETURN (*)Color_get_pointer_PROTO) PyColor_API[Color_get_pointer_NUM])
-
-        static int import_color() {
-            PyColor_API = (void **) PyCapsule_Import("ext.color._C_API", 0);
-            return (PyColor_API != nullptr) ? 0 : -1;
-        }
 
     #endif
 

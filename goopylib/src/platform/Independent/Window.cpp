@@ -31,6 +31,13 @@ namespace gp {
         _setMouseButtonCallback();
     }
 
+    std::string Window::toString() {
+        if (m_IsDestroyed) {
+            return {"Destroyed Window()"};
+        }
+        return strformat("Window(%i, %i, '%s')", m_Width, m_Height, m_Title);
+    }
+
     bool Window::isOpen() const {
         GP_CORE_TRACE_ALL("gp::Window::isOpen() - '{0}'", m_Title);
         return !isClosed();
@@ -272,6 +279,11 @@ namespace gp {
     // Aspect Ratio
     void Window::setAspectRatio(int numerator, int denominator) {
         GP_CORE_DEBUG("gp::Window::setAspectRatio({1}, {2}) - '{0}'", m_Title, numerator, denominator);
+
+        if (numerator == -1 or denominator == -1) {
+            _updateAspectRatio(-1, -1);
+            return;
+        }
 
         GP_CHECK_GT(numerator, 0, "Aspect ratio numerator must be greater than 0");
         GP_CHECK_GT(denominator, 0, "Aspect ratio denominator must be greater than 0");

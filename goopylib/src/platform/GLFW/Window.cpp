@@ -68,7 +68,7 @@ namespace gp {
 
     bool Window::isClosed() const {
         GP_CORE_TRACE_ALL("gp::Window::isClosed() - '{0}'", m_Title);
-        return glfwWindowShouldClose(m_Window) or m_IsDestroyed;
+        return m_IsDestroyed or glfwWindowShouldClose(m_Window);
     }
 }
 
@@ -282,7 +282,7 @@ namespace gp {
     }
 
     void Window::_updateSize() const {
-        GP_CORE_TRACE("gp::Window::_updateSize() - '{0}'", m_Title);
+        GP_CORE_TRACE("gp::Window::_updateSize() - '{0}' - ({1}, {2})", m_Title, m_Width, m_Height);
         glfwSetWindowSize(m_Window, m_Width, m_Height);
     }
 
@@ -351,6 +351,12 @@ namespace gp {
 
         m_CloseCallback = std::move(callback);
 
+        if (!m_CloseCallback) {
+            glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
+            });
+            return;
+        }
+
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onClose();
@@ -365,6 +371,7 @@ namespace gp {
         glfwSetWindowPosCallback(m_Window, [](GLFWwindow *window, int xPos, int yPos) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMove(xPos, yPos);
+            return;
         });
     }
 
@@ -372,6 +379,12 @@ namespace gp {
         GP_CORE_DEBUG("gp::Window::setMinimizeCallback() - '{0}'", m_Title);
 
         m_MinimizeCallback = std::move(callback);
+
+        if (!m_MinimizeCallback) {
+            glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow *window, int iconified) {
+            });
+            return;
+        }
 
         glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow *window, int iconified) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
@@ -383,6 +396,12 @@ namespace gp {
         GP_CORE_DEBUG("gp::Window::setMaximizeCallback() - '{0}'", m_Title);
 
         m_MaximizeCallback = std::move(callback);
+
+        if (!m_MaximizeCallback) {
+            glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *window, int maximized) {
+            });
+            return;
+        }
 
         // TODO fix issue with maximize callback not working. Tested on M1 MacOS Monterey 12.4, 3.3.8 Cocoa NSGL EGL OSMesa dynamic, OpenGL 4.1
         glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *window, int maximized) {
@@ -396,6 +415,12 @@ namespace gp {
 
         m_FocusedCallback = std::move(callback);
 
+        if (!m_FocusedCallback) {
+            glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *window, int focused) {
+            });
+            return;
+        }
+
         glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *window, int focused) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onFocus(focused == GLFW_TRUE);
@@ -406,6 +431,12 @@ namespace gp {
         GP_CORE_DEBUG("gp::Window::setRefreshCallback() - '{0}'", m_Title);
 
         m_RefreshCallback = std::move(callback);
+
+        if (!m_RefreshCallback) {
+            glfwSetWindowRefreshCallback(m_Window, [](GLFWwindow *window) {
+            });
+            return;
+        }
 
         glfwSetWindowRefreshCallback(m_Window, [](GLFWwindow *window) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
@@ -418,6 +449,12 @@ namespace gp {
 
         m_ContentScaleCallback = std::move(callback);
 
+        if (!m_ContentScaleCallback) {
+            glfwSetWindowContentScaleCallback(m_Window, [](GLFWwindow *window, float xScale, float yScale) {
+            });
+            return;
+        }
+
         glfwSetWindowContentScaleCallback(m_Window, [](GLFWwindow *window, float xScale, float yScale) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onContentScale(xScale, yScale);
@@ -428,6 +465,12 @@ namespace gp {
         GP_CORE_DEBUG("gp::Window::setFramebufferSizeCallback() - '{0}'", m_Title);
 
         m_FramebufferSizeCallback = std::move(callback);
+
+        if (!m_FramebufferSizeCallback) {
+            glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
+            });
+            return;
+        }
 
         glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
@@ -440,6 +483,12 @@ namespace gp {
 
         m_MouseMotionCallback = std::move(callback);
 
+        if (!m_MouseMotionCallback) {
+            glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xPos, double yPos) {
+            });
+            return;
+        }
+
         glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xPos, double yPos) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMouseMotion((float) xPos, (float) yPos);
@@ -451,6 +500,12 @@ namespace gp {
 
         m_MouseEnterCallback = std::move(callback);
 
+        if (!m_MouseEnterCallback) {
+            glfwSetCursorEnterCallback(m_Window, [](GLFWwindow *window, int entered) {
+            });
+            return;
+        }
+
         glfwSetCursorEnterCallback(m_Window, [](GLFWwindow *window, int entered) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMouseEnter((bool) entered);
@@ -461,6 +516,12 @@ namespace gp {
         GP_CORE_DEBUG("gp::Window::setScrollCallback() - '{0}'", m_Title);
 
         m_ScrollCallback = std::move(callback);
+
+        if (!m_ScrollCallback) {
+            glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xScroll, double yScroll) {
+            });
+            return;
+        }
 
         glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xScroll, double yScroll) {
             Window *windowObject = (Window *) glfwGetWindowUserPointer(window);

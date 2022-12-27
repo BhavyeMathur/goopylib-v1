@@ -1,6 +1,18 @@
 #include "easing.h"
 #include "src/goopylib/math/Easing.h"
 
+#if !GP_LOG_EASING
+#undef GP_LOGGING
+#endif
+
+#if !GP_VALUE_CHECK_EASING
+#undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
+#endif
+
+#include "extension/debug.h"
+
 // TODO Easing base class
 
 namespace easing {
@@ -337,8 +349,8 @@ namespace easing {
             return -1;
         }
 
-        GP_CHECK_GE(damping, 0, -1, "damping value for easing must be greater than or equal to 0")
-        GP_CHECK_GE(bounces, 1, -1, "bounces value for easing must be greater than or equal to 1")
+        GP_CHECK_GE(damping, 0, -1, "damping value for easing must be greater than or equal to 0");
+        GP_CHECK_GE(bounces, 1, -1, "bounces value for easing must be greater than or equal to 1");
 
         self->easing = gp::easeBounceInOut(bounces, damping);
         self->string = PyUnicode_FromFormat("ease_bounce(bounces=%i, damping=%S)", bounces,
