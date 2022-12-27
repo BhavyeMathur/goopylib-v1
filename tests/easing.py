@@ -1,5 +1,5 @@
 import unittest
-import goopylib.easing as gp
+import math.easing as gp
 
 
 class EasingFunctions(unittest.TestCase):

@@ -14,86 +14,86 @@ def build_release():
     subprocess.run(["twine", "check", "dist/*"])
 
 
-def build_c_extensions():
-    ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/src", "goopylib/vendor"],
+def build_c_exts():
+    ext_kwargs = {"include_dirs":         ["src", "src/vendor"],
                   "extra_compile_args":   ["-std=c++11", "-v"],
                   "runtime_library_dirs": [f"{path}/goopylib"],
                   "extra_objects":        ["goopylib/goopylib.dylib"]}
     setup_kwargs = {"options": {"build": {"build_lib": "."}}}
 
     setup(ext_modules=[Extension(name="goopylib.ext.easing",
-                                 sources=["goopylib/src/extension/math/easing.cpp"],
+                                 sources=["src/ext/math/easing.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.color_conversions",
-                                 sources=["goopylib/src/extension/color/conversions.cpp"],
+                                 sources=["src/ext/color/conversions.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.color",
-                                 sources=["goopylib/src/extension/color/color.cpp"],
+                                 sources=["src/ext/color/color.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.core",
-                                 sources=["goopylib/src/extension/core/core.cpp"],
+                                 sources=["src/ext/core/core.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.window",
-                                 sources=["goopylib/src/extension/core/window.cpp"],
+                                 sources=["src/ext/core/window.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.line",
-                                 sources=["goopylib/src/extension/objects/line.cpp"],
+                                 sources=["src/ext/objects/line.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.triangle",
-                                 sources=["goopylib/src/extension/objects/triangle.cpp"],
+                                 sources=["src/ext/objects/triangle.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.quad",
-                                 sources=["goopylib/src/extension/objects/quad.cpp"],
+                                 sources=["src/ext/objects/quad.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.rectangle",
-                                 sources=["goopylib/src/extension/objects/rectangle.cpp"],
+                                 sources=["src/ext/objects/rectangle.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.ellipse",
-                                 sources=["goopylib/src/extension/objects/ellipse.cpp"],
+                                 sources=["src/ext/objects/ellipse.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.circle",
-                                 sources=["goopylib/src/extension/objects/circle.cpp"],
+                                 sources=["src/ext/objects/circle.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.image",
-                                 sources=["goopylib/src/extension/objects/image.cpp"],
+                                 sources=["src/ext/objects/image.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
 
 def build_html_documentation():
-    extensions = {}
+    exts = {}
     i = 0
 
-    def move_extensions(parent):
-        nonlocal extensions, i
+    def move_exts(parent):
+        nonlocal exts, i
 
         for root, dirs, files in os.walk(parent):
             for item in files:
                 filespec = os.path.join(root, item)
                 if filespec.endswith(".so"):
-                    extensions[i] = filespec
+                    exts[i] = filespec
                     os.rename(filespec, f"build/{i}.so")
                     i += 1
             for item in dirs:
-                move_extensions(os.path.join(root, item))  # Recursively perform this operation for subdirectories
+                move_exts(os.path.join(root, item))  # Recursively perform this operation for subdirectories
 
-    move_extensions("goopylib")
+    move_exts("goopylib")
 
-    with open("goopylib/easing.py", "r") as fp:
+    with open("goopylib/math/easing.py", "r") as fp:
         new = map(lambda line: line.replace(" -> EASING_TYPE", ""), fp.readlines())
-    os.rename("goopylib/easing.py", f"build/_easing.py")
+    os.rename("goopylib/math/easing.py", f"build/_easing.py")
 
-    with open("goopylib/easing.py", "w+") as fp:
+    with open("goopylib/math/easing.py", "w+") as fp:
         fp.writelines(new)
 
     try:
@@ -103,8 +103,8 @@ def build_html_documentation():
         pass
     finally:
         for i in range(i):
-            os.rename(f"build/{i}.so", extensions[i])
-        os.rename("build/_easing.py", f"goopylib/easing.py")
+            os.rename(f"build/{i}.so", exts[i])
+        os.rename("build/_easing.py", f"goopylib/math/easing.py")
 
 
 def countlines(start, lines=0, _header=True, _begin_start=None,
@@ -135,7 +135,7 @@ arg_text = """
 Choose a task to perform:
     
     1. Create goopylib release
-    2. Build C extensions
+    2. Build C exts
     3. Count Lines of Code
     4. Create Documentation
 
@@ -164,4 +164,4 @@ if __name__ == "__main__":
         if sys.argv[1] == "sdist" and sys.argv[2] == "bdist_wheel":
             build_release()
         elif sys.argv[1] == "build":
-            build_c_extensions()
+            build_c_exts()

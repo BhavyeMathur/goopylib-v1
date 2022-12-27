@@ -2,9 +2,5 @@
 goopylib module initialization
 """
 
-from goopylib.core import *
-
-import goopylib.ext.color
-from goopylib.window import *
-
-from keyboard import *
+from core.core import *
+from core.window import *

@@ -1,6 +1,6 @@
 import unittest
 
-import goopylib.color as gp
+import color.color as gp
 
 
 class ColorConversionMethods(unittest.TestCase):

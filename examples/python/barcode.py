@@ -1,6 +1,6 @@
 import goopylib as gp
-import src.extension.archive.buffers as buffers
-import src.extension.archive.shader as shader
+import src.ext.archive.buffers as buffers
+import src.ext.archive.shader as shader
 
 window = gp.Window(500, 500, "Barcode")
 

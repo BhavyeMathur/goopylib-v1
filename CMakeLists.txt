@@ -8,55 +8,54 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/..)
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
-add_compile_definitions(GP_DIRECTORY="${PROJECT_BINARY_DIR}/../goopylib/src/")
+add_compile_definitions(GP_DIRECTORY="${PROJECT_BINARY_DIR}/../src/")
 
 set(SOURCE_FILES
-    goopylib/src/goopylib/core/Core.cpp
-    goopylib/src/goopylib/core/BufferLayout.cpp
+    src/goopylib/core/Core.cpp
+    src/goopylib/core/BufferLayout.cpp
 
-    goopylib/src/goopylib/debug/Log.cpp
-    goopylib/src/goopylib/debug/Error.cpp
+    src/goopylib/debug/Log.cpp
+    src/goopylib/debug/Error.cpp
 
-    goopylib/src/goopylib/math/Easing.cpp
-    goopylib/src/goopylib/math/gpmath.cpp
+    src/goopylib/math/Easing.cpp
+    src/goopylib/math/gpmath.cpp
 
-    goopylib/src/goopylib/color/Color.cpp
-    goopylib/src/goopylib/color/ColorConversions.cpp
-    goopylib/src/goopylib/color/Util.cpp
-    goopylib/src/goopylib/color/W3CX11.cpp
+    src/goopylib/color/Color.cpp
+    src/goopylib/color/ColorConversions.cpp
+    src/goopylib/color/Util.cpp
+    src/goopylib/color/W3CX11.cpp
 
-    goopylib/src/goopylib/objects/Renderable.cpp
-    goopylib/src/goopylib/objects/Line.cpp
-    goopylib/src/goopylib/objects/Triangle.cpp
-    goopylib/src/goopylib/objects/Quad.cpp
-    goopylib/src/goopylib/objects/Ellipse.cpp
-    goopylib/src/goopylib/objects/Circle.cpp
-    goopylib/src/goopylib/objects/Image.cpp
+    src/goopylib/objects/Renderable.cpp
+    src/goopylib/objects/Line.cpp
+    src/goopylib/objects/Triangle.cpp
+    src/goopylib/objects/Quad.cpp
+    src/goopylib/objects/Ellipse.cpp
+    src/goopylib/objects/Circle.cpp
+    src/goopylib/objects/Image.cpp
 
-    goopylib/src/goopylib/scene/Renderer.cpp
-    goopylib/src/goopylib/scene/Camera.cpp
-    goopylib/src/goopylib/scene/CameraController.cpp
+    src/goopylib/scene/Renderer.cpp
+    src/goopylib/scene/Camera.cpp
+    src/goopylib/scene/CameraController.cpp
 
-    goopylib/src/platform/GLFW/Window.cpp
-    goopylib/src/platform/OpenGL/Buffer.cpp
-    goopylib/src/platform/OpenGL/VertexArray.cpp
-    goopylib/src/platform/OpenGL/Shader.cpp
-    goopylib/src/platform/OpenGL/Texture2D.cpp
+    src/platform/GLFW/Window.cpp
+    src/platform/OpenGL/Buffer.cpp
+    src/platform/OpenGL/VertexArray.cpp
+    src/platform/OpenGL/Shader.cpp
+    src/platform/OpenGL/Texture2D.cpp
 
-    goopylib/src/platform/Independent/Window.cpp
-    goopylib/src/platform/Independent/Buffer.cpp
-    goopylib/src/platform/Independent/VertexArray.cpp
-    goopylib/src/platform/Independent/Shader.cpp
+    src/platform/Independent/Window.cpp
+    src/platform/Independent/Buffer.cpp
+    src/platform/Independent/VertexArray.cpp
+    src/platform/Independent/Shader.cpp
 
-    goopylib/vendor/stb/stb_image.cpp)
+    src/vendor/stb/stb_image.cpp)
 
-include_directories(goopylib)
-include_directories(goopylib/src)
-include_directories(goopylib/vendor)
+include_directories(src)
+include_directories(src/vendor)
 
 find_package(OpenGL REQUIRED)
 add_library(goopylib SHARED ${SOURCE_FILES})
-target_link_libraries(goopylib ${PROJECT_BINARY_DIR}/../goopylib/vendor/GLFW/libglfw.3.3.dylib)
+target_link_libraries(goopylib ${PROJECT_BINARY_DIR}/../src/vendor/GLFW/libglfw.3.3.dylib)
 
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
