@@ -1,4 +1,3 @@
-#include "gp.h"
 #include "src/goopylib/core/Window.h"
 #include <GLFW/glfw3.h>
 
@@ -25,20 +24,26 @@ namespace gp {
 }
 
 namespace gp {
-    Window::Window(const WindowConfig &config)
-            : m_Data(config),
+    Window::Window(int width, int height, const char *title)
+            : m_Width(width),
+              m_Height(height),
+              m_Title(title),
+              m_Background(Color(255, 255, 255)),
 
-            m_WindowedWidth(config.width),
-            m_WindowedHeight(config.height),
-            m_WindowedXPos(config.xPos),
-            m_WindowedYPos(config.yPos),
+              m_xPos(0),
+              m_yPos(0),
+              m_WindowedXPos(m_xPos),
+              m_WindowedYPos(m_yPos),
 
-            m_Renderer((float) config.width, (float) config.height) {
-        GP_CORE_INFO("Creating window '{0}' ({1}, {2})", config.title, config.width, config.height);
+              m_WindowedWidth(m_Width),
+              m_WindowedHeight(m_Height),
 
-        m_Window = glfwCreateWindow(m_Data.width,
-                                    m_Data.height,
-                                    m_Data.title, nullptr, nullptr);
+              m_Renderer((float) m_Width, (float) m_Height) {
+        GP_CORE_INFO("Creating window '{0}' ({1}, {2})", m_Title, m_Width, m_Height);
+
+        m_Window = glfwCreateWindow(m_Width,
+                                    m_Height,
+                                    m_Title, nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
 
         glfwSetWindowUserPointer(m_Window, this);
@@ -49,7 +54,7 @@ namespace gp {
     }
 
     Window::~Window() {
-        GP_CORE_INFO("Deallocating window '{0}'", m_Data.title);
+        GP_CORE_INFO("Deallocating window '{0}'", m_Title);
         destroy();
 
         s_Instances.erase(std::remove(s_Instances.begin(), s_Instances.end(), this), s_Instances.end());
@@ -67,7 +72,7 @@ namespace gp {
     }
 
     void Window::setResizable(bool value) {
-        GP_CORE_TRACE_ALL("Set '{0}' resizable -> {1}", m_Data.title, value);
+        GP_CORE_TRACE_ALL("Set '{0}' resizable -> {1}", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -76,7 +81,7 @@ namespace gp {
     }
 
     void Window::setDecorated(bool value) {
-        GP_CORE_TRACE_ALL("Set '{0}' decorated -> {1}", m_Data.title, value);
+        GP_CORE_TRACE_ALL("Set '{0}' decorated -> {1}", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_DECORATED, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -85,7 +90,7 @@ namespace gp {
     }
 
     void Window::setFloating(bool value) {
-        GP_CORE_TRACE_ALL("Set '{0}' floating -> {1}", m_Data.title, value);
+        GP_CORE_TRACE_ALL("Set '{0}' floating -> {1}", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_FLOATING, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -94,7 +99,7 @@ namespace gp {
     }
 
     void Window::setAutoMinimized(bool value) {
-        GP_CORE_TRACE_ALL("Set '{0}' auto minimized -> {1}", m_Data.title, value);
+        GP_CORE_TRACE_ALL("Set '{0}' auto minimized -> {1}", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_AUTO_ICONIFY, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -103,7 +108,7 @@ namespace gp {
     }
 
     void Window::setFocusedOnShow(bool value) {
-        GP_CORE_TRACE_ALL("Set '{0}' focused on show -> {1}", m_Data.title, value);
+        GP_CORE_TRACE_ALL("Set '{0}' focused on show -> {1}", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_FOCUS_ON_SHOW, value ? GLFW_TRUE : GLFW_FALSE);
     }
 
@@ -305,13 +310,13 @@ namespace gp {
     }
 
     void Window::_update() const {
-        GP_CORE_TRACE_ALL("gp::Window::_update() - {0}", m_Data.title);
+        GP_CORE_TRACE_ALL("gp::Window::_update() - {0}", m_Title);
 
         glfwSwapBuffers(m_Window);
     }
 
     void Window::_destroy() const {
-        GP_CORE_TRACE_ALL("_destroy() '{0}'", m_Data.title);
+        GP_CORE_TRACE_ALL("_destroy() '{0}'", m_Title);
         glfwDestroyWindow(m_Window);
     }
 
@@ -355,30 +360,30 @@ namespace gp {
 // Window private update methods
 namespace gp {
     void Window::_updateSize() const {
-        glfwSetWindowSize(m_Window, m_Data.width, m_Data.height);
+        glfwSetWindowSize(m_Window, m_Width, m_Height);
     }
 
     void Window::_updateTitle() const {
-        glfwSetWindowTitle(m_Window, m_Data.title);
+        glfwSetWindowTitle(m_Window, m_Title);
     }
 
     void Window::_updatePosition() const {
-        glfwSetWindowPos(m_Window, m_Data.xPos, m_Data.yPos);
+        glfwSetWindowPos(m_Window, m_xPos, m_yPos);
     }
 
     void Window::_updateBackground() const {
-        GP_CORE_TRACE_ALL("gp::Window::_updateBackground() - {0}", m_Data.title);
+        GP_CORE_TRACE_ALL("gp::Window::_updateBackground() - {0}", m_Title);
 
         glfwMakeContextCurrent(m_Window);
-        glClearColor(m_Data.background.getRedf(),
-                     m_Data.background.getGreenf(),
-                     m_Data.background.getBluef(), 1);
+        glClearColor(m_Background.getRedf(),
+                     m_Background.getGreenf(),
+                     m_Background.getBluef(), 1);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
     void Window::_updateSizeLimits() const {
-        glfwSetWindowSizeLimits(m_Window, m_Data.minWidth, m_Data.minHeight,
-                                m_Data.maxWidth, m_Data.maxHeight);
+        glfwSetWindowSizeLimits(m_Window, m_MinWidth, m_MinHeight,
+                                m_MaxWidth, m_MaxHeight);
     }
 
     void Window::_updateAspectRatio(int numerator, int denominator) const {

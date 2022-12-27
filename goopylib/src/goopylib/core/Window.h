@@ -1,58 +1,14 @@
 #pragma once
 
-#include "src/goopylib/color/Color.h"
 #include "src/goopylib/scene/Renderer.h"
+#include "src/goopylib/color/Color.h"
 
 class GLFWwindow;
 
-// TODO window autoflush
 namespace gp {
     enum class CursorMode;
 
-    struct WindowConfig {
-        int width;
-        int height;
-        const char *title;
-
-        int xPos;
-        int yPos;
-
-        Color background;
-
-        int minWidth;
-        int minHeight;
-        int maxWidth;
-        int maxHeight;
-
-        WindowConfig(int width,
-                     int height,
-                     const char *title = "goopylib Window",
-
-                     int xPos = 0,
-                     int yPos = 0,
-
-                     const Color &background = Color(255, 255, 255),
-
-                     int minWidth = 0,
-                     int minHeight = 0,
-                     int maxWidth = INT_MAX,
-                     int maxHeight = INT_MAX) :
-
-                width(width),
-                height(height),
-                title(title),
-
-                xPos(xPos),
-                yPos(yPos),
-
-                background(background),
-
-                minWidth(minWidth),
-                minHeight(minHeight),
-                maxWidth(maxWidth),
-                maxHeight(maxHeight) {
-        }
-    };
+    class Color;
 
     struct AspectRatio {
         int numerator;
@@ -77,6 +33,7 @@ namespace gp {
     };
 }
 
+// TODO window autoflush
 namespace gp {
     class Window {
 
@@ -93,7 +50,7 @@ namespace gp {
         friend class Line;
 
     public:
-        Window(const WindowConfig &config);
+        Window(int width, int height, const char* title = "goopylib Window");
 
         ~Window();
 
@@ -316,10 +273,48 @@ namespace gp {
         static void destroyAll();
 
     private:
-        WindowConfig m_Data;
+        int m_Width;
+        int m_Height;
+        const char* m_Title;
 
-        bool m_isDestroyed = false;
+        int m_xPos;
+        int m_yPos;
+
+        Color m_Background;
+
+        int m_MinWidth = 0;
+        int m_MinHeight = 0;
+        int m_MaxWidth = INT_MAX;
+        int m_MaxHeight = INT_MAX;
+
+        int m_WindowedWidth;
+        int m_WindowedHeight;
+        int m_WindowedXPos;
+        int m_WindowedYPos;
+
+        bool m_IsDestroyed = false;
         int m_KeyModifiers = 0;  // check if shift, control, alt, and super keys are pressed
+
+        Renderer m_Renderer;
+
+        std::function<void(Window *window, int width, int height)> m_ResizeCallback;
+        std::function<void(Window *window)> m_CloseCallback;
+        std::function<void(Window *window)> m_DestroyCallback;
+        std::function<void(Window *window, int xPos, int yPos)> m_PositionCallback;
+        std::function<void(Window *window, bool minimized)> m_MinimizeCallback;
+        std::function<void(Window *window, bool maximized)> m_MaximizeCallback;
+        std::function<void(Window *window, bool focused)> m_FocusedCallback;
+        std::function<void(Window *window)> m_RefreshCallback;
+        std::function<void(Window *window, float xScale, float yScale)> m_ContentScaleCallback;
+        std::function<void(Window *window, int width, int height)> m_FramebufferSizeCallback;
+        std::function<void(Window *window, float xPos, float yPos)> m_MouseMotionCallback;
+        std::function<void(Window *window, bool entered)> m_MouseEnterCallback;
+        std::function<void(Window *window, float xScroll, float yScroll)> m_ScrollCallback;
+
+        std::unordered_map<int, std::function<void(Window *window, int action)>> m_KeyCallbacks;
+        std::unordered_map<int, std::function<void(Window *window, bool pressed)>> m_MouseCallbacks;
+
+        static std::vector<Window *> s_Instances;
 
         void super();
 
@@ -360,39 +355,11 @@ namespace gp {
 
         #endif
 
-        static std::vector<Window *> s_Instances;
-
         #if GP_USING_GLFW
 
         GLFWwindow *m_Window = nullptr;
 
         #endif
-
-        Renderer m_Renderer;
-
-        int m_WindowedWidth;
-        int m_WindowedHeight;
-        int m_WindowedXPos;
-        int m_WindowedYPos;
-
-        // Callback Functions
-
-        std::function<void(Window *window, int width, int height)> m_ResizeCallback;
-        std::function<void(Window *window)> m_CloseCallback;
-        std::function<void(Window *window)> m_DestroyCallback;
-        std::function<void(Window *window, int xPos, int yPos)> m_PositionCallback;
-        std::function<void(Window *window, bool minimized)> m_MinimizeCallback;
-        std::function<void(Window *window, bool maximized)> m_MaximizeCallback;
-        std::function<void(Window *window, bool focused)> m_FocusedCallback;
-        std::function<void(Window *window)> m_RefreshCallback;
-        std::function<void(Window *window, float xScale, float yScale)> m_ContentScaleCallback;
-        std::function<void(Window *window, int width, int height)> m_FramebufferSizeCallback;
-        std::function<void(Window *window, float xPos, float yPos)> m_MouseMotionCallback;
-        std::function<void(Window *window, bool entered)> m_MouseEnterCallback;
-        std::function<void(Window *window, float xScroll, float yScroll)> m_ScrollCallback;
-
-        std::unordered_map<int, std::function<void(Window *window, int action)>> m_KeyCallbacks;
-        std::unordered_map<int, std::function<void(Window *window, bool pressed)>> m_MouseCallbacks;
 
         bool _isClosed() const;
 
