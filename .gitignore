@@ -1,4 +1,15 @@
-# general things to ignore
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+### Above combination will ignore all files without extension ###
+
+# General things to ignore
 build/
 docs/_build/
 dist/
@@ -7,11 +18,10 @@ dist/
 *.py[cod]
 __pycache__/
 *~
+
 venv/
 main.py
 main.cpp
 empty.cpp
 *.log
-main
-empty
 tests/assets
