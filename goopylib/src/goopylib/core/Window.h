@@ -50,9 +50,15 @@ namespace gp {
         friend class Line;
 
     public:
-        Window(int width, int height, const char* title = "goopylib Window");
+        Window(int width, int height, const char *title = "goopylib Window");
 
         ~Window();
+
+        #if GP_USING_GLFW
+
+        GLFWwindow *getWindowGLFW();
+
+        #endif
 
         bool isClosed() const;
 
@@ -67,54 +73,54 @@ namespace gp {
         /* Getters & Setters -----------------------------------------------------------------------------------------*/
 
         // Width
-        int getWidth() const;
-
         void setWidth(int value);
 
-        // Height
-        int getHeight() const;
+        int getWidth() const;
 
+        // Height
         void setHeight(int value);
 
+        int getHeight() const;
+
         // Title
+        void setTitle(const char *value);
+
         const char *getTitle() const;
 
-        void setTitle(const char *title);
-
         // X Position
-        int getXPos() const;
-
         void setXPos(int value);
 
-        // Y Position
-        int getYPos() const;
+        int getXPos() const;
 
+        // Y Position
         void setYPos(int value);
 
-        // Background
-        Color &getBackground() const;
+        int getYPos() const;
 
-        void setBackground(const Color &background);
+        // Background
+        void setBackground(const Color &value);
+
+        Color &getBackground();
 
         // Minimum Width
-        int getMinimumWidth() const;
+        void setMinWidth(int value);
 
-        void setMinimumWidth(int value);
+        int getMinWidth() const;
 
         // Minimum Height
-        int getMinimumHeight() const;
+        void setMinHeight(int value);
 
-        void setMinimumHeight(int value);
+        int getMinHeight() const;
 
         // Maximum Width
-        int getMaximumWidth() const;
+        void setMaxWidth(int value);
 
-        void setMaximumWidth(int value);
+        int getMaxWidth() const;
 
         // Maximum Height
-        int getMaximumHeight() const;
+        void setMaxHeight(int value);
 
-        void setMaximumHeight(int value);
+        int getMaxHeight() const;
 
         // Get & Set Methods
         void setSize(int width, int height);
@@ -122,25 +128,16 @@ namespace gp {
         void setSizeLimits(int minWidth, int minHeight,
                            int maxWidth, int maxHeight);
 
-        void setMinimumSize(int minWidth, int minHeight);
+        void setMinSize(int minWidth, int minHeight);
 
-        void setMaximumSize(int maxWidth, int maxHeight);
+        void setMaxSize(int maxWidth, int maxHeight);
 
         void setPosition(int xPos, int yPos);
 
-        // Camera & Projection
-        Camera &getCamera();
-
-        Point toWorld(Point p);
-
-        Point toScreen(Point p);
-
-        // Aspect Ratio
         void setAspectRatio(int numerator, int denominator);
 
         AspectRatio getAspectRatio() const;
 
-        // Frame Size & Content Scale
         WindowFrame getFrameSize() const;
 
         ContentScale getContentScale() const;
@@ -266,6 +263,14 @@ namespace gp {
 
         void setRightClickCallback(std::function<void(Window *window, bool pressed)> callback);
 
+        /* Other Window Methods --------------------------------------------------------------------------------------*/
+
+        Camera &getCamera();
+
+        Point toWorld(Point p);
+
+        Point toScreen(Point p);
+
         /* Static Methods --------------------------------------------------------------------------------------------*/
 
         static void updateAll();
@@ -275,7 +280,7 @@ namespace gp {
     private:
         int m_Width;
         int m_Height;
-        const char* m_Title;
+        const char *m_Title;
 
         int m_xPos;
         int m_yPos;
@@ -351,25 +356,15 @@ namespace gp {
 
         #if GP_USING_GLFW
 
-        GLFWwindow *getWindowGLFW();
-
-        #endif
-
-        #if GP_USING_GLFW
-
         GLFWwindow *m_Window = nullptr;
 
         #endif
 
-        bool _isClosed() const;
-
-        void _update() const;
+        void _swapBuffers() const;
 
         void _destroy() const;
 
         void _updateSize() const;
-
-        void _updateTitle() const;
 
         void _updatePosition() const;
 
@@ -379,49 +374,11 @@ namespace gp {
 
         void _updateAspectRatio(int numerator, int denominator) const;
 
-        // Window State Methods
-
         void _fullscreen() const;
 
         void _unfullscreen(int width, int height, int xPos, int yPos) const;
 
-        void _maximize() const;
-
-        void _minimize() const;
-
         void _restore() const;
-
-        void _hide() const;
-
-        void _show() const;
-
-        void _focus() const;
-
-        // Callback Functions
-
-        void _setResizeCallback() const;
-
-        void _setCloseCallback() const;
-
-        void _setPositionCallback() const;
-
-        void _setMinimizeCallback() const;
-
-        void _setMaximizeCallback() const;
-
-        void _setFocusedCallback() const;
-
-        void _setRefreshCallback() const;
-
-        void _setContentScaleCallback() const;
-
-        void _setFramebufferSizeCallback() const;
-
-        void _setMouseMotionCallback() const;
-
-        void _setMouseEnterCallback() const;
-
-        void _setScrollCallback() const;
 
         void _setKeyCallback() const;
 

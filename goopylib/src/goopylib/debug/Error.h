@@ -2,10 +2,6 @@
 
 #include "Log.h"
 
-#if !GP_VALUE_CHECKING
-#undef GP_VALUE_CHECK_EASING
-#endif
-
 namespace gp {
     enum class ErrorType {
         None = 0,
@@ -29,17 +25,17 @@ namespace gp {
 #define GP_VALUE_ERROR(...) gp::setError(gp::ErrorType::ValueError, __VA_ARGS__)
 
 #if GP_VALUE_CHECKING
-#define GP_CHECK_EQUALS(variable, val, error) if ((variable) != (val)) { GP_VALUE_ERROR(error); }
-#define GP_CHECK_NOT_EQUALS(variable, val, error) if ((variable) == (val)) { GP_VALUE_ERROR(error); }
+#define GP_CHECK_EQUALS(variable, val, error) do { if ((variable) != (val)) { GP_VALUE_ERROR(error); } } while (0)
+#define GP_CHECK_NOT_EQUALS(variable, val, error) do { if ((variable) == (val)) { GP_VALUE_ERROR(error); } } while (0)
 
-#define GP_CHECK_GT(variable, val, error) if ((variable) <= (val)) { GP_VALUE_ERROR(error); }
-#define GP_CHECK_GE(variable, val, error) if ((variable) < (val)) { GP_VALUE_ERROR(error); }
+#define GP_CHECK_GT(variable, val, error) do { if ((variable) <= (val)) { GP_VALUE_ERROR(error); } } while (0)
+#define GP_CHECK_GE(variable, val, error) do { if ((variable) < (val)) { GP_VALUE_ERROR(error); } } while (0)
 
-#define GP_CHECK_LT(variable, val, error) if ((variable) >= (val)) { GP_VALUE_ERROR(error); }
-#define GP_CHECK_LE(variable, val, error) if ((variable) > (val)) { GP_VALUE_ERROR(error); }
+#define GP_CHECK_LT(variable, val, error) do { if ((variable) >= (val)) { GP_VALUE_ERROR(error); } } while (0)
+#define GP_CHECK_LE(variable, val, error) do { if ((variable) > (val)) { GP_VALUE_ERROR(error); } } while (0)
 
-#define GP_CHECK_INCLUSIVE_RANGE(variable, min, max, error) if ((variable) < (min) or (variable) > (max)) { GP_VALUE_ERROR(error); }
-#define GP_CHECK_EXCLUSIVE_RANGE(variable, min, max, error) if ((variable) <= (min) or (variable) >= (max)) { GP_VALUE_ERROR(error); }
+#define GP_CHECK_INCLUSIVE_RANGE(variable, min, max, error) do { if ((variable) < (min) or (variable) > (max)) { GP_VALUE_ERROR(error); } } while (0)
+#define GP_CHECK_EXCLUSIVE_RANGE(variable, min, max, error) do { if ((variable) <= (min) or (variable) >= (max)) { GP_VALUE_ERROR(error); } } while (0)
 #else
 #define GP_CHECK_EQUALS(variable, val, error) {}
 #define GP_CHECK_NOT_EQUALS(variable, val, error) {}

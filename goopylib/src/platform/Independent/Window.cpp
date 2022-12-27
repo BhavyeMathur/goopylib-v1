@@ -18,15 +18,27 @@ namespace gp {
     std::vector<Window *> Window::s_Instances;
 
     void Window::super() {
+        GP_CORE_DEBUG("gp::Window::super() - '{0}'", m_Title);
+
         m_Renderer.init();
 
         _updatePosition();
         _updateSizeLimits();
 
-        _setResizeCallback();
-        _setPositionCallback();
+        setResizeCallback(nullptr);
+        setPositionCallback(nullptr);
         _setKeyCallback();
         _setMouseButtonCallback();
+    }
+
+    bool Window::isOpen() const {
+        GP_CORE_TRACE_ALL("gp::Window::isOpen() - '{0}'", m_Title);
+        return !isClosed();
+    }
+
+    bool Window::isDestroyed() const {
+        GP_CORE_TRACE("gp::Window::isDestroyed() - '{0}'", m_Title);
+        return m_IsDestroyed;
     }
 
     void Window::update() {
@@ -36,11 +48,11 @@ namespace gp {
 
         m_Renderer.flush();
 
-        _update();
+        _swapBuffers();
     }
 
     void Window::destroy() {
-        GP_CORE_INFO("Destroying window '{0}'", m_Title);
+        GP_CORE_INFO("gp::Window::destroy() - '{0}'", m_Title);
 
         if (!m_IsDestroyed) {
             _destroy();
@@ -54,160 +66,147 @@ namespace gp {
 namespace gp {
     // Width
     void Window::setWidth(int value) {
-        GP_CORE_DEBUG("Set '{0}' width -> {1}", m_Title, value);
+        GP_CORE_DEBUG("gp::Window::setWidth({1}) - '{0}'", m_Title, value);
+
+        GP_CHECK_GT(value, 0, "Window width must be greater than 0");
 
         m_Width = value;
         _updateSize();
     }
 
     int Window::getWidth() const {
+        GP_CORE_TRACE("gp::Window::getWidth() - '{0}'", m_Title);
         return m_Width;
     }
 
     // Height
     void Window::setHeight(int value) {
-        GP_CORE_DEBUG("Set '{0}' height -> {1}", m_Title, value);
+        GP_CORE_DEBUG("gp::Window::setHeight({1}) - '{0}'", m_Title, value);
+
+        GP_CHECK_GT(value, 0, "Window height must be greater than 0");
 
         m_Height = value;
         _updateSize();
     }
 
     int Window::getHeight() const {
+        GP_CORE_TRACE("gp::Window::getHeight() - '{0}'", m_Title);
         return m_Height;
     }
 
-    // Title
-    void Window::setTitle(const char *title) {
-        GP_CORE_DEBUG("Set '{0}' title -> '{1}'", m_Title, title);
-
-        m_Title = title;
-        _updateTitle();
-    }
-
     const char *Window::getTitle() const {
+        GP_CORE_TRACE("gp::Window::getTitle() - '{0}'", m_Title);
         return m_Title;
     }
 
     // X Position
     void Window::setXPos(int value) {
-        GP_CORE_DEBUG("Set '{0}' x-position -> {1}", m_Title, value);
+        GP_CORE_DEBUG("gp::Window::setXPos({1}) - '{0}'", m_Title, value);
 
         m_xPos = value;
         _updatePosition();
     }
 
     int Window::getXPos() const {
+        GP_CORE_TRACE("gp::Window::getXPos() - '{0}'", m_Title);
         return m_xPos;
     }
 
     // Y Position
     void Window::setYPos(int value) {
-        GP_CORE_DEBUG("Set '{0}' y-position -> {1}", m_Title, value);
+        GP_CORE_DEBUG("gp::Window::setYPos({1}) - '{0}'", m_Title, value);
 
         m_yPos = value;
         _updatePosition();
     }
 
     int Window::getYPos() const {
+        GP_CORE_TRACE("gp::Window::getYPos() - '{0}'", m_Title);
         return m_yPos;
     }
 
+    // Background
+    void Window::setBackground(const Color &value) {
+        GP_CORE_DEBUG("gp::Window::setBackground({1}) - '{0}'", m_Title, value.toString());
+
+        m_Background = value;
+        _updateBackground();
+    }
+
+    Color &Window::getBackground() {
+        GP_CORE_TRACE("gp::Window::getBackground() - '{0}'", m_Title);
+        return m_Background;
+    }
+
     // Minimum Width
-    void Window::setMinimumWidth(int value) {
-        GP_CORE_DEBUG("Set '{0}' minimum width -> {1}", m_Title, value);
+    void Window::setMinWidth(int value) {
+        GP_CORE_DEBUG("gp::Window::setMinWidth({1}) - '{0}'", m_Title, value);
+
+        GP_CHECK_GE(value, 0, "Window minimum width must be greater than or equal to 0");
 
         m_MinWidth = value;
         _updateSizeLimits();
     }
 
-    int Window::getMinimumWidth() const {
+    int Window::getMinWidth() const {
+        GP_CORE_TRACE("gp::Window::getMinWidth() - '{0}'", m_Title);
         return m_MinWidth;
     }
 
     // Minimum Height
-    void Window::setMinimumHeight(int value) {
-        GP_CORE_DEBUG("Set '{0}' minimum height -> {1}", m_Title, value);
+    void Window::setMinHeight(int value) {
+        GP_CORE_DEBUG("gp::Window::setMinHeight({1}) - '{0}'", m_Title, value);
+
+        GP_CHECK_GE(value, 0, "Window minimum height must be greater than or equal to 0");
 
         m_MinHeight = value;
         _updateSizeLimits();
     }
 
-    int Window::getMinimumHeight() const {
+    int Window::getMinHeight() const {
+        GP_CORE_TRACE("gp::Window::getMinHeight() - '{0}'", m_Title);
         return m_MinHeight;
     }
 
     // Maximum Width
-    void Window::setMaximumWidth(int value) {
-        GP_CORE_DEBUG("Set '{0}' maximum width -> {1}", m_Title, value);
+    void Window::setMaxWidth(int value) {
+        GP_CORE_DEBUG("gp::Window::setMaxWidth({1}) - '{0}'", m_Title, value);
+
+        GP_CHECK_GE(value, m_MinWidth, "Window maximum width must be greater than or equal to its minimum width");
 
         m_MaxWidth = value;
         _updateSizeLimits();
     }
 
-    int Window::getMaximumWidth() const {
+    int Window::getMaxWidth() const {
+        GP_CORE_TRACE("gp::Window::getMaxWidth() - '{0}'", m_Title);
         return m_MaxWidth;
     }
 
     // Maximum Height
-    void Window::setMaximumHeight(int value) {
-        GP_CORE_DEBUG("Set '{0}' maximum height -> {1}", m_Title, value);
+    void Window::setMaxHeight(int value) {
+        GP_CORE_DEBUG("gp::Window::setMaxHeight({1}) - '{0}'", m_Title, value);
+
+        GP_CHECK_GE(value, m_MinHeight, "Window maximum height must be greater than or equal to its minimum height");
 
         m_MaxHeight = value;
         _updateSizeLimits();
     }
 
-    int Window::getMaximumHeight() const {
+    int Window::getMaxHeight() const {
+        GP_CORE_TRACE("gp::Window::getMaxHeight() - '{0}'", m_Title);
         return m_MaxHeight;
-    }
-
-    void Window::setBackground(const Color &background) {
-        GP_CORE_DEBUG("Set '{0}' background -> {1}", m_Title, background.toString());
-
-        m_Background = background;
-        _updateBackground();
-    }
-
-    Color &Window::getBackground() const {
-        return const_cast<Color &>(m_Background);
     }
 }
 
-// Window get & set methods
+// Window Get & Set methods
 namespace gp {
-    Camera &Window::getCamera() {
-        return m_Renderer.m_Camera;
-    }
-
-    Point Window::toWorld(Point p) {
-        p.x /= (float) (m_Width >> 1);
-        p.y /= (float) (m_Height >> 1);
-
-        p.x -= 1;
-        p.y = 1 - p.y;
-
-        auto pos = m_Renderer.m_Camera.m_InverseProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
-
-        return {pos.x, pos.y};
-    }
-
-    Point Window::toScreen(Point p) {
-        auto pos = m_Renderer.m_Camera.m_ProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
-
-        float halfWidth = (float) (m_Width >> 1);
-        float halfHeight = (float) (m_Height >> 1);
-
-        pos.x *= halfWidth;
-        pos.x += halfWidth;
-
-        pos.y *= halfHeight;
-        pos.y = halfHeight - pos.y;
-
-        return {pos.x, pos.y};
-    }
-
     // Size
     void Window::setSize(int width, int height) {
-        GP_CORE_DEBUG("Set '{0}' size -> ({1}, {2})", m_Title, width, height);
+        GP_CORE_DEBUG("gp::Window::setSize({1}, {2}) - '{0}'", m_Title, width, height);
+
+        GP_CHECK_GT(width, 0, "Window width must be greater than 0");
+        GP_CHECK_GT(height, 0, "Window height must be greater than 0");
 
         m_Width = width;
         m_Height = height;
@@ -218,8 +217,13 @@ namespace gp {
     // Size Limits
     void Window::setSizeLimits(int minWidth, int minHeight, int maxWidth,
                                int maxHeight) {
-        GP_CORE_DEBUG("Set '{0}' size limits -> ({1}, {2}), ({3}, {4})", m_Title, minWidth, minHeight, maxWidth,
-                      maxHeight);
+        GP_CORE_DEBUG("gp::Window::setSizeLimits({1}, {2}, {3}, {4}) - '{0}'",
+                      m_Title, minWidth, minHeight, maxWidth, maxHeight);
+
+        GP_CHECK_GE(minWidth, 0, "Window minimum width must be greater than or equal to 0");
+        GP_CHECK_GE(minHeight, 0, "Window minimum height must be greater than or equal to 0");
+        GP_CHECK_GE(maxWidth, minWidth, "Window maximum width must be greater than or equal to its minimum width");
+        GP_CHECK_GE(maxHeight, minHeight, "Window maximum height must be greater than or equal to its minimum height");
 
         m_MinWidth = minWidth;
         m_MinHeight = minHeight;
@@ -229,8 +233,11 @@ namespace gp {
         _updateSizeLimits();
     }
 
-    void Window::setMinimumSize(int minWidth, int minHeight) {
-        GP_CORE_DEBUG("Set '{0}' minimum size -> ({1}, {2})", m_Title, minWidth, minHeight);
+    void Window::setMinSize(int minWidth, int minHeight) {
+        GP_CORE_DEBUG("gp::Window::setMinSize({1}, {2}) - '{0}'", m_Title, minWidth, minHeight);
+
+        GP_CHECK_GE(minWidth, 0, "Window minimum width must be greater than or equal to 0");
+        GP_CHECK_GE(minHeight, 0, "Window minimum height must be greater than or equal to 0");
 
         m_MinWidth = minWidth;
         m_MinHeight = minHeight;
@@ -238,8 +245,13 @@ namespace gp {
         _updateSizeLimits();
     }
 
-    void Window::setMaximumSize(int maxWidth, int maxHeight) {
-        GP_CORE_DEBUG("Set '{0}' maximum size -> ({1}, {2})", m_Title, maxWidth, maxHeight);
+    void Window::setMaxSize(int maxWidth, int maxHeight) {
+        GP_CORE_DEBUG("gp::Window::setMaxSize({1}, {2}) - '{0}'", m_Title, maxWidth, maxHeight);
+
+        GP_CHECK_GE(maxWidth, m_MinWidth,
+                    "Window maximum width must be greater than or equal to its minimum width");
+        GP_CHECK_GE(maxHeight, m_MinHeight,
+                    "Window maximum height must be greater than or equal to its minimum height");
 
         m_MaxWidth = maxWidth;
         m_MaxHeight = maxHeight;
@@ -249,7 +261,7 @@ namespace gp {
 
     // Position
     void Window::setPosition(int xPos, int yPos) {
-        GP_CORE_DEBUG("Set '{0}' position -> ({1}, {2})", m_Title, xPos, yPos);
+        GP_CORE_DEBUG("gp::Window::setPosition({1}, {2}) - '{0}'", m_Title, xPos, yPos);
 
         m_xPos = xPos;
         m_yPos = yPos;
@@ -257,13 +269,21 @@ namespace gp {
         _updatePosition();
     }
 
+    // Aspect Ratio
     void Window::setAspectRatio(int numerator, int denominator) {
+        GP_CORE_DEBUG("gp::Window::setAspectRatio({1}, {2}) - '{0}'", m_Title, numerator, denominator);
+
+        GP_CHECK_GT(numerator, 0, "Aspect ratio numerator must be greater than 0");
+        GP_CHECK_GT(denominator, 0, "Aspect ratio denominator must be greater than 0");
+
         int g = gcd(numerator, denominator);
         _updateAspectRatio(numerator / g, denominator / g);
 
     }
 
     AspectRatio Window::getAspectRatio() const {
+        GP_CORE_TRACE("gp::Window::getAspectRatio() - '{0}'", m_Title);
+
         int g = gcd(m_Width, m_Height);
         return AspectRatio{m_Width / g, m_Height / g};
     }
@@ -271,19 +291,9 @@ namespace gp {
 
 // Window state methods
 namespace gp {
-    bool Window::isDestroyed() const {
-        return m_IsDestroyed;
-    }
-
-    bool Window::isClosed() const {
-        return _isClosed() or m_IsDestroyed;
-    }
-
-    bool Window::isOpen() const {
-        return !isClosed();
-    }
-
     void Window::restore() {
+        GP_CORE_INFO("gp::Window::restore() - '{0}'", m_Title);
+
         if (isFullscreen()) {
             _unfullscreen(m_WindowedWidth, m_WindowedHeight, m_WindowedXPos, m_WindowedYPos);
         }
@@ -293,32 +303,16 @@ namespace gp {
     }
 
     void Window::fullscreen() {
+        GP_CORE_DEBUG("gp::Window::fullscreen() - '{0}'", m_Title);
+
         m_WindowedWidth = m_Width;
         m_WindowedHeight = m_Height;
         m_WindowedXPos = m_xPos;
         m_WindowedYPos = m_yPos;
 
-        _fullscreen();
-    }
-
-    void Window::maximize() {
-        _maximize();
-    }
-
-    void Window::minimize() {
-        _minimize();
-    }
-
-    void Window::show() {
-        _show();
-    }
-
-    void Window::hide() {
-        _hide();
-    }
-
-    void Window::focus() {
-        _focus();
+        if (!isFullscreen()) {
+            _fullscreen();
+        }
     }
 }
 
@@ -335,23 +329,110 @@ namespace gp {
     bool Window::checkRightClick() const {
         return checkMouseButton(GP_MOUSE_RIGHT_BUTTON);
     }
+}
 
-    void Window::onKeyPress(int key, int UNUSED(scancode), int action, int mods) {
+// Window callbacks
+namespace gp {
+    void Window::setDestroyCallback(std::function<void(Window *window)> callback) {
+        GP_CORE_DEBUG("gp::Window::setDestroyCallback() - '{0}'", m_Title);
+
+        m_DestroyCallback = std::move(callback);
+    }
+
+    void Window::onResize(int width, int height) {
+        GP_CORE_TRACE_ALL("gp::Window::on({1}, {2}) - '{0}'", m_Title, width, height);
+
+        m_Width = width;
+        m_Height = height;
+
+        if (m_ResizeCallback) {
+            m_ResizeCallback((Window *) this, width, height);
+        }
+
+        update();
+    }
+
+    void Window::onClose() {
+        GP_CORE_DEBUG("gp::Window::onClose() - '{0}'", m_Title);
+        m_CloseCallback((Window *) this);
+    }
+
+    void Window::onDestroy() {
+        GP_CORE_DEBUG("gp::Window::onDestroy() - '{0}'", m_Title);
+        if (m_DestroyCallback) {
+            m_DestroyCallback((Window *) this);
+        }
+    }
+
+    // Move
+    void Window::onMove(int xPos, int yPos) {
+        GP_CORE_TRACE_ALL("gp::Window::onMove({1}, {2}) - '{0}'", m_Title, xPos, yPos);
+
+        m_xPos = xPos;
+        m_yPos = yPos;
+
+        if (m_PositionCallback) {
+            m_PositionCallback((Window *) this, xPos, yPos);
+        }
+    }
+
+    void Window::onMinimize(bool iconified) {
+        GP_CORE_DEBUG("gp::Window::onMinimize() - '{0}'", m_Title);
+        m_MinimizeCallback((Window *) this, iconified);
+    }
+
+    void Window::onMaximize(bool maximized) {
+        GP_CORE_DEBUG("gp::Window::onMaximize() - '{0}'", m_Title);
+        m_MaximizeCallback((Window *) this, maximized);
+    }
+
+    void Window::onFocus(bool focused) {
+        GP_CORE_DEBUG("gp::Window::onFocus() - '{0}'", m_Title);
+        m_FocusedCallback((Window *) this, focused);
+    }
+
+    void Window::onRefreshRequired() {
+        GP_CORE_TRACE_ALL("gp::Window::onRefreshRequired() - '{0}'", m_Title);
+        m_RefreshCallback((Window *) this);
+    }
+
+    void Window::onContentScale(float xScale, float yScale) {
+        GP_CORE_TRACE_ALL("gp::Window::onContentScale({1}, {2}) - '{0}'", m_Title, xScale, yScale);
+        m_ContentScaleCallback((Window *) this, xScale, yScale);
+    }
+
+    void Window::onFramebufferSize(int width, int height) {
+        GP_CORE_TRACE_ALL("gp::Window::onFramebufferSize({1}, {2}) - '{0}'", m_Title, width, height);
+        m_FramebufferSizeCallback((Window *) this, width, height);
+    }
+
+    void Window::onMouseMotion(float xPos, float yPos) {
+        GP_CORE_TRACE_ALL("gp::Window::onMouseMotion({1}, {2}) - '{0}'", m_Title, xPos, yPos);
+        m_MouseMotionCallback((Window *) this, xPos, yPos);
+    }
+
+    void Window::onMouseEnter(bool entered) {
+        GP_CORE_TRACE_ALL("gp::Window::onMouseEnter({1}) - '{0}'", m_Title, entered);
+        m_MouseEnterCallback((Window *) this, entered);
+    }
+
+    void Window::onScroll(float xScroll, float yScroll) {
+        GP_CORE_TRACE_ALL("gp::Window::onScroll({1}, {2}) - '{0}'", m_Title, xScroll, yScroll);
+        m_ScrollCallback((Window *) this, xScroll, yScroll);
+    }
+
+    // Key Press
+    void Window::onKeyPress(int key, int scancode, int action, int mods) {
+        GP_CORE_TRACE_ALL("gp::Window::onKeyPress({1}, {2}, {3}, {4}) - '{0}'", m_Title, key, scancode, action, mods);
+
         m_KeyModifiers = mods;
         if (m_KeyCallbacks.find(key) != m_KeyCallbacks.end()) {
             m_KeyCallbacks[key]((Window *) this, action);
         }
     }
 
-    void Window::onMousePress(int button, int action, int mods) {
-        m_KeyModifiers = mods;
-        if (m_MouseCallbacks.find(button) != m_MouseCallbacks.end()) {
-            m_MouseCallbacks[button]((Window *) this, (bool) action);
-        }
-    }
-
     void Window::setKeyCallback(int key, std::function<void(Window *window, int action)> callback) {
-        GP_CORE_DEBUG("Set '{0}' key ({1}) callback", m_Title, key);
+        GP_CORE_DEBUG("gp::Window::setKeyCallback({1}) - '{0}'", m_Title, key);
 
         if (callback) {
             m_KeyCallbacks[key] = std::move(callback);
@@ -362,8 +443,18 @@ namespace gp {
         // _setKeyCallback(); // Not required as it is already set in super()
     }
 
+    // Mouse Button
+    void Window::onMousePress(int button, int action, int mods) {
+        GP_CORE_TRACE_ALL("gp::Window::onMousePress({1}, {2}, {3}) - '{0}'", m_Title, button, action, mods);
+
+        m_KeyModifiers = mods;
+        if (m_MouseCallbacks.find(button) != m_MouseCallbacks.end()) {
+            m_MouseCallbacks[button]((Window *) this, (bool) action);
+        }
+    }
+
     void Window::setMouseButtonCallback(int button, std::function<void(Window *window, bool pressed)> callback) {
-        GP_CORE_DEBUG("Set '{0}' button ({1}) callback", m_Title, button);
+        GP_CORE_DEBUG("gp::Window::setMouseButtonCallback({1}) - '{0}'", m_Title, button);
 
         if (callback) {
             m_MouseCallbacks[button] = std::move(callback);
@@ -387,181 +478,41 @@ namespace gp {
     }
 }
 
-// Window callbacks
 namespace gp {
-    // Resize
-    void Window::onResize(int width, int height) {
-        m_Width = width;
-        m_Height = height;
-
-        if (m_ResizeCallback) {
-            m_ResizeCallback((Window *) this, width, height);
-        }
-
-        update();
+    Camera &Window::getCamera() {
+        GP_CORE_TRACE("gp::Window::getCamera() - '{0}'", m_Title);
+        return m_Renderer.m_Camera;
     }
 
-    void Window::setResizeCallback(std::function<void(Window *, int width, int height)> callback) {
-        GP_CORE_DEBUG("Set '{0}' resize callback", m_Title);
+    Point Window::toWorld(Point p) {
+        GP_CORE_TRACE_ALL("gp::Window::toWorld({1}, {2}) - '{0}'", m_Title, p.x, p.y);
 
-        m_ResizeCallback = std::move(callback);
-        // _setResizeCallback(); // Not required as it is already set in super()
+        p.x /= (float) (m_Width >> 1);
+        p.y /= (float) (m_Height >> 1);
+
+        p.x -= 1;
+        p.y = 1 - p.y;
+
+        auto pos = m_Renderer.m_Camera.m_InverseProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
+
+        return {pos.x, pos.y};
     }
 
-    // Close
-    void Window::onClose() {
-        GP_CORE_DEBUG("OnClose()");
-        m_CloseCallback((Window *) this);
-    }
+    Point Window::toScreen(Point p) {
+        GP_CORE_TRACE_ALL("gp::Window::toScreen({1}, {2}) - '{0}'", m_Title, p.x, p.y);
 
-    void Window::setCloseCallback(std::function<void(Window *window)> callback) {
-        GP_CORE_DEBUG("Set '{0}' close callback", m_Title);
+        auto pos = m_Renderer.m_Camera.m_ProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
 
-        m_CloseCallback = std::move(callback);
-        _setCloseCallback();
-    }
+        float halfWidth = (float) (m_Width >> 1);
+        float halfHeight = (float) (m_Height >> 1);
 
-    // Destroy
-    void Window::onDestroy() {
-        GP_CORE_DEBUG("OnDestroy()");
-        if (m_DestroyCallback) {
-            m_DestroyCallback((Window *) this);
-        }
-    }
+        pos.x *= halfWidth;
+        pos.x += halfWidth;
 
-    void Window::setDestroyCallback(std::function<void(Window *window)> callback) {
-        GP_CORE_DEBUG("Set '{0}' destroy callback", m_Title);
+        pos.y *= halfHeight;
+        pos.y = halfHeight - pos.y;
 
-        m_DestroyCallback = std::move(callback);
-    }
-
-    // Move
-    void Window::onMove(int xPos, int yPos) {
-        m_xPos = xPos;
-        m_yPos = yPos;
-
-        if (m_PositionCallback) {
-            m_PositionCallback((Window *) this, xPos, yPos);
-        }
-    }
-
-    void Window::setPositionCallback(std::function<void(Window *window, int xPos, int yPos)> callback) {
-        GP_CORE_DEBUG("Set '{0}' position callback", m_Title);
-
-        m_PositionCallback = std::move(callback);
-        // _setPositionCallback(); // Not required as it is already set in super()
-    }
-
-    // Minimize
-    void Window::onMinimize(bool iconified) {
-        GP_CORE_DEBUG("OnMinimize()");
-        m_MinimizeCallback((Window *) this, iconified);
-    }
-
-    void Window::setMinimizeCallback(std::function<void(Window *window, bool minimized)> callback) {
-        GP_CORE_DEBUG("Set '{0}' minimize callback", m_Title);
-
-        m_MinimizeCallback = std::move(callback);
-        _setMinimizeCallback();
-    }
-
-    // Maximize
-    void Window::onMaximize(bool maximized) {
-        GP_CORE_DEBUG("OnMaximize()");
-        m_MaximizeCallback((Window *) this, maximized);
-    }
-
-    void Window::setMaximizeCallback(std::function<void(Window *window, bool maximized)> callback) {
-        GP_CORE_DEBUG("Set '{0}' maximize callback", m_Title);
-
-        m_MaximizeCallback = std::move(callback);
-        _setMaximizeCallback();
-    }
-
-    // Focus
-    void Window::onFocus(bool focused) {
-        GP_CORE_DEBUG("OnFocus()");
-        m_FocusedCallback((Window *) this, focused);
-    }
-
-    void Window::setFocusCallback(std::function<void(Window *window, bool focused)> callback) {
-        GP_CORE_DEBUG("Set '{0}' focus callback", m_Title);
-
-        m_FocusedCallback = std::move(callback);
-        _setFocusedCallback();
-    }
-
-    // Refresh
-    void Window::onRefreshRequired() {
-        m_RefreshCallback((Window *) this);
-    }
-
-    void Window::setRefreshCallback(std::function<void(Window *window)> callback) {
-        GP_CORE_DEBUG("Set '{0}' refresh required callback", m_Title);
-
-        m_RefreshCallback = std::move(callback);
-        _setRefreshCallback();
-    }
-
-    // Content Scale
-    void Window::onContentScale(float xScale, float yScale) {
-        m_ContentScaleCallback((Window *) this, xScale, yScale);
-    }
-
-    void Window::setContentScaleCallback(
-            std::function<void(Window *window, float xScale, float yScale)> callback) {
-        GP_CORE_DEBUG("Set '{0}' content scale callback", m_Title);
-
-        m_ContentScaleCallback = std::move(callback);
-        _setContentScaleCallback();
-    }
-
-    // Framebuffer Size
-    void Window::onFramebufferSize(int width, int height) {
-        m_FramebufferSizeCallback((Window *) this, width, height);
-    }
-
-    void Window::setFramebufferSizeCallback(
-            std::function<void(Window *window, int width, int height)> callback) {
-        GP_CORE_DEBUG("Set '{0}' framebuffer size callback", m_Title);
-
-        m_FramebufferSizeCallback = std::move(callback);
-        _setFramebufferSizeCallback();
-    }
-
-    void Window::onMouseMotion(float xPos, float yPos) {
-        m_MouseMotionCallback((Window *) this, xPos, yPos);
-    }
-
-    void Window::setMouseMotionCallback(
-            std::function<void(Window *window, float xPos, float yPos)> callback) {
-        GP_CORE_DEBUG("Set '{0}' mouse motion callback", m_Title);
-
-        m_MouseMotionCallback = std::move(callback);
-        _setMouseMotionCallback();
-    }
-
-    void Window::onMouseEnter(bool entered) {
-        m_MouseEnterCallback((Window *) this, entered);
-    }
-
-    void Window::setMouseEnterCallback(
-            std::function<void(Window *window, bool entered)> callback) {
-        GP_CORE_DEBUG("Set '{0}' mouse enter/exit callback", m_Title);
-
-        m_MouseEnterCallback = std::move(callback);
-        _setMouseEnterCallback();
-    }
-
-    void Window::onScroll(float xScroll, float yScroll) {
-        m_ScrollCallback((Window *) this, xScroll, yScroll);
-    }
-
-    void Window::setScrollCallback(std::function<void(Window *window, float xScroll, float yScroll)> callback) {
-        GP_CORE_DEBUG("Set '{0}' scroll callback", m_Title);
-
-        m_ScrollCallback = std::move(callback);
-        _setScrollCallback();
+        return {pos.x, pos.y};
     }
 }
 
@@ -576,7 +527,7 @@ namespace gp {
     }
 
     void Window::destroyAll() {
-        GP_CORE_DEBUG("Destroying all windows");
+        GP_CORE_DEBUG("gp::Window::destroyAll()");
         for (Window *&instance: s_Instances) {
             instance->destroy();
         }

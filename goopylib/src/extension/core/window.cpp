@@ -540,7 +540,7 @@ namespace window {
     // Minimum Width
     static PyObject *get_min_width(WindowObject *self, void *Py_UNUSED(closure)) {
         CHECK_WINDOW_ACTIVE(nullptr)
-        return PyLong_FromLong(self->window->getMinimumWidth());
+        return PyLong_FromLong(self->window->getMinWidth());
     }
 
     static int set_min_width(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
@@ -555,10 +555,10 @@ namespace window {
             }
             #endif
 
-            self->window->setMinimumWidth(minWidth);
+            self->window->setMinWidth(minWidth);
         }
         else if (value == Py_None) {
-            self->window->setMinimumWidth(0);
+            self->window->setMinWidth(0);
         }
         else {
             RAISE_TYPE_ERROR(-1, "integer", value)
@@ -569,7 +569,7 @@ namespace window {
     // Minimum Height
     static PyObject *get_min_height(WindowObject *self, void *Py_UNUSED(closure)) {
         CHECK_WINDOW_ACTIVE(nullptr)
-        return PyLong_FromLong(self->window->getMinimumHeight());
+        return PyLong_FromLong(self->window->getMinHeight());
     }
 
     static int set_min_height(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
@@ -583,10 +583,10 @@ namespace window {
             }
             #endif
 
-            self->window->setMinimumHeight(minHeight);
+            self->window->setMinHeight(minHeight);
         }
         else if (value == Py_None) {
-            self->window->setMinimumHeight(0);
+            self->window->setMinHeight(0);
         }
         else {
             RAISE_TYPE_ERROR(-1, "integer", value)
@@ -597,7 +597,7 @@ namespace window {
     // Maximum Width
     static PyObject *get_max_width(WindowObject *self, void *Py_UNUSED(closure)) {
         CHECK_WINDOW_ACTIVE(nullptr)
-        return PyLong_FromLong(self->window->getMaximumWidth());
+        return PyLong_FromLong(self->window->getMaxWidth());
     }
 
     static int set_max_width(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
@@ -612,15 +612,15 @@ namespace window {
             if (maxWidth < 0) {
                 RAISE_VALUE_ERROR(-1, "maximum width must be greater than or equal to 0")
             }
-            if (maxWidth < self->window->getMinimumWidth()) {
+            if (maxWidth < self->window->getMinWidth()) {
                 RAISE_VALUE_ERROR(-1, "maximum width must be greater than or equal to minimum width")
             }
             #endif
 
-            self->window->setMaximumWidth(maxWidth);
+            self->window->setMaxWidth(maxWidth);
         }
         else if (value == Py_None) {
-            self->window->setMaximumWidth(MAX_WIDTH);
+            self->window->setMaxWidth(MAX_WIDTH);
         }
         else {
             RAISE_TYPE_ERROR(-1, "integer", value)
@@ -631,7 +631,7 @@ namespace window {
     // Maximum Height
     static PyObject *get_max_height(WindowObject *self, void *Py_UNUSED(closure)) {
         CHECK_WINDOW_ACTIVE(nullptr)
-        return PyLong_FromLong(self->window->getMaximumHeight());
+        return PyLong_FromLong(self->window->getMaxHeight());
     }
 
     static int set_max_height(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
@@ -646,15 +646,15 @@ namespace window {
             if (maxHeight < 0) {
                 RAISE_VALUE_ERROR(-1, "maximum height must be greater than or equal to 0")
             }
-            if (maxHeight < self->window->getMinimumHeight()) {
+            if (maxHeight < self->window->getMinHeight()) {
                 RAISE_VALUE_ERROR(-1, "maximum height must be greater than or equal to minimum height")
             }
             #endif
 
-            self->window->setMaximumHeight(maxHeight);
+            self->window->setMaxHeight(maxHeight);
         }
         else if (value == Py_None) {
-            self->window->setMaximumHeight(MAX_HEIGHT);
+            self->window->setMaxHeight(MAX_HEIGHT);
         }
         else {
             RAISE_TYPE_ERROR(-1, "integer", value)
@@ -832,15 +832,15 @@ namespace window {
         }
         #endif
 
-        self->window->setMinimumSize(tmp_width, tmp_height);
+        self->window->setMinSize(tmp_width, tmp_height);
         Py_RETURN_NONE;
     }
 
     static PyObject *get_minimum_size(WindowObject *self, void *Py_UNUSED(closure)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        return PyTuple_Pack(2, PyLong_FromLong(self->window->getMinimumWidth()),
-                            PyLong_FromLong(self->window->getMinimumHeight()));
+        return PyTuple_Pack(2, PyLong_FromLong(self->window->getMinWidth()),
+                            PyLong_FromLong(self->window->getMinHeight()));
     }
 
     // Maximum Size
@@ -878,27 +878,27 @@ namespace window {
         if (tmp_width < 0) {
             RAISE_VALUE_ERROR(nullptr, "maximum width must be greater than or equal to 0")
         }
-        if (tmp_width < self->window->getMinimumWidth()) {
+        if (tmp_width < self->window->getMinWidth()) {
             RAISE_VALUE_ERROR(nullptr, "maximum width must be greater than or equal to minimum width")
         }
 
         if (tmp_height < 0) {
             RAISE_VALUE_ERROR(nullptr, "maximum height must be greater than or equal to 0")
         }
-        if (tmp_height < self->window->getMinimumHeight()) {
+        if (tmp_height < self->window->getMinHeight()) {
             RAISE_VALUE_ERROR(nullptr, "maximum height must be greater than or equal to minimum height")
         }
         #endif
 
-        self->window->setMaximumSize(tmp_width, tmp_height);
+        self->window->setMaxSize(tmp_width, tmp_height);
         Py_RETURN_NONE;
     }
 
     static PyObject *get_maximum_size(WindowObject *self, void *Py_UNUSED(closure)) {
         CHECK_WINDOW_ACTIVE(nullptr)
 
-        return PyTuple_Pack(2, PyLong_FromLong(self->window->getMaximumWidth()),
-                            PyLong_FromLong(self->window->getMaximumHeight()));
+        return PyTuple_Pack(2, PyLong_FromLong(self->window->getMaxWidth()),
+                            PyLong_FromLong(self->window->getMaxHeight()));
     }
 
     // Aspect Ratio
