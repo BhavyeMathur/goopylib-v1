@@ -15,7 +15,7 @@ namespace gp {
 
         Image(const char *path, Point p1, Point p2);
 
-        const char *getPath() const;
+        [[nodiscard]] const char *getPath() const;
 
         void setTransparency(float value) override;
 
@@ -35,6 +35,6 @@ namespace gp {
 
         void _update() const override;
 
-        bool _contains(float x, float y) const override;
+        [[nodiscard]] bool _contains(float x, float y) const override;
     };
 }

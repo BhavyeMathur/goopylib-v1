@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 from distutils.core import Extension, setup
+import json
 
 path = os.path.abspath(os.getcwd())
 
@@ -124,7 +125,11 @@ def countlines(start, lines=0, _header=True, _begin_start=None,
         filepath = os.path.join(start, file)
         if any(file.endswith(fmt) for fmt in formats) and file not in excluded_files:
             with open(filepath, 'r') as f:
-                newlines = len(f.readlines())
+                if file.endswith(".ipynb"):
+                    newlines = sum(len(c["source"]) for c in json.load(f)["cells"] if c["cell_type"] == "code")
+                else:
+                    newlines = len(f.readlines())
+
                 lines += newlines
 
                 print('{:>10} |{:>10} | {}'.format(newlines, lines, filepath))
