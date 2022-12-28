@@ -4,7 +4,7 @@ Module defining a quad object
 
 from goopylib.color.color import Color
 from goopylib.objects.renderable import Renderable
-# import goopylib.ext.quad as _quad
+import goopylib.ext.quad as _quad
 
 
 class Quad(Renderable):
