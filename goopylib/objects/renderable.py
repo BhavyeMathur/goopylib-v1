@@ -7,11 +7,8 @@ import goopylib.ext.renderable as _renderable
 
 
 class Renderable:
-    def __init__(self, arg: _renderable.Renderable):
-        if isinstance(arg, _renderable.Renderable):
-            self._renderable: Renderable = arg
-        else:
-            raise NotImplementedError("Cannot create renderable")
+    def __init__(self):
+        raise NotImplementedError("Cannot create renderable")
 
     def draw(self, window: Window):
         if isinstance(window, Window):

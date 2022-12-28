@@ -1,6 +1,10 @@
+#define ELLIPSE_MODULE
+
 #include "ellipse.h"
+#include "ellipse_object.h"
+#include "ellipse_capsule.h"
+#include "ellipse_module.h"
 #include "renderable_module.h"
-#include "renderable_object.h"
 
 #include "ext/color/color_object.h"
 #include "ext/color/color_module.h"
@@ -19,12 +23,6 @@
 #endif
 
 #include "ext/debug.h"
-
-
-struct EllipseObject {
-    RenderableObject base;
-    std::shared_ptr<gp::Ellipse> ellipse;
-};
 
 
 // Ellipse Core
@@ -222,7 +220,7 @@ PyTypeObject EllipseType = {
         .tp_name = "goopylib.Ellipse",
         .tp_basicsize = sizeof(EllipseObject),
         .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
 
         .tp_new = ellipse::new_,
         .tp_init = (initproc) ellipse::init,
@@ -253,6 +251,8 @@ PyMODINIT_FUNC PyInit_ellipse(void) {
         return nullptr;
     }
 
+    // Importing Renderable
+
     #if GP_LOGGING_LEVEL >= 6
     std::cout << "[--:--:--] PYTHON: PyInit_ellipse() - import_renderable()" << std::endl;
     #endif
@@ -262,6 +262,8 @@ PyMODINIT_FUNC PyInit_ellipse(void) {
     }
 
     RenderableType = Renderable_pytype();
+
+    // Importing Color
 
     #if GP_LOGGING_LEVEL >= 6
     std::cout << "[--:--:--] PYTHON: PyInit_ellipse() - import_color()" << std::endl;
@@ -273,9 +275,25 @@ PyMODINIT_FUNC PyInit_ellipse(void) {
 
     ColorType = Color_pytype();
 
+    // Exposing Class
+
     EllipseType.tp_base = RenderableType;
 
     EXPOSE_PYOBJECT_CLASS(EllipseType, "Ellipse");
+
+    // Exposing Capsule
+
+    static void *PyEllipse_API[PyEllipse_API_pointers];
+    PyObject *c_api_object;
+
+    PyEllipse_API[Ellipse_pytype_NUM] = (void *) Ellipse_pytype;
+    c_api_object = PyCapsule_New((void *) PyEllipse_API, "goopylib.ext.ellipse._C_API", nullptr);
+
+    if (PyModule_AddObject(m, "_C_API", c_api_object) < 0) {
+        Py_XDECREF(c_api_object);
+        Py_DECREF(m);
+        return nullptr;
+    }
 
     return m;
 }

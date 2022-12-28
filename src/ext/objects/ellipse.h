@@ -30,3 +30,6 @@ namespace ellipse {
 
     static PyObject *set_transparency(EllipseObject *self, PyObject *args);
 }
+
+
+extern PyTypeObject EllipseType;

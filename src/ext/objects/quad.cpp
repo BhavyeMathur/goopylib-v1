@@ -1,6 +1,10 @@
+#define QUAD_MODULE
+
 #include "quad.h"
+#include "quad_object.h"
+#include "quad_capsule.h"
+#include "quad_module.h"
 #include "renderable_module.h"
-#include "renderable_object.h"
 
 #include "ext/color/color_object.h"
 #include "ext/color/color_module.h"
@@ -19,12 +23,6 @@
 #endif
 
 #include "ext/debug.h"
-
-
-struct QuadObject {
-    RenderableObject base;
-    std::shared_ptr<gp::Quad> quad;
-};
 
 
 // Quad Core
@@ -215,7 +213,7 @@ PyTypeObject QuadType = {
         .tp_name = "goopylib.Quad",
         .tp_basicsize = sizeof(QuadObject),
         .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
 
         .tp_new = quad::new_,
         .tp_init = (initproc) quad::init,
@@ -246,6 +244,8 @@ PyMODINIT_FUNC PyInit_quad(void) {
         return nullptr;
     }
 
+    // Importing Renderable
+
     #if GP_LOGGING_LEVEL >= 6
     std::cout << "[--:--:--] PYTHON: PyInit_quad() - import_renderable()" << std::endl;
     #endif
@@ -255,6 +255,8 @@ PyMODINIT_FUNC PyInit_quad(void) {
     }
 
     RenderableType = Renderable_pytype();
+
+    // Importing Color
 
     #if GP_LOGGING_LEVEL >= 6
     std::cout << "[--:--:--] PYTHON: PyInit_quad() - import_color()" << std::endl;
@@ -266,9 +268,25 @@ PyMODINIT_FUNC PyInit_quad(void) {
 
     ColorType = Color_pytype();
 
+    // Exposing Class
+
     QuadType.tp_base = RenderableType;
 
     EXPOSE_PYOBJECT_CLASS(QuadType, "Quad");
+
+    // Exposing Capsule
+
+    static void *PyQuad_API[PyQuad_API_pointers];
+    PyObject *c_api_object;
+
+    PyQuad_API[Quad_pytype_NUM] = (void *) Quad_pytype;
+    c_api_object = PyCapsule_New((void *) PyQuad_API, "goopylib.ext.quad._C_API", nullptr);
+
+    if (PyModule_AddObject(m, "_C_API", c_api_object) < 0) {
+        Py_XDECREF(c_api_object);
+        Py_DECREF(m);
+        return nullptr;
+    }
 
     return m;
 }

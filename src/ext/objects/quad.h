@@ -30,3 +30,6 @@ namespace quad {
 
     static PyObject *set_transparency(QuadObject *self, PyObject *args);
 }
+
+
+extern PyTypeObject QuadType;

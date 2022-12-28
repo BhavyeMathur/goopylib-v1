@@ -52,22 +52,22 @@ def build_c_exts():
     setup(ext_modules=[Extension(name="goopylib.ext.triangle",
                                  sources=["src/ext/objects/triangle.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
-    
+
     setup(ext_modules=[Extension(name="goopylib.ext.quad",
                                  sources=["src/ext/objects/quad.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
-    # setup(ext_modules=[Extension(name="goopylib.ext.rectangle",
-    #                              sources=["src/ext/objects/rectangle.cpp"],
-    #                              **ext_kwargs)], **setup_kwargs)
+    setup(ext_modules=[Extension(name="goopylib.ext.rectangle",
+                                 sources=["src/ext/objects/rectangle.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.ellipse",
                                  sources=["src/ext/objects/ellipse.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
-    # setup(ext_modules=[Extension(name="goopylib.ext.circle",
-    #                              sources=["src/ext/objects/circle.cpp"],
-    #                              **ext_kwargs)], **setup_kwargs)
+    setup(ext_modules=[Extension(name="goopylib.ext.circle",
+                                 sources=["src/ext/objects/circle.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
 
     # setup(ext_modules=[Extension(name="goopylib.ext.image",
     #                              sources=["src/ext/objects/image.cpp"],
