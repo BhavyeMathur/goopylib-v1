@@ -8,7 +8,7 @@
 
 #include "goopylib/debug/LogMacros.h"
 #include "goopylib/events/KeyboardCodes.h"
-#include "goopylib/math/Easing.h"
+#include "goopylib/maths/Easing.h"
 
 #include "goopylib/color/Color.h"
 #include "goopylib/color/ColorConversions.h"

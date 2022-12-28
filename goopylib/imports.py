@@ -7,7 +7,7 @@ from color.conversions import *
 from color.random import *
 from color.w3cx11 import *
 
-from math.easing import *
+from maths.easing import *
 
 from events.keyboard import *
 from events.mouse import *

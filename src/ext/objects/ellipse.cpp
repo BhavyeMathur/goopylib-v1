@@ -180,7 +180,7 @@ namespace ellipse {
         GP_PY_DEBUG("gp.ellipse.Ellipse.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
         float v1, v2, v3, v4;
-        if (PyArg_ParseTuple(args, "fff", &v1, &v2, &v3, &v4)) {
+        if (PyArg_ParseTuple(args, "ffff", &v1, &v2, &v3, &v4)) {
             GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
             GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, nullptr, "transparency must be between 0 and 1")
             GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, nullptr, "transparency must be between 0 and 1")

@@ -2,7 +2,7 @@
 
 #include "gp.h"
 #include "goopylib/color/ColorStructs.h"
-#include "goopylib/math/gpmath.h"
+#include "goopylib/maths/gpmath.h"
 
 #define GP_CREATE_VERTEX(type) struct type##Vertex { Point vertex; type##VertexAttrib attrib; }
 

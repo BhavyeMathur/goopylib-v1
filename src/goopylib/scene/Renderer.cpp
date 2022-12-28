@@ -427,6 +427,11 @@ namespace gp {
         m_ImageVertices[batch].push_back({object->m_Points[2], object->m_V3});
         m_ImageVertices[batch].push_back({object->m_Points[3], object->m_V4});
 
+        GP_CORE_DEBUG("{0}, {1}", object->m_Points[0].x, object->m_Points[0].y);
+        GP_CORE_DEBUG("{0}, {1}", object->m_Points[1].x, object->m_Points[1].y);
+        GP_CORE_DEBUG("{0}, {1}", object->m_Points[2].x, object->m_Points[2].y);
+        GP_CORE_DEBUG("{0}, {1}", object->m_Points[3].x, object->m_Points[3].y);
+
         if (object->isHidden()) {
             m_ImageVertices[batch][index + 0].attrib.transparency = 0;
             m_ImageVertices[batch][index + 1].attrib.transparency = 0;

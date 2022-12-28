@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 project(goopylib)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../goopylib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../goopylib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/..)
@@ -17,8 +17,8 @@ set(SOURCE_FILES
     src/goopylib/debug/Log.cpp
     src/goopylib/debug/Error.cpp
 
-    src/goopylib/math/Easing.cpp
-    src/goopylib/math/gpmath.cpp
+    src/goopylib/maths/Easing.cpp
+    src/goopylib/maths/gpmath.cpp
 
     src/goopylib/color/Color.cpp
     src/goopylib/color/ColorConversions.cpp
@@ -75,9 +75,13 @@ add_executable(core examples/cpp/core.cpp)
 add_executable(window_states examples/cpp/window/window_states.cpp)
 add_executable(window_callbacks examples/cpp/window/window_callbacks.cpp)
 add_executable(gridlines examples/cpp/objects/gridlines.cpp)
+add_executable(minecraft examples/important/minecraft/minecraft.cpp)
 
 target_link_libraries(main ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
 target_link_libraries(core ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
 target_link_libraries(window_states ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
 target_link_libraries(window_callbacks ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
 target_link_libraries(gridlines ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
+target_link_libraries(minecraft ${CMAKE_SOURCE_DIR}/goopylib/goopylib.dylib)
+
+set_target_properties(minecraft PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../examples/important/minecraft)

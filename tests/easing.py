@@ -1,5 +1,5 @@
 import unittest
-import math.easing as gp
+import maths.easing as gp
 
 
 class EasingFunctions(unittest.TestCase):

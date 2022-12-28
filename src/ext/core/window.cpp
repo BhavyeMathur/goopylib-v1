@@ -203,6 +203,26 @@ namespace window {
         self->window->destroy();
         Py_RETURN_NONE;
     }
+
+    static PyObject *to_world(WindowObject *self, PyObject *args) {
+        float x, y;
+        if (!PyArg_ParseTuple(args, "ff", &x, &y)) {
+            return nullptr;
+        }
+
+        auto pos = self->window->toWorld({x, y});
+        return PyTuple_Pack(2, PyFloat_FromDouble(pos.x), PyFloat_FromDouble(pos.y));
+    }
+
+    static PyObject *to_screen(WindowObject *self, PyObject *args) {
+        float x, y;
+        if (!PyArg_ParseTuple(args, "ff", &x, &y)) {
+            return nullptr;
+        }
+
+        auto pos = self->window->toScreen({x, y});
+        return PyTuple_Pack(2, PyFloat_FromDouble(pos.x), PyFloat_FromDouble(pos.y));
+    }
 }
 
 // Window Getter & Setters
@@ -1559,6 +1579,19 @@ namespace window {
     }
 }
 
+// Static Window Methods
+namespace window {
+    static PyObject *update_all(WindowObject *Py_UNUSED(self), PyObject *args) {
+        gp::Window::updateAll();
+        Py_RETURN_NONE;
+    }
+
+    static PyObject *destroy_all(WindowObject *Py_UNUSED(self), PyObject *args) {
+        gp::Window::destroyAll();
+        Py_RETURN_NONE;
+    }
+}
+
 // Window Type
 namespace window {
     static PyMethodDef methods[] = {
@@ -1665,6 +1698,16 @@ namespace window {
                     "Sets a callback function for a keyboard event"},
             {"set_mouse_button_callback", (PyCFunction) set_mouse_button_callback, METH_VARARGS,
                     "Sets a callback function for a mouse button event"},
+
+            {"to_world",                  (PyCFunction) to_world,                  METH_VARARGS,
+                    "Converts coordinates from screen space to world space"},
+            {"to_screen",                 (PyCFunction) to_screen,                 METH_VARARGS,
+                    "Converts coordinates from screen space to world space"},
+
+            {"update_all",                (PyCFunction) update_all,                METH_STATIC | METH_NOARGS,
+                    "Updates all currently active windows"},
+            {"destroy_all",               (PyCFunction) destroy_all,               METH_STATIC | METH_NOARGS,
+                    "Destroys all currently active windows"},
 
             {nullptr}
     };

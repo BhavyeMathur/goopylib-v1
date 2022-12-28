@@ -7,6 +7,10 @@ import goopylib.ext.renderable as _renderable
 
 
 class Renderable:
+    """
+    Generic base class for Renderable objects
+    """
+
     def __init__(self):
         raise NotImplementedError("Cannot create renderable")
 
@@ -14,7 +18,7 @@ class Renderable:
         if isinstance(window, Window):
             return self._renderable.draw(window._window)
         else:
-            raise TypeError(f"'Window' argument expected, got '{type(window)}'")
+            return self._renderable.draw(window)
 
     def destroy(self):
         return self._renderable.destroy()

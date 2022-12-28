@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gp.h"
-#include "goopylib/math/gpmath.h"
+#include "goopylib/maths/gpmath.h"
 
 #include <glm/detail/type_mat4x4.hpp>
 

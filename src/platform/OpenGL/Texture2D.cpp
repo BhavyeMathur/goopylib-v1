@@ -24,7 +24,7 @@
 namespace gp {
     Texture2D::Texture2D(const char *path)
             : m_Path(path) {
-        GP_CORE_INFO("Initializing texture '{0}'", m_Path);
+        GP_CORE_INFO("gp::Texture2D::Texture2D({0})", m_Path);
 
         u_char *data = stbi_load(m_Path, &m_Width, &m_Height, &m_Channels, 0);
 
@@ -40,7 +40,13 @@ namespace gp {
             dataFormat = GL_RGB;
         }
         else {
-            GP_CORE_ERROR("Unsupported Image Format");
+            if (m_Width == 0 and m_Height == 0 and m_Channels == 0) {
+                GP_CORE_ERROR("File '{0}' not found", m_Path);
+            }
+            else {
+                GP_CORE_ERROR("Unsupported image format '{0}'", m_Path);
+            }
+
             internalFormat = 0;
             dataFormat = 0;
         }
@@ -50,8 +56,8 @@ namespace gp {
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
@@ -63,13 +69,13 @@ namespace gp {
     }
 
     void Texture2D::bind(uint32_t slot) const {
-        GP_CORE_TRACE_ALL("Binding 2D Texture {0} to {1}", m_Path, slot);
+        GP_CORE_TRACE_ALL("gp::Texture2D::bind({1}) - '{0}'", slot, m_Path);
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, m_RendererID);
     }
 
     void Texture2D::unbind() {
-        GP_CORE_WARN("Unbinding 2D Textures");
+        GP_CORE_WARN("gp::Texture2D::unbind()");
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }

@@ -22,7 +22,7 @@ def build_c_exts():
     setup_kwargs = {"options": {"build": {"build_lib": "."}}}
 
     setup(ext_modules=[Extension(name="goopylib.ext.easing",
-                                 sources=["src/ext/math/easing.cpp"],
+                                 sources=["src/ext/maths/easing.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
     setup(ext_modules=[Extension(name="goopylib.ext.color_conversions",
@@ -69,9 +69,9 @@ def build_c_exts():
                                  sources=["src/ext/objects/circle.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
-    # setup(ext_modules=[Extension(name="goopylib.ext.image",
-    #                              sources=["src/ext/objects/image.cpp"],
-    #                              **ext_kwargs)], **setup_kwargs)
+    setup(ext_modules=[Extension(name="goopylib.ext.image",
+                                 sources=["src/ext/objects/image.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
 
 
 def build_html_documentation():
@@ -93,11 +93,11 @@ def build_html_documentation():
 
     move_exts("goopylib")
 
-    with open("goopylib/math/easing.py", "r") as fp:
+    with open("goopylib/maths/easing.py", "r") as fp:
         new = map(lambda line: line.replace(" -> EASING_TYPE", ""), fp.readlines())
-    os.rename("goopylib/math/easing.py", f"build/_easing.py")
+    os.rename("goopylib/maths/easing.py", f"build/_easing.py")
 
-    with open("goopylib/math/easing.py", "w+") as fp:
+    with open("goopylib/maths/easing.py", "w+") as fp:
         fp.writelines(new)
 
     try:
@@ -108,7 +108,7 @@ def build_html_documentation():
     finally:
         for i in range(i):
             os.rename(f"build/{i}.so", exts[i])
-        os.rename("build/_easing.py", f"goopylib/math/easing.py")
+        os.rename("build/_easing.py", f"goopylib/maths/easing.py")
 
 
 def countlines(start, lines=0, _header=True, _begin_start=None,

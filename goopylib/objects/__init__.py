@@ -12,3 +12,5 @@ from goopylib.objects.rectangle import Rectangle
 
 from goopylib.objects.ellipse import Ellipse
 from goopylib.objects.circle import Circle
+
+from goopylib.objects.image import Image

@@ -31,6 +31,10 @@ namespace window {
     static PyObject *update(WindowObject *self, PyObject *args);
 
     static PyObject *destroy(WindowObject *self, PyObject *args);
+
+    static PyObject *to_world(WindowObject *self, PyObject *args);
+
+    static PyObject *to_screen(WindowObject *self, PyObject *args);
 }
 
 // Window Getter & Setters
@@ -291,6 +295,13 @@ namespace window {
     static int set_right_click_callback(WindowObject *self, PyObject *value, void *closure);
 
     static PyObject *get_right_click_callback(WindowObject *self, void *closure);
+}
+
+// Static Window Methods
+namespace window {
+    static PyObject *update_all(WindowObject *self, PyObject *args);
+
+    static PyObject *destroy_all(WindowObject *self, PyObject *args);
 }
 
 extern PyTypeObject WindowType;

@@ -1,3 +1,5 @@
+#define LINE_MODULE
+
 #include "line.h"
 #include "renderable_module.h"
 #include "renderable_object.h"

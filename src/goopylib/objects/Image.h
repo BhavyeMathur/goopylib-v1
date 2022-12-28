@@ -9,11 +9,11 @@ namespace gp {
         friend class Renderer;
 
     public:
-        Image(Point position, const char *path);
+        Image(const char *path, Point position);
 
-        Image(Point position, const char *path, float width, float height);
+        Image(const char *path, Point position, float width, float height);
 
-        Image(Point p1, Point p2, const char *path);
+        Image(const char *path, Point p1, Point p2);
 
         const char *getPath() const;
 

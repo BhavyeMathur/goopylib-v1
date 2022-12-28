@@ -1,0 +1,3 @@
+"""
+goopylib module initialization
+"""

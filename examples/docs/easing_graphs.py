@@ -1,4 +1,4 @@
-import math
+import maths
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -9,7 +9,7 @@ sns.set_theme()
 
 
 def plot_all_easing(easings):
-    rows = math.ceil(len(easings) / 6)
+    rows = maths.ceil(len(easings) / 6)
     fig, axes = plt.subplots(nrows=rows, ncols=6, figsize=(36, 6 * rows), dpi=100)
 
     x_ax = [x / 100 for x in range(101)]

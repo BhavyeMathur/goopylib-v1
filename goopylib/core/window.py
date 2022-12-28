@@ -197,7 +197,7 @@ class Window:
             self._window.background = background._color
             self._background = background
         else:
-            raise TypeError(f"'Color' argument expected, got '{type(background)}'")
+            self._window.background = background
 
     # Minimum Width
     @property
