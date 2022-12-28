@@ -53,12 +53,12 @@ namespace gp {
         /**
          * @return a string representation of the color
          */
-        virtual std::string toString() const;
+        [[nodiscard]] virtual std::string toString() const;
 
         /**
          * @return the red component of the color
          */
-        int getRed() const;
+        [[nodiscard]] int getRed() const;
 
         /**
          * @param value between 0-255
@@ -69,7 +69,7 @@ namespace gp {
         /**
          * @return the green component of the color
          */
-        int getGreen() const;
+        [[nodiscard]] int getGreen() const;
 
         /**
          * @param value between 0-255
@@ -80,7 +80,7 @@ namespace gp {
         /**
          * @return the blue component of the color
          */
-        int getBlue() const;
+        [[nodiscard]] int getBlue() const;
 
         /**
          * @param value between 0-255
@@ -91,7 +91,7 @@ namespace gp {
         /**
          * @return the alpha component of the color
          */
-        float getAlpha() const;
+        [[nodiscard]] float getAlpha() const;
 
         /**
          * @param value between 0-1
@@ -102,22 +102,22 @@ namespace gp {
         /**
          * @return the red component of the color between 0-1
          */
-        float getRedf() const;
+        [[nodiscard]] float getRedf() const;
 
         /**
          * @return the green component of the color between 0-1
          */
-        float getGreenf() const;
+        [[nodiscard]] float getGreenf() const;
 
         /**
          * @return the blue component of the color between 0-1
          */
-        float getBluef() const;
+        [[nodiscard]] float getBluef() const;
 
         /**
          * @return a struct with RGBA between 0-1
          */
-        RGBAf getRGBAf() const;
+        [[nodiscard]] RGBAf getRGBAf() const;
 
         // Operator Overloads
 
@@ -222,7 +222,7 @@ namespace gp {
          */
         ColorHex(const char *hexstring, float alpha = 1.0f);
 
-        std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
     };
 }
 
@@ -260,12 +260,12 @@ namespace gp {
          */
         ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha = 1.0f);
 
-        std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
         /**
          * @return the cyan component of the color between 0-1
          */
-        float getCyan() const;
+        [[nodiscard]] float getCyan() const;
 
         /**
          * @param value between 0-1
@@ -276,7 +276,7 @@ namespace gp {
         /**
          * @return the magenta component of the color between 0-1
          */
-        float getMagenta() const;
+        [[nodiscard]] float getMagenta() const;
 
         /**
          * @param value between 0-1
@@ -287,7 +287,7 @@ namespace gp {
         /**
          * @return the yellow component of the color between 0-1
          */
-        float getYellow() const;
+        [[nodiscard]] float getYellow() const;
 
         /**
          * @param value between 0-1
@@ -298,7 +298,7 @@ namespace gp {
         /**
          * @return the key component of the color between 0-1
          */
-        float getKey() const;
+        [[nodiscard]] float getKey() const;
 
         /**
          * @param value between 0-1
@@ -348,12 +348,12 @@ namespace gp {
          */
         ColorHSV(int hue, float saturation, float value, float alpha = 1.0f);
 
-        std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
         /**
          * @return the hue component of the color between 0-360
          */
-        int getHue() const;
+        [[nodiscard]] int getHue() const;
 
         /**
          * @param value between 0-360
@@ -364,7 +364,7 @@ namespace gp {
         /**
          * @return the saturation component of the color between 0-1
          */
-        float getSaturation() const;
+        [[nodiscard]] float getSaturation() const;
 
         /**
          * @param value between 0-1
@@ -375,7 +375,7 @@ namespace gp {
         /**
          * @return the value component of the color between 0-1
          */
-        float getValue() const;
+        [[nodiscard]] float getValue() const;
 
         /**
          * @param value between 0-1
@@ -424,12 +424,12 @@ namespace gp {
          */
         ColorHSL(int hue, float saturation, float luminance, float alpha = 1.0f);
 
-        std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
         /**
          * @return the hue component of the color between 0-360
          */
-        int getHue() const;
+        [[nodiscard]] int getHue() const;
 
         /**
          * @param value between 0-360
@@ -440,7 +440,7 @@ namespace gp {
         /**
          * @return the saturation component of the color between 0-1
          */
-        float getSaturation() const;
+        [[nodiscard]] float getSaturation() const;
 
         /**
          * @param value between 0-1
@@ -451,7 +451,7 @@ namespace gp {
         /**
          * @return the luminance component of the color between 0-1
          */
-        float getLuminance() const;
+        [[nodiscard]] float getLuminance() const;
 
         /**
          * @param value between 0-1

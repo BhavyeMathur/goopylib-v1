@@ -349,8 +349,8 @@ namespace easing {
             return -1;
         }
 
-        GP_CHECK_GE(damping, 0, -1, "damping value for easing must be greater than or equal to 0");
-        GP_CHECK_GE(bounces, 1, -1, "bounces value for easing must be greater than or equal to 1");
+        GP_CHECK_GE(damping, 0, -1, "damping value for easing must be greater than or equal to 0")
+        GP_CHECK_GE(bounces, 1, -1, "bounces value for easing must be greater than or equal to 1")
 
         self->easing = gp::easeBounceInOut(bounces, damping);
         self->string = PyUnicode_FromFormat("ease_bounce(bounces=%i, damping=%S)", bounces,

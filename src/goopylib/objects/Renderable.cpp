@@ -396,5 +396,5 @@ namespace gp {
         GP_CORE_TRACE_ALL("gp::Renderable::_contains({0}, {1})", x, y);
 
         return true;
-    };
+    }
 }

@@ -15,7 +15,6 @@ set(SOURCE_FILES
     src/goopylib/core/BufferLayout.cpp
 
     src/goopylib/debug/Log.cpp
-    src/goopylib/debug/Error.cpp
 
     src/goopylib/maths/Easing.cpp
     src/goopylib/maths/gpmath.cpp

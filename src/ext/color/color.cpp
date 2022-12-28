@@ -1,9 +1,9 @@
 #define COLOR_MODULE
 
 #include "color.h"
-#include "color_capsule.h"
 #include "color_object.h"
 #include "color_module.h"
+#include "color_capsule.h"
 
 #if !GP_LOG_COLOR
 #undef GP_LOGGING_LEVEL

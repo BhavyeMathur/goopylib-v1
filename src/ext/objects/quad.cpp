@@ -2,8 +2,8 @@
 
 #include "quad.h"
 #include "quad_object.h"
-#include "quad_capsule.h"
 #include "quad_module.h"
+#include "quad_capsule.h"
 #include "renderable_module.h"
 
 #include "ext/color/color_object.h"

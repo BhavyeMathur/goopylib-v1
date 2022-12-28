@@ -2,7 +2,7 @@ from typing import Literal, Union
 from vertex_array import *
 
 
-class VertexBuffer():
+class VertexBuffer:
     def __init__(self, *args: Union[tuple[float, ...], float]):
         raise NotImplementedError()
 

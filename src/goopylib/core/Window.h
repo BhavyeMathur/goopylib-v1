@@ -95,17 +95,17 @@ namespace gp {
         /**
          * @return whether the Window is closed.
          */
-        bool isClosed() const;
+        [[nodiscard]] bool isClosed() const;
 
         /**
          * @return whether the Window is open.
          */
-        bool isOpen() const;
+        [[nodiscard]] bool isOpen() const;
     
         /**
          * @return whether the Window has been destroyed.
          */
-        bool isDestroyed() const;
+        [[nodiscard]] bool isDestroyed() const;
     
         /**
          * Refreshes the Window.
@@ -135,7 +135,7 @@ namespace gp {
         /**
          * @return in screen coordinates
          */
-        int getWidth() const;
+        [[nodiscard]] int getWidth() const;
 
         // Height
         /**
@@ -149,7 +149,7 @@ namespace gp {
         /**
          * @return in screen coordinates
          */
-        int getHeight() const;
+        [[nodiscard]] int getHeight() const;
 
         // Title
         /**
@@ -161,7 +161,7 @@ namespace gp {
         /**
          * @return the title string showed in the title menu
          */
-        const char *getTitle() const;
+        [[nodiscard]] const char *getTitle() const;
 
         // X Position
         /**
@@ -173,7 +173,7 @@ namespace gp {
         /**
          * @return in screen coordinates, the position of the upper-left corner of the Window
          */
-        int getXPos() const;
+        [[nodiscard]] int getXPos() const;
 
         // Y Position
         /**
@@ -185,7 +185,7 @@ namespace gp {
         /**
          * @return in screen coordinates, the position of the lower-right corner of the Window
          */
-        int getYPos() const;
+        [[nodiscard]] int getYPos() const;
 
         // Background
         /**
@@ -214,7 +214,7 @@ namespace gp {
         /**
          * @return the minimum resizable width in screen coordinates
          */
-        int getMinWidth() const;
+        [[nodiscard]] int getMinWidth() const;
 
         // Minimum Height
         /**
@@ -230,7 +230,7 @@ namespace gp {
         /**
          * @return the minimum resizable height in screen coordinates
          */
-        int getMinHeight() const;
+        [[nodiscard]] int getMinHeight() const;
 
         // Maximum Width
         /**
@@ -246,7 +246,7 @@ namespace gp {
         /**
          * @return the maximum resizable width in screen coordinates
          */
-        int getMaxWidth() const;
+        [[nodiscard]] int getMaxWidth() const;
 
         // Maximum Height
         /**
@@ -262,7 +262,7 @@ namespace gp {
         /**
          * @return the maximum resizable height in screen coordinates
          */
-        int getMaxHeight() const;
+        [[nodiscard]] int getMaxHeight() const;
 
         // Get & Set Methods
         /**
@@ -355,7 +355,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        AspectRatio getAspectRatio() const;
+        [[nodiscard]] AspectRatio getAspectRatio() const;
 
         /**
          * Gets the size, in screen coordinates, of the Window frame.
@@ -369,7 +369,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        WindowFrame getFrameSize() const;
+        [[nodiscard]] WindowFrame getFrameSize() const;
 
         /**
          * Gets the scale of the content on the window.
@@ -380,7 +380,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        ContentScale getContentScale() const;
+        [[nodiscard]] ContentScale getContentScale() const;
 
         /**
          * The size of the framebuffer for the Window.
@@ -389,7 +389,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        FramebufferSize getFramebufferSize() const;
+        [[nodiscard]] FramebufferSize getFramebufferSize() const;
 
         /* Window Attributes -----------------------------------------------------------------------------------------*/
 
@@ -401,7 +401,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        bool isResizable() const;
+        [[nodiscard]] bool isResizable() const;
 
         /**
          * @param value whether the Window is resizable by the user or not.
@@ -419,7 +419,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        bool isDecorated() const;
+        [[nodiscard]] bool isDecorated() const;
 
         /**
          * @param value whether the Window has window decorations like a border, close widget, etc.
@@ -438,7 +438,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        bool isFloating() const;
+        [[nodiscard]] bool isFloating() const;
 
         /**
          * @param value whether the window is always on top of other regular windows.
@@ -454,7 +454,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        bool isAutoMinimized() const;
+        [[nodiscard]] bool isAutoMinimized() const;
 
         /**
          * @param value whether the window is automatically minimized when it loses focus.
@@ -470,7 +470,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        bool isFocusedOnShow() const;
+        [[nodiscard]] bool isFocusedOnShow() const;
 
         /**
          * @param value whether calling Window::show() gives this Window input focus
@@ -499,7 +499,7 @@ namespace gp {
          * @return whether the Window is in fullscreen mode.
          * @throws std::runtime_error window has been destroyed
          */
-        bool isFullscreen() const;
+        [[nodiscard]] bool isFullscreen() const;
 
         // Maximize
         /**
@@ -513,7 +513,7 @@ namespace gp {
          * @return whether the Window is in maximized mode.
          * @throws std::runtime_error window has been destroyed
          */
-        bool isMaximized() const;
+        [[nodiscard]] bool isMaximized() const;
 
         // Minimize
         /**
@@ -527,7 +527,7 @@ namespace gp {
          * @return whether the Window is in minimized mode.
          * @throws std::runtime_error window has been destroyed
          */
-        bool isMinimized() const;
+        [[nodiscard]] bool isMinimized() const;
 
         // Visibility
         /**
@@ -548,7 +548,7 @@ namespace gp {
          * @return whether the Window is visible to the user.
          * @throws std::runtime_error window has been destroyed
          */
-        bool isVisible() const;
+        [[nodiscard]] bool isVisible() const;
 
         // Input Focus
         /**
@@ -562,7 +562,7 @@ namespace gp {
          * @return whether the Window has input focus.
          * @throws std::runtime_error window has been destroyed
          */
-        bool hasFocus() const;
+        [[nodiscard]] bool hasFocus() const;
 
         /**
          * Requests for the user's attention to the Window.
@@ -580,7 +580,7 @@ namespace gp {
          * @return whether the mouse is hovering over the Window.
          * @throws std::runtime_error window has been destroyed
          */
-        bool isMouseHovering() const;
+        [[nodiscard]] bool isMouseHovering() const;
 
         /**
          * Gets the current position of the mouse
@@ -589,7 +589,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        Point getMousePosition() const;
+        [[nodiscard]] Point getMousePosition() const;
 
         /**
          * Normal makes the cursor visible and behave normally.\n
@@ -606,25 +606,25 @@ namespace gp {
          * @return whether the shift key is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        bool checkShiftKey() const;
+        [[nodiscard]] bool checkShiftKey() const;
 
         /**
          * @return whether the control key is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        bool checkControlKey() const;
+        [[nodiscard]] bool checkControlKey() const;
 
         /**
          * @return whether the alt key is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        bool checkAltKey() const;
+        [[nodiscard]] bool checkAltKey() const;
 
         /**
          * @return whether the super key is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        bool checkSuperKey() const;
+        [[nodiscard]] bool checkSuperKey() const;
 
         /**
          * @param key an int corresponding to the keycode
@@ -633,7 +633,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        int checkKey(int key) const;
+        [[nodiscard]] int checkKey(int key) const;
 
         /**
          * @param button an int corresponding to the mouse button
@@ -642,25 +642,25 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        bool checkMouseButton(int button) const;
+        [[nodiscard]] bool checkMouseButton(int button) const;
 
         /**
          * @return whether the left mouse button is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        bool checkLeftClick() const;
+        [[nodiscard]] bool checkLeftClick() const;
 
         /**
          * @return whether the middle mouse button is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        bool checkMiddleClick() const;
+        [[nodiscard]] bool checkMiddleClick() const;
 
         /**
          * @return whether the right mouse button is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        bool checkRightClick() const;
+        [[nodiscard]] bool checkRightClick() const;
 
         /* Window Callback Functions ---------------------------------------------------------------------------------*/
 

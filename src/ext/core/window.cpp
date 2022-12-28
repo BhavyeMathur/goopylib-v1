@@ -1,9 +1,9 @@
 #define WINDOW_MODULE
 
 #include "window.h"
-#include "window_capsule.h"
 #include "window_object.h"
 #include "window_module.h"
+#include "window_capsule.h"
 
 #include "ext/color/color_object.h"
 #include "ext/color/color_module.h"
@@ -73,7 +73,7 @@ namespace window {
 
         self->background = PyObject_CallObject((PyObject *) ColorType, Py_BuildValue("iii", 255, 255, 255));
 
-        self->window = gp::make_unique<gp::Window>(width, height, PyUnicode_AsUTF8(tmp));
+        self->window = std::make_unique<gp::Window>(width, height, PyUnicode_AsUTF8(tmp));
         self->window->setBackground(*((ColorObject *) self->background)->color);
 
         return 0;

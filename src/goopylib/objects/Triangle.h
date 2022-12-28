@@ -28,6 +28,6 @@ namespace gp {
 
         void _update() const override;
 
-        bool _contains(float x, float y) const override;
+        [[nodiscard]] bool _contains(float x, float y) const override;
     };
 }

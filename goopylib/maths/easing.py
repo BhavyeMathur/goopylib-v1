@@ -505,7 +505,7 @@ def ease_bounce_out(bounces: int = 4, damping: float = 0.4) -> EasingType:
     return __easing.ease_bounce_out(bounces, damping)
 
 
-def combine_easing(easing1: EasingType, easing2: EasingType) -> EasingType:
+def combine_easing(easing1: EasingType, easing2: EasingType) -> callable:
     """Combines 2 easing functions together.
     
     The 1st easing function is used for t values below 0.5 and the 2nd easing function is used for t values above 0.5

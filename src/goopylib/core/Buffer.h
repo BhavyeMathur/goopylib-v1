@@ -9,7 +9,7 @@ namespace gp {
     public:
         virtual ~Buffer() = default;
 
-        uint32_t count() const;
+        [[nodiscard]] [[nodiscard]] uint32_t count() const;
 
     protected:
         uint32_t m_Count = 0;
@@ -38,7 +38,7 @@ namespace gp {
 
         void setData(const void *data, uint32_t count, uint32_t offset) const;
 
-        const BufferLayout &getLayout() const;
+        [[nodiscard]] [[nodiscard]] const BufferLayout &getLayout() const;
 
         void setLayout(const BufferLayout &layout);
 
@@ -87,7 +87,7 @@ namespace gp {
 
         void setData(const void *data, uint32_t count, uint32_t offset) const;
 
-        const BufferLayout &getLayout() const;
+        [[nodiscard]] [[nodiscard]] const BufferLayout &getLayout() const;
 
         void setBinding(uint32_t binding) const;
 

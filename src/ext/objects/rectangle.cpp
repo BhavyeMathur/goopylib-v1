@@ -2,9 +2,6 @@
 #include "quad_module.h"
 #include "quad_object.h"
 
-#include "ext/color/color_object.h"
-#include "ext/color/color_module.h"
-
 #include "goopylib/objects/Rectangle.h"
 
 #if GP_LOG_RECTANGLE != true

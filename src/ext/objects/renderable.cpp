@@ -1,9 +1,9 @@
 #define RENDERABLE_MODULE
 
 #include "renderable.h"
-#include "renderable_capsule.h"
 #include "renderable_object.h"
 #include "renderable_module.h"
+#include "renderable_capsule.h"
 
 #include "ext/core/window_module.h"
 #include "ext/core/window_object.h"

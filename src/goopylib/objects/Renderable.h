@@ -23,7 +23,7 @@ namespace gp {
 
         void destroy();
 
-        bool isDrawn() const;
+        [[nodiscard]] bool isDrawn() const;
 
         /* Getters & Setters */
 
@@ -37,22 +37,22 @@ namespace gp {
 
         void setX(float x);
 
-        float getX() const;
+        [[nodiscard]] float getX() const;
 
         void setY(float y);
 
-        float getY() const;
+        [[nodiscard]] float getY() const;
 
         void setPosition(float x, float y);
 
-        Point getPosition() const;
+        [[nodiscard]] Point getPosition() const;
 
         // Rotation
         void rotate(float angle);
 
         void setRotation(float angle);
 
-        float getRotation() const;
+        [[nodiscard]] float getRotation() const;
 
         // Scale
         void scale(float factor);
@@ -67,16 +67,16 @@ namespace gp {
 
         void setScale(float xfactor, float yfactor);
 
-        Scale getScale() const;
+        [[nodiscard]] Scale getScale() const;
 
         // Dimensions
         void setWidth(float width);
 
-        float getWidth() const;
+        [[nodiscard]] float getWidth() const;
 
         void setHeight(float height);
 
-        float getHeight() const;
+        [[nodiscard]] float getHeight() const;
 
         void setSize(float width, float height);
 
@@ -87,13 +87,13 @@ namespace gp {
 
         void show();
 
-        bool isHidden() const;
+        [[nodiscard]] bool isHidden() const;
 
         /* Methods */
 
-        bool boxContains(Point point) const;
+        [[nodiscard]] bool boxContains(Point point) const;
 
-        bool contains(Point point) const;
+        [[nodiscard]] bool contains(Point point) const;
 
     protected:
         Window *m_Window = nullptr;
@@ -134,7 +134,7 @@ namespace gp {
 
         void _calculateAttributes();
 
-        virtual bool _contains(float x, float y) const;
+        [[nodiscard]] virtual bool _contains(float x, float y) const;
 
         virtual uint32_t _draw(Window *window) const = 0;
 

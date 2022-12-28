@@ -2,8 +2,8 @@
 
 #include "ellipse.h"
 #include "ellipse_object.h"
-#include "ellipse_capsule.h"
 #include "ellipse_module.h"
+#include "ellipse_capsule.h"
 #include "renderable_module.h"
 
 #include "ext/color/color_object.h"

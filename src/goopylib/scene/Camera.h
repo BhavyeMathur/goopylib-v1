@@ -23,19 +23,19 @@ namespace gp {
 
         void setPosition(float x, float y);
 
-        Point getPosition() const;
+        [[nodiscard]] [[nodiscard]] Point getPosition() const;
 
         void rotate(float angle);
 
         void setRotation(float angle);
 
-        float getRotation() const;
+        [[nodiscard]] [[nodiscard]] float getRotation() const;
 
         void zoom(float value);
 
         void setZoom(float value);
 
-        float getZoom() const;
+        [[nodiscard]] [[nodiscard]] float getZoom() const;
 
     private:
         glm::mat4 m_ProjectionMatrix;

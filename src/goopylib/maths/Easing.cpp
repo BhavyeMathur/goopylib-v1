@@ -13,8 +13,8 @@
 #include "goopylib/debug/Error.h"
 
 #define EASE_IN(func, ...) func(t, ##__VA_ARGS__)
-#define EASE_OUT(func, ...) 1 - func(1 - t, ##__VA_ARGS__)
-#define EASE_INOUT(func, ...) t < 0.5 ? func(2 * t, ##__VA_ARGS__) / 2 : 1 - func(2 * (1 - t), ##__VA_ARGS__) / 2
+#define EASE_OUT(func, ...) (1 - func(1 - t, ##__VA_ARGS__))
+#define EASE_INOUT(func, ...) (t < 0.5 ? func(2 * t, ##__VA_ARGS__) / 2 : 1 - func(2 * (1 - t), ##__VA_ARGS__) / 2)
 
 namespace {
     void processEaseBounce(int bounces, float &damping, float &scale, std::vector<float> &zeroes,

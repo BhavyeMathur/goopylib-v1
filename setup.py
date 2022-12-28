@@ -113,7 +113,7 @@ def build_html_documentation():
 
 
 def countlines(start, lines=0, _header=True, _begin_start=None,
-               formats=(".py", ".c", ".cpp", ".h", ".hpp", ".glsl", ".frag", ".vert", ".geom"),
+               formats=(".py", ".c", ".cpp", ".h", ".hpp", ".glsl", ".frag", ".vert", ".geom", ".ipynb"),
                excluded_folders=("vendor", "venv", "build", "docs"),
                excluded_files=("main.py", "main.cpp")):
 

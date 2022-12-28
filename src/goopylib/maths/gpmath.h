@@ -2,8 +2,6 @@
 
 #include "gp.h"
 
-#define B10MAX ((float)((1u << 10) - 1))
-
 template<typename T>
     T gcd(T a, T b) {
         return b == 0 ? a : gcd(b, a % b);
