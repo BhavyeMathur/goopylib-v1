@@ -50,7 +50,15 @@ namespace image {
         PyErr_Clear();
 
         if (PyArg_ParseTuple(args, "s(ff)", &path, &x1, &y1)) {
-            self->image = std::shared_ptr<gp::Image>(new gp::Image(path, {x1, y1}));
+
+            try {
+                self->image = std::shared_ptr<gp::Image>(new gp::Image(path, {x1, y1}));
+            }
+            catch (const std::filesystem::filesystem_error &e) {
+                PyErr_SetString(PyExc_FileNotFoundError, path);
+                return -1;
+            }
+
             self->base.renderable = self->image;
             return 0;
         }

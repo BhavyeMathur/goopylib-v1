@@ -41,10 +41,10 @@ namespace gp {
         }
         else {
             if (m_Width == 0 and m_Height == 0 and m_Channels == 0) {
-                GP_CORE_ERROR("File '{0}' not found", m_Path);
+                GP_FILENOTFOUND_ERROR("File '{0}' not found", m_Path);
             }
             else {
-                GP_CORE_ERROR("Unsupported image format '{0}'", m_Path);
+                GP_VALUE_ERROR("Unsupported image format '{0}'", m_Path);
             }
 
             internalFormat = 0;
@@ -65,6 +65,7 @@ namespace gp {
     }
 
     Texture2D::~Texture2D() {
+        GP_CORE_DEBUG("gp::Texture2D::~Texture2D()");
         glDeleteTextures(1, &m_RendererID);
     }
 

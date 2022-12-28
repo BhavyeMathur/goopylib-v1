@@ -4,25 +4,29 @@
 
 namespace gp {
     enum class ErrorType {
-        None = 0,
-        RuntimeError = 1,
-        ValueError = 2,
+        RuntimeError,
+        ValueError,
+        FileNotFoundError,
     };
 
     template<typename... Args>
         void setError(ErrorType type, const char *message, Args &&... args) {
             GP_CORE_CRITICAL(message, std::forward<Args>(args)...);
+
             switch (type) {
                 case ErrorType::ValueError:
                     throw std::invalid_argument(message);
-                default:
+                case ErrorType::RuntimeError:
                     throw std::runtime_error(message);
+                case ErrorType::FileNotFoundError:
+                    throw std::filesystem::filesystem_error(message, std::error_code());
             }
         }
 }
 
 #define GP_RUNTIME_ERROR(...) gp::setError(gp::ErrorType::RuntimeError, __VA_ARGS__)
 #define GP_VALUE_ERROR(...) gp::setError(gp::ErrorType::ValueError, __VA_ARGS__)
+#define GP_FILENOTFOUND_ERROR(...) gp::setError(gp::ErrorType::FileNotFoundError, __VA_ARGS__)
 
 #if GP_VALUE_CHECKING
 #define GP_CHECK_EQUALS(variable, val, error) do { if ((variable) != (val)) { GP_VALUE_ERROR(error); } } while (0)

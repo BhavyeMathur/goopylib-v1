@@ -58,6 +58,9 @@ namespace gp {
     }
 
     void Line::setTransparency(float value1, float value2) {
+        GP_CHECK_INCLUSIVE_RANGE(value1, 0, 1, "transparency must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(value2, 0, 1, "transparency must be between 0 and 1");
+
         m_V1.color.alpha = value1;
         m_V2.color.alpha = value2;
 

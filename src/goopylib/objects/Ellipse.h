@@ -55,6 +55,8 @@ namespace gp {
          * @param v2 the bottom-right transparency
          * @param v3 the top-right transparency
          * @param v4 the top-left transparency
+         *
+         * @throws std::invalid_argument if values are not between 0 and 1
          */
         void setTransparency(float v1, float v2, float v3, float v4);
 
