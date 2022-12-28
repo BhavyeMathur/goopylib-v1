@@ -15,7 +15,7 @@ class Image(Renderable):
 
     Args:
         path: the filepath to the image
-        p1: the image's center (x, y) with a coordinate in world space
+        p1: the image's center (x, y) in world space
         *args: optional width and height or an optional top-right coordinate (p1 will be bottom-left).
 
     Raises:
@@ -46,7 +46,7 @@ class Image(Renderable):
 
         Args:
             path: the filepath to the image
-            p1: the image's center (x, y) with a coordinate in world space
+            p1: the image's center (x, y) in world space
             *args: optional width and height or an optional top-right coordinate (p1 will be bottom-left).
 
         Raises:

@@ -39,7 +39,7 @@ class Ellipse(Renderable):
         An object representing an ellipse or oval
 
         Args:
-            p1: a tuple (x, y) with a coordinate in world space
+            p1: a tuple (x, y) in world space
             *args: either annother tuple (x, y) in world space, or the x and y radii of the ellipse
 
         Raises:

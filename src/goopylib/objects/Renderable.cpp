@@ -115,13 +115,21 @@ namespace gp {
     }
 
     bool Renderable::boxContains(Point point) const {
+        return boxContains(point.x, point.y);
+    }
+
+    bool Renderable::boxContains(float x, float y) const {
         GP_CORE_TRACE("gp::Renderable::boxContains({0}, {1})", point.x, point.y);
-        return point.x <= m_MaxX and point.x >= m_MinX and point.y <= m_MaxY and point.y >= m_MinY;
+        return x <= m_MaxX and x >= m_MinX and y <= m_MaxY and y >= m_MinY;
     }
 
     bool Renderable::contains(Point point) const {
+        return contains(point.x, point.y);
+    }
+
+    bool Renderable::contains(float x, float y) const {
         GP_CORE_TRACE("gp::Renderable::contains({0}, {1})", point.x, point.y);
-        return boxContains(point) and _contains(point.x, point.y);  // early exit if box doesn't contain point
+        return boxContains(x, y) and _contains(x, y);  // early exit if box doesn't contain point
     }
 }
 

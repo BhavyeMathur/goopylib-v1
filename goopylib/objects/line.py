@@ -35,10 +35,10 @@ class Line(Renderable):
 
     def set_color(self, *args):
         """
-        Sets the fill color of the object
+        Sets the outline color of the line
 
         Args:
-            *args: a color or 4 colors corresponding to each vertex
+            *args: a color or 2 colors corresponding to each vertex
 
         Raises:
             TypeError: arguments must be colors

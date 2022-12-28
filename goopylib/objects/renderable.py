@@ -107,7 +107,7 @@ class Renderable:
 
     def set_size(self, width: float, height: float):
         """
-        Sets the dimensions of the object by resizing the object
+        Sets the dimensions of the object by resizing it
 
         Args:
             width: in world coordinates

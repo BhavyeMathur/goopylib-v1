@@ -14,7 +14,7 @@ class Rectangle(Quad):
     An object representing a rectangle
 
     Args:
-        p1: a tuple (x, y) with a coordinate in world space
+        p1: a tuple (x, y) in world space
         *args: either annother tuple (x, y) in world space, or the width and height of the rectangle
 
     Raises:
@@ -38,7 +38,7 @@ class Rectangle(Quad):
         An object representing a rectangle
 
         Args:
-            p1: a tuple (x, y) with a coordinate in world space
+            p1: a tuple (x, y) in world space
             *args: either annother tuple (x, y) in world space, or the width and height of the rectangle
 
         Raises:
