@@ -46,7 +46,7 @@ namespace gp {
 
     Renderable::Renderable(std::initializer_list<Point> points)
             : m_Vertices(points.size()) {
-        GP_CORE_DEBUG("gp::Renderable::Renderable(vertices={2})", points.size());
+        GP_CORE_DEBUG("gp::Renderable::Renderable(vertices={0})", points.size());
 
         float sumX = 0;
         float sumY = 0;

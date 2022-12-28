@@ -2,6 +2,9 @@
 #include "renderable_module.h"
 #include "renderable_object.h"
 
+#include "ext/color/color_object.h"
+#include "ext/color/color_module.h"
+
 #include "goopylib/objects/Triangle.h"
 
 #if GP_LOG_TRIANGLE != true
@@ -52,6 +55,7 @@ namespace triangle {
     }
 
     static PyObject *repr(TriangleObject *self) {
+        GP_PY_TRACE("gp.triangle.Triangle.__repr__()");
         return PyUnicode_FromString("Triangle()");
     }
 
@@ -60,11 +64,12 @@ namespace triangle {
     }
 
     static int clear(TriangleObject *self) {
+        GP_PY_TRACE("gp.triangle.Triangle.clear()");
         return 0;
     }
 
     static void dealloc(TriangleObject *self) {
-        GP_PY_DEBUG("gp.window.Window.dealloc()");
+        GP_PY_DEBUG("gp.triangle.Triangle.dealloc()");
 
         self->triangle.reset();
 
@@ -74,13 +79,118 @@ namespace triangle {
     }
 }
 
+// Triangle methods
+namespace triangle {
+    static PyObject *set_color(TriangleObject *self, PyObject *args) {
+        GP_PY_DEBUG("gp.triangle.Triangle.set_color({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
+        PyObject *arg1, *arg2, *arg3;
+        PyObject *color1;
+        if (PyArg_ParseTuple(args, "OOO", &arg1, &arg2, &arg3)) {
+
+            PyObject *color2, *color3;
+
+            if (!isinstance(arg1, ColorType)) {
+                color1 = PyObject_CallObject((PyObject *) ColorType, arg1);
+
+                #if GP_TYPE_CHECKING
+                if (color1 == nullptr) {
+                    return nullptr;
+                }
+                #endif
+            }
+            else {
+                color1 = arg1;
+            }
+
+            if (!isinstance(arg2, ColorType)) {
+                color2 = PyObject_CallObject((PyObject *) ColorType, arg2);
+
+                #if GP_TYPE_CHECKING
+                if (color2 == nullptr) {
+                    return nullptr;
+                }
+                #endif
+            }
+            else {
+                color2 = arg2;
+            }
+
+            if (!isinstance(arg3, ColorType)) {
+                color3 = PyObject_CallObject((PyObject *) ColorType, arg3);
+
+                #if GP_TYPE_CHECKING
+                if (color3 == nullptr) {
+                    return nullptr;
+                }
+                #endif
+            }
+            else {
+                color3 = arg3;
+            }
+
+            self->triangle->setColor(*((ColorObject *) color1)->color,
+                                     *((ColorObject *) color2)->color,
+                                     *((ColorObject *) color3)->color);
+            Py_RETURN_NONE;
+        }
+        PyErr_Clear();
+
+        if (!PyArg_ParseTuple(args, "O", &arg1)) {
+            return nullptr;
+        }
+
+        if (!isinstance(arg1, ColorType)) {
+            color1 = PyObject_CallObject((PyObject *) ColorType, arg1);
+
+            #if GP_TYPE_CHECKING
+            if (color1 == nullptr) {
+                return nullptr;
+            }
+            #endif
+        }
+        else {
+            color1 = arg1;
+        }
+
+        self->triangle->setColor(*((ColorObject *) color1)->color);
+        Py_RETURN_NONE;
+    }
+
+    static PyObject *set_transparency(TriangleObject *self, PyObject *args) {
+        GP_PY_DEBUG("gp.triangle.Triangle.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
+        float v1, v2, v3;
+        if (PyArg_ParseTuple(args, "fff", &v1, &v2, &v3)) {
+            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, nullptr, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, nullptr, "transparency must be between 0 and 1")
+
+            self->triangle->setTransparency(v1, v2, v3);
+            Py_RETURN_NONE;
+        }
+        PyErr_Clear();
+
+        if (!PyArg_ParseTuple(args, "f", &v1)) {
+            return nullptr;
+        }
+
+        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
+
+        self->triangle->setTransparency(v1);
+        Py_RETURN_NONE;
+    }
+}
+
+
 // Triangle Type
 namespace triangle {
     static PyMethodDef methods[] = {
-            {nullptr}
-    };
+            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
+                    "Sets the color of the object"},
+            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
+                    "Sets the transparency of the object"},
 
-    static PyGetSetDef getsetters[] = {
             {nullptr}
     };
 }
@@ -96,7 +206,6 @@ PyTypeObject TriangleType = {
         .tp_init = (initproc) triangle::init,
 
         .tp_methods = triangle::methods,
-        .tp_getset = triangle::getsetters,
 
         .tp_traverse = (traverseproc) triangle::traverse,
         .tp_clear = (inquiry) triangle::clear,
@@ -130,7 +239,19 @@ PyMODINIT_FUNC PyInit_triangle(void) {
         return nullptr;
     }
 
-    TriangleType.tp_base = Renderable_pytype();
+    RenderableType = Renderable_pytype();
+
+    #if GP_LOGGING_LEVEL >= 6
+    std::cout << "[--:--:--] PYTHON: PyInit_triangle() - import_color()" << std::endl;
+    #endif
+    PyColor_API = (void **) PyCapsule_Import("goopylib.ext.color._C_API", 0);
+    if (PyColor_API == nullptr) {
+        return nullptr;
+    }
+
+    ColorType = Color_pytype();
+
+    TriangleType.tp_base = RenderableType;
 
     EXPOSE_PYOBJECT_CLASS(TriangleType, "Triangle");
 

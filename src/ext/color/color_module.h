@@ -5,39 +5,23 @@
 extern "C" {
 #endif
 
-    /* C++ API functions */
-    #define Color_create_NUM 0
-    #define Color_create_RETURN PyObject*
-    #define Color_create_PROTO (PyObject *value)
+/* C++ API functions */
+#define Color_pytype_NUM 0
+#define Color_pytype_RETURN PyTypeObject*
+#define Color_pytype_PROTO ()
 
-    #define Color_isinstance_NUM 1
-    #define Color_isinstance_RETURN bool
-    #define Color_isinstance_PROTO (PyObject *value)
+/* Total number of C++ API pointers */
+#define PyColor_API_pointers 1
 
-    #define Color_get_pointer_NUM 2
-    #define Color_get_pointer_RETURN gp::Color
-    #define Color_get_pointer_PROTO (PyObject *object)
+#ifdef COLOR_MODULE
 
-    /* Total number of C++ API pointers */
-    #define PyColor_API_pointers 3
+static Color_pytype_RETURN Color_pytype Color_pytype_PROTO;
 
-    #ifdef COLOR_MODULE
+#else
+#define Color_pytype \
+        (*(Color_pytype_RETURN (*)Color_pytype_PROTO) PyColor_API[Color_pytype_NUM])
 
-        static Color_create_RETURN Color_create Color_create_PROTO;
-        static Color_isinstance_RETURN Color_isinstance Color_isinstance_PROTO;
-        static Color_get_pointer_RETURN Color_get_pointer Color_get_pointer_PROTO;
-
-    #else
-        #define Color_create \
-        (*(Color_create_RETURN (*)Color_create_PROTO) PyColor_API[Color_create_NUM])
-
-        #define Color_isinstance \
-        (*(Color_isinstance_RETURN (*)Color_isinstance_PROTO) PyColor_API[Color_isinstance_NUM])
-
-        #define Color_get_pointer \
-        (*(Color_get_pointer_RETURN (*)Color_get_pointer_PROTO) PyColor_API[Color_get_pointer_NUM])
-
-    #endif
+#endif
 
 #ifdef __cplusplus
 }

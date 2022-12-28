@@ -2,6 +2,6 @@
 
 #include "renderable.h"
 
-static PyTypeObject* Renderable_pytype() {
+static PyTypeObject *Renderable_pytype() {
     return &RenderableType;
 }

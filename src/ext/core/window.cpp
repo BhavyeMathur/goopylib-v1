@@ -5,6 +5,7 @@
 #include "window_object.h"
 #include "window_module.h"
 
+#include "ext/color/color_object.h"
 #include "ext/color/color_module.h"
 
 #include "goopylib/core/Window.h"
@@ -70,12 +71,10 @@ namespace window {
         GP_CHECK_GT(width, 0, -1, "width must be greater than 0")
         GP_CHECK_GT(height, 0, -1, "height must be greater than 0")
 
-        self->background = Color_create(PyTuple_Pack(3, PyLong_FromLong(255),
-                                                     PyLong_FromLong(255),
-                                                     PyLong_FromLong(255)));
+        self->background = PyObject_CallObject((PyObject *) ColorType, Py_BuildValue("iii", 255, 255, 255));
 
         self->window = gp::make_unique<gp::Window>(width, height, PyUnicode_AsUTF8(tmp));
-        self->window->setBackground(Color_get_pointer(self->background));
+        self->window->setBackground(*((ColorObject *) self->background)->color);
 
         return 0;
     }
@@ -318,22 +317,22 @@ namespace window {
     static int set_background(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
         CHECK_ACTIVE(-1);
 
-        if (Color_isinstance(value)) {
+        if (isinstance(value, ColorType)) {
             SET_PYOBJECT(self->background, value);
         }
         else {
             PyObject *tmp = self->background;
-            self->background = Color_create(value);
+            self->background = PyObject_CallObject((PyObject *) ColorType, value);
             Py_XDECREF(tmp);
 
             #if GP_TYPE_CHECKING
             if (self->background == nullptr) {
-                RAISE_TYPE_ERROR(-1, "color", value);
+                return -1;
             }
             #endif
         }
 
-        self->window->setBackground(Color_get_pointer(self->background));
+        self->window->setBackground(*((ColorObject *) self->background)->color);
 
         return 0;
     }
@@ -1757,6 +1756,8 @@ PyMODINIT_FUNC PyInit_window(void) {
     if (PyColor_API == nullptr) {
         return nullptr;
     }
+
+    ColorType = Color_pytype();
 
     EXPOSE_PYOBJECT_CLASS(WindowType, "Window");
 

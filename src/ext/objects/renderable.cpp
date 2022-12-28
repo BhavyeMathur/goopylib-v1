@@ -71,12 +71,12 @@ namespace renderable {
 namespace renderable {
     static PyObject *draw(RenderableObject *self, PyObject *arg) {
         #if GP_TYPE_CHECKING
-        if (!isinstance(arg, Window_pytype())) {
+        if (!isinstance(arg, WindowType)) {
             RAISE_TYPE_ERROR(nullptr, "Window", arg);
         }
         #endif
 
-        self->renderable->draw((((WindowObject *) arg)->window).get());
+        self->renderable->draw(((WindowObject *) arg)->window.get());
         Py_RETURN_NONE;
     }
 
@@ -446,6 +446,8 @@ PyMODINIT_FUNC PyInit_renderable(void) {
     if (PyWindow_API == nullptr) {
         return nullptr;
     }
+
+    WindowType = Window_pytype();
 
     return m;
 }

@@ -1,4 +1,9 @@
+#define COLOR_MODULE
+
 #include "color.h"
+#include "color_capsule.h"
+#include "color_object.h"
+#include "color_module.h"
 
 #if !GP_LOG_COLOR
 #undef GP_LOGGING_LEVEL
@@ -873,9 +878,7 @@ PyMODINIT_FUNC PyInit_color() {
     static void *PyColor_API[PyColor_API_pointers];
     PyObject *c_api_object;
 
-    PyColor_API[Color_create_NUM] = (void *) Color_create;
-    PyColor_API[Color_isinstance_NUM] = (void *) Color_isinstance;
-    PyColor_API[Color_get_pointer_NUM] = (void *) Color_get_pointer;
+    PyColor_API[Color_pytype_NUM] = (void *) Color_pytype;
     c_api_object = PyCapsule_New((void *) PyColor_API, "goopylib.ext.color._C_API", nullptr);
 
     if (PyModule_AddObject(m, "_C_API", c_api_object) < 0) {

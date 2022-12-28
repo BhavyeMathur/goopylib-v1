@@ -3,6 +3,7 @@
 #include "ext/header.h"
 
 static void **PyColor_API;
+static PyTypeObject *ColorType;
 
 struct WindowObject;
 

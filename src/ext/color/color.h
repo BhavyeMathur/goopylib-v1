@@ -1,20 +1,9 @@
 #pragma once
 
-#include "goopylib/color/Color.h"
-
 #include "ext/header.h"
-
-#define COLOR_MODULE
-#include "color_module.h"
+#include "color_object.h"
 
 extern PyTypeObject ColorType;
-
-struct ColorObject {
-    PyObject_HEAD
-    std::shared_ptr<gp::Color> color;
-};
-
-#include "color_capsule.h"
 
 struct ColorRGBObject;
 

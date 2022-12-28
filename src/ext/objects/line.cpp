@@ -1,5 +1,11 @@
-#include "goopylib/objects/Line.h"
 #include "line.h"
+#include "renderable_module.h"
+#include "renderable_object.h"
+
+#include "ext/color/color_object.h"
+#include "ext/color/color_module.h"
+
+#include "goopylib/objects/Line.h"
 
 #if GP_LOG_LINE != true
 #undef GP_PY_LOGGING_LEVEL
@@ -16,7 +22,7 @@
 
 
 struct LineObject {
-    PyObject_HEAD
+    RenderableObject base;
     std::shared_ptr<gp::Line> line;
 };
 
@@ -36,10 +42,20 @@ namespace line {
     static int init(LineObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.line.Line()");
 
+        float x1, x2;
+        float y1, y2;
+        if (!PyArg_ParseTuple(args, "(ff)(ff)", &x1, &y1, &x2, &y2)) {
+            return -1;
+        }
+
+        self->line = std::shared_ptr<gp::Line>(new gp::Line({x1, y1}, {x2, y2}));
+        self->base.renderable = self->line;
+
         return 0;
     }
 
     static PyObject *repr(LineObject *self) {
+        GP_PY_TRACE("gp.line.Line.__repr__()");
         return PyUnicode_FromString("Line()");
     }
 
@@ -48,11 +64,12 @@ namespace line {
     }
 
     static int clear(LineObject *self) {
+        GP_PY_TRACE("gp.line.Line.clear()");
         return 0;
     }
 
     static void dealloc(LineObject *self) {
-        GP_PY_DEBUG("gp.window.Window.dealloc()");
+        GP_PY_DEBUG("gp.line.Line.dealloc()");
 
         self->line.reset();
 
@@ -62,13 +79,103 @@ namespace line {
     }
 }
 
+// Line methods
+namespace line {
+    static PyObject *set_color(LineObject *self, PyObject *args) {
+        GP_PY_DEBUG("gp.line.Line.set_color({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
+        PyObject *arg1, *arg2;
+        PyObject *color1;
+        if (PyArg_ParseTuple(args, "OO", &arg1, &arg2)) {
+
+            PyObject *color2;
+
+            if (!isinstance(arg1, ColorType)) {
+                color1 = PyObject_CallObject((PyObject *) ColorType, arg1);
+
+                #if GP_TYPE_CHECKING
+                if (color1 == nullptr) {
+                    return nullptr;
+                }
+                #endif
+            }
+            else {
+                color1 = arg1;
+            }
+
+            if (!isinstance(arg2, ColorType)) {
+                color2 = PyObject_CallObject((PyObject *) ColorType, arg2);
+
+                #if GP_TYPE_CHECKING
+                if (color2 == nullptr) {
+                    return nullptr;
+                }
+                #endif
+            }
+            else {
+                color2 = arg2;
+            }
+
+            self->line->setColor(*((ColorObject *) color1)->color,
+                                 *((ColorObject *) color2)->color);
+            Py_RETURN_NONE;
+        }
+        PyErr_Clear();
+
+        if (!PyArg_ParseTuple(args, "O", &arg1)) {
+            return nullptr;
+        }
+
+        if (!isinstance(arg1, ColorType)) {
+            color1 = PyObject_CallObject((PyObject *) ColorType, arg1);
+
+            #if GP_TYPE_CHECKING
+            if (color1 == nullptr) {
+                return nullptr;
+            }
+            #endif
+        }
+        else {
+            color1 = arg1;
+        }
+
+        self->line->setColor(*((ColorObject *) color1)->color);
+        Py_RETURN_NONE;
+    }
+
+    static PyObject *set_transparency(LineObject *self, PyObject *args) {
+        GP_PY_DEBUG("gp.line.Line.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
+        float v1, v2;
+        if (PyArg_ParseTuple(args, "ff", &v1, &v2)) {
+            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, nullptr, "transparency must be between 0 and 1")
+
+            self->line->setTransparency(v1, v2);
+            Py_RETURN_NONE;
+        }
+        PyErr_Clear();
+
+        if (!PyArg_ParseTuple(args, "f", &v1)) {
+            return nullptr;
+        }
+
+        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
+
+        self->line->setTransparency(v1);
+        Py_RETURN_NONE;
+    }
+}
+
+
 // Line Type
 namespace line {
     static PyMethodDef methods[] = {
-            {nullptr}
-    };
+            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
+                    "Sets the color of the object"},
+            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
+                    "Sets the transparency of the object"},
 
-    static PyGetSetDef getsetters[] = {
             {nullptr}
     };
 }
@@ -78,13 +185,12 @@ PyTypeObject LineType = {
         .tp_name = "goopylib.Line",
         .tp_basicsize = sizeof(LineObject),
         .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
+        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
 
         .tp_new = line::new_,
         .tp_init = (initproc) line::init,
 
         .tp_methods = line::methods,
-        .tp_getset = line::getsetters,
 
         .tp_traverse = (traverseproc) line::traverse,
         .tp_clear = (inquiry) line::clear,
@@ -109,6 +215,30 @@ PyMODINIT_FUNC PyInit_line(void) {
     if (m == nullptr) {
         return nullptr;
     }
+
+    #if GP_LOGGING_LEVEL >= 6
+    std::cout << "[--:--:--] PYTHON: PyInit_line() - import_renderable()" << std::endl;
+    #endif
+    PyRenderable_API = (void **) PyCapsule_Import("goopylib.ext.renderable._C_API", 0);
+    if (PyRenderable_API == nullptr) {
+        return nullptr;
+    }
+
+    RenderableType = Renderable_pytype();
+
+    #if GP_LOGGING_LEVEL >= 6
+    std::cout << "[--:--:--] PYTHON: PyInit_line() - import_color()" << std::endl;
+    #endif
+    PyColor_API = (void **) PyCapsule_Import("goopylib.ext.color._C_API", 0);
+    if (PyColor_API == nullptr) {
+        return nullptr;
+    }
+
+    ColorType = Color_pytype();
+
+    LineType.tp_base = RenderableType;
+
+    EXPOSE_PYOBJECT_CLASS(LineType, "Line");
 
     return m;
 }
