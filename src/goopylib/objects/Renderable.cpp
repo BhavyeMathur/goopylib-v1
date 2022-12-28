@@ -16,6 +16,7 @@ namespace gp {
     Renderable::Renderable(Point position, std::initializer_list<Point> points)
             : m_Position(position),
             m_Vertices(points.size()) {
+        GP_CORE_DEBUG("gp::Renderable::Renderable(({0}, {1}), vertices={2})", position.x, position.y, points.size());
 
         m_Points = new Point[m_Vertices];
         int32_t i = 0;
@@ -45,6 +46,7 @@ namespace gp {
 
     Renderable::Renderable(std::initializer_list<Point> points)
             : m_Vertices(points.size()) {
+        GP_CORE_DEBUG("gp::Renderable::Renderable(vertices={2})", points.size());
 
         float sumX = 0;
         float sumY = 0;
@@ -81,6 +83,8 @@ namespace gp {
     }
 
     void Renderable::draw(Window *window) {
+        GP_CORE_DEBUG("gp::Renderable::draw({0})", window->getTitle());
+
         if (m_Drawn) {
             _destroy();
         }
@@ -91,6 +95,8 @@ namespace gp {
     }
 
     void Renderable::destroy() {
+        GP_CORE_INFO("gp::Renderable::destroy()");
+
         if (m_Drawn) {
             _destroy();
 
@@ -101,16 +107,20 @@ namespace gp {
     }
 
     void Renderable::update() const {
+        GP_CORE_TRACE("gp::Renderable::update()");
+
         if (m_Drawn) {
             _update();
         }
     }
 
     bool Renderable::boxContains(Point point) const {
+        GP_CORE_TRACE("gp::Renderable::boxContains({0}, {1})", point.x, point.y);
         return point.x <= m_MaxX and point.x >= m_MinX and point.y <= m_MaxY and point.y >= m_MinY;
     }
 
     bool Renderable::contains(Point point) const {
+        GP_CORE_TRACE("gp::Renderable::contains({0}, {1})", point.x, point.y);
         return boxContains(point) and _contains(point.x, point.y);  // early exit if box doesn't contain point
     }
 }
@@ -118,16 +128,21 @@ namespace gp {
 // Getter & Setter Methods
 namespace gp {
     bool Renderable::isDrawn() const {
+        GP_CORE_TRACE("gp::Renderable::isDrawn()");
         return m_Drawn;
     }
 
     // Anchor
     void Renderable::setAnchor(float x, float y) {
+        GP_CORE_DEBUG("gp::Renderable::setAnchor({0}, {1})", x, y);
+
         m_Position.x = x;
         m_Position.y = y;
     }
 
     void Renderable::resetAnchor() {
+        GP_CORE_DEBUG("gp::Renderable::resetAnchor()");
+
         float sumX = 0;
         float sumY = 0;
 
@@ -143,6 +158,8 @@ namespace gp {
 
     // Position
     void Renderable::move(float dx, float dy) {
+        GP_CORE_DEBUG("gp::Renderable::move({0}, {1})", dx, dy);
+
         _move(dx, dy);
 
         m_MinX += dx;
@@ -157,26 +174,32 @@ namespace gp {
     }
 
     void Renderable::setX(float x) {
+        GP_CORE_DEBUG("gp::Renderable::setX({0})", x);
         move(x - m_Position.x, 0);
     }
 
     float Renderable::getX() const {
+        GP_CORE_TRACE("gp::Renderable::getX()");
         return m_Position.x;
     }
 
     void Renderable::setY(float y) {
+        GP_CORE_DEBUG("gp::Renderable::setY({0})", y);
         move(0, y - m_Position.y);
     }
 
     float Renderable::getY() const {
+        GP_CORE_TRACE("gp::Renderable::getY()");
         return m_Position.y;
     }
 
     void Renderable::setPosition(float x, float y) {
+        GP_CORE_DEBUG("gp::Renderable::setPosition({0}, {1})", x, y);
         move(x - m_Position.x, y - m_Position.y);
     }
 
     Point Renderable::getPosition() const {
+        GP_CORE_TRACE("gp::Renderable::getPosition()");
         return m_Position;
     }
 
@@ -212,6 +235,7 @@ namespace gp {
     }
 
     float Renderable::getRotation() const {
+        GP_CORE_TRACE("gp::Renderable::getRotation()");
         return m_AngleDegrees;
     }
 
@@ -255,39 +279,48 @@ namespace gp {
     }
 
     void Renderable::setScaleX(float factor) {
+        GP_CORE_DEBUG("gp::Renderable::setScaleX({0})", factor);
         scale(factor / m_xScale, 1);
     }
 
     void Renderable::setScaleY(float factor) {
+        GP_CORE_DEBUG("gp::Renderable::setScaleY({0})", factor);
         scale(1, factor / m_xScale);
     }
 
     void Renderable::setScale(float factor) {
+        GP_CORE_DEBUG("gp::Renderable::setScale({0})", factor);
         scale(factor / m_xScale, factor / m_yScale);
     }
 
     void Renderable::setScale(float xfactor, float yfactor) {
+        GP_CORE_DEBUG("gp::Renderable::setScale({0}, {1})", xfactor, yfactor);
         scale(xfactor / m_xScale, yfactor / m_yScale);
     }
 
     Scale Renderable::getScale() const {
+        GP_CORE_TRACE("gp::Renderable::getScale()");
         return {m_xScale, m_yScale};
     }
 
     // Dimensions
     void Renderable::setWidth(float width) {
+        GP_CORE_DEBUG("gp::Renderable::setWidth({0})", width);
         scale(width / m_Width, 1);
     }
 
     float Renderable::getWidth() const {
+        GP_CORE_TRACE("gp::Renderable::getWidth()");
         return m_Width;
     }
 
     void Renderable::setHeight(float height) {
+        GP_CORE_DEBUG("gp::Renderable::setHeight({0})", height);
         scale(1, height / m_Height);
     }
 
     float Renderable::getHeight() const {
+        GP_CORE_TRACE("gp::Renderable::getHeight()");
         return m_Height;
     }
 
@@ -297,6 +330,8 @@ namespace gp {
 
     // Visibility
     void Renderable::hide(bool hide) {
+        GP_CORE_DEBUG("gp::Renderable::hide({0})", hide);
+
         if (m_Hidden == hide) {
             return;
         }
@@ -306,10 +341,12 @@ namespace gp {
     }
 
     void Renderable::show() {
+        GP_CORE_DEBUG("gp::Renderable::show()");
         hide(false);
     }
 
     bool Renderable::isHidden() const {
+        GP_CORE_TRACE("gp::Renderable::isHidden()");
         return m_Hidden;
     }
 }
@@ -317,6 +354,8 @@ namespace gp {
 // Internal Methods
 namespace gp {
     void Renderable::_calculateAttributes() {
+        GP_CORE_TRACE_ALL("gp::Renderable::_calculateAttributes()");
+
         m_MaxX = -FLT_MAX;
         m_MinX = FLT_MAX;
         m_MaxY = -FLT_MAX;
@@ -345,6 +384,8 @@ namespace gp {
     }
 
     void Renderable::_move(float x, float y) {
+        GP_CORE_TRACE_ALL("gp::Renderable::_move({0}, {1})", x, y);
+
         for (int i = 0; i < m_Vertices; i++) {
             m_Points[i].x += x;
             m_Points[i].y += y;
@@ -352,6 +393,8 @@ namespace gp {
     }
 
     bool Renderable::_contains(float x, float y) const {
+        GP_CORE_TRACE_ALL("gp::Renderable::_contains({0}, {1})", x, y);
+
         return true;
     };
 }

@@ -25,6 +25,8 @@
 // Renderable Core
 namespace renderable {
     static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+        GP_PY_DEBUG("gp.renderable.Renderable.__new__()");
+
         RenderableObject *self;
         self = (RenderableObject *) type->tp_alloc(type, 0);
 
@@ -41,6 +43,7 @@ namespace renderable {
     }
 
     static PyObject *repr(RenderableObject *self) {
+        GP_PY_TRACE("gp.renderable.Renderable.__repr__()");
         return PyUnicode_FromString("Renderable()");
     }
 
@@ -49,6 +52,7 @@ namespace renderable {
     }
 
     static int clear(RenderableObject *self) {
+        GP_PY_TRACE("gp.renderable.Renderable.clear()");
         return 0;
     }
 
@@ -66,7 +70,6 @@ namespace renderable {
 // Renderable methods
 namespace renderable {
     static PyObject *draw(RenderableObject *self, PyObject *arg) {
-
         #if GP_TYPE_CHECKING
         if (!isinstance(arg, Window_pytype())) {
             RAISE_TYPE_ERROR(nullptr, "Window", arg);
