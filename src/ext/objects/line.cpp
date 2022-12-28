@@ -23,7 +23,7 @@
 
 struct LineObject {
     RenderableObject base;
-    std::shared_ptr<gp::Line> line;
+    Ref<gp::Line> line;
 };
 
 
@@ -48,7 +48,7 @@ namespace line {
             return -1;
         }
 
-        self->line = std::shared_ptr<gp::Line>(new gp::Line({x1, y1}, {x2, y2}));
+        self->line = Ref<gp::Line>(new gp::Line({x1, y1}, {x2, y2}));
         self->base.renderable = self->line;
 
         return 0;

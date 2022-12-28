@@ -10,7 +10,7 @@ extern PyTypeObject IndexBufferType;
 
 struct VertexBufferObject {
     PyObject_HEAD
-    std::shared_ptr<gp::VertexBuffer> buffer;
+    Ref<gp::VertexBuffer> buffer;
     PyObject *data;
     PyObject *layout;
     const char *repr;
@@ -18,6 +18,6 @@ struct VertexBufferObject {
 
 struct IndexBufferObject {
     PyObject_HEAD
-    std::shared_ptr<gp::IndexBuffer> buffer;
+    Ref<gp::IndexBuffer> buffer;
     const char *repr;
 };

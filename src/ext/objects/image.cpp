@@ -20,7 +20,7 @@
 
 struct ImageObject {
     RenderableObject base;
-    std::shared_ptr<gp::Image> image;
+    Ref<gp::Image> image;
 };
 
 
@@ -43,7 +43,7 @@ namespace image {
         float width, height;
         const char *path;
         if (PyArg_ParseTuple(args, "s(ff)ff", &path, &x1, &y1, &width, &height)) {
-            self->image = std::shared_ptr<gp::Image>(new gp::Image(path, {x1, y1}, width, height));
+            self->image = Ref<gp::Image>(new gp::Image(path, {x1, y1}, width, height));
             self->base.renderable = self->image;
             return 0;
         }
@@ -52,9 +52,9 @@ namespace image {
         if (PyArg_ParseTuple(args, "s(ff)", &path, &x1, &y1)) {
 
             try {
-                self->image = std::shared_ptr<gp::Image>(new gp::Image(path, {x1, y1}));
+                self->image = Ref<gp::Image>(new gp::Image(path, {x1, y1}));
             }
-            catch (const std::filesystem::filesystem_error &e) {
+            catch (const std::runtime_error &e) {
                 PyErr_SetString(PyExc_FileNotFoundError, path);
                 return -1;
             }
@@ -69,7 +69,7 @@ namespace image {
             return -1;
         }
 
-        self->image = std::shared_ptr<gp::Image>(new gp::Image(path, {x1, y1}, {x2, y2}));
+        self->image = Ref<gp::Image>(new gp::Image(path, {x1, y1}, {x2, y2}));
         self->base.renderable = self->image;
 
         return 0;

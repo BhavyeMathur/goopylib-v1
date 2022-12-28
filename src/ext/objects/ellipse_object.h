@@ -5,5 +5,5 @@
 
 struct EllipseObject {
     RenderableObject base;
-    std::shared_ptr<gp::Ellipse> ellipse;
+    Ref<gp::Ellipse> ellipse;
 };

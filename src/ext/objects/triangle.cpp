@@ -23,7 +23,7 @@
 
 struct TriangleObject {
     RenderableObject base;
-    std::shared_ptr<gp::Triangle> triangle;
+    Ref<gp::Triangle> triangle;
 };
 
 
@@ -48,7 +48,7 @@ namespace triangle {
             return -1;
         }
 
-        self->triangle = std::shared_ptr<gp::Triangle>(new gp::Triangle({x1, y1}, {x2, y2}, {x3, y3}));
+        self->triangle = Ref<gp::Triangle>(new gp::Triangle({x1, y1}, {x2, y2}, {x3, y3}));
         self->base.renderable = self->triangle;
 
         return 0;

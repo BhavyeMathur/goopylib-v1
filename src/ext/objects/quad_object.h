@@ -5,5 +5,5 @@
 
 struct QuadObject {
     RenderableObject base;
-    std::shared_ptr<gp::Quad> quad;
+    Ref<gp::Quad> quad;
 };

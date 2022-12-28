@@ -2,7 +2,7 @@
 
 struct ShaderObject {
     PyObject_HEAD
-    std::shared_ptr<gp::Shader> shader;
+    Ref<gp::Shader> shader;
 };
 
 // Shader Object

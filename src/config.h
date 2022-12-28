@@ -17,7 +17,7 @@
  6 - Trace Enabled
  7 - All Enabled
  */
-#define GP_LOGGING_LEVEL 5
+#define GP_LOGGING_LEVEL 3
 
 /* Module Specific Config --------------------------------------------------------------------------------------------*/
 
@@ -27,7 +27,7 @@
 #define GP_LOG_CORE true
 
 #define GP_VALUE_CHECK_BUFFER true
-#define GP_LOG_BUFFER 5
+#define GP_LOG_BUFFER 3
 
 #define GP_VALUE_CHECK_TEXTURE2D true
 #define GP_LOG_TEXTURE2D true
@@ -36,7 +36,7 @@
 #define GP_LOG_VERTEX_ARRAY true
 
 #define GP_VALUE_CHECK_WINDOW true
-#define GP_LOG_WINDOW 5
+#define GP_LOG_WINDOW 3
 
 #define GP_VALUE_CHECK_SHADER true
 #define GP_LOG_SHADER true

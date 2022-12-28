@@ -20,7 +20,7 @@
 
 struct CircleObject {
     EllipseObject base;
-    std::shared_ptr<gp::Circle> circle;
+    Ref<gp::Circle> circle;
 };
 
 
@@ -45,7 +45,7 @@ namespace circle {
             return -1;
         }
 
-        self->circle = std::shared_ptr<gp::Circle>(new gp::Circle({x1, y1}, radius));
+        self->circle = Ref<gp::Circle>(new gp::Circle({x1, y1}, radius));
         self->base.ellipse = self->circle;
         self->base.base.renderable = self->circle;
         return 0;

@@ -5,5 +5,5 @@
 
 struct RenderableObject {
     PyObject_HEAD
-    std::shared_ptr<gp::Renderable> renderable;
+    Ref<gp::Renderable> renderable;
 };

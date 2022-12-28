@@ -2,7 +2,7 @@
 
 struct VertexArrayObject {
     PyObject_HEAD
-    std::shared_ptr<gp::VertexArray> vertex_array;
+    Ref<gp::VertexArray> vertex_array;
     PyObject *index_buffer;
     PyObject *vertex_buffers;
 };

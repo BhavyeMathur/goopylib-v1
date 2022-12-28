@@ -5,5 +5,5 @@
 
 struct ColorObject {
     PyObject_HEAD
-    std::shared_ptr<gp::Color> color;
+    Ref<gp::Color> color;
 };

@@ -19,27 +19,27 @@
 
 struct ColorRGBObject {
     ColorObject base;
-    std::shared_ptr<gp::ColorRGB> color;
+    Ref<gp::ColorRGB> color;
 };
 
 struct ColorHexObject {
     ColorObject base;
-    std::shared_ptr<gp::ColorHex> color;
+    Ref<gp::ColorHex> color;
 };
 
 struct ColorCMYKObject {
     ColorObject base;
-    std::shared_ptr<gp::ColorCMYK> color;
+    Ref<gp::ColorCMYK> color;
 };
 
 struct ColorHSVObject {
     ColorObject base;
-    std::shared_ptr<gp::ColorHSV> color;
+    Ref<gp::ColorHSV> color;
 };
 
 struct ColorHSLObject {
     ColorObject base;
-    std::shared_ptr<gp::ColorHSL> color;
+    Ref<gp::ColorHSL> color;
 };
 
 namespace color {

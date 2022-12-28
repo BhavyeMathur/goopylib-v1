@@ -43,7 +43,7 @@ namespace ellipse {
         float x1, y1;
         float radius1, radius2;
         if (PyArg_ParseTuple(args, "(ff)ff", &x1, &y1, &radius1, &radius2)) {
-            self->ellipse = std::shared_ptr<gp::Ellipse>(new gp::Ellipse({x1, y1}, radius1, radius2));
+            self->ellipse = Ref<gp::Ellipse>(new gp::Ellipse({x1, y1}, radius1, radius2));
             self->base.renderable = self->ellipse;
             return 0;
         }
@@ -54,7 +54,7 @@ namespace ellipse {
             return -1;
         }
 
-        self->ellipse = std::shared_ptr<gp::Ellipse>(new gp::Ellipse({x1, y1}, {x2, y2}));
+        self->ellipse = Ref<gp::Ellipse>(new gp::Ellipse({x1, y1}, {x2, y2}));
         self->base.renderable = self->ellipse;
         return 0;
     }

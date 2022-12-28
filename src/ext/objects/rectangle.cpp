@@ -20,7 +20,7 @@
 
 struct RectangleObject {
     QuadObject base;
-    std::shared_ptr<gp::Rectangle> rectangle;
+    Ref<gp::Rectangle> rectangle;
 };
 
 
@@ -42,7 +42,7 @@ namespace rectangle {
         float x1, y1;
         float width, height;
         if (PyArg_ParseTuple(args, "(ff)ff", &x1, &y1, &width, &height)) {
-            self->rectangle = std::shared_ptr<gp::Rectangle>(new gp::Rectangle({x1, y1}, width, height));
+            self->rectangle = Ref<gp::Rectangle>(new gp::Rectangle({x1, y1}, width, height));
             self->base.quad = self->rectangle;
             self->base.base.renderable = self->rectangle;
             return 0;
@@ -54,7 +54,7 @@ namespace rectangle {
             return -1;
         }
 
-        self->rectangle = std::shared_ptr<gp::Rectangle>(new gp::Rectangle({x1, y1}, {x2, y2}));
+        self->rectangle = Ref<gp::Rectangle>(new gp::Rectangle({x1, y1}, {x2, y2}));
         self->base.quad = self->rectangle;
         self->base.base.renderable = self->rectangle;
         return 0;

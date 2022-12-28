@@ -5,7 +5,7 @@
 
 struct WindowObject {
     PyObject_HEAD
-            std::unique_ptr<gp::Window> window;
+            Scope<gp::Window> window;
 
     PyObject *resize_callback;
     PyObject *close_callback;

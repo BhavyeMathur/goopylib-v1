@@ -19,7 +19,8 @@ namespace gp {
                 case ErrorType::RuntimeError:
                     throw std::runtime_error(message);
                 case ErrorType::FileNotFoundError:
-                    throw std::filesystem::filesystem_error(message, std::error_code());
+                    // Because C++98 (needed for the Python extension) does not have std::filestyle::filestyle_error
+                    throw std::runtime_error(message);
             }
         }
 }

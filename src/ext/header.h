@@ -24,3 +24,9 @@ do { if (PyType_Ready(&(ObjectType)) < 0) return nullptr; \
 static bool isinstance(PyObject *object, PyTypeObject *type) {
     return PyObject_IsInstance(object, (PyObject *) type);
 }
+
+template<typename T>
+    using Scope = std::unique_ptr<T>;
+
+template<typename T>
+    using Ref = std::shared_ptr<T>;

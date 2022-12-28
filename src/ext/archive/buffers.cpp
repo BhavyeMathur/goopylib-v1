@@ -2,7 +2,7 @@
 
 struct BufferElementObject {
     PyObject_HEAD
-    std::shared_ptr<gp::BufferElement> buffer_element;
+    Ref<gp::BufferElement> buffer_element;
     const char *dtype;
 };
 
