@@ -292,6 +292,4 @@ namespace window {
     static PyObject *get_right_click_callback(WindowObject *self, void *closure);
 }
 
-namespace window {
-    bool isinstance(PyObject *object);
-}
+extern PyTypeObject WindowType;

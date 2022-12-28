@@ -1,6 +1,8 @@
-#include "goopylib/objects/Triangle.h"
-#include "renderable.h"
 #include "triangle.h"
+#include "renderable_module.h"
+#include "renderable_object.h"
+
+#include "goopylib/objects/Triangle.h"
 
 #if GP_LOG_TRIANGLE != true
 #undef GP_PY_LOGGING_LEVEL
@@ -120,9 +122,17 @@ PyMODINIT_FUNC PyInit_triangle(void) {
         return nullptr;
     }
 
-    EXPOSE_PYOBJECT_CLASS(TriangleType, "Triangle");
+    #if GP_LOGGING_LEVEL >= 6
+    std::cout << "[--:--:--] PYTHON: PyInit_triangle() - import_renderable()" << std::endl;
+    #endif
+    PyRenderable_API = (void **) PyCapsule_Import("goopylib.ext.renderable._C_API", 0);
+    if (PyRenderable_API == nullptr) {
+        return nullptr;
+    }
 
-    TriangleType.tp_base = &RenderableType;
+    TriangleType.tp_base = Renderable_pytype();
+
+    EXPOSE_PYOBJECT_CLASS(TriangleType, "Triangle");
 
     return m;
 }

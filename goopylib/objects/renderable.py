@@ -45,20 +45,19 @@ class Renderable:
 
     @property
     def x(self) -> float:
-        return self._x
+        return self._renderable.x
 
     @x.setter
     def x(self, value: float):
-        pass
+        self._renderable.x = value
 
-    # Y Position
     @property
     def y(self) -> float:
-        return self._y
+        return self._renderable.y
 
     @y.setter
     def y(self, value: float):
-        pass
+        self._renderable.y = value
 
     @property
     def position(self) -> tuple[float, float]:

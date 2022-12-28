@@ -26,6 +26,9 @@
 #define GP_VALUE_CHECK_CORE true
 #define GP_LOG_CORE 5
 
+#define GP_VALUE_CHECK_WINDOW true
+#define GP_LOG_WINDOW 5
+
 // math
 
 #define GP_LOG_EASING true

@@ -5,7 +5,7 @@
 #include "ext/header.h"
 
 #define COLOR_MODULE
-#include "colormodule.h"
+#include "color_module.h"
 
 extern PyTypeObject ColorType;
 
@@ -14,7 +14,7 @@ struct ColorObject {
     std::shared_ptr<gp::Color> color;
 };
 
-#include "capsule.h"
+#include "color_capsule.h"
 
 struct ColorRGBObject;
 

@@ -41,6 +41,10 @@ def build_c_exts():
                                  sources=["src/ext/core/window.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
+    setup(ext_modules=[Extension(name="goopylib.ext.renderable",
+                                 sources=["src/ext/objects/renderable.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
     setup(ext_modules=[Extension(name="goopylib.ext.line",
                                  sources=["src/ext/objects/line.cpp"],
                                  **ext_kwargs)], **setup_kwargs)

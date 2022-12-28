@@ -35,6 +35,14 @@ namespace gp {
         // Position
         void move(float dx, float dy);
 
+        void setX(float x);
+
+        float getX() const;
+
+        void setY(float y);
+
+        float getY() const;
+
         void setPosition(float x, float y);
 
         Point getPosition() const;
@@ -50,6 +58,12 @@ namespace gp {
         void scale(float factor);
 
         void scale(float xfactor, float yfactor);
+
+        void setScaleX(float factor);
+
+        void setScaleY(float factor);
+
+        void setScale(float factor);
 
         void setScale(float xfactor, float yfactor);
 

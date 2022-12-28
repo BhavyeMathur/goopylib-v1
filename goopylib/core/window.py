@@ -778,6 +778,9 @@ class Window:
         """
         return self._window.check_super_key()
 
+    # TODO check_key should return an int. 0 is released, 1 is pressed, 2 is repeat.
+    # This would involve maintaining an unordered map of key codes to the key state
+    # Inside GLFW's key callback, this map would be updated
     def check_key(self, keycode: int) -> bool:
         """
         Args:

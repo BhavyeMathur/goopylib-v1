@@ -36,7 +36,7 @@
 #define GP_LOG_VERTEX_ARRAY true
 
 #define GP_VALUE_CHECK_WINDOW true
-#define GP_LOG_WINDOW true
+#define GP_LOG_WINDOW 5
 
 #define GP_VALUE_CHECK_SHADER true
 #define GP_LOG_SHADER true

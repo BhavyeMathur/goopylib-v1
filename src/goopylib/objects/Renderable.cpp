@@ -156,6 +156,22 @@ namespace gp {
         update();
     }
 
+    void Renderable::setX(float x) {
+        move(x - m_Position.x, 0);
+    }
+
+    float Renderable::getX() const {
+        return m_Position.x;
+    }
+
+    void Renderable::setY(float y) {
+        move(0, y - m_Position.y);
+    }
+
+    float Renderable::getY() const {
+        return m_Position.y;
+    }
+
     void Renderable::setPosition(float x, float y) {
         move(x - m_Position.x, y - m_Position.y);
     }
@@ -236,6 +252,18 @@ namespace gp {
         _onScale(xfactor, yfactor);
 
         update();
+    }
+
+    void Renderable::setScaleX(float factor) {
+        scale(factor / m_xScale, 1);
+    }
+
+    void Renderable::setScaleY(float factor) {
+        scale(1, factor / m_xScale);
+    }
+
+    void Renderable::setScale(float factor) {
+        scale(factor / m_xScale, factor / m_yScale);
     }
 
     void Renderable::setScale(float xfactor, float yfactor) {

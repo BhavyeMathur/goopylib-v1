@@ -18,3 +18,9 @@ do { if (PyType_Ready(&(ObjectType)) < 0) return nullptr; \
 #define SET_PYOBJECT(attribute, value) PyObject *tmp = attribute; Py_INCREF((value)); (attribute) = value; Py_XDECREF(tmp)
 #define RETURN_PYOBJECT(name) Py_INCREF(name); return name
 #define PYOBJECT_NAME(object) object->ob_type->tp_name
+
+#define GETTER_SETTER(name) {#name, (getter) get_##name, (setter) set_##name, #name, nullptr}
+
+static bool isinstance(PyObject *object, PyTypeObject *type) {
+    return PyObject_IsInstance(object, (PyObject *) type);
+}

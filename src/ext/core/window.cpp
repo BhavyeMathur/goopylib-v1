@@ -1,6 +1,12 @@
-#include "window.h"
+#define WINDOW_MODULE
 
-#include "ext/color/colormodule.h"
+#include "window.h"
+#include "window_capsule.h"
+#include "window_object.h"
+#include "window_module.h"
+
+#include "ext/color/color_module.h"
+
 #include "goopylib/core/Window.h"
 #include "goopylib/events/MouseCodes.h"
 
@@ -25,30 +31,6 @@ do { if (self->window->isDestroyed()) { \
 #else
 #define CHECK_ACTIVE(val) nullptr
 #endif
-
-struct WindowObject {
-    PyObject_HEAD
-    std::unique_ptr<gp::Window> window;
-
-    PyObject *resize_callback;
-    PyObject *close_callback;
-    PyObject *destroy_callback;
-    PyObject *position_callback;
-    PyObject *content_scale_callback;
-    PyObject *framebuffer_size_callback;
-    PyObject *minimize_callback;
-    PyObject *maximize_callback;
-    PyObject *focus_callback;
-    PyObject *refresh_callback;
-    PyObject *mouse_motion_callback;
-    PyObject *mouse_enter_callback;
-    PyObject *scroll_callback;
-
-    PyObject *background;
-
-    std::unordered_map<int, PyObject *> key_callbacks;
-    std::unordered_map<int, PyObject *> mouse_callbacks;
-};
 
 // Window Core
 namespace window {
@@ -986,7 +968,10 @@ namespace window {
         }
         #endif
 
-        return PyLong_FromLong(self->window->checkKey((int) PyLong_AsLong(arg)));
+        if (self->window->checkKey((int) PyLong_AsLong(arg))) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
     }
 
     static PyObject *check_mouse_button(WindowObject *self, PyObject *arg) {
@@ -1748,12 +1733,6 @@ PyTypeObject WindowType = {
         .tp_repr = (reprfunc) window::repr,
 };
 
-namespace window {
-    bool isinstance(PyObject *object) {
-        return PyObject_IsInstance(object, (PyObject *) &WindowType);
-    }
-}
-
 static struct PyModuleDef windowmodule = {
         PyModuleDef_HEAD_INIT,
         .m_name = "window",
@@ -1780,6 +1759,18 @@ PyMODINIT_FUNC PyInit_window(void) {
     }
 
     EXPOSE_PYOBJECT_CLASS(WindowType, "Window");
+
+    static void *PyWindow_API[PyWindow_API_pointers];
+    PyObject *c_api_object;
+
+    PyWindow_API[Window_pytype_NUM] = (void *) Window_pytype;
+    c_api_object = PyCapsule_New((void *) PyWindow_API, "goopylib.ext.window._C_API", nullptr);
+
+    if (PyModule_AddObject(m, "_C_API", c_api_object) < 0) {
+        Py_XDECREF(c_api_object);
+        Py_DECREF(m);
+        return nullptr;
+    }
 
     return m;
 }

@@ -2,5 +2,9 @@
 goopylib module initialization
 """
 
-from core.core import *
-from core.window import *
+from goopylib.core.core import *
+from goopylib.core.window import *
+from goopylib.objects import *
+
+from goopylib.events.keyboard import *
+from goopylib.events.mouse import *

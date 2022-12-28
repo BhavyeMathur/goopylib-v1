@@ -1,8 +1,9 @@
 #include "goopylib/core/Window.h"
 #include "goopylib/events/MouseCodes.h"
 
-#if !GP_LOG_WINDOW
+#if GP_LOG_WINDOW != true
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_WINDOW
 #endif
 
 #include "goopylib/debug/LogMacros.h"
