@@ -1,8 +1,11 @@
 #include "easing.h"
 #include "goopylib/maths/Easing.h"
 
-#if !GP_LOG_EASING
+#include "ext/config.h"
+
+#if (GP_LOG_EASING != true) and (GP_LOG_EASING <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_EASING
 #endif
 
 #if !GP_VALUE_CHECK_EASING

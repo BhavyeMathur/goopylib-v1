@@ -17,7 +17,7 @@
  6 - Trace Enabled
  7 - All Enabled
  */
-#define GP_PY_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 3
 
 /* Module Specific Config --------------------------------------------------------------------------------------------*/
 
@@ -31,18 +31,29 @@
 
 // math
 
-#define GP_LOG_EASING true
 #define GP_VALUE_CHECK_EASING true
+#define GP_LOG_EASING true
 
 // color
 
-#define GP_LOG_COLOR true
 #define GP_VALUE_CHECK_COLOR true
+#define GP_LOG_COLOR true
 
+#define GP_VALUE_CHECK_COLOR_CONVERSIONS true
 #define GP_LOG_COLOR_CONVERSIONS true
-#define GP_VALUE_CHECKING_COLOR_CONVERSIONS true
 
 // objects
 
-#define GP_LOG_RENDERABLE true
 #define GP_VALUE_CHECK_RENDERABLE true
+#define GP_LOG_RENDERABLE true
+
+#define GP_VALUE_CHECK_RECTANGLE true
+#define GP_LOG_RECTANGLE true
+
+// scene
+
+#define GP_VALUE_CHECK_CAMERA true
+#define GP_LOG_CAMERA true
+
+#define GP_VALUE_CHECK_CAMERA_CONTROLLER true
+#define GP_LOG_CAMERA_CONTROLLER true

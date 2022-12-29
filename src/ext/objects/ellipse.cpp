@@ -11,12 +11,14 @@
 
 #include "goopylib/objects/Ellipse.h"
 
-#if GP_LOG_ELLIPSE != true
-#undef GP_PY_LOGGING_LEVEL
-#define GP_PY_LOGGING_LEVEL GP_LOG_ELLIPSE
+#include "ext/config.h"
+
+#if (GP_LOG_ELLIPSE != true) and (GP_LOG_ELLIPSE <= GP_LOGGING_LEVEL)
+#undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_ELLIPSE
 #endif
 
-#if !GP_VALUE_CHECK_CORE
+#if !GP_VALUE_CHECK_ELLIPSE
 #undef GP_VALUE_CHECKING
 #undef GP_TYPE_CHECKING
 #undef GP_ERROR_CHECKING

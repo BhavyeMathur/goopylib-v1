@@ -8,12 +8,14 @@
 #include "ext/core/window_module.h"
 #include "ext/core/window_object.h"
 
-#if GP_LOG_RENDERABLE != true
-#undef GP_PY_LOGGING_LEVEL
-#define GP_PY_LOGGING_LEVEL GP_LOG_RENDERABLE
+#include "ext/config.h"
+
+#if (GP_LOG_RENDERABLE != true) and (GP_LOG_RENDERABLE <= GP_LOGGING_LEVEL)
+#undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_RENDERABLE
 #endif
 
-#if !GP_VALUE_CHECK_CORE
+#if !GP_VALUE_CHECK_RENDERABLE
 #undef GP_VALUE_CHECKING
 #undef GP_TYPE_CHECKING
 #undef GP_ERROR_CHECKING

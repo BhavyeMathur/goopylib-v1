@@ -7,12 +7,14 @@
 
 #include "goopylib/objects/Line.h"
 
-#if GP_LOG_LINE != true
-#undef GP_PY_LOGGING_LEVEL
-#define GP_PY_LOGGING_LEVEL GP_LOG_LINE
+#include "ext/config.h"
+
+#if (GP_LOG_LINE != true) and (GP_LOG_LINE <= GP_LOGGING_LEVEL)
+#undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_LINE
 #endif
 
-#if !GP_VALUE_CHECK_CORE
+#if !GP_VALUE_CHECK_LINE
 #undef GP_VALUE_CHECKING
 #undef GP_TYPE_CHECKING
 #undef GP_ERROR_CHECKING

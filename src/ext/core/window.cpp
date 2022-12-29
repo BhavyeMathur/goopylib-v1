@@ -11,14 +11,17 @@
 #include "goopylib/core/Window.h"
 #include "goopylib/events/MouseCodes.h"
 
-#if !GP_LOG_WINDOW
+#include "ext/config.h"
+
+#if (GP_LOG_WINDOW != true) and (GP_LOG_WINDOW <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_WINDOW
 #endif
 
 #if !GP_VALUE_CHECK_WINDOW
 #undef GP_VALUE_CHECKING
 #undef GP_TYPE_CHECKING
-#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
 #include "ext/debug.h"

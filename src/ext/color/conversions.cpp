@@ -1,18 +1,21 @@
 #include "conversions.h"
+#include "goopylib/color/ColorConversions.h"
 
-#if !GP_LOG_COLOR_CONVERSIONS
+#include "ext/config.h"
+
+#if (GP_LOG_COLOR_CONVERSIONS != true) and (GP_LOG_COLOR_CONVERSIONS <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_COLOR_CONVERSIONS
 #endif
 
-#if !GP_VALUE_CHECKING_COLOR_CONVERSION
+#if !GP_VALUE_CHECK_COLOR_CONVERSIONS
 #undef GP_VALUE_CHECKING
 #undef GP_TYPE_CHECKING
 #undef GP_ERROR_CHECKING
 #endif
 
+#include "ext/debug.h"
 #include "macros.h"
-
-#include "goopylib/color/ColorConversions.h"
 
 namespace color {
 

@@ -4,12 +4,14 @@
 
 #include "goopylib/objects/Rectangle.h"
 
-#if GP_LOG_RECTANGLE != true
-#undef GP_PY_LOGGING_LEVEL
-#define GP_PY_LOGGING_LEVEL GP_LOG_RECTANGLE
+#include "ext/config.h"
+
+#if (GP_LOG_RECTANGLE != true) and (GP_LOG_RECTANGLE <= GP_LOGGING_LEVEL)
+#undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_RECTANGLE
 #endif
 
-#if !GP_VALUE_CHECK_CORE
+#if !GP_VALUE_CHECK_RECTANGLE
 #undef GP_VALUE_CHECKING
 #undef GP_TYPE_CHECKING
 #undef GP_ERROR_CHECKING

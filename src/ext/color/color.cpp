@@ -5,8 +5,11 @@
 #include "color_module.h"
 #include "color_capsule.h"
 
-#if !GP_LOG_COLOR
+#include "ext/config.h"
+
+#if (GP_LOG_COLOR != true) and (GP_LOG_COLOR <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_COLOR
 #endif
 
 #if !GP_VALUE_CHECK_COLOR
@@ -15,6 +18,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
+#include "ext/debug.h"
 #include "macros.h"
 
 struct ColorRGBObject {

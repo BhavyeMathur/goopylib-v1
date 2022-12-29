@@ -7,12 +7,14 @@
 
 #include "goopylib/objects/Triangle.h"
 
-#if GP_LOG_TRIANGLE != true
-#undef GP_PY_LOGGING_LEVEL
-#define GP_PY_LOGGING_LEVEL GP_LOG_TRIANGLE
+#include "ext/config.h"
+
+#if (GP_LOG_TRIANGLE != true) and (GP_LOG_TRIANGLE <= GP_LOGGING_LEVEL)
+#undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_TRIANGLE
 #endif
 
-#if !GP_VALUE_CHECK_CORE
+#if !GP_VALUE_CHECK_TRIANGLE
 #undef GP_VALUE_CHECKING
 #undef GP_TYPE_CHECKING
 #undef GP_ERROR_CHECKING
