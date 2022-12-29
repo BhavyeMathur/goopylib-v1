@@ -20,6 +20,6 @@ namespace gp {
     private:
         float m_RadiusSquared;
 
-        [[nodiscard]] [[nodiscard]] bool _contains(float x, float y) const override;
+        [[nodiscard]] bool _contains(float x, float y) const override;
     };
 }

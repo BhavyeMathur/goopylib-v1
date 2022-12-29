@@ -55,6 +55,22 @@ namespace gp {
         update();
     }
 
+    void Camera::setX(float x) {
+        move(x - m_Position.x, 0);
+    }
+
+    float Camera::getX() const {
+        return m_Position.x;
+    }
+
+    void Camera::setY(float y) {
+        move(0, y - m_Position.y);
+    }
+
+    float Camera::getY() const {
+        return m_Position.y;
+    }
+
     void Camera::setPosition(float x, float y) {
         move(x - m_Position.x, y - m_Position.y);
     }

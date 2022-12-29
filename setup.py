@@ -74,6 +74,10 @@ def build_c_exts():
                                  sources=["src/ext/objects/image.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
+    setup(ext_modules=[Extension(name="goopylib.ext.camera",
+                                 sources=["src/ext/scene/camera.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
 
 def build_html_documentation():
     exts = {}
@@ -114,8 +118,8 @@ def build_html_documentation():
 
 def countlines(start, lines=0, _header=True, _begin_start=None,
                formats=(".py", ".c", ".cpp", ".h", ".hpp", ".glsl", ".frag", ".vert", ".geom", ".ipynb"),
-               excluded_folders=("vendor", "venv", "build", "docs"),
-               excluded_files=("main.py", "main.cpp")):
+               excluded_folders=("vendor", "venv", "build", "docs", "cmake-build-debug", "cmake-build-release"),
+               excluded_files=("main.py", "main.cpp", "empty.cpp")):
 
     if _header:
         print('{:>10} |{:>10} | {:<20}'.format('ADDED', 'TOTAL', 'FILE'))

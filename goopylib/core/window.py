@@ -5,6 +5,7 @@ Module that defines the Window class.
 from typing import Optional, Literal
 
 from goopylib.color.color import Color
+from goopylib.scene.camera import Camera
 import goopylib.ext.window as _window
 
 
@@ -32,8 +33,10 @@ class Window:
         """
         self._window: Window = _window.Window(width, height, title)
         self._background = Color(255, 255, 255)
+        self._camera = Camera(0, 0, 0, 0)
 
         self._window.background = self._background._color
+        self._camera._camera = self._window.get_camera()
 
     def __repr__(self) -> str:
         return self._window.__repr__()
@@ -1320,7 +1323,7 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        raise NotImplementedError()
+        return self._camera
 
     def to_world(self, x: float, y: float):
         """

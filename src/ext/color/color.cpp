@@ -124,7 +124,7 @@ namespace color {
     }
 
     static void dealloc(ColorObject *self) {
-        GP_PY_DEBUG("gp.color.Color.dealloc()");
+        GP_PY_DEBUG("gp.color.Color.__dealloc__()");
 
         PyObject_GC_UnTrack(self);
         clear(self);

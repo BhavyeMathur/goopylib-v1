@@ -92,7 +92,7 @@ namespace image {
     }
 
     static void dealloc(ImageObject *self) {
-        GP_PY_DEBUG("gp.image.Image.dealloc()");
+        GP_PY_DEBUG("gp.image.Image.__dealloc__()");
 
         self->image.reset();
 

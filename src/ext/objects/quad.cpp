@@ -69,7 +69,7 @@ namespace quad {
     }
 
     static void dealloc(QuadObject *self) {
-        GP_PY_DEBUG("gp.quad.Quad.dealloc()");
+        GP_PY_DEBUG("gp.quad.Quad.__dealloc__()");
 
         self->quad.reset();
 

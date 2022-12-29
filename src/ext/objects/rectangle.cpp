@@ -77,7 +77,7 @@ namespace rectangle {
     }
 
     static void dealloc(RectangleObject *self) {
-        GP_PY_DEBUG("gp.rectangle.Rectangle.dealloc()");
+        GP_PY_DEBUG("gp.rectangle.Rectangle.__dealloc__()");
 
         self->rectangle.reset();
 

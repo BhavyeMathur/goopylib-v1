@@ -25,19 +25,19 @@ namespace gp {
 
         void setHorizontalSpeed(float value);
 
-        [[nodiscard]] [[nodiscard]] float getHorizontalSpeed() const;
+        [[nodiscard]] float getHorizontalSpeed() const;
 
         void setVerticalSpeed(float value);
 
-        [[nodiscard]] [[nodiscard]] float getVerticalSpeed() const;
+        [[nodiscard]] float getVerticalSpeed() const;
 
         void setRotateSpeed(float value);
 
-        [[nodiscard]] [[nodiscard]] float getRotateSpeed() const;
+        [[nodiscard]] float getRotateSpeed() const;
 
         void setZoomSpeed(float value);
 
-        [[nodiscard]] [[nodiscard]] float getZoomSpeed() const;
+        [[nodiscard]] float getZoomSpeed() const;
 
         void useWASD();
 

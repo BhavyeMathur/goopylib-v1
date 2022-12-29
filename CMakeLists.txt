@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 project(goopylib)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_FLAGS -Wno-deprecated-volatile)
 set(CMAKE_CXX_FLAGS_DEBUG -g)
 set(CMAKE_CXX_FLAGS_RELEASE -O3)
@@ -13,6 +13,13 @@ set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 add_compile_definitions(GP_DIRECTORY="${PROJECT_BINARY_DIR}/../src/")
+
+find_package(OpenGL REQUIRED)
+find_package(PythonLibs REQUIRED)
+
+include_directories(src)
+include_directories(src/vendor)
+include_directories(${PYTHON_INCLUDE_DIRS})
 
 set(SOURCE_FILES
     src/goopylib/core/Core.cpp
@@ -53,8 +60,6 @@ set(SOURCE_FILES
 
     src/vendor/stb/stb_image.cpp)
 
-find_package(OpenGL REQUIRED)
-find_package(PythonLibs REQUIRED)
 add_library(goopylib SHARED ${SOURCE_FILES})
 target_link_libraries(goopylib ${PROJECT_BINARY_DIR}/../src/vendor/GLFW/libglfw.3.3.dylib)
 
@@ -62,10 +67,6 @@ if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
 endif ()
 
-
-include_directories(src)
-include_directories(src/vendor)
-include_directories(${PYTHON_INCLUDE_DIRS})
 
 # Client Programs
 add_executable(main main.cpp)

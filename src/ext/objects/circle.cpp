@@ -68,7 +68,7 @@ namespace circle {
     }
 
     static void dealloc(CircleObject *self) {
-        GP_PY_DEBUG("gp.circle.Circle.dealloc()");
+        GP_PY_DEBUG("gp.circle.Circle.__dealloc__()");
 
         self->circle.reset();
 

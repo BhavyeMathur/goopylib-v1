@@ -71,7 +71,7 @@ namespace line {
     }
 
     static void dealloc(LineObject *self) {
-        GP_PY_DEBUG("gp.line.Line.dealloc()");
+        GP_PY_DEBUG("gp.line.Line.__dealloc__()");
 
         self->line.reset();
 

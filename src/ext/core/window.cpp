@@ -8,6 +8,9 @@
 #include "ext/color/color_object.h"
 #include "ext/color/color_module.h"
 
+#include "ext/scene/camera_object.h"
+#include "ext/scene/camera_module.h"
+
 #include "goopylib/core/Window.h"
 #include "goopylib/events/MouseCodes.h"
 
@@ -58,6 +61,7 @@ namespace window {
             self->scroll_callback = Py_None;
 
             self->background = Py_None;
+            self->camera = Py_None;
         }
         return (PyObject *) self;
     }
@@ -76,8 +80,11 @@ namespace window {
 
         self->background = PyObject_CallObject((PyObject *) ColorType, Py_BuildValue("iii", 255, 255, 255));
 
-        self->window = std::make_unique<gp::Window>(width, height, PyUnicode_AsUTF8(tmp));
+        self->window = std::unique_ptr<gp::Window>(new gp::Window(width, height, PyUnicode_AsUTF8(tmp)));
         self->window->setBackground(*((ColorObject *) self->background)->color);
+
+        self->camera = PyObject_CallObject((PyObject *) CameraType, Py_BuildValue("iiii", 0, 0, 0, 0));
+        ((CameraObject *) self->camera)->camera = std::shared_ptr<gp::Camera>(&self->window->getCamera());
 
         return 0;
     }
@@ -146,7 +153,7 @@ namespace window {
     }
 
     static void dealloc(WindowObject *self) {
-        GP_PY_DEBUG("gp.window.Window.dealloc()");
+        GP_PY_DEBUG("gp.window.Window.__dealloc__()");
 
         self->window.reset();
 
@@ -207,7 +214,14 @@ namespace window {
         Py_RETURN_NONE;
     }
 
+    static PyObject *get_camera(WindowObject *self, PyObject *Py_UNUSED(args)) {
+        CHECK_ACTIVE(nullptr);
+        RETURN_PYOBJECT(self->camera);
+    }
+
     static PyObject *to_world(WindowObject *self, PyObject *args) {
+        CHECK_ACTIVE(nullptr);
+
         float x, y;
         if (!PyArg_ParseTuple(args, "ff", &x, &y)) {
             return nullptr;
@@ -218,6 +232,8 @@ namespace window {
     }
 
     static PyObject *to_screen(WindowObject *self, PyObject *args) {
+        CHECK_ACTIVE(nullptr);
+
         float x, y;
         if (!PyArg_ParseTuple(args, "ff", &x, &y)) {
             return nullptr;
@@ -1702,6 +1718,8 @@ namespace window {
             {"set_mouse_button_callback", (PyCFunction) set_mouse_button_callback, METH_VARARGS,
                     "Sets a callback function for a mouse button event"},
 
+            {"get_camera",                (PyCFunction) get_camera,                METH_NOARGS,
+                    "Gets the camera object associated with the Window"},
             {"to_world",                  (PyCFunction) to_world,                  METH_VARARGS,
                     "Converts coordinates from screen space to world space"},
             {"to_screen",                 (PyCFunction) to_screen,                 METH_VARARGS,
@@ -1795,6 +1813,8 @@ PyMODINIT_FUNC PyInit_window(void) {
         return nullptr;
     }
 
+    // Importing color
+
     #if GP_LOGGING_LEVEL >= 6
     std::cout << "[--:--:--] PYTHON: PyInit_window() - import_color()" << std::endl;
     #endif
@@ -1805,7 +1825,23 @@ PyMODINIT_FUNC PyInit_window(void) {
 
     ColorType = Color_pytype();
 
+    // Importing camera
+
+    #if GP_LOGGING_LEVEL >= 6
+    std::cout << "[--:--:--] PYTHON: PyInit_window() - import_camera()" << std::endl;
+    #endif
+    PyCamera_API = (void **) PyCapsule_Import("goopylib.ext.camera._C_API", 0);
+    if (PyCamera_API == nullptr) {
+        return nullptr;
+    }
+
+    CameraType = Camera_pytype();
+
+    // Exposing class
+
     EXPOSE_PYOBJECT_CLASS(WindowType, "Window");
+
+    // Exposing capsule
 
     static void *PyWindow_API[PyWindow_API_pointers];
     PyObject *c_api_object;

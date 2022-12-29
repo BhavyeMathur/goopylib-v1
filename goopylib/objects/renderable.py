@@ -32,15 +32,16 @@ class Renderable:
             RuntimeError: window has been destroyed
         """
         if isinstance(window, Window):
-            return self._renderable.draw(window._window)
+            self._renderable.draw(window._window)
         else:
-            return self._renderable.draw(window)
+            self._renderable.draw(window)
+        return self
 
     def destroy(self):
         """
         Destroys and undraws the object
         """
-        return self._renderable.destroy()
+        self._renderable.destroy()
 
     def is_drawn(self) -> bool:
         """
@@ -103,7 +104,7 @@ class Renderable:
         Raises:
             TypeError: scale factor must be numbers
         """
-        return self._renderable.scale(*args)
+        return self._renderable.zoom(*args)
 
     def set_size(self, width: float, height: float):
         """

@@ -5,6 +5,9 @@
 static void **PyColor_API;
 static PyTypeObject *ColorType;
 
+static void **PyCamera_API;
+static PyTypeObject *CameraType;
+
 struct WindowObject;
 
 // Window Core

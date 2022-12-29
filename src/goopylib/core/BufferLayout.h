@@ -36,7 +36,7 @@ namespace gp {
     public:
         BufferElement(ShaderDataType type, const char *name, bool normalized = false);
 
-        [[nodiscard]] [[nodiscard]] int32_t getCount() const;
+        [[nodiscard]] int32_t getCount() const;
 
     private:
         const char *m_Name;
@@ -66,9 +66,9 @@ namespace gp {
 
         std::vector<BufferElement>::iterator end();
 
-        [[nodiscard]] [[nodiscard]] std::vector<BufferElement>::const_iterator begin() const;
+        [[nodiscard]] std::vector<BufferElement>::const_iterator begin() const;
 
-        [[nodiscard]] [[nodiscard]] std::vector<BufferElement>::const_iterator end() const;
+        [[nodiscard]] std::vector<BufferElement>::const_iterator end() const;
 
     private:
         std::vector<BufferElement> m_Elements;

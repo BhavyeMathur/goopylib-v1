@@ -59,7 +59,7 @@ namespace renderable {
     }
 
     static void dealloc(RenderableObject *self) {
-        GP_PY_DEBUG("gp.window.Window.dealloc()");
+        GP_PY_DEBUG("gp.renderable.Renderable.__dealloc__()");
 
         self->renderable.reset();
 
@@ -79,7 +79,7 @@ namespace renderable {
         #endif
 
         self->renderable->draw(((WindowObject *) arg)->window.get());
-        Py_RETURN_NONE;
+        RETURN_PYOBJECT((PyObject *) self);
     }
 
     static PyObject *destroy(RenderableObject *self, PyObject *Py_UNUSED(args)) {

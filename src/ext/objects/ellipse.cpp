@@ -76,7 +76,7 @@ namespace ellipse {
     }
 
     static void dealloc(EllipseObject *self) {
-        GP_PY_DEBUG("gp.ellipse.Ellipse.dealloc()");
+        GP_PY_DEBUG("gp.ellipse.Ellipse.__dealloc__()");
 
         self->ellipse.reset();
 

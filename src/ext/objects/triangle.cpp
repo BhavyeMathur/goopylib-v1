@@ -71,7 +71,7 @@ namespace triangle {
     }
 
     static void dealloc(TriangleObject *self) {
-        GP_PY_DEBUG("gp.triangle.Triangle.dealloc()");
+        GP_PY_DEBUG("gp.triangle.Triangle.__dealloc__()");
 
         self->triangle.reset();
 
