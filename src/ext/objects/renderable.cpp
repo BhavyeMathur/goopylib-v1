@@ -427,7 +427,23 @@ PyMODINIT_FUNC PyInit_renderable(void) {
         return nullptr;
     }
 
+    // Importing Window
+
+    #if GP_LOGGING_LEVEL >= 6
+    std::cout << "[--:--:--] PYTHON: PyInit_renderable() - import_window()" << std::endl;
+    #endif
+    PyWindow_API = (void **) PyCapsule_Import("goopylib.ext.window._C_API", 0);
+    if (PyWindow_API == nullptr) {
+        return nullptr;
+    }
+
+    WindowType = Window_pytype();
+
+    // Exposing class
+
     EXPOSE_PYOBJECT_CLASS(RenderableType, "Renderable");
+
+    // Exposing capsule
 
     static void *PyRenderable_API[PyRenderable_API_pointers];
     PyObject *c_api_object;
@@ -440,16 +456,6 @@ PyMODINIT_FUNC PyInit_renderable(void) {
         Py_DECREF(m);
         return nullptr;
     }
-
-    #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_renderable() - import_window()" << std::endl;
-    #endif
-    PyWindow_API = (void **) PyCapsule_Import("goopylib.ext.window._C_API", 0);
-    if (PyWindow_API == nullptr) {
-        return nullptr;
-    }
-
-    WindowType = Window_pytype();
 
     return m;
 }

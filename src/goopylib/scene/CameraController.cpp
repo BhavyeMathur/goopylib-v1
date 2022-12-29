@@ -14,9 +14,9 @@
 
 
 namespace gp {
-    CameraController::CameraController(Window &window)
-            : m_Window(&window),
-            m_Camera(&window.getCamera()) {
+    CameraController::CameraController(Window* window)
+            : m_Window(window),
+            m_Camera(&window->getCamera()) {
 
     }
 

@@ -2,7 +2,7 @@
 Module defining colors listed by the W3CX11 specification
 """
 
-from color import ColorHex
+from goopylib.color.color import ColorHex
 
 
 colors: dict[str, ColorHex] = {

@@ -2,7 +2,7 @@
 Module defining random color generation
 """
 
-from color import Color, ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
+from goopylib.color.color import Color, ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
 
 from random import randint as _randint
 from random import random as _random

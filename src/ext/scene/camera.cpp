@@ -38,6 +38,12 @@ namespace camera {
     static int init(CameraObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.camera.Camera()");
 
+        float left, right, bottom, top;
+        if (!PyArg_ParseTuple(args, "ffff", &left, &right, &bottom, &top)) {
+            return -1;
+        }
+
+        self->camera = std::shared_ptr<gp::Camera>(new gp::Camera(left, right, bottom, top));
         return 0;
     }
 

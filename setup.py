@@ -78,6 +78,10 @@ def build_c_exts():
                                  sources=["src/ext/scene/camera.cpp"],
                                  **ext_kwargs)], **setup_kwargs)
 
+    setup(ext_modules=[Extension(name="goopylib.ext.camera_controller",
+                                 sources=["src/ext/scene/camera_controller.cpp"],
+                                 **ext_kwargs)], **setup_kwargs)
+
 
 def build_html_documentation():
     exts = {}
