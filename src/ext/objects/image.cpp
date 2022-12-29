@@ -39,7 +39,7 @@ namespace image {
     }
 
     static int init(ImageObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
-        GP_PY_INFO("gp.image.Image()");
+        GP_PY_INFO("gp.image.Image({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
         float x1, y1;
         float width, height;

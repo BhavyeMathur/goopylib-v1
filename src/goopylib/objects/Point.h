@@ -24,7 +24,7 @@ namespace gp {
     struct ImageVertexAttrib {
         Point texCoord;
         uint32_t texSlot = 0;
-        float transparency = 0;
+        float transparency = 1;
 
         ImageVertexAttrib(Point texCoord) : texCoord(texCoord) {
         }

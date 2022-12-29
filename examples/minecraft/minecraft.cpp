@@ -12,7 +12,7 @@ int main() {
     auto window = gp::Window(812, 812, "Batch Rendering Images!");
     window.setBackground(gp::Color(20, 20, 20));
 
-    auto controller = gp::CameraController(window);
+    auto controller = gp::CameraController(&window);
 
     int xN = 24;
     int yN = 24;

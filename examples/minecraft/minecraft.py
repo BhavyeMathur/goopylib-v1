@@ -51,9 +51,7 @@ def main():
         for j in range(yN):
             y = height * j + height / 2 - 406
 
-            img = gp.Image(random.choice(paths), (x, y), width, height)
-            img.set_anchor(0, 0)
-            img.draw(window)
+            img = gp.Image(random.choice(paths), (x, y), width, height).draw(window)
             images.append(img)
 
     while window.is_open():

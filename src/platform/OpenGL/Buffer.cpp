@@ -1,17 +1,18 @@
 #include "goopylib/core/Buffer.h"
 #include <OpenGL/gl3.h>
 
-#if GP_LOG_BUFFER != true
+#if (GP_LOG_BUFFER != true) and (GP_LOG_BUFFER <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
 #define GP_LOGGING_LEVEL GP_LOG_BUFFER
 #endif
 
-#include "goopylib/debug/LogMacros.h"
-
 #if !GP_VALUE_CHECK_BUFFER
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
+#include "goopylib/debug/LogMacros.h"
 #include "goopylib/debug/Error.h"
 
 

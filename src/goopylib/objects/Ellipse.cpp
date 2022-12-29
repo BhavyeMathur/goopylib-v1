@@ -1,15 +1,17 @@
 #include "Ellipse.h"
 
-#if !GP_LOG_ELLIPSE
+#if (GP_LOG_ELLIPSE != true) and (GP_LOG_ELLIPSE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_ELLIPSE
 #endif
-
-#include "goopylib/debug/LogMacros.h"
 
 #if !GP_VALUE_CHECK_ELLIPSE
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
+#include "goopylib/debug/LogMacros.h"
 #include "goopylib/debug/Error.h"
 
 

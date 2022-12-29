@@ -1,15 +1,17 @@
 #include "Renderable.h"
 
-#if !GP_LOG_RENDERABLE
+#if (GP_LOG_RENDERABLE != true) and (GP_LOG_RENDERABLE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_RENDERABLE
 #endif
-
-#include "goopylib/debug/LogMacros.h"
 
 #if !GP_VALUE_CHECK_RENDERABLE
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
+#include "goopylib/debug/LogMacros.h"
 #include "goopylib/debug/Error.h"
 
 namespace gp {
@@ -125,7 +127,7 @@ namespace gp {
     }
 
     bool Renderable::boxContains(float x, float y) const {
-        GP_CORE_TRACE("gp::Renderable::boxContains({0}, {1})", point.x, point.y);
+        GP_CORE_TRACE("gp::Renderable::boxContains({0}, {1})", x, y);
         return x <= m_MaxX and x >= m_MinX and y <= m_MaxY and y >= m_MinY;
     }
 
@@ -134,7 +136,7 @@ namespace gp {
     }
 
     bool Renderable::contains(float x, float y) const {
-        GP_CORE_TRACE("gp::Renderable::contains({0}, {1})", point.x, point.y);
+        GP_CORE_TRACE("gp::Renderable::contains({0}, {1})", x, y);
         return boxContains(x, y) and _contains(x, y);  // early exit if box doesn't contain point
     }
 }

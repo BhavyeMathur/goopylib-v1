@@ -1,16 +1,18 @@
 #include "Image.h"
 #include <stb/stb_image.h>
 
-#if !GP_LOG_IMAGE
+#if (GP_LOG_IMAGE != true) and (GP_LOG_IMAGE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_IMAGE
 #endif
-
-#include "goopylib/debug/LogMacros.h"
 
 #if !GP_VALUE_CHECK_IMAGE
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
+#include "goopylib/debug/LogMacros.h"
 #include "goopylib/debug/Error.h"
 
 

@@ -101,7 +101,7 @@ namespace gp {
         Ref<UniformBuffer> m_ShaderUniform;
 
         std::vector<Ref<Texture2D>> m_Textures;
-        std::unordered_map<const char *, TextureData> m_TexturesCache;
+        std::unordered_map<std::string, TextureData> m_TexturesCache;
 
         std::vector<RenderingData> m_RenderingObjects;
         Camera m_Camera;

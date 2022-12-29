@@ -1,15 +1,17 @@
 #include "Quad.h"
 
-#if !GP_LOG_QUAD
+#if (GP_LOG_QUAD != true) and (GP_LOG_QUAD <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_QUAD
 #endif
-
-#include "goopylib/debug/LogMacros.h"
 
 #if !GP_VALUE_CHECK_QUAD
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
+#include "goopylib/debug/LogMacros.h"
 #include "goopylib/debug/Error.h"
 
 // Core Methods

@@ -34,7 +34,7 @@ namespace gp {
     private:
         uint32_t m_RendererID = 0;
 
-        std::unordered_map<const char *, int32_t> m_Uniforms;
+        std::unordered_map<std::string, int32_t> m_Uniforms;
 
         int32_t _getLocation(const char *name);
 

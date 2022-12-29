@@ -7,16 +7,21 @@
 #include "goopylib/objects/Image.h"
 #include "goopylib/shader/Shader.h"
 
+#include "config.h"
 
-#if !GP_LOG_RENDERER
+#if (GP_LOG_RENDERER != true) and (GP_LOG_RENDERER <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_
 #endif
-
-#include "goopylib/debug/LogMacros.h"
 
 #if !GP_VALUE_CHECK_RENDERER
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
+
+#include "goopylib/debug/LogMacros.h"
+#include "goopylib/debug/Error.h"
 
 namespace gp {
     Renderer::Renderer(float width, float height)
@@ -394,10 +399,11 @@ namespace gp {
     uint32_t Renderer::drawImage(Image *object) {
         uint32_t ID = m_NextImageID;
         m_NextImageID++;
-        GP_CORE_DEBUG("Drawing Image {0}", ID);
+        GP_CORE_DEBUG("gp::Renderer::drawImage({0})", ID);
 
         uint32_t texIndex, texSlot;
         if (m_TexturesCache.find(object->m_Path) == m_TexturesCache.end()) {
+            GP_CORE_TRACE("gp::Renderer::drawImage() - no cached texture '{0}'", object->m_Path);
             texIndex = _cacheTexture(object->m_Path);
             texSlot = texIndex % 16;
 
@@ -406,9 +412,12 @@ namespace gp {
             }
         }
         else {
+            GP_CORE_TRACE("gp::Renderer::drawImage() - using cached texture '{0}'", object->m_Path);
             texIndex = m_TexturesCache.at(object->m_Path).index;
             texSlot = texIndex % 16;
         }
+
+        GP_CORE_TRACE("gp::Renderer::drawImage() - texIndex={0}", texIndex);
 
         object->m_V1.texSlot = texSlot;
         object->m_V2.texSlot = texSlot;
@@ -426,11 +435,6 @@ namespace gp {
         m_ImageVertices[batch].push_back({object->m_Points[1], object->m_V2});
         m_ImageVertices[batch].push_back({object->m_Points[2], object->m_V3});
         m_ImageVertices[batch].push_back({object->m_Points[3], object->m_V4});
-
-        GP_CORE_DEBUG("{0}, {1}", object->m_Points[0].x, object->m_Points[0].y);
-        GP_CORE_DEBUG("{0}, {1}", object->m_Points[1].x, object->m_Points[1].y);
-        GP_CORE_DEBUG("{0}, {1}", object->m_Points[2].x, object->m_Points[2].y);
-        GP_CORE_DEBUG("{0}, {1}", object->m_Points[3].x, object->m_Points[3].y);
 
         if (object->isHidden()) {
             m_ImageVertices[batch][index + 0].attrib.transparency = 0;
@@ -524,7 +528,7 @@ namespace gp {
     }
 
     uint32_t Renderer::_cacheTexture(const char *path) {
-        GP_CORE_DEBUG("Adding '{}' to Textures Cache", path);
+        GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", path);
 
         auto texture = Ref<Texture2D>(new Texture2D(path));
         uint32_t texIndex = m_Textures.size();

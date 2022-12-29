@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 namespace gp {
-    static std::unordered_map<const char *, ColorHex *> colors;
+    static std::unordered_map<std::string, ColorHex *> colors;
 
     void initW3CX11();
 

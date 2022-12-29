@@ -6,16 +6,18 @@
 
 #endif
 
-#if !GP_LOG_VERTEX_ARRAY
+#if (GP_LOG_VERTEX_ARRAY != true) and (GP_LOG_VERTEX_ARRAY <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_VERTEX_ARRAY
 #endif
-
-#include "goopylib/debug/LogMacros.h"
 
 #if !GP_VALUE_CHECK_VERTEX_ARRAY
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
+#include "goopylib/debug/LogMacros.h"
 #include "goopylib/debug/Error.h"
 
 
