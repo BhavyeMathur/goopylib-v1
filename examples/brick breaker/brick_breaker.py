@@ -81,7 +81,7 @@ def main():
 
     camera = window.get_camera()
 
-    gp.Image(f"{PATH}/assets/vignette.png", (0, 0), 900, 600).draw(window).set_transparency(0.3, 0.3, 0.8, 0.8)
+    gp.Image(f"{PATH}/vignette.png", (0, 0), 900, 600).draw(window).set_transparency(0.3, 0.3, 0.8, 0.8)
 
     while window.is_open():
         camera.rotation = 0

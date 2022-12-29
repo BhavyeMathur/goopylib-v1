@@ -81,7 +81,7 @@ public:
 };
 
 
-int main() {
+int main(int argc, char* argv[]) {
     gp::init();
 
     auto window = gp::Window(900, 600, "Brick Breaker using goopylib!");
@@ -93,8 +93,10 @@ int main() {
 
     auto &camera = window.getCamera();
 
-    std::filesystem::path cwd = std::filesystem::current_path();
-    std::string path = std::string(cwd.c_str()) + "/assets/vignette.png";
+    std::string argv_str(argv[0]);
+    std::string base = argv_str.substr(0, argv_str.find_last_of("/"));
+
+    std::string path = base + "/vignette.png";
 
     auto vignette = gp::Image(path.c_str(), {0, 0}, 900, 600);
     vignette.draw(&window);
