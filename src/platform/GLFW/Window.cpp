@@ -44,6 +44,12 @@ namespace gp {
 
         super();
 
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_ALWAYS);
+
         s_Instances.push_back(this);
     }
 
@@ -290,7 +296,7 @@ namespace gp {
         glClearColor(m_Background.getRedf(),
                      m_Background.getGreenf(),
                      m_Background.getBluef(), 1);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void Window::_updateSizeLimits() const {

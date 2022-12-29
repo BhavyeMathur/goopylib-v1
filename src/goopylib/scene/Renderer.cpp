@@ -34,11 +34,6 @@ namespace gp {
     void Renderer::init() {
         GP_CORE_INFO("Initializing Renderer");
 
-        #if GP_USING_OPENGL
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        #endif
-
         GP_CORE_DEBUG("Initializing Line");
         Line::init();
 

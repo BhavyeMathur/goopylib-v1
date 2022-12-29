@@ -9,7 +9,7 @@ import ext.easing as __easing
 class EasingType:
     """Generic Easing Type"""
 
-    def __call__(self, *args: float) -> float:
+    def __call__(self, t: float) -> float:
         """
         Raises:
             TypeError: easing argument must be a float

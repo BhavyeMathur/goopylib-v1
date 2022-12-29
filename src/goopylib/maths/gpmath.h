@@ -49,7 +49,8 @@ struct Point {
 
     Point() = default;
 
-    Point(float x, float y) : x(x), y(y) {
+    template<typename T>
+    Point(T x, T y) : x(x), y(y) {
     }
 };
 

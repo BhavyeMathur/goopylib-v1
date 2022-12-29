@@ -96,6 +96,12 @@ namespace gp {
      */
     void setBufferSwapInterval(int32_t interval);
 
+    /**
+     *
+     * @return the number of seconds since goopylib was initialized
+     */
+    float getTime();
+
     #endif
 
     #if GP_USING_OPENGL

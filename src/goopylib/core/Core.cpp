@@ -192,6 +192,10 @@ namespace gp {
         glfwSwapInterval(interval);
     }
 
+    float getTime() {
+        return glfwGetTime();
+    }
+
     #endif
 
     #if GP_USING_OPENGL

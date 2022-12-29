@@ -19,6 +19,7 @@ class Renderable:
             NotImplementedError: cannot create a renderable object
         """
         raise NotImplementedError("Cannot create renderable")
+        self.window: Window = None
 
     def draw(self, window: Window):
         """
@@ -33,6 +34,7 @@ class Renderable:
         """
         if isinstance(window, Window):
             self._renderable.draw(window._window)
+            self.window = window
         else:
             self._renderable.draw(window)
         return self
