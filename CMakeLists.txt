@@ -46,10 +46,10 @@ set(SOURCE_FILES
     src/platform/OpenGL/Shader.cpp
     src/platform/OpenGL/Texture2D.cpp
 
-    src/platform/Independent/Window.cpp
-    src/platform/Independent/Buffer.cpp
-    src/platform/Independent/VertexArray.cpp
-    src/platform/Independent/Shader.cpp
+    src/goopylib/core/Window.cpp
+    src/goopylib/core/Buffer.cpp
+    src/goopylib/core/VertexArray.cpp
+    src/goopylib/shader/Shader.cpp
 
     src/vendor/stb/stb_image.cpp)
 

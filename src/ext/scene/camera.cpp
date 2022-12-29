@@ -1,3 +1,5 @@
+#include "camera.h"
+
 #include "ext/config.h"
 
 #if (GP_LOG_CAMERA != true) and (GP_LOG_CAMERA <= GP_LOGGING_LEVEL)
