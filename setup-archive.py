@@ -10,17 +10,12 @@ path = os.path.abspath(os.getcwd())
 # regex to replace function body: \) \{[^}]*\} with );
 
 
-def build_release():
-    setup()
-    # subprocess.run(["twine", "check", "dist/*"])
-    # subprocess.run(["twine", "upload", "-r", "testpypi", "dist/*"])
-
-
 def build_extensions():
     ext_kwargs = {"include_dirs":         ["src", "src/vendor"],
                   "extra_compile_args":   ["-std=c++11", "-v"],
                   "runtime_library_dirs": [f"{path}/goopylib"],
                   "extra_objects":        ["goopylib/goopylib.dylib"]}
+
     setup_kwargs = {"options": {"build": {"build_lib": "."}}}
 
     setup(ext_modules=[Extension(name="goopylib.ext.easing",
@@ -183,8 +178,5 @@ if __name__ == "__main__":
     elif sys.argv[-1] in {"1", "2", "3", "4"}:
         run_subprocess(sys.argv[-1])
     else:
-        if sys.argv[1] == "sdist":
-            print("Building Release")
-            build_release()
-        elif sys.argv[1] == "build":
+        if sys.argv[1] == "build":
             build_extensions()

@@ -1,8 +1,2 @@
-recursive-include goopylib/goopylib *.pyd
-recursive-include goopylib/goopylib *.so
-recursive-include goopylib/goopylib *.dylib
-recursive-include goopylib/goopylib *.c
-recursive-include goopylib/goopylib *.cpp
-recursive-include goopylib/goopylib *.h
-exclude */__pycache__/*
-exclude *.DS_Store
+include goopylib/goopylib.dylib
+recursive-include goopylib *.h

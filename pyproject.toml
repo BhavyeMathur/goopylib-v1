@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "goopylib"
-version = "2.0.0.dev0"
 description = "A powerful game, graphics, and application development library for Python"
+version = "2.0.0.dev0"
 readme = "README.md"
 
 requires-python = ">=3.8"
