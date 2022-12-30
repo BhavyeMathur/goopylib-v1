@@ -1,2 +1,3 @@
 include goopylib/goopylib.dylib
+graft goopylib/src
 recursive-include goopylib *.h

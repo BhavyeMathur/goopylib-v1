@@ -1,10 +1,10 @@
 #include "camera_controller.h"
 #include "goopylib/scene/CameraController.h"
 
-#include "../core/window_module.h"
-#include "../core/window_object.h"
+#include "core/window_module.h"
+#include "core/window_object.h"
 
-#include "../config.h"
+#include "config.h"
 
 #if (GP_LOG_CAMERA_CONTROLLER != true) and (GP_LOG_CAMERA_CONTROLLER <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -17,7 +17,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "../debug.h"
+#include "debug.h"
 
 
 struct CameraControllerObject {

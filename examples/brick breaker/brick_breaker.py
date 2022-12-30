@@ -20,9 +20,6 @@ class Brick(gp.Rectangle):
         self.hits += 1
         self.set_transparency(1 - 0.25 * self.hits)
 
-        if self.hits == 4:
-            self.destroy()
-
 
 class Ball(gp.Circle):
     def __init__(self):
@@ -124,6 +121,10 @@ def main():
                     ball.collide()
                     brick.hit()
                     lasthit = time.time()
+
+                    if brick.hits == 4:
+                        brick.destroy()
+                        bricks.remove(brick)
                     break
 
             if time.time() - lasthit < 0.2:

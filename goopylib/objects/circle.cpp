@@ -4,7 +4,7 @@
 
 #include "goopylib/objects/Circle.h"
 
-#include "../config.h"
+#include "config.h"
 
 #if (GP_LOG_CIRCLE != true) and (GP_LOG_CIRCLE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -17,7 +17,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "../debug.h"
+#include "debug.h"
 
 
 struct CircleObject {

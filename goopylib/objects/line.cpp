@@ -2,12 +2,12 @@
 #include "renderable_module.h"
 #include "renderable_object.h"
 
-#include "../color/color_object.h"
-#include "../color/color_module.h"
+#include "color/color_object.h"
+#include "color/color_module.h"
 
 #include "goopylib/objects/Line.h"
 
-#include "../config.h"
+#include "config.h"
 
 #if (GP_LOG_LINE != true) and (GP_LOG_LINE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -20,7 +20,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "../debug.h"
+#include "debug.h"
 
 
 struct LineObject {

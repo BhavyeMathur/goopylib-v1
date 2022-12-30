@@ -1,3 +1,4 @@
+import os
 import re
 import subprocess
 import sys
@@ -6,7 +7,7 @@ from distutils.core import Extension, setup
 
 import setuptools
 
-FULLVERSION = "2.0.0.dev0"
+FULLVERSION = "2.0.0.dev1"
 PYTHON_REQUIRES = (3, 8)
 
 PYTHON_MAJOR = sys.version_info[0]
@@ -44,14 +45,25 @@ if len(sys.argv) == 1:
     with open("pyproject.toml", "w") as f:
         f.write(content)
 
-    subprocess.run("python -m build --sdist".split())
+    subprocess.run("python -m build".split())
+
+    subprocess.run(["twine", "check", "dist/*"])
+    subprocess.run(["twine", "upload", "-r", "testpypi", "dist/*"])
 
 else:
-    ext_kwargs = {"include_dirs":         ["src", "src/vendor"],
-                  "extra_compile_args":   ["-std=c++11", "-v"],
-                  "extra_objects":        ["goopylib/goopylib.dylib"]}
+    print("CWD", os.getcwd())
+    ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/src", "goopylib/src/vendor"],
+                  "runtime_library_dirs": ["."],
+                  "extra_objects":        [f"goopylib/goopylib.dylib"],
+                  "extra_compile_args":   "-std=c++11 -v".split()}
+
+    if sys.argv[1] == "setup.py" and sys.argv[2] == "build":
+        setup_kwargs = {"options": {"build": {"build_lib": "."}}}
+    else:
+        setup_kwargs = {}
 
     setup(packages=setuptools.find_packages(),
+          version=FULLVERSION,
           ext_modules=[Extension(name="goopylib.ext.easing",
                                  sources=["goopylib/maths/easing.cpp"],
                                  **ext_kwargs),
@@ -66,10 +78,6 @@ else:
 
                        Extension(name="goopylib.ext.core",
                                  sources=["goopylib/core/core.cpp"],
-                                 **ext_kwargs),
-
-                       Extension(name="goopylib.ext.window",
-                                 sources=["goopylib/core/window.cpp"],
                                  **ext_kwargs),
 
                        Extension(name="goopylib.ext.window",
@@ -114,6 +122,5 @@ else:
 
                        Extension(name="goopylib.ext.camera_controller",
                                  sources=["goopylib/scene/camera_controller.cpp"],
-                                 **ext_kwargs)])
-    # subprocess.run(["twine", "check", "dist/*"])
-    # subprocess.run(["twine", "upload", "-r", "testpypi", "dist/*"])
+                                 **ext_kwargs)],
+          **setup_kwargs)

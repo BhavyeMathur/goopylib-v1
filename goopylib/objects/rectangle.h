@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../header.h"
+#include "header.h"
 
 static void **PyQuad_API;
 static PyTypeObject *QuadType;

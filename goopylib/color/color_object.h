@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../header.h"
+#include "header.h"
 #include "goopylib/color/Color.h"
 
 struct ColorObject {

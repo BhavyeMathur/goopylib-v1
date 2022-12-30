@@ -5,10 +5,10 @@
 #include "renderable_module.h"
 #include "renderable_capsule.h"
 
-#include "../core/window_module.h"
-#include "../core/window_object.h"
+#include "core/window_module.h"
+#include "core/window_object.h"
 
-#include "../config.h"
+#include "config.h"
 
 #if (GP_LOG_RENDERABLE != true) and (GP_LOG_RENDERABLE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -21,7 +21,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "../debug.h"
+#include "debug.h"
 
 
 // Renderable Core

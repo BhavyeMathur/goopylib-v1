@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../header.h"
+#include "header.h"
 #include "goopylib/core/Window.h"
 
 struct WindowObject {

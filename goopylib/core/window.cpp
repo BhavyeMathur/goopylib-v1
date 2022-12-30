@@ -5,16 +5,16 @@
 #include "window_module.h"
 #include "window_capsule.h"
 
-#include "../color/color_object.h"
-#include "../color/color_module.h"
+#include "color/color_object.h"
+#include "color/color_module.h"
 
-#include "../scene/camera_object.h"
-#include "../scene/camera_module.h"
+#include "scene/camera_object.h"
+#include "scene/camera_module.h"
 
 #include "goopylib/core/Window.h"
 #include "goopylib/events/MouseCodes.h"
 
-#include "../config.h"
+#include "config.h"
 
 #if (GP_LOG_WINDOW != true) and (GP_LOG_WINDOW <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -27,7 +27,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "../debug.h"
+#include "debug.h"
 
 #if GP_ERROR_CHECKING
 #define CHECK_ACTIVE(val) \

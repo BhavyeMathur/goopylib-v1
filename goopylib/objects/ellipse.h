@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../header.h"
+#include "header.h"
 
 static void **PyRenderable_API;
 static PyTypeObject *RenderableType;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../header.h"
+#include "header.h"
 #include "goopylib/scene/Camera.h"
 
 struct CameraObject {

@@ -4,7 +4,7 @@
 
 #include "goopylib/objects/Image.h"
 
-#include "../config.h"
+#include "config.h"
 
 #if (GP_LOG_IMAGE != true) and (GP_LOG_IMAGE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -17,7 +17,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "../debug.h"
+#include "debug.h"
 
 
 struct ImageObject {
