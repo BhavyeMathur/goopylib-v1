@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "goopylib"
+version = "2.0.1a4"
+description = "A powerful game, graphics, and application development library for Python"
+readme = "README.md"
+
+requires-python = ">=3.8"
+license = {file = "LICENSE.md"}
+
+authors = [
+    { name="Bhavye Mathur", email="bhavyemathur@gmail.com" },
+]
+
+keywords = [
+    "Python GUI",
+    "Graphics",
+    "2D Graphics",
+    "OpenGL",
+    "Game Development",
+    "Game Engine",
+    "Application Development",
+    "User Interfaces"
+]
+
+classifiers = [
+    "Intended Audience :: Developers",
+
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: User Interfaces",
+
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+
+    "Programming Language :: C",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/BhavyeMathur/goopylib"
+"Bug Tracker" = "https://github.com/BhavyeMathur/goopylib/issues"

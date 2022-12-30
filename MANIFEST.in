@@ -1,0 +1,7 @@
+recursive-include goopylib/goopylib *.pyd
+recursive-include goopylib/goopylib *.so
+recursive-include goopylib/goopylib *.dylib
+exclude */__pycache__/*
+exclude *.DS_Store
+include README.md
+include LICENSE.md

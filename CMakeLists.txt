@@ -15,6 +15,7 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "")
 add_compile_definitions(GP_DIRECTORY="${PROJECT_BINARY_DIR}/../src/")
 
 find_package(OpenGL REQUIRED)
+find_package(PythonInterp REQUIRED)
 find_package(PythonLibs REQUIRED)
 
 include_directories(src)

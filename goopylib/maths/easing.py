@@ -3,7 +3,7 @@ Module defining common easing functions
 """
 
 from typing import Callable
-import ext.easing as __easing
+import goopylib.ext.easing as __easing
 
 
 class EasingType:

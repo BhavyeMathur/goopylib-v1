@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 import sys
 from distutils.core import Extension, setup
@@ -11,8 +12,17 @@ path = os.path.abspath(os.getcwd())
 
 
 def build_release():
-    setup(package_dir={})
+    try:
+        shutil.rmtree("dist")
+    except FileNotFoundError:
+        pass
+
+    setup(package_dir={":color": "goopylib/color", ":objects": "goopylib/objects", ":core": "goopylib/core",
+                       ":events": "goopylib/events", ":ext": "goopylib/ext", ":maths": "goopylib/maths", 
+                       ":scene": "goopylib/scene"},
+          include_package_data=True)
     subprocess.run(["twine", "check", "dist/*"])
+    subprocess.run(["twine", "upload", "-r", "testpypi", "dist/*"])
 
 
 def build_c_exts():
@@ -126,13 +136,13 @@ def countlines(start, lines=0, _header=True, _begin_start=None,
                excluded_files=("main.py", "main.cpp", "empty.cpp")):
 
     if _header:
-        print('{:>10} |{:>10} | {:<20}'.format('ADDED', 'TOTAL', 'FILE'))
-        print('{:->11}|{:->11}|{:->20}'.format('', '', ''))
+        print("{:>10} |{:>10} | {:<20}".format("ADDED", "TOTAL", "FILE"))
+        print("{:->11}|{:->11}|{:->20}".format("", "", ""))
 
     for file in os.listdir(start):
         filepath = os.path.join(start, file)
         if any(file.endswith(fmt) for fmt in formats) and file not in excluded_files:
-            with open(filepath, 'r') as f:
+            with open(filepath, "r") as f:
                 if file.endswith(".ipynb"):
                     newlines = sum(len(c["source"]) for c in json.load(f)["cells"] if c["cell_type"] == "code")
                 else:
@@ -140,7 +150,7 @@ def countlines(start, lines=0, _header=True, _begin_start=None,
 
                 lines += newlines
 
-                print('{:>10} |{:>10} | {}'.format(newlines, lines, filepath))
+                print("{:>10} |{:>10} | {}".format(newlines, lines, filepath))
 
         elif os.path.isdir(filepath) and file not in excluded_folders:
             lines = countlines(filepath, lines, False, start, formats, excluded_folders, excluded_files)
@@ -178,7 +188,8 @@ if __name__ == "__main__":
     elif sys.argv[-1] in {"1", "2", "3", "4"}:
         run_subprocess(sys.argv[-1])
     else:
-        if sys.argv[1] == "sdist" and sys.argv[2] == "bdist_wheel":
+        if sys.argv[1] == "sdist":
+            print("Building Release")
             build_release()
         elif sys.argv[1] == "build":
             build_c_exts()

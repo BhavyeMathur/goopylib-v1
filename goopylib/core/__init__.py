@@ -2,4 +2,4 @@
 goopylib module initialization
 """
 
-from core import *
+from goopylib.core import *
