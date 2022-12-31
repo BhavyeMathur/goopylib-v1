@@ -34,3 +34,6 @@ jobs:
     - name: Build source distribution
       run: |
         python -m pip install dist/*
+
+    - name: Importing goopylib
+        run: python -c "import goopylib.imports as gp; gp.terminate()"
