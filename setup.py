@@ -52,7 +52,7 @@ def check_version():
         warnings.warn(f"goopylib {version} may not yet support Python {python_major}.{python_minor}.", RuntimeWarning)
 
 
-def run_release():
+def build_release():
     with open("pyproject.toml", "r") as f:
         content = f.read()
 
@@ -65,10 +65,10 @@ def run_release():
     with open("pyproject.toml", "w") as f:
         f.write(content)
 
-    run("python -m build --sdist")
+    run("python -m build")
 
     run("twine check dist/*")
-    # run("twine upload -r testpypi dist/*")
+
 
 
 class Install(install):
@@ -129,7 +129,7 @@ class BuildExtension(build_ext):
 check_version()
 
 if len(sys.argv) == 1:
-    run_release()
+    build_release()
 
 else:
     ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/src", "goopylib/src/vendor"],
