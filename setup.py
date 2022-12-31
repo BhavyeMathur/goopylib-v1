@@ -5,11 +5,12 @@ import subprocess
 import sys
 import warnings
 from distutils import sysconfig
-from distutils.command.build_ext import build_ext as build_ext
+from distutils import log
 from distutils.core import setup, Extension
 from distutils.dep_util import newer_group
-from distutils import log
 from distutils.errors import DistutilsSetupError
+from distutils.command.build_ext import build_ext
+from distutils.command.install import install
 
 import setuptools
 
@@ -70,13 +71,13 @@ def run_release():
     # run("twine upload -r testpypi dist/*")
 
 
-class BuildSharedLibrary(build_ext):
-    """Build the goopylib shared library"""
+class Install(install):
+    pass
 
+
+class BuildExtension(build_ext):
     def build_extension(self, ext):
         if ext.name == "goopylib.goopylib":
-            print("GOOPYLIB: building goopylib.goopylib shared library")
-
             if ext.sources is None or not isinstance(ext.sources, (list, tuple)):
                 raise DistutilsSetupError(f"in 'ext_modules' option (extension '{ext.name}'), 'sources' must be present"
                                           f" and must be a list of source filenames")
@@ -137,7 +138,7 @@ else:
 
     setup(packages=setuptools.find_packages(),
           include_package_data=False,
-          cmdclass={"build_ext": BuildSharedLibrary},
+          cmdclass={"build_ext": BuildExtension},
           ext_modules=[
               Extension(name="goopylib.goopylib",
                         sources=[
@@ -181,7 +182,7 @@ else:
                         ],
                         include_dirs=["goopylib", "goopylib/src", "goopylib/src/vendor"],
                         library_dirs=["goopylib/src/vendor/GLFW"],
-                        libraries=["glfw.3.3"],
+                        libraries=["glfw.3"],
                         extra_link_args=["-framework", "OpenGL"],
                         extra_compile_args=["-std=c++17", "-w", "-O0"]),
 
