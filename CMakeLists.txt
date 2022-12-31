@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 project(goopylib)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS -Wno-deprecated-volatile)
 set(CMAKE_CXX_FLAGS_DEBUG -g)
 set(CMAKE_CXX_FLAGS_RELEASE -O3)
@@ -59,12 +59,12 @@ set(SOURCE_FILES
 
     goopylib/src/vendor/stb/stb_image.cpp)
 
-#add_library(goopylib SHARED ${SOURCE_FILES})
-#target_link_libraries(goopylib ${CMAKE_SOURCE_DIR}/goopylib/src/vendor/GLFW/libglfw.3.3.dylib)
-#
-#if (APPLE)
-#    target_link_libraries(goopylib "-framework OpenGL")
-#endif ()
+add_library(goopylib SHARED ${SOURCE_FILES})
+target_link_libraries(goopylib ${CMAKE_SOURCE_DIR}/goopylib/src/vendor/GLFW/libglfw.3.3.dylib)
+
+if (APPLE)
+    target_link_libraries(goopylib "-framework OpenGL")
+endif ()
 
 
 # Client Programs

@@ -1,1 +1,2 @@
 graft goopylib
+exclude *.dylib

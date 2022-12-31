@@ -6,7 +6,9 @@ import os
 import shutil
 
 os.makedirs("goopylib", exist_ok=True)
-shutil.copy(f"{os.path.dirname(__file__)}/goopylib.dylib", os.getcwd() + "/goopylib")
+for file in os.listdir(os.path.dirname(__file__)):
+    if file.startswith("goopylib") and file.endswith(".so"):
+        shutil.copy(f"{os.path.dirname(__file__)}/{file}", os.getcwd() + "/goopylib")
 
 from goopylib.core.core import *
 from goopylib.core.window import *
