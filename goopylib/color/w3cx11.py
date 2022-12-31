@@ -2,6 +2,8 @@
 Module defining colors listed by the W3CX11 specification
 """
 
+from __future__ import annotations
+
 from goopylib.color.color import ColorHex
 
 

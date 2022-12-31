@@ -2,6 +2,8 @@
 goopylib module that deals with keyboard keys and events
 """
 
+from __future__ import annotations
+
 from typing import Final
 
 KEY_UNKNOWN: Final[int] = -1

@@ -2,6 +2,8 @@
 Module defining an image object
 """
 
+from __future__ import annotations
+
 from typing import Union
 
 import goopylib.ext.image as _image

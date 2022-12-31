@@ -3,17 +3,18 @@ goopylib module initialization
 """
 
 import os
+import sys
 import shutil
 
-try:
-    from goopylib.core.core import *
-except ImportError:
-    os.makedirs("goopylib", exist_ok=True)
-    for file in os.listdir(os.path.dirname(__file__)):
+
+os.makedirs("goopylib", exist_ok=True)
+
+for file in os.listdir(f"{sys.prefix}/goopylib"):
+    shutil.copy(f"{sys.prefix}/goopylib/{file}", os.getcwd() + "/goopylib")
+
+for file in os.listdir(os.path.dirname(__file__)):
         if file.startswith("goopylib") and file.endswith(".so"):
             shutil.copy(f"{os.path.dirname(__file__)}/{file}", os.getcwd() + "/goopylib")
-
-    from goopylib.core.core import *
 
 from goopylib.core.core import *
 from goopylib.core.window import *

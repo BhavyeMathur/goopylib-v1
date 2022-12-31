@@ -2,6 +2,8 @@
 Module defining a circle object
 """
 
+from __future__ import annotations
+
 from goopylib.objects.ellipse import Ellipse
 import goopylib.ext.circle as _circle
 

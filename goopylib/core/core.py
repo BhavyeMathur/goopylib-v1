@@ -2,7 +2,10 @@
 Module defining core and miscellaneous functions
 """
 
+from __future__ import annotations
+
 from typing import Union
+
 import goopylib.ext.core as _core
 
 _core.init()

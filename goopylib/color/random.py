@@ -2,6 +2,8 @@
 Module defining random color generation
 """
 
+from __future__ import annotations
+
 from goopylib.color.color import Color, ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
 
 from random import randint as _randint

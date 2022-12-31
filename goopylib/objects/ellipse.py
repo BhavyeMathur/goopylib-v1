@@ -2,6 +2,8 @@
 Module defining an ellipse object
 """
 
+from __future__ import annotations
+
 from typing import Union
 
 import goopylib.ext.ellipse as _ellipse

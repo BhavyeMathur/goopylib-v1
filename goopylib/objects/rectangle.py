@@ -2,6 +2,8 @@
 Module defining a rectangle object
 """
 
+from __future__ import annotations
+
 from typing import Union
 
 import goopylib.ext.rectangle as _rectangle

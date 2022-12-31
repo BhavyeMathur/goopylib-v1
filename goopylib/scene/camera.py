@@ -2,6 +2,8 @@
 Module defining an Orthographic camera
 """
 
+from __future__ import annotations
+
 import goopylib.ext.camera as _camera
 
 

@@ -1,2 +1,2 @@
 graft goopylib
-exclude *.dylib
+exclude goopylib.dylib

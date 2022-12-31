@@ -11,7 +11,7 @@ namespace gp {
             std::vector<spdlog::sink_ptr> logSinks;
             auto colorSink = CreateRef<spdlog::sinks::stdout_color_sink_mt>();
             logSinks.emplace_back(colorSink);
-            logSinks.emplace_back(CreateRef<spdlog::sinks::basic_file_sink_mt>("goopylib.log", true));
+            logSinks.emplace_back(CreateRef<spdlog::sinks::basic_file_sink_mt>("goopylib/goopylib.log", true));
 
             logSinks[0]->set_pattern("%^[%T] %n: %v%$");
             logSinks[1]->set_pattern("[%T] [%l] %n: %v");

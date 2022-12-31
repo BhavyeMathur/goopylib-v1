@@ -2,6 +2,8 @@
 Module defining a line object
 """
 
+from __future__ import annotations
+
 import goopylib.ext.line as _line
 
 from goopylib.color.color import Color

@@ -2,6 +2,8 @@
 Module defining functions to convert between color formats
 """
 
+from __future__ import annotations
+
 import goopylib.ext.color_conversions as _conversions
 
 

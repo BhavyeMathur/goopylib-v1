@@ -2,7 +2,10 @@
 Module defining common easing functions
 """
 
+from __future__ import annotations
+
 from typing import Callable
+
 import goopylib.ext.easing as __easing
 
 

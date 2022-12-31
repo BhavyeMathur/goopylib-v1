@@ -1094,7 +1094,7 @@ namespace window {
 
         self->window->setKeyCallback(key, [callback](gp::Window *window, int action) {
             PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallOneArg(callback, PyLong_FromLong(action));
+            PyObject_CallFunction(callback, "i", action);
             PyGILState_Release(gstate);
         });
 
@@ -1151,7 +1151,7 @@ namespace window {
 
         self->window->setMouseButtonCallback(button, [callback](gp::Window *window, int action) {
             PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallOneArg(callback, action ? Py_True : Py_False);
+            PyObject_CallFunction(callback, "O", action ? Py_True : Py_False);
             PyGILState_Release(gstate);
         });
 
@@ -1210,7 +1210,7 @@ namespace window {
 
         self->window->setCloseCallback([self](gp::Window *window) {
             PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallNoArgs(self->close_callback);
+            PyObject_Call(self->close_callback, Py_None, Py_None);
             PyGILState_Release(gstate);
         });
 
@@ -1240,7 +1240,7 @@ namespace window {
 
         self->window->setDestroyCallback([self](gp::Window *window) {
             PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallNoArgs(self->destroy_callback);
+            PyObject_Call(self->destroy_callback, Py_None, Py_None);
             PyGILState_Release(gstate);
         });
 
@@ -1390,7 +1390,7 @@ namespace window {
 
         self->window->setRefreshCallback([self](gp::Window *window) {
             PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallNoArgs(self->refresh_callback);
+            PyObject_Call(self->refresh_callback, Py_None, Py_None);
             PyGILState_Release(gstate);
         });
 

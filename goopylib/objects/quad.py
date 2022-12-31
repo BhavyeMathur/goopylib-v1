@@ -2,6 +2,8 @@
 Module defining a quad object
 """
 
+from __future__ import annotations
+
 import goopylib.ext.quad as _quad
 
 from goopylib.color.color import Color

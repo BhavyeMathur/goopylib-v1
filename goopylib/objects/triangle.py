@@ -2,6 +2,8 @@
 Module defining a triangle object
 """
 
+from __future__ import annotations
+
 import goopylib.ext.triangle as _triangle
 
 from goopylib.color.color import Color

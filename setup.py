@@ -14,10 +14,10 @@ from distutils.command.install import install
 
 import setuptools
 
-FULLVERSION = "2.0.0.dev1"
+FULLVERSION = "2.0.0.dev2"
 PYTHON_REQUIRES = (3, 8)
 
-GOOPYLIB_LIBRARY = "goopylib" + sysconfig.get_config_var("EXT_SUFFIX")
+GOOPYLIB_LIBRARY = f"goopylib" + sysconfig.get_config_var("EXT_SUFFIX")
 if sys.platform == "darwin":
     GOOPYLIB_LIBRARY.replace(".so", ".dylib")
 
@@ -48,7 +48,7 @@ def check_version():
     if (python_major, python_minor) < PYTHON_REQUIRES:
         raise RuntimeError(f"Python version >= {PYTHON_REQUIRES[0]}.{PYTHON_REQUIRES[1]} required.")
 
-    if (python_major, python_minor) > (3, 9):
+    if (python_major, python_minor) > (3, 11):
         warnings.warn(f"goopylib {version} may not yet support Python {python_major}.{python_minor}.", RuntimeWarning)
 
 
@@ -72,7 +72,8 @@ def run_release():
 
 
 class Install(install):
-    pass
+    def finalize_options(self):
+        install.finalize_options(self)
 
 
 class BuildExtension(build_ext):
@@ -138,9 +139,11 @@ else:
 
     setup(packages=setuptools.find_packages(),
           include_package_data=False,
-          cmdclass={"build_ext": BuildExtension},
+          cmdclass={"install": Install,
+                    "build_ext": BuildExtension},
+          data_files=[(f"goopylib", ["./goopylib/src/vendor/GLFW/libglfw.3.dylib"])],
           ext_modules=[
-              Extension(name="goopylib.goopylib",
+              Extension(name=f"goopylib.goopylib",
                         sources=[
                             "goopylib/src/goopylib/core/Core.cpp",
                             "goopylib/src/goopylib/core/BufferLayout.cpp",
@@ -184,7 +187,7 @@ else:
                         library_dirs=["goopylib/src/vendor/GLFW"],
                         libraries=["glfw.3"],
                         extra_link_args=["-framework", "OpenGL"],
-                        extra_compile_args=["-std=c++17", "-w", "-O0"]),
+                        extra_compile_args=["-std=c++14", "-w", "-O0"]),
 
               Extension(name="goopylib.ext.easing",
                         sources=["goopylib/maths/easing.cpp"],

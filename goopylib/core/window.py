@@ -2,6 +2,8 @@
 Module that defines the Window class.
 """
 
+from __future__ import annotations
+
 from typing import Optional, Literal
 
 from goopylib.color.color import Color
