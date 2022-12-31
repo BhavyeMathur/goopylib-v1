@@ -8,7 +8,6 @@ set(CMAKE_CXX_FLAGS_RELEASE -O3)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../goopylib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../goopylib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/..)
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
@@ -60,12 +59,12 @@ set(SOURCE_FILES
 
     goopylib/src/vendor/stb/stb_image.cpp)
 
-add_library(goopylib SHARED ${SOURCE_FILES})
-target_link_libraries(goopylib ${CMAKE_SOURCE_DIR}/goopylib/src/vendor/GLFW/libglfw.3.3.dylib)
-
-if (APPLE)
-    target_link_libraries(goopylib "-framework OpenGL")
-endif ()
+#add_library(goopylib SHARED ${SOURCE_FILES})
+#target_link_libraries(goopylib ${CMAKE_SOURCE_DIR}/goopylib/src/vendor/GLFW/libglfw.3.3.dylib)
+#
+#if (APPLE)
+#    target_link_libraries(goopylib "-framework OpenGL")
+#endif ()
 
 
 # Client Programs

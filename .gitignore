@@ -13,6 +13,7 @@
 build/
 cmake-build-debug/
 cmake-build-release/
+goopylib-build/
 docs/_build/
 dist/
 *.egg-info/
