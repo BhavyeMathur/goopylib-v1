@@ -1,15 +1,18 @@
 import re
-import shutil
+import os
 import subprocess
 import sys
 import warnings
+from distutils import sysconfig
+from distutils.command.build_ext import build_ext as build_ext
+from distutils.core import setup, Extension
 
 import setuptools
-from setuptools.command.build_ext import build_ext as build_ext
-from setuptools import setup, Extension
 
 FULLVERSION = "2.0.0.dev1"
 PYTHON_REQUIRES = (3, 8)
+
+GOOPYLIB_LIBRARY = "goopylib" + (".dylib" if sys.platform == "darwin" else sysconfig.get_config_var("EXT_SUFFIX"))
 
 
 def run(cmd):
@@ -61,18 +64,33 @@ def run_release():
     # run("twine upload -r testpypi dist/*")
 
 
-from distutils import sysconfig
-
-
 class BuildSharedLibrary(build_ext):
     """Build the goopylib shared library"""
 
     def build_extension(self, ext):
-        build_ext.build_extension(self, ext)
+        if ext.name == "goopylib.goopylib":
+            print("GOOPYLIB: building goopylib.goopylib shared library")
 
-        extension = sysconfig.get_config_var('EXT_SUFFIX')
-        print(f"GOOPYLIB: copying {self.build_lib}/goopylib/goopylib{extension} -> goopylib/")
-        shutil.copy(f"{self.build_lib}/goopylib/goopylib{extension}", "goopylib")
+            print(f"GOOPYLIB: working directory {os.getcwd()}")
+
+            run("gcc --version")
+
+            # Compilation
+
+            compile_args = f"-I{' -I'.join(ext.include_dirs)} {' '.join(ext.extra_compile_args)}"
+
+            output = ""
+            for file in ext.sources:
+                output += " " + file.replace('.cpp', '.o')
+                run(f"gcc -fPIC -c {file} {compile_args} -o {file.replace('.cpp', '.o')}")
+
+            # Linking
+
+            linking_args = f"-L{' -L'.join(ext.library_dirs)} {' '.join(ext.extra_link_args)}"
+            run(f"g++ {output} -shared {linking_args} -l{' -l'.join(ext.libraries)} -o goopylib/{GOOPYLIB_LIBRARY}")
+
+        else:
+            build_ext.build_extension(self, ext)
 
 
 check_version()
@@ -81,72 +99,61 @@ if len(sys.argv) == 1:
     run_release()
 
 else:
-    if sys.platform == "darwin":
-        config = sysconfig.get_config_vars()
-        ldshared = config["LDSHARED"]
-        suffix = config["EXT_SUFFIX"]
-
-        config["LDSHARED"] = config["LDSHARED"].replace("-bundle", "-dynamiclib")
-        config["EXT_SUFFIX"] = ".dylib"
-
     ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/src", "goopylib/src/vendor"],
                   "runtime_library_dirs": ["goopylib"],
-                  "extra_objects":        [f"goopylib/goopylib{sysconfig.get_config_var('EXT_SUFFIX')}"],
-                  "extra_compile_args":   "-std=c++11 -w -O0".split()}
+                  "extra_objects":        [f"goopylib/{GOOPYLIB_LIBRARY}"],
+                  "extra_compile_args":   "-std=c++11 -w".split()}
 
-    setup(cmdclass={"build_ext": BuildSharedLibrary},
+    setup(packages=setuptools.find_packages(),
+          include_package_data=False,
+          cmdclass={"build_ext": BuildSharedLibrary},
+          ext_modules=[
+              Extension(name="goopylib.goopylib",
+                        sources=[
+                            "goopylib/src/goopylib/core/Core.cpp",
+                            "goopylib/src/goopylib/core/BufferLayout.cpp",
 
-          ext_modules=[Extension(name="goopylib.goopylib",
-                                 sources=[
-                                     "goopylib/src/goopylib/core/Core.cpp",
-                                     # "goopylib/src/goopylib/core/BufferLayout.cpp",
-                                     #
-                                     # "goopylib/src/goopylib/debug/Log.cpp",
-                                     #
-                                     # "goopylib/src/goopylib/maths/Easing.cpp",
-                                     # "goopylib/src/goopylib/maths/gpmath.cpp",
-                                     #
-                                     # "goopylib/src/goopylib/color/Color.cpp",
-                                     # "goopylib/src/goopylib/color/ColorConversions.cpp",
-                                     # "goopylib/src/goopylib/color/Util.cpp",
-                                     # "goopylib/src/goopylib/color/W3CX11.cpp",
-                                     #
-                                     # "goopylib/src/goopylib/objects/Renderable.cpp",
-                                     # "goopylib/src/goopylib/objects/Line.cpp",
-                                     # "goopylib/src/goopylib/objects/Triangle.cpp",
-                                     # "goopylib/src/goopylib/objects/Quad.cpp",
-                                     # "goopylib/src/goopylib/objects/Ellipse.cpp",
-                                     # "goopylib/src/goopylib/objects/Circle.cpp",
-                                     # "goopylib/src/goopylib/objects/Image.cpp",
-                                     #
-                                     # "goopylib/src/goopylib/scene/Renderer.cpp",
-                                     # "goopylib/src/goopylib/scene/Camera.cpp",
-                                     # "goopylib/src/goopylib/scene/CameraController.cpp",
-                                     #
-                                     # "goopylib/src/platform/GLFW/Window.cpp",
-                                     # "goopylib/src/platform/OpenGL/Buffer.cpp",
-                                     # "goopylib/src/platform/OpenGL/VertexArray.cpp",
-                                     # "goopylib/src/platform/OpenGL/Shader.cpp",
-                                     # "goopylib/src/platform/OpenGL/Texture2D.cpp",
-                                     #
-                                     # "goopylib/src/goopylib/core/Window.cpp",
-                                     # "goopylib/src/goopylib/core/Buffer.cpp",
-                                     # "goopylib/src/goopylib/core/VertexArray.cpp",
-                                     # "goopylib/src/goopylib/shader/Shader.cpp",
+                            "goopylib/src/goopylib/debug/Log.cpp",
 
-                                     # "goopylib/src/vendor/stb/stb_image.cpp"
-                                 ],
-                                 include_dirs=["goopylib", "goopylib/src", "goopylib/src/vendor"],
-                                 library_dirs=["goopylib/src/vendor/GLFW"],
-                                 extra_link_args=["-framework", "OpenGL"],
-                                 extra_compile_args=["-std=c++20", "-w", "-O0"])])
+                            "goopylib/src/goopylib/maths/Easing.cpp",
+                            "goopylib/src/goopylib/maths/gpmath.cpp",
 
-    if sys.platform == 'darwin':
-        config = sysconfig.get_config_vars()
-        config["LDSHARED"] = ldshared
-        config["EXT_SUFFIX"] = suffix
+                            "goopylib/src/goopylib/color/Color.cpp",
+                            "goopylib/src/goopylib/color/ColorConversions.cpp",
+                            "goopylib/src/goopylib/color/Util.cpp",
+                            "goopylib/src/goopylib/color/W3CX11.cpp",
 
-    setup(ext_modules=[
+                            "goopylib/src/goopylib/objects/Renderable.cpp",
+                            "goopylib/src/goopylib/objects/Line.cpp",
+                            "goopylib/src/goopylib/objects/Triangle.cpp",
+                            "goopylib/src/goopylib/objects/Quad.cpp",
+                            "goopylib/src/goopylib/objects/Ellipse.cpp",
+                            "goopylib/src/goopylib/objects/Circle.cpp",
+                            "goopylib/src/goopylib/objects/Image.cpp",
+
+                            "goopylib/src/goopylib/scene/Renderer.cpp",
+                            "goopylib/src/goopylib/scene/Camera.cpp",
+                            "goopylib/src/goopylib/scene/CameraController.cpp",
+
+                            "goopylib/src/platform/GLFW/Window.cpp",
+                            "goopylib/src/platform/OpenGL/Buffer.cpp",
+                            "goopylib/src/platform/OpenGL/VertexArray.cpp",
+                            "goopylib/src/platform/OpenGL/Shader.cpp",
+                            "goopylib/src/platform/OpenGL/Texture2D.cpp",
+
+                            "goopylib/src/goopylib/core/Window.cpp",
+                            "goopylib/src/goopylib/core/Buffer.cpp",
+                            "goopylib/src/goopylib/core/VertexArray.cpp",
+                            "goopylib/src/goopylib/shader/Shader.cpp",
+
+                            "goopylib/src/vendor/stb/stb_image.cpp"
+                        ],
+                        include_dirs=["goopylib", "goopylib/src", "goopylib/src/vendor"],
+                        library_dirs=["goopylib/src/vendor/GLFW"],
+                        libraries=["glfw.3.3"],
+                        extra_link_args=["-framework", "OpenGL"],
+                        extra_compile_args=["-std=c++20", "-w", "-O0"]),
+
               # Extension(name="goopylib.ext.easing",
               #           sources=["goopylib/maths/easing.cpp"],
               #           **ext_kwargs),
