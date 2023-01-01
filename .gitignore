@@ -11,8 +11,7 @@
 
 # General things to ignore
 build/
-cmake-build-debug/
-cmake-build-release/
+cmake-*/
 goopylib-build/
 docs/_build/
 dist/
