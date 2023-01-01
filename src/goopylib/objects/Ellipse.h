@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing an ellipse or oval
      */
-    class Ellipse : public Renderable {
+    class GPAPI Ellipse : public Renderable {
 
         friend class Renderer;
 

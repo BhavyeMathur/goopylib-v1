@@ -6,7 +6,7 @@ namespace gp {
     /**
      * An object representing a rectangle
      */
-    class Rectangle : public Quad {
+    class GPAPI Rectangle : public Quad {
 
     public:
         /**

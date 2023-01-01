@@ -93,21 +93,10 @@ namespace {
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        #endif
 
-        #if GP_USING_GLAD
-        GP_CORE_DEBUG("gp::init() initialising GLAD");
-        #if GP_USING_GLFW
-        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-            GP_RUNTIME_ERROR("gp::init() failed to initialize GLAD");
-        }
-        #else
-        if (!gladLoadGL()) {
-            GP_RUNTIME_ERROR("gp::init() failed to initialize GLAD");
-        }
+        #if __APPLE__
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         #endif
         #endif
     }

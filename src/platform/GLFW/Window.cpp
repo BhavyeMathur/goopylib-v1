@@ -21,8 +21,8 @@ namespace gp {
               m_Title(title),
               m_Background(Color(255, 255, 255)),
 
-              m_xPos(0),
-              m_yPos(0),
+              m_xPos(50),
+              m_yPos(50),
               m_WindowedXPos(m_xPos),
               m_WindowedYPos(m_yPos),
 
@@ -35,12 +35,27 @@ namespace gp {
         GP_CHECK_GT(width, 0, "Window width must be greater than 0");
         GP_CHECK_GT(height, 0, "Window height must be greater than 0");
 
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
         m_Window = glfwCreateWindow(m_Width,
                                     m_Height,
                                     m_Title, nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
 
         glfwSetWindowUserPointer(m_Window, this);
+
+        #if GP_USING_GLAD
+        GP_CORE_DEBUG("gp::Window::Window() initialising GLAD");
+        #if GP_USING_GLFW
+        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+            GP_RUNTIME_ERROR("gp::Window::Window() failed to initialize GLAD");
+        }
+        #else
+        if (!gladLoadGL()) {
+            GP_RUNTIME_ERROR("gp::Window::Window() failed to initialize GLAD");
+        }
+        #endif
+        #endif
 
         super();
 
@@ -300,9 +315,11 @@ namespace gp {
     }
 
     void Window::_updateSizeLimits() const {
-        GP_CORE_TRACE("gp::Window::_updateSizeLimits() - '{0}'", m_Title);
+        GP_CORE_TRACE("gp::Window::_updateSizeLimits({1}, {2}, {3}, {4}) - '{0}'", m_Title,
+                      m_MinWidth, m_MinHeight, m_MaxWidth, m_MaxHeight);
         glfwSetWindowSizeLimits(m_Window, m_MinWidth, m_MinHeight,
-                                m_MaxWidth, m_MaxHeight);
+                                m_MaxWidth == INT_MAX ? GLFW_DONT_CARE : m_MaxWidth,
+                                m_MaxHeight == INT_MAX ? GLFW_DONT_CARE : m_MaxHeight);
     }
 
     void Window::_updateAspectRatio(int numerator, int denominator) const {

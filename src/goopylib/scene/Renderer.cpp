@@ -209,7 +209,7 @@ namespace gp {
 
         m_RenderingObjects[LINES].indices -= 2;
         m_RenderingObjects[LINES].vertices -= 2;
-        m_RenderingObjects[LINES].bufferData = &m_LineVertices[0];
+        m_RenderingObjects[LINES].bufferData = m_LineVertices.empty() ? nullptr : &m_LineVertices[0];
         m_RenderingObjects[LINES].reallocateBufferData = true;
     }
 
@@ -268,7 +268,7 @@ namespace gp {
 
         m_RenderingObjects[TRIANGLES].indices -= 3;
         m_RenderingObjects[TRIANGLES].vertices -= 3;
-        m_RenderingObjects[TRIANGLES].bufferData = &m_TriangleVertices[0];
+        m_RenderingObjects[TRIANGLES].bufferData = m_TriangleVertices.empty() ? nullptr : &m_TriangleVertices[0];
         m_RenderingObjects[TRIANGLES].reallocateBufferData = true;
     }
 
@@ -331,7 +331,7 @@ namespace gp {
 
         m_RenderingObjects[QUADS].indices -= 6;
         m_RenderingObjects[QUADS].vertices -= 4;
-        m_RenderingObjects[QUADS].bufferData = &m_QuadVertices[0];
+        m_RenderingObjects[QUADS].bufferData = m_QuadVertices.empty() ? nullptr : &m_QuadVertices[0];
         m_RenderingObjects[QUADS].reallocateBufferData = true;
     }
 
@@ -397,7 +397,7 @@ namespace gp {
 
         m_RenderingObjects[ELLIPSES].indices -= 6;
         m_RenderingObjects[ELLIPSES].vertices -= 4;
-        m_RenderingObjects[ELLIPSES].bufferData = &m_EllipseVertices[0];
+        m_RenderingObjects[ELLIPSES].bufferData = m_EllipseVertices.empty() ? nullptr : &m_EllipseVertices[0];
         m_RenderingObjects[ELLIPSES].reallocateBufferData = true;
     }
 
@@ -491,7 +491,7 @@ namespace gp {
 
         m_RenderingObjects[IMAGES + batch].indices -= 6;
         m_RenderingObjects[IMAGES + batch].vertices -= 4;
-        m_RenderingObjects[IMAGES + batch].bufferData = &m_ImageVertices[batch][0];
+        m_RenderingObjects[IMAGES + batch].bufferData = m_ImageVertices[batch].empty() ? nullptr : &m_ImageVertices[batch][0];
         m_RenderingObjects[IMAGES + batch].reallocateBufferData = true;
     }
 

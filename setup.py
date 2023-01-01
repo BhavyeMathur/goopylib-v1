@@ -54,7 +54,7 @@ check_version()
 ext_kwargs = {"include_dirs":       [".", "goopylib", "src", "src/vendor"],
               "library_dirs":       ["."],
               "libraries":          ["goopylib"],
-              "extra_compile_args": "-std=c++11 -w".split()}
+              "extra_compile_args": "-std=c++11 -Wno-deprecated-volatile".split() if sys.platform == "darwin" else []}
 
 setup(packages=setuptools.find_packages(),
       include_package_data=False,

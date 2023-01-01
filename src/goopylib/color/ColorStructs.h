@@ -1,26 +1,26 @@
 #pragma once
 
 namespace gp {
-    struct RGB {
+    struct GPAPI RGB {
         int red;
         int green;
         int blue;
     };
 
-    struct CMYK {
+    struct GPAPI CMYK {
         float cyan;
         float magenta;
         float yellow;
         float key;
     };
 
-    struct HSV {
+    struct GPAPI HSV {
         int hue;
         float saturation;
         float value;
     };
 
-    struct HSL {
+    struct GPAPI HSL {
         int hue;
         float saturation;
         float luminance;

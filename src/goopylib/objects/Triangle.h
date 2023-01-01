@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing a triangle with 3 vertices.
      */
-    class Triangle : public Renderable {
+    class GPAPI Triangle : public Renderable {
 
         friend class Renderer;
 

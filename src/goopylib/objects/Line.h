@@ -6,7 +6,7 @@ namespace gp {
     /**
      * An object representing a line connecting 2 points together.
      */
-    class Line : public Renderable {
+    class GPAPI Line : public Renderable {
 
         friend class Renderer;
 

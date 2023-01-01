@@ -5,9 +5,9 @@
 #include <unordered_map>
 
 namespace gp {
-    static std::unordered_map<std::string, ColorHex *> colors;
+    GPAPI extern std::unordered_map<std::string, ColorHex *> colors;
 
-    void initW3CX11();
+    void GPAPI initW3CX11();
 
-    void deallocateW3CX11();
+    void GPAPI deallocateW3CX11();
 }

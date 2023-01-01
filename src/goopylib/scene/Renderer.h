@@ -55,7 +55,7 @@ namespace gp {
         }
     };
 
-    class Renderer {
+    class GPAPI Renderer {
 
         friend class Window;
 

@@ -43,7 +43,7 @@ template<typename T>
     }
 
 
-struct Point {
+struct GPAPI Point {
     float x = 0;
     float y = 0;
 
@@ -54,8 +54,8 @@ struct Point {
     }
 };
 
-bool checkTriangleContains(Point point, Point a, Point b, Point c);
+bool GPAPI checkTriangleContains(Point point, Point a, Point b, Point c);
 
-bool checkQuadContains(Point point, Point a, Point b, Point c, Point d);
+bool GPAPI checkQuadContains(Point point, Point a, Point b, Point c, Point d);
 
 uint32_t uint32_rgb(float a, float b, float c);

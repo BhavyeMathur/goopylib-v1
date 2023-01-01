@@ -10,7 +10,7 @@ namespace gp {
      * Controller class that automatically manages camera movement, rotation, and zoom.\n
      * This is a helper class that wraps around a Window's camera and provides basic but quick functionality.
      */
-    class CameraController {
+    class GPAPI CameraController {
 
     public:
         /**

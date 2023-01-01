@@ -46,7 +46,7 @@ else ()
 endif ()
 
 if (WIN32)
-    set(WINDOWS_SOURCES src/vendor/glad/glad.c)
+    set(WINDOWS_SOURCES src/vendor/glad/glad.c main.cpp)
 endif()
 
 add_library(goopylib SHARED ${WINDOWS_SOURCES}
@@ -97,3 +97,6 @@ endif ()
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
 endif ()
+
+add_executable(main main.cpp src/vendor/glad/glad.c)
+target_link_libraries(main goopylib)

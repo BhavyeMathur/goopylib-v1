@@ -17,7 +17,7 @@ namespace gp {
     /**
      * Generic base class for renderables
      */
-    class Renderable {
+    class GPAPI Renderable {
 
         friend class Renderer;
 

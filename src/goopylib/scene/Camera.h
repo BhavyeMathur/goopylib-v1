@@ -10,7 +10,7 @@ namespace gp {
     /**
      * An orthographic camera associated with a Window.
      */
-    class Camera {
+    class GPAPI Camera {
 
         friend class Renderer;
         friend class Window;

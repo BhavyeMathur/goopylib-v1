@@ -13,6 +13,8 @@
 #include "src/goopylib/debug/Error.h"
 
 namespace gp {
+    GPAPI std::unordered_map<std::string, ColorHex *> colors;
+
     void initW3CX11() {
         GP_CORE_DEBUG("gp::initW3CX11()");
 

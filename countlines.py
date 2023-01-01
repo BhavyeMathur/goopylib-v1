@@ -4,7 +4,7 @@ import os
 
 def countlines(start, lines=0, _header=True, _begin_start=None,
                formats=(".py", ".c", ".cpp", ".h", ".hpp", ".glsl", ".frag", ".vert", ".geom", ".ipynb", ".bash",
-                        ".dockerfile", ".bat"),
+                        ".dockerfile", ".bat", ".cmd"),
                excluded_folders=("vendor", "venv", "build", "docs", "cmake-build-debug", "cmake-build-release"),
                excluded_files=("main.py", "main.cpp", "empty.cpp")):
 

@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing a textured rectangle - an image
      */
-    class Image : public Renderable {
+    class GPAPI Image : public Renderable {
 
         friend class Renderer;
 

@@ -7,25 +7,25 @@ namespace gp {
     /**
      * @return a random RGB color
      */
-    ColorRGB randomRGB();
+    ColorRGB GPAPI randomRGB();
 
     /**
      * @return a random Hexadecimal color
      */
-    ColorHex randomHex();
+    ColorHex GPAPI randomHex();
 
     /**
      * @return a random CMYK color
      */
-    ColorCMYK randomCMYK();
+    ColorCMYK GPAPI randomCMYK();
 
     /**
      * @return a random HSV color
      */
-    ColorHSV randomHSV();
+    ColorHSV GPAPI randomHSV();
 
     /**
      * @return a random HSL color
      */
-    ColorHSL randomHSL();
+    ColorHSL GPAPI randomHSL();
 }

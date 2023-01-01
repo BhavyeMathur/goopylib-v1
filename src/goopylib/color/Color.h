@@ -15,7 +15,7 @@ namespace gp {
      * @example
      *      auto color = Color(60, 180, 90, 0.5);
      */
-    class Color {
+    class GPAPI Color {
     public:
         /**
          * Create a color object from another color object.
@@ -168,7 +168,7 @@ namespace gp {
      * @example
      *      auto color = ColorRGB(otherColor);
      */
-    class ColorRGB final : public Color {
+    class GPAPI ColorRGB final : public Color {
     public:
         /**
          * Create a ColorRGB from another color object.
@@ -203,7 +203,7 @@ namespace gp {
      * @example
      *      auto color = ColorHex(otherColor);
      */
-    class ColorHex final : public Color {
+    class GPAPI ColorHex final : public Color {
     public:
         /**
          * Create a ColorHex from another color object.
@@ -238,7 +238,7 @@ namespace gp {
      * @example
      *      auto color = ColorCMYK(otherColor);
      */
-    class ColorCMYK final : public Color {
+    class GPAPI ColorCMYK final : public Color {
     public:
         /**
          * Create a ColorCMYK from another color object.
@@ -326,7 +326,7 @@ namespace gp {
      * @example
      *      auto color = ColorHSV(otherColor);
      */
-    class ColorHSV final : public Color {
+    class GPAPI ColorHSV final : public Color {
     public:
         /**
          * Create a ColorHSV from another color object.
@@ -402,7 +402,7 @@ namespace gp {
      * @example
      *      auto color = ColorHSL(otherColor);
      */
-    class ColorHSL final : public Color {
+    class GPAPI ColorHSL final : public Color {
     public:
         /**
          * Create a ColorHSL from another color object.

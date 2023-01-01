@@ -50,7 +50,7 @@ namespace gp {
      * @param height in screen coordinates
      * @param title displayed in the title bar
      */
-    class Window {
+    class GPAPI Window {
 
         friend class Renderable;
 

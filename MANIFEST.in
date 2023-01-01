@@ -1,4 +1,4 @@
 graft goopylib
 graft src
 
-include CMakeList.txt
+include CMakeLists.txt

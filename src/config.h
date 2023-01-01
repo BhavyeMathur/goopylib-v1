@@ -24,7 +24,7 @@
 // core
 
 #define GP_VALUE_CHECK_CORE true
-#define GP_LOG_CORE 3
+#define GP_LOG_CORE 7
 
 #define GP_VALUE_CHECK_BUFFER true
 #define GP_LOG_BUFFER 3
@@ -36,7 +36,7 @@
 #define GP_LOG_VERTEX_ARRAY 3
 
 #define GP_VALUE_CHECK_WINDOW true
-#define GP_LOG_WINDOW 3
+#define GP_LOG_WINDOW 7
 
 #define GP_VALUE_CHECK_SHADER true
 #define GP_LOG_SHADER 3

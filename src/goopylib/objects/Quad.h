@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing a quad with 4 vertices.
      */
-    class Quad : public Renderable {
+    class GPAPI Quad : public Renderable {
 
         friend class Renderer;
 

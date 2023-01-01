@@ -6,7 +6,7 @@ namespace gp {
     /**
      * An object representing a circle
      */
-    class Circle : public Ellipse {
+    class GPAPI Circle : public Ellipse {
 
     public:
         /**
