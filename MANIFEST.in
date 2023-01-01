@@ -1,2 +1,5 @@
 graft goopylib
-exclude goopylib.dylib
+graft src
+
+include CMakeList.txt
+exclude libgoopylib.dylib

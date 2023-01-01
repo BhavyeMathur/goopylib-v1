@@ -24,8 +24,8 @@ __pycache__/
 
 venv/
 venv*/
+wheelhouse/
 main.py
 main.cpp
 empty.cpp
 *.log
-tests/assets

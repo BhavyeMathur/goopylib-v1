@@ -1,26 +1,13 @@
 import re
 import os
-import shutil
-import subprocess
 import sys
-import time
 import warnings
-from distutils import sysconfig
-from distutils import log
 from distutils.core import setup, Extension
-from distutils.dep_util import newer_group
-from distutils.errors import DistutilsSetupError
-from distutils.command.build_ext import build_ext
-from distutils.command.install import install
 
 import setuptools
 
-FULLVERSION = "2.0.0.dev2"
+FULLVERSION = "2.0.0.dev3"
 PYTHON_REQUIRES = (3, 8)
-
-GOOPYLIB_LIBRARY = f"goopylib" + sysconfig.get_config_var("EXT_SUFFIX")
-if sys.platform == "darwin":
-    GOOPYLIB_LIBRARY.replace(".so", ".dylib")
 
 
 def run(cmd):
@@ -69,61 +56,7 @@ def build_release():
     run("cibuildwheel --platform macos")
 
     run("twine check wheelhouse/*")
-
-
-class Install(install):
-    def finalize_options(self):
-        install.finalize_options(self)
-
-
-class BuildExtension(build_ext):
-    def build_extension(self, ext):
-        if ext.name == "goopylib.goopylib":
-            if ext.sources is None or not isinstance(ext.sources, (list, tuple)):
-                raise DistutilsSetupError(f"in 'ext_modules' option (extension '{ext.name}'), 'sources' must be present"
-                                          f" and must be a list of source filenames")
-
-            # Sort to make the resulting .so file build reproducible
-            sources = sorted(ext.sources)
-            ext_path = self.get_ext_fullpath(ext.name)
-
-            depends = sources + ext.depends
-            if not (self.force or newer_group(depends, ext_path, 'newer')):
-                log.debug("skipping '%s' shared library (up-to-date)", ext.name)
-                return
-            else:
-                log.info("building '%s' shared library", ext.name)
-
-            # First, compile the source code to object files.
-
-            extra_args = ext.extra_compile_args or []
-
-            macros = ext.define_macros[:]
-            for undef in ext.undef_macros:
-                macros.append((undef,))
-
-            objects = self.compiler.compile(sources,
-                                            output_dir=self.build_temp,
-                                            macros=macros,
-                                            include_dirs=ext.include_dirs,
-                                            debug=self.debug,
-                                            extra_postargs=extra_args,
-                                            depends=ext.depends)
-
-            # Now link the object files together into a "shared library"
-
-            if ext.extra_objects:
-                objects.extend(ext.extra_objects)
-            extra_args = ext.extra_link_args or []
-
-            linking_args = f"-L{' -L'.join(ext.library_dirs)} {' '.join(extra_args)} -l{' -l'.join(ext.libraries)}"
-            run(f"g++ {' '.join(objects)} -shared {linking_args} -o goopylib/{GOOPYLIB_LIBRARY}")
-
-            shutil.copy(f"goopylib/{GOOPYLIB_LIBRARY}", ".")
-            os.rename(GOOPYLIB_LIBRARY, ext_path)
-
-        else:
-            build_ext.build_extension(self, ext)
+    run("twine upload -r testpypi wheelhouse/*")
 
 
 check_version()
@@ -132,62 +65,15 @@ if len(sys.argv) == 1:
     build_release()
 
 else:
-    ext_kwargs = {"include_dirs":         ["goopylib", "goopylib/src", "goopylib/src/vendor"],
-                  "runtime_library_dirs": ["goopylib"],
-                  "extra_objects":        [f"goopylib/{GOOPYLIB_LIBRARY}"],
-                  "extra_compile_args":   "-std=c++11 -w".split()}
+
+    ext_kwargs = {"include_dirs":       ["goopylib", "src", "src/vendor"],
+                  "library_dirs":       ["."],
+                  "libraries":          ["goopylib"],
+                  "extra_compile_args": "-std=c++11 -w".split()}
 
     setup(packages=setuptools.find_packages(),
           include_package_data=False,
-          cmdclass={"install": Install,
-                    "build_ext": BuildExtension},
           ext_modules=[
-              Extension(name=f"goopylib.goopylib",
-                        sources=[
-                            "goopylib/src/goopylib/core/Core.cpp",
-                            "goopylib/src/goopylib/core/BufferLayout.cpp",
-
-                            "goopylib/src/goopylib/debug/Log.cpp",
-
-                            "goopylib/src/goopylib/maths/Easing.cpp",
-                            "goopylib/src/goopylib/maths/gpmath.cpp",
-
-                            "goopylib/src/goopylib/color/Color.cpp",
-                            "goopylib/src/goopylib/color/ColorConversions.cpp",
-                            "goopylib/src/goopylib/color/Util.cpp",
-                            "goopylib/src/goopylib/color/W3CX11.cpp",
-
-                            "goopylib/src/goopylib/objects/Renderable.cpp",
-                            "goopylib/src/goopylib/objects/Line.cpp",
-                            "goopylib/src/goopylib/objects/Triangle.cpp",
-                            "goopylib/src/goopylib/objects/Quad.cpp",
-                            "goopylib/src/goopylib/objects/Ellipse.cpp",
-                            "goopylib/src/goopylib/objects/Circle.cpp",
-                            "goopylib/src/goopylib/objects/Image.cpp",
-
-                            "goopylib/src/goopylib/scene/Renderer.cpp",
-                            "goopylib/src/goopylib/scene/Camera.cpp",
-                            "goopylib/src/goopylib/scene/CameraController.cpp",
-
-                            "goopylib/src/platform/GLFW/Window.cpp",
-                            "goopylib/src/platform/OpenGL/Buffer.cpp",
-                            "goopylib/src/platform/OpenGL/VertexArray.cpp",
-                            "goopylib/src/platform/OpenGL/Shader.cpp",
-                            "goopylib/src/platform/OpenGL/Texture2D.cpp",
-
-                            "goopylib/src/goopylib/core/Window.cpp",
-                            "goopylib/src/goopylib/core/Buffer.cpp",
-                            "goopylib/src/goopylib/core/VertexArray.cpp",
-                            "goopylib/src/goopylib/shader/Shader.cpp",
-
-                            "goopylib/src/vendor/stb/stb_image.cpp"
-                        ],
-                        include_dirs=["goopylib", "goopylib/src", "goopylib/src/vendor"],
-                        library_dirs=["goopylib/src/vendor/GLFW"],
-                        libraries=["glfw.3"],
-                        extra_link_args=["-framework", "OpenGL"],
-                        extra_compile_args=["-std=c++14", "-w", "-O0"]),
-
               Extension(name="goopylib.ext.easing",
                         sources=["goopylib/maths/easing.cpp"],
                         **ext_kwargs),
