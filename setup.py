@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 import warnings
 from distutils import sysconfig
 from distutils import log
@@ -24,7 +25,7 @@ if sys.platform == "darwin":
 
 def run(cmd):
     print("GOOPYLIB:", cmd)
-    subprocess.run(cmd.split())
+    os.system(cmd)
 
 
 def check_version():
@@ -65,10 +66,9 @@ def build_release():
     with open("pyproject.toml", "w") as f:
         f.write(content)
 
-    run("python -m build")
+    run("cibuildwheel --platform macos")
 
-    run("twine check dist/*")
-
+    run("twine check wheelhouse/*")
 
 
 class Install(install):
@@ -141,7 +141,6 @@ else:
           include_package_data=False,
           cmdclass={"install": Install,
                     "build_ext": BuildExtension},
-          data_files=[(f"goopylib", ["./goopylib/src/vendor/GLFW/libglfw.3.dylib"])],
           ext_modules=[
               Extension(name=f"goopylib.goopylib",
                         sources=[

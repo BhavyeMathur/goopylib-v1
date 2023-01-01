@@ -23,6 +23,7 @@ __pycache__/
 *~
 
 venv/
+venv*/
 main.py
 main.cpp
 empty.cpp
