@@ -2,8 +2,23 @@
 
 #include <memory>
 #include <string>
+#include <stdexcept>
 
 #define _GP_BUILD_DLL
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+
+#define __WINDOWS__ true
+#define GP_USING_GLAD true
+#define or ||
+#define and &&
+
+#else
+
+#define __WINDOWS__ false
+#define GP_USING_GLAD false
+
+#endif
 
 #if defined(_WIN32) && defined(_GP_BUILD_DLL)
 /* We are building goopylib as a Win32 DLL */

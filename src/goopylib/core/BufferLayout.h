@@ -6,7 +6,15 @@
 
 #if GP_USING_OPENGL
 
+#if __APPLE__
 #include <OpenGL/gl.h>
+#endif
+
+#if GP_USING_GLAD
+
+#include <glad/glad.h>
+
+#endif
 
 #endif
 

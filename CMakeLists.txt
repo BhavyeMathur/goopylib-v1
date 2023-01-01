@@ -4,12 +4,18 @@ project(goopylib)
 if (APPLE)
     set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
     set(MACOSX_DEPLOYMENT_TARGET 10.9)
+
+    set(CMAKE_CXX_FLAGS_DEBUG -g)
+    set(CMAKE_CXX_FLAGS_RELEASE -O3)
+    set(CMAKE_CXX_FLAGS -Wno-deprecated-volatile)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(CMAKE_CXX_FLAGS_DEBUG /Od)
+    set(CMAKE_CXX_FLAGS_RELEASE /O2)
 endif ()
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS_DEBUG -g)
-set(CMAKE_CXX_FLAGS_RELEASE -O3)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 find_package(OpenGL REQUIRED)
@@ -21,7 +27,29 @@ include_directories(${CMAKE_SOURCE_DIR}/src/vendor)
 link_directories(${CMAKE_SOURCE_DIR})
 link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW)
 
-add_library(goopylib SHARED
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    if (MSVC_TOOLSET_VERSION EQUAL 110)
+        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2012)
+    elseif(MSVC_TOOLSET_VERSION EQUAL 120)
+        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2013)
+    elseif(MSVC_TOOLSET_VERSION EQUAL 140)
+        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2015)
+    elseif(MSVC_TOOLSET_VERSION EQUAL 141)
+        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2017)
+    elseif(MSVC_TOOLSET_VERSION EQUAL 142)
+        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2019)
+    elseif(MSVC_TOOLSET_VERSION EQUAL 143)
+        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2022)
+    endif()
+else ()
+    link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-mingw-w64)
+endif ()
+
+if (WIN32)
+    set(WINDOWS_SOURCES src/vendor/glad/glad.c)
+endif()
+
+add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/Core.cpp
             src/goopylib/core/BufferLayout.cpp
 
@@ -60,7 +88,11 @@ add_library(goopylib SHARED
 
             src/vendor/stb/stb_image.cpp)
 
-target_link_libraries(goopylib -lglfw.3)
+if (APPLE)
+    target_link_libraries(goopylib glfw.3)
+else ()
+    target_link_libraries(goopylib glfw3)
+endif ()
 
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")

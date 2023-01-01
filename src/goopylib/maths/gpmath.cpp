@@ -22,8 +22,7 @@ bool checkQuadContains(Point point, Point a, Point b, Point c, Point d) {
 
     bool s_ab = (b.x - a.x) * py_minus_ay - (b.y - a.y) * px_minus_ax > 0;
 
-    if ((cx_minus_ax * py_minus_ay - cy_minus_ay * px_minus_ax > 0 == s_ab)
-        or ((c.x - b.x) * (point.y - b.y) - (c.y - b.y) * (point.x - b.x) > 0 != s_ab)) {
+    if ((cx_minus_ax * py_minus_ay - cy_minus_ay * px_minus_ax > 0 == s_ab) or ((c.x - b.x) * (point.y - b.y) - (c.y - b.y) * (point.x - b.x) > 0 != s_ab)) {
 
         bool s_ac = cx_minus_ax * py_minus_ay - cy_minus_ay * px_minus_ax > 0;
 

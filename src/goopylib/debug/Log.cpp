@@ -21,7 +21,9 @@ namespace gp {
             logSinks[1]->set_pattern("[%T] [%l] %n: %v");
             #endif
 
+            #ifndef __WINDOWS__
             colorSink->set_color(spdlog::level::critical, "\033[91m\033[1m");
+            #endif
 
             s_CoreLogger = CreateRef<spdlog::logger>("GOOPYLIB", begin(logSinks), end(logSinks));
             spdlog::register_logger(s_CoreLogger);

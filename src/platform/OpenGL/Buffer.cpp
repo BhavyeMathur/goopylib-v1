@@ -1,5 +1,8 @@
 #include "src/goopylib/core/Buffer.h"
+
+#if __APPLE__
 #include <OpenGL/gl3.h>
+#endif
 
 #if (GP_LOG_BUFFER != true) and (GP_LOG_BUFFER <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -79,11 +82,20 @@ namespace gp {
 
         GP_CORE_DEBUG("Initializing Index Buffer {0}, count={1}", m_RendererID, indices.size());
 
+        #ifdef _MSC_VER
+        auto *bufferData = new uint32_t[indices.size()];
+        #else
         uint32_t bufferData[indices.size()];
+        #endif
+
         std::copy(indices.begin(), indices.end(), bufferData);
 
         bind();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, (long) (indices.size() * sizeof(uint32_t)), bufferData, GL_STATIC_DRAW);
+
+        #ifdef _MSC_VER
+        delete[] bufferData;
+        #endif
     }
 
     IndexBuffer::~IndexBuffer() {
@@ -105,7 +117,7 @@ namespace gp {
 // Uniform Buffer
 namespace gp {
     UniformBuffer::UniformBuffer(BufferLayout &&layout)
-    : m_Layout(layout) {
+            : m_Layout(layout) {
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Uniform Buffer");

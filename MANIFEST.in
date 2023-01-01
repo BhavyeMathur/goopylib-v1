@@ -2,4 +2,3 @@ graft goopylib
 graft src
 
 include CMakeList.txt
-exclude libgoopylib.dylib

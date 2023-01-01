@@ -51,7 +51,7 @@ def check_version():
 
 check_version()
 
-ext_kwargs = {"include_dirs":       ["goopylib", "src", "src/vendor"],
+ext_kwargs = {"include_dirs":       [".", "goopylib", "src", "src/vendor"],
               "library_dirs":       ["."],
               "libraries":          ["goopylib"],
               "extra_compile_args": "-std=c++11 -w".split()}

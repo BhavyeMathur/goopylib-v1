@@ -21,6 +21,9 @@ dist/
 __pycache__/
 *~
 
+*.ilk
+*.pdb
+
 venv/
 venv*/
 wheelhouse/

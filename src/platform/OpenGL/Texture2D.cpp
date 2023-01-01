@@ -4,7 +4,15 @@
 
 #if GP_USING_OPENGL
 
+#if __APPLE__
 #include <OpenGL/gl.h>
+#endif
+
+#if GP_USING_GLAD
+
+#include <glad/glad.h>
+
+#endif
 
 #endif
 
@@ -28,7 +36,7 @@ namespace gp {
             : m_Path(path) {
         GP_CORE_INFO("gp::Texture2D::Texture2D({0})", m_Path);
 
-        u_char *data = stbi_load(m_Path, &m_Width, &m_Height, &m_Channels, 0);
+        uint8_t *data = stbi_load(m_Path, &m_Width, &m_Height, &m_Channels, 0);
 
         GLenum dataFormat;
         int32_t internalFormat;

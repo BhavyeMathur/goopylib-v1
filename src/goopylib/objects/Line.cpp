@@ -80,7 +80,7 @@ namespace gp {
     void Line::init() {
         #if GP_USING_OPENGL
         GLfloat lineWidthRange[2] = {0.0f, 0.0f};
-        glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
+        glGetFloatv(GL_LINE_WIDTH_RANGE, lineWidthRange);
 
         s_MinWidth = lineWidthRange[0];
         s_MaxWidth = lineWidthRange[1];

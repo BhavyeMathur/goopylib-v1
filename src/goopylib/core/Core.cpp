@@ -3,7 +3,18 @@
 #include "src/goopylib/color/W3CX11.h"
 
 #include <stb/stb_image.h>
+
+#if GP_USING_GLAD
+
+#include <glad/glad.h>
+
+#endif
+
+#if GP_USING_GLFW
+
 #include <GLFW/glfw3.h>
+
+#endif
 
 #if (GP_LOG_CORE != true) and (GP_LOG_CORE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -71,6 +82,7 @@ namespace {
     void initGLFW() {
         GP_CORE_DEBUG("gp::init() initialising GLFW");
 
+        #if GP_USING_GLFW
         glfwSetErrorCallback([](int error, const char *description) {
             GP_CORE_WARN("GLFW Error Code {0}: {1}", error, description);
         });
@@ -84,6 +96,20 @@ namespace {
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        #endif
+
+        #if GP_USING_GLAD
+        GP_CORE_DEBUG("gp::init() initialising GLAD");
+        #if GP_USING_GLFW
+        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+            GP_RUNTIME_ERROR("gp::init() failed to initialize GLAD");
+        }
+        #else
+        if (!gladLoadGL()) {
+            GP_RUNTIME_ERROR("gp::init() failed to initialize GLAD");
+        }
+        #endif
+        #endif
     }
 }
 

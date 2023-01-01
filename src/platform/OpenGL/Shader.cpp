@@ -5,7 +5,9 @@
 
 #if GP_USING_OPENGL
 
+#if __APPLE__
 #include <OpenGL/gl3.h>
+#endif
 
 #endif
 
@@ -93,7 +95,7 @@ namespace gp {
         glUseProgram(0);
     }
 
-    void Shader::setUniformBlock(const Ref<UniformBuffer>& uniform, const char *name, uint32_t binding) const {
+    void Shader::setUniformBlock(const Ref<UniformBuffer> &uniform, const char *name, uint32_t binding) const {
         uniform->setBinding(binding);
 
         uint32_t index = glGetUniformBlockIndex(m_RendererID, name);
