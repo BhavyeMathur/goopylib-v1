@@ -28,7 +28,7 @@ struct ImageObject {
 
 // Image Core
 namespace image {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         ImageObject *self;
         self = (ImageObject *) type->tp_alloc(type, 0);
 
@@ -77,16 +77,16 @@ namespace image {
         return 0;
     }
 
-    static PyObject *repr(ImageObject *self) {
+    static PyObject *repr(ImageObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.image.Image.__repr__()");
         return PyUnicode_FromString("Image()");
     }
 
-    static int traverse(ImageObject *self, visitproc visit, void *arg) {
+    static int traverse(ImageObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(ImageObject *self) {
+    static int clear(ImageObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.image.Image.clear()");
         return 0;
     }
@@ -141,37 +141,71 @@ namespace image {
     static PyMethodDef methods[] = {
             {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
                     "Sets the transparency of the object"},
-            {"get_path", (PyCFunction) get_path, METH_NOARGS,
+            {"get_path",         (PyCFunction) get_path,         METH_NOARGS,
                     "Returns the filepath the image is using"},
 
             {nullptr}
     };
 }
 
-PyTypeObject ImageType = {
+static PyTypeObject ImageType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Image",
-        .tp_basicsize = sizeof(ImageObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-
-        .tp_new = image::new_,
-        .tp_init = (initproc) image::init,
-
-        .tp_methods = image::methods,
-
-        .tp_traverse = (traverseproc) image::traverse,
-        .tp_clear = (inquiry) image::clear,
-        .tp_dealloc = (destructor) image::dealloc,
-
-        .tp_repr = (reprfunc) image::repr,
+        "goopylib.Image",
+        sizeof(ImageObject),
+        0,
+        (destructor) image::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) image::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) image::traverse,
+        (inquiry) image::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        image::methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) image::init,
+        nullptr,
+        image::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef imagemodule = {
+static struct PyModuleDef ImageModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "image",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "image",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_image(void) {
@@ -179,7 +213,7 @@ PyMODINIT_FUNC PyInit_image(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_image()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&imagemodule);
+    PyObject *m = PyModule_Create(&ImageModule);
     if (m == nullptr) {
         return nullptr;
     }

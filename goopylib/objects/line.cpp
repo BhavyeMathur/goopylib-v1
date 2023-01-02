@@ -31,7 +31,7 @@ struct LineObject {
 
 // Line Core
 namespace line {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         LineObject *self;
         self = (LineObject *) type->tp_alloc(type, 0);
 
@@ -56,16 +56,16 @@ namespace line {
         return 0;
     }
 
-    static PyObject *repr(LineObject *self) {
+    static PyObject *repr(LineObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.line.Line.__repr__()");
         return PyUnicode_FromString("Line()");
     }
 
-    static int traverse(LineObject *self, visitproc visit, void *arg) {
+    static int traverse(LineObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(LineObject *self) {
+    static int clear(LineObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.line.Line.clear()");
         return 0;
     }
@@ -182,30 +182,64 @@ namespace line {
     };
 }
 
-PyTypeObject LineType = {
+static PyTypeObject LineType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Line",
-        .tp_basicsize = sizeof(LineObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-
-        .tp_new = line::new_,
-        .tp_init = (initproc) line::init,
-
-        .tp_methods = line::methods,
-
-        .tp_traverse = (traverseproc) line::traverse,
-        .tp_clear = (inquiry) line::clear,
-        .tp_dealloc = (destructor) line::dealloc,
-
-        .tp_repr = (reprfunc) line::repr,
+        "goopylib.Line",
+        sizeof(LineObject),
+        0,
+        (destructor) line::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) line::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) line::traverse,
+        (inquiry) line::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        line::methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) line::init,
+        nullptr,
+        line::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef linemodule = {
+static struct PyModuleDef LineModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "line",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "line",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_line(void) {
@@ -213,7 +247,7 @@ PyMODINIT_FUNC PyInit_line(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_line()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&linemodule);
+    PyObject *m = PyModule_Create(&LineModule);
     if (m == nullptr) {
         return nullptr;
     }

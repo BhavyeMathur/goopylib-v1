@@ -31,7 +31,7 @@ struct TriangleObject {
 
 // Triangle Core
 namespace triangle {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         TriangleObject *self;
         self = (TriangleObject *) type->tp_alloc(type, 0);
 
@@ -56,16 +56,16 @@ namespace triangle {
         return 0;
     }
 
-    static PyObject *repr(TriangleObject *self) {
+    static PyObject *repr(TriangleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.triangle.Triangle.__repr__()");
         return PyUnicode_FromString("Triangle()");
     }
 
-    static int traverse(TriangleObject *self, visitproc visit, void *arg) {
+    static int traverse(TriangleObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(TriangleObject *self) {
+    static int clear(TriangleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.triangle.Triangle.clear()");
         return 0;
     }
@@ -197,30 +197,64 @@ namespace triangle {
     };
 }
 
-PyTypeObject TriangleType = {
+static PyTypeObject TriangleType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Triangle",
-        .tp_basicsize = sizeof(TriangleObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-
-        .tp_new = triangle::new_,
-        .tp_init = (initproc) triangle::init,
-
-        .tp_methods = triangle::methods,
-
-        .tp_traverse = (traverseproc) triangle::traverse,
-        .tp_clear = (inquiry) triangle::clear,
-        .tp_dealloc = (destructor) triangle::dealloc,
-
-        .tp_repr = (reprfunc) triangle::repr,
+        "goopylib.Triangle",
+        sizeof(TriangleObject),
+        0,
+        (destructor) triangle::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) triangle::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) triangle::traverse,
+        (inquiry) triangle::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        triangle::methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) triangle::init,
+        nullptr,
+        triangle::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef trianglemodule = {
+static struct PyModuleDef TriangleModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "triangle",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "triangle",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_triangle(void) {
@@ -228,7 +262,7 @@ PyMODINIT_FUNC PyInit_triangle(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_triangle()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&trianglemodule);
+    PyObject *m = PyModule_Create(&TriangleModule);
     if (m == nullptr) {
         return nullptr;
     }

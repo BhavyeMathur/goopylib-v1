@@ -64,15 +64,15 @@ namespace color {
     static PyObject *get_alpha(ColorObject *self, PyObject *args);
 }
 
-namespace color::rgb {
+namespace color { namespace rgb {
     static int init(ColorRGBObject *self, PyObject *args, PyObject *kwds);
-}
+} }
 
-namespace color::hex {
+namespace color { namespace hex {
     static int init(ColorHexObject *self, PyObject *args, PyObject *kwds);
-}
+} }
 
-namespace color::cmyk {
+namespace color { namespace cmyk {
     static int init(ColorCMYKObject *self, PyObject *args, PyObject *kwds);
 
     static int set_cyan(ColorCMYKObject *self, PyObject *value, void *closure);
@@ -90,9 +90,9 @@ namespace color::cmyk {
     static int set_key(ColorCMYKObject *self, PyObject *value, void *closure);
 
     static PyObject *get_key(ColorCMYKObject *self, PyObject *args);
-}
+} }
 
-namespace color::hsv {
+namespace color { namespace hsv {
     static int init(ColorHSVObject *self, PyObject *args, PyObject *kwds);
     
     static int set_hue(ColorHSVObject *self, PyObject *value, void *closure);
@@ -106,9 +106,9 @@ namespace color::hsv {
     static int set_value(ColorHSVObject *self, PyObject *value_, void *closure);
 
     static PyObject *get_value(ColorHSVObject *self, PyObject *args);
-}
+} }
 
-namespace color::hsl {
+namespace color { namespace hsl {
     static int init(ColorHSLObject *self, PyObject *args, PyObject *kwds);
     
     static int set_hue(ColorHSLObject *self, PyObject *value, void *closure);
@@ -122,4 +122,4 @@ namespace color::hsl {
     static int set_luminance(ColorHSLObject *self, PyObject *value, void *closure);
     
     static PyObject *get_luminance(ColorHSLObject *self, PyObject *args);
-}
+} }

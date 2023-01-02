@@ -218,7 +218,7 @@ namespace color {
 
         gp::HSV color_hsv = gp::hsl::toHSV(hue, saturation, luminance);
 
-        return Py_BuildValue("ifff", color_hsv.hue, color_hsv.saturation, color_hsv.value);
+        return Py_BuildValue("iff", color_hsv.hue, color_hsv.saturation, color_hsv.value);
     }
 }
 
@@ -302,9 +302,10 @@ static PyMethodDef ColorConversionMethods[] = {
 
 static struct PyModuleDef ColorConversionsModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "conversions",
-        .m_size = -1,
-        .m_methods = ColorConversionMethods,
+        "conversions",
+        "",
+-1,
+        ColorConversionMethods,
 };
 
 

@@ -1,6 +1,8 @@
 FROM ubuntu:latest
 
-RUN cd macos/
+RUN cd mnt
+RUN ls
+RUN cd goopylib
 
 # install cmake
 RUN apt-get update
@@ -19,16 +21,16 @@ RUN apt install build-essential
 RUN export CC=/usr/bin/gcc
 RUN export CXX=/usr/bin/g++
 
-# clear the cmake cache and build the project
-RUN rm -rf cmake-build-linux
-RUN cmake -S . -B cmake-build-linux/ -D CMAKE_BUILD_TYPE=Release
-RUN cmake --build cmake-build-linux
-
 # install Python and dependencies
 RUN apt-get install python3
 RUN apt-get install python-pip
 RUN pip install cibuildwheel
 RUN pip install twine
+
+# clear the cmake cache and build the project
+RUN rm -rf cmake-build-linux
+RUN cmake -S . -B cmake-build-linux/ -D CMAKE_BUILD_TYPE=Release
+RUN cmake --build cmake-build-linux
 
 # create Linux wheels using cibuildwheel
 RUN cibuildwheel --platform linux

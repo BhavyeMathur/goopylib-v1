@@ -8,15 +8,15 @@ static PyTypeObject *WindowType;
 
 
 namespace renderable {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds));
 
-    static int init(RenderableObject *self, PyObject *args, PyObject *kwds);
+    static int init(RenderableObject *Py_UNUSED(self), PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds));
 
-    static PyObject *repr(RenderableObject *self);
+    static PyObject *repr(RenderableObject *Py_UNUSED(self));
 
-    static int traverse(RenderableObject *self, visitproc visit, void *arg);
+    static int traverse(RenderableObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg));
 
-    static int clear(RenderableObject *self);
+    static int clear(__attribute__((unused)) RenderableObject *Py_UNUSED(self));
 
     static void dealloc(RenderableObject *self);
 }

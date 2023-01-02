@@ -366,7 +366,7 @@ namespace color {
         }
         #endif
 
-        float alpha = (float) PyFloat_AsDouble(value);
+        auto alpha = (float) PyFloat_AsDouble(value);
 
         CHECK_ALPHA(-1)
 
@@ -399,7 +399,7 @@ namespace color {
     };
 }
 
-namespace color::rgb {
+namespace color { namespace rgb {
     static int init(ColorRGBObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.color.ColorRGB()");
 
@@ -423,9 +423,9 @@ namespace color::rgb {
 
         RAISE_VALUE_ERROR(-1, "invalid color format");
     }
-}
+} }
 
-namespace color::hex {
+namespace color { namespace hex {
     static int init(ColorHexObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.color.ColorHex()");
 
@@ -456,9 +456,9 @@ namespace color::hex {
 
         RAISE_VALUE_ERROR(-1, "invalid hexadecimal color format");
     }
-}
+} }
 
-namespace color::cmyk {
+namespace color { namespace cmyk {
     static int init(ColorCMYKObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.color.ColorCMYK()");
 
@@ -493,7 +493,7 @@ namespace color::cmyk {
         }
         #endif
 
-        float cyan = (float) PyFloat_AsDouble(value);
+        auto cyan = (float) PyFloat_AsDouble(value);
 
         CHECK_CYAN(-1)
 
@@ -515,7 +515,7 @@ namespace color::cmyk {
         }
         #endif
 
-        float magenta = (float) PyFloat_AsDouble(value);
+        auto magenta = (float) PyFloat_AsDouble(value);
 
         CHECK_MAGENTA(-1)
 
@@ -537,7 +537,7 @@ namespace color::cmyk {
         }
         #endif
 
-        float yellow = (float) PyFloat_AsDouble(value);
+        auto yellow = (float) PyFloat_AsDouble(value);
 
         CHECK_YELLOW(-1)
 
@@ -559,7 +559,7 @@ namespace color::cmyk {
         }
         #endif
 
-        float key = (float) PyFloat_AsDouble(value);
+        auto key = (float) PyFloat_AsDouble(value);
 
         CHECK_KEY(-1)
 
@@ -580,9 +580,9 @@ namespace color::cmyk {
             {"key",     (getter) get_key,     (setter) set_key,     "key",     nullptr},
             {nullptr}
     };
-}
+} }
 
-namespace color::hsv {
+namespace color { namespace hsv {
     static int init(ColorHSVObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.color.ColorHSV()");
 
@@ -640,7 +640,7 @@ namespace color::hsv {
         }
         #endif
 
-        float saturation = (float) PyFloat_AsDouble(value);
+        auto saturation = (float) PyFloat_AsDouble(value);
 
         CHECK_SATURATION(-1)
 
@@ -662,7 +662,7 @@ namespace color::hsv {
         }
         #endif
 
-        float value = (float) PyFloat_AsDouble(value_);
+        auto value = (float) PyFloat_AsDouble(value_);
 
         CHECK_VALUE(-1)
 
@@ -682,9 +682,9 @@ namespace color::hsv {
             {"value",      (getter) get_value,      (setter) set_value,      "value",      nullptr},
             {nullptr}
     };
-}
+} }
 
-namespace color::hsl {
+namespace color { namespace hsl {
     static int init(ColorHSLObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_TRACE("gp.color.ColorHSL()");
 
@@ -742,7 +742,7 @@ namespace color::hsl {
         }
         #endif
 
-        float saturation = (float) PyFloat_AsDouble(value);
+        auto saturation = (float) PyFloat_AsDouble(value);
 
         CHECK_SATURATION(-1)
 
@@ -764,7 +764,7 @@ namespace color::hsl {
         }
         #endif
 
-        float luminance = (float) PyFloat_AsDouble(value);
+        auto luminance = (float) PyFloat_AsDouble(value);
 
         CHECK_LUMINANCE(-1)
 
@@ -784,73 +784,77 @@ namespace color::hsl {
             {"luminance",  (getter) get_luminance,  (setter) set_luminance,  "luminance",  nullptr},
             {nullptr}
     };
-}
+} }
 
 PyTypeObject ColorType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_basicsize = sizeof(ColorObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-        .tp_new = PyType_GenericNew,
-        .tp_name = "goopylib.Color",
-        .tp_init = (initproc) color::init,
-
-        .tp_getset = color::getsetters,
-        .tp_as_number = &color::numbermethods,
-
-        .tp_traverse = (traverseproc) color::traverse,
-        .tp_clear = (inquiry) color::clear,
-        .tp_dealloc = (destructor) color::dealloc,
-
-        .tp_repr = (reprfunc) color::repr,
+        "goopylib.Color",
+        sizeof(ColorObject),
+        0,
+        (destructor) color::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) color::repr,
+        &color::numbermethods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
+        "",
+        (traverseproc) color::traverse,
+        (inquiry) color::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        color::getsetters,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) color::init,
+        nullptr,
+        PyType_GenericNew,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-PyTypeObject ColorRGBType = {
-        PyColorObject_HEAD_INIT
-        .tp_basicsize = sizeof(ColorRGBObject),
-        .tp_name = "goopylib.ColorRGB",
-        .tp_init = (initproc) color::rgb::init,
-};
+ColorType(ColorRGB, color::rgb::init, nullptr);
 
-PyTypeObject ColorHexType = {
-        PyColorObject_HEAD_INIT
-        .tp_basicsize = sizeof(ColorHexObject),
-        .tp_name = "goopylib.ColorHex",
-        .tp_init = (initproc) color::hex::init,
-};
+ColorType(ColorHex, color::hex::init, nullptr);
 
-PyTypeObject ColorCMYKType = {
-        PyColorObject_HEAD_INIT
-        .tp_basicsize = sizeof(ColorCMYKObject),
-        .tp_name = "goopylib.ColorCMYK",
-        .tp_init = (initproc) color::cmyk::init,
+ColorType(ColorCMYK, color::cmyk::init, color::cmyk::getsetters);
 
-        .tp_getset = color::cmyk::getsetters,
-};
+ColorType(ColorHSV, color::hsv::init, color::hsv::getsetters);
 
-PyTypeObject ColorHSVType = {
-        PyColorObject_HEAD_INIT
-        .tp_basicsize = sizeof(ColorHSVObject),
-        .tp_name = "goopylib.ColorHSV",
-        .tp_init = (initproc) color::hsv::init,
+ColorType(ColorHSL, color::hsl::init, color::hsl::getsetters);
 
-        .tp_getset = color::hsv::getsetters,
-};
 
-PyTypeObject ColorHSLType = {
-        PyColorObject_HEAD_INIT
-        .tp_basicsize = sizeof(ColorHSLObject),
-        .tp_name = "goopylib.ColorHSL",
-        .tp_init = (initproc) color::hsl::init,
-
-        .tp_getset = color::hsl::getsetters,
-};
-
-static struct PyModuleDef colormodule = {
+static struct PyModuleDef ColorModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "color",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "color",
+        "",
+        -1,
+        nullptr,
 };
 
 
@@ -860,7 +864,7 @@ PyMODINIT_FUNC PyInit_color() {
     #endif
 
     PyObject *m;
-    m = PyModule_Create(&colormodule);
+    m = PyModule_Create(&ColorModule);
     if (m == nullptr) {
         return nullptr;
     }

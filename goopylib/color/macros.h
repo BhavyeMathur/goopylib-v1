@@ -58,12 +58,55 @@ if (!PyArg_ParseTuple(args, "iff", &hue, &saturation, &luminance)) \
     return nullptr; \
 CHECK_HSL(nullptr)
 
-#define PyColorObject_HEAD_INIT \
-PyVarObject_HEAD_INIT(nullptr, 0) \
-.tp_itemsize = 0, \
-.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, \
-.tp_new = PyType_GenericNew, \
-.tp_repr = (reprfunc) color::repr, \
-.tp_traverse = (traverseproc) color::traverse, \
-.tp_clear = (inquiry) color::clear, \
-.tp_dealloc = (destructor) color::dealloc,
+#define ColorType(name, init, getset) \
+static PyTypeObject name##Type = { \
+    PyVarObject_HEAD_INIT(nullptr, 0) \
+    "goopylib." #name, \
+    sizeof(name##Object), \
+    0, \
+    (destructor) color::dealloc, \
+    0, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    (reprfunc) color::repr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, \
+    "", \
+    (traverseproc) color::traverse, \
+    (inquiry) color::clear, \
+    nullptr, \
+    0, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    getset,  \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    0, \
+    (initproc) (init), \
+    nullptr, \
+    PyType_GenericNew, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    nullptr, \
+    0, \
+    nullptr, \
+    nullptr \
+}

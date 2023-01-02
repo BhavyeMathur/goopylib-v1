@@ -9,7 +9,7 @@
  3 - Warnings Enabled
  4 - Info Enabled
  5 - Debug Enabled
- 6 - Trace Enabledpr
+ 6 - Trace Enabled
  */
 
 // Python ext Logging

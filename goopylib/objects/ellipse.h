@@ -12,15 +12,15 @@ static PyTypeObject *ColorType;
 struct EllipseObject;
 
 namespace ellipse {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds));
 
     static int init(EllipseObject *self, PyObject *args, PyObject *kwds);
 
-    static PyObject *repr(EllipseObject *self);
+    static PyObject *repr(EllipseObject *Py_UNUSED(self));
 
-    static int traverse(EllipseObject *self, visitproc visit, void *arg);
+    static int traverse(EllipseObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg));
 
-    static int clear(EllipseObject *self);
+    static int clear(__attribute__((unused)) EllipseObject *Py_UNUSED(self));
 
     static void dealloc(EllipseObject *self);
 }

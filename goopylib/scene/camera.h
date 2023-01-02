@@ -7,7 +7,7 @@ struct CameraObject;
 
 // Camera Core
 namespace camera {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *kwds);
 
     static int init(CameraObject *self, PyObject *args, PyObject *kwds);
 

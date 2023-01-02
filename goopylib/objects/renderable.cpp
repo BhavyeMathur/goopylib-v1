@@ -5,8 +5,8 @@
 #include "renderable_module.h"
 #include "renderable_capsule.h"
 
-#include "core/window_module.h"
-#include "core/window_object.h"
+#include "goopylib/core/window_module.h"
+#include "goopylib/core/window_object.h"
 
 #include "config.h"
 
@@ -26,7 +26,7 @@
 
 // Renderable Core
 namespace renderable {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         GP_PY_DEBUG("gp.renderable.Renderable.__new__()");
 
         RenderableObject *self;
@@ -38,22 +38,22 @@ namespace renderable {
         return (PyObject *) self;
     }
 
-    static int init(RenderableObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+    static int init(RenderableObject *Py_UNUSED(self), PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.renderable.Renderable()");
 
         return 0;
     }
 
-    static PyObject *repr(RenderableObject *self) {
+    static PyObject *repr(RenderableObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.renderable.Renderable.__repr__()");
         return PyUnicode_FromString("Renderable()");
     }
 
-    static int traverse(RenderableObject *self, visitproc visit, void *arg) {
+    static int traverse(RenderableObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(RenderableObject *self) {
+    static int clear(RenderableObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.renderable.Renderable.clear()");
         return 0;
     }
@@ -375,16 +375,16 @@ namespace renderable {
     };
 
     static PyGetSetDef getsetters[] = {
-            GETTER_SETTER(x),
-            GETTER_SETTER(y),
-            GETTER_SETTER(position),
+            {"x", (getter) get_x, (setter) set_x, "x", nullptr},
+            {"y", (getter) get_y, (setter) set_y, "y", nullptr},
+            {"position", (getter) get_position, (setter) set_position, "position", nullptr},
 
-            GETTER_SETTER(rotation),
-            GETTER_SETTER(xscale),
-            GETTER_SETTER(yscale),
+            {"rotation", (getter) get_rotation, (setter) set_rotation, "rotation", nullptr},
+            {"xscale", (getter) get_xscale, (setter) set_xscale, "xscale", nullptr},
+            {"yscale", (getter) get_yscale, (setter) set_yscale, "yscale", nullptr},
 
-            GETTER_SETTER(width),
-            GETTER_SETTER(height),
+            {"width", (getter) get_width, (setter) set_width, "width", nullptr},
+            {"height", (getter) get_height, (setter) set_height, "height", nullptr},
 
             {nullptr}
     };
@@ -392,29 +392,62 @@ namespace renderable {
 
 PyTypeObject RenderableType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Renderable",
-        .tp_basicsize = sizeof(RenderableObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
-
-        .tp_new = renderable::new_,
-        .tp_init = (initproc) renderable::init,
-
-        .tp_methods = renderable::methods,
-        .tp_getset = renderable::getsetters,
-
-        .tp_traverse = (traverseproc) renderable::traverse,
-        .tp_clear = (inquiry) renderable::clear,
-        .tp_dealloc = (destructor) renderable::dealloc,
-
-        .tp_repr = (reprfunc) renderable::repr,
+        "goopylib.Renderable",
+        sizeof(RenderableObject),
+        0,
+        (destructor) renderable::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) renderable::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) renderable::traverse,
+        (inquiry) renderable::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        renderable::methods,
+        nullptr,
+        renderable::getsetters,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) renderable::init,
+        nullptr,
+        renderable::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef renderablemodule = {
+static struct PyModuleDef RenderableModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "renderable",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "renderable",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_renderable(void) {
@@ -422,7 +455,7 @@ PyMODINIT_FUNC PyInit_renderable(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_renderable()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&renderablemodule);
+    PyObject *m = PyModule_Create(&RenderableModule);
     if (m == nullptr) {
         return nullptr;
     }

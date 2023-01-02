@@ -28,7 +28,7 @@ struct CircleObject {
 
 // Circle Core
 namespace circle {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         CircleObject *self;
         self = (CircleObject *) type->tp_alloc(type, 0);
 
@@ -53,16 +53,16 @@ namespace circle {
         return 0;
     }
 
-    static PyObject *repr(CircleObject *self) {
+    static PyObject *repr(CircleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.circle.Circle.__repr__()");
         return PyUnicode_FromString("Circle()");
     }
 
-    static int traverse(CircleObject *self, visitproc visit, void *arg) {
+    static int traverse(CircleObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(CircleObject *self) {
+    static int clear(CircleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.circle.Circle.clear()");
         return 0;
     }
@@ -79,28 +79,64 @@ namespace circle {
 }
 
 
-PyTypeObject CircleType = {
+static PyTypeObject CircleType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Circle",
-        .tp_basicsize = sizeof(CircleObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-
-        .tp_new = circle::new_,
-        .tp_init = (initproc) circle::init,
-
-        .tp_traverse = (traverseproc) circle::traverse,
-        .tp_clear = (inquiry) circle::clear,
-        .tp_dealloc = (destructor) circle::dealloc,
-
-        .tp_repr = (reprfunc) circle::repr,
+        "goopylib.Circle",
+        sizeof(CircleObject),
+        0,
+        (destructor) circle::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) circle::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) circle::traverse,
+        (inquiry) circle::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) circle::init,
+        nullptr,
+        circle::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef circlemodule = {
+static struct PyModuleDef CircleModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "circle",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "circle",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_circle(void) {
@@ -108,7 +144,7 @@ PyMODINIT_FUNC PyInit_circle(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_circle()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&circlemodule);
+    PyObject *m = PyModule_Create(&CircleModule);
     if (m == nullptr) {
         return nullptr;
     }

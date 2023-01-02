@@ -1,8 +1,8 @@
 #include "camera_controller.h"
 #include "src/goopylib/scene/CameraController.h"
 
-#include "core/window_module.h"
-#include "core/window_object.h"
+#include "goopylib/core/window_module.h"
+#include "goopylib/core/window_object.h"
 
 #include "config.h"
 
@@ -27,7 +27,7 @@ struct CameraControllerObject {
 
 // Camera Controller Core
 namespace controller {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         GP_PY_DEBUG("gp.camera_controller.CameraController.__new__()");
 
         CameraControllerObject *self;
@@ -42,7 +42,7 @@ namespace controller {
     static int init(CameraControllerObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.camera_controller.CameraController()");
 
-        PyObject* window;
+        PyObject *window;
         if (!PyArg_ParseTuple(args, "O!", WindowType, &window)) {
             return -1;
         }
@@ -53,16 +53,16 @@ namespace controller {
         return 0;
     }
 
-    static PyObject *repr(CameraControllerObject *self) {
+    static PyObject *repr(CameraControllerObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.camera_controller.CameraController.__repr__()");
         return PyUnicode_FromString("CameraController()");
     }
 
-    static int traverse(CameraControllerObject *self, visitproc visit, void *arg) {
+    static int traverse(CameraControllerObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(CameraControllerObject *self) {
+    static int clear(CameraControllerObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.camera_controller.CameraController.clear()");
         return 0;
     }
@@ -195,7 +195,7 @@ namespace controller {
         }
         #endif
 
-        self->controller->setHorizontalSpeed(PyFloat_AsDouble(value));
+        self->controller->setHorizontalSpeed((float) PyFloat_AsDouble(value));
         return 0;
     }
 
@@ -211,7 +211,7 @@ namespace controller {
         }
         #endif
 
-        self->controller->setVerticalSpeed(PyFloat_AsDouble(value));
+        self->controller->setVerticalSpeed((float) PyFloat_AsDouble(value));
         return 0;
     }
 
@@ -227,7 +227,7 @@ namespace controller {
         }
         #endif
 
-        self->controller->setRotateSpeed(PyFloat_AsDouble(value));
+        self->controller->setRotateSpeed((float) PyFloat_AsDouble(value));
         return 0;
     }
 
@@ -243,7 +243,7 @@ namespace controller {
         }
         #endif
 
-        self->controller->setZoomSpeed(PyFloat_AsDouble(value));
+        self->controller->setZoomSpeed((float) PyFloat_AsDouble(value));
         return 0;
     }
 }
@@ -282,40 +282,73 @@ namespace controller {
     };
 
     static PyGetSetDef getsetters[] = {
-            GETTER_SETTER(horizontal_speed),
-            GETTER_SETTER(vertical_speed),
-            GETTER_SETTER(rotate_speed),
-            GETTER_SETTER(zoom_speed),
+            {"horizontal_speed", (getter) get_horizontal_speed, (setter) set_horizontal_speed, "horizontal_speed", nullptr},
+            {"vertical_speed", (getter) get_vertical_speed, (setter) set_vertical_speed, "vertical_speed", nullptr},
+            {"rotate_speed", (getter) get_rotate_speed, (setter) set_rotate_speed, "rotate_speed", nullptr},
+            {"zoom_speed", (getter) get_zoom_speed, (setter) set_zoom_speed, "zoom_speed", nullptr},
 
             {nullptr}
     };
 }
 
-PyTypeObject ControllerType = {
+static PyTypeObject CameraControllerType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.CameraController",
-        .tp_basicsize = sizeof(CameraControllerObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-
-        .tp_new = controller::new_,
-        .tp_init = (initproc) controller::init,
-
-        .tp_methods = controller::methods,
-        .tp_getset = controller::getsetters,
-
-        .tp_traverse = (traverseproc) controller::traverse,
-        .tp_clear = (inquiry) controller::clear,
-        .tp_dealloc = (destructor) controller::dealloc,
-
-        .tp_repr = (reprfunc) controller::repr,
+        "goopylib.CameraController",
+        sizeof(CameraControllerObject),
+        0,
+        (destructor) controller::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) controller::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) controller::traverse,
+        (inquiry) controller::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        controller::methods,
+        nullptr,
+        controller::getsetters,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) controller::init,
+        nullptr,
+        controller::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
 static struct PyModuleDef CameraControllerModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "camera_controller",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "camera_controller",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_camera_controller(void) {
@@ -331,7 +364,7 @@ PyMODINIT_FUNC PyInit_camera_controller(void) {
     // Importing Window
 
     #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_renderable() - import_window()" << std::endl;
+    std::cout << "[--:--:--] PYTHON: PyInit_cameraController() - import_window()" << std::endl;
     #endif
     PyWindow_API = (void **) PyCapsule_Import("goopylib.ext.window._C_API", 0);
     if (PyWindow_API == nullptr) {
@@ -342,7 +375,7 @@ PyMODINIT_FUNC PyInit_camera_controller(void) {
 
     // Exposing class
 
-    EXPOSE_PYOBJECT_CLASS(ControllerType, "CameraController");
+    EXPOSE_PYOBJECT_CLASS(CameraControllerType, "CameraController");
 
     return m;
 }

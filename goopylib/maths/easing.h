@@ -3,20 +3,57 @@
 #include "goopylib/header.h"
 
 #define EASING_TYPE(name, space) \
-static PyTypeObject name##_type = {\
-    PyVarObject_HEAD_INIT(nullptr, 0) \
-    .tp_itemsize = 0, \
-    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, \
-    .tp_new = PyType_GenericNew, \
-    .tp_init = (initproc) space::init, \
-    .tp_call = (ternaryfunc) call, \
-    .tp_repr = (reprfunc) repr, \
-    .tp_basicsize = sizeof(EasingObject), \
-    .tp_name = (#name), \
-    .tp_traverse = (traverseproc) traverse, \
-    .tp_clear = (inquiry) clear, \
-    .tp_dealloc = (destructor) dealloc \
-}
+static PyTypeObject name##_type = { \
+            PyVarObject_HEAD_INIT(nullptr, 0) \
+            #name, \
+            sizeof(EasingObject), \
+            0, \
+            (destructor) dealloc, \
+            0, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            (reprfunc) repr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            (ternaryfunc) call, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, \
+            "", \
+            (traverseproc) traverse, \
+            (inquiry) clear, \
+            nullptr, \
+            0, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            0, \
+            (initproc) space::init, \
+            nullptr, \
+            PyType_GenericNew, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            nullptr, \
+            0, \
+            nullptr, \
+            nullptr \
+    }
 
 #define EASING_IN_TYPE(name) EASING_TYPE(name##_in, name::in)
 #define EASING_OUT_TYPE(name) EASING_TYPE(name##_out, name::out)

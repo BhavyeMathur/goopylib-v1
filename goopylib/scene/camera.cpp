@@ -23,7 +23,7 @@
 
 // Camera Core
 namespace camera {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         GP_PY_DEBUG("gp.camera.Camera.__new__()");
 
         CameraObject *self;
@@ -47,16 +47,16 @@ namespace camera {
         return 0;
     }
 
-    static PyObject *repr(CameraObject *self) {
+    static PyObject *repr(CameraObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.camera.Camera.__repr__()");
         return PyUnicode_FromString("Camera()");
     }
 
-    static int traverse(CameraObject *self, visitproc visit, void *arg) {
+    static int traverse(CameraObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(CameraObject *self) {
+    static int clear(CameraObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.camera.Camera.clear()");
         return 0;
     }
@@ -112,7 +112,7 @@ namespace camera {
         }
         #endif
 
-        self->camera->zoom(PyFloat_AsDouble(arg));
+        self->camera->zoom((float) PyFloat_AsDouble(arg));
         Py_RETURN_NONE;
     }
 }
@@ -202,26 +202,26 @@ namespace camera {
 // Camera Type
 namespace camera {
     static PyMethodDef methods[] = {
-            {"set_projection",     (PyCFunction) set_projection,     METH_VARARGS,
+            {"set_projection", (PyCFunction) set_projection, METH_VARARGS,
                     "Sets the projection of the camera"},
 
-            {"move",         (PyCFunction) move,         METH_VARARGS,
+            {"move",           (PyCFunction) move,           METH_VARARGS,
                     "Moves the camera"},
-            {"rotate",       (PyCFunction) rotate,       METH_O,
+            {"rotate",         (PyCFunction) rotate,         METH_O,
                     "Rotates the camera"},
-            {"zoomin",        (PyCFunction) zoomin,        METH_O,
+            {"zoomin",         (PyCFunction) zoomin,         METH_O,
                     "Zooms in the camera"},
 
             {nullptr}
     };
 
     static PyGetSetDef getsetters[] = {
-            GETTER_SETTER(x),
-            GETTER_SETTER(y),
-            GETTER_SETTER(position),
+            {"x", (getter) get_x, (setter) set_x, "x", nullptr},
+            {"y", (getter) get_y, (setter) set_y, "y", nullptr},
+            {"position", (getter) get_position, (setter) set_position, "position", nullptr},
 
-            GETTER_SETTER(rotation),
-            GETTER_SETTER(zoom),
+            {"rotation", (getter) get_rotation, (setter) set_rotation, "rotation", nullptr},
+            {"zoom", (getter) get_zoom, (setter) set_zoom, "zoom", nullptr},
 
             {nullptr}
     };
@@ -229,29 +229,62 @@ namespace camera {
 
 PyTypeObject CameraType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Camera",
-        .tp_basicsize = sizeof(CameraObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-
-        .tp_new = camera::new_,
-        .tp_init = (initproc) camera::init,
-
-        .tp_methods = camera::methods,
-        .tp_getset = camera::getsetters,
-
-        .tp_traverse = (traverseproc) camera::traverse,
-        .tp_clear = (inquiry) camera::clear,
-        .tp_dealloc = (destructor) camera::dealloc,
-
-        .tp_repr = (reprfunc) camera::repr,
+        "goopylib.Camera",
+        sizeof(CameraObject),
+        0,
+        (destructor) camera::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) camera::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) camera::traverse,
+        (inquiry) camera::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        camera::methods,
+        nullptr,
+        camera::getsetters,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) camera::init,
+        nullptr,
+        camera::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef cameramodule = {
+static struct PyModuleDef CameraModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "camera",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "camera",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_camera(void) {
@@ -259,7 +292,7 @@ PyMODINIT_FUNC PyInit_camera(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_camera()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&cameramodule);
+    PyObject *m = PyModule_Create(&CameraModule);
     if (m == nullptr) {
         return nullptr;
     }

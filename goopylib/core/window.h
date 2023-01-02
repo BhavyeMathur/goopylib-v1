@@ -12,7 +12,7 @@ struct WindowObject;
 
 // Window Core
 namespace window {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds));
 
     static int init(WindowObject *self, PyObject *args, PyObject *kwds);
 
@@ -101,7 +101,7 @@ namespace window {
     static PyObject *get_size(WindowObject *self, void *closure);
 
     // Size Limits
-    static PyObject *set_size_limits(WindowObject *self, PyObject *args, PyObject *kwds);
+    static PyObject *set_size_limits(WindowObject *self, PyObject *args, PyObject *Py_UNUSED(kwds));
 
     // Minimum Size
     static PyObject *set_min_size(WindowObject *self, PyObject *args);
@@ -302,9 +302,9 @@ namespace window {
 
 // Static Window Methods
 namespace window {
-    static PyObject *update_all(WindowObject *self, PyObject *args);
+    static PyObject *update_all(WindowObject *self, PyObject *Py_UNUSED(args));
 
-    static PyObject *destroy_all(WindowObject *self, PyObject *args);
+    static PyObject *destroy_all(WindowObject *self, PyObject *Py_UNUSED(args));
 }
 
 extern PyTypeObject WindowType;

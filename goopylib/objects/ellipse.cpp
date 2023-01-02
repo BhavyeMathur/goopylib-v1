@@ -29,7 +29,7 @@
 
 // Ellipse Core
 namespace ellipse {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         EllipseObject *self;
         self = (EllipseObject *) type->tp_alloc(type, 0);
 
@@ -61,16 +61,16 @@ namespace ellipse {
         return 0;
     }
 
-    static PyObject *repr(EllipseObject *self) {
+    static PyObject *repr(EllipseObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.ellipse.Ellipse.__repr__()");
         return PyUnicode_FromString("Ellipse()");
     }
 
-    static int traverse(EllipseObject *self, visitproc visit, void *arg) {
+    static int traverse(EllipseObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(EllipseObject *self) {
+    static int clear(EllipseObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.ellipse.Ellipse.clear()");
         return 0;
     }
@@ -219,28 +219,62 @@ namespace ellipse {
 
 PyTypeObject EllipseType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Ellipse",
-        .tp_basicsize = sizeof(EllipseObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
-
-        .tp_new = ellipse::new_,
-        .tp_init = (initproc) ellipse::init,
-
-        .tp_methods = ellipse::methods,
-
-        .tp_traverse = (traverseproc) ellipse::traverse,
-        .tp_clear = (inquiry) ellipse::clear,
-        .tp_dealloc = (destructor) ellipse::dealloc,
-
-        .tp_repr = (reprfunc) ellipse::repr,
+        "goopylib.Ellipse",
+        sizeof(EllipseObject),
+        0,
+        (destructor) ellipse::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) ellipse::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
+        "",
+        (traverseproc) ellipse::traverse,
+        (inquiry) ellipse::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        ellipse::methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) ellipse::init,
+        nullptr,
+        ellipse::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef ellipsemodule = {
+static struct PyModuleDef EllipseModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "ellipse",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "ellipse",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_ellipse(void) {
@@ -248,7 +282,7 @@ PyMODINIT_FUNC PyInit_ellipse(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_ellipse()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&ellipsemodule);
+    PyObject *m = PyModule_Create(&EllipseModule);
     if (m == nullptr) {
         return nullptr;
     }

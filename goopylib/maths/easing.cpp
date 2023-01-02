@@ -396,11 +396,13 @@ static PyMethodDef EasingMethods[] = {
         {nullptr, nullptr, 0, nullptr}
 };
 
-static struct PyModuleDef easingmodule = {
+static struct PyModuleDef EasingModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "easing",
-        .m_size = -1,
-        .m_methods = EasingMethods,
+        "easing",
+        "",
+        -1,
+        EasingMethods,
+        nullptr
 };
 
 PyMODINIT_FUNC PyInit_easing() {
@@ -409,7 +411,7 @@ PyMODINIT_FUNC PyInit_easing() {
     #endif
 
     PyObject *m;
-    m = PyModule_Create(&easingmodule);
+    m = PyModule_Create(&EasingModule);
     if (m == nullptr) {
         return nullptr;
     }

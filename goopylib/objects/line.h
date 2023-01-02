@@ -12,15 +12,15 @@ static PyTypeObject *ColorType;
 struct LineObject;
 
 namespace line {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds));
 
     static int init(LineObject *self, PyObject *args, PyObject *kwds);
 
-    static PyObject *repr(LineObject *self);
+    static PyObject *repr(LineObject *Py_UNUSED(self));
 
-    static int traverse(LineObject *self, visitproc visit, void *arg);
+    static int traverse(LineObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg));
 
-    static int clear(LineObject *self);
+    static int clear(__attribute__((unused)) LineObject *Py_UNUSED(self));
 
     static void dealloc(LineObject *self);
 }

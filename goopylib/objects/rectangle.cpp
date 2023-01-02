@@ -28,7 +28,7 @@ struct RectangleObject {
 
 // Rectangle Core
 namespace rectangle {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         RectangleObject *self;
         self = (RectangleObject *) type->tp_alloc(type, 0);
 
@@ -62,16 +62,16 @@ namespace rectangle {
         return 0;
     }
 
-    static PyObject *repr(RectangleObject *self) {
+    static PyObject *repr(RectangleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.rectangle.Rectangle.__repr__()");
         return PyUnicode_FromString("Rectangle()");
     }
 
-    static int traverse(RectangleObject *self, visitproc visit, void *arg) {
+    static int traverse(RectangleObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(RectangleObject *self) {
+    static int clear(RectangleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.rectangle.Rectangle.clear()");
         return 0;
     }
@@ -88,28 +88,64 @@ namespace rectangle {
 }
 
 
-PyTypeObject RectangleType = {
+static PyTypeObject RectangleType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Rectangle",
-        .tp_basicsize = sizeof(RectangleObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-
-        .tp_new = rectangle::new_,
-        .tp_init = (initproc) rectangle::init,
-
-        .tp_traverse = (traverseproc) rectangle::traverse,
-        .tp_clear = (inquiry) rectangle::clear,
-        .tp_dealloc = (destructor) rectangle::dealloc,
-
-        .tp_repr = (reprfunc) rectangle::repr,
+        "goopylib.Rectangle",
+        sizeof(RectangleObject),
+        0,
+        (destructor) rectangle::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) rectangle::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) rectangle::traverse,
+        (inquiry) rectangle::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) rectangle::init,
+        nullptr,
+        rectangle::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef rectanglemodule = {
+static struct PyModuleDef RectangleModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "rectangle",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "rectangle",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_rectangle(void) {
@@ -117,7 +153,7 @@ PyMODINIT_FUNC PyInit_rectangle(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_rectangle()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&rectanglemodule);
+    PyObject *m = PyModule_Create(&RectangleModule);
     if (m == nullptr) {
         return nullptr;
     }

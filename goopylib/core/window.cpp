@@ -41,7 +41,7 @@ do { if (self->window->isDestroyed()) { \
 
 // Window Core
 namespace window {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         WindowObject *self;
         self = (WindowObject *) type->tp_alloc(type, 0);
 
@@ -503,7 +503,7 @@ namespace window {
     }
 
     // Size Limits
-    static PyObject *set_size_limits(WindowObject *self, PyObject *args, PyObject *kwds) {
+    static PyObject *set_size_limits(WindowObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         CHECK_ACTIVE(nullptr);
 
         int minWidth, minHeight;
@@ -1600,12 +1600,12 @@ namespace window {
 
 // Static Window Methods
 namespace window {
-    static PyObject *update_all(WindowObject *Py_UNUSED(self), PyObject *args) {
+    static PyObject *update_all(WindowObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
         gp::Window::updateAll();
         Py_RETURN_NONE;
     }
 
-    static PyObject *destroy_all(WindowObject *Py_UNUSED(self), PyObject *args) {
+    static PyObject *destroy_all(WindowObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
         gp::Window::destroyAll();
         Py_RETURN_NONE;
     }
@@ -1778,29 +1778,62 @@ namespace window {
 
 PyTypeObject WindowType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Window",
-        .tp_basicsize = sizeof(WindowObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-
-        .tp_new = window::new_,
-        .tp_init = (initproc) window::init,
-
-        .tp_methods = window::methods,
-        .tp_getset = window::getsetters,
-
-        .tp_traverse = (traverseproc) window::traverse,
-        .tp_clear = (inquiry) window::clear,
-        .tp_dealloc = (destructor) window::dealloc,
-
-        .tp_repr = (reprfunc) window::repr,
+        "goopylib.Window",
+        sizeof(WindowObject),
+        0,
+        (destructor) window::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) window::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        "",
+        (traverseproc) window::traverse,
+        (inquiry) window::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        window::methods,
+        nullptr,
+        window::getsetters,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) window::init,
+        nullptr,
+        window::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef windowmodule = {
+static struct PyModuleDef WindowModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "window",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "window",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_window(void) {
@@ -1808,7 +1841,7 @@ PyMODINIT_FUNC PyInit_window(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_window()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&windowmodule);
+    PyObject *m = PyModule_Create(&WindowModule);
     if (m == nullptr) {
         return nullptr;
     }

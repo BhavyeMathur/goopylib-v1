@@ -29,7 +29,7 @@
 
 // Quad Core
 namespace quad {
-    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         QuadObject *self;
         self = (QuadObject *) type->tp_alloc(type, 0);
 
@@ -54,16 +54,16 @@ namespace quad {
         return 0;
     }
 
-    static PyObject *repr(QuadObject *self) {
+    static PyObject *repr(QuadObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.quad.Quad.__repr__()");
         return PyUnicode_FromString("Quad()");
     }
 
-    static int traverse(QuadObject *self, visitproc visit, void *arg) {
+    static int traverse(QuadObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(QuadObject *self) {
+    static int clear(QuadObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.quad.Quad.clear()");
         return 0;
     }
@@ -212,28 +212,62 @@ namespace quad {
 
 PyTypeObject QuadType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        .tp_name = "goopylib.Quad",
-        .tp_basicsize = sizeof(QuadObject),
-        .tp_itemsize = 0,
-        .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
-
-        .tp_new = quad::new_,
-        .tp_init = (initproc) quad::init,
-
-        .tp_methods = quad::methods,
-
-        .tp_traverse = (traverseproc) quad::traverse,
-        .tp_clear = (inquiry) quad::clear,
-        .tp_dealloc = (destructor) quad::dealloc,
-
-        .tp_repr = (reprfunc) quad::repr,
+        "goopylib.Quad",
+        sizeof(QuadObject),
+        0,
+        (destructor) quad::dealloc,
+        0,
+        nullptr,
+        nullptr,
+        nullptr,
+        (reprfunc) quad::repr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
+        "",
+        (traverseproc) quad::traverse,
+        (inquiry) quad::clear,
+        nullptr,
+        0,
+        nullptr,
+        nullptr,
+        quad::methods,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        (initproc) quad::init,
+        nullptr,
+        quad::new_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
 };
 
-static struct PyModuleDef quadmodule = {
+static struct PyModuleDef QuadModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "quad",
-        .m_size = -1,
-        .m_methods = nullptr,
+        "quad",
+        "",
+        -1,
+        nullptr,
 };
 
 PyMODINIT_FUNC PyInit_quad(void) {
@@ -241,7 +275,7 @@ PyMODINIT_FUNC PyInit_quad(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_quad()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&quadmodule);
+    PyObject *m = PyModule_Create(&QuadModule);
     if (m == nullptr) {
         return nullptr;
     }

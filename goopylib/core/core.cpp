@@ -129,7 +129,7 @@ namespace core {
         }
         #endif
 
-        int32_t interval = (int32_t) PyLong_AsLong(arg);
+        auto interval = (int32_t) PyLong_AsLong(arg);
 
         GP_CHECK_GE(interval, 0, nullptr, "interval must be greater than or equal to 0")
 
@@ -184,11 +184,13 @@ static PyMethodDef CoreMethods[] = {
 };
 
 
-static struct PyModuleDef coremodule = {
+static struct PyModuleDef CoreModule = {
         PyModuleDef_HEAD_INIT,
-        .m_name = "core",
-        .m_size = -1,
-        .m_methods = CoreMethods,
+        "core",
+        "",
+        -1,
+        CoreMethods,
+        nullptr
 };
 
 PyMODINIT_FUNC PyInit_core(void) {
@@ -196,7 +198,7 @@ PyMODINIT_FUNC PyInit_core(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_core()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&coremodule);
+    PyObject *m = PyModule_Create(&CoreModule);
     if (m == nullptr) {
         return nullptr;
     }
