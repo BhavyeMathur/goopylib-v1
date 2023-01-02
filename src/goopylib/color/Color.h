@@ -15,12 +15,12 @@ namespace gp {
      * @example
      *      auto color = Color(60, 180, 90, 0.5);
      */
-    class GPAPI Color {
+    class Color {
     public:
         /**
          * Create a color object from another color object.
          */
-        Color(Color const *color);
+        GPAPI explicit Color(Color const *color);
 
         /**
          * Create colors by passing RGB arguments or a hexstring.
@@ -34,7 +34,7 @@ namespace gp {
          * @throws std::invalid_argument RGB must be between 0-255
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        Color(int red, int green, int blue, float alpha = 1);
+        GPAPI Color(int red, int green, int blue, float alpha = 1);
 
         /**
          * Create colors by passing RGB arguments or a hexstring.
@@ -46,73 +46,73 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        Color(const char *hexstring, float alpha = 1);
+        GPAPI explicit Color(const char *hexstring, float alpha = 1);
 
-        ~Color();
+        GPAPI ~Color();
 
         /**
          * @return a string representation of the color
          */
-        [[nodiscard]] virtual std::string toString() const;
+        [[nodiscard]] GPAPI virtual std::string toString() const;
 
         /**
          * @return the red component of the color
          */
-        [[nodiscard]] int getRed() const;
+        [[nodiscard]] GPAPI int getRed() const;
 
         /**
          * @param value between 0-255
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setRed(int value);
+        GPAPI void setRed(int value);
 
         /**
          * @return the green component of the color
          */
-        [[nodiscard]] int getGreen() const;
+        [[nodiscard]] GPAPI int getGreen() const;
 
         /**
          * @param value between 0-255
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setGreen(int value);
+        GPAPI void setGreen(int value);
 
         /**
          * @return the blue component of the color
          */
-        [[nodiscard]] int getBlue() const;
+        [[nodiscard]] GPAPI int getBlue() const;
 
         /**
          * @param value between 0-255
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setBlue(int value);
+        GPAPI void setBlue(int value);
 
         /**
          * @return the alpha component of the color
          */
-        [[nodiscard]] float getAlpha() const;
+        [[nodiscard]] GPAPI float getAlpha() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setAlpha(float value);
+        GPAPI void setAlpha(float value);
 
         /**
          * @return the red component of the color between 0-1
          */
-        [[nodiscard]] float getRedf() const;
+        [[nodiscard]] GPAPI float getRedf() const;
 
         /**
          * @return the green component of the color between 0-1
          */
-        [[nodiscard]] float getGreenf() const;
+        [[nodiscard]] GPAPI float getGreenf() const;
 
         /**
          * @return the blue component of the color between 0-1
          */
-        [[nodiscard]] float getBluef() const;
+        [[nodiscard]] GPAPI float getBluef() const;
 
         /**
          * @return a struct with RGBA between 0-1
@@ -121,21 +121,21 @@ namespace gp {
 
         // Operator Overloads
 
-        Color operator+(int value) const;
+        GPAPI Color operator+(int value) const;
 
-        Color operator+(const Color &value) const;
+        GPAPI Color operator+(const Color &value) const;
 
-        Color operator-(int value) const;
+        GPAPI Color operator-(int value) const;
 
-        Color operator-(const Color &value) const;
+        GPAPI Color operator-(const Color &value) const;
 
-        Color &operator+=(int value);
+        GPAPI Color &operator+=(int value);
 
-        Color &operator+=(const Color &value);
+        GPAPI Color &operator+=(const Color &value);
 
-        Color &operator-=(int value);
+        GPAPI Color &operator-=(int value);
 
-        Color &operator-=(const Color &value);
+        GPAPI Color &operator-=(const Color &value);
 
     protected:
         int m_Red;
@@ -168,12 +168,12 @@ namespace gp {
      * @example
      *      auto color = ColorRGB(otherColor);
      */
-    class GPAPI ColorRGB final : public Color {
+    class ColorRGB final : public Color {
     public:
         /**
          * Create a ColorRGB from another color object.
          */
-        ColorRGB(Color const *color);
+        GPAPI explicit ColorRGB(Color const *color);
 
         /**
          * Create an RGB color by passing RGB arguments with an optional alpha parameter.
@@ -187,7 +187,7 @@ namespace gp {
          * @throws std::invalid_argument RGB must be between 0-255
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        ColorRGB(int red, int green, int blue, float alpha = 1.0f);
+        GPAPI ColorRGB(int red, int green, int blue, float alpha = 1.0f);
     };
 }
 
@@ -203,12 +203,12 @@ namespace gp {
      * @example
      *      auto color = ColorHex(otherColor);
      */
-    class GPAPI ColorHex final : public Color {
+    class ColorHex final : public Color {
     public:
         /**
          * Create a ColorHex from another color object.
          */
-        ColorHex(Color const *color);
+        GPAPI explicit ColorHex(Color const *color);
 
         /**
          * Create a Hexadecimal color by passing a hexstring with an optional alpha parameter. The '#' is optional.
@@ -220,9 +220,9 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        ColorHex(const char *hexstring, float alpha = 1.0f);
+        GPAPI explicit ColorHex(const char *hexstring, float alpha = 1.0f);
 
-        [[nodiscard]] std::string toString() const override;
+        [[nodiscard]] GPAPI std::string toString() const override;
     };
 }
 
@@ -238,12 +238,12 @@ namespace gp {
      * @example
      *      auto color = ColorCMYK(otherColor);
      */
-    class GPAPI ColorCMYK final : public Color {
+    class ColorCMYK final : public Color {
     public:
         /**
          * Create a ColorCMYK from another color object.
          */
-        ColorCMYK(Color const *color);
+        GPAPI explicit ColorCMYK(Color const *color);
 
         /**
          * Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha.
@@ -258,53 +258,53 @@ namespace gp {
          * @throws std::invalid_argument CMYK must be between 0-1
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha = 1.0f);
+        GPAPI ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha = 1.0f);
 
-        [[nodiscard]] std::string toString() const override;
+        [[nodiscard]] GPAPI std::string toString() const override;
 
         /**
          * @return the cyan component of the color between 0-1
          */
-        [[nodiscard]] float getCyan() const;
+        [[nodiscard]] GPAPI float getCyan() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setCyan(float value);
+        GPAPI void setCyan(float value);
 
         /**
          * @return the magenta component of the color between 0-1
          */
-        [[nodiscard]] float getMagenta() const;
+        [[nodiscard]] GPAPI float getMagenta() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setMagenta(float value);
+        GPAPI void setMagenta(float value);
 
         /**
          * @return the yellow component of the color between 0-1
          */
-        [[nodiscard]] float getYellow() const;
+        [[nodiscard]] GPAPI float getYellow() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setYellow(float value);
+        GPAPI void setYellow(float value);
 
         /**
          * @return the key component of the color between 0-1
          */
-        [[nodiscard]] float getKey() const;
+        [[nodiscard]] GPAPI float getKey() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setKey(float value);
+        GPAPI void setKey(float value);
 
     private:
         float m_Cyan;
@@ -326,12 +326,12 @@ namespace gp {
      * @example
      *      auto color = ColorHSV(otherColor);
      */
-    class GPAPI ColorHSV final : public Color {
+    class ColorHSV final : public Color {
     public:
         /**
          * Create a ColorHSV from another color object.
          */
-        ColorHSV(Color const *color);
+        GPAPI explicit ColorHSV(Color const *color);
 
         /**
          * Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)
@@ -346,42 +346,42 @@ namespace gp {
          * @throws std::invalid_argument saturation & value must be between 0-1
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        ColorHSV(int hue, float saturation, float value, float alpha = 1.0f);
+        GPAPI ColorHSV(int hue, float saturation, float value, float alpha = 1.0f);
 
-        [[nodiscard]] std::string toString() const override;
+        [[nodiscard]] GPAPI std::string toString() const override;
 
         /**
          * @return the hue component of the color between 0-360
          */
-        [[nodiscard]] int getHue() const;
+        [[nodiscard]] GPAPI int getHue() const;
 
         /**
          * @param value between 0-360
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setHue(int value);
+        GPAPI void setHue(int value);
 
         /**
          * @return the saturation component of the color between 0-1
          */
-        [[nodiscard]] float getSaturation() const;
+        [[nodiscard]] GPAPI float getSaturation() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setSaturation(float value);
+        GPAPI void setSaturation(float value);
 
         /**
          * @return the value component of the color between 0-1
          */
-        [[nodiscard]] float getValue() const;
+        [[nodiscard]] GPAPI float getValue() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setValue(float value);
+        GPAPI void setValue(float value);
 
     private:
         int m_Hue;
@@ -402,12 +402,12 @@ namespace gp {
      * @example
      *      auto color = ColorHSL(otherColor);
      */
-    class GPAPI ColorHSL final : public Color {
+    class ColorHSL final : public Color {
     public:
         /**
          * Create a ColorHSL from another color object.
          */
-        ColorHSL(Color const *color);
+        GPAPI explicit ColorHSL(Color const *color);
 
         /**
          * Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)
@@ -422,42 +422,42 @@ namespace gp {
          * @throws std::invalid_argument saturation & luminance must be between 0-1
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        ColorHSL(int hue, float saturation, float luminance, float alpha = 1.0f);
+        GPAPI ColorHSL(int hue, float saturation, float luminance, float alpha = 1.0f);
 
-        [[nodiscard]] std::string toString() const override;
+        [[nodiscard]] GPAPI std::string toString() const override;
 
         /**
          * @return the hue component of the color between 0-360
          */
-        [[nodiscard]] int getHue() const;
+        [[nodiscard]] GPAPI int getHue() const;
 
         /**
          * @param value between 0-360
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setHue(int value);
+        GPAPI void setHue(int value);
 
         /**
          * @return the saturation component of the color between 0-1
          */
-        [[nodiscard]] float getSaturation() const;
+        [[nodiscard]] GPAPI float getSaturation() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setSaturation(float value);
+        GPAPI void setSaturation(float value);
 
         /**
          * @return the luminance component of the color between 0-1
          */
-        [[nodiscard]] float getLuminance() const;
+        [[nodiscard]] GPAPI float getLuminance() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        void setLuminance(float value);
+        GPAPI void setLuminance(float value);
 
     private:
         int m_Hue;
@@ -467,5 +467,5 @@ namespace gp {
 }
 
 namespace gp {
-    std::ostream &operator<<(std::ostream &os, const Color &color);
+    GPAPI std::ostream &operator<<(std::ostream &os, const Color &color);
 }

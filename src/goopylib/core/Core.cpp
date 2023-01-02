@@ -103,8 +103,6 @@ namespace {
 }
 
 namespace gp {
-    GPAPI bool is_initialized = false;
-
     void init() {
         Log::init();
 

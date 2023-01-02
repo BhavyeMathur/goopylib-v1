@@ -50,8 +50,8 @@ struct GPAPI Point {
     Point() = default;
 
     template<typename T>
-    Point(T x, T y) : x(x), y(y) {
-    }
+        Point(T x, T y) : x(x), y(y) {
+        }
 };
 
 bool GPAPI checkTriangleContains(Point point, Point a, Point b, Point c);

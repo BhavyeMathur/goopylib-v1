@@ -8,16 +8,16 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
 namespace gp {
-    class GPAPI Log {
+    class Log {
 
     public:
         static void init();
 
         static Ref<spdlog::logger> getCoreLogger();
 
-        static Ref<spdlog::logger> getClientLogger();
+        GPAPI static Ref<spdlog::logger> getClientLogger();
 
-        static Ref<spdlog::logger> getPythonLogger();
+        GPAPI static Ref<spdlog::logger> getPythonLogger();
 
     private:
         static Ref<spdlog::logger> s_CoreLogger;

@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing a textured rectangle - an image
      */
-    class GPAPI Image : public Renderable {
+    class Image : public Renderable {
 
         friend class Renderer;
 
@@ -21,7 +21,7 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        Image(const char *path, Point position);
+        GPAPI Image(const char *path, Point position);
 
         /**
          * An object representing a textured rectangle - an image
@@ -34,7 +34,7 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        Image(const char *path, Point position, float width, float height);
+        GPAPI Image(const char *path, Point position, float width, float height);
 
         /**
          * An object representing a textured rectangle - an image
@@ -46,15 +46,15 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        Image(const char *path, Point p1, Point p2);
+        GPAPI Image(const char *path, Point p1, Point p2);
 
         /**
          *
          * @return the filepath used by the image
          */
-        [[nodiscard]] const char *getPath() const;
+        [[nodiscard]] GPAPI const char *getPath() const;
 
-        void setTransparency(float value) override;
+        GPAPI void setTransparency(float value) override;
 
         /**
          * Sets the transparency of the image
@@ -66,7 +66,7 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        void setTransparency(float v1, float v2, float v3, float v4);
+        GPAPI void setTransparency(float v1, float v2, float v3, float v4);
 
     private:
         ImageVertexAttrib m_V1 = {{0, 0}};

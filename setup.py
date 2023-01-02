@@ -51,13 +51,30 @@ def check_version():
 
 check_version()
 
+if sys.platform == "darwin":
+    compile_args = ["-std=c++11"]
+    compile_args += ["-Wno-deprecated-volatile"]  # suppress warnings caused by glm
+
+    library_dirs = ["binaries/lib-macos"]
+    package_data = {}
+
+elif sys.platform == "win32":
+    compile_args = ["/wd4005"]  # suppress macro-redefinition warning
+    library_dirs = ["binaries/lib-vc2022"]
+    package_data = {"goopylib.ext": ["binaries/lib-vc2022/goopylib.dll"]}
+
+else:
+    compile_args = []
+    library_dirs = []
+    package_data = {}
+
 ext_kwargs = {"include_dirs":       [".", "goopylib", "src", "src/vendor"],
-              "library_dirs":       [f"binaries/lib-{'macos' if sys.platform == 'darwin' else 'vc2022'}"],
+              "library_dirs":       library_dirs,
               "libraries":          ["goopylib"],
-              "extra_compile_args": "-std=c++11 -Wno-deprecated-volatile".split() if sys.platform == "darwin" else []}
+              "extra_compile_args":  compile_args}
 
 setup(packages=setuptools.find_packages(),
-      package_data={"goopylib.ext": ["binaries/lib-vc2022/goopylib.dll"]} if sys.platform == "win32" else {},
+      package_data=package_data,
       include_package_data=False,
       ext_modules=[
           Extension(name="goopylib.ext.easing",

@@ -8,7 +8,7 @@
 // TODO implement window icons
 // TODO window autoflush
 
-class GLFWwindow;
+struct GLFWwindow;
 
 namespace gp {
     enum class CursorMode {
@@ -50,7 +50,7 @@ namespace gp {
      * @param height in screen coordinates
      * @param title displayed in the title bar
      */
-    class GPAPI Window {
+    class Window {
 
         friend class Renderable;
 
@@ -75,11 +75,11 @@ namespace gp {
          * @throws std::invalid_argument width must be greater than 0
          * @throws std::invalid_argument height must be greater than 0
          */
-        Window(int width, int height, const char *title = "goopylib Window");
+        GPAPI Window(int width, int height, const char *title = "goopylib Window");
 
-        ~Window();
+        GPAPI ~Window();
 
-        std::string toString();
+        GPAPI std::string toString();
 
         #if GP_USING_GLFW
         
@@ -88,38 +88,38 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        GLFWwindow *getWindowGLFW();
+        GPAPI GLFWwindow *getWindowGLFW();
 
         #endif
     
         /**
          * @return whether the Window is closed.
          */
-        [[nodiscard]] bool isClosed() const;
+        [[nodiscard]] GPAPI bool isClosed() const;
 
         /**
          * @return whether the Window is open.
          */
-        [[nodiscard]] bool isOpen() const;
+        [[nodiscard]] GPAPI bool isOpen() const;
     
         /**
          * @return whether the Window has been destroyed.
          */
-        [[nodiscard]] bool isDestroyed() const;
+        [[nodiscard]] GPAPI bool isDestroyed() const;
     
         /**
          * Refreshes the Window.
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void update();
+        GPAPI void update();
     
         /**
          * Destroys & closes the Window.
          * 
          * @warning Once the Window is destroyed, calling its methods is undefined.
          */
-        void destroy();
+        GPAPI void destroy();
 
         /* Getters & Setters -----------------------------------------------------------------------------------------*/
 
@@ -130,12 +130,12 @@ namespace gp {
          * @throws std::invalid_argument value must be greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setWidth(int value);
+        GPAPI void setWidth(int value);
 
         /**
          * @return in screen coordinates
          */
-        [[nodiscard]] int getWidth() const;
+        [[nodiscard]] GPAPI int getWidth() const;
 
         // Height
         /**
@@ -144,48 +144,48 @@ namespace gp {
          * @throws std::invalid_argument value must be greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setHeight(int value);
+        GPAPI void setHeight(int value);
 
         /**
          * @return in screen coordinates
          */
-        [[nodiscard]] int getHeight() const;
+        [[nodiscard]] GPAPI int getHeight() const;
 
         // Title
         /**
          * @param value the title string to show in the title menu
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setTitle(const char *value);
+        GPAPI void setTitle(const char *value);
 
         /**
          * @return the title string showed in the title menu
          */
-        [[nodiscard]] const char *getTitle() const;
+        [[nodiscard]] GPAPI const char *getTitle() const;
 
         // X Position
         /**
          * @param value in screen coordinates of the upper-left corner of the Window
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setXPos(int value);
+        GPAPI void setXPos(int value);
 
         /**
          * @return in screen coordinates, the position of the upper-left corner of the Window
          */
-        [[nodiscard]] int getXPos() const;
+        [[nodiscard]] GPAPI int getXPos() const;
 
         // Y Position
         /**
          * @param value in screen coordinates of the upper-left corner of the Window
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setYPos(int value);
+        GPAPI void setYPos(int value);
 
         /**
          * @return in screen coordinates, the position of the lower-right corner of the Window
          */
-        [[nodiscard]] int getYPos() const;
+        [[nodiscard]] GPAPI int getYPos() const;
 
         // Background
         /**
@@ -193,12 +193,12 @@ namespace gp {
          * 
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setBackground(const Color &value);
+        GPAPI void setBackground(const Color &value);
 
         /**
          * @return the background color of the Window
          */
-        Color &getBackground();
+        GPAPI Color &getBackground();
 
         // Minimum Width
         /**
@@ -209,12 +209,12 @@ namespace gp {
          * @throws std::invalid_argument value must be greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setMinWidth(int value);
+        GPAPI void setMinWidth(int value);
 
         /**
          * @return the minimum resizable width in screen coordinates
          */
-        [[nodiscard]] int getMinWidth() const;
+        [[nodiscard]] GPAPI int getMinWidth() const;
 
         // Minimum Height
         /**
@@ -225,12 +225,12 @@ namespace gp {
          * @throws std::invalid_argument value must be greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setMinHeight(int value);
+        GPAPI void setMinHeight(int value);
 
         /**
          * @return the minimum resizable height in screen coordinates
          */
-        [[nodiscard]] int getMinHeight() const;
+        [[nodiscard]] GPAPI int getMinHeight() const;
 
         // Maximum Width
         /**
@@ -241,12 +241,12 @@ namespace gp {
          * @throws std::invalid_argument value must be greater than the Window's minimum width
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setMaxWidth(int value);
+        GPAPI void setMaxWidth(int value);
 
         /**
          * @return the maximum resizable width in screen coordinates
          */
-        [[nodiscard]] int getMaxWidth() const;
+        [[nodiscard]] GPAPI int getMaxWidth() const;
 
         // Maximum Height
         /**
@@ -257,12 +257,12 @@ namespace gp {
          * @throws std::invalid_argument value must be greater than the Window's minimum height
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setMaxHeight(int value);
+        GPAPI void setMaxHeight(int value);
 
         /**
          * @return the maximum resizable height in screen coordinates
          */
-        [[nodiscard]] int getMaxHeight() const;
+        [[nodiscard]] GPAPI int getMaxHeight() const;
 
         // Get & Set Methods
         /**
@@ -275,7 +275,7 @@ namespace gp {
          * @throws std::invalid_argument height must be greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setSize(int width, int height);
+        GPAPI void setSize(int width, int height);
 
         /**
          * Sets the minimum size of the Window.
@@ -293,7 +293,7 @@ namespace gp {
          * @throws std::invalid_argument height must be greater than minHeight
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight);
+        GPAPI void setSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight);
 
         /**
          * Sets the minimum size of the Window.
@@ -307,7 +307,7 @@ namespace gp {
          * @throws std::invalid_argument minHeight must be greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setMinSize(int minWidth, int minHeight);
+        GPAPI void setMinSize(int minWidth, int minHeight);
 
         /**
          * Sets the maximum size of the Window.
@@ -321,7 +321,7 @@ namespace gp {
          * @throws std::invalid_argument height must be greater than the Window's minimum height
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setMaxSize(int maxWidth, int maxHeight);
+        GPAPI void setMaxSize(int maxWidth, int maxHeight);
 
         /**
          * Sets the position of the top-left of the Window on the screen.
@@ -331,7 +331,7 @@ namespace gp {
          *
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setPosition(int xPos, int yPos);
+        GPAPI void setPosition(int xPos, int yPos);
 
         /**
          * Sets the aspect ratio of the Window.
@@ -346,7 +346,7 @@ namespace gp {
          * @throws std::invalid_argument denominator must be -1 or greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setAspectRatio(int numerator, int denominator);
+        GPAPI void setAspectRatio(int numerator, int denominator);
 
         /**
          * Gets the current aspect ratio of the Window.
@@ -355,7 +355,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] AspectRatio getAspectRatio() const;
+        [[nodiscard]] GPAPI AspectRatio getAspectRatio() const;
 
         /**
          * Gets the size, in screen coordinates, of the Window frame.
@@ -369,7 +369,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] WindowFrame getFrameSize() const;
+        [[nodiscard]] GPAPI WindowFrame getFrameSize() const;
 
         /**
          * Gets the scale of the content on the window.
@@ -380,7 +380,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] ContentScale getContentScale() const;
+        [[nodiscard]] GPAPI ContentScale getContentScale() const;
 
         /**
          * The size of the framebuffer for the Window.
@@ -389,7 +389,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] FramebufferSize getFramebufferSize() const;
+        [[nodiscard]] GPAPI FramebufferSize getFramebufferSize() const;
 
         /* Window Attributes -----------------------------------------------------------------------------------------*/
 
@@ -401,13 +401,13 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isResizable() const;
+        [[nodiscard]] GPAPI bool isResizable() const;
 
         /**
          * @param value whether the Window is resizable by the user or not.
          * @throws std::runtime_error window has been destroyed
          */
-        void setResizable(bool value);
+        GPAPI void setResizable(bool value);
 
         /**
          * Gets whether the Window has window decorations.
@@ -419,7 +419,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isDecorated() const;
+        [[nodiscard]] GPAPI bool isDecorated() const;
 
         /**
          * @param value whether the Window has window decorations like a border, close widget, etc.
@@ -428,7 +428,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setDecorated(bool value);
+        GPAPI void setDecorated(bool value);
 
         /**
          * Gets whether the Window is always on top.
@@ -438,13 +438,13 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isFloating() const;
+        [[nodiscard]] GPAPI bool isFloating() const;
 
         /**
          * @param value whether the window is always on top of other regular windows.
          * @throws std::runtime_error window has been destroyed
          */
-        void setFloating(bool value);
+        GPAPI void setFloating(bool value);
 
         /**
          * Gets whether the Window is automatically minimized when it loses focus.
@@ -454,13 +454,13 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isAutoMinimized() const;
+        [[nodiscard]] GPAPI bool isAutoMinimized() const;
 
         /**
          * @param value whether the window is automatically minimized when it loses focus.
          * @throws std::runtime_error window has been destroyed
          */
-        void setAutoMinimized(bool value);
+        GPAPI void setAutoMinimized(bool value);
 
         /**
          * Gets whether the Window gains input focus when it is shown.
@@ -470,13 +470,13 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isFocusedOnShow() const;
+        [[nodiscard]] GPAPI bool isFocusedOnShow() const;
 
         /**
          * @param value whether calling Window::show() gives this Window input focus
          * @throws std::runtime_error window has been destroyed
          */
-        void setFocusedOnShow(bool value);
+        GPAPI void setFocusedOnShow(bool value);
 
         /* Window State Methods --------------------------------------------------------------------------------------*/
 
@@ -485,7 +485,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void restore();
+        GPAPI void restore();
 
         // Fullscreen
         /**
@@ -493,13 +493,13 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void fullscreen();
+        GPAPI void fullscreen();
 
         /**
          * @return whether the Window is in fullscreen mode.
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isFullscreen() const;
+        [[nodiscard]] GPAPI bool isFullscreen() const;
 
         // Maximize
         /**
@@ -507,13 +507,13 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void maximize();
+        GPAPI void maximize();
 
         /**
          * @return whether the Window is in maximized mode.
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isMaximized() const;
+        [[nodiscard]] GPAPI bool isMaximized() const;
 
         // Minimize
         /**
@@ -521,13 +521,13 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void minimize();
+        GPAPI void minimize();
 
         /**
          * @return whether the Window is in minimized mode.
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isMinimized() const;
+        [[nodiscard]] GPAPI bool isMinimized() const;
 
         // Visibility
         /**
@@ -535,20 +535,20 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void show();
+        GPAPI void show();
 
         /**
          * Makes the Window invisible to the user.
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void hide();
+        GPAPI void hide();
 
         /**
          * @return whether the Window is visible to the user.
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isVisible() const;
+        [[nodiscard]] GPAPI bool isVisible() const;
 
         // Input Focus
         /**
@@ -556,13 +556,13 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void focus();
+        GPAPI void focus();
 
         /**
          * @return whether the Window has input focus.
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool hasFocus() const;
+        [[nodiscard]] GPAPI bool hasFocus() const;
 
         /**
          * Requests for the user's attention to the Window.
@@ -572,7 +572,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void requestAttention() const;
+        GPAPI void requestAttention() const;
 
         /* Window Input Events ---------------------------------------------------------------------------------------*/
 
@@ -580,7 +580,7 @@ namespace gp {
          * @return whether the mouse is hovering over the Window.
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool isMouseHovering() const;
+        [[nodiscard]] GPAPI bool isMouseHovering() const;
 
         /**
          * Gets the current position of the mouse
@@ -589,7 +589,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] Point getMousePosition() const;
+        [[nodiscard]] GPAPI Point getMousePosition() const;
 
         /**
          * Normal makes the cursor visible and behave normally.\n
@@ -600,31 +600,31 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setCursorMode(CursorMode mode) const;
+        GPAPI void setCursorMode(CursorMode mode) const;
 
         /**
          * @return whether the shift key is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool checkShiftKey() const;
+        [[nodiscard]] GPAPI bool checkShiftKey() const;
 
         /**
          * @return whether the control key is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool checkControlKey() const;
+        [[nodiscard]] GPAPI bool checkControlKey() const;
 
         /**
          * @return whether the alt key is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool checkAltKey() const;
+        [[nodiscard]] GPAPI bool checkAltKey() const;
 
         /**
          * @return whether the super key is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool checkSuperKey() const;
+        [[nodiscard]] GPAPI bool checkSuperKey() const;
 
         /**
          * @param key an int corresponding to the keycode
@@ -633,7 +633,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] int checkKey(int key) const;
+        [[nodiscard]] GPAPI int checkKey(int key) const;
 
         /**
          * @param button an int corresponding to the mouse button
@@ -642,25 +642,25 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool checkMouseButton(int button) const;
+        [[nodiscard]] GPAPI bool checkMouseButton(int button) const;
 
         /**
          * @return whether the left mouse button is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool checkLeftClick() const;
+        [[nodiscard]] GPAPI bool checkLeftClick() const;
 
         /**
          * @return whether the middle mouse button is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool checkMiddleClick() const;
+        [[nodiscard]] GPAPI bool checkMiddleClick() const;
 
         /**
          * @return whether the right mouse button is being pressed
          * @throws std::runtime_error window has been destroyed
          */
-        [[nodiscard]] bool checkRightClick() const;
+        [[nodiscard]] GPAPI bool checkRightClick() const;
 
         /* Window Callback Functions ---------------------------------------------------------------------------------*/
 
@@ -679,7 +679,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setResizeCallback(std::function<void(Window *window, int width, int height)> callback);
+        GPAPI void setResizeCallback(std::function<void(Window *window, int width, int height)> callback);
 
         /**
          * Callback executed when the Window is attempted to be closed.
@@ -696,7 +696,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setCloseCallback(std::function<void(Window *window)> callback);
+        GPAPI void setCloseCallback(std::function<void(Window *window)> callback);
 
         /**
          * Callback executed when the Window is destroyed.
@@ -713,7 +713,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setDestroyCallback(std::function<void(Window *window)> callback);
+        GPAPI void setDestroyCallback(std::function<void(Window *window)> callback);
 
         /**
          * Callback executed when the Window is moved.
@@ -730,7 +730,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setPositionCallback(std::function<void(Window *window, int xPos, int yPos)> callback);
+        GPAPI void setPositionCallback(std::function<void(Window *window, int xPos, int yPos)> callback);
 
         /**
          * Callback executed when the Window is minimized.
@@ -747,7 +747,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setMinimizeCallback(std::function<void(Window *window, bool minimized)> callback);
+        GPAPI void setMinimizeCallback(std::function<void(Window *window, bool minimized)> callback);
 
         /**
          * Callback executed when the Window is maximized.
@@ -764,7 +764,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setMaximizeCallback(std::function<void(Window *window, bool maximized)> callback);
+        GPAPI void setMaximizeCallback(std::function<void(Window *window, bool maximized)> callback);
 
         /**
          * Callback executed when the Window gains input focus.
@@ -783,7 +783,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setFocusCallback(std::function<void(Window *window, bool focused)> callback);
+        GPAPI void setFocusCallback(std::function<void(Window *window, bool focused)> callback);
 
         /**
          * Callback executed when the Window needs refreshing.
@@ -801,7 +801,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setRefreshCallback(std::function<void(Window *window)> callback);
+        GPAPI  void setRefreshCallback(std::function<void(Window *window)> callback);
 
         /**
          * Callback executed when the Window's content scale changes.
@@ -818,7 +818,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setContentScaleCallback(std::function<void(Window *window, float xScale, float yScale)> callback);
+        GPAPI void setContentScaleCallback(std::function<void(Window *window, float xScale, float yScale)> callback);
 
         /**
          * Callback executed when the Window's framebuffer size changes.
@@ -835,7 +835,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setFramebufferSizeCallback(std::function<void(Window *window, int width, int height)> callback);
+        GPAPI void setFramebufferSizeCallback(std::function<void(Window *window, int width, int height)> callback);
 
         /**
          * Callback executed when the mouse moves.
@@ -852,7 +852,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setMouseMotionCallback(std::function<void(Window *window, float xPos, float yPos)> callback);
+        GPAPI void setMouseMotionCallback(std::function<void(Window *window, float xPos, float yPos)> callback);
 
         /**
          * Callback executed when the mouse enters/exits the Window.
@@ -869,7 +869,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setMouseEnterCallback(std::function<void(Window *window, bool entered)> callback);
+        GPAPI void setMouseEnterCallback(std::function<void(Window *window, bool entered)> callback);
 
         /**
          * Callback executed when the mouse scrolls.
@@ -886,7 +886,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setScrollCallback(std::function<void(Window *window, float xScroll, float yScroll)> callback);
+        GPAPI void setScrollCallback(std::function<void(Window *window, float xScroll, float yScroll)> callback);
 
         /**
          * Callback executed when a key is pressed.
@@ -904,7 +904,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setKeyCallback(int key, std::function<void(Window *window, int action)> callback);
+        GPAPI void setKeyCallback(int key, std::function<void(Window *window, int action)> callback);
 
         /**
          * Callback executed when a mouse button is pressed.
@@ -922,7 +922,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setMouseButtonCallback(int button, std::function<void(Window *window, bool pressed)> callback);
+        GPAPI void setMouseButtonCallback(int button, std::function<void(Window *window, bool pressed)> callback);
 
         /**
          * Callback executed when the left mouse button is clicked.
@@ -939,7 +939,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setLeftClickCallback(std::function<void(Window *window, bool pressed)> callback);
+        GPAPI void setLeftClickCallback(std::function<void(Window *window, bool pressed)> callback);
 
         /**
          * Callback executed when the middle mouse button is clicked.
@@ -956,7 +956,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setMiddleClickCallback(std::function<void(Window *window, bool pressed)> callback);
+        GPAPI void setMiddleClickCallback(std::function<void(Window *window, bool pressed)> callback);
 
         /**
          * Callback executed when the right mouse button is clicked.
@@ -973,14 +973,14 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setRightClickCallback(std::function<void(Window *window, bool pressed)> callback);
+        GPAPI void setRightClickCallback(std::function<void(Window *window, bool pressed)> callback);
 
         /* Other Window Methods --------------------------------------------------------------------------------------*/
 
         /**
          * @return the Camera object associated with the Window
          */
-        Camera &getCamera();
+        GPAPI Camera &getCamera();
 
         /**
          * Converts coordinates in screen space to world space.
@@ -991,7 +991,7 @@ namespace gp {
          * @param p a struct with (x, y) in screen coordinates
          * @return a struct with (x, y) in world coordinates
          */
-        Point toWorld(Point p);
+        GPAPI Point toWorld(Point p);
 
         /**
          * Converts coordinates in world space to screen space.
@@ -1001,19 +1001,19 @@ namespace gp {
          * @param p a struct with (x, y) in world coordinates
          * @return a struct with (x, y) in screen coordinates
          */
-        Point toScreen(Point p);
+        GPAPI Point toScreen(Point p);
 
         /* Static Methods --------------------------------------------------------------------------------------------*/
 
         /**
          * Updates all the Windows currently active.
          */
-        static void updateAll();
+        GPAPI static void updateAll();
 
         /**
          * Destroys all active windows.
          */
-        static void destroyAll();
+        GPAPI static void destroyAll();
 
     private:
         int m_Width;

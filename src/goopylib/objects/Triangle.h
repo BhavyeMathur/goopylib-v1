@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing a triangle with 3 vertices.
      */
-    class GPAPI Triangle : public Renderable {
+    class Triangle : public Renderable {
 
         friend class Renderer;
 
@@ -19,13 +19,13 @@ namespace gp {
          * @param p2 2nd coordinate (x, y) in world space
          * @param p3 3rd coordinate (x, y) in world space
          */
-        Triangle(Point p1, Point p2, Point p3);
+        GPAPI Triangle(Point p1, Point p2, Point p3);
 
         /**
          * Sets the fill color of the triangle
          * @param color the color of the triangle
          */
-        void setColor(const Color& color);
+        GPAPI void setColor(const Color& color);
 
         /**
          * Sets the fill color of the triangle
@@ -34,10 +34,10 @@ namespace gp {
          * @param color2 the color of the 2nd vertex
          * @param color3 the color of the 3rd vertex
          */
-        void setColor(const Color& color1, const Color& color2, const Color& color3);
+        GPAPI void setColor(const Color& color1, const Color& color2, const Color& color3);
 
 
-        void setTransparency(float value) override;
+        GPAPI void setTransparency(float value) override;
 
         /**
          * Sets the transparency of the triangle
@@ -48,7 +48,7 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        void setTransparency(float v1, float v2, float v3);
+        GPAPI void setTransparency(float v1, float v2, float v3);
 
     private:
         TriangleVertexAttrib m_V1, m_V2, m_V3;

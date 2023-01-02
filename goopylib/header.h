@@ -3,6 +3,10 @@
 #include <Python.h>
 #include <iostream>
 
+#include <memory>
+#include <string>
+#include <stdexcept>
+
 #define EXPOSE_PYOBJECT_CLASS(ObjectType, name) \
 do { if (PyType_Ready(&(ObjectType)) < 0) return nullptr; \
     Py_INCREF(&(ObjectType)); \

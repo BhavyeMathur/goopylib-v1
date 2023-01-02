@@ -175,9 +175,8 @@ namespace window {
         GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing background reference");
         Py_XDECREF(self->background);
 
-        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing key callback references");
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing {0} key callback references", self->key_callbacks.size());
         for (auto key: self->key_callbacks) {
-            GP_PY_TRACE("gp.window.Window.__dealloc__() {0}", PyUnicode_AsUTF8(PyObject_Repr(key.second)));
             Py_XDECREF(key.second);
         }
 

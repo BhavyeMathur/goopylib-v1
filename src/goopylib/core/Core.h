@@ -4,7 +4,7 @@
 #include <cstring>
 
 namespace gp {
-    GPAPI extern bool is_initialized;
+    static bool is_initialized = false;
 
     /**
      * Initializes goopylib internally.

@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing an ellipse or oval
      */
-    class GPAPI Ellipse : public Renderable {
+    class Ellipse : public Renderable {
 
         friend class Renderer;
 
@@ -19,7 +19,7 @@ namespace gp {
          * @param xRadius in world space
          * @param yRadius in world space
          */
-        Ellipse(Point position, float xRadius, float yRadius);
+        GPAPI Ellipse(Point position, float xRadius, float yRadius);
 
         /**
          * An object representing an ellipse or oval
@@ -27,14 +27,14 @@ namespace gp {
          * @param p1 1st coordinate (x, y) in world space
          * @param p2 2nd coordinate (x, y) in world space
          */
-        Ellipse(Point p1, Point p2);
+        GPAPI Ellipse(Point p1, Point p2);
 
         /**
          * Sets the fill color of the object
          *
          * @param color the color of the object
          */
-        void setColor(const Color& color);
+        GPAPI void setColor(const Color& color);
 
         /**
          * Sets the fill color of the object
@@ -44,9 +44,9 @@ namespace gp {
          * @param color3 the top-right color
          * @param color4 the top-left color
          */
-        void setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
+        GPAPI void setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
 
-        void setTransparency(float value) override;
+        GPAPI void setTransparency(float value) override;
 
         /**
          * Sets the transparency of the object
@@ -58,13 +58,13 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        void setTransparency(float v1, float v2, float v3, float v4);
+        GPAPI void setTransparency(float v1, float v2, float v3, float v4);
 
     private:
-        EllipseVertexAttrib m_V1 = {{-1, -1},  {0, 0.55, 0.9}};
-        EllipseVertexAttrib m_V2 = {{1, -1},  {0, 0.55, 0.9}};
-        EllipseVertexAttrib m_V3 = {{1, 1},  {0, 0.55, 0.9}};
-        EllipseVertexAttrib m_V4 = {{-1, 1},  {0, 0.55, 0.9}};
+        EllipseVertexAttrib m_V1 = {{-1, -1},  {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V2 = {{1, -1},  {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V3 = {{1, 1},  {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V4 = {{-1, 1},  {0.0f, 0.55f, 0.9f}};
 
         float m_Radius1;
         float m_Radius2;

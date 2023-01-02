@@ -34,9 +34,9 @@ namespace gp {
     ColorHex randomHex() {
         GP_CORE_INFO("gp::randomHex()");
 
-        return {rgb::toHex(rgb_distribution(generator),
+        return ColorHex(rgb::toHex(rgb_distribution(generator),
                            rgb_distribution(generator),
-                           rgb_distribution(generator))};
+                           rgb_distribution(generator)));
     }
 
     ColorCMYK randomCMYK() {

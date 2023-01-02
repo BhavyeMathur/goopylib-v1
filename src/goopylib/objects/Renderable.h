@@ -17,7 +17,7 @@ namespace gp {
     /**
      * Generic base class for renderables
      */
-    class GPAPI Renderable {
+    class Renderable {
 
         friend class Renderer;
 
@@ -29,18 +29,18 @@ namespace gp {
          *
          * @throws std::runtime_error the window has been destroyed
          */
-        void draw(Window *window);
+        GPAPI void draw(Window *window);
 
         /**
          * Destroys and undraws the object
          */
-        void destroy();
+        GPAPI void destroy();
 
         /**
          *
          * @return whether the object has been drawn
          */
-        [[nodiscard]] bool isDrawn() const;
+        [[nodiscard]] GPAPI bool isDrawn() const;
 
         /* Getters & Setters */
 
@@ -51,12 +51,12 @@ namespace gp {
          * @param x in world coordinates
          * @param y in world coordinates
          */
-        void setAnchor(float x, float y);
+        GPAPI void setAnchor(float x, float y);
 
         /**
          * Resets the anchor of the object to its center (average of its vertices)
          */
-        void resetAnchor();
+        GPAPI void resetAnchor();
 
         // Position
         /**
@@ -65,140 +65,140 @@ namespace gp {
          * @param dx in world coordinates
          * @param dy in world coordinates
          */
-        void move(float dx, float dy);
+        GPAPI void move(float dx, float dy);
 
         /**
          * Sets the x position of the object
          * @param x in world coordinates
          */
-        void setX(float x);
+        GPAPI void setX(float x);
 
         /**
          *
          * @return the x position of the object's anchor in world coordinates
          */
-        [[nodiscard]] float getX() const;
+        [[nodiscard]] GPAPI float getX() const;
 
         /**
          * Sets the y position of the object
          * @param y in world coordinates
          */
-        void setY(float y);
+        GPAPI void setY(float y);
 
         /**
          *
          * @return the y position of the object's anchor in world coordinates
          */
-        [[nodiscard]] float getY() const;
+        [[nodiscard]] GPAPI float getY() const;
 
         /**
          * Sets the position of the object by moving its anchor
          * @param x in world coordinates
          * @param y in world coordinates
          */
-        void setPosition(float x, float y);
+        GPAPI void setPosition(float x, float y);
 
         /**
          *
          * @return a struct with the (x, y) position of the object's anchor
          */
-        [[nodiscard]] Point getPosition() const;
+        [[nodiscard]] GPAPI Point getPosition() const;
 
         // Rotation
         /**
          * Rotates the object
          * @param angle in degrees
          */
-        void rotate(float angle);
+        GPAPI void rotate(float angle);
 
         /**
          * Sets the rotation of the object
          * @param angle in degrees
          */
-        void setRotation(float angle);
+        GPAPI void setRotation(float angle);
 
         /**
          *
          * @return the rotation of the object in degrees
          */
-        [[nodiscard]] float getRotation() const;
+        [[nodiscard]] GPAPI float getRotation() const;
 
         // Scale
         /**
          * Scales the object
          * @param factor the scale amount
          */
-        void scale(float factor);
+        GPAPI void scale(float factor);
 
         /**
          * Scales the object
          * @param xfactor x-component scale amount
          * @param yfactor y-component scale amount
          */
-        void scale(float xfactor, float yfactor);
+        GPAPI void scale(float xfactor, float yfactor);
 
         /**
          * Sets the x-component scale of the object
          * @param factor the scale amount
          */
-        void setScaleX(float factor);
+        GPAPI void setScaleX(float factor);
 
         /**
          * Sets the y-component scale of the object
          * @param factor the scale amount
          */
-        void setScaleY(float factor);
+        GPAPI void setScaleY(float factor);
 
         /**
          * Sets the x and y scale of the object
          * @param factor the scale amount
          */
-        void setScale(float factor);
+        GPAPI void setScale(float factor);
 
         /**
          * Sets the x and y scale of the object
          * @param xfactor the x-component scale amount
          * @param yfactor the y-component scale amount
          */
-        void setScale(float xfactor, float yfactor);
+        GPAPI void setScale(float xfactor, float yfactor);
 
         /**
          *
          * @return a struct with the (x, y) components of the object's scale
          */
-        [[nodiscard]] Scale getScale() const;
+        [[nodiscard]] GPAPI Scale getScale() const;
 
         // Dimensions
         /**
          * Sets the width of the object by resizing it
          * @param width in screen coordinates
          */
-        void setWidth(float width);
+        GPAPI void setWidth(float width);
 
         /**
          *
          * @return in screen coordinates
          */
-        [[nodiscard]] float getWidth() const;
+        [[nodiscard]] GPAPI float getWidth() const;
 
         /**
          * Sets the height of the object by resizing it
          * @param height in screen coordinates
          */
-        void setHeight(float height);
+        GPAPI void setHeight(float height);
 
         /**
          *
          * @return in screen coordinates
          */
-        [[nodiscard]] float getHeight() const;
+        [[nodiscard]] GPAPI float getHeight() const;
 
         /**
          * Sets the dimensions of the object by resizing it
          * @param width in screen coordinates
          * @param height in screen coordinates
          */
-        void setSize(float width, float height);
+        GPAPI void setSize(float width, float height);
 
         // Visibility
         /**
@@ -208,24 +208,24 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        virtual void setTransparency(float value) = 0;
+        GPAPI virtual void setTransparency(float value) = 0;
 
         /**
          * Hides the object from the window
          * @param hide whether to hide or show
          */
-        void hide(bool hide = true);
+        GPAPI void hide(bool hide = true);
 
         /**
          * Unhides the object if it was hidden
          */
-        void show();
+        GPAPI void show();
 
         /**
          *
          * @return whether the object is hidden
          */
-        [[nodiscard]] bool isHidden() const;
+        [[nodiscard]] GPAPI bool isHidden() const;
 
         /* Methods */
 
@@ -236,7 +236,7 @@ namespace gp {
          *
          * @return whether the rectangular bounding box contains the point
          */
-        [[nodiscard]] bool boxContains(Point point) const;
+        [[nodiscard]] GPAPI bool boxContains(Point point) const;
 
         /**
          * Checks if the object's rectangular bounding box contains a point
@@ -246,7 +246,7 @@ namespace gp {
          *
          * @return whether the rectangular bounding box contains the point
          */
-        [[nodiscard]] bool boxContains(float x, float y) const;
+        [[nodiscard]] GPAPI bool boxContains(float x, float y) const;
 
         /**
          * Checks if the object's bounding box contains a point
@@ -255,7 +255,7 @@ namespace gp {
          *
          * @return whether the object contains the point
          */
-        [[nodiscard]] bool contains(Point point) const;
+        [[nodiscard]] GPAPI bool contains(Point point) const;
 
         /**
          * Checks if the object's bounding box contains a point
@@ -265,7 +265,7 @@ namespace gp {
          *
          * @return whether the object contains the point
          */
-        [[nodiscard]] bool contains(float x, float y) const;
+        [[nodiscard]] GPAPI bool contains(float x, float y) const;
 
     protected:
         Window *m_Window = nullptr;

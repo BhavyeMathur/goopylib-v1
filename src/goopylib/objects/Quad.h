@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing a quad with 4 vertices.
      */
-    class GPAPI Quad : public Renderable {
+    class Quad : public Renderable {
 
         friend class Renderer;
 
@@ -20,13 +20,13 @@ namespace gp {
          * @param p3 3rd coordinate (x, y) in world space
          * @param p4 4th coordinate (x, y) in world space
          */
-        Quad(Point p1, Point p2, Point p3, Point p4);
+        GPAPI Quad(Point p1, Point p2, Point p3, Point p4);
 
         /**
          * Sets the fill color of the quad
          * @param color the color of the quad
          */
-        void setColor(const Color& color);
+        void GPAPI setColor(const Color& color);
 
         /**
          * Sets the fill color of the quad
@@ -36,9 +36,9 @@ namespace gp {
          * @param color3 the color of the 3rd vertex
          * @param color4 the color of the 4th vertex
          */
-        void setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
+        void GPAPI setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
 
-        void setTransparency(float value) override;
+        void GPAPI setTransparency(float value) override;
 
         /**
          * Sets the transparency of the quad
@@ -50,20 +50,20 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        void setTransparency(float v1, float v2, float v3, float v4);
+        void GPAPI setTransparency(float v1, float v2, float v3, float v4);
 
     private:
-        QuadVertexAttrib m_V1 = {{0, 0.55, 0.9}};
-        QuadVertexAttrib m_V2 = {{0, 0.55, 0.9}};
-        QuadVertexAttrib m_V3 = {{0, 0.55, 0.9}};
-        QuadVertexAttrib m_V4 = {{0, 0.55, 0.9}};
+        QuadVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
+        QuadVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
+        QuadVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
+        QuadVertexAttrib m_V4 = {{0.0f, 0.55f, 0.9f}};
 
-        uint32_t _draw(Window *window) const override;
+        GPAPI uint32_t _draw(Window *window) const override;
 
-        void _destroy() const override;
+        GPAPI void _destroy() const override;
 
-        void _update() const override;
+        GPAPI void _update() const override;
 
-        [[nodiscard]] bool _contains(float x, float y) const override;
+        [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
     };
 }
