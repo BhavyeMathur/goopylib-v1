@@ -5,7 +5,7 @@ from distutils.core import setup, Extension
 
 import setuptools
 
-FULLVERSION = "2.0.0.dev4"
+FULLVERSION = "2.0.0.dev5"
 PYTHON_REQUIRES = (3, 8)
 
 
@@ -64,15 +64,14 @@ elif sys.platform == "win32":
     package_data = {"goopylib.ext": ["binaries/lib-vc2022/goopylib.dll"]}
 
 else:
-    compile_args = []
-    library_dirs = []
-    package_data = {}
+    raise RuntimeError(f"Unsupported Platform! {sys.platform}")
 
 ext_kwargs = {"include_dirs":       [".", "goopylib", "src", "src/vendor"],
               "library_dirs":       library_dirs,
               "libraries":          ["goopylib"],
               "extra_compile_args":  compile_args}
 
+print("PACKAGE DATA:", package_data)
 setup(packages=setuptools.find_packages(),
       package_data=package_data,
       include_package_data=False,
