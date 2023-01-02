@@ -52,7 +52,7 @@ def check_version():
 check_version()
 
 ext_kwargs = {"include_dirs":       [".", "goopylib", "src", "src/vendor"],
-              "library_dirs":       ["."],
+              "library_dirs":       [f"binaries/lib-{'macos' if sys.platform == 'darwin' else 'vc2022'}"],
               "libraries":          ["goopylib"],
               "extra_compile_args": "-std=c++11 -Wno-deprecated-volatile".split() if sys.platform == "darwin" else []}
 

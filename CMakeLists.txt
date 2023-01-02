@@ -13,10 +13,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_RELEASE /O2)
 endif ()
 
-set(CMAKE_CXX_STANDARD 17)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenGL REQUIRED)
 
@@ -25,28 +22,69 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/vendor)
 
 link_directories(${CMAKE_SOURCE_DIR})
-link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW)
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    if (MSVC_TOOLSET_VERSION EQUAL 110)
-        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2012)
-    elseif(MSVC_TOOLSET_VERSION EQUAL 120)
-        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2013)
-    elseif(MSVC_TOOLSET_VERSION EQUAL 140)
-        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2015)
-    elseif(MSVC_TOOLSET_VERSION EQUAL 141)
-        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2017)
-    elseif(MSVC_TOOLSET_VERSION EQUAL 142)
-        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2019)
-    elseif(MSVC_TOOLSET_VERSION EQUAL 143)
-        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2022)
-    endif()
-else ()
-    link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-mingw-w64)
-endif ()
 
 if (WIN32)
     set(WINDOWS_SOURCES src/vendor/glad/glad.c main.cpp)
+
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        if (MSVC_TOOLSET_VERSION EQUAL 110)
+            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2012)
+
+            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
+            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
+            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
+
+        elseif(MSVC_TOOLSET_VERSION EQUAL 120)
+            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2013)
+
+            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
+            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
+            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
+
+        elseif(MSVC_TOOLSET_VERSION EQUAL 140)
+            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2015)
+
+            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
+            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
+            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
+
+        elseif(MSVC_TOOLSET_VERSION EQUAL 141)
+            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2017)
+
+            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
+            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
+            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
+
+        elseif(MSVC_TOOLSET_VERSION EQUAL 142)
+            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2019)
+
+            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
+            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
+            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
+
+        elseif(MSVC_TOOLSET_VERSION EQUAL 143)
+            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-vc2022)
+
+            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
+            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
+            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
+
+        endif()
+    else ()
+        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/glfw-3.3.8.bin.WIN64/lib-mingw-w64)
+
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-mingw-64)
+        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-mingw-64)
+        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-mingw-64)
+
+    endif ()
+
+elseif (APPLE)
+    link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW)
+
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
 endif()
 
 add_library(goopylib SHARED ${WINDOWS_SOURCES}
@@ -97,6 +135,3 @@ endif ()
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
 endif ()
-
-add_executable(main main.cpp src/vendor/glad/glad.c)
-target_link_libraries(main goopylib)

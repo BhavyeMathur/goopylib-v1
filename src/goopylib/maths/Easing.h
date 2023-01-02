@@ -21,21 +21,21 @@ namespace gp {
      * @equation ease_poly(t) = t<sup>power</sup>
      * @return a polynomial in easing function
      */
-    GPAPI std::function<float(float)> easePolyIn(float power);
+    GPAPI std::function<float(float)> easePolyIn(float power = 6);
 
     /**
      * @param power: the exponent defining the easing
      * @equation ease_poly(t) = t<sup>power</sup>
      * @return a polynomial out easing function
      */
-    GPAPI std::function<float(float)> easePolyOut(float power);
+    GPAPI std::function<float(float)> easePolyOut(float power = 6);
 
     /**
      * @param power: the exponent defining the easing
      * @equation ease_poly(t) = t<sup>power</sup>
      * @return a polynomial in-out easing function
      */
-    GPAPI std::function<float(float)> easePolyInOut(float power);
+    GPAPI std::function<float(float)> easePolyInOut(float power = 6);
 
     /**
      * @param t: the value at which to evaluate the easing function
@@ -192,21 +192,21 @@ namespace gp {
      * @equation ease_exp(t) = base<sup>10(t - 1)</sup>
      * @return an exponential in easing function
      */
-    GPAPI std::function<float(float)> easeExpIn(float base);
+    GPAPI std::function<float(float)> easeExpIn(float base = 2.718281828459045);
 
     /**
      * @param base: the base of the exponential function.
      * @equation ease_exp(t) = base<sup>10(t - 1)</sup>
      * @return an exponential out easing function
      */
-    GPAPI std::function<float(float)> easeExpOut(float base);
+    GPAPI std::function<float(float)> easeExpOut(float base = 2.718281828459045);
 
     /**
      * @param base: the base of the exponential function.
      * @equation ease_exp(t) = base<sup>10(t - 1)</sup>
      * @return an exponential in-out easing function
      */
-    GPAPI std::function<float(float)> easeExpInOut(float base);
+    GPAPI std::function<float(float)> easeExpInOut(float base = 2.718281828459045);
 
     /**
      * @param t: the value at which to evaluate the easing function
@@ -219,21 +219,21 @@ namespace gp {
      * @equation ease_back(t) = (factor + 1) × t<sup>3</sup> - factor × t<sup>2</sup>
      * @return a back in easing function
      */
-    GPAPI std::function<float(float)> easeBackIn(float factor);
+    GPAPI std::function<float(float)> easeBackIn(float factor = 1.70158);
 
     /**
      * @param factor: the scale of the easing's stretch.
      * @equation ease_back(t) = (factor + 1) × t<sup>3</sup> - factor × t<sup>2</sup>
      * @return a back out easing function
      */
-    GPAPI std::function<float(float)> easeBackOut(float factor);
+    GPAPI std::function<float(float)> easeBackOut(float factor = 1.70158);
 
     /**
      * @param factor: the scale of the easing's stretch.
      * @equation ease_back(t) = (factor + 1) × t<sup>3</sup> - factor × t<sup>2</sup>
      * @return a back in-out easing function
      */
-    GPAPI std::function<float(float)> easeBackInOut(float factor);
+    GPAPI std::function<float(float)> easeBackInOut(float factor = 1.70158);
 
     /**
      * @param t: the value at which to evaluate the easing function
@@ -246,21 +246,21 @@ namespace gp {
      * @equation ease_elastic(t) = 2<sup>10(t - 1)</sup>sin(tπ/2 × (1 + 4 × factor))
      * @return an elastic in easing function
      */
-    GPAPI std::function<float(float)> easeElasticIn(int factor);
+    GPAPI std::function<float(float)> easeElasticIn(int factor = 3);
 
     /**
      * @param factor: the number of elastic oscillations.
      * @equation ease_elastic(t) = 2<sup>10(t - 1)</sup>sin(tπ/2 × (1 + 4 × factor))
      * @return an elastic out easing function
      */
-    GPAPI std::function<float(float)> easeElasticOut(int factor);
+    GPAPI std::function<float(float)> easeElasticOut(int factor = 3);
 
     /**
      * @param factor: the number of elastic oscillations.
      * @equation ease_elastic(t) = 2<sup>10(t - 1)</sup>sin(tπ/2 × (1 + 4 × factor))
      * @return an elastic in-out easing function
      */
-    GPAPI std::function<float(float)> easeElasticInOut(int factor);
+    GPAPI std::function<float(float)> easeElasticInOut(int factor = 3);
 
     /**
      * @param t: the value at which to evaluate the easing function
@@ -273,21 +273,21 @@ namespace gp {
      * @param damping: the energy retained during each bounce.
      * @return a bounce in easing function
      */
-    GPAPI std::function<float(float)> easeBounceIn(int bounces, float damping);
+    GPAPI std::function<float(float)> easeBounceIn(int bounces = 4, float damping = 0.4);
 
     /**
      * @param bounces: the number of bounces in the easing.
      * @param damping: the energy retained during each bounce.
      * @return a bounce out easing function
      */
-    GPAPI std::function<float(float)> easeBounceOut(int bounces, float damping);
+    GPAPI std::function<float(float)> easeBounceOut(int bounces = 4, float damping = 0.4);
 
     /**
      * @param bounces: the number of bounces in the easing.
      * @param damping: the energy retained during each bounce.
      * @return a bounce in-out easing function
      */
-    GPAPI std::function<float(float)> easeBounceInOut(int bounces, float damping);
+    GPAPI std::function<float(float)> easeBounceInOut(int bounces = 4, float damping = 0.4);
 
     /**
      * Combines 2 easing functions together.

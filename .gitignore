@@ -11,6 +11,7 @@
 
 # General things to ignore
 build/
+out/
 cmake-*/
 goopylib-build/
 docs/_build/
@@ -26,6 +27,9 @@ __pycache__/
 
 venv/
 venv*/
+.vs/
+.idea/
+
 wheelhouse/
 main.py
 main.cpp
