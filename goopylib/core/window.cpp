@@ -157,6 +157,7 @@ namespace window {
 
         self->window.reset();
 
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing callback references");
         Py_XDECREF(self->resize_callback);
         Py_XDECREF(self->close_callback);
         Py_XDECREF(self->position_callback);
@@ -171,11 +172,16 @@ namespace window {
         Py_XDECREF(self->mouse_enter_callback);
         Py_XDECREF(self->scroll_callback);
 
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing background reference");
         Py_XDECREF(self->background);
 
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing key callback references");
         for (auto key: self->key_callbacks) {
+            GP_PY_TRACE("gp.window.Window.__dealloc__() {0}", PyUnicode_AsUTF8(PyObject_Repr(key.second)));
             Py_XDECREF(key.second);
         }
+
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing mouse callback references");
         for (auto button: self->mouse_callbacks) {
             Py_XDECREF(button.second);
         }

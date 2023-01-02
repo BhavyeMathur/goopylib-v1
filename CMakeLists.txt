@@ -140,3 +140,6 @@ endif ()
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
 endif ()
+
+add_executable(main main.cpp)
+target_link_libraries(main goopylib)

@@ -12,15 +12,15 @@ static PyTypeObject *ColorType;
 struct QuadObject;
 
 namespace quad {
-    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds));
+    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
 
     static int init(QuadObject *self, PyObject *args, PyObject *kwds);
 
-    static PyObject *repr(QuadObject *Py_UNUSED(self));
+    static PyObject *repr(QuadObject *self);
 
-    static int traverse(QuadObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg));
+    static int traverse(QuadObject *self, visitproc visit, void *arg);
 
-    static int clear(__attribute__((unused)) QuadObject *Py_UNUSED(self));
+    static int clear(QuadObject *self);
 
     static void dealloc(QuadObject *self);
 }

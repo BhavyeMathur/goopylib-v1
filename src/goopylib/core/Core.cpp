@@ -89,7 +89,7 @@ namespace {
         if (!glfwInit()) {
             GP_RUNTIME_ERROR("gp::init() failed to initialize GLFW");
         }
-        gp::glfw_initialized = true;
+        gp::is_initialized = true;
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -103,7 +103,7 @@ namespace {
 }
 
 namespace gp {
-    bool glfw_initialized = false;
+    GPAPI bool is_initialized = false;
 
     void init() {
         Log::init();
@@ -127,8 +127,12 @@ namespace gp {
         #if GP_USING_GLFW
         GP_CORE_DEBUG("gp::terminate() terminating GLFW");
         glfwTerminate();
-        glfw_initialized = false;
+        is_initialized = false;
         #endif
+    }
+
+    bool isInitialized() {
+        return is_initialized;
     }
 
     void update() {
@@ -209,6 +213,10 @@ namespace gp {
 
     float getTime() {
         return glfwGetTime();
+    }
+
+    bool hasActiveContext() {
+        return (bool) glfwGetCurrentContext();
     }
 
     #endif

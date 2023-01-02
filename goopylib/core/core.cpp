@@ -1,8 +1,6 @@
 #include "src/goopylib/core/Core.h"
 #include "core.h"
 
-#include <GLFW/glfw3.h>
-
 #include "config.h"
 
 #if (GP_LOG_CORE != true) and (GP_LOG_CORE <= GP_LOGGING_LEVEL)
@@ -95,28 +93,28 @@ namespace core {
     static PyObject *get_refresh_rate(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.get_refresh_rate()");
 
-        CHECK_GLFW_INITIALIZED(nullptr);
+        CHECK_GP_INITIALIZED(nullptr);
         return PyLong_FromLong(gp::getRefreshRate());
     }
 
     static PyObject *get_screen_width(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.get_screen_width()");
 
-        CHECK_GLFW_INITIALIZED(nullptr);
+        CHECK_GP_INITIALIZED(nullptr);
         return PyLong_FromLong(gp::getScreenWidth());
     }
 
     static PyObject *get_screen_height(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.get_screen_height()");
 
-        CHECK_GLFW_INITIALIZED(nullptr);
+        CHECK_GP_INITIALIZED(nullptr);
         return PyLong_FromLong(gp::getScreenHeight());
     }
 
     static PyObject *number_of_monitors(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.number_of_monitors()");
 
-        CHECK_GLFW_INITIALIZED(nullptr);
+        CHECK_GP_INITIALIZED(nullptr);
         return PyLong_FromLong(gp::getNumberOfMonitors());
     }
 
@@ -144,7 +142,7 @@ namespace core {
     static PyObject *opengl_version(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.opengl_version()");
 
-        CHECK_GLFW_CONTEXT(nullptr);
+        CHECK_ACTIVE_CONTEXT(nullptr);
         return PyUnicode_FromString(gp::openglVersion().c_str());
     }
 

@@ -9,15 +9,15 @@ static PyTypeObject *EllipseType;
 struct CircleObject;
 
 namespace circle {
-    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds));
+    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
 
     static int init(CircleObject *self, PyObject *args, PyObject *kwds);
 
-    static PyObject *repr(CircleObject *Py_UNUSED(self));
+    static PyObject *repr(CircleObject *self);
 
-    static int traverse(CircleObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg));
+    static int traverse(CircleObject *self, visitproc visit, void *arg);
 
-    static int clear(CircleObject *Py_UNUSED(self));
+    static int clear(CircleObject *self);
 
     static void dealloc(CircleObject *self);
 }

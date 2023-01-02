@@ -9,15 +9,15 @@ static PyTypeObject *RenderableType;
 struct ImageObject;
 
 namespace image {
-    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds));
+    static PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
 
     static int init(ImageObject *self, PyObject *args, PyObject *kwds);
 
-    static PyObject *repr(ImageObject *Py_UNUSED(self));
+    static PyObject *repr(ImageObject *self);
 
-    static int traverse(ImageObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg));
+    static int traverse(ImageObject *self, visitproc visit, void *arg);
 
-    static int clear(ImageObject *Py_UNUSED(self));
+    static int clear(ImageObject *self);
 
     static void dealloc(ImageObject *self);
 }

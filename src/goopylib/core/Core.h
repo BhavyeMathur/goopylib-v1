@@ -4,7 +4,7 @@
 #include <cstring>
 
 namespace gp {
-    extern bool glfw_initialized;
+    GPAPI extern bool is_initialized;
 
     /**
      * Initializes goopylib internally.
@@ -19,6 +19,12 @@ namespace gp {
      * @note goopylib can be reinitialized using gp::init()
      */
     GPAPI void terminate();
+
+    /**
+     *
+     * @return whether goopylib has been initialized
+     */
+    GPAPI bool isInitialized();
 
     /**
      * Updates goopylib and its windows.
@@ -101,6 +107,8 @@ namespace gp {
      * @return the number of seconds since goopylib was initialized
      */
     GPAPI float getTime();
+
+    GPAPI bool hasActiveContext();
 
     #endif
 

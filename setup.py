@@ -57,6 +57,7 @@ ext_kwargs = {"include_dirs":       [".", "goopylib", "src", "src/vendor"],
               "extra_compile_args": "-std=c++11 -Wno-deprecated-volatile".split() if sys.platform == "darwin" else []}
 
 setup(packages=setuptools.find_packages(),
+      package_data={"goopylib.ext": ["binaries/lib-vc2022/goopylib.dll"]} if sys.platform == "win32" else {},
       include_package_data=False,
       ext_modules=[
           Extension(name="goopylib.ext.easing",
