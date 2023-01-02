@@ -24,6 +24,6 @@ struct WindowObject {
     PyObject *background;
     PyObject *camera;
 
-    std::unordered_map<int, PyObject *> key_callbacks;
-    std::unordered_map<int, PyObject *> mouse_callbacks;
+    PyObject* key_callbacks;
+    PyObject* mouse_callbacks;
 };

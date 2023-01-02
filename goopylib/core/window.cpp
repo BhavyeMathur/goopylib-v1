@@ -1,6 +1,8 @@
 #define WINDOW_MODULE
 
 #include "window.h"
+
+#include <memory>
 #include "window_object.h"
 #include "window_module.h"
 #include "window_capsule.h"
@@ -62,6 +64,9 @@ namespace window {
 
             self->background = Py_None;
             self->camera = Py_None;
+
+            self->key_callbacks = PyDict_New();
+            self->mouse_callbacks = PyDict_New();
         }
         return (PyObject *) self;
     }
@@ -69,7 +74,7 @@ namespace window {
     static int init(WindowObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.window.Window()");
 
-        PyObject *tmp;
+        PyObject * tmp;
         int width, height;
         if (!PyArg_ParseTuple(args, "iiU", &width, &height, &tmp)) {
             return -1;
@@ -80,7 +85,7 @@ namespace window {
 
         self->background = PyObject_CallObject((PyObject *) ColorType, Py_BuildValue("iii", 255, 255, 255));
 
-        self->window = std::unique_ptr<gp::Window>(new gp::Window(width, height, PyUnicode_AsUTF8(tmp)));
+        self->window = std::make_unique<gp::Window>(width, height, PyUnicode_AsUTF8(tmp));
         self->window->setBackground(*((ColorObject *) self->background)->color);
 
         self->camera = PyObject_CallObject((PyObject *) CameraType, Py_BuildValue("iiii", 0, 0, 0, 0));
@@ -111,12 +116,8 @@ namespace window {
 
         Py_VISIT(self->background);
 
-        for (auto key: self->key_callbacks) {
-            Py_VISIT(key.second);
-        }
-        for (auto button: self->mouse_callbacks) {
-            Py_VISIT(button.second);
-        }
+        Py_VISIT(self->key_callbacks);
+        Py_VISIT(self->mouse_callbacks);
 
         return 0;
     }
@@ -142,12 +143,8 @@ namespace window {
 
         Py_CLEAR(self->background);
 
-        for (auto key: self->key_callbacks) {
-            Py_CLEAR(key.second);
-        }
-        for (auto button: self->mouse_callbacks) {
-            Py_CLEAR(button.second);
-        }
+        Py_CLEAR(self->key_callbacks);
+        Py_CLEAR(self->mouse_callbacks);
 
         return 0;
     }
@@ -175,15 +172,11 @@ namespace window {
         GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing background reference");
         Py_XDECREF(self->background);
 
-        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing {0} key callback references", self->key_callbacks.size());
-        for (auto key: self->key_callbacks) {
-            Py_XDECREF(key.second);
-        }
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing key callback references");
+        Py_XDECREF(self->key_callbacks);
 
         GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing mouse callback references");
-        for (auto button: self->mouse_callbacks) {
-            Py_XDECREF(button.second);
-        }
+        Py_XDECREF(self->mouse_callbacks);
 
         PyObject_GC_UnTrack(self);
         clear(self);
@@ -365,7 +358,7 @@ namespace window {
             SET_PYOBJECT(self->background, value);
         }
         else {
-            PyObject *tmp = self->background;
+            PyObject * tmp = self->background;
             self->background = PyObject_CallObject((PyObject *) ColorType, value);
             Py_XDECREF(tmp);
 
@@ -512,7 +505,7 @@ namespace window {
         CHECK_ACTIVE(nullptr);
 
         int minWidth, minHeight;
-        PyObject *tmp_width, *tmp_height;
+        PyObject * tmp_width, *tmp_height;
         if (!PyArg_ParseTuple(args, "iiOO", &minWidth, &minHeight, &tmp_width, &tmp_height)) {
             return nullptr;
         }
@@ -575,7 +568,7 @@ namespace window {
     static PyObject *set_max_size(WindowObject *self, PyObject *args) {
         CHECK_ACTIVE(nullptr);
 
-        PyObject *tmp_width, *tmp_height;
+        PyObject * tmp_width, *tmp_height;
         if (!PyArg_ParseTuple(args, "OO", &tmp_width, &tmp_height)) {
             return nullptr;
         }
@@ -640,7 +633,7 @@ namespace window {
     static PyObject *set_aspect_ratio(WindowObject *self, PyObject *args) {
         CHECK_ACTIVE(nullptr);
 
-        PyObject *tmp_numerator, *tmp_denominator;
+        PyObject * tmp_numerator, *tmp_denominator;
         if (!PyArg_ParseTuple(args, "OO", &tmp_numerator, &tmp_denominator)) {
             return nullptr;
         }
@@ -1062,22 +1055,15 @@ namespace window {
     static PyObject *set_key_callback(WindowObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         CHECK_ACTIVE(nullptr);
 
-        PyObject *callback;
-        int key;
-        if (!PyArg_ParseTuple(args, "iO", &key, &callback)) {
+        PyObject * callback;
+        PyObject * key;
+        if (!PyArg_ParseTuple(args, "O!O", &PyLong_Type, &key, &callback)) {
             return nullptr;
         }
 
-        auto indexi = self->key_callbacks.find(key);
-
         if (callback == Py_None) {
-            if (indexi == self->key_callbacks.end()) {
-                Py_RETURN_NONE;
-            }
-
-            Py_DECREF(indexi->second);
-            self->key_callbacks.erase(indexi);
-            self->window->setKeyCallback(key, nullptr);
+            PyDict_SetItem(self->key_callbacks, key, callback);
+            self->window->setKeyCallback((int) PyLong_AsLong(key), nullptr);
 
             Py_RETURN_NONE;
         }
@@ -1088,16 +1074,9 @@ namespace window {
         }
         #endif
 
-        if (indexi == self->key_callbacks.end()) {
-            Py_INCREF(callback);
-            // TODO libc++abi: terminating with uncaught exception of type std::overflow_error: __next_prime overflow
-            self->key_callbacks.insert({key, callback});
-        }
-        else {
-            SET_PYOBJECT(indexi->second, callback);
-        }
+        PyDict_SetItem(self->key_callbacks, key, callback);
 
-        self->window->setKeyCallback(key, [callback](gp::Window *window, int action) {
+        self->window->setKeyCallback((int) PyLong_AsLong(key), [callback](gp::Window *window, int action) {
             PyGILState_STATE gstate = PyGILState_Ensure();
             PyObject_CallFunction(callback, "i", action);
             PyGILState_Release(gstate);
@@ -1111,29 +1090,18 @@ namespace window {
 
         CHECK_ACTIVE(nullptr);
 
-        PyObject *callback;
-        int button;
-        if (!PyArg_ParseTuple(args, "iO", &button, &callback)) {
+        PyObject * callback;
+        PyObject * button;
+        if (!PyArg_ParseTuple(args, "O!O", &PyLong_Type, &button, &callback)) {
             return nullptr;
         }
 
-        auto indexi = self->mouse_callbacks.find(button);
-
         if (callback == Py_None) {
-            GP_PY_TRACE("gp.window.Window.set_mouse_button_callback() callback == Py_None");
-
-            if (indexi == self->mouse_callbacks.end()) {
-                Py_RETURN_NONE;
-            }
-
-            Py_DECREF(indexi->second);
-            self->mouse_callbacks.erase(indexi);
-            self->window->setMouseButtonCallback(button, nullptr);
+            PyDict_SetItem(self->mouse_callbacks, button, callback);
+            self->window->setMouseButtonCallback((int) PyLong_AsLong(button), nullptr);
 
             Py_RETURN_NONE;
         }
-
-        GP_PY_TRACE("gp.window.Window.set_mouse_button_callback() callback != Py_None");
 
         #if GP_TYPE_CHECKING
         if (!PyCallable_Check(callback)) {
@@ -1141,20 +1109,9 @@ namespace window {
         }
         #endif
 
-        if (indexi == self->mouse_callbacks.end()) {
-            GP_PY_TRACE("gp.window.Window.set_mouse_button_callback() inserting new callback");
+        PyDict_SetItem(self->mouse_callbacks, button, callback);
 
-            Py_INCREF(callback);
-            // TODO libc++abi: terminating with uncaught exception of type std::overflow_error: __next_prime overflow
-            self->mouse_callbacks.insert({button, callback});
-        }
-        else {
-            GP_PY_TRACE("gp.window.Window.set_mouse_button_callback() replacing old callback");
-
-            SET_PYOBJECT(indexi->second, callback);
-        }
-
-        self->window->setMouseButtonCallback(button, [callback](gp::Window *window, int action) {
+        self->window->setMouseButtonCallback((int) PyLong_AsLong(button), [callback](gp::Window *window, int action) {
             PyGILState_STATE gstate = PyGILState_Ensure();
             PyObject_CallFunction(callback, "O", action ? Py_True : Py_False);
             PyGILState_Release(gstate);
@@ -1565,11 +1522,12 @@ namespace window {
     }
 
     static PyObject *get_left_click_callback(WindowObject *self, void *Py_UNUSED(closure)) {
-        auto indexi = self->mouse_callbacks.find(GP_MOUSE_LEFT_BUTTON);
-        if (indexi == self->mouse_callbacks.end()) {
-            Py_RETURN_NONE;
+        PyObject *button = PyLong_FromLong(GP_MOUSE_LEFT_BUTTON);
+
+        if (PyDict_Contains(self->mouse_callbacks, button)) {
+            RETURN_PYOBJECT(PyDict_GetItem(self->mouse_callbacks, button));
         }
-        RETURN_PYOBJECT(indexi->second);
+        Py_RETURN_NONE;
     }
 
     static int set_middle_click_callback(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
@@ -1580,11 +1538,12 @@ namespace window {
     }
 
     static PyObject *get_middle_click_callback(WindowObject *self, void *Py_UNUSED(closure)) {
-        auto indexi = self->mouse_callbacks.find(GP_MOUSE_MIDDLE_BUTTON);
-        if (indexi == self->mouse_callbacks.end()) {
-            Py_RETURN_NONE;
+        PyObject *button = PyLong_FromLong(GP_MOUSE_MIDDLE_BUTTON);
+
+        if (PyDict_Contains(self->mouse_callbacks, button)) {
+            RETURN_PYOBJECT(PyDict_GetItem(self->mouse_callbacks, button));
         }
-        RETURN_PYOBJECT(indexi->second);
+        Py_RETURN_NONE;
     }
 
     static int set_right_click_callback(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
@@ -1595,11 +1554,12 @@ namespace window {
     }
 
     static PyObject *get_right_click_callback(WindowObject *self, void *Py_UNUSED(closure)) {
-        auto indexi = self->mouse_callbacks.find(GP_MOUSE_RIGHT_BUTTON);
-        if (indexi == self->mouse_callbacks.end()) {
-            Py_RETURN_NONE;
+        PyObject *button = PyLong_FromLong(GP_MOUSE_RIGHT_BUTTON);
+
+        if (PyDict_Contains(self->mouse_callbacks, button)) {
+            RETURN_PYOBJECT(PyDict_GetItem(self->mouse_callbacks, button));
         }
-        RETURN_PYOBJECT(indexi->second);
+        Py_RETURN_NONE;
     }
 }
 
@@ -1846,7 +1806,7 @@ PyMODINIT_FUNC PyInit_window(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_window()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&WindowModule);
+    PyObject * m = PyModule_Create(&WindowModule);
     if (m == nullptr) {
         return nullptr;
     }
@@ -1882,7 +1842,7 @@ PyMODINIT_FUNC PyInit_window(void) {
     // Exposing capsule
 
     static void *PyWindow_API[PyWindow_API_pointers];
-    PyObject *c_api_object;
+    PyObject * c_api_object;
 
     PyWindow_API[Window_pytype_NUM] = (void *) Window_pytype;
     c_api_object = PyCapsule_New((void *) PyWindow_API, "goopylib.ext.window._C_API", nullptr);
