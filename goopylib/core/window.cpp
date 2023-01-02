@@ -85,7 +85,7 @@ namespace window {
 
         self->background = PyObject_CallObject((PyObject *) ColorType, Py_BuildValue("iii", 255, 255, 255));
 
-        self->window = std::make_unique<gp::Window>(width, height, PyUnicode_AsUTF8(tmp));
+        self->window = std::unique_ptr<gp::Window>(new gp::Window(width, height, PyUnicode_AsUTF8(tmp)));
         self->window->setBackground(*((ColorObject *) self->background)->color);
 
         self->camera = PyObject_CallObject((PyObject *) CameraType, Py_BuildValue("iiii", 0, 0, 0, 0));
