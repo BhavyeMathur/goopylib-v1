@@ -2,7 +2,7 @@
 #include "ellipse_module.h"
 #include "ellipse_object.h"
 
-#include "goopylib/objects/Circle.h"
+#include "src/goopylib/objects/Circle.h"
 
 #include "config.h"
 
@@ -17,7 +17,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 
 struct CircleObject {

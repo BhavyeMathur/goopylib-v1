@@ -1,5 +1,5 @@
 #include "easing.h"
-#include "goopylib/maths/Easing.h"
+#include "src/goopylib/maths/Easing.h"
 
 #include "config.h"
 
@@ -14,7 +14,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 // TODO Easing base class
 

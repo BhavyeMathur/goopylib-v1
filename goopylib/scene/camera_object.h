@@ -1,7 +1,7 @@
 #pragma once
 
-#include "header.h"
-#include "goopylib/scene/Camera.h"
+#include "goopylib/header.h"
+#include "src/goopylib/scene/Camera.h"
 
 struct CameraObject {
     PyObject_HEAD

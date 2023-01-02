@@ -1,4 +1,4 @@
-#include "goopylib/core/Core.h"
+#include "src/goopylib/core/Core.h"
 #include "core.h"
 
 #include <GLFW/glfw3.h>
@@ -16,7 +16,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 
 namespace core {

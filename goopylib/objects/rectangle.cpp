@@ -2,7 +2,7 @@
 #include "quad_module.h"
 #include "quad_object.h"
 
-#include "goopylib/objects/Rectangle.h"
+#include "src/goopylib/objects/Rectangle.h"
 
 #include "config.h"
 
@@ -17,7 +17,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 
 struct RectangleObject {

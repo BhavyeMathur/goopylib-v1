@@ -1,7 +1,7 @@
 #pragma once
 
-#include "header.h"
-#include "goopylib/core/Window.h"
+#include "goopylib/header.h"
+#include "src/goopylib/core/Window.h"
 
 struct WindowObject {
     PyObject_HEAD

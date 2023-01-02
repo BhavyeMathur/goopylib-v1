@@ -1,7 +1,7 @@
 #pragma once
 
-#include "header.h"
-#include "goopylib/objects/Renderable.h"
+#include "goopylib/header.h"
+#include "src/goopylib/objects/Renderable.h"
 
 struct RenderableObject {
     PyObject_HEAD

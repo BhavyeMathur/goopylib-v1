@@ -17,6 +17,11 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenGL REQUIRED)
 
+# needed to silence errors in IDE
+find_package(PythonInterp REQUIRED)
+find_package(PythonLibs REQUIRED)
+include_directories(${PYTHON_INCLUDE_DIRS})
+
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/vendor)

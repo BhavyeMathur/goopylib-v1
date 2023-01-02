@@ -1,6 +1,6 @@
 #pragma once
 
-#include "header.h"
+#include "goopylib/header.h"
 
 #define EASING_TYPE(name, space) \
 static PyTypeObject name##_type = {\

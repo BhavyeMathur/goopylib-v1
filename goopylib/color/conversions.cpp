@@ -1,5 +1,5 @@
 #include "conversions.h"
-#include "goopylib/color/ColorConversions.h"
+#include "src/goopylib/color/ColorConversions.h"
 
 #include "config.h"
 
@@ -14,7 +14,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 #include "macros.h"
 
 namespace color {

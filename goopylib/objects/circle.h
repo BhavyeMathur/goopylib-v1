@@ -1,6 +1,6 @@
 #pragma once
 
-#include "header.h"
+#include "goopylib/header.h"
 
 static void **PyEllipse_API;
 static PyTypeObject *EllipseType;

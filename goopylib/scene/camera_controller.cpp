@@ -1,5 +1,5 @@
 #include "camera_controller.h"
-#include "goopylib/scene/CameraController.h"
+#include "src/goopylib/scene/CameraController.h"
 
 #include "core/window_module.h"
 #include "core/window_object.h"
@@ -17,7 +17,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 
 struct CameraControllerObject {

@@ -2,7 +2,7 @@
 #include "renderable_module.h"
 #include "renderable_object.h"
 
-#include "goopylib/objects/Image.h"
+#include "src/goopylib/objects/Image.h"
 
 #include "config.h"
 
@@ -17,7 +17,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 
 struct ImageObject {

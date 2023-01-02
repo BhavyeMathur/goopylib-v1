@@ -5,14 +5,14 @@
 #include "window_module.h"
 #include "window_capsule.h"
 
-#include "color/color_object.h"
-#include "color/color_module.h"
+#include "goopylib/color/color_object.h"
+#include "goopylib/color/color_module.h"
 
-#include "scene/camera_object.h"
-#include "scene/camera_module.h"
+#include "goopylib/scene/camera_object.h"
+#include "goopylib/scene/camera_module.h"
 
-#include "goopylib/core/Window.h"
-#include "goopylib/events/MouseCodes.h"
+#include "src/goopylib/core/Window.h"
+#include "src/goopylib/events/MouseCodes.h"
 
 #include "config.h"
 
@@ -27,7 +27,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 #if GP_ERROR_CHECKING
 #define CHECK_ACTIVE(val) \

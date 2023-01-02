@@ -2,10 +2,10 @@
 #include "renderable_module.h"
 #include "renderable_object.h"
 
-#include "color/color_object.h"
-#include "color/color_module.h"
+#include "goopylib/color/color_object.h"
+#include "goopylib/color/color_module.h"
 
-#include "goopylib/objects/Line.h"
+#include "src/goopylib/objects/Line.h"
 
 #include "config.h"
 
@@ -20,7 +20,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 
 struct LineObject {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "goopylib/debug/Log.h"
+#include "src/goopylib/debug/Log.h"
 
 /*
  0 - No Logging

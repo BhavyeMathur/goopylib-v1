@@ -1,6 +1,6 @@
 #pragma once
 
-#include "header.h"
+#include "goopylib/header.h"
 #include "color_object.h"
 
 extern PyTypeObject ColorType;

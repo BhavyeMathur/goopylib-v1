@@ -6,10 +6,10 @@
 #include "ellipse_capsule.h"
 #include "renderable_module.h"
 
-#include "color/color_object.h"
-#include "color/color_module.h"
+#include "goopylib/color/color_object.h"
+#include "goopylib/color/color_module.h"
 
-#include "goopylib/objects/Ellipse.h"
+#include "src/goopylib/objects/Ellipse.h"
 
 #include "config.h"
 
@@ -24,7 +24,7 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "debug.h"
+#include "goopylib/debug.h"
 
 
 // Ellipse Core

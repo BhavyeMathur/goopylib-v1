@@ -1,6 +1,6 @@
 #pragma once
 
-#include "header.h"
+#include "goopylib/header.h"
 
 static void **PyWindow_API;
 static PyTypeObject *WindowType;
