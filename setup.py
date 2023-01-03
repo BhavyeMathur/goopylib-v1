@@ -52,7 +52,7 @@ def check_version():
 check_version()
 
 if sys.platform == "darwin":
-    compile_args = ["-std=c++11"]
+    compile_args = ["-std=c++11", "-Wno-macro-redefined"]
     compile_args += ["-Wno-deprecated-volatile"]  # suppress warnings caused by glm
 
     library_dirs = ["binaries/lib-macos"]
@@ -71,7 +71,7 @@ else:
 ext_kwargs = {"include_dirs":       [".", "goopylib", "src", "src/vendor"],
               "library_dirs":       library_dirs,
               "libraries":          ["goopylib"],
-              "extra_compile_args":  compile_args}
+              "extra_compile_args": compile_args}
 
 setup(packages=setuptools.find_packages(),
       data_files=data_files,

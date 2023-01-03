@@ -35,8 +35,8 @@ namespace gp {
     };
 
     struct RenderingData {
-        Ref<Shader> shader;
         Ref<VertexArray> VAO;
+        Ref<Shader> shader;
 
         int32_t indices = 0;
         int32_t vertices = 0;
