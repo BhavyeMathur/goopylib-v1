@@ -18,6 +18,7 @@ docs/_build/
 dist/
 *.egg-info/
 *.egg
+*.so
 *.py[cod]
 __pycache__/
 *~

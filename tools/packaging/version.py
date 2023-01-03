@@ -56,5 +56,5 @@ def check_version():
     content = re.sub("python_requires = .*",
                      f"python_requires = >={PYTHON_REQUIRES[0]}.{PYTHON_REQUIRES[1]}", content)
 
-    with open("pyproject.toml", "w") as f:
+    with open("setup.cfg", "w") as f:
         f.write(content)
