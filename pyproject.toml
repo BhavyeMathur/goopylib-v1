@@ -54,6 +54,9 @@ classifiers = [
 "Homepage" = "https://github.com/BhavyeMathur/goopylib"
 "Bug Tracker" = "https://github.com/BhavyeMathur/goopylib/issues"
 
+[tool.setuptools]
+include-package-data = false
+
 [tool.cibuildwheel]
 build-frontend = "build"
 

@@ -1,8 +1,8 @@
 import re
 import sys
 import warnings
-from distutils.core import setup, Extension
 
+from setuptools import setup, Extension
 import setuptools
 
 FULLVERSION = "2.0.0.dev5"
@@ -56,25 +56,25 @@ if sys.platform == "darwin":
     compile_args += ["-Wno-deprecated-volatile"]  # suppress warnings caused by glm
 
     library_dirs = ["binaries/lib-macos"]
-    package_data = {}
+    data_files = []
 
 elif sys.platform == "win32":
     compile_args = ["/wd4005"]  # suppress macro-redefinition warning
     library_dirs = ["binaries/lib-vc2022"]
-    package_data = {"goopylib.ext": ["binaries/lib-vc2022/goopylib.dll"]}
+    data_files = [("goopylib", ["binaries/lib-vc2022/goopylib.dll"])]
 
 else:
-    raise RuntimeError(f"Unsupported Platform! {sys.platform}")
+    compile_args = []
+    library_dirs = []
+    data_files = []
 
 ext_kwargs = {"include_dirs":       [".", "goopylib", "src", "src/vendor"],
               "library_dirs":       library_dirs,
               "libraries":          ["goopylib"],
               "extra_compile_args":  compile_args}
 
-print("PACKAGE DATA:", package_data)
 setup(packages=setuptools.find_packages(),
-      package_data=package_data,
-      include_package_data=False,
+      data_files=data_files,
       ext_modules=[
           Extension(name="goopylib.ext.easing",
                     sources=["goopylib/maths/easing.cpp"],
