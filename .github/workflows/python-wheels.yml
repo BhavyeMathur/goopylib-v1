@@ -6,8 +6,17 @@ run-name: ${{ github.actor }} building Python Wheel
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - goopylib/**
+      - src/**
+      - binaries/**
+
   pull_request:
     branches: [ "master" ]
+    paths:
+      - goopylib/**
+      - src/**
+      - binaries/**
 
 jobs:
   build_wheels:
