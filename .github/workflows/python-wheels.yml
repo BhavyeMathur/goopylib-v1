@@ -1,7 +1,7 @@
 # This workflow installs builds Python wheels using cibuildwheel
 
 name: Build Python Wheels
-run-name: ${{ github.actor }} building Python Package from sdist
+run-name: ${{ github.actor }} building Python Wheel
 
 on:
   push:
@@ -13,23 +13,24 @@ jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-2019, macos-11]
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+
+      - name: Setup Dependencies
+        run: |
+          python -m pip install cibuildwheel==2.11.4
+          python -m pip install twine
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.11.4
-        # env:
-        #   CIBW_SOME_OPTION: value
-        #    ...
-        # with:
-        #   package-dir: .
-        #   output-dir: wheelhouse
-        #   config-file: "{package}/pyproject.toml"
+        run: python -m cibuildwheel --output-dir wheelhouse
+
+      - name: Check wheels
+        run: twine check wheelhouse/*
 
       - uses: actions/upload-artifact@v3
         with:
