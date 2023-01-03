@@ -1,6 +1,6 @@
 # install dependencies
-pip install build
-pip install cibuildwheel
+python -m pip install build
+python -m pip install cibuildwheel
 
 # move into goopylib folder
 cd ..

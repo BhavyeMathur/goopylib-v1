@@ -3,9 +3,7 @@ import os
 
 from setuptools import setup
 
-from tools.packaging.version import check_version
-from tools.packaging.config import RUNTIME_LIBRARY_DIRS
-from tools.packaging import extensions
+from setup import find_extensions, check_version, RUNTIME_LIBRARY_DIRS
 
 check_version()
 
@@ -15,5 +13,5 @@ if sys.platform == "darwin":
 if len(sys.argv) == 1:
     os.system("python setup_extensions.py build")
 else:
-    setup(ext_modules=extensions.find_extensions(),
+    setup(ext_modules=find_extensions(),
           options={"build": {"build_lib": "."}})
