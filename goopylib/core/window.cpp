@@ -48,22 +48,22 @@ namespace window {
         self = (WindowObject *) type->tp_alloc(type, 0);
 
         if (self != nullptr) {
-            self->resize_callback = Py_None;
-            self->close_callback = Py_None;
-            self->destroy_callback = Py_None;
-            self->position_callback = Py_None;
-            self->content_scale_callback = Py_None;
-            self->framebuffer_size_callback = Py_None;
-            self->minimize_callback = Py_None;
-            self->maximize_callback = Py_None;
-            self->focus_callback = Py_None;
-            self->refresh_callback = Py_None;
-            self->mouse_motion_callback = Py_None;
-            self->mouse_enter_callback = Py_None;
-            self->scroll_callback = Py_None;
+            INITIALIZE_PYOBJECT(self->resize_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->close_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->destroy_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->position_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->content_scale_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->framebuffer_size_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->minimize_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->maximize_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->focus_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->refresh_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->mouse_motion_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->mouse_enter_callback, Py_None);
+            INITIALIZE_PYOBJECT(self->scroll_callback, Py_None);
 
-            self->background = Py_None;
-            self->camera = Py_None;
+            INITIALIZE_PYOBJECT(self->background, Py_None);
+            INITIALIZE_PYOBJECT(self->camera, Py_None);
 
             self->key_callbacks = PyDict_New();
             self->mouse_callbacks = PyDict_New();
