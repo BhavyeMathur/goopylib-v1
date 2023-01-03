@@ -1,21 +1,102 @@
-<h1 align="center">
-<img src="./branding/logo/goopylib_primary_logo.svg" width="400">
-</h1><br>
+<div align="center">
+  <img src="./branding/logo/goopylib_primary_logo.svg" width="500" height="250">
+</div>
 
-[![License](https://img.shields.io/pypi/l/goopylib?color=1398d1)](./LICENSE.md)
-[![PyPI](https://img.shields.io/pypi/v/goopylib?color=13b1d1&label=release)](https://pypi.org/project/goopylib/)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/goopylib?color=13c1d1)
+[![License](https://img.shields.io/pypi/l/goopylib?color=0079b5)](./LICENSE.md)
+[![PyPI](https://img.shields.io/pypi/v/goopylib?color=0091b5&label=release)](https://pypi.org/project/goopylib/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/goopylib?color=00a3b5)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/goopylib)](https://pypi.org/project/goopylib/#files)
 
+-----------------
+
 ## What is it?
-goopylib is powerful game, graphics, and application development library for C++ and Python.
+goopylib is powerful game, graphics, and GUI library for Python and C++ to build cross-platform applications. It allows you to unlock the potential of OpenGL and low-level graphics with a high-level, simple-yet-powerful API.
+
+### Key Features:
+ - Cross-Platform & Powerful
+ - Fast! Built-in batch-rendering & optimizations
+ - Accessible through Python & C++
+ - Simple code to create, transform, & animate images, quads, triangles, circles, and more
+ - Automatic 2D Orthographic Camera & Camera Controller
+ - Window & Mouse events: key & button presses, several callbacks, etc.
+
+#### In Development:
+ - Text Rendering
+ - GUI Elements
+ - Animation Engine
+ - Texture Factory
+ - Low-Level API Access
+
+#### Future Plans:
+ - 2D Rigid-Body Physics Engine
+ - Sound & Lighting Engine
+ - Profiling Tools
+ - Build & Distribution Tools
 
 ## Installation
 
+**Requires Python ≥ 3.8.** To install goopylib on Windows or MacOS, use the [Python Package Index (PyPI)](https://pypi.org/project/goopylib):
+
+```sh
+pip install goopylib
+```
+Wheels for Linux are not currently supported but coming as soon as I can build them!
+
 ## Tutorial
+
+Let's start by creating a rectangle on an empty window:
+
+```python
+import goopylib as gp
+
+window = gp.Window(700, 500)  # width=700, height=500
+
+# centered at (0, 0), width=100, height=50
+rect = gp.Rectangle((0, 0), 100, 50).draw(window)
+
+while window.is_open():
+    gp.update()
+```
+
+Inside the loop, you can check for events:
+
+```python
+while window.is_open():
+    if window.check_key(gp.KEY_H):
+        rect.hide()
+    elif window.check_key(gp.KEY_S):
+        rect.show()
+    
+    mousex, mousey = window.to_world(*window.get_mouse_position())
+    
+    if rect.contains(mousex, mousey):
+        print("Hovering over the rectangle!")
+        
+    gp.update()
+```
+
+Draw other shapes or more complex objects:
+
+```python
+img = gp.Image("filepath", (0, 0)).draw(window)
+```
+
+Install a simple camera controller that automatically moves, rotates, and zooms in & out!
+
+```python
+controller = gp.CameraController(window)
+
+while window.is_open():
+    # ...
+    controller.update()
+```
 
 ## Documentation
 
-## Gallery
+The documentation for goopylib is currently under development. Please submit an issue or email bhavyemathur@gmail.com for any questions!
 
-## Contributing
+## Contributing & Usage
+
+Contributions to goopylib are absolutely welcome! Please reach out to me if you have an idea or feature request or submit a pull request yourself. I'd love to hear if you've used goopylib for a project - maybe we could even add some screenshots to a gallery. 
+
+goopylib is licensed under the [Mozilla Public License Version 2.0](./LICENSE.md) which essentially enables you use and modify goopylib (commercially or otherwise) as long as you attribute the project! See [choosealicense.com](https://choosealicense.com/licenses/mpl-2.0/) for more details.
