@@ -32,6 +32,8 @@ jobs:
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
+      - uses: openrndr/setup-opengl@v1.1
+
     - name: Checkout repository
       uses: actions/checkout@v3
 
