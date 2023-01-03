@@ -1,9 +1,9 @@
-from distutils.core import setup, Extension
+from setuptools import setup
 
+from tools.packaging.extensions import extensions
+from tools.packaging.version import check_version
 
-setup(name="fputs",
-      version="2.0.0",
-      description="Python interface for the fputs C library function",
-      author="<your name>",
-      author_email="your_email@gmail.com",
-      ext_modules=[Extension("fputs", ["fputsmodule.c"])])
+check_version()
+
+setup(ext_modules=extensions,
+      options={"build": {"build_lib": "."}})
