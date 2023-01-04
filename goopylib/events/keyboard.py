@@ -1,12 +1,10 @@
 """
-goopylib module that deals with keyboard keys and events
+goopylib module that defines keyboard key constants
 """
 
 from __future__ import annotations
 
 from typing import Final
-
-KEY_UNKNOWN: Final[int] = -1
 
 KEY_SPACE: Final[int] = 32
 KEY_APOSTROPHE: Final[int] = 39  # '

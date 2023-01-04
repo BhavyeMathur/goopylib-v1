@@ -11,6 +11,8 @@ import re
 sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath("."))
 
+import goopylib as gp
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -57,7 +59,17 @@ always_document_param_types = False
 
 
 def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
-    print(f"\n{name}")
+    print(f"\n{name} - {what}")
+
+    if what == "data":
+        lines.clear()
+
+        obj = gp
+        for attr in name.split(".")[1:]:
+            obj = getattr(obj, attr)
+
+        lines.append(str(obj))
+        return
 
     # No documentation for -in and -out easing functions
     # because the documentation for the in-out function is present
@@ -72,7 +84,6 @@ def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
             lines.pop(i)
             continue
 
-
         if not line.startswith("    "):  # make sure line isn't inside a code-block
             line = line.replace("<goopylib.", "<goopylib.core.")
 
@@ -85,7 +96,6 @@ def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
             if name.startswith("goopylib.maths.easing"):
                 line = re.sub(r" callable(\s|$)", r" :py:class:`callable`\1", line)
 
-
         lines[i] = line
         print("\t", line)
 
@@ -93,13 +103,14 @@ def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
 def setup(app):
     app.connect("autodoc-process-docstring", autodoc_process_docstring)
 
+
 templates_path = ["templates"]
-exclude_patterns = ["output", "sphinx-autodoc-typehints/*", "dev/*", "api_reference/keyboard.rst"]
+exclude_patterns = ["output", "sphinx-autodoc-typehints/*", "dev/*"]
 
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = "sphinx_rtd_theme"
-html_css_files = ["css/style.css"]
+html_css_files = ["css/style.css", "css/bootstrapcustom.min.css"]
 
 html_logo = "../branding/logo/goopylib_primary_logo.svg"
 html_favicon = "../branding/logo/goopylib_logomark.ico"

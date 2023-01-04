@@ -8,3 +8,7 @@
 .autosummary tbody tr td:first-child p code {
     font-size: 100%;
 }
+
+#keyboard-key-ids col {
+    width: auto !important;
+}
