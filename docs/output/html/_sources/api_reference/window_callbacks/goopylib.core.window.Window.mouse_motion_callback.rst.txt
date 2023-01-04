@@ -1,4 +1,4 @@
-﻿Mouse motion callback
+﻿Mouse Motion Callback
 =====================
 
 .. currentmodule:: goopylib.core.window

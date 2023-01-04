@@ -57,7 +57,13 @@ always_document_param_types = False
 
 
 def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
-    print(name)
+    print(f"\n{name}")
+
+    # No documentation for -in and -out easing functions
+    # because the documentation for the in-out function is present
+    if name.startswith("goopylib.maths.easing") and (name.endswith("_in") or name.endswith("_out")):
+        lines.clear()
+        return
 
     for i, line in enumerate(lines):
         if "|" in line\
@@ -76,19 +82,19 @@ def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
             # style None, int, and tuples
             line = re.sub(r" (None|int|\([\w\d, \"']*\))(\s|$)", r" :py:class:`\1`\2", line)
 
+            if name.startswith("goopylib.maths.easing"):
+                line = re.sub(r" callable(\s|$)", r" :py:class:`callable`\1", line)
+
 
         lines[i] = line
         print("\t", line)
-
-    print()
 
 
 def setup(app):
     app.connect("autodoc-process-docstring", autodoc_process_docstring)
 
 templates_path = ["templates"]
-exclude_patterns = ["build", "Thumbs.db", ".DS_Store", "dev/*", "api_reference/keyboard.rst",
-                    "api_reference/easing.rst"]
+exclude_patterns = ["output", "sphinx-autodoc-typehints/*", "dev/*", "api_reference/keyboard.rst"]
 
 # -- Options for HTML output ----------------------------------------------
 

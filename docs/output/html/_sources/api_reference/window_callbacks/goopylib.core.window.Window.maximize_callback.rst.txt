@@ -1,4 +1,4 @@
-﻿Maximize callback
+﻿Maximize Callback
 =================
 
 .. currentmodule:: goopylib.core.window

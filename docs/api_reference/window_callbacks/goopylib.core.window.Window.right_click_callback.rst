@@ -1,4 +1,4 @@
-﻿Right click callback
+﻿Right Click Callback
 ====================
 
 .. currentmodule:: goopylib.core.window

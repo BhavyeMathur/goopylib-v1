@@ -1,4 +1,4 @@
-﻿Left click callback
+﻿Left Click Callback
 ===================
 
 .. currentmodule:: goopylib.core.window

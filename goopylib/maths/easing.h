@@ -5,7 +5,7 @@
 #define EASING_TYPE(name, space) \
 static PyTypeObject name##_type = { \
             PyVarObject_HEAD_INIT(nullptr, 0) \
-            #name, \
+            "gp.ease_" #name, \
             sizeof(EasingObject), \
             0, \
             (destructor) dealloc, \

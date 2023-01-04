@@ -1,4 +1,4 @@
-﻿Focus callback
+﻿Focus Callback
 ==============
 
 .. currentmodule:: goopylib.core.window

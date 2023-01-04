@@ -153,8 +153,9 @@ def find_extensions():
     ]
 
 
-check_version()
+if __name__ == "__main__":
+    check_version()
 
-setup(packages=setuptools.find_packages(),
-      ext_modules=find_extensions(),
-      data_files=data_files)
+    setup(packages=setuptools.find_packages(),
+          ext_modules=find_extensions(),
+          data_files=data_files)

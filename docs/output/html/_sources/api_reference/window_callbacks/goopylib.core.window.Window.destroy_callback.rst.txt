@@ -1,4 +1,4 @@
-﻿Destroy callback
+﻿Destroy Callback
 ================
 
 .. currentmodule:: goopylib.core.window

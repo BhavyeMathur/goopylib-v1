@@ -1,4 +1,4 @@
-﻿Scroll callback
+﻿Scroll Callback
 ===============
 
 .. currentmodule:: goopylib.core.window

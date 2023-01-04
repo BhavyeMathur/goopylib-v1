@@ -1,4 +1,5 @@
-import maths
+import math
+import os
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,9 +8,11 @@ import goopylib.imports as gp
 
 sns.set_theme()
 
+PATH = os.path.dirname(__file__)
+
 
 def plot_all_easing(easings):
-    rows = maths.ceil(len(easings) / 6)
+    rows = math.ceil(len(easings) / 6)
     fig, axes = plt.subplots(nrows=rows, ncols=6, figsize=(36, 6 * rows), dpi=100)
 
     x_ax = [x / 100 for x in range(101)]
@@ -20,7 +23,7 @@ def plot_all_easing(easings):
 
     plt.tight_layout()
 
-    fig.savefig(f"../../docs/_static/easing/all.png")
+    fig.savefig(f"{PATH}/all.png")
     plt.show()
 
 
@@ -41,7 +44,7 @@ def plot_easing_variants(name: str, ease, ease_in, ease_out):
 
     plt.tight_layout()
 
-    fig.savefig(f"../../docs/_static/easing/{name.lower()}.png")
+    fig.savefig(f"{PATH}/{ease.__class__.__name__}.png")
 
 
 def plot_easing(name: str, ease):
@@ -55,7 +58,10 @@ def plot_easing(name: str, ease):
 
     plt.tight_layout()
 
-    fig.savefig(f"../../docs/_static/easing/{name.lower()}.png")
+    if ease.__class__.__name__ == "function":
+        fig.savefig(f"{PATH}/combine_easing.png")
+    else:
+        fig.savefig(f"{PATH}/{ease.__class__.__name__}.png")
 
 
 plot_easing("Combined", gp.combine_easing(gp.ease_elastic_in(), gp.ease_bounce_out()))

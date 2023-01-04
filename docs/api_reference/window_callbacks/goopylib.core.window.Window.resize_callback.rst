@@ -1,4 +1,4 @@
-﻿Resize callback
+﻿Resize Callback
 ===============
 
 .. currentmodule:: goopylib.core.window

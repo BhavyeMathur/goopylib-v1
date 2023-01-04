@@ -1,4 +1,4 @@
-﻿Refresh callback
+﻿Refresh Callback
 ================
 
 .. currentmodule:: goopylib.core.window

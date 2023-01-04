@@ -1,4 +1,4 @@
-﻿Framebuffer size callback
+﻿Framebuffer Size Callback
 =========================
 
 .. currentmodule:: goopylib.core.window

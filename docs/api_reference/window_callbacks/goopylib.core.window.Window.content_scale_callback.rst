@@ -1,4 +1,4 @@
-﻿Content scale callback
+﻿Content Scale Callback
 ======================
 
 .. currentmodule:: goopylib.core.window

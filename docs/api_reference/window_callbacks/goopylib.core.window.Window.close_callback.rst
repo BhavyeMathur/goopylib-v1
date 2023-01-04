@@ -1,4 +1,4 @@
-﻿Close callback
+﻿Close Callback
 ==============
 
 .. currentmodule:: goopylib.core.window

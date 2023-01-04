@@ -1,4 +1,4 @@
-{{ name | replace("_", " ") | capitalize() | escape | underline }}
+{{ name | replace("_", " ") | title() | escape | underline }}
 
 .. currentmodule:: {{ module }}
 

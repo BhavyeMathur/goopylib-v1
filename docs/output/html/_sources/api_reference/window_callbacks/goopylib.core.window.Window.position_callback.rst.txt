@@ -1,4 +1,4 @@
-﻿Position callback
+﻿Position Callback
 =================
 
 .. currentmodule:: goopylib.core.window

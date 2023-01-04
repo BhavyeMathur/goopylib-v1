@@ -1,4 +1,4 @@
-﻿Middle click callback
+﻿Middle Click Callback
 =====================
 
 .. currentmodule:: goopylib.core.window

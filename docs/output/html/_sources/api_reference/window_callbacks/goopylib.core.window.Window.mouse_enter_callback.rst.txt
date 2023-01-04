@@ -1,4 +1,4 @@
-﻿Mouse enter callback
+﻿Mouse Enter Callback
 ====================
 
 .. currentmodule:: goopylib.core.window

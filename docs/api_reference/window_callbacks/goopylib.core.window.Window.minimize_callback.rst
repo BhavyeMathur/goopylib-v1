@@ -1,4 +1,4 @@
-﻿Minimize callback
+﻿Minimize Callback
 =================
 
 .. currentmodule:: goopylib.core.window
