@@ -4,7 +4,7 @@ Module that defines the Window class.
 
 from __future__ import annotations
 
-from typing import Optional, Literal
+from typing import Union, Literal
 
 from goopylib.color.color import Color
 from goopylib.scene.camera import Camera
@@ -16,7 +16,7 @@ import goopylib.ext.window as _window
 
 class Window:
     """
-    Creates a Window that can be used to draw graphics and widgets.
+    Creates a window that can be used to draw graphics and widgets.
 
     Args:
         width: in screen coordinates
@@ -26,7 +26,7 @@ class Window:
 
     def __init__(self, width: int, height: int, title: str = "goopylib Window"):
         """
-        Creates a Window that can be used to draw graphics and widgets.
+        Creates a window that can be used to draw graphics and widgets.
 
         Args:
             width: in screen coordinates
@@ -43,30 +43,30 @@ class Window:
     def __repr__(self) -> str:
         return self._window.__repr__()
 
-    def is_closed(self) -> bool:
+    def is_closed(self: Window) -> bool:
         """
         Returns:
-             whether the Window is closed.
+             whether the window is closed.
         """
         return self._window.is_closed()
 
     def is_open(self) -> bool:
         """
         Returns:
-             whether the Window is open.
+             whether the window is open.
         """
         return self._window.is_open()
 
     def is_destroyed(self) -> bool:
         """
         Returns:
-            whether the Window has been destroyed.
+            whether the window has been destroyed.
         """
         return self._window.is_destroyed()
 
     def update(self):
         """
-        Refreshes the Window.
+        Refreshes the window.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -75,10 +75,10 @@ class Window:
 
     def destroy(self):
         """
-        Destroys & closes the Window.
+        Destroys & closes the window.
 
         Warning:
-            Once the Window is destroyed, accessing its attributes or calling its methods is undefined.
+            Once the window is destroyed, accessing its attributes or calling its methods is undefined.
         """
         self._window.destroy()
 
@@ -88,15 +88,15 @@ class Window:
     @property
     def width(self) -> int:
         """
-        The width of the Window.
+        The width of the window.
 
         Returns:
-            The width, in screen coordinates, of the Window
+            The width, in screen coordinates, of the window
 
         Raises:
             TypeError: width must be an int
             ValueError: width must be greater than 0
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.width
 
@@ -108,15 +108,15 @@ class Window:
     @property
     def height(self) -> int:
         """
-        The height of the Window.
+        The height of the window.
 
         Returns:
-            The height, in screen coordinates, of the Window
+            The height, in screen coordinates, of the window
 
         Raises:
             TypeError: height must be an int
             ValueError: height must be greater than 0
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.height
 
@@ -128,14 +128,14 @@ class Window:
     @property
     def title(self) -> str:
         """
-        The title of the Window.
+        The title of the window.
 
         Returns:
-            A UTF-8 encoded string representing the Window's title
+            A UTF-8 encoded string representing the window's title
 
         Raises:
             TypeError: title must be a str
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.title
 
@@ -147,14 +147,14 @@ class Window:
     @property
     def xpos(self) -> int:
         """
-        The x position of the Window.
+        The x position of the window.
 
         Returns:
-            The x position, in screen coordinates, of the upper-left corner of the Window on the monitor
+            The x position, in screen coordinates, of the upper-left corner of the window on the monitor
 
         Raises:
             TypeError: xpos must be an int
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.xpos
 
@@ -166,14 +166,14 @@ class Window:
     @property
     def ypos(self) -> int:
         """
-        The y position of the Window.
+        The y position of the window.
 
         Returns:
-            The y position, in screen coordinates, of the upper-left corner of the Window on the monitor
+            The y position, in screen coordinates, of the upper-left corner of the window on the monitor
 
         Raises:
             TypeError: ypos must be an int
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.ypos
 
@@ -185,7 +185,7 @@ class Window:
     @property
     def background(self) -> Color:
         """
-        The background color of the Window.
+        The background color of the window.
 
         Returns:
             a color object
@@ -208,7 +208,7 @@ class Window:
     @property
     def min_width(self) -> int:
         """
-        The minimum width of the Window.
+        The minimum width of the window.
 
         Defaults to 0.
 
@@ -216,12 +216,12 @@ class Window:
             The minimum width the window can be resized to.
 
         Note:
-            This attribute only applies to resizable Windows.
+            This attribute only applies to resizable windows.
 
         Raises:
             TypeError: min_width must be an int or None
             ValueError: min_width must be greater than or equal to 0
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.min_width
 
@@ -233,7 +233,7 @@ class Window:
     @property
     def min_height(self) -> int:
         """
-        The minimum height of the Window.
+        The minimum height of the window.
 
         Defaults to 0.
 
@@ -241,12 +241,12 @@ class Window:
             The minimum height the window can be resized to.
 
         Note:
-            This attribute only applies to resizable Windows.
+            This attribute only applies to resizable windows.
 
         Raises:
             TypeError: min_height must be an int or None
             ValueError: min_height must be greater than or equal to 0
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.min_height
 
@@ -258,7 +258,7 @@ class Window:
     @property
     def max_width(self) -> int:
         """
-        The maximum width of the Window.
+        The maximum width of the window.
 
         Defaults to None which represents no maximum width.
 
@@ -266,24 +266,24 @@ class Window:
             The maximum width the window can be resized to.
 
         Note:
-            This attribute only applies to resizable Windows.
+            This attribute only applies to resizable windows.
 
         Raises:
             TypeError: max_width must be an int or None
             ValueError: max_width must be greater than or equal to min_width
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.max_width
 
     @max_width.setter
-    def max_width(self, value: Optional[int]):
+    def max_width(self, value: Union[int]):
         self._window.max_width = value
 
     # Maximum Height
     @property
     def max_height(self) -> int:
         """
-        The maximum height of the Window.
+        The maximum height of the window.
 
         Defaults to None which represents no maximum height.
 
@@ -291,12 +291,12 @@ class Window:
             The maximum height the window can be resized to.
 
         Note:
-            This attribute only applies to resizable Windows.
+            This attribute only applies to resizable windows.
 
         Raises:
             TypeError: max_height must be an int or None
             ValueError: max_height must be greater than or equal to min_height
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.max_height
 
@@ -307,57 +307,57 @@ class Window:
     # Get & Set Methods
     def set_size(self, width: int, height: int):
         """
-        Sets the size of the Window.
+        Sets the size of the window.
 
         Args:
             width: in screen coordinates
             height: in screen coordinates
 
         Raises:
-            TypeError: width and height must be ints
+            TypeError: width and height must be integers
             ValueError: width and height must be greater than 0
             RuntimeError: window has been destroyed
         """
         self._window.set_size(width, height)
 
-    def set_size_limits(self, min_width: int, min_height: int, max_width: Optional[int], max_height: Optional[int]):
+    def set_size_limits(self, min_width: int, min_height: int, max_width: Union[int], max_height: Union[int]):
         """
-        Sets the minimum and maximum resizable dimensions of the Window.
+        Sets the minimum and maximum resizable dimensions of the window.
 
         Note:
-            This attribute only applies to resizable Windows
+            This attribute only applies to resizable windows
 
         Raises:
-            TypeError: All the parameters must be int or None
+            TypeError: All the parameters must be integers or None
             ValueError: min_width and min_height must be greater than or equal to 0.
                 max_width and max_height must be greater than or equal min_width and min_height
             RuntimeError: window has been destroyed
         """
         self._window.set_size_limits(min_width, min_height, max_width, max_height)
 
-    def set_min_size(self, min_width: Optional[int], min_height: Optional[int]):
+    def set_min_size(self, min_width: Union[int], min_height: Union[int]):
         """
-        Sets the minimum resizable dimensions of the Window.
+        Sets the minimum resizable dimensions of the window.
 
         Note:
-            This attribute only applies to resizable Windows
+            This attribute only applies to resizable windows
 
         Raises:
-            TypeError: min_width and min_height must be ints
+            TypeError: min_width and min_height must be integers
             ValueError: min_width and min_height must be greater than or equal to 0
             RuntimeError: window has been destroyed
         """
         self._window.set_min_size(min_width, min_height)
 
-    def set_max_size(self, max_width: Optional[int], max_height: Optional[int]):
+    def set_max_size(self, max_width: Union[int], max_height: Union[int]):
         """
-        Sets the maximum resizable dimensions of the Window.
+        Sets the maximum resizable dimensions of the window.
 
         Note:
-            This attribute only applies to resizable Windows
+            This attribute only applies to resizable windows
 
         Raises:
-            TypeError: max_width and max_height must be ints or None
+            TypeError: max_width and max_height must be integers or None
             ValueError: max_width and max_height must be greater than or equal to min_width and min_height.
             RuntimeError: window has been destroyed
         """
@@ -365,21 +365,21 @@ class Window:
 
     def set_position(self, xpos: int, ypos: int):
         """
-        Sets the position of the top-left of the Window on the screen.
+        Sets the position of the top-left of the window on the screen.
 
         Args:
             xpos: in screen coordinates
             ypos: in screen coordinates
 
         Raises:
-            TypeError: xpos and ypos must be ints
+            TypeError: xpos and ypos must be integers
             RuntimeError: window has been destroyed
         """
         self._window.set_position(xpos, ypos)
 
-    def set_aspect_ratio(self, numerator: Optional[int], denominator: Optional[int]):
+    def set_aspect_ratio(self, numerator: Union[int], denominator: Union[int]):
         """
-        Sets the aspect ratio of the Window.
+        Sets the aspect ratio of the window.
 
         |
 
@@ -391,7 +391,7 @@ class Window:
         Set both arguments to None to remove any aspect ratio configuration.
 
         Raises:
-            TypeError: numerator and denominator must be ints or None
+            TypeError: numerator and denominator must be integers or None
             ValueError: numerator and denominator must be greater than 0
             RuntimeError: window has been destroyed
         """
@@ -399,7 +399,7 @@ class Window:
 
     def get_aspect_ratio(self) -> tuple[int, int]:
         """
-        Gets the current aspect ratio of the Window.
+        Gets the current aspect ratio of the window.
 
         Returns:
             A tuple representing the aspect ratio as (numerator, denominator)
@@ -411,17 +411,17 @@ class Window:
 
     def get_frame_size(self) -> tuple[int, int, int, int]:
         """
-        Gets the size, in screen coordinates, of the Window frame.
+        Gets the size, in screen coordinates, of the window frame.
 
         |
 
-        Decorated Windows  have title bars and window frames around them. You can retrieve the sizes of these using this
+        Decorated windows  have title bars and window frames around them. You can retrieve the sizes of these using this
         method. The returned values are the distances, in screen coordinates, from the edges of the content area to the
         corresponding edges of the full window. As they are distances and not coordinates, they are always zero or
         positive.
 
         Returns:
-            The size of the Window's frame in order (left, top, right, bottom)
+            The size of the window's frame in order (left, top, right, bottom)
 
         Raises:
             RuntimeError: window has been destroyed
@@ -446,7 +446,7 @@ class Window:
 
     def get_framebuffer_size(self) -> tuple[int, int]:
         """
-        The size of the framebuffer for the Window.
+        The size of the framebuffer for the window.
         
         Returns:
             A tuple (width, height) representing the dimensions, in pixels, of the framebuffer
@@ -461,7 +461,7 @@ class Window:
     @property
     def resizable(self) -> bool:
         """
-        Whether the Window is resizable by the user or not.
+        Whether the window is resizable by the user or not.
 
         Defaults to False.
 
@@ -470,7 +470,7 @@ class Window:
 
         Raises:
             TypeError: resizable must be a bool
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.resizable
 
@@ -482,7 +482,7 @@ class Window:
     @property
     def decorated(self) -> bool:
         """
-        Whether the Window has window decorations.
+        Whether the window has window decorations.
 
         Defaults to True.
 
@@ -494,7 +494,7 @@ class Window:
 
         Raises:
             TypeError: decorated must be a bool
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.decorated
 
@@ -506,7 +506,7 @@ class Window:
     @property
     def floating(self) -> bool:
         """
-        Whether the Window is always on top.
+        Whether the window is always on top.
 
         Defaults to False.
 
@@ -515,7 +515,7 @@ class Window:
 
         Raises:
             TypeError: floating must be a bool
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.floating
 
@@ -527,7 +527,7 @@ class Window:
     @property
     def auto_minimized(self) -> bool:
         """
-        Whether the Window is automatically minimized when it loses focus.
+        Whether the window is automatically minimized when it loses focus.
 
         Defaults to True.
 
@@ -535,11 +535,11 @@ class Window:
             whether the window is automatically minimized when it loses focus.
 
         Note:
-            This attribute only applies to Windows in fullscreen.
+            This attribute only applies to windows in fullscreen.
 
         Raises:
             TypeError: auto_minimized must be a bool
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.auto_minimized
 
@@ -551,16 +551,16 @@ class Window:
     @property
     def focused_on_show(self) -> bool:
         """
-        Whether the Window gains input focus when it is shown.
+        Whether the window gains input focus when it is shown.
 
         Defaults to True.
 
         Returns:
-            whether calling Window.show() gives this Window input focus
+            whether calling Window.show() gives this window input focus
 
         Raises:
             TypeError: focused_on_show must be a bool
-            RuntimeError: cannot set the attribute of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.focused_on_show
 
@@ -572,7 +572,7 @@ class Window:
 
     def restore(self):
         """
-        Restores a minimized, maximized, or fullscreen Window back to normal.
+        Restores a minimized, maximized, or fullscreen window back to normal.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -582,17 +582,17 @@ class Window:
     # Fullscreen
     def fullscreen(self):
         """
-        Makes the Window enter fullscreen mode.
+        Makes the window enter fullscreen mode.
 
         Raises:
             RuntimeError: window has been destroyed
         """
         self._window.fullscreen()
 
-    def is_fullscreen(self):
+    def is_fullscreen(self) -> bool:
         """
         Returns:
-             whether the Window is in fullscreen mode.
+             whether the window is in fullscreen mode.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -602,17 +602,17 @@ class Window:
     # Minimize
     def minimize(self):
         """
-        Minimizes the Window.
+        Minimizes the window.
 
         Raises:
             RuntimeError: window has been destroyed
         """
         self._window.minimize()
 
-    def is_minimized(self):
+    def is_minimized(self) -> bool:
         """
         Returns:
-             whether the Window is in minimized mode.
+             whether the window is in minimized mode.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -622,17 +622,17 @@ class Window:
     # Maximize
     def maximize(self):
         """
-        Maximizes the Window.
+        Maximizes the window.
 
         Raises:
             RuntimeError: window has been destroyed
         """
         self._window.maximize()
 
-    def is_maximized(self):
+    def is_maximized(self) -> bool:
         """
         Returns:
-             whether the Window is in maximized mode.
+             whether the window is in maximized mode.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -642,16 +642,16 @@ class Window:
     # Visibility
     def show(self):
         """
-        Makes the Window visible to the user.
+        Makes the window visible to the user.
 
         Raises:
             RuntimeError: window has been destroyed
         """
         self._window.show()
 
-    def hide(self, hide=True):
+    def hide(self, hide: bool = True):
         """
-        Makes the Window invisible to the user.
+        Makes the window invisible to the user.
 
         Args:
             hide: whether to hide/show the window
@@ -661,10 +661,10 @@ class Window:
         """
         self._window.hide(hide)
 
-    def is_visible(self):
+    def is_visible(self) -> bool:
         """
         Returns:
-             whether the Window is visible to the user.
+             whether the window is visible to the user.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -674,7 +674,7 @@ class Window:
     # Input Focus
     def focus(self):
         """
-        Gives the Window input focus and brings it to the front.
+        Gives the window input focus and brings it to the front.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -684,7 +684,7 @@ class Window:
     def has_focus(self) -> bool:
         """
         Returns:
-             whether the Window has input focus.
+             whether the window has input focus.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -693,11 +693,11 @@ class Window:
 
     def request_attention(self):
         """
-        Requests for the user's attention to the Window.
+        Requests for the user's attention to the window.
         
         |
         
-        The system will highlight the Window, or on platforms where this is not supported, the application as a whole.
+        The system will highlight the window, or on platforms where this is not supported, the application as a whole.
         Once the user has given it attention, the system will automatically end the request.
 
         Raises:
@@ -707,10 +707,10 @@ class Window:
 
     """Window Input Events ------------------------------------------------------------------------------------------"""
 
-    def is_mouse_hovering(self):
+    def is_mouse_hovering(self) -> bool:
         """
         Returns:
-            whether the mouse is hovering over the Window.
+            whether the mouse is hovering over the window.
 
         Raises:
             RuntimeError: window has been destroyed
@@ -849,9 +849,9 @@ class Window:
 
     # Resize Callback
     @property
-    def resize_callback(self):
+    def resize_callback(self) -> callable:
         """
-        Callback executed when the Window is resized.
+        Callback executed when the window is resized.
         
         It receives the new size, in screen coordinates, of the window when the window is resized. 
         
@@ -865,7 +865,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 2 arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.resize_callback
 
@@ -875,9 +875,9 @@ class Window:
 
     # Close Callback
     @property
-    def close_callback(self):
+    def close_callback(self) -> callable:
         """
-        Callback executed when the Window is attempted to be closed.
+        Callback executed when the window is attempted to be closed.
         
         It is called directly after the window's close flag has been set.
         
@@ -891,7 +891,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must not take arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.close_callback
 
@@ -901,9 +901,9 @@ class Window:
 
     # Destroy Callback
     @property
-    def destroy_callback(self):
+    def destroy_callback(self) -> callable:
         """
-        Callback executed when the Window is destroyed.
+        Callback executed when the window is destroyed.
 
         It is called directly after Window.destroy().
             
@@ -917,7 +917,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must not take arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.destroy_callback
 
@@ -927,9 +927,9 @@ class Window:
 
     # Position Callback
     @property
-    def position_callback(self):
+    def position_callback(self) -> callable:
         """
-        Callback executed when the Window is moved.
+        Callback executed when the window is moved.
 
         It receives the new position, in screen coordinates, of the upper-left corner of the window.
         
@@ -943,7 +943,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 2 arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.position_callback
 
@@ -953,11 +953,11 @@ class Window:
 
     # Minimize Callback
     @property
-    def minimize_callback(self):
+    def minimize_callback(self) -> callable:
         """
-        Callback executed when the Window is minimized.
+        Callback executed when the window is minimized.
 
-        It receives a bool representing whether the Window was minimized or restored to normal.
+        It receives a bool representing whether the window was minimized or restored to normal.
         
         |
 
@@ -969,7 +969,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.minimize_callback
 
@@ -979,11 +979,11 @@ class Window:
 
     # Maximize Callback
     @property
-    def maximize_callback(self):
+    def maximize_callback(self) -> callable:
         """
-        Callback executed when the Window is maximized.
+        Callback executed when the window is maximized.
 
-        It receives a bool representing whether the Window was maximized or restored to normal.
+        It receives a bool representing whether the window was maximized or restored to normal.
         
         |
 
@@ -995,7 +995,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.maximize_callback
 
@@ -1005,11 +1005,11 @@ class Window:
 
     # Focus Callback
     @property
-    def focus_callback(self):
+    def focus_callback(self) -> callable:
         """
-        Callback executed when the Window gains input focus.
+        Callback executed when the window gains input focus.
 
-        It receives a bool representing whether the Window gained or lost input focus.
+        It receives a bool representing whether the window gained or lost input focus.
 
         |
 
@@ -1026,7 +1026,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.focus_callback
 
@@ -1036,9 +1036,9 @@ class Window:
 
     # Refresh Callback
     @property
-    def refresh_callback(self):
+    def refresh_callback(self) -> callable:
         """
-        Callback executed when the Window needs refreshing.
+        Callback executed when the window needs refreshing.
 
         On most platforms, this is called when the size of the window changes through resizing, minimizing, maximizing, 
         and entering fullscreen.
@@ -1053,7 +1053,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must not take arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.refresh_callback
 
@@ -1063,9 +1063,9 @@ class Window:
 
     # Content Scale Callback
     @property
-    def content_scale_callback(self):
+    def content_scale_callback(self) -> callable:
         """
-        Callback executed when the Window's content scale changes.
+        Callback executed when the window's content scale changes.
 
         It receives the new content scale of the window.
         
@@ -1079,7 +1079,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 2 arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.content_scale_callback
 
@@ -1089,9 +1089,9 @@ class Window:
 
     # Framebuffer Size Callback
     @property
-    def framebuffer_size_callback(self):
+    def framebuffer_size_callback(self) -> callable:
         """
-        Callback executed when the Window's framebuffer size changes.
+        Callback executed when the window's framebuffer size changes.
 
         It receives the new size of the window's framebuffer.
 
@@ -1105,7 +1105,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 2 arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.framebuffer_size_callback
 
@@ -1115,7 +1115,7 @@ class Window:
 
     # Mouse Motion Callback
     @property
-    def mouse_motion_callback(self):
+    def mouse_motion_callback(self) -> callable:
         """
         Callback executed when the mouse moves.
 
@@ -1131,7 +1131,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 2 arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.mouse_motion_callback
 
@@ -1141,9 +1141,9 @@ class Window:
 
     # Mouse Enter Callback
     @property
-    def mouse_enter_callback(self):
+    def mouse_enter_callback(self) -> callable:
         """
-        Callback executed when the mouse enters/exits the Window.
+        Callback executed when the mouse enters/exits the window.
 
         The callback function receives a bool representing whether the mouse entered or exited a window.
 
@@ -1157,7 +1157,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.mouse_enter_callback
 
@@ -1167,7 +1167,7 @@ class Window:
 
     # Scroll Callback
     @property
-    def scroll_callback(self):
+    def scroll_callback(self) -> callable:
         """
         Callback executed when the mouse scrolls.
 
@@ -1183,7 +1183,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 2 arguments
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.scroll_callback
 
@@ -1212,7 +1212,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         self._window.set_key_callback(keycode, callback)
 
@@ -1237,13 +1237,13 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         self._window.set_mouse_button_callback(button, callback)
 
     # Left Click Callback
     @property
-    def left_click_callback(self):
+    def left_click_callback(self) -> callable:
         """
         Callback executed when the left mouse button is clicked.
 
@@ -1259,7 +1259,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.left_click_callback
 
@@ -1269,7 +1269,7 @@ class Window:
 
     # Middle Click Callback
     @property
-    def middle_click_callback(self):
+    def middle_click_callback(self) -> callable:
         """
         Callback executed when the middle mouse button is clicked.
 
@@ -1285,7 +1285,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.middle_click_callback
 
@@ -1295,7 +1295,7 @@ class Window:
 
     # Right Click Callback
     @property
-    def right_click_callback(self):
+    def right_click_callback(self) -> callable:
         """
         Callback executed when the right mouse button is clicked.
 
@@ -1311,7 +1311,7 @@ class Window:
         Raises:
             TypeError: callback must be callable
             ValueError: callback function must take 1 argument
-            RuntimeError: cannot set the callback of a destroyed window
+            RuntimeError: window has been destroyed
         """
         return self._window.right_click_callback
 
@@ -1320,23 +1320,23 @@ class Window:
         self._window.right_click_callback = callback
 
     # Camera & Projection
-    def get_camera(self):
+    def get_camera(self) -> Camera:
         """
         Returns:
-            the Camera object associated with the Window
+            the Camera object associated with the window
 
         Raises:
             RuntimeError: window has been destroyed
         """
         return self._camera
 
-    def to_world(self, x: float, y: float):
+    def to_world(self, x: float, y: float) -> tuple[float, float]:
         """
         Converts coordinates in screen space to world space.
 
         |
 
-        (0, 0) is the upper-left of the Window in screen space
+        (0, 0) is the upper-left of the window in screen space
 
         (width, height) is the lower-right in screen space
 
@@ -1348,7 +1348,7 @@ class Window:
         """
         return self._window.to_world(x, y)
 
-    def to_screen(self, x: float, y: float):
+    def to_screen(self, x: float, y: float) -> tuple[float, float]:
         """
         Converts coordinates in world space to screen space.
 
@@ -1367,7 +1367,7 @@ class Window:
     @staticmethod
     def update_all():
         """
-        Updates all the Windows currently active.
+        Updates all the windows currently active.
         """
         _window.Window.update_all()
 

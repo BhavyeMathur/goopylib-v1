@@ -124,7 +124,7 @@ class ColorRGB(Color):
     Convert another color object to RGB by passing it as a parameter.
 
     Raises:
-        TypeError: expected ints for RGB and floats for alpha
+        TypeError: expected integers for RGB and floats for alpha
         ValueError: RGB must be between 0-255, alpha must be between 0-1
 
     Examples:
@@ -143,7 +143,7 @@ class ColorRGB(Color):
         Convert another color object to RGB by passing it as a parameter.
 
         Raises:
-            TypeError: expected ints for RGB and floats for alpha
+            TypeError: expected integers for RGB and floats for alpha
             ValueError: RGB must be between 0-255, alpha must be between 0-1
 
         Examples:

@@ -1,0 +1,10 @@
+.autosummary tbody tr td:first-child p {
+    font-weight: 700;
+    color: #404040;
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, Courier, monospace;
+    font-size: 75% !important;
+}
+
+.autosummary tbody tr td:first-child p code {
+    font-size: 100%;
+}
