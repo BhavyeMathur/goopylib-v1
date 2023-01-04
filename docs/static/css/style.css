@@ -9,6 +9,7 @@
     font-size: 100%;
 }
 
-#keyboard-key-ids col {
+#keyboard-key-ids col,
+#mouse-button-ids col {
     width: auto !important;
 }

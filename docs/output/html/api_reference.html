@@ -28,7 +28,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="goopylib.core" href="api_reference/core.html" />
+    <link rel="next" title="goopylib.core" href="api_reference/core/core.html" />
     <link rel="prev" title="Welcome to goopylib’s documentation!" href="index.html" /> 
 </head>
 
@@ -53,10 +53,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html">goopylib.core</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/window.html">goopylib.Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing.html">Easing Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/keyboard.html">Keyboard Key IDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html">goopylib.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/window.html">goopylib.Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing.html">Easing Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/events/keyboard.html">Keyboard Key IDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/events/mouse.html">Mouse Button IDs</a></li>
 </ul>
 </li>
 </ul>
@@ -89,45 +90,46 @@
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api_reference/core.html">goopylib.core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.init"><code class="docutils literal notranslate"><span class="pre">init()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.terminate"><code class="docutils literal notranslate"><span class="pre">terminate()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.update"><code class="docutils literal notranslate"><span class="pre">update()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.update_on_event"><code class="docutils literal notranslate"><span class="pre">update_on_event()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.update_timeout"><code class="docutils literal notranslate"><span class="pre">update_timeout()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.set_buffer_swap_interval"><code class="docutils literal notranslate"><span class="pre">set_buffer_swap_interval()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.get_refresh_rate"><code class="docutils literal notranslate"><span class="pre">get_refresh_rate()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.get_screen_width"><code class="docutils literal notranslate"><span class="pre">get_screen_width()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.get_screen_height"><code class="docutils literal notranslate"><span class="pre">get_screen_height()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.number_of_monitors"><code class="docutils literal notranslate"><span class="pre">number_of_monitors()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.glfw_compiled_version"><code class="docutils literal notranslate"><span class="pre">glfw_compiled_version()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.glfw_current_version"><code class="docutils literal notranslate"><span class="pre">glfw_current_version()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/core.html#goopylib.core.core.opengl_version"><code class="docutils literal notranslate"><span class="pre">opengl_version()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference/core/core.html">goopylib.core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.init"><code class="docutils literal notranslate"><span class="pre">init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.terminate"><code class="docutils literal notranslate"><span class="pre">terminate()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.update"><code class="docutils literal notranslate"><span class="pre">update()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.update_on_event"><code class="docutils literal notranslate"><span class="pre">update_on_event()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.update_timeout"><code class="docutils literal notranslate"><span class="pre">update_timeout()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.set_buffer_swap_interval"><code class="docutils literal notranslate"><span class="pre">set_buffer_swap_interval()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.get_refresh_rate"><code class="docutils literal notranslate"><span class="pre">get_refresh_rate()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.get_screen_width"><code class="docutils literal notranslate"><span class="pre">get_screen_width()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.get_screen_height"><code class="docutils literal notranslate"><span class="pre">get_screen_height()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.number_of_monitors"><code class="docutils literal notranslate"><span class="pre">number_of_monitors()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.glfw_compiled_version"><code class="docutils literal notranslate"><span class="pre">glfw_compiled_version()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.glfw_current_version"><code class="docutils literal notranslate"><span class="pre">glfw_current_version()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/core.html#goopylib.core.core.opengl_version"><code class="docutils literal notranslate"><span class="pre">opengl_version()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_reference/window.html">goopylib.Window</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/window.html#goopylib.core.window.Window"><code class="docutils literal notranslate"><span class="pre">Window</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/window.html#callback-functions">Callback Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference/core/window.html">goopylib.Window</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/window.html#goopylib.core.window.Window"><code class="docutils literal notranslate"><span class="pre">Window</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/core/window.html#callback-functions">Callback Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_reference/easing.html">Easing Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_linear.html">Ease Linear</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_poly.html">Ease Poly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_quad.html">Ease Quad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_cubic.html">Ease Cubic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_quart.html">Ease Quart</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_quint.html">Ease Quint</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_sin.html">Ease Sin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_exp.html">Ease Exp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_circle.html">Ease Circle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_back.html">Ease Back</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_elastic.html">Ease Elastic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing/goopylib.maths.easing.ease_bounce.html">Ease Bounce</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing.html#easing-function-graphs">Easing Function Graphs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_reference/easing.html#combine-easing-functions">Combine Easing Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference/maths/easing.html">Easing Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_linear.html">Ease Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_poly.html">Ease Poly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_quad.html">Ease Quad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_cubic.html">Ease Cubic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_quart.html">Ease Quart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_quint.html">Ease Quint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_sin.html">Ease Sin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_exp.html">Ease Exp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_circle.html">Ease Circle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_back.html">Ease Back</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_elastic.html">Ease Elastic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing/goopylib.maths.easing.ease_bounce.html">Ease Bounce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing.html#easing-function-graphs">Easing Function Graphs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/maths/easing.html#combine-easing-functions">Combine Easing Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_reference/keyboard.html">Keyboard Key IDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference/events/keyboard.html">Keyboard Key IDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference/events/mouse.html">Mouse Button IDs</a></li>
 </ul>
 </div>
 </section>
@@ -137,7 +139,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to goopylib’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="api_reference/core.html" class="btn btn-neutral float-right" title="goopylib.core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="api_reference/core/core.html" class="btn btn-neutral float-right" title="goopylib.core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
