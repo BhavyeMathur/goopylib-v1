@@ -501,20 +501,6 @@ namespace gp {
          */
         [[nodiscard]] GPAPI bool isFullscreen() const;
 
-        // Maximize
-        /**
-         * Maximizes the Window.
-         *
-         * @throws std::runtime_error window has been destroyed
-         */
-        GPAPI void maximize();
-
-        /**
-         * @return whether the Window is in maximized mode.
-         * @throws std::runtime_error window has been destroyed
-         */
-        [[nodiscard]] GPAPI bool isMaximized() const;
-
         // Minimize
         /**
          * Minimizes the Window.
@@ -528,6 +514,20 @@ namespace gp {
          * @throws std::runtime_error window has been destroyed
          */
         [[nodiscard]] GPAPI bool isMinimized() const;
+
+        // Maximize
+        /**
+         * Maximizes the Window.
+         *
+         * @throws std::runtime_error window has been destroyed
+         */
+        GPAPI void maximize();
+
+        /**
+         * @return whether the Window is in maximized mode.
+         * @throws std::runtime_error window has been destroyed
+         */
+        [[nodiscard]] GPAPI bool isMaximized() const;
 
         // Visibility
         /**

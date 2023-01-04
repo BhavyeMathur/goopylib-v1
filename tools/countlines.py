@@ -4,7 +4,7 @@ import os
 
 def countlines(start,
                formats=(".py", ".c", ".cpp", ".h", ".hpp", ".glsl", ".frag", ".vert", ".geom", ".ipynb", ".bash",
-                        ".dockerfile", ".bat", ".cmd", ".in", ".toml", ".cfg"),
+                        ".dockerfile", ".bat", ".cmd", ".in", ".toml", ".cfg", ".sh"),
                included_files=("CMakeLists.txt",),
                included_folders=("src", "tests", "examples"),
                excluded_folders=("vendor",),

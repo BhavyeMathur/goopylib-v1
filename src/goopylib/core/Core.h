@@ -14,7 +14,8 @@ namespace gp {
     GPAPI void init();
 
     /**
-     * Terminates goopylib internally and destroys all open Windows.
+     * Terminates goopylib internally and destroys all open windows.\n
+     * You should call this function before the program ends.
      *
      * @note goopylib can be reinitialized using gp::init()
      */
@@ -56,16 +57,11 @@ namespace gp {
     GPAPI void updateTimeout(double timeout = 0);
 
     /**
-     *
-     * @return the version of GLFW that goopylib was compiled with.
+     * Sets the rate of swapping window buffers.
+     * @param interval the number of refreshes to wait before swapping buffers.
+     * @throws std::invalid_argument: if interval is less than 0
      */
-    GPAPI std::string glfwCompiledVersion();
-
-    /**
-     *
-     * @return the version of GLFW that is currently running.
-     */
-    GPAPI std::string glfwCurrentVersion();
+    GPAPI void setBufferSwapInterval(int32_t interval);
 
     /**
      *
@@ -96,19 +92,28 @@ namespace gp {
     GPAPI int getNumberOfMonitors();
 
     /**
-     * Sets the rate of swapping Window buffers.
-     * @param interval the number of refreshes to wait before swapping buffers.
-     * @throws std::invalid_argument: if interval is less than 0
-     */
-    GPAPI void setBufferSwapInterval(int32_t interval);
-
-    /**
      *
      * @return the number of seconds since goopylib was initialized
      */
     GPAPI float getTime();
 
+    /**
+     *
+     * @return whether a graphics context is currently active
+     */
     GPAPI bool hasActiveContext();
+
+    /**
+     *
+     * @return the version of GLFW that goopylib was compiled with.
+     */
+    GPAPI std::string glfwCompiledVersion();
+
+    /**
+     *
+     * @return the version of GLFW that is currently running.
+     */
+    GPAPI std::string glfwCurrentVersion();
 
     #endif
 

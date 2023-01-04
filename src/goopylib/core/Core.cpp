@@ -160,19 +160,12 @@ namespace gp {
         onUpdate();
     }
 
-    std::string glfwCompiledVersion() {
-        GP_CORE_TRACE("gp::glfwCompiledVersion()");
+    void setBufferSwapInterval(int32_t interval) {
+        GP_CORE_TRACE("gp::setBufferSwapInterval(interval={0})", interval);
 
-        return {glfwGetVersionString()};
-    }
+        GP_CHECK_GE(interval, 0, "gp::setBufferSwapInterval() interval must be greater than or equal to 0");
 
-    std::string glfwCurrentVersion() {
-        GP_CORE_TRACE("gp::glfwCurrentVersion()");
-
-        int major, minor, revision;
-        glfwGetVersion(&major, &minor, &revision);
-
-        return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(revision);
+        glfwSwapInterval(interval);
     }
 
     int getRefreshRate() {
@@ -201,20 +194,27 @@ namespace gp {
         return count;
     }
 
-    void setBufferSwapInterval(int32_t interval) {
-        GP_CORE_TRACE("gp::setBufferSwapInterval(interval={0})", interval);
-
-        GP_CHECK_GE(interval, 0, "gp::setBufferSwapInterval() interval must be greater than or equal to 0");
-
-        glfwSwapInterval(interval);
-    }
-
     float getTime() {
         return glfwGetTime();
     }
 
     bool hasActiveContext() {
         return (bool) glfwGetCurrentContext();
+    }
+
+    std::string glfwCompiledVersion() {
+        GP_CORE_TRACE("gp::glfwCompiledVersion()");
+
+        return {glfwGetVersionString()};
+    }
+
+    std::string glfwCurrentVersion() {
+        GP_CORE_TRACE("gp::glfwCurrentVersion()");
+
+        int major, minor, revision;
+        glfwGetVersion(&major, &minor, &revision);
+
+        return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(revision);
     }
 
     #endif

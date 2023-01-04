@@ -599,26 +599,6 @@ class Window:
         """
         return self._window.is_fullscreen()
 
-    # Maximize
-    def maximize(self):
-        """
-        Maximizes the Window.
-
-        Raises:
-            RuntimeError: window has been destroyed
-        """
-        self._window.maximize()
-
-    def is_maximized(self):
-        """
-        Returns:
-             whether the Window is in maximized mode.
-
-        Raises:
-            RuntimeError: window has been destroyed
-        """
-        return self._window.is_maximized()
-
     # Minimize
     def minimize(self):
         """
@@ -639,6 +619,26 @@ class Window:
         """
         return self._window.is_minimized()
 
+    # Maximize
+    def maximize(self):
+        """
+        Maximizes the Window.
+
+        Raises:
+            RuntimeError: window has been destroyed
+        """
+        self._window.maximize()
+
+    def is_maximized(self):
+        """
+        Returns:
+             whether the Window is in maximized mode.
+
+        Raises:
+            RuntimeError: window has been destroyed
+        """
+        return self._window.is_maximized()
+
     # Visibility
     def show(self):
         """
@@ -649,14 +649,17 @@ class Window:
         """
         self._window.show()
 
-    def hide(self):
+    def hide(self, hide=True):
         """
         Makes the Window invisible to the user.
+
+        Args:
+            hide: whether to hide/show the window
 
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.hide()
+        self._window.hide(hide)
 
     def is_visible(self):
         """

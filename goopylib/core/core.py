@@ -1,10 +1,12 @@
 """
-Module defining core and miscellaneous functions
+This is goopylib's most important module. It defines core and miscellaneous functions that allow you to configure and
+use the library. The module is automatically imported and initializes the underlying API.
+
+It can be used to configure global settings, initialize/terminate the library, and gather runtime or compilation
+information about goopylib.
 """
 
 from __future__ import annotations
-
-from typing import Union
 
 import goopylib.ext.core as _core
 
@@ -13,7 +15,6 @@ _core.init()
 
 def init():
     """Initializes goopylib internally.
-
     This function is automatically called when goopylib is imported.
 
     Raises:
@@ -23,7 +24,8 @@ def init():
 
 
 def terminate():
-    """Terminates goopylib internally and destroys all open Windows.
+    """Terminates goopylib internally and destroys all open windows.
+    You should call this function before the program ends.
 
     Note:
         goopylib can be reinitialized using :func:`gp.init()<goopylib.init>`
@@ -49,6 +51,7 @@ def update():
 
 def update_on_event():
     """Updates goopylib every time an event occurs.
+    These can be key presses, cursor movement, window resizing, or others.
     """
     _core.update_on_event()
 
@@ -57,7 +60,7 @@ def update_timeout(timeout: float = 0):
     """Updates goopylib after a duration has passed.
 
     Args:
-        timeout: the duration (seconds) to wait between updates. Defaults to `0`.
+        timeout: the duration (seconds) to wait between updates.
 
     Raises:
         ValueError: if timeout is less than 0
@@ -65,23 +68,24 @@ def update_timeout(timeout: float = 0):
     _core.update_timeout(timeout)
 
 
-def glfw_compiled_version() -> str:
-    """Returns the version of GLFW that goopylib was compiled with.
-    """
-    return _core.glfw_compiled_version()
+def set_buffer_swap_interval(interval: int):
+    """Sets the rate of swapping window buffers.
 
+    Args:
+        interval: the number of refreshes to wait before swapping buffers.
 
-def glfw_current_version() -> str:
-    """Returns the version of GLFW that is currently running.
+    Raises:
+        TypeError: if a non-integer value is passed.
+        ValueError: if interval is less than 0
     """
-    return _core.glfw_current_version()
+    return _core.set_buffer_swap_interval(interval)
 
 
 def get_refresh_rate() -> int:
     """Returns the refresh rate of the primary monitor.
 
     Returns:
-        int: the refresh rate in Hertz
+        the refresh rate in Hertz
 
     Raises:
         RuntimeError: if goopylib has not been initialized
@@ -93,7 +97,7 @@ def get_screen_width() -> int:
     """Returns the width of the primary monitor.
 
     Returns:
-        int: the screen width in screen coordinates
+        the screen width in screen coordinates
 
     Raises:
         RuntimeError: if goopylib has not been initialized
@@ -105,7 +109,7 @@ def get_screen_height() -> int:
     """Returns the height of the primary monitor.
 
     Returns:
-        int: the screen height in screen coordinates
+        the screen height in screen coordinates
 
     Raises:
         RuntimeError: if goopylib has not been initialized
@@ -122,17 +126,16 @@ def number_of_monitors() -> int:
     return _core.number_of_monitors()
 
 
-def set_buffer_swap_interval(interval: int):
-    """Sets the rate of swapping Window buffers.
-
-    Args:
-        interval: the number of refreshes to wait before swapping buffers.
-
-    Raises:
-        TypeError: if a non-integer value is passed.
-        ValueError: if interval is less than 0
+def glfw_compiled_version() -> str:
+    """Returns the version of GLFW that goopylib was compiled with.
     """
-    return _core.set_buffer_swap_interval(interval)
+    return _core.glfw_compiled_version()
+
+
+def glfw_current_version() -> str:
+    """Returns the version of GLFW that is currently running.
+    """
+    return _core.glfw_current_version()
 
 
 def opengl_version() -> str:

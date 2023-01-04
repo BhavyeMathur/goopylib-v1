@@ -1,20 +1,19 @@
-Window
-======
+goopylib.Window
+===============
 
-.. currentmodule:: goopylib
+.. currentmodule:: goopylib.core.window
 
 .. autoclass:: Window
     :undoc-members:
 
+    .. automethod:: is_closed
+    .. automethod:: is_open
+    .. automethod:: is_destroyed
+
     .. automethod:: update
     .. automethod:: destroy
-    .. automethod:: close
-    .. automethod:: is_open
-    .. automethod:: is_closed
 
     ----------
-
-    |
 
     Window Attributes
     -----------------
@@ -22,22 +21,22 @@ Window
     ``Window`` instances have many attributes that can be modified to configure the look of the Window. Here is a list:
 
     .. autosummary::
-        :toctree: generated
-
         Window.width
         Window.height
 
-        Window.x_position
-        Window.y_position
-
         Window.title
 
-        Window.resizable
+        Window.xpos
+        Window.ypos
+
+        Window.background
+
         Window.min_width
         Window.min_height
         Window.max_width
         Window.max_height
 
+        Window.resizable
         Window.decorated
         Window.floating
         Window.auto_minimized
@@ -46,61 +45,50 @@ Window
         Window.framebuffer_size
 
     .. automethod:: set_size
-    .. automethod:: get_size
     .. automethod:: set_position
-    .. automethod:: get_position
+    .. automethod:: get_frame_size
+    .. automethod:: get_content_scale
+    .. automethod:: get_framebuffer_size
 
     .. note::
 
-        These next attributes only apply to :func:`resizable<goopylib.resizable>` Windows
+        These next attributes only apply to :func:`resizable<goopylib.window.Window.resizable>` Windows
 
     .. automethod:: set_size_limits
-
-    ----------
-
-    .. automethod:: get_minimum_size
     .. automethod:: set_minimum_size
-
-    ----------
-
-    .. automethod:: get_maximum_size
     .. automethod:: set_maximum_size
 
     ----------
 
     .. automethod:: get_aspect_ratio
     .. automethod:: set_aspect_ratio
-    .. automethod:: get_frame_size
-    .. automethod:: get_content_scale
 
     |
 
     Window State Methods
     --------------------
 
-    .. automethod:: is_fullscreen
-    .. automethod:: fullscreen
-    .. automethod:: unfullscreen
-
-    ----------
-
-    .. automethod:: is_minimized
-    .. automethod:: minimize
-    .. automethod:: is_maximized
-    .. automethod:: maximize
     .. automethod:: restore
+    .. automethod:: fullscreen
+    .. automethod:: is_fullscreen
 
     ----------
 
-    .. automethod:: is_visible
+    .. automethod:: minimize
+    .. automethod:: is_minimized
+    .. automethod:: maximize
+    .. automethod:: is_maximized
+
+    ----------
+
     .. automethod:: show
-    .. automethod:: is_hidden
     .. automethod:: hide
+    .. automethod:: is_visible
 
     ----------
 
+    .. automethod:: focus
     .. automethod:: has_focus
-    .. automethod:: set_focus
     .. automethod:: request_attention
 
     ----------
@@ -111,6 +99,34 @@ Window
     -------------
 
     .. automethod:: is_mouse_hovering
+    .. automethod:: get_mouse_position
+    .. automethod:: set_cursor_mode
+    .. automethod:: check_shift_key
+    .. automethod:: check_control_key
+    .. automethod:: check_alt_key
+    .. automethod:: check_super_key
+    .. automethod:: check_key
+    .. automethod:: check_mouse_button
+    .. automethod:: check_left_click
+    .. automethod:: check_middle_click
+    .. automethod:: check_right_click
+
+    |
+
+    Camera & Projection
+    -------------------
+
+    .. automethod:: get_camera
+    .. automethod:: to_world
+    .. automethod:: to_screen
+
+    |
+
+    Static Methods
+    --------------
+
+    .. automethod:: update_all
+    .. automethod:: destroy_all
 
 |
 
@@ -124,15 +140,21 @@ The ``Window`` class provides several callback functions that can be set to exec
     :nosignatures:
 
     Window.resize_callback
-    Window.position_callback
     Window.close_callback
     Window.destroy_callback
+    Window.position_callback
     Window.minimize_callback
     Window.maximize_callback
     Window.focus_callback
     Window.refresh_callback
     Window.content_scale_callback
     Window.framebuffer_size_callback
+    Window.mouse_motion_callback
+    Window.mouse_enter_callback
+    Window.scroll_callback
+    Window.left_click_callback
+    Window.middle_click_callback
+    Window.right_click_callback
 
 These can be accessed and set like so:
 
@@ -141,7 +163,5 @@ These can be accessed and set like so:
     def callback_function():
         print("Window has been destroyed")
 
-        print(window.destroy_callback)  # default value is None
-        window.destroy_callback = callback_function
-
-.. autofunction:: set_buffer_swap_interval
+    print(window.destroy_callback)  # default value is None
+    window.destroy_callback = callback_function

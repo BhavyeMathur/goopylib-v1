@@ -181,16 +181,6 @@ namespace gp {
         return (bool) glfwGetWindowMonitor(m_Window);
     }
 
-    void Window::maximize() {
-        GP_CORE_INFO("gp::Window::maximize() - '{0}'", m_Title);
-        glfwMaximizeWindow(m_Window);
-    }
-
-    bool Window::isMaximized() const {
-        GP_CORE_TRACE("gp::Window::isMaximized() - '{0}'", m_Title);
-        return (bool) glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED);
-    }
-
     void Window::minimize() {
         GP_CORE_INFO("gp::Window::minimize() - '{0}'", m_Title);
         glfwIconifyWindow(m_Window);
@@ -199,6 +189,16 @@ namespace gp {
     bool Window::isMinimized() const {
         GP_CORE_TRACE("gp::Window::isMinimized() - '{0}'", m_Title);
         return (bool) glfwGetWindowAttrib(m_Window, GLFW_ICONIFIED);
+    }
+
+    void Window::maximize() {
+        GP_CORE_INFO("gp::Window::maximize() - '{0}'", m_Title);
+        glfwMaximizeWindow(m_Window);
+    }
+
+    bool Window::isMaximized() const {
+        GP_CORE_TRACE("gp::Window::isMaximized() - '{0}'", m_Title);
+        return (bool) glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED);
     }
 
     void Window::hide() {
