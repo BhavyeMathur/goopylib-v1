@@ -9,6 +9,95 @@
     font-size: 100%;
 }
 
+a.reference.internal code {
+    font-family: Lato, proxima-nova, Helvetica Neue, Arial, sans-serif;
+    font-size: 100%;
+}
+
+a.reference.internal[href="#goopylib.core.window.Window"] + ul .toctree-l4 a.reference.internal,
+a.reference.internal[href="#goopylib.scene.camera.Camera"] + ul .toctree-l4 a.reference.internal,
+a.reference.internal[href="#goopylib.scene.camera_controller.CameraController"] + ul .toctree-l4 a.reference.internal {
+    padding: 0 !important;
+}
+
+a.reference.internal[href="#goopylib.core.window.Window"] + ul .toctree-l4 a.reference.internal code,
+a.reference.internal[href="#goopylib.scene.camera.Camera"] + ul .toctree-l4 a.reference.internal code,
+a.reference.internal[href="#goopylib.scene.camera_controller.CameraController"] + ul .toctree-l4 a.reference.internal code {
+    display: none;
+}
+
+a.reference.internal[href="#goopylib.core.window.Window"] + ul .toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.destroy"],
+a.reference.internal[href="#goopylib.core.window.Window"] + ul .toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.set_size_limits"],
+a.reference.internal[href="#goopylib.core.window.Window"] + ul .toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.restore"],
+a.reference.internal[href="#goopylib.core.window.Window"] + ul .toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.is_mouse_hovering"],
+a.reference.internal[href="#goopylib.core.window.Window"] + ul .toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.get_camera"],
+a.reference.internal[href="#goopylib.core.window.Window"] + ul .toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.update_all"],
+
+a.reference.internal[href="#goopylib.scene.camera.Camera"] + ul .toctree-l4 a.reference.internal[href="#goopylib.scene.camera.Camera.move"],
+a.reference.internal[href="#goopylib.scene.camera.Camera"] + ul .toctree-l4 a.reference.internal[href="#goopylib.scene.camera.Camera.x"],
+
+a.reference.internal[href="#goopylib.scene.camera_controller.CameraController"] + ul .toctree-l4 a.reference.internal[href="#goopylib.scene.camera_controller.CameraController.enable_movement"],
+a.reference.internal[href="#goopylib.scene.camera_controller.CameraController"] + ul .toctree-l4 a.reference.internal[href="#goopylib.scene.camera_controller.CameraController.invert_movement"],
+a.reference.internal[href="#goopylib.scene.camera_controller.CameraController"] + ul .toctree-l4 a.reference.internal[href="#goopylib.scene.camera_controller.CameraController.horizontal_speed"],
+a.reference.internal[href="#goopylib.scene.camera_controller.CameraController"] + ul .toctree-l4 a.reference.internal[href="#goopylib.scene.camera_controller.CameraController.use_wasd"] {
+    padding: .4045em 1.618em .4045em 5.663em !important;
+}
+
+/*gp.Window navigation headers*/
+
+.toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.destroy"]::after {
+    content: "Window Attributes"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.set_size_limits"]::after {
+    content: "Size & Aspect Ratio"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.restore"]::after {
+    content: "Window States"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.is_mouse_hovering"]::after {
+    content: "Mouse & Keyboard"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.get_camera"]::after {
+    content: "Camera & Projection"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.core.window.Window.update_all"]::after {
+    content: "Static Methods"
+}
+
+/*gp.Camera navigation headers*/
+
+.toctree-l4 a.reference.internal[href="#goopylib.scene.camera.Camera.move"]::after {
+    content: "Camera Methods"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.scene.camera.Camera.x"]::after {
+    content: "Camera Attributes"
+}
+
+/*gp.CameraController navigation headers*/
+
+.toctree-l4 a.reference.internal[href="#goopylib.scene.camera_controller.CameraController.enable_movement"]::after {
+    content: "Enable/Disable Functions"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.scene.camera_controller.CameraController.invert_movement"]::after {
+    content: "Invert Functions"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.scene.camera_controller.CameraController.horizontal_speed"]::after {
+    content: "Controller Attributes"
+}
+
+.toctree-l4 a.reference.internal[href="#goopylib.scene.camera_controller.CameraController.use_wasd"]::after {
+    content: "Key Bindings"
+}
+
+
 #keyboard-key-ids col,
 #mouse-button-ids col {
     width: auto !important;

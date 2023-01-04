@@ -3,7 +3,7 @@ Keyboard Key IDs
 
 .. currentmodule:: goopylib.events.keyboard
 
-This is a list of all the valid keyboard key IDs that can be used with the goopylib ``Window`` to set callbacks,
+This is a list of all the valid keyboard key IDs that can be used with the goopylib Window to set callbacks,
 check for key events, and more.
 
 .. raw:: html

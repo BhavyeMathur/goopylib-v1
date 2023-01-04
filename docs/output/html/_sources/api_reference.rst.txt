@@ -2,10 +2,10 @@ API Reference
 =============
 
 .. toctree::
-    :maxdepth: 2
-
     api_reference/core/core
     api_reference/core/window
+
+    api_reference/scene
 
     api_reference/maths/easing
 

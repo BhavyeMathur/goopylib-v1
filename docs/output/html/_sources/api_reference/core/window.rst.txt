@@ -1,4 +1,4 @@
-goopylib.Window
+goopylib.window
 ===============
 
 .. currentmodule:: goopylib.core.window

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Camera Controller &mdash; goopylib 2.0.0.dev5 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/katex-math.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/bootstrapcustom.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/goopylib_logomark.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/katex.min.js"></script>
+        <script src="../../_static/auto-render.min.js"></script>
+        <script src="../../_static/katex_autorenderer.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> goopylib
+            <img src="../../_static/goopylib_primary_logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">goopylib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Camera Controller</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_reference/scene/camera_controller.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="camera-controller">
+<h1>Camera Controller<a class="headerlink" href="#camera-controller" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CameraController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../core/window.html#goopylib.core.window.Window" title="goopylib.core.window.Window"><span class="pre">goopylib.core.window.Window</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController" title="Permalink to this definition"></a></dt>
+<dd><p>Controller class that automatically manages camera movement, rotation, and zoom.</p>
+<p>This is a helper class that wraps around a Window’s camera and provides basic but quick functionality</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>window</strong> (<a class="reference internal" href="../core/window.html#goopylib.core.window.Window" title="goopylib.core.window.Window"><code class="xref py py-class docutils literal notranslate"><span class="pre">Window</span></code></a>) – the window to use</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Raises</dt><dd><p>TypeError: window must be a goopylib Window</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.update" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the controller. Call this method in the mainloop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.enable_movement">
+<span class="sig-name descname"><span class="pre">enable_movement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.enable_movement" title="Permalink to this definition"></a></dt>
+<dd><p>Enables automatic camera movement when the control keys are pressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to enable or disable movement</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – value must be a boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.enable_rotation">
+<span class="sig-name descname"><span class="pre">enable_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.enable_rotation" title="Permalink to this definition"></a></dt>
+<dd><p>Enables automatic camera rotation when the control keys are pressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to enable or disable rotation</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – value must be a boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.enable_zoom">
+<span class="sig-name descname"><span class="pre">enable_zoom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.enable_zoom" title="Permalink to this definition"></a></dt>
+<dd><p>Enables automatic camera zooming when the control keys are pressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to enable or disable zooming</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – value must be a boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.invert_movement">
+<span class="sig-name descname"><span class="pre">invert_movement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.invert_movement" title="Permalink to this definition"></a></dt>
+<dd><p>Inverts camera movement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to invert the movement</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – value must be a boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.invert_rotation">
+<span class="sig-name descname"><span class="pre">invert_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.invert_rotation" title="Permalink to this definition"></a></dt>
+<dd><p>Inverts camera rotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – whether to invert the rotation</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – value must be a boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.horizontal_speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">horizontal_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.horizontal_speed" title="Permalink to this definition"></a></dt>
+<dd><p>The horizontal movement speed of the camera.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – the horizontal movement speed</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – speed must be a number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.vertical_speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vertical_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.vertical_speed" title="Permalink to this definition"></a></dt>
+<dd><p>The vertical movement speed of the camera.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – the vertical movement speed</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – speed must be a number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.rotate_speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotate_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.rotate_speed" title="Permalink to this definition"></a></dt>
+<dd><p>The rotational speed of the camera.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – the rotation speed</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – speed must be a number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.zoom_speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zoom_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.zoom_speed" title="Permalink to this definition"></a></dt>
+<dd><p>The zoom speed of the camera.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> – the zoom speed</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – speed must be a number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.use_wasd">
+<span class="sig-name descname"><span class="pre">use_wasd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.use_wasd" title="Permalink to this definition"></a></dt>
+<dd><p>Binds the WASD keys for camera movement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.use_arrows">
+<span class="sig-name descname"><span class="pre">use_arrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.use_arrows" title="Permalink to this definition"></a></dt>
+<dd><p>Binds the arrow keys for camera movement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.set_movement_keys">
+<span class="sig-name descname"><span class="pre">set_movement_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">down</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.set_movement_keys" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the keys used for camera movement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>up</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – key to use for moving up</p></li>
+<li><p><strong>left</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – key to use for moving left</p></li>
+<li><p><strong>down</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – key to use for moving down</p></li>
+<li><p><strong>right</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – key to use for moving right</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – arguments must be keys</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.set_rotation_keys">
+<span class="sig-name descname"><span class="pre">set_rotation_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clockwise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anticlockwise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.set_rotation_keys" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the keys used for camera rotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clockwise</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – key to use for clockwise rotation</p></li>
+<li><p><strong>anticlockwise</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – key to use for anticlockwise rotation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – arguments must be keys</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.set_zoom_keys">
+<span class="sig-name descname"><span class="pre">set_zoom_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zoomin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoomout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.set_zoom_keys" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the keys used for camera zooming.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>zoomin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – key to use for zooming in</p></li>
+<li><p><strong>zoomout</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – key to use for zooming out</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – arguments must be keys</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Bhavye Mathur.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>goopylib.Window &mdash; goopylib 2.0.0.dev5 documentation</title>
+  <title>goopylib.window &mdash; goopylib 2.0.0.dev5 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" type="text/css" />
@@ -54,25 +54,77 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="core.html">goopylib.core</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">goopylib.Window</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.resize_callback.html">Resize Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.close_callback.html">Close Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.destroy_callback.html">Destroy Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.position_callback.html">Position Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.minimize_callback.html">Minimize Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.maximize_callback.html">Maximize Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.focus_callback.html">Focus Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.refresh_callback.html">Refresh Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.content_scale_callback.html">Content Scale Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.framebuffer_size_callback.html">Framebuffer Size Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.mouse_motion_callback.html">Mouse Motion Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.mouse_enter_callback.html">Mouse Enter Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.scroll_callback.html">Scroll Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.left_click_callback.html">Left Click Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.middle_click_callback.html">Middle Click Callback</a></li>
-<li class="toctree-l3"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.right_click_callback.html">Right Click Callback</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">goopylib.window</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#goopylib.core.window.Window"><code class="docutils literal notranslate"><span class="pre">Window</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.is_closed"><code class="docutils literal notranslate"><span class="pre">Window.is_closed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.is_open"><code class="docutils literal notranslate"><span class="pre">Window.is_open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.is_destroyed"><code class="docutils literal notranslate"><span class="pre">Window.is_destroyed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.update"><code class="docutils literal notranslate"><span class="pre">Window.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.destroy"><code class="docutils literal notranslate"><span class="pre">Window.destroy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.set_size"><code class="docutils literal notranslate"><span class="pre">Window.set_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.set_position"><code class="docutils literal notranslate"><span class="pre">Window.set_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.get_frame_size"><code class="docutils literal notranslate"><span class="pre">Window.get_frame_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.get_content_scale"><code class="docutils literal notranslate"><span class="pre">Window.get_content_scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.get_framebuffer_size"><code class="docutils literal notranslate"><span class="pre">Window.get_framebuffer_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.set_size_limits"><code class="docutils literal notranslate"><span class="pre">Window.set_size_limits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.set_min_size"><code class="docutils literal notranslate"><span class="pre">Window.set_min_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.set_max_size"><code class="docutils literal notranslate"><span class="pre">Window.set_max_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.get_aspect_ratio"><code class="docutils literal notranslate"><span class="pre">Window.get_aspect_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.set_aspect_ratio"><code class="docutils literal notranslate"><span class="pre">Window.set_aspect_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.restore"><code class="docutils literal notranslate"><span class="pre">Window.restore()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.fullscreen"><code class="docutils literal notranslate"><span class="pre">Window.fullscreen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.is_fullscreen"><code class="docutils literal notranslate"><span class="pre">Window.is_fullscreen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.minimize"><code class="docutils literal notranslate"><span class="pre">Window.minimize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.is_minimized"><code class="docutils literal notranslate"><span class="pre">Window.is_minimized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.maximize"><code class="docutils literal notranslate"><span class="pre">Window.maximize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.is_maximized"><code class="docutils literal notranslate"><span class="pre">Window.is_maximized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.show"><code class="docutils literal notranslate"><span class="pre">Window.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.hide"><code class="docutils literal notranslate"><span class="pre">Window.hide()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.is_visible"><code class="docutils literal notranslate"><span class="pre">Window.is_visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.focus"><code class="docutils literal notranslate"><span class="pre">Window.focus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.has_focus"><code class="docutils literal notranslate"><span class="pre">Window.has_focus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.request_attention"><code class="docutils literal notranslate"><span class="pre">Window.request_attention()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.is_mouse_hovering"><code class="docutils literal notranslate"><span class="pre">Window.is_mouse_hovering()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.get_mouse_position"><code class="docutils literal notranslate"><span class="pre">Window.get_mouse_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.set_cursor_mode"><code class="docutils literal notranslate"><span class="pre">Window.set_cursor_mode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_shift_key"><code class="docutils literal notranslate"><span class="pre">Window.check_shift_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_control_key"><code class="docutils literal notranslate"><span class="pre">Window.check_control_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_alt_key"><code class="docutils literal notranslate"><span class="pre">Window.check_alt_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_super_key"><code class="docutils literal notranslate"><span class="pre">Window.check_super_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_key"><code class="docutils literal notranslate"><span class="pre">Window.check_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_mouse_button"><code class="docutils literal notranslate"><span class="pre">Window.check_mouse_button()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_left_click"><code class="docutils literal notranslate"><span class="pre">Window.check_left_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_middle_click"><code class="docutils literal notranslate"><span class="pre">Window.check_middle_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.check_right_click"><code class="docutils literal notranslate"><span class="pre">Window.check_right_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.get_camera"><code class="docutils literal notranslate"><span class="pre">Window.get_camera()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.to_world"><code class="docutils literal notranslate"><span class="pre">Window.to_world()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.to_screen"><code class="docutils literal notranslate"><span class="pre">Window.to_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.update_all"><code class="docutils literal notranslate"><span class="pre">Window.update_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.window.Window.destroy_all"><code class="docutils literal notranslate"><span class="pre">Window.destroy_all()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#callback-functions">Callback Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.resize_callback.html">Resize Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.close_callback.html">Close Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.destroy_callback.html">Destroy Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.position_callback.html">Position Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.minimize_callback.html">Minimize Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.maximize_callback.html">Maximize Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.focus_callback.html">Focus Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.refresh_callback.html">Refresh Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.content_scale_callback.html">Content Scale Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.framebuffer_size_callback.html">Framebuffer Size Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.mouse_motion_callback.html">Mouse Motion Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.mouse_enter_callback.html">Mouse Enter Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.scroll_callback.html">Scroll Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.left_click_callback.html">Left Click Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.middle_click_callback.html">Middle Click Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.window.Window.right_click_callback.html">Right Click Callback</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../scene.html">goopylib.scene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../maths/easing.html">Easing Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../events/keyboard.html">Keyboard Key IDs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../events/mouse.html">Mouse Button IDs</a></li>
@@ -95,7 +147,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../../api_reference.html">API Reference</a></li>
-      <li class="breadcrumb-item active">goopylib.Window</li>
+      <li class="breadcrumb-item active">goopylib.window</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/api_reference/core/window.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -106,7 +158,7 @@
            <div itemprop="articleBody">
              
   <section id="goopylib-window">
-<h1>goopylib.Window<a class="headerlink" href="#goopylib-window" title="Permalink to this heading"></a></h1>
+<h1>goopylib.window<a class="headerlink" href="#goopylib-window" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="goopylib.core.window.Window">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'goopylib</span> <span class="pre">Window'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.window.Window" title="Permalink to this definition"></a></dt>
@@ -644,10 +696,10 @@ Once the user has given it attention, the system will automatically end the requ
 <h2>Camera &amp; Projection<a class="headerlink" href="#camera-projection" title="Permalink to this heading"></a></h2>
 <dl class="py method">
 <dt class="sig sig-object py" id="goopylib.core.window.Window.get_camera">
-<span class="sig-name descname"><span class="pre">get_camera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">goopylib.scene.camera.Camera</span></span></span><a class="headerlink" href="#goopylib.core.window.Window.get_camera" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_camera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../scene/camera.html#goopylib.scene.camera.Camera" title="goopylib.scene.camera.Camera"><span class="pre">goopylib.scene.camera.Camera</span></a></span></span><a class="headerlink" href="#goopylib.core.window.Window.get_camera" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code> – the Camera object associated with the window</p>
+<dd class="field-odd"><p><a class="reference internal" href="../scene/camera.html#goopylib.scene.camera.Camera" title="goopylib.scene.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a> – the Camera object associated with the window</p>
 </dd>
 </dl>
 </dd></dl>

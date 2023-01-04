@@ -3,7 +3,7 @@ Mouse Button IDs
 
 .. currentmodule:: goopylib.events.mouse
 
-This is a list of all the valid mouse buttons IDs that can be used with the goopylib ``Window`` to set callbacks,
+This is a list of all the valid mouse buttons IDs that can be used with the goopylib Window to set callbacks,
 check for mouse events, and more.
 
 .. autosummary::

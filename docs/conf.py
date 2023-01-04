@@ -90,11 +90,22 @@ def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
             # add `` around attribute names
             line = re.sub(r" ([a-zA-Z]\w+_\w*)(\W|$)", r" ``\1``\2", line)
 
-            # style None, int, and tuples
-            line = re.sub(r" (None|int|\([\w\d, \"']*\))(\s|$)", r" :py:class:`\1`\2", line)
+            # style None, int, and other Python types
+            line = re.sub(r" (None|int)(\s|$)", r" :py:class:`\1`\2", line)
+
+            # style tuples
+            line = re.sub(r" (\([\w\d\"']*,[\w\d, \"']*\))(\s|$)", r" :py:class:`\1`\2", line)
 
             if name.startswith("goopylib.maths.easing"):
+                if line.startswith(":type") and line.endswith(": float"):
+                    lines.pop(i)
+                    continue
+
                 line = re.sub(r" callable(\s|$)", r" :py:class:`callable`\1", line)
+                line = line.replace(" easing1 ", " ``easing1`` ")
+                line = line.replace(" easing2 ", " ``easing2`` ")
+                line = line.replace(" t ", " :py:class:`t` ")
+                line = line.replace("in-out ", "")
 
         lines[i] = line
         print("\t", line)
