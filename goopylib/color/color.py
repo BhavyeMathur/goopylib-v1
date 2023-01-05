@@ -4,11 +4,16 @@ Module defining colors
 
 from __future__ import annotations
 
+from typing import Union
+
 import goopylib.ext.color as _color
 
 
 # The reason docstrings for the class are copied to the __init__() method is because CLion (and presumably PyCharm)
-# renders the 'Raises' section with an odd identation otherwise.
+# renders the 'Raises' section with an odd indentation otherwise.
+
+# The reason the RGBA properties are repeated in all the subclasses is because the Sphinx autodoc "orderby source"
+# configuration doesn't seem to work with inherited members.
 
 
 class Color:
@@ -54,11 +59,35 @@ class Color:
         return self._color.__repr__()
 
     def __add__(self, other: Union[int, Color]) -> Color:
+        """
+        Adds an integer value to the RGB components of the color,
+        or adds the RGB components of another color supplied.
+        You can also use in-place addition.
+
+        Examples:
+            >>> Color(120, 50, 60) + 5  # increases the brightness by 5 points
+            Color(125, 55, 65)
+
+            >>> Color(15, 20, 30) + Color(60, 5, 30)
+            Color(75, 25, 60)
+        """
         if isinstance(other, Color):
             return self._color.__add__(other._color)
         return self._color.__add__(other)
 
     def __sub__(self, other: Union[int, Color]) -> Color:
+        """
+        Subtracts an integer value from the RGB components of the color,
+        or subtracts the RGB components of another color supplied.
+        You can also use in-place subtraction.
+
+        Examples:
+            >>> Color(120, 50, 60) - 5  # decreases the brightness by 5 points
+            Color(115, 45, 55)
+
+            >>> Color(60, 80, 100) - Color(10, 20, 30)
+            Color(50, 60, 70)
+        """
         if isinstance(other, Color):
             return self._color.__sub__(other._color)
         return self._color.__sub__(other)
@@ -76,7 +105,8 @@ class Color:
     @property
     def red(self) -> int:
         """
-        Returns: the red component of the color
+        Returns:
+            the red component of the color
         """
         return self._color.red
 
@@ -87,7 +117,8 @@ class Color:
     @property
     def green(self) -> int:
         """
-        Returns: the green component of the color
+        Returns:
+            the green component of the color
         """
         return self._color.green
 
@@ -98,7 +129,8 @@ class Color:
     @property
     def blue(self) -> int:
         """
-        Returns: the blue component of the color
+        Returns:
+            the blue component of the color
         """
         return self._color.blue
 
@@ -109,7 +141,8 @@ class Color:
     @property
     def alpha(self) -> float:
         """
-        Returns: the alpha component of the color
+        Returns:
+            the alpha component of the color
         """
         return self._color.alpha
 
@@ -121,6 +154,7 @@ class Color:
 class ColorRGB(Color):
     """
     Create an RGB color by passing RGB arguments with an optional alpha parameter.
+
     Convert another color object to RGB by passing it as a parameter.
 
     Raises:
@@ -140,6 +174,7 @@ class ColorRGB(Color):
     def __init__(self, *args):
         """
         Create an RGB color by passing RGB arguments with an optional alpha parameter.
+
         Convert another color object to RGB by passing it as a parameter.
 
         Raises:
@@ -157,10 +192,59 @@ class ColorRGB(Color):
         """
         self._color = _color.ColorRGB(*args)
 
+    @property
+    def red(self) -> int:
+        """
+        Returns:
+            the red component of the color
+        """
+        return self._color.red
+
+    @red.setter
+    def red(self, value: int):
+        self._color.red = value
+
+    @property
+    def green(self) -> int:
+        """
+        Returns:
+            the green component of the color
+        """
+        return self._color.green
+
+    @green.setter
+    def green(self, value: int):
+        self._color.green = value
+
+    @property
+    def blue(self) -> int:
+        """
+        Returns:
+            the blue component of the color
+        """
+        return self._color.blue
+
+    @blue.setter
+    def blue(self, value: int):
+        self._color.blue = value
+
+    @property
+    def alpha(self) -> float:
+        """
+        Returns:
+            the alpha component of the color
+        """
+        return self._color.alpha
+
+    @alpha.setter
+    def alpha(self, value: float):
+        self._color.alpha = value
+
 
 class ColorHex(Color):
     """
     Create a Hexadecimal color by passing a hexstring with an optional alpha parameter. The '#' is optional.
+
     Convert another color object to Hexadecimal by passing it as a parameter.
 
     Raises:
@@ -179,6 +263,7 @@ class ColorHex(Color):
     def __init__(self, *args):
         """
         Create a Hexadecimal color by passing a hexstring with an optional alpha parameter. The '#' is optional.
+
         Convert another color object to Hexadecimal by passing it as a parameter.
 
         Raises:
@@ -196,10 +281,66 @@ class ColorHex(Color):
 
         self._color = _color.ColorHex(*args)
 
+    def __repr__(self) -> str:
+        """
+        Returns:
+            the hexadecimal string
+        """
+        return self._color.__repr__()
+
+    @property
+    def red(self) -> int:
+        """
+        Returns:
+            the red component of the color
+        """
+        return self._color.red
+
+    @red.setter
+    def red(self, value: int):
+        self._color.red = value
+
+    @property
+    def green(self) -> int:
+        """
+        Returns:
+            the green component of the color
+        """
+        return self._color.green
+
+    @green.setter
+    def green(self, value: int):
+        self._color.green = value
+
+    @property
+    def blue(self) -> int:
+        """
+        Returns:
+            the blue component of the color
+        """
+        return self._color.blue
+
+    @blue.setter
+    def blue(self, value: int):
+        self._color.blue = value
+
+    @property
+    def alpha(self) -> float:
+        """
+        Returns:
+            the alpha component of the color
+        """
+        return self._color.alpha
+
+    @alpha.setter
+    def alpha(self, value: float):
+        self._color.alpha = value
+
 
 class ColorCMYK(Color):
     """
     Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha.
+
     Convert another color object to CMYK by passing it as a parameter.
 
     Raises:
@@ -219,6 +360,7 @@ class ColorCMYK(Color):
     def __init__(self, *args):
         """
         Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha. All parameters are between 0-1.
+
         Convert another color object to CMYK by passing it as a parameter.
 
         Raises:
@@ -239,7 +381,8 @@ class ColorCMYK(Color):
     @property
     def cyan(self) -> float:
         """
-        Returns: the cyan component of the color
+        Returns:
+            the cyan component of the color
         """
         return self._color.cyan
 
@@ -250,7 +393,8 @@ class ColorCMYK(Color):
     @property
     def magenta(self) -> float:
         """
-        Returns: the magenta component of the color
+        Returns:
+            the magenta component of the color
         """
         return self._color.magenta
 
@@ -261,7 +405,8 @@ class ColorCMYK(Color):
     @property
     def yellow(self) -> float:
         """
-        Returns: the yellow component of the color
+        Returns:
+            the yellow component of the color
         """
         return self._color.yellow
 
@@ -272,7 +417,8 @@ class ColorCMYK(Color):
     @property
     def key(self) -> float:
         """
-        Returns: the key component of the color
+        Returns:
+            the key component of the color
         """
         return self._color.key
 
@@ -280,10 +426,59 @@ class ColorCMYK(Color):
     def key(self, value: float):
         self._color.key = value
 
+    @property
+    def red(self) -> int:
+        """
+        Returns:
+            the red component of the color
+        """
+        return self._color.red
+
+    @red.setter
+    def red(self, value: int):
+        self._color.red = value
+
+    @property
+    def green(self) -> int:
+        """
+        Returns:
+            the green component of the color
+        """
+        return self._color.green
+
+    @green.setter
+    def green(self, value: int):
+        self._color.green = value
+
+    @property
+    def blue(self) -> int:
+        """
+        Returns:
+            the blue component of the color
+        """
+        return self._color.blue
+
+    @blue.setter
+    def blue(self, value: int):
+        self._color.blue = value
+
+    @property
+    def alpha(self) -> float:
+        """
+        Returns:
+            the alpha component of the color
+        """
+        return self._color.alpha
+
+    @alpha.setter
+    def alpha(self, value: float):
+        self._color.alpha = value
+
 
 class ColorHSV(Color):
     """
     Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)
+
     Convert another color object to HSV by passing it as a parameter.
 
     Raises:
@@ -303,6 +498,7 @@ class ColorHSV(Color):
     def __init__(self, *args):
         """
         Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)
+
         Convert another color object to HSV by passing it as a parameter.
 
         Raises:
@@ -323,7 +519,8 @@ class ColorHSV(Color):
     @property
     def hue(self) -> int:
         """
-        Returns: the hue component of the color
+        Returns:
+            the hue component of the color
         """
         return self._color.hue
 
@@ -334,7 +531,8 @@ class ColorHSV(Color):
     @property
     def saturation(self) -> float:
         """
-        Returns: the saturation component of the color
+        Returns:
+            the saturation component of the color
         """
         return self._color.saturation
 
@@ -345,7 +543,8 @@ class ColorHSV(Color):
     @property
     def value(self) -> float:
         """
-        Returns: the value component of the color
+        Returns:
+            the value component of the color
         """
         return self._color.value
 
@@ -353,10 +552,59 @@ class ColorHSV(Color):
     def value(self, value: float):
         self._color.value = value
 
+    @property
+    def red(self) -> int:
+        """
+        Returns:
+            the red component of the color
+        """
+        return self._color.red
+
+    @red.setter
+    def red(self, value: int):
+        self._color.red = value
+
+    @property
+    def green(self) -> int:
+        """
+        Returns:
+            the green component of the color
+        """
+        return self._color.green
+
+    @green.setter
+    def green(self, value: int):
+        self._color.green = value
+
+    @property
+    def blue(self) -> int:
+        """
+        Returns:
+            the blue component of the color
+        """
+        return self._color.blue
+
+    @blue.setter
+    def blue(self, value: int):
+        self._color.blue = value
+
+    @property
+    def alpha(self) -> float:
+        """
+        Returns:
+            the alpha component of the color
+        """
+        return self._color.alpha
+
+    @alpha.setter
+    def alpha(self, value: float):
+        self._color.alpha = value
+
 
 class ColorHSL(Color):
     """
     Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)
+
     Convert another color object to HSL by passing it as a parameter.
 
     Raises:
@@ -376,6 +624,7 @@ class ColorHSL(Color):
     def __init__(self, *args):
         """
         Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)
+
         Convert another color object to HSL by passing it as a parameter.
 
         Raises:
@@ -396,7 +645,8 @@ class ColorHSL(Color):
     @property
     def hue(self) -> int:
         """
-        Returns: the hue component of the color
+        Returns:
+            the hue component of the color
         """
         return self._color.hue
 
@@ -407,7 +657,8 @@ class ColorHSL(Color):
     @property
     def saturation(self) -> float:
         """
-        Returns: the saturation component of the color
+        Returns:
+            the saturation component of the color
         """
         return self._color.saturation
 
@@ -418,10 +669,59 @@ class ColorHSL(Color):
     @property
     def luminance(self) -> float:
         """
-        Returns: the luminance component of the color
+        Returns:
+            the luminance component of the color
         """
         return self._color.luminance
 
     @luminance.setter
     def luminance(self, value: float):
         self._color.luminance = value
+
+    @property
+    def red(self) -> int:
+        """
+        Returns:
+            the red component of the color
+        """
+        return self._color.red
+
+    @red.setter
+    def red(self, value: int):
+        self._color.red = value
+
+    @property
+    def green(self) -> int:
+        """
+        Returns:
+            the green component of the color
+        """
+        return self._color.green
+
+    @green.setter
+    def green(self, value: int):
+        self._color.green = value
+
+    @property
+    def blue(self) -> int:
+        """
+        Returns:
+            the blue component of the color
+        """
+        return self._color.blue
+
+    @blue.setter
+    def blue(self, value: int):
+        self._color.blue = value
+
+    @property
+    def alpha(self) -> float:
+        """
+        Returns:
+            the alpha component of the color
+        """
+        return self._color.alpha
+
+    @alpha.setter
+    def alpha(self, value: float):
+        self._color.alpha = value

@@ -8,6 +8,7 @@ API Reference
     api_reference/objects
     api_reference/scene
 
+    api_reference/color
     api_reference/maths/easing
 
     api_reference/events/keyboard
