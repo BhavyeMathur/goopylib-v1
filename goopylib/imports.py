@@ -1,26 +1,26 @@
 """Helper module to import all goopylib functionality"""
 
-from goopylib.color.color import *
-from goopylib.color.conversions import *
-from goopylib.color.random import *
-from goopylib.color.w3cx11 import *
+from .color.color import *
+from .color.conversions import *
+from .color.random import *
+from .color.w3cx11 import *
 
-from goopylib.core.core import *
-from goopylib.core.window import *
+from .core.core import *
+from .core.window import *
 
-from goopylib.events.keyboard import *
-from goopylib.events.mouse import *
+from .events.keyboard import *
+from .events.mouse import *
 
-from goopylib.maths.easing import *
+from .maths.easing import *
 
-from goopylib.objects.circle import *
-from goopylib.objects.ellipse import *
-from goopylib.objects.image import *
-from goopylib.objects.line import *
-from goopylib.objects.quad import *
-from goopylib.objects.rectangle import *
-from goopylib.objects.renderable import *
-from goopylib.objects.triangle import *
+from .objects.circle import *
+from .objects.ellipse import *
+from .objects.image import *
+from .objects.line import *
+from .objects.quad import *
+from .objects.rectangle import *
+from .objects.renderable import *
+from .objects.triangle import *
 
-from goopylib.scene.camera import *
-from goopylib.scene.camera_controller import *
+from .scene.camera import *
+from .scene.camera_controller import *

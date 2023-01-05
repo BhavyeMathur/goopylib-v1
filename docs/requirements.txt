@@ -1,1 +1,2 @@
 sphinxcontrib-katex
+typing_extensions

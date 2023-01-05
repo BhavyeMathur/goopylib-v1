@@ -5,7 +5,6 @@ Module defining a generic Renderable object
 from __future__ import annotations
 
 from goopylib.core.window import Window
-import goopylib.ext.renderable as _renderable
 
 
 class Renderable:

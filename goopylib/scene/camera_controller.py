@@ -4,9 +4,9 @@ Module defining the Camera Controller helper class
 
 from __future__ import annotations
 
-from goopylib.core.window import Window
-
 import goopylib.ext.camera_controller as _controller
+
+from goopylib.core.window import Window
 
 
 class CameraController:
@@ -40,13 +40,13 @@ class CameraController:
             self._controller: CameraController = _controller.CameraController(self._window._window)
         else:
             self._controller: CameraController = _controller.CameraController(self._window)
-    
+
     def update(self):
         """
         Updates the controller. Call this method in the mainloop.
         """
         self._controller.update()
-    
+
     def enable_movement(self, value: bool):
         """
         Enables automatic camera movement when the control keys are pressed.
@@ -82,7 +82,7 @@ class CameraController:
             TypeError: value must be a boolean
         """
         self._controller.enable_zoom(value)
-    
+
     def invert_movement(self, value: bool):
         """
         Inverts camera movement.
@@ -94,7 +94,7 @@ class CameraController:
             TypeError: value must be a boolean
         """
         self._controller.invert_movement(value)
-    
+
     def invert_rotation(self, value: bool):
         """
         Inverts camera rotation.
@@ -106,7 +106,7 @@ class CameraController:
             TypeError: value must be a boolean
         """
         self._controller.invert_rotation(value)
-    
+
     @property
     def horizontal_speed(self) -> float:
         """

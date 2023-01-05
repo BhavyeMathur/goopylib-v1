@@ -4,7 +4,10 @@ goopylib module that defines keyboard key constants
 
 from __future__ import annotations
 
-from typing import Final
+try:
+    from typing import Final
+except ImportError:
+    from typing_extensions import Final
 
 KEY_SPACE: Final[int] = 32
 KEY_APOSTROPHE: Final[int] = 39  # '

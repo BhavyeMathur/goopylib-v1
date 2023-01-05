@@ -34,7 +34,7 @@ class Rectangle(Quad):
 
             >>> Rectangle((0, 0), 50, 100)
     """
-    
+
     def __init__(self, p1: tuple[float, float], *args: Union[tuple[float, float], float]):
         """
         An object representing a rectangle

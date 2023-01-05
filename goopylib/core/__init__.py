@@ -2,5 +2,5 @@
 goopylib module initialization
 """
 
-from goopylib.core.core import *
-from goopylib.core.window import *
+from .core import *
+from .window import *
