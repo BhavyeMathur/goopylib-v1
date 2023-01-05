@@ -140,7 +140,7 @@ exclude_patterns = []
 html_theme = "sphinx_rtd_theme"
 html_css_files = ["css/style.css", "css/bootstrapcustom.min.css", "css/normalize/normalize.css"]
 
-html_logo = "../branding/logo/goopylib_primary_logo.svg"
+# html_logo = "../branding/logo/goopylib_primary_logo.svg"
 html_favicon = "../branding/logo/goopylib_logomark.ico"
 html_static_path = ["static"]
 

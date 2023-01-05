@@ -2,15 +2,17 @@
   <img src="./branding/logo/goopylib_primary_logo.svg" width="500" height="250">
 </div>
 
-[![License](https://img.shields.io/pypi/l/goopylib?color=0079b5)](./LICENSE.md)
+[![Downloads](https://static.pepy.tech/badge/goopylib)](https://pepy.tech/project/goopylib)
 [![PyPI](https://img.shields.io/pypi/v/goopylib?color=0091b5&label=release)](https://pypi.org/project/goopylib/)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/goopylib?color=00a3b5)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/goopylib)](https://pypi.org/project/goopylib/#files)
+[![GitHub](https://img.shields.io/github/license/BhavyeMathur/goopylib?color=0079b5)](./LICENSE.md)
 
 -----------------
 
 ## What is it?
-goopylib is powerful game, graphics, and GUI library for Python and C++ to build cross-platform applications. It allows you to unlock the potential of OpenGL and low-level graphics with a high-level, simple-yet-powerful API.
+goopylib is powerful game, graphics, and GUI library for Python and C++ to build cross-platform applications.
+It allows you to unlock the potential of OpenGL and low-level graphics with a high-level, simple-yet-powerful API.
 
 ### Key Features:
  - Cross-Platform & Powerful
@@ -35,7 +37,8 @@ goopylib is powerful game, graphics, and GUI library for Python and C++ to build
 
 ## Installation
 
-**Requires Python ≥ 3.8.** To install goopylib on Windows or MacOS, use the [Python Package Index (PyPI)](https://pypi.org/project/goopylib):
+**Requires Python ≥ 3.8.** To install goopylib on Windows or MacOS, use the
+[Python Package Index (PyPI)](https://pypi.org/project/goopylib):
 
 ```sh
 pip install goopylib
@@ -93,10 +96,15 @@ while window.is_open():
 
 ## Documentation
 
-The documentation for goopylib is currently under development. Please submit an issue or email bhavyemathur@gmail.com for any questions!
+The documentation for goopylib is currently under development. 
+Please submit an issue or email bhavyemathur@gmail.com for any questions!
 
 ## Contributing & Usage
 
-Contributions to goopylib are absolutely welcome! Please reach out to me if you have an idea or feature request or submit a pull request yourself. I'd love to hear if you've used goopylib for a project - maybe we could even add some screenshots to a gallery. 
+Contributions to goopylib are absolutely welcome! Please reach out to me if you have an idea or feature request or
+submit a pull request yourself. I'd love to hear if you've used goopylib for a project - maybe we could even add some 
+screenshots to a gallery. 
 
-goopylib is licensed under the [Mozilla Public License Version 2.0](./LICENSE.md) which essentially enables you use and modify goopylib (commercially or otherwise) as long as you attribute the project! See [choosealicense.com](https://choosealicense.com/licenses/mpl-2.0/) for more details.
+goopylib is licensed under the [Mozilla Public License Version 2.0](./LICENSE.md) which essentially enables you use 
+and modify goopylib (commercially or otherwise) as long as you attribute the project! See
+[choosealicense.com](https://choosealicense.com/licenses/mpl-2.0/) for more details.
