@@ -26,7 +26,7 @@ def ease_linear() -> EasingType:
 
     .. math::
 
-        \text{ease\_linear}(t) = t
+        \text{ease_linear}(t) = t
 
     Returns:
         a linear ease callable
@@ -39,7 +39,7 @@ def ease_poly(power: float = 6) -> EasingType:
 
     .. math::
 
-        \text{ease\_poly}(t) = t^{\text{power}}
+        \text{ease_poly}(t) = t^{\text{power}}
 
     Args:
         power (float): The exponent defining the easing.
@@ -55,7 +55,7 @@ def ease_poly_in(power: float = 6) -> EasingType:
 
     .. math::
 
-        \text{ease\_poly}(t) = t^{\text{power}}
+        \text{ease_poly}(t) = t^{\text{power}}
 
     Args:
         power (float): The exponent defining the easing.
@@ -71,7 +71,7 @@ def ease_poly_out(power: float = 6) -> EasingType:
 
     .. math::
 
-        \text{ease\_poly}(t) = t^{\text{power}}
+        \text{ease_poly}(t) = t^{\text{power}}
 
     Args:
         power (float): The exponent defining the easing.
@@ -87,7 +87,7 @@ def ease_quad() -> EasingType:
 
     .. math::
 
-        \text{ease\_quad}(t) = t^{2}
+        \text{ease_quad}(t) = t^{2}
 
     Returns:
         a quadratic in-out ease callable
@@ -100,7 +100,7 @@ def ease_quad_in() -> EasingType:
 
     .. math::
 
-        \text{ease\_quad}(t) = t^{2}
+        \text{ease_quad}(t) = t^{2}
 
     Returns:
         a quadratic in ease callable
@@ -113,7 +113,7 @@ def ease_quad_out() -> EasingType:
 
     .. math::
 
-        \text{ease\_quad}(t) = t^{2}
+        \text{ease_quad}(t) = t^{2}
 
     Returns:
         a quadratic out ease callable
@@ -126,7 +126,7 @@ def ease_cubic() -> EasingType:
 
     .. math::
 
-        \text{ease\_cubic}(t) = t^{3}
+        \text{ease_cubic}(t) = t^{3}
 
     Returns:
         a cubic in-out ease callable
@@ -139,7 +139,7 @@ def ease_cubic_in() -> EasingType:
 
     .. math::
 
-        \text{ease\_cubic}(t) = t^{3}
+        \text{ease_cubic}(t) = t^{3}
 
     Returns:
         a cubic in ease callable
@@ -152,7 +152,7 @@ def ease_cubic_out() -> EasingType:
 
     .. math::
 
-        \text{ease\_cubic}(t) = t^{3}
+        \text{ease_cubic}(t) = t^{3}
 
     Returns:
         a cubic out ease callable
@@ -165,7 +165,7 @@ def ease_quart() -> EasingType:
 
     .. math::
 
-        \text{ease\_quart}(t) = t^{4}
+        \text{ease_quart}(t) = t^{4}
 
     Returns:
         a quartic in-out ease callable
@@ -178,7 +178,7 @@ def ease_quart_in() -> EasingType:
 
     .. math::
 
-        \text{ease\_quart}(t) = t^{4}
+        \text{ease_quart}(t) = t^{4}
 
     Returns:
         a quartic in ease callable
@@ -191,7 +191,7 @@ def ease_quart_out() -> EasingType:
 
     .. math::
 
-        \text{ease\_quart}(t) = t^{4}
+        \text{ease_quart}(t) = t^{4}
 
     Returns:
         a quartic out ease callable
@@ -204,7 +204,7 @@ def ease_quint() -> EasingType:
 
     .. math::
 
-        \text{ease\_quint}(t) = t^{5}
+        \text{ease_quint}(t) = t^{5}
 
     Returns:
         a quintic in-out ease callable
@@ -217,7 +217,7 @@ def ease_quint_in() -> EasingType:
 
     .. math::
 
-        \text{ease\_quint}(t) = t^{5}
+        \text{ease_quint}(t) = t^{5}
 
     Returns:
         a quintic in ease callable
@@ -230,7 +230,7 @@ def ease_quint_out() -> EasingType:
 
     .. math::
 
-        \text{ease\_quint}(t) = t^{5}
+        \text{ease_quint}(t) = t^{5}
 
     Returns:
         a quintic out ease callable
@@ -243,7 +243,7 @@ def ease_circle() -> EasingType:
 
     .. math::
 
-        \text{ease\_circle}(t) = 1 - \sqrt{1 - t^2}
+        \text{ease_circle}(t) = 1 - \sqrt{1 - t^2}
 
     Returns:
         an circular in-out ease callable
@@ -256,7 +256,7 @@ def ease_circle_in() -> EasingType:
 
     .. math::
 
-        \text{ease\_circle}(t) = 1 - \sqrt{1 - t^2}
+        \text{ease_circle}(t) = 1 - \sqrt{1 - t^2}
 
     Returns:
         an circular in ease callable
@@ -269,7 +269,7 @@ def ease_circle_out() -> EasingType:
 
     .. math::
 
-        \text{ease\_circle}(t) = 1 - \sqrt{1 - t^2}
+        \text{ease_circle}(t) = 1 - \sqrt{1 - t^2}
 
     Returns:
         an circular out ease callable
@@ -282,7 +282,7 @@ def ease_sin() -> EasingType:
 
     .. math::
 
-        \text{ease\_sin}(t) = 1 - \text{cos}(t\pi/2)
+        \text{ease_sin}(t) = 1 - \text{cos}(t\pi/2)
 
     Returns:
         a sine in-out ease callable
@@ -295,7 +295,7 @@ def ease_sin_in() -> EasingType:
 
     .. math::
 
-        \text{ease\_sin}(t) = 1 - \text{cos}(t\pi/2)
+        \text{ease_sin}(t) = 1 - \text{cos}(t\pi/2)
 
     Returns:
         a sine in ease callable
@@ -308,7 +308,7 @@ def ease_sin_out() -> EasingType:
 
     .. math::
 
-        \text{ease\_sin}(t) = 1 - \text{cos}(t\pi/2)
+        \text{ease_sin}(t) = 1 - \text{cos}(t\pi/2)
 
     Returns:
         a sine out ease callable
@@ -321,7 +321,7 @@ def ease_exp(base: float = 2.718281828459045) -> EasingType:
 
     .. math::
 
-        \text{ease\_exp}(t) = \text{base}^{10(t - 1)}
+        \text{ease_exp}(t) = \text{base}^{10(t - 1)}
 
     Args:
         base (float): The base of the exponential function.
@@ -337,7 +337,7 @@ def ease_exp_in(base: float = 2.718281828459045) -> EasingType:
 
     .. math::
 
-        \text{ease\_exp}(t) = \text{base}^{10(t - 1)}
+        \text{ease_exp}(t) = \text{base}^{10(t - 1)}
 
     Args:
         base (float): The base of the exponential function.
@@ -353,7 +353,7 @@ def ease_exp_out(base: float = 2.718281828459045) -> EasingType:
 
     .. math::
 
-        \text{ease\_exp}(t) = \text{base}^{10(t - 1)}
+        \text{ease_exp}(t) = \text{base}^{10(t - 1)}
 
     Args:
         base (float): The base of the exponential function.
@@ -369,7 +369,7 @@ def ease_back(factor: float = 1.70158) -> EasingType:
 
     .. math::
 
-        \text{ease\_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
+        \text{ease_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
 
     Args:
         factor (float): The scale of the easing's stretch.
@@ -385,7 +385,7 @@ def ease_back_in(factor: float = 1.70158) -> EasingType:
 
     .. math::
 
-        \text{ease\_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
+        \text{ease_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
 
     Args:
         factor (float): The scale of the easing's stretch.
@@ -401,7 +401,7 @@ def ease_back_out(factor: float = 1.70158) -> EasingType:
 
     .. math::
 
-        \text{ease\_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
+        \text{ease_back}(t) = (\text{factor} + 1)\times t^3 - \text{factor}\times t^2
 
     Args:
         factor (float): The scale of the easing's stretch.
@@ -417,7 +417,7 @@ def ease_elastic(factor: int = 3) -> EasingType:
 
     .. math::
 
-        \text{ease\_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
+        \text{ease_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
 
     Args:
         factor (int): The number of elastic oscillations.
@@ -433,7 +433,7 @@ def ease_elastic_in(factor: int = 3) -> EasingType:
 
     .. math::
 
-        \text{ease\_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
+        \text{ease_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
 
     Args:
         factor (int): The number of elastic oscillations.
@@ -449,7 +449,7 @@ def ease_elastic_out(factor: int = 3) -> EasingType:
 
     .. math::
 
-        \text{ease\_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
+        \text{ease_back}(t) = 2^{10(t - 1)}\text{sin}(t\pi/2\times(1 + 4\times\text{factor)})
 
     Args:
         factor (int): The number of elastic oscillations.
