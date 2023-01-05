@@ -9,6 +9,9 @@ goopylib.scene
 
 .. currentmodule:: goopylib.scene
 
+Camera Controller
+-----------------
+
 .. autoclass:: CameraController
     :undoc-members:
     :members:

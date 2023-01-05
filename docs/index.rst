@@ -6,10 +6,13 @@
 Welcome to goopylib's documentation!
 ====================================
 
-goopylib is powerful game, graphics, and GUI library for Python and C++ to build cross-platform applications. It allows you to unlock the potential of OpenGL and low-level graphics with a high-level, simple-yet-powerful API.
+goopylib is powerful game, graphics, and GUI library for Python and C++ to build cross-platform applications.
+It allows you to unlock the potential of OpenGL and low-level graphics with a high-level, simple-yet-powerful API.
 
 Contents
 ====================================
 
 .. toctree::
+   installation
+   getting_started
    api_reference
