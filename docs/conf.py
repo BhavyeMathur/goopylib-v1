@@ -8,10 +8,11 @@ import sys
 import os
 import re
 
-sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath("."))
 
-import goopylib as gp
+import goopylib_constants as gp
+
+sys.path.insert(0, os.path.abspath(".."))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -39,6 +40,8 @@ extensions = [
     "sphinx.ext.todo",
     "sphinxcontrib.katex"
 ]
+
+autodoc_mock_imports = ["goopylib.ext"]
 
 add_module_names = False
 todo_include_todos = True
