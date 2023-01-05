@@ -26,8 +26,6 @@ To begin, import the library, set-up a controller, and begin drawing objects:
     gp.terminate()  # make sure to terminate the library once you're done
 
 
-|
-
 **Explore the key submodules:**
 
 * :ref:`goopylib.core`

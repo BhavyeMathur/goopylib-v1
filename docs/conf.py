@@ -27,6 +27,7 @@ release = "2.0.0.dev5"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 master_doc = "index"
+source_suffix = '.rst'
 language = "en"
 
 extensions = [
@@ -132,12 +133,12 @@ def setup(app):
 
 
 templates_path = ["templates"]
-exclude_patterns = ["output", "sphinx-autodoc-typehints/*", "dev/*"]
+exclude_patterns = []
 
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = "sphinx_rtd_theme"
-html_css_files = ["css/style.css", "css/bootstrapcustom.min.css"]
+html_css_files = ["css/style.css", "css/bootstrapcustom.min.css", "css/normalize/normalize.css"]
 
 html_logo = "../branding/logo/goopylib_primary_logo.svg"
 html_favicon = "../branding/logo/goopylib_logomark.ico"

@@ -13,6 +13,10 @@ Wheels for Linux are not currently supported but coming as soon as I can build t
 
     The minimum required Python version is Python 3.8.
 
+-----------
+
+|
+
 Building goopylib using CMake
 -----------------------------
 
