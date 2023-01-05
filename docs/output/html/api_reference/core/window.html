@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>goopylib.window &mdash; goopylib 2.0.0.dev5 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/katex-math.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/bootstrapcustom.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/normalize/normalize.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/goopylib_logomark.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/katex.min.js"></script>
+        <script src="../../_static/auto-render.min.js"></script>
+        <script src="../../_static/katex_autorenderer.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Resize Callback" href="window_callbacks/goopylib.core.Window.resize_callback.html" />
+    <link rel="prev" title="goopylib.core" href="core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> goopylib
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="core.html">goopylib.core</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">goopylib.window</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#goopylib.core.Window"><code class="docutils literal notranslate"><span class="pre">Window</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.is_closed"><code class="docutils literal notranslate"><span class="pre">Window.is_closed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.is_open"><code class="docutils literal notranslate"><span class="pre">Window.is_open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.is_destroyed"><code class="docutils literal notranslate"><span class="pre">Window.is_destroyed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.update"><code class="docutils literal notranslate"><span class="pre">Window.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.destroy"><code class="docutils literal notranslate"><span class="pre">Window.destroy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.set_size"><code class="docutils literal notranslate"><span class="pre">Window.set_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.set_position"><code class="docutils literal notranslate"><span class="pre">Window.set_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.get_frame_size"><code class="docutils literal notranslate"><span class="pre">Window.get_frame_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.get_content_scale"><code class="docutils literal notranslate"><span class="pre">Window.get_content_scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.get_framebuffer_size"><code class="docutils literal notranslate"><span class="pre">Window.get_framebuffer_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.set_size_limits"><code class="docutils literal notranslate"><span class="pre">Window.set_size_limits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.set_min_size"><code class="docutils literal notranslate"><span class="pre">Window.set_min_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.set_max_size"><code class="docutils literal notranslate"><span class="pre">Window.set_max_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.get_aspect_ratio"><code class="docutils literal notranslate"><span class="pre">Window.get_aspect_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.set_aspect_ratio"><code class="docutils literal notranslate"><span class="pre">Window.set_aspect_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.restore"><code class="docutils literal notranslate"><span class="pre">Window.restore()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.fullscreen"><code class="docutils literal notranslate"><span class="pre">Window.fullscreen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.is_fullscreen"><code class="docutils literal notranslate"><span class="pre">Window.is_fullscreen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.minimize"><code class="docutils literal notranslate"><span class="pre">Window.minimize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.is_minimized"><code class="docutils literal notranslate"><span class="pre">Window.is_minimized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.maximize"><code class="docutils literal notranslate"><span class="pre">Window.maximize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.is_maximized"><code class="docutils literal notranslate"><span class="pre">Window.is_maximized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.show"><code class="docutils literal notranslate"><span class="pre">Window.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.hide"><code class="docutils literal notranslate"><span class="pre">Window.hide()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.is_visible"><code class="docutils literal notranslate"><span class="pre">Window.is_visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.focus"><code class="docutils literal notranslate"><span class="pre">Window.focus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.has_focus"><code class="docutils literal notranslate"><span class="pre">Window.has_focus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.request_attention"><code class="docutils literal notranslate"><span class="pre">Window.request_attention()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.is_mouse_hovering"><code class="docutils literal notranslate"><span class="pre">Window.is_mouse_hovering()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.get_mouse_position"><code class="docutils literal notranslate"><span class="pre">Window.get_mouse_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.set_cursor_mode"><code class="docutils literal notranslate"><span class="pre">Window.set_cursor_mode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_shift_key"><code class="docutils literal notranslate"><span class="pre">Window.check_shift_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_control_key"><code class="docutils literal notranslate"><span class="pre">Window.check_control_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_alt_key"><code class="docutils literal notranslate"><span class="pre">Window.check_alt_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_super_key"><code class="docutils literal notranslate"><span class="pre">Window.check_super_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_key"><code class="docutils literal notranslate"><span class="pre">Window.check_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_mouse_button"><code class="docutils literal notranslate"><span class="pre">Window.check_mouse_button()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_left_click"><code class="docutils literal notranslate"><span class="pre">Window.check_left_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_middle_click"><code class="docutils literal notranslate"><span class="pre">Window.check_middle_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.check_right_click"><code class="docutils literal notranslate"><span class="pre">Window.check_right_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.get_camera"><code class="docutils literal notranslate"><span class="pre">Window.get_camera()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.to_world"><code class="docutils literal notranslate"><span class="pre">Window.to_world()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.to_screen"><code class="docutils literal notranslate"><span class="pre">Window.to_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.update_all"><code class="docutils literal notranslate"><span class="pre">Window.update_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.core.Window.destroy_all"><code class="docutils literal notranslate"><span class="pre">Window.destroy_all()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#callback-functions">Callback Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.resize_callback.html">Resize Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.close_callback.html">Close Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.destroy_callback.html">Destroy Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.position_callback.html">Position Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.minimize_callback.html">Minimize Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.maximize_callback.html">Maximize Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.focus_callback.html">Focus Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.refresh_callback.html">Refresh Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.content_scale_callback.html">Content Scale Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.framebuffer_size_callback.html">Framebuffer Size Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.mouse_motion_callback.html">Mouse Motion Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.mouse_enter_callback.html">Mouse Enter Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.scroll_callback.html">Scroll Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.left_click_callback.html">Left Click Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.middle_click_callback.html">Middle Click Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window_callbacks/goopylib.core.Window.right_click_callback.html">Right Click Callback</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../objects.html">goopylib.objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scene.html">goopylib.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../color.html">goopylib.color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../maths/easing.html">Easing Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/keyboard.html">Keyboard Key IDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/mouse.html">Mouse Button IDs</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">goopylib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../api_reference.html">API Reference</a></li>
+      <li class="breadcrumb-item active">goopylib.window</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_reference/core/window.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="goopylib-window">
+<h1>goopylib.window<a class="headerlink" href="#goopylib-window" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="goopylib.core.Window">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'goopylib</span> <span class="pre">Window'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a window that can be used to draw graphics and widgets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>width</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – in screen coordinates</p></li>
+<li><p><strong>height</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – in screen coordinates</p></li>
+<li><p><strong>title</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'goopylib</span> <span class="pre">Window'</span></code>) – displayed in the title bar</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.is_closed">
+<span class="sig-name descname"><span class="pre">is_closed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.is_closed" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the window is closed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.is_open">
+<span class="sig-name descname"><span class="pre">is_open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.is_open" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the window is open.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.is_destroyed">
+<span class="sig-name descname"><span class="pre">is_destroyed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.is_destroyed" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the window has been destroyed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.update" title="Permalink to this definition"></a></dt>
+<dd><p>Refreshes the window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.destroy">
+<span class="sig-name descname"><span class="pre">destroy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.destroy" title="Permalink to this definition"></a></dt>
+<dd><p>Destroys &amp; closes the window.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Once the window is destroyed, accessing its attributes or calling its methods is undefined.</p>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<section id="window-attributes">
+<h2>Window Attributes<a class="headerlink" href="#window-attributes" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Window</span></code> instances have many attributes that can be modified to configure the look of the Window. Here is a list:</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.width</span></code></p></td>
+<td><p>The width of the window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.height</span></code></p></td>
+<td><p>The height of the window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.title</span></code></p></td>
+<td><p>The title of the window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.xpos</span></code></p></td>
+<td><p>The x position of the window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.ypos</span></code></p></td>
+<td><p>The y position of the window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.background</span></code></p></td>
+<td><p>The background color of the window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.min_width</span></code></p></td>
+<td><p>The minimum width of the window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.min_height</span></code></p></td>
+<td><p>The minimum height of the window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.max_width</span></code></p></td>
+<td><p>The maximum width of the window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.max_height</span></code></p></td>
+<td><p>The maximum height of the window.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.resizable</span></code></p></td>
+<td><p>Whether the window is resizable by the user or not.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.decorated</span></code></p></td>
+<td><p>Whether the window has window decorations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.floating</span></code></p></td>
+<td><p>Whether the window is always on top.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.auto_minimized</span></code></p></td>
+<td><p>Whether the window is automatically minimized when it loses focus.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.focused_on_show</span></code></p></td>
+<td><p>Whether the window gains input focus when it is shown.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.set_size">
+<span class="sig-name descname"><span class="pre">set_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.set_size" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the size of the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>width</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – in screen coordinates</p></li>
+<li><p><strong>height</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – in screen coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – width and height must be integers</p></li>
+<li><p><strong>ValueError</strong> – width and height must be greater than 0</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.set_position">
+<span class="sig-name descname"><span class="pre">set_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xpos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ypos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.set_position" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the position of the top-left of the window on the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xpos</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – in screen coordinates</p></li>
+<li><p><strong>ypos</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – in screen coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – xpos and ypos must be integers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.get_frame_size">
+<span class="sig-name descname"><span class="pre">get_frame_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.core.Window.get_frame_size" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the size, in screen coordinates, of the window frame.</p>
+<p>Decorated windows  have title bars and window frames around them. You can retrieve the sizes of these using this
+method. The returned values are the distances, in screen coordinates, from the edges of the content area to the
+corresponding edges of the full window. As they are distances and not coordinates, they are always zero or
+positive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>] – The size of the window’s frame in order <code class="xref py py-class docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">top,</span> <span class="pre">right,</span> <span class="pre">bottom)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.get_content_scale">
+<span class="sig-name descname"><span class="pre">get_content_scale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.core.Window.get_content_scale" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the scale of the content on the window.</p>
+<p>The content scale is the ratio between the current DPI and the platform’s default DPI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – A tuple representing the content scale as <code class="xref py py-class docutils literal notranslate"><span class="pre">(xscale,</span> <span class="pre">yscale)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.get_framebuffer_size">
+<span class="sig-name descname"><span class="pre">get_framebuffer_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.core.Window.get_framebuffer_size" title="Permalink to this definition"></a></dt>
+<dd><p>The size of the framebuffer for the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>] – A tuple <code class="xref py py-class docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code> representing the dimensions, in pixels, of the framebuffer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These methods only apply to <code class="xref py py-attr docutils literal notranslate"><span class="pre">resizable</span></code> Windows</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.set_size_limits">
+<span class="sig-name descname"><span class="pre">set_size_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.set_size_limits" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the minimum and maximum resizable dimensions of the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – All the parameters must be integers or <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>ValueError</strong> – <code class="docutils literal notranslate"><span class="pre">min_width</span></code> and <code class="docutils literal notranslate"><span class="pre">min_height</span></code> must be greater than or equal to 0.
+    <code class="docutils literal notranslate"><span class="pre">max_width</span></code> and <code class="docutils literal notranslate"><span class="pre">max_height</span></code> must be greater than or equal <code class="docutils literal notranslate"><span class="pre">min_width</span></code> and <code class="docutils literal notranslate"><span class="pre">min_height</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.set_min_size">
+<span class="sig-name descname"><span class="pre">set_min_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.set_min_size" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the minimum resizable dimensions of the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – <code class="docutils literal notranslate"><span class="pre">min_width</span></code> and <code class="docutils literal notranslate"><span class="pre">min_height</span></code> must be integers</p></li>
+<li><p><strong>ValueError</strong> – <code class="docutils literal notranslate"><span class="pre">min_width</span></code> and <code class="docutils literal notranslate"><span class="pre">min_height</span></code> must be greater than or equal to 0</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.set_max_size">
+<span class="sig-name descname"><span class="pre">set_max_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.set_max_size" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the maximum resizable dimensions of the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – <code class="docutils literal notranslate"><span class="pre">max_width</span></code> and <code class="docutils literal notranslate"><span class="pre">max_height</span></code> must be integers or <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>ValueError</strong> – <code class="docutils literal notranslate"><span class="pre">max_width</span></code> and <code class="docutils literal notranslate"><span class="pre">max_height</span></code> must be greater than or equal to <code class="docutils literal notranslate"><span class="pre">min_width</span></code> and <code class="docutils literal notranslate"><span class="pre">min_height</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.get_aspect_ratio">
+<span class="sig-name descname"><span class="pre">get_aspect_ratio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.core.Window.get_aspect_ratio" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the current aspect ratio of the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>] – A tuple representing the aspect ratio as <code class="xref py py-class docutils literal notranslate"><span class="pre">(numerator,</span> <span class="pre">denominator)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.set_aspect_ratio">
+<span class="sig-name descname"><span class="pre">set_aspect_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numerator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">denominator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.set_aspect_ratio" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the aspect ratio of the window.</p>
+<p>The aspect ratio is specified as a numerator and denominator, corresponding to the width and height,
+respectively. If you want a window to maintain its current aspect ratio, use its current size as the ratio.</p>
+<p>Set both arguments to <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code> to remove any aspect ratio configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – numerator and denominator must be integers or <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>ValueError</strong> – numerator and denominator must be greater than 0</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="window-state-methods">
+<h2>Window State Methods<a class="headerlink" href="#window-state-methods" title="Permalink to this heading"></a></h2>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.restore" title="Permalink to this definition"></a></dt>
+<dd><p>Restores a minimized, maximized, or fullscreen window back to normal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.fullscreen">
+<span class="sig-name descname"><span class="pre">fullscreen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.fullscreen" title="Permalink to this definition"></a></dt>
+<dd><p>Makes the window enter fullscreen mode.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.is_fullscreen">
+<span class="sig-name descname"><span class="pre">is_fullscreen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.is_fullscreen" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the window is in fullscreen mode.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.minimize" title="Permalink to this definition"></a></dt>
+<dd><p>Minimizes the window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.is_minimized">
+<span class="sig-name descname"><span class="pre">is_minimized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.is_minimized" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the window is in minimized mode.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.maximize">
+<span class="sig-name descname"><span class="pre">maximize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.maximize" title="Permalink to this definition"></a></dt>
+<dd><p>Maximizes the window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.is_maximized">
+<span class="sig-name descname"><span class="pre">is_maximized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.is_maximized" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the window is in maximized mode.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.show" title="Permalink to this definition"></a></dt>
+<dd><p>Makes the window visible to the user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hide</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.hide" title="Permalink to this definition"></a></dt>
+<dd><p>Makes the window invisible to the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hide</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – whether to hide/show the window</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.is_visible">
+<span class="sig-name descname"><span class="pre">is_visible</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.is_visible" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the window is visible to the user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.focus">
+<span class="sig-name descname"><span class="pre">focus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.focus" title="Permalink to this definition"></a></dt>
+<dd><p>Gives the window input focus and brings it to the front.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.has_focus">
+<span class="sig-name descname"><span class="pre">has_focus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.has_focus" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the window has input focus.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.request_attention">
+<span class="sig-name descname"><span class="pre">request_attention</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.request_attention" title="Permalink to this definition"></a></dt>
+<dd><p>Requests for the user’s attention to the window.</p>
+<p>The system will highlight the window, or on platforms where this is not supported, the application as a whole.
+Once the user has given it attention, the system will automatically end the request.</p>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="window-events">
+<h2>Window Events<a class="headerlink" href="#window-events" title="Permalink to this heading"></a></h2>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.is_mouse_hovering">
+<span class="sig-name descname"><span class="pre">is_mouse_hovering</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.is_mouse_hovering" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the mouse is hovering over the window.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.get_mouse_position">
+<span class="sig-name descname"><span class="pre">get_mouse_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.core.Window.get_mouse_position" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple <code class="xref py py-class docutils literal notranslate"><span class="pre">(xpos,</span> <span class="pre">ypos)</span></code> with the position of the mouse cursor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.set_cursor_mode">
+<span class="sig-name descname"><span class="pre">set_cursor_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.set_cursor_mode" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Normal:</dt><dd><p>makes the cursor visible and behave normally.</p>
+</dd>
+<dt>Hidden:</dt><dd><p>hides the cursor when it is over the window.</p>
+</dd>
+<dt>Disabled:</dt><dd><p>hides and grabs the cursor, providing virtual and unlimited cursor movement.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – one of “Normal”, “Disabled”, or “Hidden”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_shift_key">
+<span class="sig-name descname"><span class="pre">check_shift_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_shift_key" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the shift key is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_control_key">
+<span class="sig-name descname"><span class="pre">check_control_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_control_key" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the control key is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_alt_key">
+<span class="sig-name descname"><span class="pre">check_alt_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_alt_key" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the alt key is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_super_key">
+<span class="sig-name descname"><span class="pre">check_super_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_super_key" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the super key is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_key">
+<span class="sig-name descname"><span class="pre">check_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keycode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_key" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keycode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – an <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> corresponding to the keycode</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the specified key is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_mouse_button">
+<span class="sig-name descname"><span class="pre">check_mouse_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">button</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_mouse_button" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>button</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – an <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> corresponding to the mouse button</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the specified mouse button is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_left_click">
+<span class="sig-name descname"><span class="pre">check_left_click</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_left_click" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the left mouse button is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_middle_click">
+<span class="sig-name descname"><span class="pre">check_middle_click</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_middle_click" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the middle mouse button is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.check_right_click">
+<span class="sig-name descname"><span class="pre">check_right_click</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.core.Window.check_right_click" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the right mouse button is being pressed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="camera-projection">
+<h2>Camera &amp; Projection<a class="headerlink" href="#camera-projection" title="Permalink to this heading"></a></h2>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.get_camera">
+<span class="sig-name descname"><span class="pre">get_camera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../scene.html#goopylib.scene.Camera" title="goopylib.scene.camera.Camera"><span class="pre">Camera</span></a></span></span><a class="headerlink" href="#goopylib.core.Window.get_camera" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../scene.html#goopylib.scene.Camera" title="goopylib.scene.camera.Camera"><code class="xref py py-class docutils literal notranslate"><span class="pre">Camera</span></code></a> – the Camera object associated with the window</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.to_world">
+<span class="sig-name descname"><span class="pre">to_world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.core.Window.to_world" title="Permalink to this definition"></a></dt>
+<dd><p>Converts coordinates in screen space to world space.</p>
+<p>(0, 0) is the upper-left of the window in screen space</p>
+<p>(width, height) is the lower-right in screen space</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple <code class="xref py py-class docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> in world coordinates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.to_screen">
+<span class="sig-name descname"><span class="pre">to_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.core.Window.to_screen" title="Permalink to this definition"></a></dt>
+<dd><p>Converts coordinates in world space to screen space.</p>
+<p>With the default camera projection, <code class="xref py py-class docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0)</span></code> is the center in world space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple <code class="xref py py-class docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> in screen coordinates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="static-methods">
+<h2>Static Methods<a class="headerlink" href="#static-methods" title="Permalink to this heading"></a></h2>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.update_all">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.update_all" title="Permalink to this definition"></a></dt>
+<dd><p>Updates all the windows currently active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.core.Window.destroy_all">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">destroy_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.Window.destroy_all" title="Permalink to this definition"></a></dt>
+<dd><p>Destroys all active windows.</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="callback-functions">
+<h2>Callback Functions<a class="headerlink" href="#callback-functions" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Window</span></code> class provides several callback functions that can be set to execute code whenever certain events take place:</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.resize_callback.html#goopylib.core.Window.resize_callback" title="goopylib.core.Window.resize_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.resize_callback</span></code></a></p></td>
+<td><p>Callback executed when the window is resized.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.close_callback.html#goopylib.core.Window.close_callback" title="goopylib.core.Window.close_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.close_callback</span></code></a></p></td>
+<td><p>Callback executed when the window is attempted to be closed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.destroy_callback.html#goopylib.core.Window.destroy_callback" title="goopylib.core.Window.destroy_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.destroy_callback</span></code></a></p></td>
+<td><p>Callback executed when the window is destroyed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.position_callback.html#goopylib.core.Window.position_callback" title="goopylib.core.Window.position_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.position_callback</span></code></a></p></td>
+<td><p>Callback executed when the window is moved.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.minimize_callback.html#goopylib.core.Window.minimize_callback" title="goopylib.core.Window.minimize_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.minimize_callback</span></code></a></p></td>
+<td><p>Callback executed when the window is minimized.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.maximize_callback.html#goopylib.core.Window.maximize_callback" title="goopylib.core.Window.maximize_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.maximize_callback</span></code></a></p></td>
+<td><p>Callback executed when the window is maximized.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.focus_callback.html#goopylib.core.Window.focus_callback" title="goopylib.core.Window.focus_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.focus_callback</span></code></a></p></td>
+<td><p>Callback executed when the window gains input focus.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.refresh_callback.html#goopylib.core.Window.refresh_callback" title="goopylib.core.Window.refresh_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.refresh_callback</span></code></a></p></td>
+<td><p>Callback executed when the window needs refreshing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.content_scale_callback.html#goopylib.core.Window.content_scale_callback" title="goopylib.core.Window.content_scale_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.content_scale_callback</span></code></a></p></td>
+<td><p>Callback executed when the window's content scale changes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.framebuffer_size_callback.html#goopylib.core.Window.framebuffer_size_callback" title="goopylib.core.Window.framebuffer_size_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.framebuffer_size_callback</span></code></a></p></td>
+<td><p>Callback executed when the window's framebuffer size changes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.mouse_motion_callback.html#goopylib.core.Window.mouse_motion_callback" title="goopylib.core.Window.mouse_motion_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.mouse_motion_callback</span></code></a></p></td>
+<td><p>Callback executed when the mouse moves.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.mouse_enter_callback.html#goopylib.core.Window.mouse_enter_callback" title="goopylib.core.Window.mouse_enter_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.mouse_enter_callback</span></code></a></p></td>
+<td><p>Callback executed when the mouse enters/exits the window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.scroll_callback.html#goopylib.core.Window.scroll_callback" title="goopylib.core.Window.scroll_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.scroll_callback</span></code></a></p></td>
+<td><p>Callback executed when the mouse scrolls.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.left_click_callback.html#goopylib.core.Window.left_click_callback" title="goopylib.core.Window.left_click_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.left_click_callback</span></code></a></p></td>
+<td><p>Callback executed when the left mouse button is clicked.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.middle_click_callback.html#goopylib.core.Window.middle_click_callback" title="goopylib.core.Window.middle_click_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.middle_click_callback</span></code></a></p></td>
+<td><p>Callback executed when the middle mouse button is clicked.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="window_callbacks/goopylib.core.Window.right_click_callback.html#goopylib.core.Window.right_click_callback" title="goopylib.core.Window.right_click_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Window.right_click_callback</span></code></a></p></td>
+<td><p>Callback executed when the right mouse button is clicked.</p></td>
+</tr>
+</tbody>
+</table>
+<p>These can be accessed and set like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">callback_function</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Window has been destroyed&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">window</span><span class="o">.</span><span class="n">destroy_callback</span><span class="p">)</span>  <span class="c1"># default value is None</span>
+<span class="n">window</span><span class="o">.</span><span class="n">destroy_callback</span> <span class="o">=</span> <span class="n">callback_function</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="core.html" class="btn btn-neutral float-left" title="goopylib.core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="window_callbacks/goopylib.core.Window.resize_callback.html" class="btn btn-neutral float-right" title="Resize Callback" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Bhavye Mathur.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

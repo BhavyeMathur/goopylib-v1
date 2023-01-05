@@ -6,15 +6,11 @@ from __future__ import annotations
 
 from typing import Union
 
-# noinspection PyUnresolvedReferences
 import goopylib.ext.color
-# noinspection PyUnresolvedReferences
 import goopylib.ext.camera
-# noinspection PyUnresolvedReferences
 import goopylib.ext.window as _window
 
 from goopylib.color.color import Color
-from goopylib.scene.camera import Camera
 
 
 # TODO some of the docstrings (especially the callback functions) are essentially plagiarised from GLFW's docs.
@@ -1383,3 +1379,6 @@ class Window:
         Destroys all active windows.
         """
         _window.Window.destroy_all()
+
+
+from goopylib.scene.camera import Camera

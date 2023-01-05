@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ColorCMYK &mdash; goopylib 2.0.0.dev5 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/katex-math.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/bootstrapcustom.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/normalize/normalize.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/goopylib_logomark.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/katex.min.js"></script>
+        <script src="../../_static/auto-render.min.js"></script>
+        <script src="../../_static/katex_autorenderer.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ColorHSV" href="goopylib.color.ColorHSV.html" />
+    <link rel="prev" title="ColorHex" href="goopylib.color.ColorHex.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> goopylib
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core/core.html">goopylib.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/window.html">goopylib.window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../objects.html">goopylib.objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scene.html">goopylib.scene</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../color.html">goopylib.color</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="goopylib.color.Color.html">Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="goopylib.color.ColorRGB.html">ColorRGB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="goopylib.color.ColorHex.html">ColorHex</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ColorCMYK</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.ColorCMYK"><code class="docutils literal notranslate"><span class="pre">ColorCMYK</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="goopylib.color.ColorHSV.html">ColorHSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="goopylib.color.ColorHSL.html">ColorHSL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../color.html#module-goopylib.color.random">Random Colors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../color.html#rgb-conversions">RGB Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../color.html#hex-conversions">Hex Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../color.html#cmyk-conversions">CMYK Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../color.html#hsv-conversions">HSV Conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../color.html#hsl-conversions">HSL Conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../maths/easing.html">Easing Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/keyboard.html">Keyboard Key IDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/mouse.html">Mouse Button IDs</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">goopylib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../api_reference.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../color.html">goopylib.color</a></li>
+      <li class="breadcrumb-item active">ColorCMYK</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_reference/color/goopylib.color.ColorCMYK.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="colorcmyk">
+<h1>ColorCMYK<a class="headerlink" href="#colorcmyk" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ColorCMYK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.color.ColorCMYK" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="goopylib.color.Color.html#goopylib.color.Color" title="goopylib.color.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></p>
+<p>Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha. All parameters are between 0-1.</p>
+<p>Convert another color object to CMYK by passing it as a parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – CMYK, alpha values must be floats</p></li>
+<li><p><strong>ValueError</strong> – CMYK, alpha values must be between 0-1</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ColorCMYK</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="go">ColorCMYK(0.5, 0.4, 0.2, 0.1)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ColorCMYK</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="go">ColorCMYK(0.6, 0.9, 1, 1)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ColorCMYK</span><span class="p">(</span><span class="n">other_color</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.cyan">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cyan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.color.ColorCMYK.cyan" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.magenta">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magenta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.color.ColorCMYK.magenta" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.yellow">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">yellow</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.color.ColorCMYK.yellow" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.key">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.color.ColorCMYK.key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.red">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">red</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#goopylib.color.ColorCMYK.red" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.green">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">green</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#goopylib.color.ColorCMYK.green" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.blue">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">blue</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#goopylib.color.ColorCMYK.blue" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.alpha">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpha</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.color.ColorCMYK.alpha" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="goopylib.color.Color.html#goopylib.color.Color" title="goopylib.color.color.Color"><span class="pre">Color</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="goopylib.color.Color.html#goopylib.color.Color" title="goopylib.color.color.Color"><span class="pre">Color</span></a></span></span><a class="headerlink" href="#goopylib.color.ColorCMYK.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Adds an integer value to the RGB components of the color,
+or adds the RGB components of another color supplied.
+You can also use in-place addition.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span> <span class="o">+</span> <span class="mi">5</span>  <span class="c1"># increases the brightness by 5 points</span>
+<span class="go">Color(125, 55, 65)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="o">+</span> <span class="n">Color</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="go">Color(75, 25, 60)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="goopylib.color.Color.html#goopylib.color.Color" title="goopylib.color.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.color.ColorCMYK.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="goopylib.color.Color.html#goopylib.color.Color" title="goopylib.color.color.Color"><span class="pre">Color</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="goopylib.color.Color.html#goopylib.color.Color" title="goopylib.color.color.Color"><span class="pre">Color</span></a></span></span><a class="headerlink" href="#goopylib.color.ColorCMYK.__sub__" title="Permalink to this definition"></a></dt>
+<dd><p>Subtracts an integer value from the RGB components of the color,
+or subtracts the RGB components of another color supplied.
+You can also use in-place subtraction.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span> <span class="o">-</span> <span class="mi">5</span>  <span class="c1"># decreases the brightness by 5 points</span>
+<span class="go">Color(115, 45, 55)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-</span> <span class="n">Color</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="go">Color(50, 60, 70)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="goopylib.color.Color.html#goopylib.color.Color" title="goopylib.color.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="goopylib.color.ColorHex.html" class="btn btn-neutral float-left" title="ColorHex" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="goopylib.color.ColorHSV.html" class="btn btn-neutral float-right" title="ColorHSV" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Bhavye Mathur.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

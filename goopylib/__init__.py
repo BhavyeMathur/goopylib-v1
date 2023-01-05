@@ -10,5 +10,6 @@ if sys.platform == "win32":
 
 from .core import *
 from .objects import *
-
+from .maths import *
 from .events import *
+from .scene import *

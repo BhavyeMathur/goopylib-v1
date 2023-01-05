@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>goopylib.objects &mdash; goopylib 2.0.0.dev5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/katex-math.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/bootstrapcustom.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/normalize/normalize.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/goopylib_logomark.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/katex.min.js"></script>
+        <script src="../_static/auto-render.min.js"></script>
+        <script src="../_static/katex_autorenderer.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Line" href="objects/goopylib.objects.Line.html" />
+    <link rel="prev" title="Right Click Callback" href="core/window_callbacks/goopylib.core.Window.right_click_callback.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> goopylib
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="core/core.html">goopylib.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/window.html">goopylib.window</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">goopylib.objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="objects/goopylib.objects.Line.html">Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="objects/goopylib.objects.Triangle.html">Triangle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="objects/goopylib.objects.Quad.html">Quad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="objects/goopylib.objects.Ellipse.html">Ellipse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="objects/goopylib.objects.Image.html">Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goopylib.objects.Renderable"><code class="docutils literal notranslate"><span class="pre">Renderable</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.draw"><code class="docutils literal notranslate"><span class="pre">Renderable.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.destroy"><code class="docutils literal notranslate"><span class="pre">Renderable.destroy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.is_drawn"><code class="docutils literal notranslate"><span class="pre">Renderable.is_drawn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.set_anchor"><code class="docutils literal notranslate"><span class="pre">Renderable.set_anchor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.reset_anchor"><code class="docutils literal notranslate"><span class="pre">Renderable.reset_anchor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.move"><code class="docutils literal notranslate"><span class="pre">Renderable.move()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.rotate"><code class="docutils literal notranslate"><span class="pre">Renderable.rotate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.scale"><code class="docutils literal notranslate"><span class="pre">Renderable.scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.set_size"><code class="docutils literal notranslate"><span class="pre">Renderable.set_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.x"><code class="docutils literal notranslate"><span class="pre">Renderable.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.y"><code class="docutils literal notranslate"><span class="pre">Renderable.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.position"><code class="docutils literal notranslate"><span class="pre">Renderable.position</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.rotation"><code class="docutils literal notranslate"><span class="pre">Renderable.rotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.xscale"><code class="docutils literal notranslate"><span class="pre">Renderable.xscale</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.yscale"><code class="docutils literal notranslate"><span class="pre">Renderable.yscale</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.width"><code class="docutils literal notranslate"><span class="pre">Renderable.width</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.height"><code class="docutils literal notranslate"><span class="pre">Renderable.height</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.hide"><code class="docutils literal notranslate"><span class="pre">Renderable.hide()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.show"><code class="docutils literal notranslate"><span class="pre">Renderable.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.is_hidden"><code class="docutils literal notranslate"><span class="pre">Renderable.is_hidden()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.box_contains"><code class="docutils literal notranslate"><span class="pre">Renderable.box_contains()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.objects.Renderable.contains"><code class="docutils literal notranslate"><span class="pre">Renderable.contains()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scene.html">goopylib.scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">goopylib.color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maths/easing.html">Easing Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events/keyboard.html">Keyboard Key IDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events/mouse.html">Mouse Button IDs</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">goopylib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+      <li class="breadcrumb-item active">goopylib.objects</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api_reference/objects.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="goopylib-objects">
+<h1>goopylib.objects<a class="headerlink" href="#goopylib-objects" title="Permalink to this heading"></a></h1>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="objects/goopylib.objects.Line.html#goopylib.objects.Line" title="goopylib.objects.Line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Line</span></code></a>(p1, p2)</p></td>
+<td><p>An object representing a line connecting 2 points together.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="objects/goopylib.objects.Triangle.html#goopylib.objects.Triangle" title="goopylib.objects.Triangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Triangle</span></code></a>(p1, p2, p3)</p></td>
+<td><p>An object representing a triangle with 3 vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="objects/goopylib.objects.Quad.html#goopylib.objects.Quad" title="goopylib.objects.Quad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Quad</span></code></a>(p1, p2, p3, p4)</p></td>
+<td><p>An object representing a quad with 4 vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="objects/goopylib.objects.Ellipse.html#goopylib.objects.Ellipse" title="goopylib.objects.Ellipse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Ellipse</span></code></a>(p1, *args)</p></td>
+<td><p>An object representing an ellipse or oval</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="objects/goopylib.objects.Image.html#goopylib.objects.Image" title="goopylib.objects.Image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Image</span></code></a>(path, p1, *args)</p></td>
+<td><p>An object representing a textured rectangle - an image</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Renderable</span></span><a class="headerlink" href="#goopylib.objects.Renderable" title="Permalink to this definition"></a></dt>
+<dd><p>This is the base class from which all goopylib objects are derived. The methods provided can be called by any other
+goopylib objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – cannot directly initialize a Renderable</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="core/window.html#goopylib.core.Window" title="goopylib.core.window.Window"><span class="pre">Window</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.draw" title="Permalink to this definition"></a></dt>
+<dd><p>Draws the object to a window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>window</strong> (<a class="reference internal" href="core/window.html#goopylib.core.Window" title="goopylib.core.window.Window"><code class="xref py py-class docutils literal notranslate"><span class="pre">Window</span></code></a>) – the Window to draw to</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – argument must be a Window</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.destroy">
+<span class="sig-name descname"><span class="pre">destroy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.destroy" title="Permalink to this definition"></a></dt>
+<dd><p>Destroys and undraws the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.is_drawn">
+<span class="sig-name descname"><span class="pre">is_drawn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.objects.Renderable.is_drawn" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the object has been drawn</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.set_anchor">
+<span class="sig-name descname"><span class="pre">set_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.set_anchor" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the anchor (center) of the object to the specified coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – x and y must be numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.reset_anchor">
+<span class="sig-name descname"><span class="pre">reset_anchor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.reset_anchor" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the anchor of the object to its center (average of its vertices)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.move" title="Permalink to this definition"></a></dt>
+<dd><p>Moves (translates) the object across the screen</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dx</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+<li><p><strong>dy</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – dx and dy must be numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.rotate" title="Permalink to this definition"></a></dt>
+<dd><p>Rotates the object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>angle</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in degrees</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – angle must be a number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.scale">
+<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.scale" title="Permalink to this definition"></a></dt>
+<dd><p>Scales the object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>*args</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – a float representing the scale amount. 2 floats to scale the x and y components individually.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – scale factor must be numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.set_size">
+<span class="sig-name descname"><span class="pre">set_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.set_size" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the dimensions of the object by resizing it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>width</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+<li><p><strong>height</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – width and height must be numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.objects.Renderable.x" title="Permalink to this definition"></a></dt>
+<dd><p>The x-position of the object’s anchor in world coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – value must be a number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.objects.Renderable.y" title="Permalink to this definition"></a></dt>
+<dd><p>The y-position of the object’s anchor in world coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – value must be a number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.position">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#goopylib.objects.Renderable.position" title="Permalink to this definition"></a></dt>
+<dd><p>The position of the object’s anchor in world coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple <code class="xref py py-class docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> with the position</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – value must be a tuple of x, y numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.rotation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.objects.Renderable.rotation" title="Permalink to this definition"></a></dt>
+<dd><p>The rotation of the object in degrees</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – value must be a number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.xscale">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xscale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.objects.Renderable.xscale" title="Permalink to this definition"></a></dt>
+<dd><p>The x-scale of the object in %</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – value must be a number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.yscale">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">yscale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.objects.Renderable.yscale" title="Permalink to this definition"></a></dt>
+<dd><p>The y-scale of the object in %</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – value must be a number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.width">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.objects.Renderable.width" title="Permalink to this definition"></a></dt>
+<dd><p>The width of the object in world coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – value must be a number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.objects.Renderable.height" title="Permalink to this definition"></a></dt>
+<dd><p>The height of the object in world coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – value must be a number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hide</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.hide" title="Permalink to this definition"></a></dt>
+<dd><p>Hides the object from the window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hide</strong> – whether to hide or show</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – hide must be a boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.show" title="Permalink to this definition"></a></dt>
+<dd><p>Unhides the object if it was hidden</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.is_hidden">
+<span class="sig-name descname"><span class="pre">is_hidden</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#goopylib.objects.Renderable.is_hidden" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> – whether the object is hidden</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.box_contains">
+<span class="sig-name descname"><span class="pre">box_contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.box_contains" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the object’s rectangular bounding box contains a point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – x and y must be numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="goopylib.objects.Renderable.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.objects.Renderable.contains" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the object’s bounding box contains a point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – in world coordinates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – x and y must be numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="core/window_callbacks/goopylib.core.Window.right_click_callback.html" class="btn btn-neutral float-left" title="Right Click Callback" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="objects/goopylib.objects.Line.html" class="btn btn-neutral float-right" title="Line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Bhavye Mathur.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

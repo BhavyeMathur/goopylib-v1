@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>goopylib.color &mdash; goopylib 2.0.0.dev5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/katex-math.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/bootstrapcustom.min.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/normalize/normalize.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/goopylib_logomark.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/katex.min.js"></script>
+        <script src="../_static/auto-render.min.js"></script>
+        <script src="../_static/katex_autorenderer.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Color" href="color/goopylib.color.Color.html" />
+    <link rel="prev" title="goopylib.scene" href="scene.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> goopylib
+          </a>
+              <div class="version">
+                2.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="core/core.html">goopylib.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/window.html">goopylib.window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objects.html">goopylib.objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scene.html">goopylib.scene</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">goopylib.color</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="color/goopylib.color.Color.html">Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="color/goopylib.color.ColorRGB.html">ColorRGB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="color/goopylib.color.ColorHex.html">ColorHex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="color/goopylib.color.ColorCMYK.html">ColorCMYK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="color/goopylib.color.ColorHSV.html">ColorHSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="color/goopylib.color.ColorHSL.html">ColorHSL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-goopylib.color.random">Random Colors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.random.random_rgb"><code class="docutils literal notranslate"><span class="pre">random_rgb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.random.random_hex"><code class="docutils literal notranslate"><span class="pre">random_hex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.random.random_cmyk"><code class="docutils literal notranslate"><span class="pre">random_cmyk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.random.random_hsv"><code class="docutils literal notranslate"><span class="pre">random_hsv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.random.random_hsl"><code class="docutils literal notranslate"><span class="pre">random_hsl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#rgb-conversions">RGB Conversions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.rgb_to_hex"><code class="docutils literal notranslate"><span class="pre">rgb_to_hex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.rgb_to_cmyk"><code class="docutils literal notranslate"><span class="pre">rgb_to_cmyk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.rgb_to_hsv"><code class="docutils literal notranslate"><span class="pre">rgb_to_hsv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.rgb_to_hsl"><code class="docutils literal notranslate"><span class="pre">rgb_to_hsl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hex-conversions">Hex Conversions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hex_to_rgb"><code class="docutils literal notranslate"><span class="pre">hex_to_rgb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hex_to_cmyk"><code class="docutils literal notranslate"><span class="pre">hex_to_cmyk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hex_to_hsv"><code class="docutils literal notranslate"><span class="pre">hex_to_hsv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hex_to_hsl"><code class="docutils literal notranslate"><span class="pre">hex_to_hsl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cmyk-conversions">CMYK Conversions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.cmyk_to_rgb"><code class="docutils literal notranslate"><span class="pre">cmyk_to_rgb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.cmyk_to_hex"><code class="docutils literal notranslate"><span class="pre">cmyk_to_hex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.cmyk_to_hsv"><code class="docutils literal notranslate"><span class="pre">cmyk_to_hsv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.cmyk_to_hsl"><code class="docutils literal notranslate"><span class="pre">cmyk_to_hsl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hsv-conversions">HSV Conversions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hsv_to_rgb"><code class="docutils literal notranslate"><span class="pre">hsv_to_rgb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hsv_to_hex"><code class="docutils literal notranslate"><span class="pre">hsv_to_hex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hsv_to_cmyk"><code class="docutils literal notranslate"><span class="pre">hsv_to_cmyk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hsv_to_hsl"><code class="docutils literal notranslate"><span class="pre">hsv_to_hsl()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hsl-conversions">HSL Conversions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hsl_to_rgb"><code class="docutils literal notranslate"><span class="pre">hsl_to_rgb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hsl_to_hex"><code class="docutils literal notranslate"><span class="pre">hsl_to_hex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hsl_to_cmyk"><code class="docutils literal notranslate"><span class="pre">hsl_to_cmyk()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.color.conversions.hsl_to_hsv"><code class="docutils literal notranslate"><span class="pre">hsl_to_hsv()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="maths/easing.html">Easing Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events/keyboard.html">Keyboard Key IDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events/mouse.html">Mouse Button IDs</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">goopylib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+      <li class="breadcrumb-item active">goopylib.color</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api_reference/color.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="goopylib-color">
+<h1>goopylib.color<a class="headerlink" href="#goopylib-color" title="Permalink to this heading"></a></h1>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="color/goopylib.color.Color.html#goopylib.color.Color" title="goopylib.color.Color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Color</span></code></a></p></td>
+<td><p>Create colors by passing RGB arguments or a hexstring.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="color/goopylib.color.ColorRGB.html#goopylib.color.ColorRGB" title="goopylib.color.ColorRGB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorRGB</span></code></a></p></td>
+<td><p>Create an RGB color by passing RGB arguments with an optional alpha parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="color/goopylib.color.ColorHex.html#goopylib.color.ColorHex" title="goopylib.color.ColorHex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorHex</span></code></a></p></td>
+<td><p>Create a Hexadecimal color by passing a hexstring with an optional alpha parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="color/goopylib.color.ColorCMYK.html#goopylib.color.ColorCMYK" title="goopylib.color.ColorCMYK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorCMYK</span></code></a></p></td>
+<td><p>Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="color/goopylib.color.ColorHSV.html#goopylib.color.ColorHSV" title="goopylib.color.ColorHSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorHSV</span></code></a></p></td>
+<td><p>Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="color/goopylib.color.ColorHSL.html#goopylib.color.ColorHSL" title="goopylib.color.ColorHSL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorHSL</span></code></a></p></td>
+<td><p>Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)</p></td>
+</tr>
+</tbody>
+</table>
+<section id="module-goopylib.color.random">
+<span id="random-colors"></span><h2>Random Colors<a class="headerlink" href="#module-goopylib.color.random" title="Permalink to this heading"></a></h2>
+<p>Use this module for simple random color generation in different formats.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.random.random_rgb">
+<span class="sig-name descname"><span class="pre">random_rgb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="color/goopylib.color.ColorRGB.html#goopylib.color.ColorRGB" title="goopylib.color.color.ColorRGB"><span class="pre">ColorRGB</span></a></span></span><a class="headerlink" href="#goopylib.color.random.random_rgb" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="color/goopylib.color.ColorRGB.html#goopylib.color.ColorRGB" title="goopylib.color.color.ColorRGB"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorRGB</span></code></a> – a random RGB color</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.random.random_hex">
+<span class="sig-name descname"><span class="pre">random_hex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="color/goopylib.color.ColorHex.html#goopylib.color.ColorHex" title="goopylib.color.color.ColorHex"><span class="pre">ColorHex</span></a></span></span><a class="headerlink" href="#goopylib.color.random.random_hex" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="color/goopylib.color.ColorHex.html#goopylib.color.ColorHex" title="goopylib.color.color.ColorHex"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorHex</span></code></a> – a random Hexadecimal color</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.random.random_cmyk">
+<span class="sig-name descname"><span class="pre">random_cmyk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="color/goopylib.color.ColorCMYK.html#goopylib.color.ColorCMYK" title="goopylib.color.color.ColorCMYK"><span class="pre">ColorCMYK</span></a></span></span><a class="headerlink" href="#goopylib.color.random.random_cmyk" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="color/goopylib.color.ColorCMYK.html#goopylib.color.ColorCMYK" title="goopylib.color.color.ColorCMYK"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorCMYK</span></code></a> – a random CMYK color</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.random.random_hsv">
+<span class="sig-name descname"><span class="pre">random_hsv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="color/goopylib.color.ColorHSV.html#goopylib.color.ColorHSV" title="goopylib.color.color.ColorHSV"><span class="pre">ColorHSV</span></a></span></span><a class="headerlink" href="#goopylib.color.random.random_hsv" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="color/goopylib.color.ColorHSV.html#goopylib.color.ColorHSV" title="goopylib.color.color.ColorHSV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorHSV</span></code></a> – a random HSV color</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.random.random_hsl">
+<span class="sig-name descname"><span class="pre">random_hsl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="color/goopylib.color.ColorHSL.html#goopylib.color.ColorHSL" title="goopylib.color.color.ColorHSL"><span class="pre">ColorHSL</span></a></span></span><a class="headerlink" href="#goopylib.color.random.random_hsl" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference internal" href="color/goopylib.color.ColorHSL.html#goopylib.color.ColorHSL" title="goopylib.color.color.ColorHSL"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorHSL</span></code></a> – a random HSL color</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="rgb-conversions">
+<h2>RGB Conversions<a class="headerlink" href="#rgb-conversions" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.rgb_to_hex">
+<span class="sig-name descname"><span class="pre">rgb_to_hex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">red</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#goopylib.color.conversions.rgb_to_hex" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from RGB to a Hexadecimal string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>red</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+<li><p><strong>green</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+<li><p><strong>blue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> – a hexstring in the format <code class="docutils literal notranslate"><span class="pre">&quot;#rrggbb&quot;</span></code></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.rgb_to_cmyk">
+<span class="sig-name descname"><span class="pre">rgb_to_cmyk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">red</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.rgb_to_cmyk" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from RGB to CMYK</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>red</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+<li><p><strong>green</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+<li><p><strong>blue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of CMYK values between 0 and 1</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.rgb_to_hsv">
+<span class="sig-name descname"><span class="pre">rgb_to_hsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">red</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.rgb_to_hsv" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from RGB to HSV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>red</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+<li><p><strong>green</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+<li><p><strong>blue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of HSV values</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.rgb_to_hsl">
+<span class="sig-name descname"><span class="pre">rgb_to_hsl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">red</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">green</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.rgb_to_hsl" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from RGB to HSL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>red</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+<li><p><strong>green</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+<li><p><strong>blue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 255</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of HSL values</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="hex-conversions">
+<h2>Hex Conversions<a class="headerlink" href="#hex-conversions" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hex_to_rgb">
+<span class="sig-name descname"><span class="pre">hex_to_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hexstring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hex_to_rgb" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color hexstring to RGB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hexstring</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a valid color hexadecimal string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>] – a tuple of RGB values between 0 and 255</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the hexstring is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hex_to_cmyk">
+<span class="sig-name descname"><span class="pre">hex_to_cmyk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hexstring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hex_to_cmyk" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color hexstring to CMYK</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hexstring</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a valid color hexadecimal string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of CMYK values between 0 and 1</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the hexstring is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hex_to_hsv">
+<span class="sig-name descname"><span class="pre">hex_to_hsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hexstring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hex_to_hsv" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color hexstring to HSV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hexstring</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a valid color hexadecimal string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of HSV values</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the hexstring is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hex_to_hsl">
+<span class="sig-name descname"><span class="pre">hex_to_hsl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hexstring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hex_to_hsl" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color hexstring to HSL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>hexstring</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – a valid color hexadecimal string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of HSL values</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the hexstring is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cmyk-conversions">
+<h2>CMYK Conversions<a class="headerlink" href="#cmyk-conversions" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.cmyk_to_rgb">
+<span class="sig-name descname"><span class="pre">cmyk_to_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cyan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magenta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yellow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.cmyk_to_rgb" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from CMYK to RGB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cyan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>magenta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>yellow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>] – a tuple of RGB values between 0 and 255</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.cmyk_to_hex">
+<span class="sig-name descname"><span class="pre">cmyk_to_hex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cyan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magenta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yellow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#goopylib.color.conversions.cmyk_to_hex" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from CMYK to a Hexadecimal String</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cyan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>magenta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>yellow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> – a hexstring in the format <code class="docutils literal notranslate"><span class="pre">&quot;#rrggbb&quot;</span></code></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.cmyk_to_hsv">
+<span class="sig-name descname"><span class="pre">cmyk_to_hsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cyan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magenta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yellow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.cmyk_to_hsv" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from CMYK to HSV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cyan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>magenta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>yellow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of HSV values</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.cmyk_to_hsl">
+<span class="sig-name descname"><span class="pre">cmyk_to_hsl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cyan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magenta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yellow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.cmyk_to_hsl" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from CMYK to HSL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cyan</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>magenta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>yellow</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>key</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of HSL values</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="hsv-conversions">
+<h2>HSV Conversions<a class="headerlink" href="#hsv-conversions" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hsv_to_rgb">
+<span class="sig-name descname"><span class="pre">hsv_to_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hsv_to_rgb" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from HSV to RGB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 360</p></li>
+<li><p><strong>saturation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>] – a tuple of RGB values between 0 and 255</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hsv_to_hex">
+<span class="sig-name descname"><span class="pre">hsv_to_hex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#goopylib.color.conversions.hsv_to_hex" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from HSV to a Hexadecimal string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 360</p></li>
+<li><p><strong>saturation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> – a hexstring in the format <code class="docutils literal notranslate"><span class="pre">&quot;#rrggbb&quot;</span></code></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hsv_to_cmyk">
+<span class="sig-name descname"><span class="pre">hsv_to_cmyk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hsv_to_cmyk" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from HSV to CMYK</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 360</p></li>
+<li><p><strong>saturation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of CMYK values between 0 and 1</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hsv_to_hsl">
+<span class="sig-name descname"><span class="pre">hsv_to_hsl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hsv_to_hsl" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from HSV to HSL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 360</p></li>
+<li><p><strong>saturation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>value</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of HSL values</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="hsl-conversions">
+<h2>HSL Conversions<a class="headerlink" href="#hsl-conversions" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hsl_to_rgb">
+<span class="sig-name descname"><span class="pre">hsl_to_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">luminance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hsl_to_rgb" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from HSL to RGB</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 360</p></li>
+<li><p><strong>saturation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>luminance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>] – a tuple of RGB values between 0 and 255</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hsl_to_hex">
+<span class="sig-name descname"><span class="pre">hsl_to_hex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">luminance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#goopylib.color.conversions.hsl_to_hex" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from HSL to a Hexadecimal string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 360</p></li>
+<li><p><strong>saturation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>luminance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> – a hexstring in the format <code class="docutils literal notranslate"><span class="pre">&quot;#rrggbb&quot;</span></code></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hsl_to_cmyk">
+<span class="sig-name descname"><span class="pre">hsl_to_cmyk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">luminance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hsl_to_cmyk" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from HSL to CMYK</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 360</p></li>
+<li><p><strong>saturation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>luminance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of CMYK values between 0 and 1</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="goopylib.color.conversions.hsl_to_hsv">
+<span class="sig-name descname"><span class="pre">hsl_to_hsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">luminance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#goopylib.color.conversions.hsl_to_hsv" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a color from HSL to HSV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hue</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – between 0 and 360</p></li>
+<li><p><strong>saturation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+<li><p><strong>luminance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>] – a tuple of HSV values</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if the inputs are outside their bounds</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="scene.html" class="btn btn-neutral float-left" title="goopylib.scene" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="color/goopylib.color.Color.html" class="btn btn-neutral float-right" title="Color" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Bhavye Mathur.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

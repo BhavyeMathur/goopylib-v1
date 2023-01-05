@@ -2,7 +2,6 @@
 goopylib module initialization
 """
 
-# noinspection PyUnresolvedReferences
 from goopylib.ext.renderable import *
 from .renderable import *
 

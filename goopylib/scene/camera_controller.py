@@ -6,8 +6,6 @@ from __future__ import annotations
 
 import goopylib.ext.camera_controller as _controller
 
-from goopylib.core.window import Window
-
 
 class CameraController:
     """
@@ -227,3 +225,6 @@ class CameraController:
             TypeError: arguments must be keys
         """
         self._controller.set_zoom_keys(zoomin, zoomout)
+
+
+from goopylib.core.window import Window
