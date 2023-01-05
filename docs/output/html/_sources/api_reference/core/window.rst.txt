@@ -1,7 +1,7 @@
 goopylib.window
 ===============
 
-.. currentmodule:: goopylib.core.window
+.. currentmodule:: goopylib.core
 
 .. autoclass:: Window
     :undoc-members:

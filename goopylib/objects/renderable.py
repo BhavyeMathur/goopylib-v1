@@ -10,18 +10,20 @@ import goopylib.ext.renderable as _renderable
 
 class Renderable:
     """
-    Generic base class for Renderable objects
+    This is the base class from which all goopylib objects are derived. The methods provided can be called by any other
+    goopylib objects.
     """
 
     def __init__(self):
         """
-        Generic base class for Renderable
+        This is the base class from which all goopylib objects are derived. The methods provided can be called by any other
+        goopylib objects.
 
         Raises:
-            NotImplementedError: cannot create a renderable object
+            NotImplementedError: cannot directly initialize a Renderable
         """
-        raise NotImplementedError("Cannot create renderable")
         self.window: Window = None
+        raise NotImplementedError("Cannot create renderable")
 
     def draw(self, window: Window):
         """

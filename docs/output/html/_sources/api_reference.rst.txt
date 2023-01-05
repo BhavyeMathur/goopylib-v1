@@ -5,6 +5,7 @@ API Reference
     api_reference/core/core
     api_reference/core/window
 
+    api_reference/objects
     api_reference/scene
 
     api_reference/maths/easing

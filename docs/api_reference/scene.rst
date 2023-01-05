@@ -1,13 +1,13 @@
 goopylib.scene
 ==============
 
-.. currentmodule:: goopylib.scene.camera
+.. currentmodule:: goopylib.scene
 
 .. autoclass:: Camera
     :undoc-members:
     :members:
 
-.. currentmodule:: goopylib.scene.camera_controller
+.. currentmodule:: goopylib.scene
 
 .. autoclass:: CameraController
     :undoc-members:

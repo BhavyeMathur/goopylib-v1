@@ -59,7 +59,7 @@ always_document_param_types = False
 
 
 def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
-    print(f"\n{name} - {what}")
+    # print(f"\n{name} - {what}")
 
     if what == "data":
         lines.clear()
@@ -78,8 +78,8 @@ def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
         return
 
     for i, line in enumerate(lines):
-        if "|" in line\
-                or "only applies to resizable windows" in line\
+        if "|" in line \
+                or "only applies to resizable windows" in line \
                 or ":raises RuntimeError: window has been destroyed" in line:
             lines.pop(i)
             continue
@@ -96,6 +96,9 @@ def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
             # style tuples
             line = re.sub(r" (\([\w\d\"']*,[\w\d, \"']*\))(\s|$)", r" :py:class:`\1`\2", line)
 
+            line = line.replace(" p1 ", " :py:class:`p1` ")
+            line = line.replace(" p2 ", " :py:class:`p2` ")
+
             if name.startswith("goopylib.maths.easing"):
                 if line.startswith(":type") and line.endswith(": float"):
                     lines.pop(i)
@@ -108,10 +111,17 @@ def autodoc_process_docstring(app, what, name, obj, options, lines: list[str]):
                 line = line.replace("in-out ", "")
 
         lines[i] = line
-        print("\t", line)
+        # print("\t", line)
+
+
+def rstjinja(app, docname, source):
+    if app.builder.format != 'html':
+        return
+    source[0] = app.builder.templates.render_string(source[0], app.config.html_context)
 
 
 def setup(app):
+    app.connect("source-read", rstjinja)
     app.connect("autodoc-process-docstring", autodoc_process_docstring)
 
 

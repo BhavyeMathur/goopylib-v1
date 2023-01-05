@@ -5,6 +5,7 @@ Module defining the Camera Controller helper class
 from __future__ import annotations
 
 from goopylib.core.window import *
+from goopylib.ext.window import *
 
 import goopylib.ext.camera_controller as _controller
 

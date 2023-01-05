@@ -29,7 +29,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Easing Functions" href="maths/easing.html" />
-    <link rel="prev" title="Right Click Callback" href="core/window_callbacks/goopylib.core.window.Window.right_click_callback.html" /> 
+    <link rel="prev" title="Image" href="objects/goopylib.objects.Image.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,35 +55,36 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="core/core.html">goopylib.core</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/window.html">goopylib.window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objects.html">goopylib.objects</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">goopylib.scene</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#goopylib.scene.camera.Camera"><code class="docutils literal notranslate"><span class="pre">Camera</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.set_projection"><code class="docutils literal notranslate"><span class="pre">Camera.set_projection()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.move"><code class="docutils literal notranslate"><span class="pre">Camera.move()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.rotate"><code class="docutils literal notranslate"><span class="pre">Camera.rotate()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.zoomin"><code class="docutils literal notranslate"><span class="pre">Camera.zoomin()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.x"><code class="docutils literal notranslate"><span class="pre">Camera.x</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.y"><code class="docutils literal notranslate"><span class="pre">Camera.y</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.position"><code class="docutils literal notranslate"><span class="pre">Camera.position</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.rotation"><code class="docutils literal notranslate"><span class="pre">Camera.rotation</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera.Camera.zoom"><code class="docutils literal notranslate"><span class="pre">Camera.zoom</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goopylib.scene.Camera"><code class="docutils literal notranslate"><span class="pre">Camera</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.set_projection"><code class="docutils literal notranslate"><span class="pre">Camera.set_projection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.move"><code class="docutils literal notranslate"><span class="pre">Camera.move()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.rotate"><code class="docutils literal notranslate"><span class="pre">Camera.rotate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.zoomin"><code class="docutils literal notranslate"><span class="pre">Camera.zoomin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.x"><code class="docutils literal notranslate"><span class="pre">Camera.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.y"><code class="docutils literal notranslate"><span class="pre">Camera.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.position"><code class="docutils literal notranslate"><span class="pre">Camera.position</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.rotation"><code class="docutils literal notranslate"><span class="pre">Camera.rotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.Camera.zoom"><code class="docutils literal notranslate"><span class="pre">Camera.zoom</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController"><code class="docutils literal notranslate"><span class="pre">CameraController</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.update"><code class="docutils literal notranslate"><span class="pre">CameraController.update()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.enable_movement"><code class="docutils literal notranslate"><span class="pre">CameraController.enable_movement()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.enable_rotation"><code class="docutils literal notranslate"><span class="pre">CameraController.enable_rotation()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.enable_zoom"><code class="docutils literal notranslate"><span class="pre">CameraController.enable_zoom()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.invert_movement"><code class="docutils literal notranslate"><span class="pre">CameraController.invert_movement()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.invert_rotation"><code class="docutils literal notranslate"><span class="pre">CameraController.invert_rotation()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.horizontal_speed"><code class="docutils literal notranslate"><span class="pre">CameraController.horizontal_speed</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.vertical_speed"><code class="docutils literal notranslate"><span class="pre">CameraController.vertical_speed</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.rotate_speed"><code class="docutils literal notranslate"><span class="pre">CameraController.rotate_speed</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.zoom_speed"><code class="docutils literal notranslate"><span class="pre">CameraController.zoom_speed</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.use_wasd"><code class="docutils literal notranslate"><span class="pre">CameraController.use_wasd()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.use_arrows"><code class="docutils literal notranslate"><span class="pre">CameraController.use_arrows()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.set_movement_keys"><code class="docutils literal notranslate"><span class="pre">CameraController.set_movement_keys()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.set_rotation_keys"><code class="docutils literal notranslate"><span class="pre">CameraController.set_rotation_keys()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.camera_controller.CameraController.set_zoom_keys"><code class="docutils literal notranslate"><span class="pre">CameraController.set_zoom_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goopylib.scene.CameraController"><code class="docutils literal notranslate"><span class="pre">CameraController</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.update"><code class="docutils literal notranslate"><span class="pre">CameraController.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.enable_movement"><code class="docutils literal notranslate"><span class="pre">CameraController.enable_movement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.enable_rotation"><code class="docutils literal notranslate"><span class="pre">CameraController.enable_rotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.enable_zoom"><code class="docutils literal notranslate"><span class="pre">CameraController.enable_zoom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.invert_movement"><code class="docutils literal notranslate"><span class="pre">CameraController.invert_movement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.invert_rotation"><code class="docutils literal notranslate"><span class="pre">CameraController.invert_rotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.horizontal_speed"><code class="docutils literal notranslate"><span class="pre">CameraController.horizontal_speed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.vertical_speed"><code class="docutils literal notranslate"><span class="pre">CameraController.vertical_speed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.rotate_speed"><code class="docutils literal notranslate"><span class="pre">CameraController.rotate_speed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.zoom_speed"><code class="docutils literal notranslate"><span class="pre">CameraController.zoom_speed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.use_wasd"><code class="docutils literal notranslate"><span class="pre">CameraController.use_wasd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.use_arrows"><code class="docutils literal notranslate"><span class="pre">CameraController.use_arrows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.set_movement_keys"><code class="docutils literal notranslate"><span class="pre">CameraController.set_movement_keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.set_rotation_keys"><code class="docutils literal notranslate"><span class="pre">CameraController.set_rotation_keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goopylib.scene.CameraController.set_zoom_keys"><code class="docutils literal notranslate"><span class="pre">CameraController.set_zoom_keys()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -123,8 +124,8 @@
   <section id="goopylib-scene">
 <h1>goopylib.scene<a class="headerlink" href="#goopylib-scene" title="Permalink to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera.Camera" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.Camera" title="Permalink to this definition"></a></dt>
 <dd><p>An orthographic camera associated with a Window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -140,8 +141,8 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.set_projection">
-<span class="sig-name descname"><span class="pre">set_projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera.Camera.set_projection" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.set_projection">
+<span class="sig-name descname"><span class="pre">set_projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.Camera.set_projection" title="Permalink to this definition"></a></dt>
 <dd><p>Sets an orthographic projection for the camera</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -159,8 +160,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.move">
-<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera.Camera.move" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.Camera.move" title="Permalink to this definition"></a></dt>
 <dd><p>Moves (translate) the camera’s position</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -176,8 +177,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.rotate">
-<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera.Camera.rotate" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.Camera.rotate" title="Permalink to this definition"></a></dt>
 <dd><p>Rotates the camera</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -190,8 +191,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.zoomin">
-<span class="sig-name descname"><span class="pre">zoomin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera.Camera.zoomin" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.zoomin">
+<span class="sig-name descname"><span class="pre">zoomin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.Camera.zoomin" title="Permalink to this definition"></a></dt>
 <dd><p>Zooms the camera in. A value less than 1 zooms the camera out.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -204,8 +205,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.x">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera.Camera.x" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.Camera.x" title="Permalink to this definition"></a></dt>
 <dd><p>The x-position of the camera</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
@@ -218,8 +219,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.y">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera.Camera.y" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.Camera.y" title="Permalink to this definition"></a></dt>
 <dd><p>The y-position of the camera</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
@@ -232,8 +233,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.position">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera.Camera.position" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.position">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.Camera.position" title="Permalink to this definition"></a></dt>
 <dd><p>The position of the camera as an <code class="xref py py-class docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> tuple</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
@@ -246,8 +247,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.rotation">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera.Camera.rotation" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.rotation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.Camera.rotation" title="Permalink to this definition"></a></dt>
 <dd><p>The rotation of the camera in degrees</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
@@ -260,8 +261,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera.Camera.zoom">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zoom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera.Camera.zoom" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.Camera.zoom">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zoom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.Camera.zoom" title="Permalink to this definition"></a></dt>
 <dd><p>The zoom amount of the camera in %</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
@@ -276,13 +277,13 @@
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CameraController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="core/window.html#goopylib.core.window.Window" title="goopylib.core.window.Window"><span class="pre">goopylib.core.window.Window</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CameraController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">goopylib.Window</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController" title="Permalink to this definition"></a></dt>
 <dd><p>Controller class that automatically manages camera movement, rotation, and zoom.</p>
 <p>This is a helper class that wraps around a Window’s camera and provides basic but quick functionality</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>window</strong> (<a class="reference internal" href="core/window.html#goopylib.core.window.Window" title="goopylib.core.window.Window"><code class="xref py py-class docutils literal notranslate"><span class="pre">Window</span></code></a>) – the window to use</p>
+<dd class="field-odd"><p><strong>window</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Window</span></code>) – the window to use</p>
 </dd>
 </dl>
 <dl class="simple">
@@ -290,14 +291,14 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.update" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.update" title="Permalink to this definition"></a></dt>
 <dd><p>Updates the controller. Call this method in the mainloop.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.enable_movement">
-<span class="sig-name descname"><span class="pre">enable_movement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.enable_movement" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.enable_movement">
+<span class="sig-name descname"><span class="pre">enable_movement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.enable_movement" title="Permalink to this definition"></a></dt>
 <dd><p>Enables automatic camera movement when the control keys are pressed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -310,8 +311,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.enable_rotation">
-<span class="sig-name descname"><span class="pre">enable_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.enable_rotation" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.enable_rotation">
+<span class="sig-name descname"><span class="pre">enable_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.enable_rotation" title="Permalink to this definition"></a></dt>
 <dd><p>Enables automatic camera rotation when the control keys are pressed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -324,8 +325,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.enable_zoom">
-<span class="sig-name descname"><span class="pre">enable_zoom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.enable_zoom" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.enable_zoom">
+<span class="sig-name descname"><span class="pre">enable_zoom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.enable_zoom" title="Permalink to this definition"></a></dt>
 <dd><p>Enables automatic camera zooming when the control keys are pressed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -338,8 +339,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.invert_movement">
-<span class="sig-name descname"><span class="pre">invert_movement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.invert_movement" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.invert_movement">
+<span class="sig-name descname"><span class="pre">invert_movement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.invert_movement" title="Permalink to this definition"></a></dt>
 <dd><p>Inverts camera movement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -352,8 +353,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.invert_rotation">
-<span class="sig-name descname"><span class="pre">invert_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.invert_rotation" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.invert_rotation">
+<span class="sig-name descname"><span class="pre">invert_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.invert_rotation" title="Permalink to this definition"></a></dt>
 <dd><p>Inverts camera rotation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -366,8 +367,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.horizontal_speed">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">horizontal_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.horizontal_speed" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.horizontal_speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">horizontal_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.CameraController.horizontal_speed" title="Permalink to this definition"></a></dt>
 <dd><p>The horizontal movement speed of the camera.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -380,8 +381,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.vertical_speed">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vertical_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.vertical_speed" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.vertical_speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vertical_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.CameraController.vertical_speed" title="Permalink to this definition"></a></dt>
 <dd><p>The vertical movement speed of the camera.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -394,8 +395,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.rotate_speed">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotate_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.rotate_speed" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.rotate_speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotate_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.CameraController.rotate_speed" title="Permalink to this definition"></a></dt>
 <dd><p>The rotational speed of the camera.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -408,8 +409,8 @@
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.zoom_speed">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zoom_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.zoom_speed" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.zoom_speed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zoom_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#goopylib.scene.CameraController.zoom_speed" title="Permalink to this definition"></a></dt>
 <dd><p>The zoom speed of the camera.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -422,20 +423,20 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.use_wasd">
-<span class="sig-name descname"><span class="pre">use_wasd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.use_wasd" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.use_wasd">
+<span class="sig-name descname"><span class="pre">use_wasd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.use_wasd" title="Permalink to this definition"></a></dt>
 <dd><p>Binds the WASD keys for camera movement.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.use_arrows">
-<span class="sig-name descname"><span class="pre">use_arrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.use_arrows" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.use_arrows">
+<span class="sig-name descname"><span class="pre">use_arrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.use_arrows" title="Permalink to this definition"></a></dt>
 <dd><p>Binds the arrow keys for camera movement.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.set_movement_keys">
-<span class="sig-name descname"><span class="pre">set_movement_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">down</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.set_movement_keys" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.set_movement_keys">
+<span class="sig-name descname"><span class="pre">set_movement_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">down</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.set_movement_keys" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the keys used for camera movement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -453,8 +454,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.set_rotation_keys">
-<span class="sig-name descname"><span class="pre">set_rotation_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clockwise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anticlockwise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.set_rotation_keys" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.set_rotation_keys">
+<span class="sig-name descname"><span class="pre">set_rotation_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clockwise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anticlockwise</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.set_rotation_keys" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the keys used for camera rotation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -470,8 +471,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="goopylib.scene.camera_controller.CameraController.set_zoom_keys">
-<span class="sig-name descname"><span class="pre">set_zoom_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zoomin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoomout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.camera_controller.CameraController.set_zoom_keys" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="goopylib.scene.CameraController.set_zoom_keys">
+<span class="sig-name descname"><span class="pre">set_zoom_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zoomin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zoomout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.scene.CameraController.set_zoom_keys" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the keys used for camera zooming.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -494,7 +495,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="core/window_callbacks/goopylib.core.window.Window.right_click_callback.html" class="btn btn-neutral float-left" title="Right Click Callback" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="objects/goopylib.objects.Image.html" class="btn btn-neutral float-left" title="Image" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="maths/easing.html" class="btn btn-neutral float-right" title="Easing Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
