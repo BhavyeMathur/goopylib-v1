@@ -16,8 +16,8 @@ class Renderable:
     # pylint: disable-next=super-init-not-called
     def __init__(self) -> None:
         """
-        This is the base class from which all goopylib objects are derived. The methods provided can be called by any other
-        goopylib objects.
+        This is the base class from which all goopylib objects are derived.
+        The methods provided can be called by any other goopylib objects.
 
         Raises:
             NotImplementedError: cannot directly initialize a Renderable
