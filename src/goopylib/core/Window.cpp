@@ -15,6 +15,11 @@
 #include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
 
+// TODO some of the docstrings (especially the callback functions) are essentially plagiarised from GLFW's docs.
+
+// TODO check_key should return an int. 0 is released, 1 is pressed, 2 is repeat.
+// This would involve maintaining an unordered map of key codes to the key state
+// Inside GLFW's key callback, this map would be updated
 
 namespace gp {
     std::vector<Window *> Window::s_Instances;
