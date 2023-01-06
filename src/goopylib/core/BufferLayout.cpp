@@ -35,7 +35,7 @@ namespace gp {
             case ShaderDataType::Bool:
                 return GL_BYTE;
 
-            case ShaderDataType::None:
+            default:
                 GP_CORE_ERROR("Unrecognised Shader Type");
                 return 0;
         }
@@ -68,7 +68,7 @@ namespace gp {
                 return 4 * 4;
             case ShaderDataType::Bool:
                 return 1;
-            case ShaderDataType::None:
+            default:
                 GP_CORE_ERROR("Unrecognised Shader Type");
                 return 0;
         }

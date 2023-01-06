@@ -4,6 +4,7 @@ name: "Build with CMake"
 
 on:
   workflow_dispatch:
+
   push:
     branches: [ "master" ]
     paths:

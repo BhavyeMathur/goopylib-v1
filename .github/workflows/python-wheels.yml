@@ -4,6 +4,8 @@ name: Build Python Wheels
 run-name: ${{ github.actor }} building Python Wheel
 
 on:
+  workflow_dispatch:
+
   push:
     branches: [ "master" ]
     paths:
