@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from typing import Union
 
-# pylint: disable-next=import-error
-# pylint: disable-next=no-name-in-module
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.ellipse as _ellipse
 
 from goopylib.color.color import Color
@@ -38,7 +37,8 @@ class Ellipse(Renderable):
             >>> Ellipse((0, 0), 50, 100)
     """
 
-    def __init__(self, p1: tuple[float, float], *args: Union[tuple[float, float], float]):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, p1: tuple[float, float], *args: Union[tuple[float, float], float]) -> None:
         """
         An object representing an ellipse or oval
 
@@ -63,7 +63,7 @@ class Ellipse(Renderable):
         """
         self._renderable: Ellipse = _ellipse.Ellipse(p1, *args)
 
-    def set_color(self, *args):
+    def set_color(self, *args) -> None:
         """
         Sets the fill color of the object
 
@@ -75,7 +75,7 @@ class Ellipse(Renderable):
         """
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
-    def set_transparency(self, *args: float):
+    def set_transparency(self, *args: float) -> None:
         """
         Sets the transparency of the object
 

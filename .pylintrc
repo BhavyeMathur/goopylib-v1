@@ -1,2 +1,21 @@
 [FORMAT]
 max-line-length=120
+
+[MESSAGES CONTROL]
+disable=
+    trailing-whitespace,
+    too-many-lines,
+    pointless-string-statement,
+    protected-access,
+    too-many-public-methods
+
+[BASIC]
+good-names=i,
+           j,
+           k,
+           x,
+           y,
+           dx,
+           dy,
+           t,
+           _

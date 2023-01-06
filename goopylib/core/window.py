@@ -9,8 +9,8 @@ from typing import Union
 # pylint: disable=import-error
 # pylint: disable=no-name-in-module
 
-import goopylib.ext.color
-import goopylib.ext.camera
+from goopylib.ext.color import *
+from goopylib.ext.camera import *
 import goopylib.ext.window as _window
 
 # pylint: enable=import-error
@@ -32,7 +32,7 @@ class Window:
         title: displayed in the title bar
     """
 
-    def __init__(self, width: int, height: int, title: str = "goopylib Window"):
+    def __init__(self, width: int, height: int, title: str = "goopylib Window") -> None:
         """
         Creates a window that can be used to draw graphics and widgets.
 
@@ -72,7 +72,7 @@ class Window:
         """
         return self._window.is_destroyed()
 
-    def update(self):
+    def update(self) -> None:
         """
         Refreshes the window.
 
@@ -81,7 +81,7 @@ class Window:
         """
         self._window.update()
 
-    def destroy(self):
+    def destroy(self) -> None:
         """
         Destroys & closes the window.
 
@@ -109,7 +109,7 @@ class Window:
         return self._window.width
 
     @width.setter
-    def width(self, value: int):
+    def width(self, value: int) -> None:
         self._window.width = value
 
     # Height
@@ -129,7 +129,7 @@ class Window:
         return self._window.height
 
     @height.setter
-    def height(self, value: int):
+    def height(self, value: int) -> None:
         self._window.height = value
 
     # Title
@@ -148,7 +148,7 @@ class Window:
         return self._window.title
 
     @title.setter
-    def title(self, value: str):
+    def title(self, value: str) -> None:
         self._window.title = value
 
     # X Position
@@ -167,7 +167,7 @@ class Window:
         return self._window.xpos
 
     @xpos.setter
-    def xpos(self, value: int):
+    def xpos(self, value: int) -> None:
         self._window.xpos = value
 
     # Y Position
@@ -186,7 +186,7 @@ class Window:
         return self._window.ypos
 
     @ypos.setter
-    def ypos(self, value: int):
+    def ypos(self, value: int) -> None:
         self._window.ypos = value
 
     # Background Color
@@ -205,7 +205,7 @@ class Window:
         return self._background
 
     @background.setter
-    def background(self, background: Color):
+    def background(self, background: Color) -> None:
         if isinstance(background, Color):
             self._window.background = background._color
             self._background = background
@@ -234,7 +234,7 @@ class Window:
         return self._window.min_width
 
     @min_width.setter
-    def min_width(self, value: int):
+    def min_width(self, value: int) -> None:
         self._window.min_width = value
 
     # Minimum Height
@@ -259,7 +259,7 @@ class Window:
         return self._window.min_height
 
     @min_height.setter
-    def min_height(self, value: int):
+    def min_height(self, value: int) -> None:
         self._window.min_height = value
 
     # Maximum Width
@@ -284,7 +284,7 @@ class Window:
         return self._window.max_width
 
     @max_width.setter
-    def max_width(self, value: Union[int]):
+    def max_width(self, value: Union[int]) -> None:
         self._window.max_width = value
 
     # Maximum Height
@@ -309,11 +309,11 @@ class Window:
         return self._window.max_height
 
     @max_height.setter
-    def max_height(self, value: int):
+    def max_height(self, value: int) -> None:
         self._window.max_height = value
 
     # Get & Set Methods
-    def set_size(self, width: int, height: int):
+    def set_size(self, width: int, height: int) -> None:
         """
         Sets the size of the window.
 
@@ -328,7 +328,7 @@ class Window:
         """
         self._window.set_size(width, height)
 
-    def set_size_limits(self, min_width: int, min_height: int, max_width: Union[int], max_height: Union[int]):
+    def set_size_limits(self, min_width: int, min_height: int, max_width: Union[int], max_height: Union[int]) -> None:
         """
         Sets the minimum and maximum resizable dimensions of the window.
 
@@ -343,7 +343,7 @@ class Window:
         """
         self._window.set_size_limits(min_width, min_height, max_width, max_height)
 
-    def set_min_size(self, min_width: Union[int], min_height: Union[int]):
+    def set_min_size(self, min_width: Union[int], min_height: Union[int]) -> None:
         """
         Sets the minimum resizable dimensions of the window.
 
@@ -357,7 +357,7 @@ class Window:
         """
         self._window.set_min_size(min_width, min_height)
 
-    def set_max_size(self, max_width: Union[int], max_height: Union[int]):
+    def set_max_size(self, max_width: Union[int], max_height: Union[int]) -> None:
         """
         Sets the maximum resizable dimensions of the window.
 
@@ -371,7 +371,7 @@ class Window:
         """
         self._window.set_max_size(max_width, max_height)
 
-    def set_position(self, xpos: int, ypos: int):
+    def set_position(self, xpos: int, ypos: int) -> None:
         """
         Sets the position of the top-left of the window on the screen.
 
@@ -385,7 +385,7 @@ class Window:
         """
         self._window.set_position(xpos, ypos)
 
-    def set_aspect_ratio(self, numerator: Union[int], denominator: Union[int]):
+    def set_aspect_ratio(self, numerator: Union[int], denominator: Union[int]) -> None:
         """
         Sets the aspect ratio of the window.
 
@@ -483,7 +483,7 @@ class Window:
         return self._window.resizable
 
     @resizable.setter
-    def resizable(self, value: bool):
+    def resizable(self, value: bool) -> None:
         self._window.resizable = value
 
     # Decorated
@@ -507,7 +507,7 @@ class Window:
         return self._window.decorated
 
     @decorated.setter
-    def decorated(self, value: bool):
+    def decorated(self, value: bool) -> None:
         self._window.decorated = value
 
     # Floating
@@ -528,7 +528,7 @@ class Window:
         return self._window.floating
 
     @floating.setter
-    def floating(self, value: bool):
+    def floating(self, value: bool) -> None:
         self._window.floating = value
 
     # Auto Minimized
@@ -552,7 +552,7 @@ class Window:
         return self._window.auto_minimized
 
     @auto_minimized.setter
-    def auto_minimized(self, value: bool):
+    def auto_minimized(self, value: bool) -> None:
         self._window.auto_minimized = value
 
     # Focused on Show
@@ -573,12 +573,12 @@ class Window:
         return self._window.focused_on_show
 
     @focused_on_show.setter
-    def focused_on_show(self, value: bool):
+    def focused_on_show(self, value: bool) -> None:
         self._window.focused_on_show = value
 
     """Window State Methods -----------------------------------------------------------------------------------------"""
 
-    def restore(self):
+    def restore(self) -> None:
         """
         Restores a minimized, maximized, or fullscreen window back to normal.
 
@@ -588,7 +588,7 @@ class Window:
         self._window.restore()
 
     # Fullscreen
-    def fullscreen(self):
+    def fullscreen(self) -> None:
         """
         Makes the window enter fullscreen mode.
 
@@ -608,7 +608,7 @@ class Window:
         return self._window.is_fullscreen()
 
     # Minimize
-    def minimize(self):
+    def minimize(self) -> None:
         """
         Minimizes the window.
 
@@ -628,7 +628,7 @@ class Window:
         return self._window.is_minimized()
 
     # Maximize
-    def maximize(self):
+    def maximize(self) -> None:
         """
         Maximizes the window.
 
@@ -648,7 +648,7 @@ class Window:
         return self._window.is_maximized()
 
     # Visibility
-    def show(self):
+    def show(self) -> None:
         """
         Makes the window visible to the user.
 
@@ -657,7 +657,7 @@ class Window:
         """
         self._window.show()
 
-    def hide(self, hide: bool = True):
+    def hide(self, hide: bool = True) -> None:
         """
         Makes the window invisible to the user.
 
@@ -680,7 +680,7 @@ class Window:
         return self._window.is_visible()
 
     # Input Focus
-    def focus(self):
+    def focus(self) -> None:
         """
         Gives the window input focus and brings it to the front.
 
@@ -699,7 +699,7 @@ class Window:
         """
         return self._window.has_focus()
 
-    def request_attention(self):
+    def request_attention(self) -> None:
         """
         Requests for the user's attention to the window.
         
@@ -735,7 +735,7 @@ class Window:
         """
         return self._window.get_mouse_position()
 
-    def set_cursor_mode(self, mode: str):
+    def set_cursor_mode(self, mode: str) -> None:
         """
         Normal:
             makes the cursor visible and behave normally.
@@ -867,7 +867,7 @@ class Window:
         
         .. code-block:: python
 
-            def resize_callback(width: int, height: int):
+            def resize_callback(width: int, height: int) -> None:
                 # code here
 
         Raises:
@@ -878,7 +878,7 @@ class Window:
         return self._window.resize_callback
 
     @resize_callback.setter
-    def resize_callback(self, callback: callable):
+    def resize_callback(self, callback: callable) -> None:
         self._window.resize_callback = callback
 
     # Close Callback
@@ -893,7 +893,7 @@ class Window:
 
         .. code-block:: python
 
-            def close_callback():
+            def close_callback() -> None:
                 # code here
 
         Raises:
@@ -904,7 +904,7 @@ class Window:
         return self._window.close_callback
 
     @close_callback.setter
-    def close_callback(self, callback: callable):
+    def close_callback(self, callback: callable) -> None:
         self._window.close_callback = callback
 
     # Destroy Callback
@@ -919,7 +919,7 @@ class Window:
 
         .. code-block:: python
 
-            def destroy_callback():
+            def destroy_callback() -> None:
                 # code here
 
         Raises:
@@ -930,7 +930,7 @@ class Window:
         return self._window.destroy_callback
 
     @destroy_callback.setter
-    def destroy_callback(self, callback: callable):
+    def destroy_callback(self, callback: callable) -> None:
         self._window.destroy_callback = callback
 
     # Position Callback
@@ -945,7 +945,7 @@ class Window:
 
         .. code-block:: python
 
-            def position_callback(xpos: int, ypos: int):
+            def position_callback(xpos: int, ypos: int) -> None:
                 # code here
 
         Raises:
@@ -956,7 +956,7 @@ class Window:
         return self._window.position_callback
 
     @position_callback.setter
-    def position_callback(self, callback: callable):
+    def position_callback(self, callback: callable) -> None:
         self._window.position_callback = callback
 
     # Minimize Callback
@@ -971,7 +971,7 @@ class Window:
 
         .. code-block:: python
 
-            def minimize_callback(minimized: bool):
+            def minimize_callback(minimized: bool) -> None:
                 # code here
 
         Raises:
@@ -982,7 +982,7 @@ class Window:
         return self._window.minimize_callback
 
     @minimize_callback.setter
-    def minimize_callback(self, callback: callable):
+    def minimize_callback(self, callback: callable) -> None:
         self._window.minimize_callback = callback
 
     # Maximize Callback
@@ -997,7 +997,7 @@ class Window:
 
         .. code-block:: python
 
-            def maximize_callback(maximized: bool):
+            def maximize_callback(maximized: bool) -> None:
                 # code here
 
         Raises:
@@ -1008,7 +1008,7 @@ class Window:
         return self._window.maximize_callback
 
     @maximize_callback.setter
-    def maximize_callback(self, callback: callable):
+    def maximize_callback(self, callback: callable) -> None:
         self._window.maximize_callback = callback
 
     # Focus Callback
@@ -1028,7 +1028,7 @@ class Window:
 
         .. code-block:: python
 
-            def focus_callback(focused: bool):
+            def focus_callback(focused: bool) -> None:
                 # code here
 
         Raises:
@@ -1039,7 +1039,7 @@ class Window:
         return self._window.focus_callback
 
     @focus_callback.setter
-    def focus_callback(self, callback: callable):
+    def focus_callback(self, callback: callable) -> None:
         self._window.focus_callback = callback
 
     # Refresh Callback
@@ -1055,7 +1055,7 @@ class Window:
 
         .. code-block:: python
 
-            def refresh_callback():
+            def refresh_callback() -> None:
                 # code here
 
         Raises:
@@ -1066,7 +1066,7 @@ class Window:
         return self._window.refresh_callback
 
     @refresh_callback.setter
-    def refresh_callback(self, callback: callable):
+    def refresh_callback(self, callback: callable) -> None:
         self._window.refresh_callback = callback
 
     # Content Scale Callback
@@ -1081,7 +1081,7 @@ class Window:
 
         .. code-block:: python
 
-            def content_scale_callback(xscale: float, yscale: float):
+            def content_scale_callback(xscale: float, yscale: float) -> None:
                 # code here
 
         Raises:
@@ -1092,7 +1092,7 @@ class Window:
         return self._window.content_scale_callback
 
     @content_scale_callback.setter
-    def content_scale_callback(self, callback: callable):
+    def content_scale_callback(self, callback: callable) -> None:
         self._window.content_scale_callback = callback
 
     # Framebuffer Size Callback
@@ -1107,7 +1107,7 @@ class Window:
 
         .. code-block:: python
 
-            def framebuffer_size_callback(width: float, height: float):
+            def framebuffer_size_callback(width: float, height: float) -> None:
                 # code here
 
         Raises:
@@ -1118,7 +1118,7 @@ class Window:
         return self._window.framebuffer_size_callback
 
     @framebuffer_size_callback.setter
-    def framebuffer_size_callback(self, callback: callable):
+    def framebuffer_size_callback(self, callback: callable) -> None:
         self._window.framebuffer_size_callback = callback
 
     # Mouse Motion Callback
@@ -1133,7 +1133,7 @@ class Window:
 
         .. code-block:: python
 
-            def mouse_motion_callback(xpos: float, ypos: float):
+            def mouse_motion_callback(xpos: float, ypos: float) -> None:
                 # code here
 
         Raises:
@@ -1144,7 +1144,7 @@ class Window:
         return self._window.mouse_motion_callback
 
     @mouse_motion_callback.setter
-    def mouse_motion_callback(self, callback: callable):
+    def mouse_motion_callback(self, callback: callable) -> None:
         self._window.mouse_motion_callback = callback
 
     # Mouse Enter Callback
@@ -1159,7 +1159,7 @@ class Window:
 
         .. code-block:: python
 
-            def mouse_enter_callback(entered: bool):
+            def mouse_enter_callback(entered: bool) -> None:
                 # code here
 
         Raises:
@@ -1170,7 +1170,7 @@ class Window:
         return self._window.mouse_enter_callback
 
     @mouse_enter_callback.setter
-    def mouse_enter_callback(self, callback: callable):
+    def mouse_enter_callback(self, callback: callable) -> None:
         self._window.mouse_enter_callback = callback
 
     # Scroll Callback
@@ -1185,7 +1185,7 @@ class Window:
 
         .. code-block:: python
 
-            def scroll_callback(xscroll: float, yscroll: float):
+            def scroll_callback(xscroll: float, yscroll: float) -> None:
                 # code here
 
         Raises:
@@ -1196,11 +1196,11 @@ class Window:
         return self._window.scroll_callback
 
     @scroll_callback.setter
-    def scroll_callback(self, callback: callable):
+    def scroll_callback(self, callback: callable) -> None:
         self._window.scroll_callback = callback
 
     # Key Callback
-    def set_key_callback(self, keycode: int, callback: callable):
+    def set_key_callback(self, keycode: int, callback: callable) -> None:
         """
         Callback executed when a key is pressed.
 
@@ -1210,7 +1210,7 @@ class Window:
 
         .. code-block:: python
 
-            def key_callback(action: int):
+            def key_callback(action: int) -> None:
                 # code here
 
         Args:
@@ -1225,7 +1225,7 @@ class Window:
         self._window.set_key_callback(keycode, callback)
 
     # Mouse Button Callback
-    def set_mouse_button_callback(self, button: int, callback: callable):
+    def set_mouse_button_callback(self, button: int, callback: callable) -> None:
         """
         Callback executed when a mouse button is pressed.
 
@@ -1235,7 +1235,7 @@ class Window:
 
         .. code-block:: python
 
-            def mouse_button_callback(pressed: bool):
+            def mouse_button_callback(pressed: bool) -> None:
                 # code here
 
         Args:
@@ -1261,7 +1261,7 @@ class Window:
 
         .. code-block:: python
 
-            def left_click_callback(pressed: bool):
+            def left_click_callback(pressed: bool) -> None:
                 # code here
 
         Raises:
@@ -1272,7 +1272,7 @@ class Window:
         return self._window.left_click_callback
 
     @left_click_callback.setter
-    def left_click_callback(self, callback: callable):
+    def left_click_callback(self, callback: callable) -> None:
         self._window.left_click_callback = callback
 
     # Middle Click Callback
@@ -1287,7 +1287,7 @@ class Window:
 
         .. code-block:: python
 
-            def middle_click_callback(pressed: bool):
+            def middle_click_callback(pressed: bool) -> None:
                 # code here
 
         Raises:
@@ -1298,7 +1298,7 @@ class Window:
         return self._window.middle_click_callback
 
     @middle_click_callback.setter
-    def middle_click_callback(self, callback: callable):
+    def middle_click_callback(self, callback: callable) -> None:
         self._window.middle_click_callback = callback
 
     # Right Click Callback
@@ -1313,7 +1313,7 @@ class Window:
 
         .. code-block:: python
 
-            def right_click_callback(pressed: bool):
+            def right_click_callback(pressed: bool) -> None:
                 # code here
 
         Raises:
@@ -1324,7 +1324,7 @@ class Window:
         return self._window.right_click_callback
 
     @right_click_callback.setter
-    def right_click_callback(self, callback: callable):
+    def right_click_callback(self, callback: callable) -> None:
         self._window.right_click_callback = callback
 
     # Camera & Projection
@@ -1373,18 +1373,19 @@ class Window:
         return self._window.to_screen(x, y)
 
     @staticmethod
-    def update_all():
+    def update_all() -> None:
         """
         Updates all the windows currently active.
         """
         _window.Window.update_all()
 
     @staticmethod
-    def destroy_all():
+    def destroy_all() -> None:
         """
         Destroys all active windows.
         """
         _window.Window.destroy_all()
 
 
+# pylint: disable-next=wrong-import-position
 from goopylib.scene.camera import Camera

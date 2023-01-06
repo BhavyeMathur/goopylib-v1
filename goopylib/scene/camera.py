@@ -4,8 +4,7 @@ Module defining an Orthographic camera
 
 from __future__ import annotations
 
-# pylint: disable-next=import-error
-# pylint: disable-next=no-name-in-module
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.camera as _camera
 
 
@@ -23,7 +22,7 @@ class Camera:
         TypeError: arguments must be numbers
     """
 
-    def __init__(self, left: float, right: float, bottom: float, top: float):
+    def __init__(self, left: float, right: float, bottom: float, top: float) -> None:
         """
         An orthographic camera associated with a Window.
 
@@ -38,7 +37,7 @@ class Camera:
         """
         self._camera: Camera = _camera.Camera(left, right, bottom, top)
 
-    def set_projection(self, left: float, right: float, bottom: float, top: float):
+    def set_projection(self, left: float, right: float, bottom: float, top: float) -> None:
         """
         Sets an orthographic projection for the camera
 
@@ -53,7 +52,7 @@ class Camera:
         """
         self._camera.set_projection(left, right, bottom, top)
 
-    def move(self, dx: float, dy: float):
+    def move(self, dx: float, dy: float) -> None:
         """
         Moves (translate) the camera's position
 
@@ -66,7 +65,7 @@ class Camera:
         """
         self._camera.move(dx, dy)
 
-    def rotate(self, angle: float):
+    def rotate(self, angle: float) -> None:
         """
         Rotates the camera
 
@@ -78,7 +77,7 @@ class Camera:
         """
         self._camera.rotate(angle)
 
-    def zoomin(self, value: float):
+    def zoomin(self, value: float) -> None:
         """
         Zooms the camera in. A value less than 1 zooms the camera out.
 
@@ -101,7 +100,7 @@ class Camera:
         return self._camera.x
 
     @x.setter
-    def x(self, value: float):
+    def x(self, value: float) -> None:
         self._camera.x = value
 
     @property
@@ -115,7 +114,7 @@ class Camera:
         return self._camera.y
 
     @y.setter
-    def y(self, value: float):
+    def y(self, value: float) -> None:
         self._camera.y = value
 
     @property
@@ -129,7 +128,7 @@ class Camera:
         return self._camera.position
 
     @position.setter
-    def position(self, value: float):
+    def position(self, value: float) -> None:
         self._camera.position = value
 
     @property
@@ -143,7 +142,7 @@ class Camera:
         return self._camera.rotation
 
     @rotation.setter
-    def rotation(self, value: float):
+    def rotation(self, value: float) -> None:
         self._camera.rotation = value
 
     @property
@@ -157,5 +156,5 @@ class Camera:
         return self._camera.zoom
 
     @zoom.setter
-    def zoom(self, value: float):
+    def zoom(self, value: float) -> None:
         self._camera.zoom = value

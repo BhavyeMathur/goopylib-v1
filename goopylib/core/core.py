@@ -8,14 +8,13 @@ information about goopylib.
 
 from __future__ import annotations
 
-# pylint: disable-next=import-error
-# pylint: disable-next=no-name-in-module
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.core as _core
 
 _core.init()
 
 
-def init():
+def init() -> None:
     """Initializes goopylib internally.
     This function is automatically called when goopylib is imported.
 
@@ -25,7 +24,7 @@ def init():
     _core.init()
 
 
-def terminate():
+def terminate() -> None:
     """Terminates goopylib internally and destroys all open windows.
     You should call this function before the program ends.
 
@@ -35,7 +34,7 @@ def terminate():
     _core.terminate()
 
 
-def update():
+def update() -> None:
     """Updates goopylib and its windows.
 
     Examples:
@@ -51,14 +50,14 @@ def update():
     _core.update()
 
 
-def update_on_event():
+def update_on_event() -> None:
     """Updates goopylib every time an event occurs.
     These can be key presses, cursor movement, window resizing, or others.
     """
     _core.update_on_event()
 
 
-def update_timeout(timeout: float = 0):
+def update_timeout(timeout: float = 0) -> None:
     """Updates goopylib after a duration has passed.
 
     Args:
@@ -70,7 +69,7 @@ def update_timeout(timeout: float = 0):
     _core.update_timeout(timeout)
 
 
-def set_buffer_swap_interval(interval: int):
+def set_buffer_swap_interval(interval: int) -> None:
     """Sets the rate of swapping window buffers.
 
     Args:

@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from typing import Union
 
-# pylint: disable-next=import-error
-# pylint: disable-next=no-name-in-module
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.image as _image
 
 from goopylib.objects.renderable import Renderable
@@ -44,7 +43,8 @@ class Image(Renderable):
             >>> Image("filepath.jgp", (0, 0), (120, 20))
     """
 
-    def __init__(self, path: str, p1: tuple[float, float], *args: Union[tuple[float, float], float]):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, path: str, p1: tuple[float, float], *args: Union[tuple[float, float], float]) -> None:
         """
         An object representing a textured rectangle - an image
 
@@ -76,7 +76,7 @@ class Image(Renderable):
         """
         self._renderable: Image = _image.Image(path, p1, *args)
 
-    def set_transparency(self, *args: float):
+    def set_transparency(self, *args: float) -> None:
         """
         Sets the transparency of the object
 

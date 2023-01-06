@@ -4,8 +4,7 @@ Module defining a triangle object
 
 from __future__ import annotations
 
-# pylint: disable-next=import-error
-# pylint: disable-next=no-name-in-module
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.triangle as _triangle
 
 from goopylib.color.color import Color
@@ -25,7 +24,8 @@ class Triangle(Renderable):
         TypeError: p1, p2, and p3 must be (x, y) tuples of numbers
     """
 
-    def __init__(self, p1: tuple[float, float], p2: tuple[float, float], p3: tuple[float, float]):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, p1: tuple[float, float], p2: tuple[float, float], p3: tuple[float, float]) -> None:
         """
         An object representing a triangle with 3 vertices.
 
@@ -39,7 +39,7 @@ class Triangle(Renderable):
         """
         self._renderable: Triangle = _triangle.Triangle(p1, p2, p3)
 
-    def set_color(self, *args):
+    def set_color(self, *args) -> None:
         """
         Sets the fill color of the object
 
@@ -51,7 +51,7 @@ class Triangle(Renderable):
         """
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
-    def set_transparency(self, *args: float):
+    def set_transparency(self, *args: float) -> None:
         """
         Sets the transparency of the object
 

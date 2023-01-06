@@ -4,8 +4,7 @@ Module defining a quad object
 
 from __future__ import annotations
 
-# pylint: disable-next=import-error
-# pylint: disable-next=no-name-in-module
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.quad as _quad
 
 from goopylib.color.color import Color
@@ -26,6 +25,7 @@ class Quad(Renderable):
         TypeError: p1, p2, p3, and p4 must be (x, y) tuples of numbers
     """
 
+    # pylint: disable-next=super-init-not-called
     def __init__(self, p1: tuple[float, float],
                  p2: tuple[float, float],
                  p3: tuple[float, float],
@@ -44,7 +44,7 @@ class Quad(Renderable):
         """
         self._renderable: Quad = _quad.Quad(p1, p2, p3, p4)
 
-    def set_color(self, *args):
+    def set_color(self, *args) -> None:
         """
         Sets the fill color of the object
 
@@ -56,7 +56,7 @@ class Quad(Renderable):
         """
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
-    def set_transparency(self, *args: float):
+    def set_transparency(self, *args: float) -> None:
         """
         Sets the transparency of the object
 

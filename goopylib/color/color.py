@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import Union
 
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.color as _color
 
 
@@ -35,7 +36,7 @@ class Color:
         Color(60, 180, 90)
     """
 
-    def __init__(self, *args):
+    def __init__(self, *args) -> None:
         """
         Create colors by passing RGB arguments or a hexstring.
         Specify an alpha value by passing a float as the last parameter.
@@ -92,12 +93,12 @@ class Color:
             return self._color.__sub__(other._color)
         return self._color.__sub__(other)
 
-    def __iadd__(self, other: Union[int, Color]):
+    def __iadd__(self, other: Union[int, Color]) -> None:
         if isinstance(other, Color):
             return self._color.__iadd__(other._color)
         return self._color.__iadd__(other)
 
-    def __isub__(self, other: Union[int, Color]):
+    def __isub__(self, other: Union[int, Color]) -> None:
         if isinstance(other, Color):
             return self._color.__isub__(other._color)
         return self._color.__isub__(other)
@@ -111,7 +112,7 @@ class Color:
         return self._color.red
 
     @red.setter
-    def red(self, value: int):
+    def red(self, value: int) -> None:
         self._color.red = value
 
     @property
@@ -123,7 +124,7 @@ class Color:
         return self._color.green
 
     @green.setter
-    def green(self, value: int):
+    def green(self, value: int) -> None:
         self._color.green = value
 
     @property
@@ -135,7 +136,7 @@ class Color:
         return self._color.blue
 
     @blue.setter
-    def blue(self, value: int):
+    def blue(self, value: int) -> None:
         self._color.blue = value
 
     @property
@@ -147,7 +148,7 @@ class Color:
         return self._color.alpha
 
     @alpha.setter
-    def alpha(self, value: float):
+    def alpha(self, value: float) -> None:
         self._color.alpha = value
 
 
@@ -171,7 +172,8 @@ class ColorRGB(Color):
         >>> ColorRGB(other_color)
     """
 
-    def __init__(self, *args):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, *args) -> None:
         """
         Create an RGB color by passing RGB arguments with an optional alpha parameter.
 
@@ -201,7 +203,7 @@ class ColorRGB(Color):
         return self._color.red
 
     @red.setter
-    def red(self, value: int):
+    def red(self, value: int) -> None:
         self._color.red = value
 
     @property
@@ -213,7 +215,7 @@ class ColorRGB(Color):
         return self._color.green
 
     @green.setter
-    def green(self, value: int):
+    def green(self, value: int) -> None:
         self._color.green = value
 
     @property
@@ -225,7 +227,7 @@ class ColorRGB(Color):
         return self._color.blue
 
     @blue.setter
-    def blue(self, value: int):
+    def blue(self, value: int) -> None:
         self._color.blue = value
 
     @property
@@ -237,7 +239,7 @@ class ColorRGB(Color):
         return self._color.alpha
 
     @alpha.setter
-    def alpha(self, value: float):
+    def alpha(self, value: float) -> None:
         self._color.alpha = value
 
 
@@ -260,7 +262,8 @@ class ColorHex(Color):
         >>> ColorHex(other_color)
     """
 
-    def __init__(self, *args):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, *args) -> None:
         """
         Create a Hexadecimal color by passing a hexstring with an optional alpha parameter. The '#' is optional.
 
@@ -297,7 +300,7 @@ class ColorHex(Color):
         return self._color.red
 
     @red.setter
-    def red(self, value: int):
+    def red(self, value: int) -> None:
         self._color.red = value
 
     @property
@@ -309,7 +312,7 @@ class ColorHex(Color):
         return self._color.green
 
     @green.setter
-    def green(self, value: int):
+    def green(self, value: int) -> None:
         self._color.green = value
 
     @property
@@ -321,7 +324,7 @@ class ColorHex(Color):
         return self._color.blue
 
     @blue.setter
-    def blue(self, value: int):
+    def blue(self, value: int) -> None:
         self._color.blue = value
 
     @property
@@ -333,7 +336,7 @@ class ColorHex(Color):
         return self._color.alpha
 
     @alpha.setter
-    def alpha(self, value: float):
+    def alpha(self, value: float) -> None:
         self._color.alpha = value
 
 
@@ -357,7 +360,8 @@ class ColorCMYK(Color):
         >>> ColorCMYK(other_color)
     """
 
-    def __init__(self, *args):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, *args) -> None:
         """
         Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha. All parameters are between 0-1.
 
@@ -387,7 +391,7 @@ class ColorCMYK(Color):
         return self._color.cyan
 
     @cyan.setter
-    def cyan(self, value: float):
+    def cyan(self, value: float) -> None:
         self._color.cyan = value
 
     @property
@@ -399,7 +403,7 @@ class ColorCMYK(Color):
         return self._color.magenta
 
     @magenta.setter
-    def magenta(self, value: float):
+    def magenta(self, value: float) -> None:
         self._color.magenta = value
 
     @property
@@ -411,7 +415,7 @@ class ColorCMYK(Color):
         return self._color.yellow
 
     @yellow.setter
-    def yellow(self, value: float):
+    def yellow(self, value: float) -> None:
         self._color.yellow = value
 
     @property
@@ -423,7 +427,7 @@ class ColorCMYK(Color):
         return self._color.key
 
     @key.setter
-    def key(self, value: float):
+    def key(self, value: float) -> None:
         self._color.key = value
 
     @property
@@ -435,7 +439,7 @@ class ColorCMYK(Color):
         return self._color.red
 
     @red.setter
-    def red(self, value: int):
+    def red(self, value: int) -> None:
         self._color.red = value
 
     @property
@@ -447,7 +451,7 @@ class ColorCMYK(Color):
         return self._color.green
 
     @green.setter
-    def green(self, value: int):
+    def green(self, value: int) -> None:
         self._color.green = value
 
     @property
@@ -459,7 +463,7 @@ class ColorCMYK(Color):
         return self._color.blue
 
     @blue.setter
-    def blue(self, value: int):
+    def blue(self, value: int) -> None:
         self._color.blue = value
 
     @property
@@ -471,7 +475,7 @@ class ColorCMYK(Color):
         return self._color.alpha
 
     @alpha.setter
-    def alpha(self, value: float):
+    def alpha(self, value: float) -> None:
         self._color.alpha = value
 
 
@@ -495,7 +499,8 @@ class ColorHSV(Color):
         >>> ColorHSV(other_color)
     """
 
-    def __init__(self, *args):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, *args) -> None:
         """
         Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)
 
@@ -525,7 +530,7 @@ class ColorHSV(Color):
         return self._color.hue
 
     @hue.setter
-    def hue(self, value: int):
+    def hue(self, value: int) -> None:
         self._color.hue = value
 
     @property
@@ -537,7 +542,7 @@ class ColorHSV(Color):
         return self._color.saturation
 
     @saturation.setter
-    def saturation(self, value: float):
+    def saturation(self, value: float) -> None:
         self._color.saturation = value
 
     @property
@@ -549,7 +554,7 @@ class ColorHSV(Color):
         return self._color.value
 
     @value.setter
-    def value(self, value: float):
+    def value(self, value: float) -> None:
         self._color.value = value
 
     @property
@@ -561,7 +566,7 @@ class ColorHSV(Color):
         return self._color.red
 
     @red.setter
-    def red(self, value: int):
+    def red(self, value: int) -> None:
         self._color.red = value
 
     @property
@@ -573,7 +578,7 @@ class ColorHSV(Color):
         return self._color.green
 
     @green.setter
-    def green(self, value: int):
+    def green(self, value: int) -> None:
         self._color.green = value
 
     @property
@@ -585,7 +590,7 @@ class ColorHSV(Color):
         return self._color.blue
 
     @blue.setter
-    def blue(self, value: int):
+    def blue(self, value: int) -> None:
         self._color.blue = value
 
     @property
@@ -597,7 +602,7 @@ class ColorHSV(Color):
         return self._color.alpha
 
     @alpha.setter
-    def alpha(self, value: float):
+    def alpha(self, value: float) -> None:
         self._color.alpha = value
 
 
@@ -621,7 +626,8 @@ class ColorHSL(Color):
         >>> ColorHSL(other_color)
     """
 
-    def __init__(self, *args):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, *args) -> None:
         """
         Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)
 
@@ -651,7 +657,7 @@ class ColorHSL(Color):
         return self._color.hue
 
     @hue.setter
-    def hue(self, value: int):
+    def hue(self, value: int) -> None:
         self._color.hue = value
 
     @property
@@ -663,7 +669,7 @@ class ColorHSL(Color):
         return self._color.saturation
 
     @saturation.setter
-    def saturation(self, value: float):
+    def saturation(self, value: float) -> None:
         self._color.saturation = value
 
     @property
@@ -675,7 +681,7 @@ class ColorHSL(Color):
         return self._color.luminance
 
     @luminance.setter
-    def luminance(self, value: float):
+    def luminance(self, value: float) -> None:
         self._color.luminance = value
 
     @property
@@ -687,7 +693,7 @@ class ColorHSL(Color):
         return self._color.red
 
     @red.setter
-    def red(self, value: int):
+    def red(self, value: int) -> None:
         self._color.red = value
 
     @property
@@ -699,7 +705,7 @@ class ColorHSL(Color):
         return self._color.green
 
     @green.setter
-    def green(self, value: int):
+    def green(self, value: int) -> None:
         self._color.green = value
 
     @property
@@ -711,7 +717,7 @@ class ColorHSL(Color):
         return self._color.blue
 
     @blue.setter
-    def blue(self, value: int):
+    def blue(self, value: int) -> None:
         self._color.blue = value
 
     @property
@@ -723,5 +729,5 @@ class ColorHSL(Color):
         return self._color.alpha
 
     @alpha.setter
-    def alpha(self, value: float):
+    def alpha(self, value: float) -> None:
         self._color.alpha = value

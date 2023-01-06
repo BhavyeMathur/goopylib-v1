@@ -13,7 +13,8 @@ class Renderable:
     goopylib objects.
     """
 
-    def __init__(self):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self) -> None:
         """
         This is the base class from which all goopylib objects are derived. The methods provided can be called by any other
         goopylib objects.
@@ -21,10 +22,11 @@ class Renderable:
         Raises:
             NotImplementedError: cannot directly initialize a Renderable
         """
+        self._renderable = None
         self.window: Window = None
         raise NotImplementedError("Cannot create renderable")
 
-    def draw(self, window: Window):
+    def draw(self, window: Window) -> None:
         """
         Draws the object to a window
 
@@ -42,7 +44,7 @@ class Renderable:
             self._renderable.draw(window)
         return self
 
-    def destroy(self):
+    def destroy(self) -> None:
         """
         Destroys and undraws the object
         """
@@ -55,7 +57,7 @@ class Renderable:
         """
         return self._renderable.is_drawn()
 
-    def set_anchor(self, x: float, y: float):
+    def set_anchor(self, x: float, y: float) -> None:
         """
         Sets the anchor (center) of the object to the specified coordinates
 
@@ -68,13 +70,13 @@ class Renderable:
         """
         return self._renderable.set_anchor(x, y)
 
-    def reset_anchor(self):
+    def reset_anchor(self) -> None:
         """
         Resets the anchor of the object to its center (average of its vertices)
         """
         return self._renderable.reset_anchor()
 
-    def move(self, dx: float, dy: float):
+    def move(self, dx: float, dy: float) -> None:
         """
         Moves (translates) the object across the screen
 
@@ -87,7 +89,7 @@ class Renderable:
         """
         return self._renderable.move(dx, dy)
 
-    def rotate(self, angle: float):
+    def rotate(self, angle: float) -> None:
         """
         Rotates the object
 
@@ -99,7 +101,7 @@ class Renderable:
         """
         return self._renderable.rotate(angle)
 
-    def scale(self, *args: float):
+    def scale(self, *args: float) -> None:
         """
         Scales the object
 
@@ -111,7 +113,7 @@ class Renderable:
         """
         return self._renderable.zoom(*args)
 
-    def set_size(self, width: float, height: float):
+    def set_size(self, width: float, height: float) -> None:
         """
         Sets the dimensions of the object by resizing it
 
@@ -135,7 +137,7 @@ class Renderable:
         return self._renderable.x
 
     @x.setter
-    def x(self, value: float):
+    def x(self, value: float) -> None:
         self._renderable.x = value
 
     @property
@@ -149,7 +151,7 @@ class Renderable:
         return self._renderable.y
 
     @y.setter
-    def y(self, value: float):
+    def y(self, value: float) -> None:
         self._renderable.y = value
 
     @property
@@ -166,7 +168,7 @@ class Renderable:
         return self._renderable.position
 
     @position.setter
-    def position(self, value: tuple[float, float]):
+    def position(self, value: tuple[float, float]) -> None:
         self._renderable.position = value
 
     @property
@@ -180,7 +182,7 @@ class Renderable:
         return self._renderable.rotation
 
     @rotation.setter
-    def rotation(self, value: float):
+    def rotation(self, value: float) -> None:
         self._renderable.rotation = value
 
     @property
@@ -194,7 +196,7 @@ class Renderable:
         return self._renderable.xscale
 
     @xscale.setter
-    def xscale(self, value: float):
+    def xscale(self, value: float) -> None:
         self._renderable.xscale = value
 
     @property
@@ -208,7 +210,7 @@ class Renderable:
         return self._renderable.yscale
 
     @yscale.setter
-    def yscale(self, value: float):
+    def yscale(self, value: float) -> None:
         self._renderable.yscale = value
 
     @property
@@ -222,7 +224,7 @@ class Renderable:
         return self._renderable.width
 
     @width.setter
-    def width(self, value: float):
+    def width(self, value: float) -> None:
         self._renderable.width = value
 
     @property
@@ -236,10 +238,10 @@ class Renderable:
         return self._renderable.height
 
     @height.setter
-    def height(self, value: float):
+    def height(self, value: float) -> None:
         self._renderable.height = value
 
-    def hide(self, hide=True):
+    def hide(self, hide=True) -> None:
         """
         Hides the object from the window
 
@@ -251,7 +253,7 @@ class Renderable:
         """
         return self._renderable.hide(hide)
 
-    def show(self):
+    def show(self) -> None:
         """
         Unhides the object if it was hidden
         """
@@ -264,7 +266,7 @@ class Renderable:
         """
         return self._renderable.is_hidden()
 
-    def box_contains(self, x: float, y: float):
+    def box_contains(self, x: float, y: float) -> None:
         """
         Checks if the object's rectangular bounding box contains a point
 
@@ -277,7 +279,7 @@ class Renderable:
         """
         return self._renderable.box_contains(x, y)
 
-    def contains(self, x: float, y: float):
+    def contains(self, x: float, y: float) -> None:
         """
         Checks if the object's bounding box contains a point
 

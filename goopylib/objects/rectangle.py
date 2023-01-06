@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from typing import Union
 
-# pylint: disable-next=import-error
-# pylint: disable-next=no-name-in-module
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.rectangle as _rectangle
 
 from goopylib.objects.quad import Quad
@@ -37,7 +36,8 @@ class Rectangle(Quad):
             >>> Rectangle((0, 0), 50, 100)
     """
 
-    def __init__(self, p1: tuple[float, float], *args: Union[tuple[float, float], float]):
+    # pylint: disable-next=super-init-not-called
+    def __init__(self, p1: tuple[float, float], *args: Union[tuple[float, float], float]) -> None:
         """
         An object representing a rectangle
 

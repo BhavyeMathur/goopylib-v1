@@ -4,8 +4,7 @@ Module defining the Camera Controller helper class
 
 from __future__ import annotations
 
-# pylint: disable-next=import-error
-# pylint: disable-next=no-name-in-module
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.camera_controller as _controller
 
 
@@ -22,7 +21,7 @@ class CameraController:
         TypeError: window must be a goopylib Window
     """
 
-    def __init__(self, window: Window):
+    def __init__(self, window: Window) -> None:
         """
         Controller class that automatically manages camera movement, rotation, and zoom.
 
@@ -41,13 +40,13 @@ class CameraController:
         else:
             self._controller: CameraController = _controller.CameraController(self._window)
 
-    def update(self):
+    def update(self) -> None:
         """
         Updates the controller. Call this method in the mainloop.
         """
         self._controller.update()
 
-    def enable_movement(self, value: bool):
+    def enable_movement(self, value: bool) -> None:
         """
         Enables automatic camera movement when the control keys are pressed.
 
@@ -59,7 +58,7 @@ class CameraController:
         """
         self._controller.enable_movement(value)
 
-    def enable_rotation(self, value: bool):
+    def enable_rotation(self, value: bool) -> None:
         """
         Enables automatic camera rotation when the control keys are pressed.
 
@@ -71,7 +70,7 @@ class CameraController:
         """
         self._controller.enable_rotation(value)
 
-    def enable_zoom(self, value: bool):
+    def enable_zoom(self, value: bool) -> None:
         """
         Enables automatic camera zooming when the control keys are pressed.
 
@@ -83,7 +82,7 @@ class CameraController:
         """
         self._controller.enable_zoom(value)
 
-    def invert_movement(self, value: bool):
+    def invert_movement(self, value: bool) -> None:
         """
         Inverts camera movement.
 
@@ -95,7 +94,7 @@ class CameraController:
         """
         self._controller.invert_movement(value)
 
-    def invert_rotation(self, value: bool):
+    def invert_rotation(self, value: bool) -> None:
         """
         Inverts camera rotation.
 
@@ -121,7 +120,7 @@ class CameraController:
         return self._controller.horizontal_speed
 
     @horizontal_speed.setter
-    def horizontal_speed(self, value: float):
+    def horizontal_speed(self, value: float) -> None:
         self._controller.horizontal_speed = value
 
     @property
@@ -138,7 +137,7 @@ class CameraController:
         return self._controller.vertical_speed
 
     @vertical_speed.setter
-    def vertical_speed(self, value: float):
+    def vertical_speed(self, value: float) -> None:
         self._controller.vertical_speed = value
 
     @property
@@ -155,7 +154,7 @@ class CameraController:
         return self._controller.rotate_speed
 
     @rotate_speed.setter
-    def rotate_speed(self, value: float):
+    def rotate_speed(self, value: float) -> None:
         self._controller.rotate_speed = value
 
     @property
@@ -172,22 +171,22 @@ class CameraController:
         return self._controller.zoom_speed
 
     @zoom_speed.setter
-    def zoom_speed(self, value: float):
+    def zoom_speed(self, value: float) -> None:
         self._controller.zoom_speed = value
 
-    def use_wasd(self):
+    def use_wasd(self) -> None:
         """
         Binds the WASD keys for camera movement.
         """
         self._controller.use_wasd()
 
-    def use_arrows(self):
+    def use_arrows(self) -> None:
         """
         Binds the arrow keys for camera movement.
         """
         self._controller.use_arrows()
 
-    def set_movement_keys(self, up: int, left: int, down: int, right: int):
+    def set_movement_keys(self, up: int, left: int, down: int, right: int) -> None:
         """
         Sets the keys used for camera movement.
 
@@ -202,7 +201,7 @@ class CameraController:
         """
         self._controller.set_movement_keys(up, left, down, right)
 
-    def set_rotation_keys(self, clockwise: int, anticlockwise: int):
+    def set_rotation_keys(self, clockwise: int, anticlockwise: int) -> None:
         """
         Sets the keys used for camera rotation.
 
@@ -215,7 +214,7 @@ class CameraController:
         """
         self._controller.set_rotation_keys(clockwise, anticlockwise)
 
-    def set_zoom_keys(self, zoomin: int, zoomout: int):
+    def set_zoom_keys(self, zoomin: int, zoomout: int) -> None:
         """
         Sets the keys used for camera zooming.
 
@@ -229,4 +228,5 @@ class CameraController:
         self._controller.set_zoom_keys(zoomin, zoomout)
 
 
+# pylint disable=wrong-import-position
 from goopylib.core.window import Window

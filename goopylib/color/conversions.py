@@ -4,6 +4,7 @@ Module defining functions to convert between color formats
 
 from __future__ import annotations
 
+# pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.color_conversions as _conversions
 
 
