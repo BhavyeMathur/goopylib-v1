@@ -29,7 +29,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/vendor)
 link_directories(${CMAKE_SOURCE_DIR})
 
 if (WIN32)
-    set(WINDOWS_SOURCES src/vendor/glad/glad.c main.cpp)
+    set(WINDOWS_SOURCES src/vendor/glad/glad.c)
 
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         if (MSVC_TOOLSET_VERSION EQUAL 110)
