@@ -64,7 +64,7 @@ namespace color {
         alpha = alpha > 1 ? 1 : (alpha < 0 ? 0 : alpha);
 
         return PyObject_Call((PyObject *) &ColorType,
-                             Py_BuildValue("iiif", red, green, blue, alpha), Py_None);
+                             Py_BuildValue("iiif", red, green, blue, alpha), nullptr);
     }
 }
 

@@ -1172,7 +1172,7 @@ namespace window {
 
         self->window->setCloseCallback([self](gp::Window *window) {
             PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_Call(self->close_callback, Py_None, Py_None);
+            PyObject_Call(self->close_callback, Py_None, nullptr);
             PyGILState_Release(gstate);
         });
 
@@ -1202,7 +1202,7 @@ namespace window {
 
         self->window->setDestroyCallback([self](gp::Window *window) {
             PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_Call(self->destroy_callback, Py_None, Py_None);
+            PyObject_Call(self->destroy_callback, Py_None, nullptr);
             PyGILState_Release(gstate);
         });
 
@@ -1352,7 +1352,7 @@ namespace window {
 
         self->window->setRefreshCallback([self](gp::Window *window) {
             PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_Call(self->refresh_callback, Py_None, Py_None);
+            PyObject_Call(self->refresh_callback, Py_None, nullptr);
             PyGILState_Release(gstate);
         });
 
@@ -1515,7 +1515,7 @@ namespace window {
 
     // Mouse Buttons
     static int set_left_click_callback(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
-        if (set_mouse_button_callback(self, Py_BuildValue("iO", GP_MOUSE_LEFT_BUTTON, value), Py_None)) {
+        if (set_mouse_button_callback(self, Py_BuildValue("iO", GP_MOUSE_LEFT_BUTTON, value), nullptr)) {
             return 0;
         }
         return -1;
@@ -1531,7 +1531,7 @@ namespace window {
     }
 
     static int set_middle_click_callback(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
-        if (set_mouse_button_callback(self, Py_BuildValue("iO", GP_MOUSE_MIDDLE_BUTTON, value), Py_None)) {
+        if (set_mouse_button_callback(self, Py_BuildValue("iO", GP_MOUSE_MIDDLE_BUTTON, value), nullptr)) {
             return 0;
         }
         return -1;
@@ -1547,7 +1547,7 @@ namespace window {
     }
 
     static int set_right_click_callback(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
-        if (set_mouse_button_callback(self, Py_BuildValue("iO", GP_MOUSE_RIGHT_BUTTON, value), Py_None)) {
+        if (set_mouse_button_callback(self, Py_BuildValue("iO", GP_MOUSE_RIGHT_BUTTON, value), nullptr)) {
             return 0;
         }
         return -1;
