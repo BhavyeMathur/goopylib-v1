@@ -8,13 +8,15 @@ from typing import Union
 
 # pylint: disable=import-error
 # pylint: disable=no-name-in-module
+# pylint: disable=wildcard-import
 
 from goopylib.ext.color import *
 from goopylib.ext.camera import *
 import goopylib.ext.window as _window
 
 # pylint: enable=import-error
-# pylint: disable=no-name-in-module
+# pylint: enable=no-name-in-module
+# pylint: enable=wildcard-import
 
 from goopylib.color.color import Color
 

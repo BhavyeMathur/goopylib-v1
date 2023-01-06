@@ -7,7 +7,8 @@ disable=
     too-many-lines,
     pointless-string-statement,
     protected-access,
-    too-many-public-methods
+    too-many-public-methods,
+    too-few-public-methods,
 
 [BASIC]
 good-names=i,
@@ -18,4 +19,8 @@ good-names=i,
            dx,
            dy,
            t,
+           up,
+           down,
+           left,
+           right,
            _

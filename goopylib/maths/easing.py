@@ -537,8 +537,7 @@ def combine_easing(easing1: EasingType, easing2: EasingType) -> Callable[[float]
             """
             if t < 0.5:
                 return easing1(2 * t) / 2
-            else:
-                return (1 + easing2(2 * t - 1)) / 2
+            return (1 + easing2(2 * t - 1)) / 2
 
         return closure
 

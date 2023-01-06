@@ -2,6 +2,7 @@
 goopylib module initialization
 """
 
+# pylint: disable-next=no-name-in-module, import-error
 from goopylib.ext.renderable import *
 from .renderable import *
 

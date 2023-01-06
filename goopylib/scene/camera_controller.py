@@ -228,5 +228,5 @@ class CameraController:
         self._controller.set_zoom_keys(zoomin, zoomout)
 
 
-# pylint disable=wrong-import-position
+# pylint: disable-next=wrong-import-position
 from goopylib.core.window import Window

@@ -9,8 +9,8 @@ from goopylib.core.window import Window
 
 class Renderable:
     """
-    This is the base class from which all goopylib objects are derived. The methods provided can be called by any other
-    goopylib objects.
+    This is the base class from which all goopylib objects are derived.
+    The methods provided can be called by any other goopylib objects.
     """
 
     # pylint: disable-next=super-init-not-called
