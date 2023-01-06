@@ -8,14 +8,14 @@ on:
     branches: [ "master" ]
     paths:
       - goopylib/**
-      - src/**
+      # - src/**
       - binaries/**
 
   pull_request:
     branches: [ "master" ]
     paths:
       - goopylib/**
-      - src/**
+      # - src/**
       - binaries/**
 
 jobs:
@@ -31,9 +31,9 @@ jobs:
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.11.4
-        # env:
-        #   CIBW_SOME_OPTION: value
-        #    ...
+        env:
+          CIBW_BUILD: cp38-* pp38-*
+
         # with:
         #   package-dir: .
         #   output-dir: wheelhouse
