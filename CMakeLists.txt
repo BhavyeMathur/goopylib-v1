@@ -30,6 +30,7 @@ link_directories(${CMAKE_SOURCE_DIR})
 
 if (WIN32)
     set(WINDOWS_SOURCES src/vendor/glad/glad.c)
+    link_directories(${CMAKE_SOURCE_DIR}/src/vendor/harfbuzz/win64)
 
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         if (MSVC_TOOLSET_VERSION EQUAL 110)
@@ -86,6 +87,7 @@ if (WIN32)
 
 elseif (APPLE)
     link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/macos)
+    link_directories(${CMAKE_SOURCE_DIR}/src/vendor/harfbuzz/macos)
 
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
@@ -131,12 +133,16 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
 
             src/vendor/stb/stb_image.cpp)
 
-if (APPLE)
-    target_link_libraries(goopylib glfw.3)
-else ()
-    target_link_libraries(goopylib glfw3)
-endif ()
+target_link_libraries(goopylib glfw3)
+target_link_libraries(goopylib harfbuzz)
 
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
+    target_link_libraries(goopylib "-framework Cocoa")
+    target_link_libraries(goopylib "-framework IOKit")
 endif ()
+
+add_executable(main main.cpp)
+target_link_libraries(main goopylib)
+target_link_libraries(main harfbuzz)
+target_link_libraries(main "-framework Cocoa")

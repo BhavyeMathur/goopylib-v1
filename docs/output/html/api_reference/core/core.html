@@ -110,30 +110,38 @@ use the library. The module is automatically imported and initializes the underl
 information about goopylib.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="goopylib.core.core.init">
-<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.core.init" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#goopylib.core.core.init" title="Permalink to this definition"></a></dt>
 <dd><p>Initializes goopylib internally.
 This function is automatically called when goopylib is imported.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><strong>RuntimeError</strong> – if the initialization fails</p>
 </dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="goopylib.core.core.terminate">
-<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.core.terminate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#goopylib.core.core.terminate" title="Permalink to this definition"></a></dt>
 <dd><p>Terminates goopylib internally and destroys all open windows.
 You should call this function before the program ends.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>goopylib can be reinitialized using <code class="xref py py-func docutils literal notranslate"><span class="pre">gp.init()</span></code></p>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="goopylib.core.core.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.core.update" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#goopylib.core.core.update" title="Permalink to this definition"></a></dt>
 <dd><p>Updates goopylib and its windows.</p>
 <p class="rubric">Examples</p>
 <p>The following is a standard goopylib mainloop:</p>
@@ -143,18 +151,28 @@ You should call this function before the program ends.</p>
     <span class="n">gp</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="goopylib.core.core.update_on_event">
-<span class="sig-name descname"><span class="pre">update_on_event</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.core.update_on_event" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update_on_event</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#goopylib.core.core.update_on_event" title="Permalink to this definition"></a></dt>
 <dd><p>Updates goopylib every time an event occurs.
 These can be key presses, cursor movement, window resizing, or others.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="goopylib.core.core.update_timeout">
-<span class="sig-name descname"><span class="pre">update_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.core.update_timeout" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#goopylib.core.core.update_timeout" title="Permalink to this definition"></a></dt>
 <dd><p>Updates goopylib after a duration has passed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -163,12 +181,15 @@ These can be key presses, cursor movement, window resizing, or others.</p>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>ValueError</strong> – if timeout is less than 0</p>
 </dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="goopylib.core.core.set_buffer_swap_interval">
-<span class="sig-name descname"><span class="pre">set_buffer_swap_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#goopylib.core.core.set_buffer_swap_interval" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_buffer_swap_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#goopylib.core.core.set_buffer_swap_interval" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the rate of swapping window buffers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -179,6 +200,9 @@ These can be key presses, cursor movement, window resizing, or others.</p>
 <li><p><strong>TypeError</strong> – if a non-integer value is passed.</p></li>
 <li><p><strong>ValueError</strong> – if interval is less than 0</p></li>
 </ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>

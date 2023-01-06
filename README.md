@@ -96,7 +96,7 @@ while window.is_open():
 
 ## Documentation
 
-The documentation for goopylib is currently under development. 
+The documentation for goopylib can be found [here](https://goopylib.readthedocs.io/en/latest/index.html).
 Please submit an issue or email bhavyemathur@gmail.com for any questions!
 
 ## Contributing & Usage
