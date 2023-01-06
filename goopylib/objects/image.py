@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from typing import Union
 
+# pylint: disable-next=import-error
+# pylint: disable-next=no-name-in-module
 import goopylib.ext.image as _image
 
 from goopylib.objects.renderable import Renderable

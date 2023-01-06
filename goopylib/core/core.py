@@ -8,6 +8,8 @@ information about goopylib.
 
 from __future__ import annotations
 
+# pylint: disable-next=import-error
+# pylint: disable-next=no-name-in-module
 import goopylib.ext.core as _core
 
 _core.init()

@@ -4,6 +4,8 @@ Module defining a quad object
 
 from __future__ import annotations
 
+# pylint: disable-next=import-error
+# pylint: disable-next=no-name-in-module
 import goopylib.ext.quad as _quad
 
 from goopylib.color.color import Color

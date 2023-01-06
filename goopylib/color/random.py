@@ -4,11 +4,11 @@ Use this module for simple random color generation in different formats.
 
 from __future__ import annotations
 
-from goopylib.color.color import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
-from goopylib.color.conversions import rgb_to_hex
-
 from random import randint as _randint
 from random import random as _random
+
+from goopylib.color.color import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
+from goopylib.color.conversions import rgb_to_hex
 
 
 # Random Colors

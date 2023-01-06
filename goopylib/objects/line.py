@@ -4,6 +4,8 @@ Module defining a line object
 
 from __future__ import annotations
 
+# pylint: disable-next=import-error
+# pylint: disable-next=no-name-in-module
 import goopylib.ext.line as _line
 
 from goopylib.color.color import Color

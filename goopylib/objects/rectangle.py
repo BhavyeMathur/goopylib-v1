@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from typing import Union
 
+# pylint: disable-next=import-error
+# pylint: disable-next=no-name-in-module
 import goopylib.ext.rectangle as _rectangle
 
 from goopylib.objects.quad import Quad

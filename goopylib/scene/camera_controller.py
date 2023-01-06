@@ -4,6 +4,8 @@ Module defining the Camera Controller helper class
 
 from __future__ import annotations
 
+# pylint: disable-next=import-error
+# pylint: disable-next=no-name-in-module
 import goopylib.ext.camera_controller as _controller
 
 

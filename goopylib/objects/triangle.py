@@ -4,6 +4,8 @@ Module defining a triangle object
 
 from __future__ import annotations
 
+# pylint: disable-next=import-error
+# pylint: disable-next=no-name-in-module
 import goopylib.ext.triangle as _triangle
 
 from goopylib.color.color import Color

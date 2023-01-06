@@ -8,8 +8,12 @@ if sys.platform == "win32":
     import os
     os.add_dll_directory(f"{sys.prefix}/goopylib")
 
+# pylint: disable=wrong-import-position
+
 from .core import *
 from .objects import *
 from .maths import *
 from .events import *
 from .scene import *
+
+# pylint: enable=wrong-import-position

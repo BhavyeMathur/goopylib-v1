@@ -6,9 +6,15 @@ from __future__ import annotations
 
 from typing import Union
 
+# pylint: disable=import-error
+# pylint: disable=no-name-in-module
+
 import goopylib.ext.color
 import goopylib.ext.camera
 import goopylib.ext.window as _window
+
+# pylint: enable=import-error
+# pylint: disable=no-name-in-module
 
 from goopylib.color.color import Color
 
