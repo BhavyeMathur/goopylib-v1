@@ -1,16 +1,18 @@
 #include "Color.h"
 #include "ColorConversions.h"
 
-#if !GP_LOG_COLOR
+#if (GP_LOG_COLOR != true) and (GP_LOG_COLOR <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_COLOR
 #endif
-
-#include "src/goopylib/debug/LogMacros.h"
 
 #if !GP_VALUE_CHECK_COLOR
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
+#include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
 
 

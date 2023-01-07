@@ -15,6 +15,7 @@ from .events.keyboard import *
 from .events.mouse import *
 
 from .maths.easing import *
+from .maths.packing import *
 
 from .objects.circle import *
 from .objects.ellipse import *
