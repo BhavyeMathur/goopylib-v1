@@ -78,37 +78,24 @@ namespace gp {
         float y = m_Position.y;
 
         for (uint32_t i = 0; i < glyphCount; i++) {
-            if (FT_Error err = FT_Load_Glyph(font.ft_face, glyphInfo[i].codepoint, 0)) {
+            if (FT_Error err = FT_Load_Glyph(font.ft_face, glyphInfo[i].codepoint, FT_LOAD_RENDER)) {
                 GP_CORE_WARN("Text::Text() failed to load {0}: '{1}'", glyphInfo[i].codepoint, err);
                 continue;
             }
-            if (font.ft_face->glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
-                GP_CORE_WARN("Text::Text() glyph->format = '{0}'", (char *) &font.ft_face->glyph->format);
-                continue;
-            }
 
-            float xOffset = (float) glyphPositions[i].x_offset / 64.0f;
-            float yOffset = (float) glyphPositions[i].y_offset / 64.0f;
-            float xAdvance = (float) glyphPositions[i].x_advance / 64.0f;
-            float yAdvance = (float) glyphPositions[i].y_advance / 64.0f;
+            auto xSize = (float) font.ft_face->glyph->bitmap.width;
+            auto ySize = (float) font.ft_face->glyph->bitmap.rows;
 
-            float xSize = (float) font.ft_face->glyph->metrics.width / 64.0f;
-            float ySize = (float) font.ft_face->glyph->metrics.height / 64.0f;
-            float xBearing = (float) font.ft_face->glyph->metrics.horiBearingX / 64.0f;
-            float yBearing = (float) font.ft_face->glyph->metrics.horiBearingY / 64.0f;
+            float xStart = x + (float) (font.ft_face->glyph->bitmap_left + glyphPositions[i].x_offset);
+            float yStart = y + (float) (font.ft_face->glyph->bitmap_top + glyphPositions[i].y_offset);
 
             GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, glyphInfo[i].codepoint);
 
-            GP_CORE_TRACE("\tsize=({0}, {1})", xSize, ySize);
-            GP_CORE_TRACE("\toffset=({0}, {1})", xOffset, yOffset);
-            GP_CORE_TRACE("\tadvance=({0}, {1})", xAdvance, yAdvance);
-            GP_CORE_TRACE("\tbearing=({0}, {1})", xBearing, yBearing);
+            m_Characters.push_back(new gp::Rectangle({xStart, yStart},
+                                                     {xStart + xSize, yStart - ySize}));
 
-            m_Characters.push_back(new gp::Rectangle({x + xBearing, y + yBearing},
-                                                     {x + xBearing + xSize, y + yBearing - ySize}));
-
-            x += xAdvance;
-            y += yAdvance;
+            x += (float) glyphPositions[i].x_advance / 64.0f;
+            y += (float) glyphPositions[i].y_advance / 64.0f;
         }
 
         hb_buffer_destroy(buffer);
