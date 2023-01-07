@@ -30,6 +30,14 @@
 #include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
 
+#include "freetype/ft2build.h"
+#include FT_FREETYPE_H
+
+namespace gp {
+    static FT_Library ft_library;
+    static bool is_initialized = false;
+}
+
 namespace {
     void onUpdate() {
         GP_CORE_TRACE_ALL("gp::onUpdate()");
@@ -100,6 +108,14 @@ namespace {
         #endif
         #endif
     }
+
+    void initFreeType() {
+        GP_CORE_DEBUG("gp::init() initialising FreeType");
+
+        if (FT_Init_FreeType(&gp::ft_library)) {
+            GP_RUNTIME_ERROR("gp::init() failed to initialize FreeType");
+        }
+    }
 }
 
 namespace gp {
@@ -113,6 +129,8 @@ namespace gp {
         #if GP_USING_GLFW
         initGLFW();
         #endif
+
+        initFreeType();
     }
 
     void terminate() {
@@ -127,6 +145,8 @@ namespace gp {
         glfwTerminate();
         is_initialized = false;
         #endif
+
+        FT_Done_FreeType(ft_library);
     }
 
     bool isInitialized() {

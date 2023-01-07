@@ -25,12 +25,14 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/vendor)
+include_directories(${CMAKE_SOURCE_DIR}/src/vendor/freetype)
 
 link_directories(${CMAKE_SOURCE_DIR})
+link_directories(${CMAKE_SOURCE_DIR}/src/vendor/freetype)
+link_directories(${CMAKE_SOURCE_DIR}/src/vendor/harfbuzz)
 
 if (WIN32)
     set(WINDOWS_SOURCES src/vendor/glad/glad.c)
-    link_directories(${CMAKE_SOURCE_DIR}/src/vendor/harfbuzz/win64)
 
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         if (MSVC_TOOLSET_VERSION EQUAL 110)
@@ -87,7 +89,6 @@ if (WIN32)
 
 elseif (APPLE)
     link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/macos)
-    link_directories(${CMAKE_SOURCE_DIR}/src/vendor/harfbuzz/macos)
 
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
@@ -135,6 +136,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
 
 target_link_libraries(goopylib glfw3)
 target_link_libraries(goopylib harfbuzz)
+target_link_libraries(goopylib freetype)
 
 if (APPLE)
     target_link_libraries(goopylib "-framework OpenGL")
@@ -145,4 +147,5 @@ endif ()
 add_executable(main main.cpp)
 target_link_libraries(main goopylib)
 target_link_libraries(main harfbuzz)
+target_link_libraries(main freetype)
 target_link_libraries(main "-framework Cocoa")

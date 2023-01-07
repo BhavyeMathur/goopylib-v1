@@ -4,8 +4,6 @@
 #include <cstring>
 
 namespace gp {
-    static bool is_initialized = false;
-
     /**
      * Initializes goopylib internally.
      *
