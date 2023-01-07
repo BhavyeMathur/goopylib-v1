@@ -65,8 +65,8 @@ namespace window {
             INITIALIZE_PYOBJECT(self->background, Py_None);
             INITIALIZE_PYOBJECT(self->camera, Py_None);
 
-            self->key_callbacks = PyDict_New();
-            self->mouse_callbacks = PyDict_New();
+            //self->key_callbacks = PyDict_New();
+            //self->mouse_callbacks = PyDict_New();
         }
         return (PyObject *) self;
     }
@@ -127,6 +127,7 @@ namespace window {
 
         self->window.reset();
 
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing callback references");
         Py_CLEAR(self->resize_callback);
         Py_CLEAR(self->close_callback);
         Py_CLEAR(self->position_callback);
@@ -141,8 +142,10 @@ namespace window {
         Py_CLEAR(self->mouse_enter_callback);
         Py_CLEAR(self->scroll_callback);
 
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing background reference");
         Py_CLEAR(self->background);
 
+        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing key & mouse callback references");
         Py_CLEAR(self->key_callbacks);
         Py_CLEAR(self->mouse_callbacks);
 
@@ -151,32 +154,6 @@ namespace window {
 
     static void dealloc(WindowObject *self) {
         GP_PY_DEBUG("gp.window.Window.__dealloc__()");
-
-        self->window.reset();
-
-        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing callback references");
-        Py_XDECREF(self->resize_callback);
-        Py_XDECREF(self->close_callback);
-        Py_XDECREF(self->position_callback);
-        Py_XDECREF(self->destroy_callback);
-        Py_XDECREF(self->content_scale_callback);
-        Py_XDECREF(self->framebuffer_size_callback);
-        Py_XDECREF(self->minimize_callback);
-        Py_XDECREF(self->maximize_callback);
-        Py_XDECREF(self->focus_callback);
-        Py_XDECREF(self->refresh_callback);
-        Py_XDECREF(self->mouse_motion_callback);
-        Py_XDECREF(self->mouse_enter_callback);
-        Py_XDECREF(self->scroll_callback);
-
-        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing background reference");
-        Py_XDECREF(self->background);
-
-        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing key callback references");
-        Py_XDECREF(self->key_callbacks);
-
-        GP_PY_TRACE("gp.window.Window.__dealloc__() decreasing mouse callback references");
-        Py_XDECREF(self->mouse_callbacks);
 
         PyObject_GC_UnTrack(self);
         clear(self);
