@@ -1,5 +1,6 @@
-#include "Window.h"
-#include "Core.h"
+#include "src/goopylib/core/Window.h"
+#include "src/goopylib/core/Core.h"
+#include "src/goopylib/objects/Text.h"
 #include "src/goopylib/color/W3CX11.h"
 
 #include <stb/stb_image.h>
@@ -30,11 +31,8 @@
 #include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
 
-#include "freetype/ft2build.h"
-#include FT_FREETYPE_H
 
 namespace gp {
-    static FT_Library ft_library;
     static bool is_initialized = false;
 }
 
@@ -108,14 +106,6 @@ namespace {
         #endif
         #endif
     }
-
-    void initFreeType() {
-        GP_CORE_DEBUG("gp::init() initialising FreeType");
-
-        if (FT_Init_FreeType(&gp::ft_library)) {
-            GP_RUNTIME_ERROR("gp::init() failed to initialize FreeType");
-        }
-    }
 }
 
 namespace gp {
@@ -130,7 +120,7 @@ namespace gp {
         initGLFW();
         #endif
 
-        initFreeType();
+        Text::init();
     }
 
     void terminate() {
@@ -146,7 +136,7 @@ namespace gp {
         is_initialized = false;
         #endif
 
-        FT_Done_FreeType(ft_library);
+        Text::terminate();
     }
 
     bool isInitialized() {

@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.22)
 project(goopylib)
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions(__DEBUG__)
+endif ()
+
 if (APPLE)
     set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
     set(MACOSX_DEPLOYMENT_TARGET 10.9)
@@ -116,6 +120,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/objects/Ellipse.cpp
             src/goopylib/objects/Circle.cpp
             src/goopylib/objects/Image.cpp
+            src/goopylib/objects/Text.cpp
 
             src/goopylib/scene/Renderer.cpp
             src/goopylib/scene/Camera.cpp

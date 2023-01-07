@@ -52,6 +52,9 @@ namespace gp {
          */
         void GPAPI setTransparency(float v1, float v2, float v3, float v4);
 
+    protected:
+        GPAPI void _update() const override;
+
     private:
         QuadVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
         QuadVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
@@ -61,8 +64,6 @@ namespace gp {
         GPAPI uint32_t _draw(Window *window) const override;
 
         GPAPI void _destroy() const override;
-
-        GPAPI void _update() const override;
 
         [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
     };

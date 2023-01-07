@@ -17,26 +17,31 @@
  6 - Trace Enabled
  7 - All Enabled
  */
+
+#if __DEBUG__
+#define GP_LOGGING_LEVEL 6
+#else
 #define GP_LOGGING_LEVEL 3
+#endif
 
 /* Module Specific Config --------------------------------------------------------------------------------------------*/
 
 // core
 
 #define GP_VALUE_CHECK_CORE true
-#define GP_LOG_CORE 7
+#define GP_LOG_CORE 3
 
 #define GP_VALUE_CHECK_BUFFER true
 #define GP_LOG_BUFFER 3
 
 #define GP_VALUE_CHECK_TEXTURE2D true
-#define GP_LOG_TEXTURE2D true
+#define GP_LOG_TEXTURE2D 3
 
 #define GP_VALUE_CHECK_VERTEX_ARRAY true
 #define GP_LOG_VERTEX_ARRAY 3
 
 #define GP_VALUE_CHECK_WINDOW true
-#define GP_LOG_WINDOW 7
+#define GP_LOG_WINDOW 3
 
 #define GP_VALUE_CHECK_SHADER true
 #define GP_LOG_SHADER 3
@@ -69,9 +74,12 @@
 #define GP_LOG_CAMERA_CONTROLLER 3
 
 #define GP_VALUE_CHECK_RENDERER true
-#define GP_LOG_RENDERER true
+#define GP_LOG_RENDERER 3
 
 // objects
+
+#define GP_VALUE_CHECK_RENDERABLE true
+#define GP_LOG_RENDERABLE 3
 
 #define GP_VALUE_CHECK_LINE true
 #define GP_LOG_LINE 3
@@ -89,7 +97,7 @@
 #define GP_LOG_CIRCLE 3
 
 #define GP_VALUE_CHECK_IMAGE true
-#define GP_LOG_IMAGE true
+#define GP_LOG_IMAGE 3
 
-#define GP_VALUE_CHECK_RENDERABLE true
-#define GP_LOG_RENDERABLE 3
+#define GP_VALUE_CHECK_TEXT true
+#define GP_LOG_TEXT true

@@ -8,6 +8,8 @@ namespace gp {
      */
     class Rectangle : public Quad {
 
+        friend class Text;
+
     public:
         /**
          * An object representing a rectangle

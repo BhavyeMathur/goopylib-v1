@@ -15,12 +15,13 @@
 #include "src/goopylib/color/Util.h"
 #include "src/goopylib/color/W3CX11.h"
 
+#include "src/goopylib/objects/Line.h"
 #include "src/goopylib/objects/Triangle.h"
 #include "src/goopylib/objects/Quad.h"
 #include "src/goopylib/objects/Rectangle.h"
 #include "src/goopylib/objects/Ellipse.h"
 #include "src/goopylib/objects/Circle.h"
 #include "src/goopylib/objects/Image.h"
-#include "src/goopylib/objects/Line.h"
+#include "src/goopylib/objects/Text.h"
 
 #include "src/goopylib/scene/CameraController.h"
