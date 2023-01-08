@@ -19,7 +19,7 @@
  */
 
 #if __DEBUG__
-#define GP_LOGGING_LEVEL 6
+#define GP_LOGGING_LEVEL 3
 #else
 #define GP_LOGGING_LEVEL 3
 #endif

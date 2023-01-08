@@ -293,7 +293,8 @@ def pack_shelf_best_width_fit(rectangles: InputRectangles,
                 best_shelf = shelf
 
         if best_shelf is None:
-            if shelf.y + short > bin_height:  # check if the new shelf must be added to the current bin or the next bin
+            if shelf.y + shelf.height + short > bin_height:
+                shelves.append(_Shelf(x=0, y=shelf.y + shelf.height, height=0, bin_=shelf.bin_))
                 best_shelf = _Shelf(x=0, y=0, height=short, bin_=shelf.bin_ + 1)
                 packed.append({})
             else:
@@ -301,8 +302,8 @@ def pack_shelf_best_width_fit(rectangles: InputRectangles,
                 best_shelf = _Shelf(x=0, y=shelf.y + shelf.height, height=short, bin_=shelf.bin_)
 
             shelves.append(best_shelf)
-            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
-            best_shelf.x += width
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), long != original_width)
+            best_shelf.x += long
 
         else:
             if allow_rotation:
@@ -378,7 +379,8 @@ def pack_shelf_worst_width_fit(rectangles: InputRectangles,
                 best_shelf = shelf
 
         if best_shelf is None:
-            if shelf.y + short > bin_height:  # check if the new shelf must be added to the current bin or the next bin
+            if shelf.y + shelf.height + short > bin_height:
+                shelves.append(_Shelf(x=0, y=shelf.y + shelf.height, height=0, bin_=shelf.bin_))
                 best_shelf = _Shelf(x=0, y=0, height=short, bin_=shelf.bin_ + 1)
                 packed.append({})
             else:
@@ -386,8 +388,8 @@ def pack_shelf_worst_width_fit(rectangles: InputRectangles,
                 best_shelf = _Shelf(x=0, y=shelf.y + shelf.height, height=short, bin_=shelf.bin_)
 
             shelves.append(best_shelf)
-            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
-            best_shelf.x += width
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), long != original_width)
+            best_shelf.x += long
 
         else:
             if allow_rotation:
@@ -462,8 +464,10 @@ def pack_shelf_best_height_fit(rectangles: InputRectangles,
                 minimized_leftover = shelf.height - height
                 best_shelf = shelf
 
+        # check if the new shelf must be added to the current bin or the next bin
         if best_shelf is None:
-            if shelf.y + short > bin_height:  # check if the new shelf must be added to the current bin or the next bin
+            if shelf.y + shelf.height + short > bin_height:
+                shelves.append(_Shelf(x=0, y=shelf.y + shelf.height, height=0, bin_=shelf.bin_))
                 best_shelf = _Shelf(x=0, y=0, height=short, bin_=shelf.bin_ + 1)
                 packed.append({})
             else:
@@ -471,8 +475,8 @@ def pack_shelf_best_height_fit(rectangles: InputRectangles,
                 best_shelf = _Shelf(x=0, y=shelf.y + shelf.height, height=short, bin_=shelf.bin_)
 
             shelves.append(best_shelf)
-            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
-            best_shelf.x += width
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), long != original_width)
+            best_shelf.x += long
 
         else:
             if allow_rotation:
