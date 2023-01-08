@@ -44,6 +44,14 @@ def sort_by_side_ratio(rectangles: InputRectangles) -> _SortedRectangles:
     return _sorting_func(rectangles, lambda rect: rect[1][0] / rect[1][1])
 
 
+def sort_by_long_side(rectangles: InputRectangles) -> _SortedRectangles:
+    return _sorting_func(rectangles, lambda rect: max(rect[1]))
+
+
+def sort_by_short_side(rectangles: InputRectangles) -> _SortedRectangles:
+    return _sorting_func(rectangles, lambda rect: min(rect[1]))
+
+
 def pack1D(rectangles: InputRectangles,
            bin_size: float,
            sorting_func: Optional[SortingFunction] = None) -> PackedRectangles:
@@ -94,7 +102,7 @@ class _Shelf:
 def pack_shelf_next_fit(rectangles: InputRectangles,
                         bin_width: float,
                         bin_height: float,
-                        sorting_func: Optional[SortingFunction] = sort_by_width,
+                        sorting_func: Optional[SortingFunction] = sort_by_short_side,
                         allow_rotation=True) -> PackedRectangles:
 
     if sorting_func:
@@ -149,7 +157,7 @@ def pack_shelf_next_fit(rectangles: InputRectangles,
 def pack_shelf_first_fit(rectangles: InputRectangles,
                          bin_width: float,
                          bin_height: float,
-                         sorting_func: Optional[SortingFunction] = sort_by_width,
+                         sorting_func: Optional[SortingFunction] = sort_by_short_side,
                          allow_rotation=True) -> PackedRectangles:
 
     if sorting_func:
@@ -232,7 +240,7 @@ def pack_shelf_first_fit(rectangles: InputRectangles,
 def pack_shelf_best_width_fit(rectangles: InputRectangles,
                               bin_width: float,
                               bin_height: float,
-                              sorting_func: Optional[SortingFunction] = sort_by_width,
+                              sorting_func: Optional[SortingFunction] = sort_by_short_side,
                               allow_rotation=True) -> PackedRectangles:
 
     if sorting_func:
@@ -249,6 +257,13 @@ def pack_shelf_best_width_fit(rectangles: InputRectangles,
         if height > bin_height:
             raise RuntimeError(f"Cannot pack rectangle of height {height} into a bin of height {bin_height}.")
 
+        if width > height:
+            long = width
+            short = height
+        else:
+            long = height
+            short = width
+
         index = indices.__next__()
 
         minimized_leftover = bin_width
@@ -257,11 +272,12 @@ def pack_shelf_best_width_fit(rectangles: InputRectangles,
 
         for shelf in shelves:
             if allow_rotation:
-                if height > width:
-                    width, height = height, width
-
-                if width <= shelf.height and shelf.x + height <= bin_width:
-                    width, height = height, width
+                if long <= shelf.height and shelf.x + short <= bin_width:
+                    width = short
+                    height = long
+                else:
+                    width = long
+                    height = short
 
             if shelf.x + width > bin_width:  # rectangle doesn't horizontally fit on the current shelf
                 continue
@@ -269,34 +285,208 @@ def pack_shelf_best_width_fit(rectangles: InputRectangles,
             if shelf.is_open:
                 if shelf.y + height > bin_height:  # rectangle doesn't fit vertically on the current shelf
                     continue
-            else:
-                if height > shelf.height:  # rectangle doesn't fit vertically on the current (closed) shelf
-                    continue
+            elif height > shelf.height:  # rectangle doesn't fit vertically on the current (closed) shelf
+                continue
 
             if bin_width - shelf.x - width < minimized_leftover:
                 minimized_leftover = bin_width - shelf.x - width
                 best_shelf = shelf
 
         if best_shelf is None:
-            if shelf.y + height > bin_height:  # check if the new shelf must be added to the current bin or the next bin
-                best_shelf = _Shelf(x=0, y=0, height=0, bin_=shelf.bin_ + 1)
+            if shelf.y + short > bin_height:  # check if the new shelf must be added to the current bin or the next bin
+                best_shelf = _Shelf(x=0, y=0, height=short, bin_=shelf.bin_ + 1)
                 packed.append({})
             else:
                 shelf.is_open = False
-                best_shelf = _Shelf(x=0, y=shelf.y + shelf.height, height=0, bin_=shelf.bin_)
+                best_shelf = _Shelf(x=0, y=shelf.y + shelf.height, height=short, bin_=shelf.bin_)
+
             shelves.append(best_shelf)
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
+            best_shelf.x += width
 
-        if allow_rotation:
-            if height > width:
-                width, height = height, width
+        else:
+            if allow_rotation:
+                if long <= best_shelf.height and best_shelf.x + short <= bin_width:
+                    width = short
+                    height = long
+                else:
+                    width = long
+                    height = short
 
-            if width <= best_shelf.height and best_shelf.x + height <= bin_width:
-                width, height = height, width
+            if height > best_shelf.height:
+                best_shelf.height = height
 
-        if height > best_shelf.height:
-            best_shelf.height = height
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
+            best_shelf.x += width
 
-        packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
-        best_shelf.x += width
+    return packed
+
+
+def pack_shelf_worst_width_fit(rectangles: InputRectangles,
+                               bin_width: float,
+                               bin_height: float,
+                               sorting_func: Optional[SortingFunction] = sort_by_short_side,
+                               allow_rotation=True) -> PackedRectangles:
+
+    if sorting_func:
+        indices, rectangles = sorting_func(rectangles)
+    else:
+        indices = range(len(rectangles)).__iter__()
+
+    packed: PackedRectangles = [{}]
+    shelves: list[_Shelf] = [_Shelf(0, 0, 0, 0)]
+
+    for width, height in rectangles:
+        if width > bin_width:
+            raise RuntimeError(f"Cannot pack rectangle of width {width} into a bin of width {bin_width}.")
+        if height > bin_height:
+            raise RuntimeError(f"Cannot pack rectangle of height {height} into a bin of height {bin_height}.")
+
+        if width > height:
+            long = width
+            short = height
+        else:
+            long = height
+            short = width
+
+        index = indices.__next__()
+
+        maximized_leftover = 0
+        best_shelf = None
+        original_width = width
+
+        for shelf in shelves:
+            if allow_rotation:
+                if long <= shelf.height and shelf.x + short <= bin_width:
+                    width = short
+                    height = long
+                else:
+                    width = long
+                    height = short
+
+            if shelf.x + width > bin_width:  # rectangle doesn't horizontally fit on the current shelf
+                continue
+
+            if shelf.is_open:
+                if shelf.y + height > bin_height:  # rectangle doesn't fit vertically on the current shelf
+                    continue
+            elif height > shelf.height:  # rectangle doesn't fit vertically on the current (closed) shelf
+                continue
+
+            if bin_width - shelf.x - width > maximized_leftover:
+                maximized_leftover = bin_width - shelf.x - width
+                best_shelf = shelf
+
+        if best_shelf is None:
+            if shelf.y + short > bin_height:  # check if the new shelf must be added to the current bin or the next bin
+                best_shelf = _Shelf(x=0, y=0, height=short, bin_=shelf.bin_ + 1)
+                packed.append({})
+            else:
+                shelf.is_open = False
+                best_shelf = _Shelf(x=0, y=shelf.y + shelf.height, height=short, bin_=shelf.bin_)
+
+            shelves.append(best_shelf)
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
+            best_shelf.x += width
+
+        else:
+            if allow_rotation:
+                if long <= best_shelf.height and best_shelf.x + short <= bin_width:
+                    width = short
+                    height = long
+                else:
+                    width = long
+                    height = short
+
+            if height > best_shelf.height:
+                best_shelf.height = height
+
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
+            best_shelf.x += width
+
+    return packed
+
+
+def pack_shelf_best_height_fit(rectangles: InputRectangles,
+                               bin_width: float,
+                               bin_height: float,
+                               sorting_func: Optional[SortingFunction] = sort_by_short_side,
+                               allow_rotation=True) -> PackedRectangles:
+
+    if sorting_func:
+        indices, rectangles = sorting_func(rectangles)
+    else:
+        indices = range(len(rectangles)).__iter__()
+
+    packed: PackedRectangles = [{}]
+    shelves: list[_Shelf] = [_Shelf(0, 0, 0, 0)]
+
+    for width, height in rectangles:
+        if width > bin_width:
+            raise RuntimeError(f"Cannot pack rectangle of width {width} into a bin of width {bin_width}.")
+        if height > bin_height:
+            raise RuntimeError(f"Cannot pack rectangle of height {height} into a bin of height {bin_height}.")
+
+        if width > height:
+            long = width
+            short = height
+        else:
+            long = height
+            short = width
+
+        index = indices.__next__()
+
+        minimized_leftover = bin_height
+        best_shelf = None
+        original_width = width
+
+        for shelf in shelves:
+            if allow_rotation:
+                if long <= shelf.height and shelf.x + short <= bin_width:
+                    width = short
+                    height = long
+                else:
+                    width = long
+                    height = short
+
+            if shelf.x + width > bin_width:  # rectangle doesn't horizontally fit on the current shelf
+                continue
+
+            if shelf.is_open:
+                if shelf.y + height > bin_height:  # rectangle doesn't fit vertically on the current shelf
+                    continue
+            elif height > shelf.height:  # rectangle doesn't fit vertically on the current (closed) shelf
+                continue
+
+            if shelf.height - height < minimized_leftover:
+                minimized_leftover = shelf.height - height
+                best_shelf = shelf
+
+        if best_shelf is None:
+            if shelf.y + short > bin_height:  # check if the new shelf must be added to the current bin or the next bin
+                best_shelf = _Shelf(x=0, y=0, height=short, bin_=shelf.bin_ + 1)
+                packed.append({})
+            else:
+                shelf.is_open = False
+                best_shelf = _Shelf(x=0, y=shelf.y + shelf.height, height=short, bin_=shelf.bin_)
+
+            shelves.append(best_shelf)
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
+            best_shelf.x += width
+
+        else:
+            if allow_rotation:
+                if long <= best_shelf.height and best_shelf.x + short <= bin_width:
+                    width = short
+                    height = long
+                else:
+                    width = long
+                    height = short
+
+            if height > best_shelf.height:
+                best_shelf.height = height
+
+            packed[best_shelf.bin_][index] = ((best_shelf.x, best_shelf.y), width != original_width)
+            best_shelf.x += width
 
     return packed
