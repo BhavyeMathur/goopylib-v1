@@ -9,6 +9,7 @@ disable=
     protected-access,
     too-many-public-methods,
     too-few-public-methods,
+    too-many-branches,
 
 [BASIC]
 good-names=i,
