@@ -23,22 +23,22 @@ namespace gp {
     class Text : public Renderable {
 
     public:
-        Text(std::string text, Point position, uint32_t fontSize);
+        GPAPI Text(std::string text, Point position, uint32_t fontSize);
 
-        ~Text();
+        GPAPI ~Text();
 
-        std::string getText() const;
+        GPAPI std::string getText() const;
 
-        uint32_t getFontSize() const;
+        GPAPI uint32_t getFontSize() const;
 
-        void setTransparency(float value) override;
+        GPAPI void setTransparency(float value) override;
 
         // Static methods
-        static void loadFont(const std::string& filepath, uint32_t faceIndex = 0, bool setDefault = true);
+        GPAPI static void loadFont(const std::string& filepath, uint32_t faceIndex = 0, bool setDefault = true);
 
-        static void init();
+        GPAPI static void init();
 
-        static void terminate();
+        GPAPI static void terminate();
 
     private:
         std::string m_Text;

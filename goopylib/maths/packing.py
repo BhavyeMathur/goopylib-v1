@@ -39,7 +39,7 @@ class Item:
         self.ID = Item.items
         Item.items += 1
 
-    def rotate(self) -> None:
+    def _rotate(self) -> None:
         """
         Swaps the Item's width and height, ie rotates by 90 degrees.
         """
@@ -384,7 +384,7 @@ def pack_shelf_next_fit(items: list[Item],
 
     for item in items:
         if allow_rotation and (item.is_vertical() != (item.long_side <= shelf.height)):
-            item.rotate()
+            item._rotate()
 
         if shelf.fits(item):
             shelf.add(item)
@@ -397,7 +397,7 @@ def pack_shelf_next_fit(items: list[Item],
             shelf = bins[-1].open_shelf
 
         if allow_rotation and item.is_vertical():
-            item.rotate()
+            item._rotate()
         shelf.add(item)
 
     return bins
@@ -430,7 +430,7 @@ def pack_shelf_first_fit(items: list[Item],
     def _add_to_bin() -> bool:
         for shelf in bin:
             if allow_rotation and (item.is_vertical() != (item.long_side <= shelf.height)):
-                item.rotate()
+                item._rotate()
 
             if shelf.fits(item):
                 shelf.add(item)
@@ -440,7 +440,7 @@ def pack_shelf_first_fit(items: list[Item],
                 shelf = bin.add_shelf()
 
                 if allow_rotation and item.is_vertical():
-                    item.rotate()
+                    item._rotate()
                 shelf.add(item)
 
                 return True
@@ -453,7 +453,7 @@ def pack_shelf_first_fit(items: list[Item],
             bins.append(ShelvedBin(width=bin_width, height=bin_height))
 
             if allow_rotation and item.is_vertical():
-                item.rotate()
+                item._rotate()
             bins[-1].open_shelf.add(item)
 
     return bins
@@ -498,7 +498,7 @@ def pack_shelf_scored_fit(items: list[Item],
     def _add_to_bin() -> None:
         for shelf in bin:
             if allow_rotation and (item.is_vertical() != (item.long_side <= shelf.height)):
-                item.rotate()
+                item._rotate()
 
             if shelf.fits(item):
                 _score(shelf, item)
@@ -507,7 +507,7 @@ def pack_shelf_scored_fit(items: list[Item],
             shelf = bin.add_shelf()
 
             if allow_rotation and item.is_vertical():
-                item.rotate()
+                item._rotate()
 
             _score(shelf, item)
 
@@ -523,13 +523,13 @@ def pack_shelf_scored_fit(items: list[Item],
             bins.append(ShelvedBin(width=bin_width, height=bin_height))
 
             if allow_rotation and item.is_vertical():
-                item.rotate()
+                item._rotate()
 
             best_shelf = bins[-1].open_shelf
             best_orientation = item.rotated
 
         if item.rotated != best_orientation:
-            item.rotate()
+            item._rotate()
 
         best_shelf.add(item)  # noqa W0631
 
@@ -701,7 +701,7 @@ def pack_shelf_oriented_next_fit(items: list[Item],
 
     for item in items:
         if orientation_vertical == item.is_horizontal():
-            item.rotate()
+            item._rotate()
 
         if shelf.fits(item):
             shelf.add(item)
@@ -745,7 +745,7 @@ def pack_shelf_oriented_first_fit(items: list[Item],
     def _add_to_bin() -> bool:
         for shelf in bin:
             if orientation_vertical == item.is_horizontal():
-                item.rotate()
+                item._rotate()
 
             if shelf.fits(item):
                 shelf.add(item)
@@ -815,7 +815,7 @@ def pack_shelf_oriented_scored_fit(items: list[Item],
 
     for item in items:
         if orientation_vertical == item.is_horizontal():
-            item.rotate()
+            item._rotate()
 
         best_shelf = None
         best_score = float("-inf")
