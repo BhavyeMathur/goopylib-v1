@@ -157,10 +157,7 @@ class ShelvedBin(Bin):
             the % packing ratio of this shelf (between 0-1)
         """
         if self.ID == Bin.bins - 1:  # this is the latest bin
-            try:
-                return sum(map(Item.area, self.items)) / sum(map(Shelf.packed_area, self.shelves))
-            except ZeroDivisionError:
-                return 0
+            return sum(map(Item.area, self.items)) / sum(map(Shelf.packed_area, self.shelves))
         else:
             return sum(map(Item.area, self.items)) / (self.width * self.height)
 
@@ -623,7 +620,7 @@ def pack_shelf_best_height_fit(items: list[Item],
 def pack_shelf_worst_height_fit(items: list[Item],
                                 bin_width: float,
                                 bin_height: float,
-                                sorting: Optional[_SortingFunction] = sort_by_short_side(descending=False),
+                                sorting: Optional[_SortingFunction] = sort_by_short_side(descending=True),
                                 allow_rotation: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Worst-Height Fit algorithm.
@@ -643,5 +640,33 @@ def pack_shelf_worst_height_fit(items: list[Item],
                                  bin_width=bin_width,
                                  bin_height=bin_height,
                                  scoring_function=lambda shelf, obj: shelf.height - obj.height,
+                                 sorting=sorting,
+                                 allow_rotation=allow_rotation)
+
+
+def pack_shelf_best_area_fit(items: list[Item],
+                             bin_width: float,
+                             bin_height: float,
+                             sorting: Optional[_SortingFunction] = sort_by_short_side(descending=True),
+                             allow_rotation: bool = True) -> list[Bin]:
+    """
+    Packs a list of rectangular items into bins using the Shelf Best Area Fit algorithm.
+
+    Args:
+        items: list of items
+        bin_width: of each bin
+        bin_height: of each bin
+
+        sorting: function used to sort the items. Set to None to disable sorting.
+        allow_rotation: whether items are allowed to be rotated.
+
+    Returns:
+        a list of bins with packed items.
+    """
+    return pack_shelf_scored_fit(items=items,
+                                 bin_width=bin_width,
+                                 bin_height=bin_height,
+                                 scoring_function=
+                                 lambda shelf, obj: (shelf.packed_width + obj.width) * max(obj.height, shelf.height),
                                  sorting=sorting,
                                  allow_rotation=allow_rotation)
