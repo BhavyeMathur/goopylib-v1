@@ -1,6 +1,23 @@
 #include "Packing.h"
 
-#include <float.h>
+#include <cfloat>
+#include <iostream>
+
+#include "src/config.h"
+
+#if (GP_LOG_PACKING != true) and (GP_LOG_PACKING <= GP_LOGGING_LEVEL)
+#undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_PACKING
+#endif
+
+#if !GP_VALUE_CHECK_PACKING
+#undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
+#endif
+
+#include "src/goopylib/debug/LogMacros.h"
+#include "src/goopylib/debug/Error.h"
 
 
 // Item Class
@@ -71,6 +88,10 @@ namespace gp::packing {
     float Item::getShortSide() const {
         return m_ShortSide;
     }
+
+    Ref<Item> Item::create(float width, float height) {
+        return Ref<Item>(new Item(width, height));
+    }
 }
 
 // Bin Class
@@ -125,6 +146,10 @@ namespace gp::packing::shelf {
 
     }
 
+    std::string Shelf::toString() const {
+        return strformat("Shelf(offset=%f, packed=%f) with %i items", m_VerticalOffset, m_PackedWidth, m_Items.size());
+    }
+
     bool Shelf::fits(const Ref<Item> &item) const {
         if (m_IsOpen) {
             return item->getWidth() <= m_AvailableWidth and
@@ -143,6 +168,7 @@ namespace gp::packing::shelf {
         item->m_X = m_PackedWidth;
         item->m_Y = m_VerticalOffset;
         m_Bin.add(item);
+        m_Items.push_back(item);
 
         if (item->getHeight() > m_Height) {
             m_Height = item->getHeight();
@@ -188,6 +214,11 @@ namespace gp::packing::shelf {
     bool Shelf::isOpen() const {
         return m_IsOpen;
     }
+
+    std::ostream &operator<<(std::ostream &os, const Shelf &shelf) {
+        os << shelf.toString();
+        return os;
+    }
 }
 
 // Shelved Bin Class
@@ -195,7 +226,7 @@ namespace gp::packing {
     ShelvedBin::ShelvedBin(float width, float height)
             : Bin(width, height),
               m_OpenShelf(Ref<shelf::Shelf>(new shelf::Shelf(0, *this))) {
-
+        m_Shelves.push_back(m_OpenShelf);
     }
 
     Ref<shelf::Shelf> ShelvedBin::addShelf() {
@@ -398,7 +429,7 @@ namespace gp::packing {
         std::vector<Ref<ShelvedBin>> bins = {Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight))};
 
         for (const auto &item: items) {
-            for (const auto &bin : bins) {
+            for (const auto &bin: bins) {
                 for (const auto &shelf: *bin) {
                     if (allowRotation and (item->isVertical() != (item->getLongSide() <= shelf->getHeight()))) {
                         item->rotate();
@@ -418,14 +449,17 @@ namespace gp::packing {
                     goto next_item;
                 }
             }
+            {
+                // code only reaches here if item has not been added to a shelf
+                bins.push_back(Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight)));
 
-            // code only reaches here if item has not been added to a shelf
-            bins.push_back(Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight)));
-
-            if (allowRotation and item->isVertical()) {
-                item->rotate();
+                if (allowRotation and item->isVertical()) {
+                    item->rotate();
+                }
+                const auto &newBin = bins.back();
+                const auto &newShelf = newBin->m_OpenShelf;
+                newShelf->add(item);
             }
-            bins.back()->m_OpenShelf->add(item);
 
             next_item:
             continue;
@@ -565,5 +599,206 @@ namespace gp::packing {
                                  return -(shelf->getPackedWidth() + obj->getWidth()) *
                                         max(obj->getHeight(), shelf->getHeight());
                              }, sorting, allowRotation);
+    }
+}
+
+// Oriented Shelf Packing Algorithms
+namespace gp::packing {
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedNextFit(std::vector<Ref<Item>> &items,
+                                                            float binWidth,
+                                                            float binHeight,
+                                                            const SortingFunction &sorting,
+                                                            bool orientVertically) {
+        if (sorting) {
+            items = sorting(items);
+        }
+
+        std::vector<Ref<ShelvedBin>> bins = {Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight))};
+        Ref<Shelf> shelf = bins.back()->m_OpenShelf;
+
+        for (const auto &item: items) {
+            if (orientVertically == item->isHorizontal()) {
+                item->rotate();
+            }
+
+            if (shelf->fits(item)) {
+                shelf->add(item);
+                continue;
+            }
+
+            if (shelf->fitsAbove(item)) {
+                shelf = bins.back()->addShelf();
+            }
+            else {
+                bins.push_back(Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight)));
+                shelf = bins.back()->m_OpenShelf;
+            }
+
+            shelf->add(item);
+        }
+
+        return bins;
+    }
+
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedFirstFit(std::vector<Ref<Item>> &items,
+                                                             float binWidth,
+                                                             float binHeight,
+                                                             const SortingFunction &sorting,
+                                                             bool orientVertically) {
+        if (sorting) {
+            items = sorting(items);
+        }
+
+        std::vector<Ref<ShelvedBin>> bins = {Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight))};
+
+        for (const auto &item: items) {
+            if (orientVertically == item->isHorizontal()) {
+                item->rotate();
+            }
+
+            for (const auto &bin: bins) {
+                for (const auto &shelf: *bin) {
+                    if (shelf->fits(item)) {
+                        shelf->add(item);
+                        goto next_item;
+                    }
+                }
+
+                if (bin->m_OpenShelf->fitsAbove(item)) {
+                    bin->addShelf()->add(item);
+                    goto next_item;
+                }
+            }
+
+            // code only reaches here if item has not been added to a shelf
+            bins.push_back(Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight)));
+            bins.back()->m_OpenShelf->add(item);
+
+            next_item:
+            continue;
+        }
+
+        return bins;
+    }
+
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedScoredFit(std::vector<Ref<Item>> &items,
+                                                              float binWidth,
+                                                              float binHeight,
+                                                              const ScoringFunction &scoringFunction,
+                                                              const SortingFunction &sorting,
+                                                              bool orientVertically) {
+        if (sorting) {
+            items = sorting(items);
+        }
+
+        std::vector<Ref<ShelvedBin>> bins = {Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight))};
+
+        for (const auto &item: items) {
+            if (orientVertically == item->isHorizontal()) {
+                item->rotate();
+            }
+
+            Ref<Shelf> bestShelf = nullptr;
+            float bestScore = -FLT_MAX;
+
+            for (const auto &bin: bins) {
+                for (const auto &shelf: *bin) {
+                    if (shelf->fits(item)) {
+                        float score = scoringFunction(shelf, item);
+                        if (score > bestScore) {
+                            bestShelf = shelf;
+                            bestScore = score;
+                        }
+                    }
+                }
+
+                if (bestShelf == nullptr and bin->m_OpenShelf->fitsAbove(item)) {
+                    auto shelf = bin->addShelf();
+
+                    float score = scoringFunction(shelf, item);
+                    if (score > bestScore) {
+                        bestShelf = shelf;
+                        bestScore = score;
+                    }
+                }
+            }
+
+            if (bestShelf == nullptr) {
+                bins.push_back(Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight)));
+                bestShelf = bins.back()->m_OpenShelf;
+            }
+
+            bestShelf->add(item);
+        }
+
+        return bins;
+    }
+
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedBestWidthFit(std::vector<Ref<Item>> &items,
+                                                                 float binWidth,
+                                                                 float binHeight,
+                                                                 const SortingFunction &sorting,
+                                                                 bool orientVertically) {
+        return packOrientedScoredFit(items, binWidth, binHeight,
+                                     [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                                         return obj->getWidth() - shelf->getAvailableWidth();
+                                     }, sorting, orientVertically);
+    }
+
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedWorstWidthFit(std::vector<Ref<Item>> &items,
+                                                                  float binWidth,
+                                                                  float binHeight,
+                                                                  const SortingFunction &sorting,
+                                                                  bool orientVertically) {
+        return packOrientedScoredFit(items, binWidth, binHeight,
+                                     [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                                         return shelf->getAvailableWidth() - obj->getWidth();
+                                     }, sorting, orientVertically);
+    }
+
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedBestHeightFit(std::vector<Ref<Item>> &items,
+                                                                  float binWidth,
+                                                                  float binHeight,
+                                                                  const SortingFunction &sorting,
+                                                                  bool orientVertically) {
+        return packOrientedScoredFit(items, binWidth, binHeight,
+                                     [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                                         return obj->getHeight() - shelf->getHeight();
+                                     }, sorting, orientVertically);
+    }
+
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedWorstHeightFit(std::vector<Ref<Item>> &items,
+                                                                   float binWidth,
+                                                                   float binHeight,
+                                                                   const SortingFunction &sorting,
+                                                                   bool orientVertically) {
+        return packOrientedScoredFit(items, binWidth, binHeight,
+                                     [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                                         return shelf->getHeight() - obj->getHeight();
+                                     }, sorting, orientVertically);
+    }
+
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedBestAreaFit(std::vector<Ref<Item>> &items,
+                                                                float binWidth,
+                                                                float binHeight,
+                                                                const SortingFunction &sorting,
+                                                                bool orientVertically) {
+        return packOrientedScoredFit(items, binWidth, binHeight,
+                                     [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                                         return (shelf->getPackedWidth() + obj->getWidth()) *
+                                                max(obj->getHeight(), shelf->getHeight());
+                                     }, sorting, orientVertically);
+    }
+
+    std::vector<Ref<ShelvedBin>> shelf::packOrientedWorstAreaFit(std::vector<Ref<Item>> &items,
+                                                                 float binWidth,
+                                                                 float binHeight,
+                                                                 const SortingFunction &sorting,
+                                                                 bool allowRotation) {
+        return packOrientedScoredFit(items, binWidth, binHeight,
+                                     [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                                         return -(shelf->getPackedWidth() + obj->getWidth()) *
+                                                max(obj->getHeight(), shelf->getHeight());
+                                     }, sorting, allowRotation);
     }
 }

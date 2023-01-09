@@ -12,7 +12,7 @@ if (APPLE)
     set(CMAKE_CXX_FLAGS_DEBUG -g)
     set(CMAKE_CXX_FLAGS_RELEASE -O3)
     set(CMAKE_CXX_FLAGS -Wno-deprecated-volatile)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_DEBUG /Od)
     set(CMAKE_CXX_FLAGS_RELEASE /O2)
 endif ()
@@ -46,42 +46,42 @@ if (WIN32)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
 
-        elseif(MSVC_TOOLSET_VERSION EQUAL 120)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 120)
             link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2013)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
 
-        elseif(MSVC_TOOLSET_VERSION EQUAL 140)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 140)
             link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2015)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
 
-        elseif(MSVC_TOOLSET_VERSION EQUAL 141)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 141)
             link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2017)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
 
-        elseif(MSVC_TOOLSET_VERSION EQUAL 142)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 142)
             link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2019)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
 
-        elseif(MSVC_TOOLSET_VERSION EQUAL 143)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 143)
             link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2022)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
 
-        endif()
+        endif ()
     else ()
         link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-mingw-w64)
 
@@ -97,7 +97,7 @@ elseif (APPLE)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
-endif()
+endif ()
 
 add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/Core.cpp
@@ -106,6 +106,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/debug/Log.cpp
 
             src/goopylib/maths/Easing.cpp
+            src/goopylib/maths/Packing.cpp
             src/goopylib/maths/gpmath.cpp
 
             src/goopylib/color/Color.cpp
@@ -148,3 +149,6 @@ if (APPLE)
     target_link_libraries(goopylib "-framework Cocoa")
     target_link_libraries(goopylib "-framework IOKit")
 endif ()
+
+add_executable(main main.cpp)
+target_link_libraries(main goopylib)

@@ -70,6 +70,13 @@ namespace gp::packing::shelf {
     using ScoringFunction = std::function<float(const Ref<gp::packing::shelf::Shelf> &,
                                                 const Ref<gp::packing::Item> &)>;
 
+    using PackingFunction = std::function<std::vector<Ref<ShelvedBin>>(std::vector<Ref<Item>> &, float, float,
+                                                                       const SortingFunction &, bool)>;
+
+    using ScoredPackingFunction = std::function<std::vector<Ref<ShelvedBin>>(std::vector<Ref<Item>> &, float, float,
+                                                                             const ScoringFunction &,
+                                                                             const SortingFunction &, bool)>;
+
     GPAPI std::vector<Ref<ShelvedBin>> packNextFit(std::vector<Ref<Item>> &items,
                                                    float binWidth,
                                                    float binHeight,
@@ -124,7 +131,64 @@ namespace gp::packing::shelf {
                                                         float binHeight,
                                                         const SortingFunction &sorting = sortByShortSide(true),
                                                         bool allowRotation = true);
+}
 
+// Oriented Shelf Packing Algorithms
+namespace gp::packing::shelf {
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedNextFit(std::vector<Ref<Item>> &items,
+                                                           float binWidth,
+                                                           float binHeight,
+                                                           const SortingFunction &sorting = sortByLongSide(true),
+                                                           bool orientVertically = true);
+
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedFirstFit(std::vector<Ref<Item>> &items,
+                                                            float binWidth,
+                                                            float binHeight,
+                                                            const SortingFunction &sorting = sortByLongSide(true),
+                                                            bool orientVertically = true);
+
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedScoredFit(std::vector<Ref<Item>> &items,
+                                                             float binWidth,
+                                                             float binHeight,
+                                                             const ScoringFunction &scoringFunction,
+                                                             const SortingFunction &sorting = sortByLongSide(true),
+                                                             bool orientVertically = true);
+
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedBestWidthFit(std::vector<Ref<Item>> &items,
+                                                                float binWidth,
+                                                                float binHeight,
+                                                                const SortingFunction &sorting = sortByLongSide(true),
+                                                                bool orientVertically = true);
+
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedWorstWidthFit(std::vector<Ref<Item>> &items,
+                                                                 float binWidth,
+                                                                 float binHeight,
+                                                                 const SortingFunction &sorting = sortByLongSide(true),
+                                                                 bool orientVertically = true);
+
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedBestHeightFit(std::vector<Ref<Item>> &items,
+                                                                 float binWidth,
+                                                                 float binHeight,
+                                                                 const SortingFunction &sorting = sortByLongSide(true),
+                                                                 bool orientVertically = true);
+
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedWorstHeightFit(std::vector<Ref<Item>> &items,
+                                                                  float binWidth,
+                                                                  float binHeight,
+                                                                  const SortingFunction &sorting = sortByLongSide(true),
+                                                                  bool orientVertically = true);
+
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedBestAreaFit(std::vector<Ref<Item>> &items,
+                                                               float binWidth,
+                                                               float binHeight,
+                                                               const SortingFunction &sorting = sortByLongSide(true),
+                                                               bool orientVertically = true);
+
+    GPAPI std::vector<Ref<ShelvedBin>> packOrientedWorstAreaFit(std::vector<Ref<Item>> &items,
+                                                                float binWidth,
+                                                                float binHeight,
+                                                                const SortingFunction &sorting = sortByLongSide(true),
+                                                                bool orientVertically = true);
 }
 
 // Item Class
@@ -151,6 +215,25 @@ namespace gp::packing {
                                                                  const shelf::ScoringFunction &scoringFunction,
                                                                  const SortingFunction &sorting,
                                                                  bool allowRotation);
+
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedNextFit(std::vector<Ref<Item>> &items,
+                                                                       float binWidth,
+                                                                       float binHeight,
+                                                                       const SortingFunction &sorting,
+                                                                       bool orientVertically);
+
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedFirstFit(std::vector<Ref<Item>> &items,
+                                                                        float binWidth,
+                                                                        float binHeight,
+                                                                        const SortingFunction &sorting,
+                                                                        bool orientVertically);
+
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedScoredFit(std::vector<Ref<Item>> &items,
+                                                                         float binWidth,
+                                                                         float binHeight,
+                                                                         const shelf::ScoringFunction &scoringFunction,
+                                                                         const SortingFunction &sorting,
+                                                                         bool orientVertically);
 
     public:
         GPAPI Item(float width, float height);
@@ -182,6 +265,8 @@ namespace gp::packing {
         GPAPI static bool compareWidth(const Item &item1, const Item &item2) {
             return item1.m_Width < item2.m_Height;
         }
+
+        GPAPI static Ref<Item> create(float width, float height);
 
     private:
         float m_Width;
@@ -226,7 +311,28 @@ namespace gp::packing::shelf {
                                                                  const SortingFunction &sorting,
                                                                  bool allowRotation);
 
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedNextFit(std::vector<Ref<Item>> &items,
+                                                                       float binWidth,
+                                                                       float binHeight,
+                                                                       const SortingFunction &sorting,
+                                                                       bool orientVertically);
+
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedFirstFit(std::vector<Ref<Item>> &items,
+                                                                        float binWidth,
+                                                                        float binHeight,
+                                                                        const SortingFunction &sorting,
+                                                                        bool orientVertically);
+
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedScoredFit(std::vector<Ref<Item>> &items,
+                                                                         float binWidth,
+                                                                         float binHeight,
+                                                                         const shelf::ScoringFunction &scoringFunction,
+                                                                         const SortingFunction &sorting,
+                                                                         bool orientVertically);
+
     public:
+        GPAPI std::string toString() const;
+
         GPAPI float getWidth() const;
 
         GPAPI float getHeight() const;
@@ -290,6 +396,25 @@ namespace gp::packing {
                                                                  const shelf::ScoringFunction &scoringFunction,
                                                                  const SortingFunction &sorting,
                                                                  bool allowRotation);
+
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedNextFit(std::vector<Ref<Item>> &items,
+                                                                       float binWidth,
+                                                                       float binHeight,
+                                                                       const SortingFunction &sorting,
+                                                                       bool orientVertically);
+
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedFirstFit(std::vector<Ref<Item>> &items,
+                                                                        float binWidth,
+                                                                        float binHeight,
+                                                                        const SortingFunction &sorting,
+                                                                        bool orientVertically);
+
+        friend std::vector<Ref<ShelvedBin>> shelf::packOrientedScoredFit(std::vector<Ref<Item>> &items,
+                                                                         float binWidth,
+                                                                         float binHeight,
+                                                                         const shelf::ScoringFunction &scoringFunction,
+                                                                         const SortingFunction &sorting,
+                                                                         bool orientVertically);
 
     public:
         GPAPI float packingRatio() const override;

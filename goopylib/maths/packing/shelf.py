@@ -450,7 +450,7 @@ def pack_oriented_next_fit(items: list[Item],
                            bin_width: float,
                            bin_height: float,
                            sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                           orientation_vertical: bool = True) -> list[Bin]:
+                           orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Next Fit algorithm.
 
@@ -460,7 +460,7 @@ def pack_oriented_next_fit(items: list[Item],
         bin_height: of each bin
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -472,7 +472,7 @@ def pack_oriented_next_fit(items: list[Item],
     shelf = bins[-1].open_shelf
 
     for item in items:
-        if orientation_vertical == item.is_horizontal():
+        if orient_vertically == item.is_horizontal():
             item._rotate()
 
         if shelf._fits(item):
@@ -494,7 +494,7 @@ def pack_oriented_first_fit(items: list[Item],
                             bin_width: float,
                             bin_height: float,
                             sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                            orientation_vertical: bool = True) -> list[Bin]:
+                            orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using Shelf First Fit algorithm.
 
@@ -504,7 +504,7 @@ def pack_oriented_first_fit(items: list[Item],
         bin_height: of each bin
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -516,9 +516,6 @@ def pack_oriented_first_fit(items: list[Item],
 
     def _add_to_bin() -> bool:
         for shelf in bin:
-            if orientation_vertical == item.is_horizontal():
-                item._rotate()
-
             if shelf._fits(item):
                 shelf._add(item)
                 return True
@@ -531,6 +528,9 @@ def pack_oriented_first_fit(items: list[Item],
         return False
 
     for item in items:
+        if orient_vertically == item.is_horizontal():
+            item._rotate()
+
         for bin in bins:
             if _add_to_bin():
                 break
@@ -546,7 +546,7 @@ def pack_oriented_scored_fit(items: list[Item],
                              bin_height: float,
                              scoring_function: Callable[[Shelf, Item], float],
                              sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                             orientation_vertical: bool = True) -> list[Bin]:
+                             orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Best Width Fit algorithm.
 
@@ -558,7 +558,7 @@ def pack_oriented_scored_fit(items: list[Item],
         scoring_function: a function that scores shelf candidates for placing items
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -588,7 +588,7 @@ def pack_oriented_scored_fit(items: list[Item],
             _score(shelf, item)
 
     for item in items:
-        if orientation_vertical == item.is_horizontal():
+        if orient_vertically == item.is_horizontal():
             item._rotate()
 
         best_shelf = None
@@ -610,7 +610,7 @@ def pack_oriented_best_width_fit(items: list[Item],
                                  bin_width: float,
                                  bin_height: float,
                                  sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                                 orientation_vertical: bool = True) -> list[Bin]:
+                                 orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Best Width Fit algorithm.
 
@@ -620,7 +620,7 @@ def pack_oriented_best_width_fit(items: list[Item],
         bin_height: of each bin
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -630,14 +630,14 @@ def pack_oriented_best_width_fit(items: list[Item],
                                     bin_height=bin_height,
                                     scoring_function=lambda shelf, obj: obj.width - shelf.available_width,
                                     sorting=sorting,
-                                    orientation_vertical=orientation_vertical)
+                                    orient_vertically=orient_vertically)
 
 
 def pack_oriented_worst_width_fit(items: list[Item],
                                   bin_width: float,
                                   bin_height: float,
                                   sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                                  orientation_vertical: bool = True) -> list[Bin]:
+                                  orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Worst-Width Fit algorithm.
 
@@ -647,7 +647,7 @@ def pack_oriented_worst_width_fit(items: list[Item],
         bin_height: of each bin
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -657,14 +657,14 @@ def pack_oriented_worst_width_fit(items: list[Item],
                                     bin_height=bin_height,
                                     scoring_function=lambda shelf, obj: shelf.available_width - obj.width,
                                     sorting=sorting,
-                                    orientation_vertical=orientation_vertical)
+                                    orient_vertically=orient_vertically)
 
 
 def pack_oriented_best_height_fit(items: list[Item],
                                   bin_width: float,
                                   bin_height: float,
                                   sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                                  orientation_vertical: bool = True) -> list[Bin]:
+                                  orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Best Height Fit algorithm.
 
@@ -674,7 +674,7 @@ def pack_oriented_best_height_fit(items: list[Item],
         bin_height: of each bin
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -684,14 +684,14 @@ def pack_oriented_best_height_fit(items: list[Item],
                                     bin_height=bin_height,
                                     scoring_function=lambda shelf, obj: obj.height - shelf.height,
                                     sorting=sorting,
-                                    orientation_vertical=orientation_vertical)
+                                    orient_vertically=orient_vertically)
 
 
 def pack_oriented_worst_height_fit(items: list[Item],
                                    bin_width: float,
                                    bin_height: float,
                                    sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                                   orientation_vertical: bool = True) -> list[Bin]:
+                                   orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Worst-Height Fit algorithm.
 
@@ -701,7 +701,7 @@ def pack_oriented_worst_height_fit(items: list[Item],
         bin_height: of each bin
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -711,14 +711,14 @@ def pack_oriented_worst_height_fit(items: list[Item],
                                     bin_height=bin_height,
                                     scoring_function=lambda shelf, obj: shelf.height - obj.height,
                                     sorting=sorting,
-                                    orientation_vertical=orientation_vertical)
+                                    orient_vertically=orient_vertically)
 
 
 def pack_oriented_best_area_fit(items: list[Item],
                                 bin_width: float,
                                 bin_height: float,
                                 sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                                orientation_vertical: bool = True) -> list[Bin]:
+                                orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Best Area Fit algorithm.
 
@@ -728,7 +728,7 @@ def pack_oriented_best_area_fit(items: list[Item],
         bin_height: of each bin
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -739,14 +739,14 @@ def pack_oriented_best_area_fit(items: list[Item],
                                     scoring_function=lambda shelf, obj:
                                     (shelf.packed_width + obj.width) * max(obj.height, shelf.height),
                                     sorting=sorting,
-                                    orientation_vertical=orientation_vertical)
+                                    orient_vertically=orient_vertically)
 
 
 def pack_oriented_worst_area_fit(items: list[Item],
                                  bin_width: float,
                                  bin_height: float,
                                  sorting: Optional[_SortingFunction] = sort_by_long_side(descending=True),
-                                 orientation_vertical: bool = True) -> list[Bin]:
+                                 orient_vertically: bool = True) -> list[Bin]:
     """
     Packs a list of rectangular items into bins using the Shelf Worst Area Fit algorithm.
 
@@ -756,7 +756,7 @@ def pack_oriented_worst_area_fit(items: list[Item],
         bin_height: of each bin
 
         sorting: function used to sort the items. Set to None to disable sorting.
-        orientation_vertical: whether items are oriented vertically or horizontally.
+        orient_vertically: whether items are oriented vertically or horizontally.
 
     Returns:
         a list of bins with packed items.
@@ -767,6 +767,6 @@ def pack_oriented_worst_area_fit(items: list[Item],
                                     scoring_function=lambda shelf, obj:
                                     -(shelf.packed_width + obj.width) * max(obj.height, shelf.height),
                                     sorting=sorting,
-                                    orientation_vertical=orientation_vertical)
+                                    orient_vertically=orient_vertically)
 
 # pylint: enable=redefined-builtin
