@@ -34,7 +34,7 @@ namespace gp::packing {
 
         std::vector<Ref<Item>> m_Items;
 
-        static uint32_t bins;
+        static uint32_t s_Bins;
 
         Bin(float width, float height);
 
@@ -280,7 +280,7 @@ namespace gp::packing {
         bool m_Rotated = false;
 
         uint32_t m_ID;
-        static uint32_t items;
+        static uint32_t s_Items;
 
         void rotate();
     };

@@ -116,6 +116,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
 
             src/goopylib/objects/Renderable.cpp
             src/goopylib/objects/Line.cpp
+            src/platform/OpenGL/Line.cpp
             src/goopylib/objects/Triangle.cpp
             src/goopylib/objects/Quad.cpp
             src/goopylib/objects/Ellipse.cpp
@@ -131,7 +132,11 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/platform/OpenGL/Buffer.cpp
             src/platform/OpenGL/VertexArray.cpp
             src/platform/OpenGL/Shader.cpp
+
             src/platform/OpenGL/Texture2D.cpp
+            src/platform/OpenGL/TextureAtlas.cpp
+            src/goopylib/texture/TextureAtlas.cpp
+            src/goopylib/texture/Bitmap.cpp
 
             src/goopylib/core/Window.cpp
             src/goopylib/core/Buffer.cpp

@@ -385,4 +385,4 @@ def sort_by_short_side(descending: bool = False) -> SortingFunction:
 
 # pylint: enable=redefined-builtin
 
-from .shelf import Shelf
+from .py_shelf import Shelf

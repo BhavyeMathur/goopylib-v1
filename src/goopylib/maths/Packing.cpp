@@ -22,15 +22,15 @@
 
 // Item Class
 namespace gp::packing {
-    uint32_t Item::items = 0;
+    uint32_t Item::s_Items = 0;
 
     Item::Item(float width, float height)
             : m_Width(width),
               m_Height(height),
-              m_ID(Item::items),
+              m_ID(Item::s_Items),
               m_LongSide(max(width, height)),
               m_ShortSide(min(width, height)) {
-        Item::items++;
+        Item::s_Items++;
     }
 
     void Item::rotate() {
@@ -96,13 +96,13 @@ namespace gp::packing {
 
 // Bin Class
 namespace gp::packing {
-    uint32_t Bin::bins = 0;
+    uint32_t Bin::s_Bins = 0;
 
     Bin::Bin(float width, float height)
             : m_Width(width),
               m_Height(height),
-              m_ID(Bin::bins) {
-        Bin::bins++;
+              m_ID(Bin::s_Bins) {
+        Bin::s_Bins++;
     }
 
     void Bin::add(const Ref<Item> &item) {
@@ -238,7 +238,7 @@ namespace gp::packing {
     }
 
     float ShelvedBin::packingRatio() const {
-        if (m_ID == Bin::bins - 1) { // this is the latest bin
+        if (m_ID == Bin::s_Bins - 1) { // this is the latest bin
             float sum = 0;
             float area = 0;
             for (const auto &item: m_Items) {

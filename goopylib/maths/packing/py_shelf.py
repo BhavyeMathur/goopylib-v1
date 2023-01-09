@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Optional, Callable
 
-from .packing import SortingFunction, Item, Bin, ShelvedBin, sort_by_short_side, sort_by_long_side
+from .py_packing import SortingFunction, Item, Bin, ShelvedBin, sort_by_short_side, sort_by_long_side
 
 
 # Bin shadows the Python built-in 'bin', but until I can think
@@ -100,6 +100,7 @@ class Shelf:
 
 
 # Shelf Packing Algorithms
+
 
 def pack_next_fit(items: list[Item],
                   bin_width: float,

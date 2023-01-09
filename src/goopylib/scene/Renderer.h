@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 #include "src/goopylib/objects/Point.h"
-#include "src/goopylib/core/Texture2D.h"
+#include "src/goopylib/texture/Texture2D.h"
 #include "src/goopylib/core/VertexArray.h"
 #include "src/goopylib/scene/Camera.h"
 

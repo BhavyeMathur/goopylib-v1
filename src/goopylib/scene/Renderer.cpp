@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include "src/goopylib/texture/TextureAtlas.h"
+
 #include "src/goopylib/objects/Line.h"
 #include "src/goopylib/objects/Triangle.h"
 #include "src/goopylib/objects/Quad.h"
@@ -64,18 +66,21 @@ namespace gp {
     Renderer::~Renderer() = default;
 
     void Renderer::init() {
-        GP_CORE_INFO("Initializing Renderer");
+        GP_CORE_INFO("Rendering::init() initializing Renderer");
 
-        GP_CORE_DEBUG("Initializing Line");
+        GP_CORE_DEBUG("Rendering::init() initializing Line");
         Line::init();
 
-        GP_CORE_TRACE("Initializing Line Shader");
+        GP_CORE_DEBUG("Rendering::init() initializing Texture Atlas");
+        TextureAtlas::init();
+
+        GP_CORE_TRACE("Rendering::init() initializing Line Shader");
         m_LineShader = CreateRef<Shader>(lineVertexShader, lineFragmentShader);
 
-        GP_CORE_TRACE("Initializing Polygon Shader");
+        GP_CORE_TRACE("Rendering::init() initializing Polygon Shader");
         m_PolygonShader = CreateRef<Shader>(polygonVertexShader, polygonFragmentShader);
 
-        GP_CORE_TRACE("Initializing Ellipse Shader");
+        GP_CORE_TRACE("Rendering::init() initializing Ellipse Shader");
         m_EllipseShader = CreateRef<Shader>(ellipseVertexShader, ellipseFragmentShader);
 
         _createLineBuffer();
@@ -83,7 +88,7 @@ namespace gp {
         _createQuadBuffer();
         _createEllipseBuffer();
 
-        GP_CORE_TRACE("Initializing Image Shader");
+        GP_CORE_TRACE("Rendering::init() initializing Image Shader");
         m_ImageShader = CreateRef<Shader>(imageVertexShader, imageFragmentShader);
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,

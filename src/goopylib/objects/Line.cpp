@@ -77,16 +77,6 @@ namespace gp {
     float Line::s_MinWidth = 0;
     float Line::s_MaxWidth = FLT_MAX;
 
-    void Line::init() {
-        #if GP_USING_OPENGL
-        GLfloat lineWidthRange[2] = {0.0f, 0.0f};
-        glGetFloatv(GL_LINE_WIDTH_RANGE, lineWidthRange);
-
-        s_MinWidth = lineWidthRange[0];
-        s_MaxWidth = lineWidthRange[1];
-        #endif
-    }
-
     void Line::setThickness(float value) {
         #if GP_ERROR_CHECKING
         if (value > s_MaxWidth or value < s_MinWidth) {

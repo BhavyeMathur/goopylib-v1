@@ -12,7 +12,7 @@ from typing import Optional, Callable
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.shelf as _shelf
 
-from .packing import SortingFunction, Item, Bin, ShelvedBin, sort_by_short_side, sort_by_long_side
+from .cpp_packing import SortingFunction, Item, Bin, ShelvedBin, sort_by_short_side, sort_by_long_side
 
 
 # Bin shadows the Python built-in 'bin', but until I can think

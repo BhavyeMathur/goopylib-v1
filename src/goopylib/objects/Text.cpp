@@ -1,4 +1,5 @@
 #include "Text.h"
+#include "src/goopylib/maths/Packing.h"
 
 #include "freetype/ttnameid.h"
 #include "freetype/ftoutln.h"
@@ -54,7 +55,13 @@ namespace gp {
               Renderable(position, {}) {
         GP_CORE_INFO("Text::Text('{0}', ({1}, {2}), {3})", m_Text, position.x, position.y, fontSize);
 
-        Font font = s_Fonts[s_DefaultTypeface.family][s_DefaultTypeface.style];
+        #if GP_VALUE_CHECKING
+        if (s_Fonts.empty()) {
+            GP_RUNTIME_ERROR("No fonts have been loaded!");
+        }
+        #endif
+
+        Font font = s_Fonts.at(s_DefaultTypeface.family).at(s_DefaultTypeface.style);
         FT_Set_Char_Size(font.ft_face, 0, m_FontSize * 64, 0, 0);
 
         hb_buffer_t *buffer = hb_buffer_create();
@@ -77,10 +84,23 @@ namespace gp {
         float x = m_Position.x;
         float y = m_Position.y;
 
+        std::unordered_map<uint32_t, Ref<packing::Item>> glyphBoxes;
+
         for (uint32_t i = 0; i < glyphCount; i++) {
-            if (FT_Error err = FT_Load_Glyph(font.ft_face, glyphInfo[i].codepoint, FT_LOAD_RENDER)) {
-                GP_CORE_WARN("Text::Text() failed to load {0}: '{1}'", glyphInfo[i].codepoint, err);
-                continue;
+            uint32_t codepoint = glyphInfo[i].codepoint;
+            Ref<packing::Item> box;
+
+            if (glyphBoxes.find(codepoint) == glyphBoxes.end()) {
+                if (FT_Error err = FT_Load_Glyph(font.ft_face, codepoint, FT_LOAD_RENDER)) {
+                    GP_CORE_WARN("Text::Text() failed to load {0}: '{1}'", codepoint, err);
+                    continue;
+                }
+                box = packing::Item::create((float) font.ft_face->glyph->bitmap.width,
+                                            (float) font.ft_face->glyph->bitmap.rows);
+                glyphBoxes.insert({codepoint, box});
+            }
+            else {
+                box = glyphBoxes.at(codepoint);
             }
 
             auto xSize = (float) font.ft_face->glyph->bitmap.width;
@@ -89,7 +109,7 @@ namespace gp {
             float xStart = x + (float) (font.ft_face->glyph->bitmap_left + glyphPositions[i].x_offset);
             float yStart = y + (float) (font.ft_face->glyph->bitmap_top + glyphPositions[i].y_offset);
 
-            GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, glyphInfo[i].codepoint);
+            GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, codepoint);
 
             m_Characters.push_back(new gp::Rectangle({xStart, yStart},
                                                      {xStart + xSize, yStart - ySize}));
@@ -97,6 +117,8 @@ namespace gp {
             x += (float) glyphPositions[i].x_advance / 64.0f;
             y += (float) glyphPositions[i].y_advance / 64.0f;
         }
+
+        auto atlas = packing::shelf::packBestAreaFit(glyphBoxes, GetIntegerv(GL_MAX_TEXTURE_SIZE,));
 
         hb_buffer_destroy(buffer);
     }
@@ -188,7 +210,7 @@ namespace gp {
         Font font = {face,
                      hb_ft_font_create(face, nullptr)};
 
-        s_Fonts[face->family_name][face->style_name] = font;
+        s_Fonts[face->family_name].insert({face->style_name, font});
 
         if (setDefault or s_DefaultTypeface.family.empty()) {
             s_DefaultTypeface = {face->family_name, face->style_name};

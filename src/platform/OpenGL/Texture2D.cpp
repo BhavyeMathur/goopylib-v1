@@ -1,18 +1,18 @@
-#include "src/goopylib/core/Texture2D.h"
-
-#include <stb/stb_image.h>
+#include "src/goopylib/texture/Texture2D.h"
 
 #if GP_USING_OPENGL
 
+#include <stb/stb_image.h>
+
 #if __APPLE__
+
 #include <OpenGL/gl.h>
+
 #endif
 
 #if GP_USING_GLAD
 
 #include <glad/glad.h>
-
-#endif
 
 #endif
 
@@ -90,3 +90,5 @@ namespace gp {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }
+
+#endif
