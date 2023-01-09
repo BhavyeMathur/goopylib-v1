@@ -1,11 +1,15 @@
 #include "Text.h"
 #include "src/goopylib/maths/packing/Packing.h"
+#include "src/goopylib/texture/TextureAtlas.h"
 
 #include "freetype/ttnameid.h"
 #include "freetype/ftoutln.h"
 
 #include "harfbuzz/hb.h"
 #include "harfbuzz/hb-ft.h"
+
+
+#include "src/config.h"
 
 #if (GP_LOG_TEXT != true) and (GP_LOG_TEXT <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -79,29 +83,33 @@ namespace gp {
 
         GP_CORE_DEBUG("Text::Text() got {0} glyphs", glyphCount);
 
-        m_Characters.reserve(glyphCount);
-
         float x = m_Position.x;
         float y = m_Position.y;
 
-        std::unordered_map<uint32_t, Ref<packing::Item>> glyphBoxes;
+        std::unordered_map<uint32_t, Ref<Bitmap>> glyphBitmaps;
+        std::vector<Ref<Bitmap>> bitmaps;
+        m_Characters.reserve(glyphCount);
 
         for (uint32_t i = 0; i < glyphCount; i++) {
             uint32_t codepoint = glyphInfo[i].codepoint;
-            Ref<packing::Item> box;
 
-            if (glyphBoxes.find(codepoint) == glyphBoxes.end()) {
+            if (glyphBitmaps.find(codepoint) == glyphBitmaps.end()) {
                 if (FT_Error err = FT_Load_Glyph(font.ft_face, codepoint, FT_LOAD_RENDER)) {
                     GP_CORE_WARN("Text::Text() failed to load {0}: '{1}'", codepoint, err);
                     continue;
                 }
-                box = Ref<packing::Item>(new packing::Item((float) font.ft_face->glyph->bitmap.width,
-                                                           (float) font.ft_face->glyph->bitmap.rows));
-                glyphBoxes.insert({codepoint, box});
+                Ref<Bitmap> bitmap = Ref<Bitmap>(new Bitmap((float) font.ft_face->glyph->bitmap.width,
+                                                            (float) font.ft_face->glyph->bitmap.rows));
+                glyphBitmaps.insert({codepoint, bitmap});
+                bitmaps.push_back(bitmap);
             }
-            else {
-                box = glyphBoxes.at(codepoint);
-            }
+        }
+
+        auto atlas = TextureAtlas();
+        auto texCoords = atlas.add(bitmaps);
+
+        for (uint32_t i = 0; i < glyphCount; i++) {
+            Ref<Bitmap> bitmap = glyphBitmaps.at(glyphInfo[i].codepoint);
 
             auto xSize = (float) font.ft_face->glyph->bitmap.width;
             auto ySize = (float) font.ft_face->glyph->bitmap.rows;
@@ -109,10 +117,10 @@ namespace gp {
             float xStart = x + (float) (font.ft_face->glyph->bitmap_left + glyphPositions[i].x_offset);
             float yStart = y + (float) (font.ft_face->glyph->bitmap_top + glyphPositions[i].y_offset);
 
-            GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, codepoint);
-
-            m_Characters.push_back(new gp::Rectangle({xStart, yStart},
+            m_Characters.push_back(new gp::Image("", {xStart, yStart},
                                                      {xStart + xSize, yStart - ySize}));
+
+            GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, codepoint);
 
             x += (float) glyphPositions[i].x_advance / 64.0f;
             y += (float) glyphPositions[i].y_advance / 64.0f;

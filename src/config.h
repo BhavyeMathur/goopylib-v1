@@ -54,6 +54,9 @@
 #define GP_VALUE_CHECK_PACKING true
 #define GP_LOG_PACKING 3
 
+#define GP_VALUE_CHECK_SHELF_PACKING true
+#define GP_LOG_SHLEF_PACKING 3
+
 // color
 
 #define GP_VALUE_CHECK_COLOR true

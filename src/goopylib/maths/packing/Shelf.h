@@ -89,6 +89,10 @@ namespace gp::packing {
     public:
         GPAPI float packingRatio() const override;
 
+        GPAPI Ref<shelf::Shelf> getOpenShelf();
+
+        GPAPI std::vector<Ref<shelf::Shelf>> getShelves();
+
         [[nodiscard]] GPAPI std::vector<Ref<shelf::Shelf>>::const_iterator begin() const;
 
         [[nodiscard]] GPAPI std::vector<Ref<shelf::Shelf>>::const_iterator end() const;
@@ -111,17 +115,17 @@ namespace gp::packing::shelf {
     class ShelfPackingAlgorithm : public PackingAlgorithm {
 
     public:
-        virtual void pack(Ref<Item> item, bool allowRotation = true) = 0;
+        virtual void pack(const Ref<Item>& item, bool allowRotation = true);
 
         void packAll(std::vector<Ref<Item>> items,
-                     const SortingFunction &sortingFunction = sortByShortSide(true),
-                     bool allowRotation = true);
+                     bool allowRotation = true,
+                     const SortingFunction &sortingFunction = sortByShortSide(true));
 
         void packOriented(const Ref<Item>& item, bool orientVertically = true);
 
         void packAllOriented(std::vector<Ref<Item>> items,
-                             const SortingFunction &sortingFunction = sortByLongSide(true),
-                             bool orientVertically = true);
+                             bool orientVertically = true,
+                             const SortingFunction &sortingFunction = sortByLongSide(true));
 
         std::vector<Ref<ShelvedBin>> bins() const;
 
@@ -136,7 +140,7 @@ namespace gp::packing::shelf {
     public:
         NextFit(float binWidth, float binHeight);
 
-        void pack(Ref<Item> item, bool allowRotation) override;
+        void pack(const Ref<Item> &item, bool allowRotation) override;
 
     private:
         Ref<Shelf> m_Shelf;
@@ -147,7 +151,7 @@ namespace gp::packing::shelf {
     public:
         FirstFit(float binWidth, float binHeight);
 
-        void pack(Ref<Item> item, bool allowRotation) override;
+        void pack(const Ref<Item> &item, bool allowRotation) override;
     };
 
     class ScoredFit : public ShelfPackingAlgorithm {
@@ -155,7 +159,7 @@ namespace gp::packing::shelf {
     public:
         ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction);
 
-        void pack(Ref<Item> item, bool allowRotation) override;
+        void pack(const Ref<Item> &item, bool allowRotation) override;
 
     private:
         ScoringFunction m_ScoringFunction;

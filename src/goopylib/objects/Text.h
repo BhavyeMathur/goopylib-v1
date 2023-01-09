@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Renderable.h"
-#include "Rectangle.h"
+#include "Image.h"
 
 #include "freetype/ft2build.h"
 #include FT_FREETYPE_H
@@ -42,7 +42,7 @@ namespace gp {
 
     private:
         std::string m_Text;
-        std::vector<Rectangle *> m_Characters;
+        std::vector<Image *> m_Characters;
 
         uint32_t m_FontSize;
 
