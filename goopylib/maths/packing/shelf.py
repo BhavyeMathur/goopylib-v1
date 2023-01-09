@@ -204,7 +204,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
             item: the item to pack
             orient_vertically: whether to orient the item vertically
         """
-        if item.is_horizontal() != orient_vertically:
+        if item.is_horizontal() == orient_vertically:
             item._rotate()
         self.pack(item, allow_rotation=False)
 
@@ -468,7 +468,7 @@ class BestHeightFit(ScoredFit):
             bin_width: the maximum width of the packed bin
             bin_height: the maximum height of the packed bin
         """
-        super().__init__(bin_width, bin_height, lambda shelf, obj: obj.height - shelf.available_height)
+        super().__init__(bin_width, bin_height, lambda shelf, obj: obj.height - shelf.height)
 
 
 class WorstHeightFit(ScoredFit):
@@ -488,7 +488,7 @@ class WorstHeightFit(ScoredFit):
             bin_width: the maximum width of the packed bin
             bin_height: the maximum height of the packed bin
         """
-        super().__init__(bin_width, bin_height, lambda shelf, obj: shelf.available_height - obj.height)
+        super().__init__(bin_width, bin_height, lambda shelf, obj: shelf.height - obj.height)
 
 
 class BestAreaFit(ScoredFit):

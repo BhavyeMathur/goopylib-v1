@@ -6,7 +6,7 @@ int main() {
     gp::init();
 
     const char *choices = R""""(
-    Choose an algorithm:
+    Choose an algorithm: {
         ⏎ default
 
         Shelf Algorithms
@@ -24,21 +24,6 @@ int main() {
         7. Shelf Best Area Fit
         8. Shelf Worst Area Fit
 
-        Oriented Shelf Algorithms
-        -------------------------
-
-        9. Oriented Shelf Next-Fit
-        10. Oriented Shelf First-Fit
-
-        11. Oriented Shelf Best Width Fit
-        12. Oriented Shelf Worst Width Fit
-
-        13. Oriented Shelf Best Height Fit
-        14. Oriented Shelf Worst Height Fit
-
-        15. Oriented Shelf Best Area Fit
-        16. Oriented Shelf Worst Area Fit
-
     Enter Choice: )"""";
 
     std::string choice;
@@ -47,66 +32,69 @@ int main() {
 
     std::vector<gp::Ref<gp::packing::Item>> items;
     for (int i = 0; i < 500; i++) {
-        items.push_back(gp::packing::Item::create(5 + (float) (rand() % 6500) / 100,
-                                                  5 + (float) (rand() % 7500) / 100));
+        items.emplace_back(new gp::packing::Item(5 + (float) (rand() % 6500) / 100,
+                                                 5 + (float) (rand() % 7500) / 100));
     }
 
     std::vector<gp::Ref<gp::packing::ShelvedBin>> bins;
     if (choice == "") {
-        bins = gp::packing::shelf::packBestAreaFit(items, 800, 800);
+        auto algorithm = gp::packing::shelf::BestAreaFit(800, 800);
+        algorithm.packAll(items);
+        bins = algorithm.bins();
     }
     else {
         switch (std::stoi(choice)) {
-            case 1:
-                bins = gp::packing::shelf::packNextFit(items, 800, 800);
+            case 1: {
+                auto algorithm = gp::packing::shelf::NextFit(800, 800);
+                algorithm.packAll(items);
+                bins = algorithm.bins();
                 break;
-            case 2:
-                bins = gp::packing::shelf::packFirstFit(items, 800, 800);
+            }
+            case 2: {
+                auto algorithm = gp::packing::shelf::FirstFit(800, 800);
+                algorithm.packAll(items);
+                bins = algorithm.bins();
                 break;
-            case 3:
-                bins = gp::packing::shelf::packBestWidthFit(items, 800, 800);
+            }
+            case 3: {
+                auto algorithm = gp::packing::shelf::BestWidthFit(800, 800);
+                algorithm.packAll(items);
+                bins = algorithm.bins();
                 break;
-            case 4:
-                bins = gp::packing::shelf::packWorstWidthFit(items, 800, 800);
+            }
+            case 4: {
+                auto algorithm = gp::packing::shelf::WorstWidthFit(800, 800);
+                algorithm.packAll(items);
+                bins = algorithm.bins();
                 break;
-            case 5:
-                bins = gp::packing::shelf::packBestHeightFit(items, 800, 800);
+            }
+            case 5: {
+                auto algorithm = gp::packing::shelf::BestHeightFit(800, 800);
+                algorithm.packAll(items);
+                bins = algorithm.bins();
                 break;
-            case 6:
-                bins = gp::packing::shelf::packWorstHeightFit(items, 800, 800);
+            }
+            case 6: {
+                auto algorithm = gp::packing::shelf::WorstHeightFit(800, 800);
+                algorithm.packAll(items);
+                bins = algorithm.bins();
                 break;
-            case 7:
-                bins = gp::packing::shelf::packBestAreaFit(items, 800, 800);
+            }
+            case 7: {
+                auto algorithm = gp::packing::shelf::BestAreaFit(800, 800);
+                algorithm.packAll(items);
+                bins = algorithm.bins();
                 break;
-            case 8:
-                bins = gp::packing::shelf::packWorstAreaFit(items, 800, 800);
+            }
+            case 8: {
+                auto algorithm = gp::packing::shelf::WorstAreaFit(800, 800);
+                algorithm.packAll(items);
+                bins = algorithm.bins();
                 break;
-            case 9:
-                bins = gp::packing::shelf::packOrientedNextFit(items, 800, 800);
-                break;
-            case 10:
-                bins = gp::packing::shelf::packOrientedFirstFit(items, 800, 800);
-                break;
-            case 11:
-                bins = gp::packing::shelf::packOrientedBestWidthFit(items, 800, 800);
-                break;
-            case 12:
-                bins = gp::packing::shelf::packOrientedWorstWidthFit(items, 800, 800);
-                break;
-            case 13:
-                bins = gp::packing::shelf::packOrientedBestHeightFit(items, 800, 800);
-                break;
-            case 14:
-                bins = gp::packing::shelf::packOrientedWorstHeightFit(items, 800, 800);
-                break;
-            case 15:
-                bins = gp::packing::shelf::packOrientedBestAreaFit(items, 800, 800);
-                break;
-            case 16:
-                bins = gp::packing::shelf::packOrientedWorstAreaFit(items, 800, 800);
-                break;
-            default:
+            }
+            default: {
                 throw std::invalid_argument("Invalid algorithm choice");
+            }
         }
     }
 

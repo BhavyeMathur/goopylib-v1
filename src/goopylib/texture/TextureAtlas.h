@@ -4,7 +4,7 @@
 
 #include "Bitmap.h"
 #include "src/goopylib/maths/gpmath.h"
-#include "src/goopylib/maths/Packing.h"
+#include "src/goopylib/maths/packing/Packing.h"
 
 namespace gp {
     struct TextureCoords {

@@ -2,8 +2,9 @@
 
 
 namespace gp {
-    static uint32_t s_Width = 0;
-    static uint32_t s_Height = 0;
+    uint32_t TextureAtlas::s_Width = 0;
+    uint32_t TextureAtlas::s_Height = 0;
+    std::vector<TextureAtlas *> TextureAtlas::s_Atlases;
 
     TextureAtlas::TextureAtlas()
     : m_Bin(nullptr) {

@@ -8,8 +8,10 @@
 
 #include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/events/KeyboardCodes.h"
+
 #include "src/goopylib/maths/Easing.h"
-#include "src/goopylib/maths/Packing.h"
+#include "src/goopylib/maths/packing/Packing.h"
+#include "src/goopylib/maths/packing/Shelf.h"
 
 #include "src/goopylib/color/Color.h"
 #include "src/goopylib/color/ColorConversions.h"

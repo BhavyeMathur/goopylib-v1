@@ -1,5 +1,5 @@
 #include "Text.h"
-#include "src/goopylib/maths/Packing.h"
+#include "src/goopylib/maths/packing/Packing.h"
 
 #include "freetype/ttnameid.h"
 #include "freetype/ftoutln.h"
@@ -95,8 +95,8 @@ namespace gp {
                     GP_CORE_WARN("Text::Text() failed to load {0}: '{1}'", codepoint, err);
                     continue;
                 }
-                box = packing::Item::create((float) font.ft_face->glyph->bitmap.width,
-                                            (float) font.ft_face->glyph->bitmap.rows);
+                box = Ref<packing::Item>(new packing::Item((float) font.ft_face->glyph->bitmap.width,
+                                                           (float) font.ft_face->glyph->bitmap.rows));
                 glyphBoxes.insert({codepoint, box});
             }
             else {
@@ -117,8 +117,6 @@ namespace gp {
             x += (float) glyphPositions[i].x_advance / 64.0f;
             y += (float) glyphPositions[i].y_advance / 64.0f;
         }
-
-        auto atlas = packing::shelf::packBestAreaFit(glyphBoxes, GetIntegerv(GL_MAX_TEXTURE_SIZE,));
 
         hb_buffer_destroy(buffer);
     }

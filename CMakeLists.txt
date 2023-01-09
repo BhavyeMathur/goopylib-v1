@@ -11,7 +11,7 @@ if (APPLE)
 
     set(CMAKE_CXX_FLAGS_DEBUG -g)
     set(CMAKE_CXX_FLAGS_RELEASE -O3)
-    set(CMAKE_CXX_FLAGS -Wno-deprecated-volatile)
+    set(CMAKE_CXX_FLAGS -Wno-c++17-extensions)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_DEBUG /Od)
     set(CMAKE_CXX_FLAGS_RELEASE /O2)
@@ -105,9 +105,10 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
 
             src/goopylib/debug/Log.cpp
 
-            src/goopylib/maths/Easing.cpp
-            src/goopylib/maths/Packing.cpp
             src/goopylib/maths/gpmath.cpp
+            src/goopylib/maths/Easing.cpp
+            src/goopylib/maths/packing/Packing.cpp
+            src/goopylib/maths/packing/Shelf.cpp
 
             src/goopylib/color/Color.cpp
             src/goopylib/color/ColorConversions.cpp
@@ -154,6 +155,9 @@ if (APPLE)
     target_link_libraries(goopylib "-framework Cocoa")
     target_link_libraries(goopylib "-framework IOKit")
 endif ()
+
+add_executable(packing examples/algorithms/packing/packing.cpp)
+target_link_libraries(packing goopylib)
 
 add_executable(main main.cpp)
 target_link_libraries(main goopylib)
