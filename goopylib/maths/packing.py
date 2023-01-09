@@ -390,7 +390,7 @@ def pack_shelf_next_fit(items: list[Item],
             shelf.add(item)
             continue
 
-        elif shelf.fits_above(item):
+        if shelf.fits_above(item):
             shelf = bins[-1].add_shelf()
         else:
             bins.append(ShelvedBin(width=bin_width, height=bin_height))
@@ -435,15 +435,16 @@ def pack_shelf_first_fit(items: list[Item],
             if shelf.fits(item):
                 shelf.add(item)
                 return True
-        else:
-            if shelf.fits_above(item):  # noqa W0631, each bin has at least 1 shelf
-                shelf = bin.add_shelf()
 
-                if allow_rotation and item.is_vertical():
-                    item._rotate()
-                shelf.add(item)
+        if shelf.fits_above(item):  # noqa W0631, each bin has at least 1 shelf
+            shelf = bin.add_shelf()
 
-                return True
+            if allow_rotation and item.is_vertical():
+                item._rotate()
+            shelf.add(item)
+
+            return True
+        return False
 
     for item in items:
         for bin in bins:
@@ -503,6 +504,7 @@ def pack_shelf_scored_fit(items: list[Item],
             if shelf.fits(item):
                 _score(shelf, item)
 
+        # pylint: disable-next=undefined-loop-variable
         if best_shelf is None and shelf.fits_above(item):  # noqa W0631, each bin has at least 1 shelf
             shelf = bin.add_shelf()
 
@@ -519,7 +521,7 @@ def pack_shelf_scored_fit(items: list[Item],
         for bin in bins:
             _add_to_bin()
 
-        if best_shelf is None:  # noqa W0631
+        if best_shelf is None:
             bins.append(ShelvedBin(width=bin_width, height=bin_height))
 
             if allow_rotation and item.is_vertical():
@@ -531,7 +533,7 @@ def pack_shelf_scored_fit(items: list[Item],
         if item.rotated != best_orientation:
             item._rotate()
 
-        best_shelf.add(item)  # noqa W0631
+        best_shelf.add(item)
 
     return bins
 
@@ -750,12 +752,13 @@ def pack_shelf_oriented_first_fit(items: list[Item],
             if shelf.fits(item):
                 shelf.add(item)
                 return True
-        else:
-            if shelf.fits_above(item):  # noqa W0631, each bin has at least 1 shelf
-                shelf = bin.add_shelf()
-                shelf.add(item)
 
-                return True
+        if shelf.fits_above(item):  # noqa W0631, each bin has at least 1 shelf
+            shelf = bin.add_shelf()
+            shelf.add(item)
+
+            return True
+        return False
 
     for item in items:
         for bin in bins:
@@ -808,6 +811,7 @@ def pack_shelf_oriented_scored_fit(items: list[Item],
             if shelf.fits(item):
                 _score(shelf, item)
 
+        # pylint: disable-next=undefined-loop-variable
         if best_shelf is None and shelf.fits_above(item):  # noqa W0631, each bin has at least 1 shelf
             shelf = bin.add_shelf()
 
@@ -823,11 +827,11 @@ def pack_shelf_oriented_scored_fit(items: list[Item],
         for bin in bins:
             _add_to_bin()
 
-        if best_shelf is None:  # noqa W0631
+        if best_shelf is None:
             bins.append(ShelvedBin(width=bin_width, height=bin_height))
             best_shelf = bins[-1].open_shelf
 
-        best_shelf.add(item)  # noqa W0631
+        best_shelf.add(item)
 
     return bins
 

@@ -53,7 +53,7 @@ namespace gp {
         void GPAPI setTransparency(float v1, float v2, float v3, float v4);
 
     protected:
-        void _update() const override;
+        GPAPI void _update() const override;
 
     private:
         QuadVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};

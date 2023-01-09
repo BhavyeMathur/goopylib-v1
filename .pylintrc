@@ -4,12 +4,16 @@ max-line-length=120
 [MESSAGES CONTROL]
 disable=
     trailing-whitespace,
-    too-many-lines,
     pointless-string-statement,
     protected-access,
+    too-many-lines,
     too-many-public-methods,
     too-few-public-methods,
     too-many-branches,
+    too-many-arguments,
+    too-many-instance-attributes,
+    redefined-builtin,
+    no-else-return,
 
 [BASIC]
 good-names=i,
@@ -24,4 +28,8 @@ good-names=i,
            down,
            left,
            right,
+           ID,
+           id,
+           p1,
+           p2,
            _
