@@ -7,9 +7,9 @@ See https://pds25.egloos.com/pds/201504/21/98/RectangleBinPack.pdf
 
 from __future__ import annotations
 
-from typing import Optional, Callable
+from typing import Optional, Callable, Iterator
 
-from .packing import PackingAlgorithm, SortingFunction, Item, Bin, ShelvedBin, sort_by_long_side, sort_by_short_side
+from .packing import PackingAlgorithm, SortingFunction, Item, Bin, sort_by_long_side, sort_by_short_side
 
 
 # Bin shadows the Python built-in 'bin', but until I can think
@@ -98,6 +98,54 @@ class Shelf:
         else:
             return self.width * self.height
 
+
+class ShelvedBin(Bin):
+    """
+    Class representing the maximum area in which to pack Items broken down into shelves
+
+    Args:
+        width: of the bin
+        height: of the bin
+    """
+
+    def __init__(self, width: float, height: float) -> None:
+        """
+        Class representing the maximum area in which to pack Items broken down into shelves
+
+        Args:
+            width: of the bin
+            height: of the bin
+        """
+
+        super().__init__(width, height)
+
+        self.open_shelf: Shelf = Shelf(vertical_offset=0, bin=self)
+        self.shelves: list[Shelf] = [self.open_shelf]
+
+    def __iter__(self) -> Iterator[Shelf]:
+        return self.shelves.__iter__()
+
+    def _add_shelf(self) -> Shelf:
+        """
+        Adds a new shelf to this Bin and closes the previously open shelf.
+
+        Returns:
+            the newly added shelf.
+        """
+        self.open_shelf._close()
+        self.open_shelf = Shelf(vertical_offset=self.open_shelf.vertical_offset + self.open_shelf.height, bin=self)
+        self.shelves.append(self.open_shelf)
+
+        return self.open_shelf
+
+    def packing_ratio(self) -> float:
+        """
+        Returns:
+            the % packing ratio of this shelf (between 0-1)
+        """
+        if self._id == Bin.bins - 1:  # this is the latest bin
+            return sum(map(Item.area, self._items)) / sum(map(Shelf.packed_area, self.shelves))
+        return Bin.packing_ratio(self)
 
 # Shelf Packing Algorithms
 
