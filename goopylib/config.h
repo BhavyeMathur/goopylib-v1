@@ -24,10 +24,10 @@
 // core
 
 #define GP_VALUE_CHECK_CORE true
-#define GP_LOG_CORE true
+#define GP_LOG_CORE 3
 
 #define GP_VALUE_CHECK_WINDOW true
-#define GP_LOG_WINDOW true
+#define GP_LOG_WINDOW 3
 
 // math
 

@@ -12,7 +12,6 @@ disable=
     too-many-branches,
     too-many-arguments,
     too-many-instance-attributes,
-    redefined-builtin,
     no-else-return,
 
 [BASIC]
