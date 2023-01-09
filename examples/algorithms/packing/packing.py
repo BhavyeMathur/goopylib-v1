@@ -6,7 +6,9 @@ import goopylib.imports as gp
 def plot_packing(packing, window_size=(800, 800)):
     items = [gp.packing.Item(width=5 + 65 * random.random(),
                              height=5 + 75 * random.random()) for _ in range(500)]
-    bins = packing(items, *window_size)
+    algorithm = packing(*window_size)
+    algorithm.pack_all(items)
+    bins = algorithm.bins()
 
     window = gp.Window(window_size[0], window_size[1], "Rectangle Packing Algorithms using goopylib!")
 
@@ -68,44 +70,21 @@ Choose an algorithm:
         
      7. Shelf Best Area Fit
      8. Shelf Worst Area Fit
-        
-    Oriented Shelf Algorithms
-    -------------------------
-        
-     9. Oriented Shelf Next-Fit
-    10. Oriented Shelf First-Fit
-        
-    11. Oriented Shelf Best Width Fit
-    12. Oriented Shelf Worst Width Fit
-        
-    13. Oriented Shelf Best Height Fit
-    14. Oriented Shelf Worst Height Fit
-        
-    15. Oriented Shelf Best Area Fit
-    16. Oriented Shelf Worst Area Fit
 
 Enter Choice: """
 
 if (choice := input(choices)) == "":
-    func = gp.packing.shelf.pack_best_area_fit
+    func = gp.packing.shelf.BestAreaFit
 else:
-    func = [gp.packing.shelf.pack_next_fit,
-            gp.packing.shelf.pack_first_fit,
-            gp.packing.shelf.pack_best_width_fit,
-            gp.packing.shelf.pack_worst_width_fit,
-            gp.packing.shelf.pack_best_height_fit,
-            gp.packing.shelf.pack_worst_height_fit,
-            gp.packing.shelf.pack_best_area_fit,
-            gp.packing.shelf.pack_worst_area_fit,
+    func = [gp.packing.shelf.NextFit,
+            gp.packing.shelf.FirstFit,
+            gp.packing.shelf.BestWidthFit,
+            gp.packing.shelf.WorstWidthFit,
+            gp.packing.shelf.BestHeightFit,
+            gp.packing.shelf.WorstHeightFit,
+            gp.packing.shelf.BestAreaFit,
+            gp.packing.shelf.WorstAreaFit,
 
-            gp.packing.shelf.pack_oriented_next_fit,
-            gp.packing.shelf.pack_oriented_first_fit,
-            gp.packing.shelf.pack_oriented_best_width_fit,
-            gp.packing.shelf.pack_oriented_worst_width_fit,
-            gp.packing.shelf.pack_oriented_best_height_fit,
-            gp.packing.shelf.pack_oriented_worst_height_fit,
-            gp.packing.shelf.pack_oriented_best_area_fit,
-            gp.packing.shelf.pack_oriented_worst_area_fit,
             ][int(choice) - 1]
 
 print("Algorithm: ", func.__name__.replace("_", " ").title(), end="\n\n")
