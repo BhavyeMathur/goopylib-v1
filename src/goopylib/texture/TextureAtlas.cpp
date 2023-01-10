@@ -2,8 +2,8 @@
 
 
 namespace gp {
-    uint32_t TextureAtlas::s_Width = 0;
-    uint32_t TextureAtlas::s_Height = 0;
+    int32_t TextureAtlas::s_Width = 0;
+    int32_t TextureAtlas::s_Height = 0;
     std::vector<TextureAtlas *> TextureAtlas::s_Atlases;
 
     TextureAtlas::TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm)
@@ -17,6 +17,14 @@ namespace gp {
 
     TextureAtlas::~TextureAtlas() {
         delete m_PackingAlgorithm;
+    }
+
+    int32_t TextureAtlas::getWidth() {
+        return s_Width;
+    }
+
+    int32_t TextureAtlas::getHeight() {
+        return s_Height;
     }
 
     TextureCoords TextureAtlas::add(const Ref<Bitmap> &bitmap, bool allowRotation) {

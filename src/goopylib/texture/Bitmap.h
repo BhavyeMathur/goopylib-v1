@@ -9,7 +9,7 @@ namespace gp {
         friend class Text;
 
     public:
-        ~Bitmap() = default;
+        GPAPI ~Bitmap() = default;
 
         GPAPI float getWidth() const;
 

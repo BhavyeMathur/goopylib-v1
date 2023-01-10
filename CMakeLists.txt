@@ -138,6 +138,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/platform/OpenGL/TextureAtlas.cpp
             src/goopylib/texture/TextureAtlas.cpp
             src/goopylib/texture/Bitmap.cpp
+            src/goopylib/texture/Texture2D.cpp
 
             src/goopylib/core/Window.cpp
             src/goopylib/core/Buffer.cpp
@@ -155,6 +156,10 @@ if (APPLE)
     target_link_libraries(goopylib "-framework Cocoa")
     target_link_libraries(goopylib "-framework IOKit")
 endif ()
+
+
+add_executable(main main.cpp)
+target_link_libraries(main goopylib)
 
 add_subdirectory(examples/BrickBreaker)
 add_subdirectory(examples/Minecraft)

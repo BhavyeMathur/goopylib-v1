@@ -91,6 +91,10 @@ namespace gp {
         glDeleteTextures(1, &m_RendererID);
     }
 
+    void Texture2D::init() {
+        glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &s_TextureSlots);
+    }
+
     void Texture2D::bind(uint32_t slot) const {
         GP_CORE_TRACE_ALL("gp::Texture2D::bind({1}) - '{0}'", slot, m_Path);
         glActiveTexture(GL_TEXTURE0 + slot);

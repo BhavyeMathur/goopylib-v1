@@ -25,12 +25,18 @@ namespace gp {
 
         GPAPI static void unbind();
 
+        GPAPI static void init();
+
+        GPAPI static int32_t getTextureSlots();
+
     private:
         uint32_t m_Width = 0;
         uint32_t m_Height = 0;
         uint32_t m_Channels = 0;
 
         uint32_t m_RendererID = 0;
+
+        static int32_t s_TextureSlots;
 
         Texture2D(const char *path);
 

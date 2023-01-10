@@ -22,9 +22,7 @@ namespace gp {
 namespace gp {
     class TextureAtlas {
 
-        friend class Image;
-
-        friend class Text;
+        friend class Renderer;
 
     public:
         GPAPI ~TextureAtlas();
@@ -39,12 +37,16 @@ namespace gp {
 
         GPAPI static void init();
 
+        GPAPI static int32_t getWidth();
+
+        GPAPI static int32_t getHeight();
+
     private:
         packing::shelf::ShelfPackingAlgorithm *m_PackingAlgorithm;
 
         static std::vector<TextureAtlas *> s_Atlases;
-        static uint32_t s_Width;
-        static uint32_t s_Height;
+        static int32_t s_Width;
+        static int32_t s_Height;
 
         TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
     };

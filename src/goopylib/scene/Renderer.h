@@ -126,8 +126,6 @@ namespace gp {
         std::vector<Ref<Texture2D>> m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 
-        const unsigned int s_TextureSlots = 16;
-
         Renderer(float width, float height);
 
         void _createLineBuffer();
@@ -142,7 +140,7 @@ namespace gp {
 
         uint32_t _cacheTexture(const char *path);
 
-        void _bindTextureBatch(uint32_t batch);
+        void _bindTextureBatch(uint32_t offset);
 
         static void _updateRenderingObjectVBO(RenderingBatch &object);
 

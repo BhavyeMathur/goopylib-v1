@@ -105,9 +105,6 @@ namespace gp {
             }
         }
 
-        auto atlas = TextureAtlas();
-        auto texCoords = atlas.add(bitmaps);
-
         for (uint32_t i = 0; i < glyphCount; i++) {
             Ref<Bitmap> bitmap = glyphBitmaps.at(glyphInfo[i].codepoint);
 

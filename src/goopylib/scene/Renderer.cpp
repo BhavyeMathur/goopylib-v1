@@ -60,10 +60,8 @@ namespace gp {
     void Renderer::init() {
         GP_CORE_INFO("Rendering::init() initializing Renderer");
 
-        GP_CORE_DEBUG("Rendering::init() initializing Line");
         Line::init();
-
-        GP_CORE_DEBUG("Rendering::init() initializing Texture Atlas");
+        Texture2D::init();
         TextureAtlas::init();
 
         GP_CORE_TRACE("Rendering::init() initializing Solid Shader");
@@ -82,7 +80,7 @@ namespace gp {
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
-        m_TextureShader->set("Texture", s_TextureSlots, samplers);
+        m_TextureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
 
 
         m_ShaderUniform = Ref<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
@@ -440,7 +438,7 @@ namespace gp {
         object->m_V3.texSlot = texSlot;
         object->m_V4.texSlot = texSlot;
 
-        unsigned int batch = texIndex / s_TextureSlots;
+        uint32_t batch = texIndex / Texture2D::getTextureSlots();
 
         uint32_t index = m_TexturedQuadVertices[batch].size();
         m_TexturedQuadToBatch.insert({ID, batch});
@@ -541,12 +539,10 @@ namespace gp {
         }
 
         m_TextureShader->bind();
-        uint32_t offset = 0;
+        uint32_t textureSlotOffset = 0;
         for (auto &batch: m_TexturedQuadBatches) {
-            for (uint32_t slot = offset; slot < min(offset + s_TextureSlots, (uint32_t) m_Textures.size()); slot++) {
-                m_Textures[slot]->bind(slot % 16);
-            }
-            offset += s_TextureSlots;
+            _bindTextureBatch(textureSlotOffset);
+            textureSlotOffset += Texture2D::getTextureSlots();
 
             if (batch.indices) {
                 _updateRenderingObjectEBO(batch);
@@ -569,11 +565,11 @@ namespace gp {
         return texIndex;
     }
 
-    void Renderer::_bindTextureBatch(uint32_t batch) {
-        uint32_t textures = min((batch + 1) * s_TextureSlots, (uint32_t) m_Textures.size());
+    void Renderer::_bindTextureBatch(uint32_t offset) {
+        uint32_t textures = min(offset + Texture2D::getTextureSlots(), (uint32_t) m_Textures.size());
 
-        for (uint32_t i = batch * s_TextureSlots; i < textures; i++) {
-            m_Textures[i]->bind(i % s_TextureSlots);
+        for (uint32_t i = offset; i < textures; i++) {
+            m_Textures[i]->bind(i % Texture2D::getTextureSlots());
         }
     }
 

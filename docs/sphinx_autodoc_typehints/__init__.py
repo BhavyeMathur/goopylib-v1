@@ -656,7 +656,7 @@ def setup(app: Sphinx) -> dict[str, bool]:
     app.add_config_value("typehints_use_signature", False, "env")
     app.add_config_value("typehints_use_signature_return", False, "env")
     app.connect("env-before-read-docs", validate_config)  # config may be changed after “config-inited” event
-    app.connect("autodoc-process-signature", process_signature)
+    # app.connect("autodoc-process-signature", process_signature)
     app.connect("autodoc-process-docstring", process_docstring)
     return {"parallel_read_safe": True}
 
