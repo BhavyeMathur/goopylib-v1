@@ -81,11 +81,11 @@ namespace gp {
 
         GPAPI void updateEllipse(uint32_t ID, const Ellipse *object);
 
-        GPAPI uint32_t drawImage(Image *object);
+        GPAPI uint32_t drawTexturedQuad(Image *object);
 
-        GPAPI void destroyImage(uint32_t ID);
+        GPAPI void destroyTexturedQuad(uint32_t ID);
 
-        GPAPI void updateImage(uint32_t ID, const Image *object);
+        GPAPI void updateTexturedQuad(uint32_t ID, const Image *object);
 
         GPAPI void flush();
 

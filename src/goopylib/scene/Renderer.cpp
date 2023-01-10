@@ -410,14 +410,14 @@ namespace gp {
         m_EllipseBatch.updateBufferData = true;
     }
 
-    uint32_t Renderer::drawImage(Image *object) {
+    uint32_t Renderer::drawTexturedQuad(Image *object) {
         uint32_t ID = m_NextImageID;
         m_NextImageID++;
-        GP_CORE_DEBUG("gp::Renderer::drawImage({0})", ID);
+        GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
         uint32_t texIndex, texSlot;
         if (m_TexturesCache.find(object->m_Path) == m_TexturesCache.end()) {
-            GP_CORE_TRACE("gp::Renderer::drawImage() - no cached texture '{0}'", object->m_Path);
+            GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->m_Path);
             texIndex = _cacheTexture(object->m_Path);
             texSlot = texIndex % 16;
 
@@ -426,12 +426,12 @@ namespace gp {
             }
         }
         else {
-            GP_CORE_TRACE("gp::Renderer::drawImage() - using cached texture '{0}'", object->m_Path);
+            GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - using cached texture '{0}'", object->m_Path);
             texIndex = m_TexturesCache[object->m_Path].index;
             texSlot = texIndex % 16;
         }
 
-        GP_CORE_TRACE("gp::Renderer::drawImage() - texIndex={0}", texIndex);
+        GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - texIndex={0}", texIndex);
 
         object->m_V1.texSlot = texSlot;
         object->m_V2.texSlot = texSlot;
@@ -464,7 +464,7 @@ namespace gp {
         return ID;
     }
 
-    void Renderer::destroyImage(uint32_t ID) {
+    void Renderer::destroyTexturedQuad(uint32_t ID) {
         uint32_t batch = m_TexturedQuadToBatch[ID];
         auto &imageIDs = m_TexturedQuadToIndex[batch];
         uint32_t index = imageIDs[ID];
@@ -486,7 +486,7 @@ namespace gp {
         m_TexturedQuadBatches[batch].reallocateBufferData = true;
     }
 
-    void Renderer::updateImage(uint32_t ID, const Image *object) {
+    void Renderer::updateTexturedQuad(uint32_t ID, const Image *object) {
         uint32_t batch = m_TexturedQuadToBatch[ID];
         uint32_t index = m_TexturedQuadToIndex[batch][ID];
 

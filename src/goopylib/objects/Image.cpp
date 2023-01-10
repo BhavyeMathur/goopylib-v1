@@ -70,17 +70,17 @@ namespace gp {
 
     uint32_t Image::_draw(Window *window) const {
         GP_CORE_DEBUG("gp::Image::draw('{1}') - '{0}'", m_Path, window->m_Title);
-        return window->m_Renderer.drawImage(const_cast<Image *>(this));
+        return window->m_Renderer.drawTexturedQuad(const_cast<Image *>(this));
     }
 
     void Image::_destroy() const {
         GP_CORE_DEBUG("gp::Image::destroy() - '{0}'", m_Path);
-        m_Window->m_Renderer.destroyImage(m_RendererID);
+        m_Window->m_Renderer.destroyTexturedQuad(m_RendererID);
     }
 
     void Image::_update() const {
         GP_CORE_TRACE_ALL("gp::Image::update() - '{0}'", m_Path);
-        m_Window->m_Renderer.updateImage(m_RendererID, this);
+        m_Window->m_Renderer.updateTexturedQuad(m_RendererID, this);
     }
 
     bool Image::_contains(float x, float y) const {
