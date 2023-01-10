@@ -18,9 +18,9 @@
 namespace gp {
     Triangle::Triangle(Point p1, Point p2, Point p3)
             : Renderable({p1, p2, p3}),
-              m_V1({{0.0f, 0.55f, 0.9f}}),
-              m_V2({{0.0f, 0.55f, 0.9f}}),
-              m_V3({{0.0f, 0.55f, 0.9f}}) {
+              m_V1({0.0f, 0.55f, 0.9f}),
+              m_V2({0.0f, 0.55f, 0.9f}),
+              m_V3({0.0f, 0.55f, 0.9f}) {
         GP_CORE_DEBUG("Initializing Triangle ({0}, {1}), ({2}, {3}), ({4}, {5})", p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
     }
 

@@ -17,7 +17,9 @@ namespace gp {
                   p2(p2) {
         }
     };
+}
 
+namespace gp {
     class TextureAtlas {
 
         friend class Image;
@@ -42,7 +44,7 @@ namespace gp {
         static uint32_t s_Width;
         static uint32_t s_Height;
 
-        explicit TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
+        TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
 
         ~TextureAtlas();
     };

@@ -17,4 +17,4 @@ void main() {
     Color = color;
     LocalCoord = localCoord;
 }
-)""
+)"";

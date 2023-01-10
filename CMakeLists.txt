@@ -156,8 +156,4 @@ if (APPLE)
     target_link_libraries(goopylib "-framework IOKit")
 endif ()
 
-add_executable(packing examples/algorithms/packing/packing.cpp)
-target_link_libraries(packing goopylib)
-
-add_executable(main main.cpp)
-target_link_libraries(main goopylib)
+add_subdirectory(examples/BrickBreaker)

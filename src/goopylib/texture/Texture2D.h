@@ -32,7 +32,7 @@ namespace gp {
 
         uint32_t m_RendererID = 0;
 
-        explicit Texture2D(const char *path);
+        Texture2D(const char *path);
 
         Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
 

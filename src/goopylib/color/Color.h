@@ -20,7 +20,7 @@ namespace gp {
         /**
          * Create a color object from another color object.
          */
-        GPAPI explicit Color(Color const *color);
+        GPAPI Color(Color const *color);
 
         /**
          * Create colors by passing RGB arguments or a hexstring.
@@ -46,7 +46,7 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI explicit Color(const char *hexstring, float alpha = 1);
+        GPAPI Color(const char *hexstring, float alpha = 1);
 
         GPAPI ~Color();
 
@@ -173,7 +173,7 @@ namespace gp {
         /**
          * Create a ColorRGB from another color object.
          */
-        GPAPI explicit ColorRGB(Color const *color);
+        GPAPI ColorRGB(Color const *color);
 
         /**
          * Create an RGB color by passing RGB arguments with an optional alpha parameter.
@@ -208,7 +208,7 @@ namespace gp {
         /**
          * Create a ColorHex from another color object.
          */
-        GPAPI explicit ColorHex(Color const *color);
+        GPAPI ColorHex(Color const *color);
 
         /**
          * Create a Hexadecimal color by passing a hexstring with an optional alpha parameter. The '#' is optional.
@@ -220,7 +220,7 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI explicit ColorHex(const char *hexstring, float alpha = 1.0f);
+        GPAPI ColorHex(const char *hexstring, float alpha = 1.0f);
 
         [[nodiscard]] GPAPI std::string toString() const override;
     };
@@ -243,7 +243,7 @@ namespace gp {
         /**
          * Create a ColorCMYK from another color object.
          */
-        GPAPI explicit ColorCMYK(Color const *color);
+        GPAPI ColorCMYK(Color const *color);
 
         /**
          * Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha.
@@ -331,7 +331,7 @@ namespace gp {
         /**
          * Create a ColorHSV from another color object.
          */
-        GPAPI explicit ColorHSV(Color const *color);
+        GPAPI ColorHSV(Color const *color);
 
         /**
          * Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)
@@ -407,7 +407,7 @@ namespace gp {
         /**
          * Create a ColorHSL from another color object.
          */
-        GPAPI explicit ColorHSL(Color const *color);
+        GPAPI ColorHSL(Color const *color);
 
         /**
          * Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)

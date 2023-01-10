@@ -19,7 +19,7 @@ namespace gp {
          *
          * @param window the window to use
          */
-        GPAPI explicit CameraController(Window* window);
+        GPAPI CameraController(Window* window);
 
         /**
          * Updates the controller. Call this method in the mainloop.

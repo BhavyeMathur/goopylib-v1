@@ -150,7 +150,7 @@ namespace gp {
 
     void Text::_update() const {
         for (auto character: m_Characters) {
-            character->_update();
+            // character->_update();
         }
     }
 }

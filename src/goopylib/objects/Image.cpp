@@ -104,10 +104,10 @@ namespace gp {
     void Image::setTransparency(float v1, float v2, float v3, float v4) {
         GP_CORE_TRACE("gp::Image::setTransparency({1}, {2}, {3}, {4}) - '{0}'", v1, v2, v3, v4, m_Path);
 
-        m_V1.transparency = v1;
-        m_V2.transparency = v2;
-        m_V3.transparency = v3;
-        m_V4.transparency = v4;
+        m_V1.color.alpha = v1;
+        m_V2.color.alpha = v2;
+        m_V3.color.alpha = v3;
+        m_V4.color.alpha = v4;
 
         update();
     }

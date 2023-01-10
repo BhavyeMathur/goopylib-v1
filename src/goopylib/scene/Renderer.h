@@ -3,17 +3,11 @@
 #include "gp.h"
 #include <unordered_map>
 
-#include "src/goopylib/objects/Point.h"
+#include "src/goopylib/objects/Vertex.h"
 #include "src/goopylib/texture/Texture2D.h"
 #include "src/goopylib/core/VertexArray.h"
 #include "src/goopylib/scene/Camera.h"
 
-
-#define LINES 0
-#define TRIANGLES 1
-#define QUADS 2
-#define ELLIPSES 3
-#define IMAGES 4
 
 namespace gp {
     class Line;
@@ -34,9 +28,8 @@ namespace gp {
         uint32_t index;
     };
 
-    struct RenderingData {
+    struct RenderingBatch {
         Ref<VertexArray> VAO;
-        Ref<Shader> shader;
 
         int32_t indices = 0;
         int32_t vertices = 0;
@@ -46,10 +39,10 @@ namespace gp {
 
         int32_t mode;
 
-        RenderingData(const Ref<VertexArray> &VAO, void *bufferData,
-                      const Ref<Shader> &shader, int32_t mode = GP_DRAW_MODE_TRIANGLES)
+        RenderingBatch(const Ref<VertexArray> &VAO = nullptr,
+                       void *bufferData = nullptr,
+                       int32_t mode = GP_DRAW_MODE_TRIANGLES)
                 : VAO(VAO),
-                  shader(shader),
                   bufferData(bufferData),
                   mode(mode) {
         }
@@ -72,39 +65,41 @@ namespace gp {
         friend class Image;
 
     private:
-        std::vector<LineVertex> m_LineVertices;
         uint32_t m_NextLineID = 0;
-        std::unordered_map<uint32_t, uint32_t> m_LineIDs;
+        RenderingBatch m_LineBatch;
+        std::vector<SolidVertex> m_LineVertices;
+        std::unordered_map<uint32_t, uint32_t> m_LineToIndex;
 
-        std::vector<TriangleVertex> m_TriangleVertices;
         uint32_t m_NextTriangleID = 0;
-        std::unordered_map<uint32_t, uint32_t> m_TriangleIDs;
+        RenderingBatch m_TriangleBatch;
+        std::vector<SolidVertex> m_TriangleVertices;
+        std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
 
-        std::vector<QuadVertex> m_QuadVertices;
         uint32_t m_NextQuadID = 0;
-        std::unordered_map<uint32_t, uint32_t> m_QuadIDs;
+        RenderingBatch m_QuadBatch;
+        std::vector<SolidVertex> m_QuadVertices;
+        std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
 
-        std::vector<EllipseVertex> m_EllipseVertices;
         uint32_t m_NextEllipseID = 0;
-        std::unordered_map<uint32_t, uint32_t> m_EllipseIDs;
+        RenderingBatch m_EllipseBatch;
+        std::vector<EllipseVertex> m_EllipseVertices;
+        std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;
 
-        std::vector<std::vector<ImageVertex>> m_ImageVertices;
         uint32_t m_NextImageID = 0;
-        std::unordered_map<uint32_t, uint32_t> m_ImageBatches;
-        std::vector<std::unordered_map<uint32_t, uint32_t>> m_ImageIDs;
+        std::vector<RenderingBatch> m_TexturedQuadBatches;
+        std::vector<std::vector<TextureVertex>> m_TexturedQuadVertices;
+        std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
+        std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
 
-        Ref<Shader> m_LineShader;
-        Ref<Shader> m_PolygonShader;
+        Ref<Shader> m_SolidShader;
         Ref<Shader> m_EllipseShader;
-        Ref<Shader> m_ImageShader;
+        Ref<Shader> m_TextureShader;
 
+        Camera m_Camera;
         Ref<UniformBuffer> m_ShaderUniform;
 
         std::vector<Ref<Texture2D>> m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
-
-        std::vector<RenderingData> m_RenderingObjects;
-        Camera m_Camera;
 
         const unsigned int s_TextureSlots = 16;
 
@@ -161,8 +156,8 @@ namespace gp {
 
         void _bindTextureBatch(uint32_t batch);
 
-        static void _updateRenderingObjectVBO(RenderingData &object);
+        static void _updateRenderingObjectVBO(RenderingBatch &object);
 
-        static void _updateRenderingObjectEBO(RenderingData &object);
+        static void _updateRenderingObjectEBO(RenderingBatch &object);
     };
 }

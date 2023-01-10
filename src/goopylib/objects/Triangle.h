@@ -51,7 +51,7 @@ namespace gp {
         GPAPI void setTransparency(float v1, float v2, float v3);
 
     private:
-        TriangleVertexAttrib m_V1, m_V2, m_V3;
+        SolidVertexAttrib m_V1, m_V2, m_V3;
 
         uint32_t _draw(Window *window) const override;
 

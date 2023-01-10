@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Point.h"
+#include "Vertex.h"
 #include "src/goopylib/core/Window.h"
 
 #include <cfloat>

@@ -69,10 +69,10 @@ namespace gp {
         GPAPI void setTransparency(float v1, float v2, float v3, float v4);
 
     private:
-        ImageVertexAttrib m_V1 = {{0, 0}};
-        ImageVertexAttrib m_V2 = {{1, 0}};
-        ImageVertexAttrib m_V3 = {{1, 1}};
-        ImageVertexAttrib m_V4 = {{0, 1}};
+        TextureVertexAttrib m_V1 = {{0, 0}};
+        TextureVertexAttrib m_V2 = {{1, 0}};
+        TextureVertexAttrib m_V3 = {{1, 1}};
+        TextureVertexAttrib m_V4 = {{0, 1}};
 
         const char *m_Path;
 
