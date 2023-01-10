@@ -55,7 +55,7 @@
 #define GP_LOG_PACKING 3
 
 #define GP_VALUE_CHECK_SHELF_PACKING true
-#define GP_LOG_SHLEF_PACKING 3
+#define GP_LOG_SHELF_PACKING 3
 
 // color
 
@@ -69,7 +69,7 @@
 #define GP_LOG_W3CX11 3
 
 #define GP_LOG_COLOR_CONVERSIONS true
-#define GP_VALUE_CHECKING_COLOR_CONVERSIONS true
+#define GP_VALUE_CHECK_COLOR_CONVERSIONS true
 
 // scene
 
@@ -95,6 +95,9 @@
 
 #define GP_VALUE_CHECK_QUAD true
 #define GP_LOG_QUAD 3
+
+#define GP_VALUE_CHECK_TEXTURED_QUAD true
+#define GP_LOG_TEXTURED_QUAD 3
 
 #define GP_VALUE_CHECK_ELLIPSE true
 #define GP_LOG_ELLIPSE 3

@@ -22,6 +22,8 @@
 #include "src/goopylib/objects/Triangle.h"
 #include "src/goopylib/objects/Quad.h"
 #include "src/goopylib/objects/Rectangle.h"
+#include "src/goopylib/objects/TexturedQuad.h"
+#include "src/goopylib/objects/TexturedRectangle.h"
 #include "src/goopylib/objects/Ellipse.h"
 #include "src/goopylib/objects/Circle.h"
 #include "src/goopylib/objects/Image.h"

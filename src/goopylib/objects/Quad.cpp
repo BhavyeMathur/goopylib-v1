@@ -1,5 +1,7 @@
 #include "Quad.h"
 
+#include "config.h"
+
 #if (GP_LOG_QUAD != true) and (GP_LOG_QUAD <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
 #define GP_LOGGING_LEVEL GP_LOG_QUAD
@@ -18,7 +20,7 @@
 namespace gp {
     Quad::Quad(Point p1, Point p2, Point p3, Point p4)
             : Renderable({p1, p2, p3, p4}) {
-        GP_CORE_DEBUG("Initializing Quad ({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
+        GP_CORE_DEBUG("gp::Quad::Quad({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
     }
 

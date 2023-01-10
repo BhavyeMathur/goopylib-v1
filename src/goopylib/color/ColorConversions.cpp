@@ -42,7 +42,7 @@ namespace {
             case 'F':
                 return 15;
             default:
-                GP_VALUE_ERROR("invalid hexstring character '{0}'", digit);
+                GP_VALUE_ERROR("digitToInt() invalid hexstring character '{0}'", digit);
                 return 0;
         }
     }
@@ -242,7 +242,7 @@ namespace gp {
                 case 7:
                     return Hex7toRGB(hexstring);
                 default:
-                    GP_VALUE_ERROR("invalid hexstring '{0}'", hexstring);
+                    GP_VALUE_ERROR("gp::hex::toRGB() invalid hexstring '{0}'", hexstring);
                     return {-1, -1, -1};
             }
         }

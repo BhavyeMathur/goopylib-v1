@@ -58,6 +58,8 @@ namespace gp {
 
         friend class Quad;
 
+        friend class TexturedQuad;
+
         friend class Ellipse;
 
         friend class Image;

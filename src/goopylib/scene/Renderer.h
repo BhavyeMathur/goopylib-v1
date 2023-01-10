@@ -18,7 +18,7 @@ namespace gp {
 
     class Ellipse;
 
-    class Image;
+    class TexturedQuad;
 
     class Shader;
 
@@ -81,11 +81,11 @@ namespace gp {
 
         GPAPI void updateEllipse(uint32_t ID, const Ellipse *object);
 
-        GPAPI uint32_t drawTexturedQuad(Image *object);
+        GPAPI uint32_t drawTexturedQuad(TexturedQuad *object);
 
         GPAPI void destroyTexturedQuad(uint32_t ID);
 
-        GPAPI void updateTexturedQuad(uint32_t ID, const Image *object);
+        GPAPI void updateTexturedQuad(uint32_t ID, const TexturedQuad *object);
 
         GPAPI void flush();
 

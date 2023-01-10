@@ -61,7 +61,7 @@ namespace gp {
 
         #if GP_VALUE_CHECKING
         if (s_Fonts.empty()) {
-            GP_RUNTIME_ERROR("No fonts have been loaded!");
+            GP_RUNTIME_ERROR("Text::Text() no fonts have been loaded!");
         }
         #endif
 

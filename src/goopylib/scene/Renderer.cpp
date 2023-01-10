@@ -6,7 +6,7 @@
 #include "src/goopylib/objects/Triangle.h"
 #include "src/goopylib/objects/Quad.h"
 #include "src/goopylib/objects/Ellipse.h"
-#include "src/goopylib/objects/Image.h"
+#include "src/goopylib/objects/TexturedQuad.h"
 #include "src/goopylib/shader/Shader.h"
 
 #include "config.h"
@@ -151,9 +151,9 @@ namespace gp {
         auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         imageVBO->setLayout({{ShaderDataType::Float2, "position"},
+                             {ShaderDataType::Float4, "color"},
                              {ShaderDataType::Float2, "texCoord"},
-                             {ShaderDataType::Int,    "texSlot"},
-                             {ShaderDataType::Float4, "color"}});
+                             {ShaderDataType::Int,    "texSlot"},});
         imageVAO->setVertexBuffer(imageVBO);
 
         m_TexturedQuadBatches.emplace_back(imageVAO, nullptr);
@@ -410,15 +410,15 @@ namespace gp {
         m_EllipseBatch.updateBufferData = true;
     }
 
-    uint32_t Renderer::drawTexturedQuad(Image *object) {
+    uint32_t Renderer::drawTexturedQuad(TexturedQuad *object) {
         uint32_t ID = m_NextImageID;
         m_NextImageID++;
         GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
         uint32_t texIndex, texSlot;
-        if (m_TexturesCache.find(object->m_Path) == m_TexturesCache.end()) {
+        if (m_TexturesCache.find(object->m_Texture) == m_TexturesCache.end()) {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->m_Path);
-            texIndex = _cacheTexture(object->m_Path);
+            texIndex = _cacheTexture(object->m_Texture);
             texSlot = texIndex % 16;
 
             if (texSlot == 0) {
@@ -427,16 +427,21 @@ namespace gp {
         }
         else {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - using cached texture '{0}'", object->m_Path);
-            texIndex = m_TexturesCache[object->m_Path].index;
+            texIndex = m_TexturesCache[object->m_Texture].index;
             texSlot = texIndex % 16;
         }
 
         GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - texIndex={0}", texIndex);
 
-        object->m_V1.texSlot = texSlot;
-        object->m_V2.texSlot = texSlot;
-        object->m_V3.texSlot = texSlot;
-        object->m_V4.texSlot = texSlot;
+        object->m_T1.texSlot = texSlot;
+        object->m_T2.texSlot = texSlot;
+        object->m_T3.texSlot = texSlot;
+        object->m_T4.texSlot = texSlot;
+
+        object->m_T1.texCoord = {0, 0};
+        object->m_T2.texCoord = {1, 0};
+        object->m_T3.texCoord = {1, 1};
+        object->m_T4.texCoord = {0, 1};
 
         uint32_t batch = texIndex / Texture2D::getTextureSlots();
 
@@ -444,10 +449,10 @@ namespace gp {
         m_TexturedQuadToBatch.insert({ID, batch});
         m_TexturedQuadToIndex[batch].insert({ID, index});
 
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[0], object->m_V1});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[1], object->m_V2});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[2], object->m_V3});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[3], object->m_V4});
+        m_TexturedQuadVertices[batch].push_back({object->m_Points[0], object->m_V1, object->m_T1});
+        m_TexturedQuadVertices[batch].push_back({object->m_Points[1], object->m_V2, object->m_T2});
+        m_TexturedQuadVertices[batch].push_back({object->m_Points[2], object->m_V3, object->m_T3});
+        m_TexturedQuadVertices[batch].push_back({object->m_Points[3], object->m_V4, object->m_T4});
 
         if (object->isHidden()) {
             m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;
@@ -486,14 +491,14 @@ namespace gp {
         m_TexturedQuadBatches[batch].reallocateBufferData = true;
     }
 
-    void Renderer::updateTexturedQuad(uint32_t ID, const Image *object) {
+    void Renderer::updateTexturedQuad(uint32_t ID, const TexturedQuad *object) {
         uint32_t batch = m_TexturedQuadToBatch[ID];
         uint32_t index = m_TexturedQuadToIndex[batch][ID];
 
-        m_TexturedQuadVertices[batch][index + 0] = {object->m_Points[0], object->m_V1};
-        m_TexturedQuadVertices[batch][index + 1] = {object->m_Points[1], object->m_V2};
-        m_TexturedQuadVertices[batch][index + 2] = {object->m_Points[2], object->m_V3};
-        m_TexturedQuadVertices[batch][index + 3] = {object->m_Points[3], object->m_V4};
+        m_TexturedQuadVertices[batch][index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
+        m_TexturedQuadVertices[batch][index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
+        m_TexturedQuadVertices[batch][index + 2] = {object->m_Points[2], object->m_V3, object->m_T3};
+        m_TexturedQuadVertices[batch][index + 3] = {object->m_Points[3], object->m_V4, object->m_T4};
 
         if (object->isHidden()) {
             m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;

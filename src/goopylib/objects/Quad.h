@@ -53,14 +53,14 @@ namespace gp {
         void GPAPI setTransparency(float v1, float v2, float v3, float v4);
 
     protected:
-        GPAPI void _update() const override;
-
-    private:
         SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V4 = {{0.0f, 0.55f, 0.9f}};
 
+        GPAPI void _update() const override;
+
+    private:
         GPAPI uint32_t _draw(Window *window) const override;
 
         GPAPI void _destroy() const override;

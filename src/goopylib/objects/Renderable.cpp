@@ -89,7 +89,7 @@ namespace gp {
 
         #if GP_ERROR_CHECKING
         if (window->m_IsDestroyed) {
-            GP_RUNTIME_ERROR("window has been destroyed");
+            GP_RUNTIME_ERROR("Renderable::draw() window has been destroyed");
         }
         #endif
 
