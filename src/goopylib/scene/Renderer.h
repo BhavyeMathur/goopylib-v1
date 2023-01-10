@@ -52,17 +52,42 @@ namespace gp {
 
         friend class Window;
 
-        friend class Renderable;
+    public:
+        GPAPI ~Renderer();
 
-        friend class Line;
+        GPAPI void init();
 
-        friend class Triangle;
+        GPAPI uint32_t drawLine(Line *object);
 
-        friend class Quad;
+        GPAPI void destroyLine(uint32_t ID);
 
-        friend class Ellipse;
+        GPAPI void updateLine(uint32_t ID, const Line *object);
 
-        friend class Image;
+        GPAPI uint32_t drawTriangle(Triangle *object);
+
+        GPAPI void destroyTriangle(uint32_t ID);
+
+        GPAPI void updateTriangle(uint32_t ID, const Triangle *object);
+
+        GPAPI uint32_t drawQuad(Quad *object);
+
+        GPAPI void destroyQuad(uint32_t ID);
+
+        GPAPI void updateQuad(uint32_t ID, const Quad *object);
+
+        GPAPI uint32_t drawEllipse(Ellipse *object);
+
+        GPAPI void destroyEllipse(uint32_t ID);
+
+        GPAPI void updateEllipse(uint32_t ID, const Ellipse *object);
+
+        GPAPI uint32_t drawImage(Image *object);
+
+        GPAPI void destroyImage(uint32_t ID);
+
+        GPAPI void updateImage(uint32_t ID, const Image *object);
+
+        GPAPI void flush();
 
     private:
         uint32_t m_NextLineID = 0;
@@ -105,43 +130,6 @@ namespace gp {
 
         Renderer(float width, float height);
 
-        ~Renderer();
-
-        void init();
-
-        uint32_t drawLine(Line *object);
-
-        void destroyLine(uint32_t ID);
-
-        void updateLine(uint32_t ID, const Line *object);
-
-        uint32_t drawTriangle(Triangle *object);
-
-        void destroyTriangle(uint32_t ID);
-
-        void updateTriangle(uint32_t ID, const Triangle *object);
-
-        uint32_t drawQuad(Quad *object);
-
-        void destroyQuad(uint32_t ID);
-
-        void updateQuad(uint32_t ID, const Quad *object);
-
-        uint32_t drawEllipse(Ellipse *object);
-
-        void destroyEllipse(uint32_t ID);
-
-        void updateEllipse(uint32_t ID, const Ellipse *object);
-
-        uint32_t drawImage(Image *object);
-
-        void destroyImage(uint32_t ID);
-
-        void updateImage(uint32_t ID, const Image *object);
-
-        void flush();
-
-    private:
         void _createLineBuffer();
 
         void _createTriangleBuffer();
@@ -150,7 +138,7 @@ namespace gp {
 
         void _createEllipseBuffer();
 
-        void _newImageBuffer();
+        void _createTexturedQuadBuffer();
 
         uint32_t _cacheTexture(const char *path);
 

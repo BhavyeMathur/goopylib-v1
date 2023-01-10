@@ -27,6 +27,8 @@ namespace gp {
         friend class Text;
 
     public:
+        GPAPI ~TextureAtlas();
+
         GPAPI TextureCoords add(const Ref<Bitmap> &bitmap, bool allowRotation = true);
 
         GPAPI std::vector<TextureCoords> add(const std::vector<Ref<Bitmap>> &bitmaps,
@@ -45,7 +47,5 @@ namespace gp {
         static uint32_t s_Height;
 
         TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
-
-        ~TextureAtlas();
     };
 }

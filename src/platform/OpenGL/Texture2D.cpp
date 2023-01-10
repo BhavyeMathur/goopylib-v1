@@ -43,8 +43,8 @@ namespace gp {
         }
         #endif
 
-        GLenum dataFormat = getDataFormat();
-        int32_t internalFormat = getInternalFormat();
+        GLenum dataFormat = _getDataFormat();
+        int32_t internalFormat = _getInternalFormat();
 
         glGenTextures(1, &m_RendererID);
         bind(0);
@@ -63,8 +63,8 @@ namespace gp {
             : m_Width(width),
               m_Height(height),
               m_Channels(channels) {
-        GLenum dataFormat = getDataFormat();
-        int32_t internalFormat = getInternalFormat();
+        GLenum dataFormat = _getDataFormat();
+        int32_t internalFormat = _getInternalFormat();
 
         glGenTextures(1, &m_RendererID);
         bind(0);
@@ -107,8 +107,8 @@ namespace gp {
         m_Width = width;
         m_Height = height;
 
-        GLenum dataFormat = getDataFormat();
-        int32_t internalFormat = getInternalFormat();
+        GLenum dataFormat = _getDataFormat();
+        int32_t internalFormat = _getInternalFormat();
 
         bind(0);
         glTexImage2D(GL_TEXTURE_2D,
@@ -122,7 +122,7 @@ namespace gp {
     }
 
     void Texture2D::setData(const uint8_t *data, uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height) {
-        int32_t internalFormat = getInternalFormat();
+        int32_t internalFormat = _getInternalFormat();
 
         bind(0);
         glTexSubImage2D(GL_TEXTURE_2D,
@@ -136,7 +136,7 @@ namespace gp {
                         data);
     }
 
-    uint32_t Texture2D::getDataFormat() const {
+    uint32_t Texture2D::_getDataFormat() const {
         if (m_Channels == 4) {
             return GL_RGBA;
         }
@@ -147,12 +147,12 @@ namespace gp {
             return GL_RED;
         }
         else {
-            GP_VALUE_ERROR("gp::Texture2D::getDataFormat() invalid data format");
+            GP_VALUE_ERROR("gp::Texture2D::_getDataFormat() invalid data format");
         }
         return 0;
     }
 
-    int32_t Texture2D::getInternalFormat() const {
+    int32_t Texture2D::_getInternalFormat() const {
         if (m_Channels == 4) {
             return GL_RGBA8;
         }
@@ -163,7 +163,7 @@ namespace gp {
             return GL_R8;
         }
         else {
-            GP_VALUE_ERROR("gp::Texture2D::getInternalFormat() invalid data format");
+            GP_VALUE_ERROR("gp::Texture2D::_getInternalFormat() invalid data format");
         }
         return 0;
     }

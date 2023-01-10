@@ -94,7 +94,7 @@ namespace gp {
     }
 
     void Renderer::_createLineBuffer() {
-        GP_CORE_TRACE("Creating Line Buffers");
+        GP_CORE_TRACE("Renderer::_createLineBuffer()");
 
         auto lineVAO = Ref<VertexArray>(new VertexArray());
         auto lineVBO = Ref<VertexBuffer>(new VertexBuffer());
@@ -107,7 +107,7 @@ namespace gp {
     }
 
     void Renderer::_createTriangleBuffer() {
-        GP_CORE_TRACE("Creating Triangle Buffers");
+        GP_CORE_TRACE("Renderer::_createTriangleBuffer()");
 
         auto triangleVAO = Ref<VertexArray>(new VertexArray());
         auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
@@ -120,7 +120,7 @@ namespace gp {
     }
 
     void Renderer::_createQuadBuffer() {
-        GP_CORE_TRACE("Creating Quad Buffers");
+        GP_CORE_TRACE("Renderer::_createQuadBuffer()");
 
         auto quadVAO = Ref<VertexArray>(new VertexArray());
         auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
@@ -133,7 +133,7 @@ namespace gp {
     }
 
     void Renderer::_createEllipseBuffer() {
-        GP_CORE_TRACE("Creating Ellipse Buffers");
+        GP_CORE_TRACE("Renderer::_createEllipseBuffer()");
 
         auto ellipseVAO = Ref<VertexArray>(new VertexArray());
         auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
@@ -146,8 +146,8 @@ namespace gp {
         m_EllipseBatch = {ellipseVAO, nullptr};
     }
 
-    void Renderer::_newImageBuffer() {
-        GP_CORE_TRACE("Creating New Image Buffer");
+    void Renderer::_createTexturedQuadBuffer() {
+        GP_CORE_TRACE("Renderer::_createTexturedQuadBuffer()");
 
         auto imageVAO = Ref<VertexArray>(new VertexArray());
         auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
@@ -424,7 +424,7 @@ namespace gp {
             texSlot = texIndex % 16;
 
             if (texSlot == 0) {
-                _newImageBuffer();
+                _createTexturedQuadBuffer();
             }
         }
         else {

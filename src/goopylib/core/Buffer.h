@@ -28,25 +28,24 @@ namespace gp {
         friend class Renderer;
 
     public:
-        ~VertexBuffer() override;
+        GPAPI ~VertexBuffer() override;
 
-        void bind() const;
+        GPAPI void bind() const;
 
-        static void unbind();
+        GPAPI static void unbind();
 
-        void setData(const void *data, uint32_t count);
+        GPAPI void setData(const void *data, uint32_t count);
 
-        void setData(const void *data, uint32_t count, uint32_t offset) const;
+        GPAPI void setData(const void *data, uint32_t count, uint32_t offset) const;
 
-        [[nodiscard]] const BufferLayout &getLayout() const;
+        [[nodiscard]] GPAPI const BufferLayout &getLayout() const;
 
-        void setLayout(const BufferLayout &layout);
-
-    protected:
-        VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
+        GPAPI void setLayout(const BufferLayout &layout);
 
     private:
         BufferLayout m_Layout{};
+
+        VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
     };
 }
 
@@ -57,11 +56,11 @@ namespace gp {
         friend class VertexArray;
 
     public:
-        ~IndexBuffer() override;
+        GPAPI ~IndexBuffer() override;
 
-        void bind() const;
+        GPAPI void bind() const;
 
-        static void unbind();
+        GPAPI static void unbind();
 
     private:
         IndexBuffer(uint32_t count, uint32_t *indices);
@@ -77,23 +76,23 @@ namespace gp {
         friend class Renderer;
 
     public:
-        ~UniformBuffer() override;
+        GPAPI ~UniformBuffer() override;
 
-        void bind() const;
+        GPAPI void bind() const;
 
-        static void unbind();
+        GPAPI static void unbind();
 
-        void setData(const void *data, uint32_t count);
+        GPAPI void setData(const void *data, uint32_t count);
 
-        void setData(const void *data, uint32_t count, uint32_t offset) const;
+        GPAPI void setData(const void *data, uint32_t count, uint32_t offset) const;
 
-        [[nodiscard]] const BufferLayout &getLayout() const;
+        [[nodiscard]] GPAPI const BufferLayout &getLayout() const;
 
-        void setBinding(uint32_t binding) const;
+        GPAPI void setBinding(uint32_t binding) const;
 
     private:
-        UniformBuffer(BufferLayout &&layout);
-
         BufferLayout m_Layout;
+
+        UniformBuffer(BufferLayout &&layout);
     };
 }

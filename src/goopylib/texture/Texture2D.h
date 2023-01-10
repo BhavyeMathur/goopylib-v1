@@ -36,8 +36,8 @@ namespace gp {
 
         Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
 
-        uint32_t getDataFormat() const;
+        uint32_t _getDataFormat() const;
 
-        int32_t getInternalFormat() const;
+        int32_t _getInternalFormat() const;
     };
 }
