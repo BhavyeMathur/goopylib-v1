@@ -28,7 +28,7 @@ namespace gp {
     }
 
     TextureCoords TextureAtlas::add(const Ref<Bitmap> &bitmap, bool allowRotation) {
-        auto item = Ref<packing::Item>(new packing::Item(bitmap->getWidth(), bitmap->getHeight()));
+        auto item = Ref<packing::Item>(new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight()));
         m_PackingAlgorithm->pack(item, allowRotation);
         return {item->p1(), item->p2()};
     }
@@ -42,7 +42,7 @@ namespace gp {
         texCoords.reserve(bitmaps.size());
 
         for (const auto &bitmap: bitmaps) {
-            items.emplace_back(new packing::Item(bitmap->getWidth(), bitmap->getHeight()));
+            items.emplace_back(new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight()));
         }
 
         m_PackingAlgorithm->packAll(items, allowRotation, sorting);
@@ -72,11 +72,11 @@ namespace gp {
             auto texture = Texture2D(width, height, 1);
 
             for (const auto &item: bin->items()) {
-                texture.setData(nullptr,
-                                (uint32_t) item->getX(),
+                texture.setData((uint32_t) item->getX(),
                                 (uint32_t) item->getY(),
                                 (uint32_t) item->getWidth(),
-                                (uint32_t) item->getHeight());
+                                (uint32_t) item->getHeight(),
+                                nullptr);
             }
 
             textures.push_back(texture);

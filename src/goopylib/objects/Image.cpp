@@ -1,7 +1,7 @@
 #include "Image.h"
 #include <stb/stb_image.h>
 
-#include "config.h"
+#include "src/config.h"
 
 #if (GP_LOG_IMAGE != true) and (GP_LOG_IMAGE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL

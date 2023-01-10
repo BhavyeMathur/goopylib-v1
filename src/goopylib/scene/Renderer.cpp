@@ -9,7 +9,7 @@
 #include "src/goopylib/objects/TexturedQuad.h"
 #include "src/goopylib/shader/Shader.h"
 
-#include "config.h"
+#include "src/config.h"
 
 #if (GP_LOG_RENDERER != true) and (GP_LOG_RENDERER <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
@@ -561,7 +561,8 @@ namespace gp {
     uint32_t Renderer::_cacheTexture(const char *path) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", path);
 
-        auto texture = Ref<Texture2D>(new Texture2D(path));
+        auto bitmap = gp::Bitmap(path);
+        auto texture = Ref<Texture2D>(new Texture2D(bitmap));
         uint32_t texIndex = m_Textures.size();
 
         m_TexturesCache.insert({path, {texture, texIndex}});

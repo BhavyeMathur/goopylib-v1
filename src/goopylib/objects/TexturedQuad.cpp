@@ -1,6 +1,6 @@
 #include "TexturedQuad.h"
 
-#include "config.h"
+#include "src/config.h"
 
 #if (GP_LOG_TEXTURED_QUAD != true) and (GP_LOG_TEXTURED_QUAD <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL

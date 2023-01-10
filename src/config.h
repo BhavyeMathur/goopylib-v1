@@ -34,9 +34,6 @@
 #define GP_VALUE_CHECK_BUFFER true
 #define GP_LOG_BUFFER 3
 
-#define GP_VALUE_CHECK_TEXTURE2D true
-#define GP_LOG_TEXTURE2D 3
-
 #define GP_VALUE_CHECK_VERTEX_ARRAY true
 #define GP_LOG_VERTEX_ARRAY 3
 
@@ -110,3 +107,14 @@
 
 #define GP_VALUE_CHECK_TEXT true
 #define GP_LOG_TEXT true
+
+// texture
+
+#define GP_VALUE_CHECK_TEXTURE2D true
+#define GP_LOG_TEXTURE2D 3
+
+#define GP_VALUE_CHECK_TEXTURE_ATLAS true
+#define GP_LOG_TEXTURE_ATLAS 3
+
+#define GP_VALUE_CHECK_BITMAP true
+#define GP_LOG_BITMAP 3

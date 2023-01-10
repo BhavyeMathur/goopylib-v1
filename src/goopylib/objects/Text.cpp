@@ -98,8 +98,9 @@ namespace gp {
                     GP_CORE_WARN("Text::Text() failed to load {0}: '{1}'", codepoint, err);
                     continue;
                 }
-                Ref<Bitmap> bitmap = Ref<Bitmap>(new Bitmap((float) font.ft_face->glyph->bitmap.width,
-                                                            (float) font.ft_face->glyph->bitmap.rows));
+                Ref<Bitmap> bitmap = Ref<Bitmap>(new Bitmap(font.ft_face->glyph->bitmap.width,
+                                                            font.ft_face->glyph->bitmap.rows,
+                                                            1, font.ft_face->glyph->bitmap.buffer));
                 glyphBitmaps.insert({codepoint, bitmap});
                 bitmaps.push_back(bitmap);
             }
@@ -115,7 +116,7 @@ namespace gp {
             float yStart = y + (float) (font.ft_face->glyph->bitmap_top + glyphPositions[i].y_offset);
 
             m_Characters.push_back(new gp::Image("", {xStart, yStart},
-                                                     {xStart + xSize, yStart - ySize}));
+                                                 {xStart + xSize, yStart - ySize}));
 
             GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, glyphInfo[i].codepoint);
 

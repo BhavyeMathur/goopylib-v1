@@ -2,7 +2,7 @@
 
 #if GP_USING_OPENGL
 
-#include <stb/stb_image.h>
+#include "src/goopylib/texture/Bitmap.h"
 
 #if __APPLE__
 
@@ -32,33 +32,6 @@
 
 
 namespace gp {
-    Texture2D::Texture2D(const char *path) {
-        GP_CORE_INFO("gp::Texture2D::Texture2D({0})", m_Path);
-
-        uint8_t *data = stbi_load(path, (int32_t *) &m_Width, (int32_t *) &m_Height, (int32_t *) &m_Channels, 0);
-
-        #if GP_ERROR_CHECKING
-        if (m_Width == 0 and m_Height == 0 and m_Channels == 0) {
-            GP_FILENOTFOUND_ERROR("gp::Texture2D::Texture2D() file '{0}' not found", path);
-        }
-        #endif
-
-        GLenum dataFormat = _getDataFormat();
-        int32_t internalFormat = _getInternalFormat();
-
-        glGenTextures(1, &m_RendererID);
-        bind(0);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
-
-        stbi_image_free(data);
-    }
-
     Texture2D::Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data)
             : m_Width(width),
               m_Height(height),
@@ -86,6 +59,11 @@ namespace gp {
         }
     }
 
+    Texture2D::Texture2D(const Bitmap &bitmap)
+    : Texture2D(bitmap.getWidth(), bitmap.getHeight(), bitmap.getChannels(), bitmap.getData()) {
+
+    }
+
     Texture2D::~Texture2D() {
         GP_CORE_DEBUG("gp::Texture2D::~Texture2D()");
         glDeleteTextures(1, &m_RendererID);
@@ -106,7 +84,7 @@ namespace gp {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    void Texture2D::setData(const uint8_t *data, uint32_t width, uint32_t height, uint32_t channels) {
+    void Texture2D::setData(uint32_t width, uint32_t height, uint32_t channels, const uint8_t *data) {
         m_Channels = channels;
         m_Width = width;
         m_Height = height;
@@ -125,7 +103,7 @@ namespace gp {
                      data);
     }
 
-    void Texture2D::setData(const uint8_t *data, uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height) {
+    void Texture2D::setData(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, const uint8_t *data) {
         int32_t internalFormat = _getInternalFormat();
 
         bind(0);

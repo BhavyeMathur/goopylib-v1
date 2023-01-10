@@ -8,17 +8,29 @@ namespace gp {
 
         friend class Text;
 
+        friend class Renderer;
+
     public:
-        GPAPI ~Bitmap() = default;
+        GPAPI ~Bitmap();
 
-        GPAPI float getWidth() const;
+        GPAPI uint32_t getWidth() const;
 
-        GPAPI float getHeight() const;
+        GPAPI uint32_t getHeight() const;
+
+        GPAPI uint32_t getChannels() const;
+
+        GPAPI uint8_t* getData() const;
 
     private:
-        float m_Width;
-        float m_Height;
+        uint32_t m_Width = 0;
+        uint32_t m_Height = 0;
+        uint32_t m_Channels = 0;
 
-        Bitmap(float width, float height);
+        uint8_t *m_Data = nullptr;
+        bool m_IsImage = false;
+
+        Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
+
+        Bitmap(const char* filepath);
     };
 }

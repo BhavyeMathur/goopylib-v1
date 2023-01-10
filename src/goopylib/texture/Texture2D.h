@@ -3,6 +3,7 @@
 #include "gp.h"
 
 namespace gp {
+    class Bitmap;
 
     class Texture2D {
 
@@ -15,13 +16,13 @@ namespace gp {
 
         GPAPI void bind(uint32_t slot) const;
 
-        GPAPI void setData(const uint8_t *data,
-                           uint32_t xOffset,
+        GPAPI void setData(uint32_t xOffset,
                            uint32_t yOffset,
                            uint32_t width,
-                           uint32_t height);
+                           uint32_t height,
+                           const uint8_t *data);
 
-        GPAPI void setData(const uint8_t *data, uint32_t width, uint32_t height, uint32_t channels);
+        GPAPI void setData(uint32_t width, uint32_t height, uint32_t channels, const uint8_t *data = nullptr);
 
         GPAPI static void unbind();
 
@@ -38,9 +39,9 @@ namespace gp {
 
         static int32_t s_TextureSlots;
 
-        Texture2D(const char *path);
-
         Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
+
+        Texture2D(const Bitmap& bitmap);
 
         uint32_t _getDataFormat() const;
 

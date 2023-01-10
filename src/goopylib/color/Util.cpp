@@ -1,7 +1,7 @@
 #include "Util.h"
 #include "ColorConversions.h"
 
-#include "config.h"
+#include "src/config.h"
 
 #if (GP_LOG_COLOR_UTIL != true) and (GP_LOG_COLOR_UTIL <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL

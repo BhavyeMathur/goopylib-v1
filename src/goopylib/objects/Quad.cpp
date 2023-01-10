@@ -1,6 +1,6 @@
 #include "Quad.h"
 
-#include "config.h"
+#include "src/config.h"
 
 #if (GP_LOG_QUAD != true) and (GP_LOG_QUAD <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
