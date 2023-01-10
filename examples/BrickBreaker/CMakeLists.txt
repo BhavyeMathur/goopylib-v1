@@ -1,7 +1,6 @@
-cmake_minimum_required(VERSION 3.22)
 project(BrickBreaker)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable(BrickBreaker brick_breaker.cpp)
+add_executable(BrickBreaker main.cpp)
 target_link_libraries(BrickBreaker goopylib)

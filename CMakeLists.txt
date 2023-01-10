@@ -157,3 +157,5 @@ if (APPLE)
 endif ()
 
 add_subdirectory(examples/BrickBreaker)
+add_subdirectory(examples/Minecraft)
+add_subdirectory(examples/algorithms/packing)

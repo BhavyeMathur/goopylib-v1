@@ -120,7 +120,7 @@ namespace gp {
             m_Characters.push_back(new gp::Image("", {xStart, yStart},
                                                      {xStart + xSize, yStart - ySize}));
 
-            GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, codepoint);
+            GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, glyphInfo[i].codepoint);
 
             x += (float) glyphPositions[i].x_advance / 64.0f;
             y += (float) glyphPositions[i].y_advance / 64.0f;

@@ -99,7 +99,7 @@ namespace gp {
         auto lineVAO = Ref<VertexArray>(new VertexArray());
         auto lineVBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        lineVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+        lineVBO->setLayout({{ShaderDataType::Float2, "position"},
                             {ShaderDataType::Float4, "color"}});
         lineVAO->setVertexBuffer(lineVBO);
 
@@ -112,7 +112,7 @@ namespace gp {
         auto triangleVAO = Ref<VertexArray>(new VertexArray());
         auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        triangleVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+        triangleVBO->setLayout({{ShaderDataType::Float2, "position"},
                                 {ShaderDataType::Float4, "color"}});
         triangleVAO->setVertexBuffer(triangleVBO);
 
@@ -125,7 +125,7 @@ namespace gp {
         auto quadVAO = Ref<VertexArray>(new VertexArray());
         auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        quadVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+        quadVBO->setLayout({{ShaderDataType::Float2, "position"},
                             {ShaderDataType::Float4, "color"}});
         quadVAO->setVertexBuffer(quadVBO);
 
@@ -138,7 +138,7 @@ namespace gp {
         auto ellipseVAO = Ref<VertexArray>(new VertexArray());
         auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        ellipseVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+        ellipseVBO->setLayout({{ShaderDataType::Float2, "position"},
                                {ShaderDataType::Float2, "localCoord"},
                                {ShaderDataType::Float4, "color"}});
         ellipseVAO->setVertexBuffer(ellipseVBO);
@@ -152,10 +152,10 @@ namespace gp {
         auto imageVAO = Ref<VertexArray>(new VertexArray());
         auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        imageVBO->setLayout({{ShaderDataType::Float2, "vertices"},
+        imageVBO->setLayout({{ShaderDataType::Float2, "position"},
                              {ShaderDataType::Float2, "texCoord"},
                              {ShaderDataType::Int,    "texSlot"},
-                             {ShaderDataType::Float,  "transparency"}});
+                             {ShaderDataType::Float4, "color"}});
         imageVAO->setVertexBuffer(imageVBO);
 
         m_TexturedQuadBatches.emplace_back(imageVAO, nullptr);
@@ -483,7 +483,8 @@ namespace gp {
 
         m_TexturedQuadBatches[batch].indices -= 6;
         m_TexturedQuadBatches[batch].vertices -= 4;
-        m_TexturedQuadBatches[batch].bufferData = m_TexturedQuadVertices[batch].empty() ? nullptr : &m_TexturedQuadVertices[batch][0];
+        m_TexturedQuadBatches[batch].bufferData = m_TexturedQuadVertices[batch].empty() ? nullptr
+                                                                                        : &m_TexturedQuadVertices[batch][0];
         m_TexturedQuadBatches[batch].reallocateBufferData = true;
     }
 
@@ -540,7 +541,13 @@ namespace gp {
         }
 
         m_TextureShader->bind();
+        uint32_t offset = 0;
         for (auto &batch: m_TexturedQuadBatches) {
+            for (uint32_t slot = offset; slot < min(offset + s_TextureSlots, (uint32_t) m_Textures.size()); slot++) {
+                m_Textures[slot]->bind(slot % 16);
+            }
+            offset += s_TextureSlots;
+
             if (batch.indices) {
                 _updateRenderingObjectEBO(batch);
                 _updateRenderingObjectVBO(batch);
