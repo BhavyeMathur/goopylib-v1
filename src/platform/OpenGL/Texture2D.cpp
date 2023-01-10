@@ -42,6 +42,8 @@ namespace gp {
         glGenTextures(1, &m_RendererID);
         bind(0);
 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -50,10 +52,10 @@ namespace gp {
         if (data) {
             glTexImage2D(GL_TEXTURE_2D,
                          0,
-                         internalFormat,
+                         GL_RED, //internalFormat,
                          (int32_t) m_Width,
                          (int32_t) m_Height,
-                         0, dataFormat,
+                         0, GL_RED,//dataFormat,
                          GL_UNSIGNED_BYTE,
                          data);
         }

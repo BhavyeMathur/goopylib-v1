@@ -138,7 +138,7 @@ namespace gp {
 
         void _createTexturedQuadBuffer();
 
-        uint32_t _cacheTexture(const char *path);
+        uint32_t _cacheTexture(const char* name, const Bitmap& bitmap);
 
         void _bindTextureBatch(uint32_t offset);
 

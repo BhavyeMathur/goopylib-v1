@@ -8,6 +8,8 @@
 #include "harfbuzz/hb.h"
 #include "harfbuzz/hb-ft.h"
 
+#include <stb/stb_image_write.h>
+
 
 #include "src/config.h"
 
@@ -24,33 +26,6 @@
 
 #include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
-
-struct Spanner {
-    int xMin;
-    int xMax;
-    int yMin;
-    int yMax;
-};
-
-void spanner_sizer(int y, int count, const FT_Span *spans, void *user) {
-    auto baton = (Spanner *) user;
-
-    if (y < baton->yMin) {
-        baton->yMin = y;
-    }
-    if (y > baton->yMax) {
-        baton->yMax = y;
-    }
-
-    for (int i = 0; i < count; i++) {
-        if (spans[i].x + spans[i].len > baton->xMax) {
-            baton->xMax = spans[i].x + spans[i].len;
-        }
-        if (spans[i].x < baton->xMin) {
-            baton->xMin = spans[i].x;
-        }
-    }
-}
 
 namespace gp {
     Text::Text(std::string text, Point position, uint32_t fontSize)
@@ -86,39 +61,47 @@ namespace gp {
         float x = m_Position.x;
         float y = m_Position.y;
 
-        std::unordered_map<uint32_t, Ref<Bitmap>> glyphBitmaps;
-        std::vector<Ref<Bitmap>> bitmaps;
+        std::unordered_map<uint32_t, Bitmap *> glyphBitmaps;
+        std::vector<Bitmap *> bitmaps;
         m_Characters.reserve(glyphCount);
 
         for (uint32_t i = 0; i < glyphCount; i++) {
             uint32_t codepoint = glyphInfo[i].codepoint;
 
+            Bitmap *bitmap = nullptr;
             if (glyphBitmaps.find(codepoint) == glyphBitmaps.end()) {
                 if (FT_Error err = FT_Load_Glyph(font.ft_face, codepoint, FT_LOAD_RENDER)) {
                     GP_CORE_WARN("Text::Text() failed to load {0}: '{1}'", codepoint, err);
                     continue;
                 }
-                Ref<Bitmap> bitmap = Ref<Bitmap>(new Bitmap(font.ft_face->glyph->bitmap.width,
-                                                            font.ft_face->glyph->bitmap.rows,
-                                                            1, font.ft_face->glyph->bitmap.buffer));
+
+                uint32_t xSize = font.ft_face->glyph->bitmap.width;
+                uint32_t ySize = font.ft_face->glyph->bitmap.rows;
+
+                auto bitmapBuffer = Ref<uint8_t>(new uint8_t[xSize * ySize]);
+                std::copy(font.ft_face->glyph->bitmap.buffer,
+                          font.ft_face->glyph->bitmap.buffer + xSize * ySize, bitmapBuffer.get());
+                m_BitmapBuffers.push_back(bitmapBuffer);
+
+                float xStart = x + (float) (font.ft_face->glyph->bitmap_left + glyphPositions[i].x_offset);
+                float yStart = y + (float) (font.ft_face->glyph->bitmap_top + glyphPositions[i].y_offset);
+
+                stbi_write_bmp(strformat("%i.bmp", codepoint).c_str(),
+                               (int32_t) xSize, (int32_t) ySize, 1,
+                               m_BitmapBuffers.back().get());
+
+                bitmap = new Bitmap(xSize, ySize, 1, m_BitmapBuffers.back().get());
                 glyphBitmaps.insert({codepoint, bitmap});
                 bitmaps.push_back(bitmap);
+
+                m_Characters.push_back(new gp::TexturedRectangle(strformat("%i", codepoint).c_str(),
+                                                                 Ref<Bitmap>(bitmap),
+                                                                 {xStart, yStart - (float) ySize},
+                                                                 {xStart + (float) xSize, yStart}));
             }
-        }
-
-        for (uint32_t i = 0; i < glyphCount; i++) {
-            Ref<Bitmap> bitmap = glyphBitmaps.at(glyphInfo[i].codepoint);
-
-            auto xSize = (float) font.ft_face->glyph->bitmap.width;
-            auto ySize = (float) font.ft_face->glyph->bitmap.rows;
-
-            float xStart = x + (float) (font.ft_face->glyph->bitmap_left + glyphPositions[i].x_offset);
-            float yStart = y + (float) (font.ft_face->glyph->bitmap_top + glyphPositions[i].y_offset);
-
-            m_Characters.push_back(new gp::Image("", {xStart, yStart},
-                                                 {xStart + xSize, yStart - ySize}));
-
-            GP_CORE_TRACE("Text::Text() creating glyph {0} '{1}'", i, glyphInfo[i].codepoint);
+            else {
+                bitmap = glyphBitmaps[codepoint];
+            }
 
             x += (float) glyphPositions[i].x_advance / 64.0f;
             y += (float) glyphPositions[i].y_advance / 64.0f;

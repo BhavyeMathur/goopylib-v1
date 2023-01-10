@@ -1,4 +1,5 @@
 #include "Image.h"
+#include "src/goopylib/texture/Bitmap.h"
 #include <stb/stb_image.h>
 
 #include "src/config.h"
@@ -65,5 +66,9 @@ namespace gp {
     const char *Image::getPath() const {
         GP_CORE_TRACE_ALL("gp::Image::getPath() - '{0}'", m_Path);
         return m_Path;
+    }
+
+    Bitmap Image::getBitmap() const {
+        return {m_Path};
     }
 }

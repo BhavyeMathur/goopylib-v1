@@ -416,9 +416,11 @@ namespace gp {
         GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
         uint32_t texIndex, texSlot;
-        if (m_TexturesCache.find(object->m_Texture) == m_TexturesCache.end()) {
+        if (m_TexturesCache.find(object->getTextureName()) == m_TexturesCache.end()) {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->m_Path);
-            texIndex = _cacheTexture(object->m_Texture);
+
+            auto bitmap = object->getBitmap();
+            texIndex = _cacheTexture(object->getTextureName(), bitmap);
             texSlot = texIndex % 16;
 
             if (texSlot == 0) {
@@ -427,7 +429,7 @@ namespace gp {
         }
         else {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - using cached texture '{0}'", object->m_Path);
-            texIndex = m_TexturesCache[object->m_Texture].index;
+            texIndex = m_TexturesCache[object->getTextureName()].index;
             texSlot = texIndex % 16;
         }
 
@@ -558,14 +560,13 @@ namespace gp {
         }
     }
 
-    uint32_t Renderer::_cacheTexture(const char *path) {
+    uint32_t Renderer::_cacheTexture(const char* name, const Bitmap& bitmap) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", path);
 
-        auto bitmap = gp::Bitmap(path);
         auto texture = Ref<Texture2D>(new Texture2D(bitmap));
         uint32_t texIndex = m_Textures.size();
 
-        m_TexturesCache.insert({path, {texture, texIndex}});
+        m_TexturesCache.insert({name, {texture, texIndex}});
         m_Textures.push_back(texture);
 
         return texIndex;

@@ -8,7 +8,7 @@ namespace gp {
 
         friend class Text;
 
-        friend class Renderer;
+        friend class Image;
 
     public:
         GPAPI ~Bitmap();
@@ -28,6 +28,8 @@ namespace gp {
 
         uint8_t *m_Data = nullptr;
         bool m_IsImage = false;
+
+        Bitmap();
 
         Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
 

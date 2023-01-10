@@ -1,4 +1,5 @@
 #include "TexturedQuad.h"
+#include "src/goopylib/texture/Bitmap.h"
 
 #include "src/config.h"
 
@@ -18,9 +19,9 @@
 
 // Core Methods
 namespace gp {
-    TexturedQuad::TexturedQuad(const char* texture, Point p1, Point p2, Point p3, Point p4)
+    TexturedQuad::TexturedQuad(const char *texture, Point p1, Point p2, Point p3, Point p4)
             : Quad({p1, p2, p3, p4}),
-            m_Texture(texture) {
+              m_Texture(texture) {
         GP_CORE_DEBUG("gp::TexturedQuad::TexturedQuad({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
 
@@ -30,8 +31,21 @@ namespace gp {
         m_V4.color = {1, 1, 1, 1};
     }
 
+    TexturedQuad::TexturedQuad(const char *texture, const Ref<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4)
+            : TexturedQuad(texture, p1, p2, p3, p4) {
+        m_Bitmap = bitmap;
+    }
+
     const char *TexturedQuad::getTextureName() const {
         return m_Texture;
+    }
+
+    void TexturedQuad::setBitmap(const Ref<Bitmap> &bitmap) {
+        m_Bitmap = bitmap;
+    }
+
+    Bitmap TexturedQuad::getBitmap() const {
+        return *m_Bitmap;
     }
 
     uint32_t TexturedQuad::_draw(Window *window) const {

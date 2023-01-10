@@ -62,4 +62,8 @@ namespace gp {
     uint8_t *Bitmap::getData() const {
         return m_Data;
     }
+
+    Bitmap::Bitmap() {
+
+    }
 }

@@ -146,7 +146,8 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/VertexArray.cpp
             src/goopylib/shader/Shader.cpp
 
-            src/vendor/stb/stb_image.cpp)
+            src/vendor/stb/stb_image.cpp
+            src/vendor/stb/stb_image_write.cpp)
 
 target_link_libraries(goopylib glfw3)
 target_link_libraries(goopylib harfbuzz)

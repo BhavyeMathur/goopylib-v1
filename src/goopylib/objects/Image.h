@@ -54,6 +54,8 @@ namespace gp {
          */
         [[nodiscard]] GPAPI const char *getPath() const;
 
+        GPAPI Bitmap getBitmap() const override;
+
     private:
         const char *m_Path;
     };
