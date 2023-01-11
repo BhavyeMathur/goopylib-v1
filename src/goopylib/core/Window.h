@@ -54,6 +54,8 @@ namespace gp {
 
         friend class Renderable;
 
+        friend class Line;
+
         friend class Triangle;
 
         friend class Quad;
@@ -64,7 +66,7 @@ namespace gp {
 
         friend class Image;
 
-        friend class Line;
+        friend class TextCharacter;
 
     public:
         /**

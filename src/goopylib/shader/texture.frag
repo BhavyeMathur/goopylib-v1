@@ -10,6 +10,6 @@ uniform sampler2D Texture[16];
 out vec4 FragColor;
 
 void main() {
-    FragColor = Color * texture(Texture[TexSlot], TexCoord).r;
+    FragColor = Color * texture(Texture[TexSlot], TexCoord);
 }
 )"";

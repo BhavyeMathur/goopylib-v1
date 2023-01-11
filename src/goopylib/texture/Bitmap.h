@@ -21,6 +21,8 @@ namespace gp {
 
         GPAPI uint8_t* getData() const;
 
+        GPAPI void saveBitmap(const std::string& filepath) const;
+
     private:
         uint32_t m_Width = 0;
         uint32_t m_Height = 0;
@@ -29,7 +31,7 @@ namespace gp {
         uint8_t *m_Data = nullptr;
         bool m_IsImage = false;
 
-        Bitmap();
+        Bitmap() = default;
 
         Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
 

@@ -1,6 +1,7 @@
 #include "Bitmap.h"
 
 #include <stb/stb_image.h>
+#include <stb/stb_image_write.h>
 
 #include "src/config.h"
 
@@ -63,7 +64,7 @@ namespace gp {
         return m_Data;
     }
 
-    Bitmap::Bitmap() {
-
+    void Bitmap::saveBitmap(const std::string &filepath) const {
+        stbi_write_bmp(filepath.c_str(), (int32_t) m_Width, (int32_t) m_Height, 1, m_Data);
     }
 }

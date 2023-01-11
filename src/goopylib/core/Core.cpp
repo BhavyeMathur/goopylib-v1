@@ -1,6 +1,6 @@
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/core/Core.h"
-#include "src/goopylib/objects/Text.h"
+#include "src/goopylib/objects/text/Text.h"
 #include "src/goopylib/color/W3CX11.h"
 
 #include <stb/stb_image.h>
@@ -114,7 +114,7 @@ namespace gp {
 
         GP_CORE_INFO("gp::init()");
 
-        stbi_set_flip_vertically_on_load(1);
+        // stbi_set_flip_vertically_on_load(1);
 
         #if GP_USING_GLFW
         initGLFW();

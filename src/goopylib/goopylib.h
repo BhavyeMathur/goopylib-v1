@@ -27,7 +27,7 @@
 #include "src/goopylib/objects/Ellipse.h"
 #include "src/goopylib/objects/Circle.h"
 #include "src/goopylib/objects/Image.h"
-#include "src/goopylib/objects/Text.h"
+#include "src/goopylib/objects/text/Text.h"
 
 #include "src/goopylib/texture/Bitmap.h"
 #include "src/goopylib/texture/Texture2D.h"

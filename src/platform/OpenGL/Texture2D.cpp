@@ -52,10 +52,10 @@ namespace gp {
         if (data) {
             glTexImage2D(GL_TEXTURE_2D,
                          0,
-                         GL_RED, //internalFormat,
+                         internalFormat,
                          (int32_t) m_Width,
                          (int32_t) m_Height,
-                         0, GL_RED,//dataFormat,
+                         0, dataFormat,
                          GL_UNSIGNED_BYTE,
                          data);
         }

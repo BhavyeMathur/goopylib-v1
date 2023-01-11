@@ -124,7 +124,11 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/objects/Ellipse.cpp
             src/goopylib/objects/Circle.cpp
             src/goopylib/objects/Image.cpp
-            src/goopylib/objects/Text.cpp
+
+            src/goopylib/objects/text/Glyph.cpp
+            src/goopylib/objects/text/Font.cpp
+            src/goopylib/objects/text/TextCharacter.cpp
+            src/goopylib/objects/text/Text.cpp
 
             src/goopylib/scene/Renderer.cpp
             src/goopylib/scene/Camera.cpp
