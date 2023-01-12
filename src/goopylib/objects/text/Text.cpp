@@ -40,8 +40,8 @@ namespace gp {
         hb_buffer_t *buffer = hb_buffer_create();
 
         hb_buffer_set_direction(buffer, HB_DIRECTION_LTR);
-        hb_buffer_set_script(buffer, HB_SCRIPT_LATIN);
-        hb_buffer_set_language(buffer, hb_language_from_string("en", -1));
+        hb_buffer_set_script(buffer, HB_SCRIPT_ARABIC);
+        hb_buffer_set_language(buffer, hb_language_from_string("ar", -1));
 
         hb_buffer_add_utf8(buffer, m_Text.c_str(), -1, 0, -1);
         hb_shape(font.hb_font, buffer, nullptr, 0);
@@ -105,6 +105,8 @@ namespace gp {
             GP_CORE_WARN("Text::Text() failed to load {0}: '{1}'", codepoint, err);
             return;
         }
+
+        FT_Render_Glyph(font.ft_face->glyph, FT_RENDER_MODE_SDF);
 
         uint32_t xSize = font.ft_face->glyph->bitmap.width;
         uint32_t ySize = font.ft_face->glyph->bitmap.rows;
