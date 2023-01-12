@@ -2,14 +2,13 @@
 
 #include "Font.h"
 #include "TextCharacter.h"
-#include "src/goopylib/texture/Bitmap.h"
 
 
 namespace gp {
     class Text : public Renderable {
 
     public:
-        GPAPI Text(std::string text, Point position, uint32_t fontSize);
+        GPAPI Text(std::string text, Point position, uint32_t fontSize, const Ref<Font>& font = nullptr);
 
         GPAPI ~Text();
 
@@ -19,35 +18,23 @@ namespace gp {
 
         GPAPI void setTransparency(float value) override;
 
-        // Static methods
-        GPAPI static void loadFont(const std::string &filepath, uint32_t faceIndex = 0, bool setDefault = true);
-
-        GPAPI static void init();
-
-        GPAPI static void terminate();
-
     private:
         std::string m_Text;
         std::vector<TextCharacter *> m_Characters;
 
         uint32_t m_FontSize;
+        Ref<Font> m_Font;
 
-        uint32_t _draw(Window *window) const override;
+        uint32_t m_GlyphCount = 0;
+        hb_glyph_info_t *m_GlyphInfo;
+        hb_glyph_position_t *m_GlyphPositions;
+
+        void _createGlyphs();
+
+        uint32_t _draw(Window *window) override;
 
         void _destroy() const override;
 
-        void _update() const override;
-
-        // Static members & methods
-
-        static FT_Library s_FontLibrary;
-        static Typeface s_DefaultTypeface;
-
-        // {family1: {style1: ..., style2: ...}, family2: ...}
-        static std::unordered_map<std::string, std::unordered_map<std::string, Font>> s_Fonts;
-
-        static int forceUCS2(FT_Face face);
-
-        static void _rasterizeGlyph(Font &font, uint32_t codepoint);
+        void _update() override;
     };
 }

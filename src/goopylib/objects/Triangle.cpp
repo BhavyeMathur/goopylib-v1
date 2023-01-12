@@ -24,7 +24,7 @@ namespace gp {
         GP_CORE_DEBUG("Initializing Triangle ({0}, {1}), ({2}, {3}), ({4}, {5})", p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
     }
 
-    uint32_t Triangle::_draw(Window *window) const {
+    uint32_t Triangle::_draw(Window *window) {
         return window->m_Renderer.drawTriangle(const_cast<Triangle *>(this));
     }
 
@@ -32,7 +32,7 @@ namespace gp {
         m_Window->m_Renderer.destroyTriangle(m_RendererID);
     }
 
-    void Triangle::_update() const {
+    void Triangle::_update() {
         m_Window->m_Renderer.updateTriangle(m_RendererID, this);
     }
 

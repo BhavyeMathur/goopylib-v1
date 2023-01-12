@@ -278,7 +278,7 @@ namespace gp {
 
         Renderable(std::initializer_list<Point> points);
 
-        void update() const;
+        void update();
 
     protected:
         void _move(float x, float y);
@@ -308,11 +308,11 @@ namespace gp {
 
         [[nodiscard]] virtual bool _contains(float x, float y) const;
 
-        virtual uint32_t _draw(Window *window) const = 0;
+        virtual uint32_t _draw(Window *window) = 0;
 
         virtual void _destroy() const = 0;
 
-        virtual void _update() const = 0;
+        virtual void _update() = 0;
 
         virtual void _onScale(float xfactor, float yfactor) {
         };

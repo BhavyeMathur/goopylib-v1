@@ -68,10 +68,10 @@ namespace gp {
         static float s_MinWidth;
         static float s_MaxWidth;
 
-        uint32_t _draw(Window *window) const override;
+        uint32_t _draw(Window *window) override;
 
         void _destroy() const override;
 
-        void _update() const override;
+        void _update() override;
     };
 }

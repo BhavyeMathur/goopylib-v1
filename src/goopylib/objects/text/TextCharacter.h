@@ -18,10 +18,10 @@ namespace gp {
         GPAPI TextCharacter(const Glyph &glyph, Point position);
 
     private:
-        GPAPI uint32_t _draw(Window *window) const override;
+        GPAPI uint32_t _draw(Window *window) override;
 
         GPAPI void _destroy() const override;
 
-        GPAPI void _update() const override;
+        GPAPI void _update() override;
     };
 }

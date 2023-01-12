@@ -17,7 +17,7 @@ namespace gp {
         setColor({0, 0, 0});
     }
 
-    uint32_t TextCharacter::_draw(Window *window) const {
+    uint32_t TextCharacter::_draw(Window *window) {
         return window->m_Renderer.drawGlyph(const_cast<TextCharacter *>(this));
     }
 
@@ -25,7 +25,7 @@ namespace gp {
         m_Window->m_Renderer.destroyGlyph(m_RendererID);
     }
 
-    void TextCharacter::_update() const {
+    void TextCharacter::_update() {
         m_Window->m_Renderer.updateGlyph(m_RendererID, this);
     }
 }

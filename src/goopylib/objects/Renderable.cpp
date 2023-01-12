@@ -114,7 +114,7 @@ namespace gp {
         }
     }
 
-    void Renderable::update() const {
+    void Renderable::update() {
         GP_CORE_TRACE("gp::Renderable::update()");
 
         if (m_Drawn) {

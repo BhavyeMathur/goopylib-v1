@@ -24,7 +24,7 @@ namespace gp {
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
     }
 
-    uint32_t Quad::_draw(Window *window) const {
+    uint32_t Quad::_draw(Window *window) {
         return window->m_Renderer.drawQuad(const_cast<Quad *>(this));
     }
 
@@ -32,7 +32,7 @@ namespace gp {
         m_Window->m_Renderer.destroyQuad(m_RendererID);
     }
 
-    void Quad::_update() const {
+    void Quad::_update() {
         m_Window->m_Renderer.updateQuad(m_RendererID, this);
     }
 

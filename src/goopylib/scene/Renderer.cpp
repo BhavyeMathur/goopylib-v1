@@ -1,13 +1,14 @@
 #include "Renderer.h"
 
 #include "src/goopylib/texture/TextureAtlas.h"
+#include "src/goopylib/shader/Shader.h"
 
 #include "src/goopylib/objects/Line.h"
 #include "src/goopylib/objects/Triangle.h"
 #include "src/goopylib/objects/Quad.h"
 #include "src/goopylib/objects/Ellipse.h"
 #include "src/goopylib/objects/TexturedQuad.h"
-#include "src/goopylib/shader/Shader.h"
+#include "src/goopylib/objects/text/Text.h"
 
 #include "src/config.h"
 
@@ -53,6 +54,10 @@ const char *textFragmentShader =
 
         #include "src/goopylib/shader/text.frag"
 
+const char *textSDFFragmentShader =
+
+        #include "src/goopylib/shader/textSDF.frag"
+
 namespace gp {
     Renderer::Renderer(float width, float height)
             : m_Camera(-width / 2, width / 2, -height / 2, height / 2) {
@@ -80,7 +85,7 @@ namespace gp {
         _createEllipseBuffer();
 
         GP_CORE_TRACE("Rendering::init() initializing text Shader");
-        m_TextShader = CreateRef<Shader>(textureVertexShader, textFragmentShader);
+        m_TextShader = CreateRef<Shader>(textureVertexShader, textSDFFragmentShader);
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};

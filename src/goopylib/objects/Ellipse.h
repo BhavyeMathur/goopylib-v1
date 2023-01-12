@@ -69,11 +69,11 @@ namespace gp {
         float m_Radius1;
         float m_Radius2;
 
-        uint32_t _draw(Window *window) const override;
+        uint32_t _draw(Window *window) override;
 
         void _destroy() const override;
 
-        void _update() const override;
+        void _update() override;
 
         [[nodiscard]] bool _contains(float x, float y) const override;
 

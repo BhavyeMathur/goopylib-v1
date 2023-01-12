@@ -6,7 +6,7 @@
 namespace gp {
     class Bitmap {
 
-        friend class Text;
+        friend class Font;
 
         friend class Image;
 
