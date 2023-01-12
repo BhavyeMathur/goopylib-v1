@@ -1,5 +1,7 @@
 #include "Text.h"
 
+#include <utility>
+
 #include "harfbuzz/hb-ft.h"
 
 #include "src/config.h"
@@ -24,7 +26,10 @@ namespace gp {
     Text::Text(std::string text, Point position, uint32_t fontSize, const Ref<Font>& font)
             : Renderable(position, {}),
               m_Text(std::move(text)),
-              m_FontSize(fontSize) {
+              m_FontSize(fontSize),
+              m_Direction(s_DefaultDirection),
+              m_Script(s_DefaultScript),
+              m_Language(s_DefaultLanguage) {
         GP_CORE_INFO("Text::Text('{0}', ({1}, {2}), {3})", m_Text, position.x, position.y, fontSize);
 
         if (font == nullptr) {
@@ -39,27 +44,6 @@ namespace gp {
         else {
             m_Font = font;
         }
-
-        FT_Set_Char_Size(m_Font->m_FTFace, 0, m_FontSize * 64, 0, 0);
-
-        hb_buffer_t *buffer = hb_buffer_create();
-
-        hb_buffer_set_direction(buffer, HB_DIRECTION_LTR);
-        hb_buffer_set_script(buffer, HB_SCRIPT_ARABIC);
-        hb_buffer_set_language(buffer, hb_language_from_string("ar", -1));
-
-        hb_buffer_add_utf8(buffer, m_Text.c_str(), -1, 0, -1);
-        hb_shape(m_Font->m_HBFont, buffer, nullptr, 0);
-
-        m_GlyphInfo = hb_buffer_get_glyph_infos(buffer, &m_GlyphCount);
-        m_GlyphPositions = hb_buffer_get_glyph_positions(buffer, nullptr);
-        m_Characters.reserve(m_GlyphCount);
-
-        GP_CORE_DEBUG("Text::Text() got {0} glyphs", m_GlyphCount);
-
-        _createGlyphs();
-
-        hb_buffer_destroy(buffer);
     }
 
     Text::~Text() {
@@ -69,6 +53,26 @@ namespace gp {
     }
 
     void Text::_createGlyphs() {
+        for (auto character: m_Characters) {
+            character->destroy();
+        }
+        m_Characters.clear();
+
+        FT_Set_Char_Size(m_Font->m_FTFace, 0, m_FontSize * 64, 0, 0);
+
+        hb_buffer_t *buffer = hb_buffer_create();
+
+        hb_buffer_set_direction(buffer, getHarfbuffDirection(m_Direction));
+        hb_buffer_set_script(buffer, m_Script);
+        hb_buffer_set_language(buffer, hb_language_from_string(m_Language.c_str(), -1));
+
+        hb_buffer_add_utf8(buffer, m_Text.c_str(), -1, 0, -1);
+        hb_shape(m_Font->m_HBFont, buffer, nullptr, 0);
+
+        m_GlyphInfo = hb_buffer_get_glyph_infos(buffer, &m_GlyphCount);
+        m_GlyphPositions = hb_buffer_get_glyph_positions(buffer, nullptr);
+        m_Characters.reserve(m_GlyphCount);
+
         float x = m_Position.x;
         float y = m_Position.y;
 
@@ -87,9 +91,13 @@ namespace gp {
             x += (float) glyph.x_advance / 64;
             y += (float) glyph.y_advance / 64;
         }
+
+        hb_buffer_destroy(buffer);
     }
 
     uint32_t Text::_draw(Window *window) {
+        _createGlyphs();
+
         for (auto character: m_Characters) {
             character->draw(window);
         }
@@ -123,5 +131,74 @@ namespace gp {
         for (auto character: m_Characters) {
             character->setTransparency(value);
         }
+    }
+
+    void Text::setDirection(TextDirection direction) {
+        m_Direction = direction;
+        if (m_Drawn) {
+            _draw(m_Window);
+        }
+    }
+
+    TextDirection Text::getDirection() const {
+        return m_Direction;
+    }
+
+    void Text::setScript(hb_script_t script) {
+        m_Script = script;
+        if (m_Drawn) {
+            _draw(m_Window);
+        }
+    }
+
+    hb_script_t Text::getScript() const {
+        return m_Script;
+    }
+
+    void Text::setLanguage(std::string language) {
+        m_Language = std::move(language);
+        if (m_Drawn) {
+            _draw(m_Window);
+        }
+    }
+
+    std::string Text::getLanguage() const {
+        return m_Language;
+    }
+}
+
+// Static Methods
+namespace gp {
+    TextDirection Text::s_DefaultDirection = TextDirection::LTR;
+    hb_script_t Text::s_DefaultScript = HB_SCRIPT_LATIN;
+    std::string Text::s_DefaultLanguage;
+
+    void Text::init() {
+        s_DefaultLanguage = "en";
+    }
+
+    hb_direction_t Text::getHarfbuffDirection(TextDirection direction) {
+        switch (direction) {
+            case TextDirection::LTR:
+                return HB_DIRECTION_LTR;
+            case TextDirection::RTL:
+                return HB_DIRECTION_RTL;
+            case TextDirection::TTB:
+                return HB_DIRECTION_TTB;
+            case TextDirection::BTT:
+                return HB_DIRECTION_BTT;
+        }
+    }
+
+    void Text::setDefaultDirection(TextDirection direction) {
+        s_DefaultDirection = direction;
+    }
+
+    void Text::setDefaultScript(hb_script_t script) {
+        s_DefaultScript = script;
+    }
+
+    void Text::setDefaultLanguage(std::string language) {
+        s_DefaultLanguage = std::move(language);
     }
 }

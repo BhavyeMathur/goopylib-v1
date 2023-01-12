@@ -7,7 +7,7 @@ flat in int TexSlot;
 
 uniform sampler2D Texture[16];
 
-const float threshold = 0.47f;
+const float threshold = 0.48f;
 const float smoothing = 0.03f;
 
 out vec4 FragColor;

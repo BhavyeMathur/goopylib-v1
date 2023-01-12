@@ -1,6 +1,6 @@
+#include "Core.h"
 #include "src/goopylib/core/Window.h"
-#include "src/goopylib/core/Core.h"
-#include "src/goopylib/objects/text/Font.h"
+#include "src/goopylib/objects/text/Text.h"
 #include "src/goopylib/color/W3CX11.h"
 
 #if GP_USING_GLAD
@@ -117,6 +117,7 @@ namespace gp {
         #endif
 
         Font::init();
+        Text::init();
     }
 
     void terminate() {
@@ -201,7 +202,7 @@ namespace gp {
     }
 
     float getTime() {
-        return glfwGetTime();
+        return (float) glfwGetTime();
     }
 
     bool hasActiveContext() {

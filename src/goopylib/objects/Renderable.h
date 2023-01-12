@@ -300,10 +300,10 @@ namespace gp {
         float m_MaxY = -FLT_MAX;
         float m_MinY = FLT_MAX;
 
-    private:
         bool m_Drawn = false;
         bool m_Hidden = false;
 
+    private:
         void _calculateAttributes();
 
         [[nodiscard]] virtual bool _contains(float x, float y) const;
