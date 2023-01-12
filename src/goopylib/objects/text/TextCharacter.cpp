@@ -1,13 +1,12 @@
 #include "TextCharacter.h"
-#include "src/goopylib/texture/Bitmap.h"
 
-
-
+#include "Glyph.h"
+#include "Font.h"
 
 // Core Methods
 namespace gp {
-    TextCharacter::TextCharacter(const Glyph &glyph, Point position)
-            : TexturedRectangle(strformat("%i", glyph.codepoint),
+    TextCharacter::TextCharacter(const Ref<Font>& font, const Glyph &glyph, Point position)
+            : TexturedRectangle(strformat("%s%i", font->getFamily(), glyph.codepoint),
                                 glyph.bitmap,
                                 {position.x + glyph.xOffset,
                                  position.y + glyph.yOffset - (float) glyph.height},

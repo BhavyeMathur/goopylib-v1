@@ -1,10 +1,13 @@
 #pragma once
 
-#include "Glyph.h"
 #include "src/goopylib/objects/TexturedRectangle.h"
 
 
 namespace gp {
+    class Font;
+
+    class Glyph;
+
     /**
      * An object representing a single text character
      */
@@ -15,7 +18,7 @@ namespace gp {
         friend class Text;
 
     public:
-        GPAPI TextCharacter(const Glyph &glyph, Point position);
+        GPAPI TextCharacter(const Ref<Font>& font, const Glyph &glyph, Point position);
 
     private:
         GPAPI uint32_t _draw(Window *window) override;

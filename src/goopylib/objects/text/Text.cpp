@@ -80,7 +80,7 @@ namespace gp {
                 m_Font->rasterizeGlyph(codepoint);
             }
 
-            auto character = new gp::TextCharacter(*m_Font->m_Glyphs[codepoint],
+            auto character = new gp::TextCharacter(m_Font, *m_Font->m_Glyphs[codepoint],
                                                    {x + (float) glyph.x_offset, y + (float) glyph.y_offset});
             m_Characters.emplace_back(character);
 
