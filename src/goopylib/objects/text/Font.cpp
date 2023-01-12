@@ -22,10 +22,10 @@
 
 namespace gp {
     FT_Library Font::s_FontLibrary;
-    Font *Font::s_DefaultFont;
-    std::unordered_map<std::string, std::unordered_map<std::string, Font *>> Font::s_Fonts;
+    Ref<Font> Font::s_DefaultFont;
+    std::unordered_map<std::string, std::unordered_map<std::string, Ref<Font>>> Font::s_Fonts;
 
-    Font::Font(const std::string &filepath, uint32_t faceIndex, bool setDefault) {
+    Font::Font(const std::string &filepath, uint32_t faceIndex) {
         GP_CORE_DEBUG("Font::loadFont('{0}', {1})", filepath, faceIndex);
 
         if (FT_New_Face(s_FontLibrary, filepath.c_str(), faceIndex, &m_FTFace)) {
@@ -35,12 +35,6 @@ namespace gp {
         forceUCS2();
 
         m_HBFont = hb_ft_font_create_referenced(m_FTFace);
-
-        s_Fonts[m_FTFace->family_name].insert({m_FTFace->style_name, this});
-        if (setDefault or s_DefaultFont == nullptr) {
-            s_DefaultFont = this;
-        }
-
         GP_CORE_INFO("Font::loadFont() loaded font '{0}' style '{1}'", m_FTFace->family_name, m_FTFace->style_name);
     }
 
@@ -49,29 +43,6 @@ namespace gp {
         for (auto &glyph: m_Glyphs) {
             delete glyph.second;
         }
-    }
-
-    void Font::init() {
-        GP_CORE_INFO("Font::init()");
-
-        GP_CORE_DEBUG("Font::init() initialising FreeType");
-        if (FT_Init_FreeType(&s_FontLibrary)) {
-            GP_RUNTIME_ERROR("Font::init() failed to initialize FreeType");
-        }
-    }
-
-    void Font::shutdown() {
-        GP_CORE_INFO("Font::shutdown()");
-
-        GP_CORE_DEBUG("Font::shutdown() destroying Harfbuzz fonts");
-        for (const auto &fontFamily: s_Fonts) {
-            for (const auto &style: fontFamily.second) {
-                hb_font_destroy(style.second->m_HBFont);
-            }
-        }
-
-        GP_CORE_DEBUG("Font::shutdown() freeing FreeType library");
-        FT_Done_FreeType(s_FontLibrary);
     }
 
     int Font::forceUCS2() {
@@ -117,9 +88,44 @@ namespace gp {
     }
 }
 
+// Getters & Setters
+namespace gp {
+    const char *Font::getFamily() {
+        return m_FTFace->family_name;
+    }
+}
+
 // Static Methods
 namespace gp {
     Ref<Font> Font::load(const std::string &filepath, uint32_t faceIndex, bool setDefault) {
-        return Ref<Font>(new Font(filepath, faceIndex, setDefault));
+        auto font = Ref<Font>(new Font(filepath, faceIndex));
+        if (setDefault or s_DefaultFont == nullptr) {
+            s_DefaultFont = font;
+        }
+        s_Fonts[font->m_FTFace->family_name].insert({font->m_FTFace->style_name, font});
+        return font;
+    }
+
+    void Font::init() {
+        GP_CORE_INFO("Font::init()");
+
+        GP_CORE_DEBUG("Font::init() initialising FreeType");
+        if (FT_Init_FreeType(&s_FontLibrary)) {
+            GP_RUNTIME_ERROR("Font::init() failed to initialize FreeType");
+        }
+    }
+
+    void Font::shutdown() {
+        GP_CORE_INFO("Font::shutdown()");
+
+        GP_CORE_DEBUG("Font::shutdown() destroying Harfbuzz fonts");
+        for (const auto &fontFamily: s_Fonts) {
+            for (const auto &style: fontFamily.second) {
+                hb_font_destroy(style.second->m_HBFont);
+            }
+        }
+
+        GP_CORE_DEBUG("Font::shutdown() freeing FreeType library");
+        FT_Done_FreeType(s_FontLibrary);
     }
 }

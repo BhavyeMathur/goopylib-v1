@@ -13,13 +13,13 @@ namespace gp {
         friend class Text;
 
     public:
-        GPAPI Font(const std::string &filepath, uint32_t faceIndex = 0, bool setDefault = true);
-
         GPAPI ~Font();
 
         GPAPI int forceUCS2();
 
         GPAPI void rasterizeGlyph(uint32_t codepoint);
+
+        GPAPI const char* getFamily();
 
         GPAPI static void init();
 
@@ -35,10 +35,12 @@ namespace gp {
         std::unordered_map<uint32_t, Glyph *> m_Glyphs;
 
         static FT_Library s_FontLibrary;
-        static Font *s_DefaultFont;
+        static Ref<Font> s_DefaultFont;
 
         // {family1: {style1: ..., style2: ...}, family2: ...}
-        static std::unordered_map<std::string, std::unordered_map<std::string, Font *>> s_Fonts;
+        static std::unordered_map<std::string, std::unordered_map<std::string, Ref<Font>>> s_Fonts;
+
+        Font(const std::string &filepath, uint32_t faceIndex = 0);
     };
 
     struct Typeface {
