@@ -171,7 +171,6 @@ namespace gp {
         imageVAO->setVertexBuffer(imageVBO);
 
         m_TexturedQuadBatches.emplace_back(imageVAO, 4);
-        m_TexturedQuadVertices.emplace_back();
         m_TexturedQuadToIndex.emplace_back();
 
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating Glyph buffer");
@@ -186,7 +185,6 @@ namespace gp {
         imageVAO->setVertexBuffer(imageVBO);
 
         m_GlyphBatches.emplace_back(imageVAO, 4);
-        m_GlyphVertices.emplace_back();
         m_GlyphToIndex.emplace_back();
     }
 
@@ -358,25 +356,24 @@ namespace gp {
 
         uint32_t batch = texIndex / Texture2D::getTextureSlots();
 
-        uint32_t index = m_TexturedQuadVertices[batch].size();
+        uint32_t index = m_TexturedQuadBatches[batch].m_Vertices.size();
         m_TexturedQuadToBatch.insert({ID, batch});
         m_TexturedQuadToIndex[batch].insert({ID, index});
 
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[0], object->m_V1, object->m_T1});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[1], object->m_V2, object->m_T2});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[2], object->m_V3, object->m_T3});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[3], object->m_V4, object->m_T4});
+        m_TexturedQuadBatches[batch].m_Vertices.push_back({object->m_Points[0], object->m_V1, object->m_T1});
+        m_TexturedQuadBatches[batch].m_Vertices.push_back({object->m_Points[1], object->m_V2, object->m_T2});
+        m_TexturedQuadBatches[batch].m_Vertices.push_back({object->m_Points[2], object->m_V3, object->m_T3});
+        m_TexturedQuadBatches[batch].m_Vertices.push_back({object->m_Points[3], object->m_V4, object->m_T4});
 
         if (object->isHidden()) {
-            m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;
-            m_TexturedQuadVertices[batch][index + 1].attrib.color.alpha = 0;
-            m_TexturedQuadVertices[batch][index + 2].attrib.color.alpha = 0;
-            m_TexturedQuadVertices[batch][index + 3].attrib.color.alpha = 0;
+            m_TexturedQuadBatches[batch].m_Vertices[index + 0].attrib.color.alpha = 0;
+            m_TexturedQuadBatches[batch].m_Vertices[index + 1].attrib.color.alpha = 0;
+            m_TexturedQuadBatches[batch].m_Vertices[index + 2].attrib.color.alpha = 0;
+            m_TexturedQuadBatches[batch].m_Vertices[index + 3].attrib.color.alpha = 0;
         }
 
         m_TexturedQuadBatches[batch].m_Indices += 6;
-        m_TexturedQuadBatches[batch].m_Vertices += 4;
-        m_TexturedQuadBatches[batch].m_BufferData = &m_TexturedQuadVertices[batch][0];
+        m_TexturedQuadBatches[batch].m_BufferData = &m_TexturedQuadBatches[batch].m_Vertices[0];
         m_TexturedQuadBatches[batch].m_ReallocateBufferData = true;
 
         return ID;
@@ -387,8 +384,9 @@ namespace gp {
         auto &imageIDs = m_TexturedQuadToIndex[batch];
         uint32_t index = imageIDs[ID];
 
-        m_TexturedQuadVertices[batch].erase(std::next(m_TexturedQuadVertices[batch].begin(), index),
-                                            std::next(m_TexturedQuadVertices[batch].begin(), index + 4));
+        m_TexturedQuadBatches[batch].m_Vertices.erase(std::next(m_TexturedQuadBatches[batch].m_Vertices.begin(), index),
+                                                      std::next(m_TexturedQuadBatches[batch].m_Vertices.begin(),
+                                                                index + 4));
 
         imageIDs.erase(ID);
         for (auto &i: imageIDs) {
@@ -398,9 +396,8 @@ namespace gp {
         }
 
         m_TexturedQuadBatches[batch].m_Indices -= 6;
-        m_TexturedQuadBatches[batch].m_Vertices -= 4;
-        m_TexturedQuadBatches[batch].m_BufferData = m_TexturedQuadVertices[batch].empty() ? nullptr
-                                                                                          : &m_TexturedQuadVertices[batch][0];
+        m_TexturedQuadBatches[batch].m_BufferData = m_TexturedQuadBatches[batch].m_Vertices.empty() ? nullptr
+                                                                                                    : &m_TexturedQuadBatches[batch].m_Vertices[0];
         m_TexturedQuadBatches[batch].m_ReallocateBufferData = true;
     }
 
@@ -408,16 +405,16 @@ namespace gp {
         uint32_t batch = m_TexturedQuadToBatch[ID];
         uint32_t index = m_TexturedQuadToIndex[batch][ID];
 
-        m_TexturedQuadVertices[batch][index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
-        m_TexturedQuadVertices[batch][index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
-        m_TexturedQuadVertices[batch][index + 2] = {object->m_Points[2], object->m_V3, object->m_T3};
-        m_TexturedQuadVertices[batch][index + 3] = {object->m_Points[3], object->m_V4, object->m_T4};
+        m_TexturedQuadBatches[batch].m_Vertices[index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
+        m_TexturedQuadBatches[batch].m_Vertices[index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
+        m_TexturedQuadBatches[batch].m_Vertices[index + 2] = {object->m_Points[2], object->m_V3, object->m_T3};
+        m_TexturedQuadBatches[batch].m_Vertices[index + 3] = {object->m_Points[3], object->m_V4, object->m_T4};
 
         if (object->isHidden()) {
-            m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;
-            m_TexturedQuadVertices[batch][index + 1].attrib.color.alpha = 0;
-            m_TexturedQuadVertices[batch][index + 2].attrib.color.alpha = 0;
-            m_TexturedQuadVertices[batch][index + 3].attrib.color.alpha = 0;
+            m_TexturedQuadBatches[batch].m_Vertices[index + 0].attrib.color.alpha = 0;
+            m_TexturedQuadBatches[batch].m_Vertices[index + 1].attrib.color.alpha = 0;
+            m_TexturedQuadBatches[batch].m_Vertices[index + 2].attrib.color.alpha = 0;
+            m_TexturedQuadBatches[batch].m_Vertices[index + 3].attrib.color.alpha = 0;
         }
 
         m_TexturedQuadBatches[batch].m_UpdateBufferData = true;
@@ -455,25 +452,24 @@ namespace gp {
 
         uint32_t batch = texIndex / Texture2D::getTextureSlots();
 
-        uint32_t index = m_GlyphVertices[batch].size();
+        uint32_t index = m_GlyphBatches[batch].m_Vertices.size();
         m_GlyphToBatch.insert({ID, batch});
         m_GlyphToIndex[batch].insert({ID, index});
 
-        m_GlyphVertices[batch].push_back({object->m_Points[0], object->m_V1, object->m_T1});
-        m_GlyphVertices[batch].push_back({object->m_Points[1], object->m_V2, object->m_T2});
-        m_GlyphVertices[batch].push_back({object->m_Points[2], object->m_V3, object->m_T3});
-        m_GlyphVertices[batch].push_back({object->m_Points[3], object->m_V4, object->m_T4});
+        m_GlyphBatches[batch].m_Vertices.push_back({object->m_Points[0], object->m_V1, object->m_T1});
+        m_GlyphBatches[batch].m_Vertices.push_back({object->m_Points[1], object->m_V2, object->m_T2});
+        m_GlyphBatches[batch].m_Vertices.push_back({object->m_Points[2], object->m_V3, object->m_T3});
+        m_GlyphBatches[batch].m_Vertices.push_back({object->m_Points[3], object->m_V4, object->m_T4});
 
         if (object->isHidden()) {
-            m_GlyphVertices[batch][index + 0].attrib.color.alpha = 0;
-            m_GlyphVertices[batch][index + 1].attrib.color.alpha = 0;
-            m_GlyphVertices[batch][index + 2].attrib.color.alpha = 0;
-            m_GlyphVertices[batch][index + 3].attrib.color.alpha = 0;
+            m_GlyphBatches[batch].m_Vertices[index + 0].attrib.color.alpha = 0;
+            m_GlyphBatches[batch].m_Vertices[index + 1].attrib.color.alpha = 0;
+            m_GlyphBatches[batch].m_Vertices[index + 2].attrib.color.alpha = 0;
+            m_GlyphBatches[batch].m_Vertices[index + 3].attrib.color.alpha = 0;
         }
 
         m_GlyphBatches[batch].m_Indices += 6;
-        m_GlyphBatches[batch].m_Vertices += 4;
-        m_GlyphBatches[batch].m_BufferData = &m_GlyphVertices[batch][0];
+        m_GlyphBatches[batch].m_BufferData = &m_GlyphBatches[batch].m_Vertices[0];
         m_GlyphBatches[batch].m_ReallocateBufferData = true;
 
         return ID;
@@ -484,8 +480,8 @@ namespace gp {
         auto &imageIDs = m_GlyphToIndex[batch];
         uint32_t index = imageIDs[ID];
 
-        m_GlyphVertices[batch].erase(std::next(m_GlyphVertices[batch].begin(), index),
-                                     std::next(m_GlyphVertices[batch].begin(), index + 4));
+        m_GlyphBatches[batch].m_Vertices.erase(std::next(m_GlyphBatches[batch].m_Vertices.begin(), index),
+                                               std::next(m_GlyphBatches[batch].m_Vertices.begin(), index + 4));
 
         imageIDs.erase(ID);
         for (auto &i: imageIDs) {
@@ -495,9 +491,8 @@ namespace gp {
         }
 
         m_GlyphBatches[batch].m_Indices -= 6;
-        m_GlyphBatches[batch].m_Vertices -= 4;
-        m_GlyphBatches[batch].m_BufferData = m_GlyphVertices[batch].empty() ? nullptr
-                                                                            : &m_GlyphVertices[batch][0];
+        m_GlyphBatches[batch].m_BufferData = m_GlyphBatches[batch].m_Vertices.empty() ? nullptr
+                                                                                      : &m_GlyphBatches[batch].m_Vertices[0];
         m_GlyphBatches[batch].m_ReallocateBufferData = true;
     }
 
@@ -505,16 +500,16 @@ namespace gp {
         uint32_t batch = m_GlyphToBatch[ID];
         uint32_t index = m_GlyphToIndex[batch][ID];
 
-        m_GlyphVertices[batch][index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
-        m_GlyphVertices[batch][index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
-        m_GlyphVertices[batch][index + 2] = {object->m_Points[2], object->m_V3, object->m_T3};
-        m_GlyphVertices[batch][index + 3] = {object->m_Points[3], object->m_V4, object->m_T4};
+        m_GlyphBatches[batch].m_Vertices[index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
+        m_GlyphBatches[batch].m_Vertices[index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
+        m_GlyphBatches[batch].m_Vertices[index + 2] = {object->m_Points[2], object->m_V3, object->m_T3};
+        m_GlyphBatches[batch].m_Vertices[index + 3] = {object->m_Points[3], object->m_V4, object->m_T4};
 
         if (object->isHidden()) {
-            m_GlyphVertices[batch][index + 0].attrib.color.alpha = 0;
-            m_GlyphVertices[batch][index + 1].attrib.color.alpha = 0;
-            m_GlyphVertices[batch][index + 2].attrib.color.alpha = 0;
-            m_GlyphVertices[batch][index + 3].attrib.color.alpha = 0;
+            m_GlyphBatches[batch].m_Vertices[index + 0].attrib.color.alpha = 0;
+            m_GlyphBatches[batch].m_Vertices[index + 1].attrib.color.alpha = 0;
+            m_GlyphBatches[batch].m_Vertices[index + 2].attrib.color.alpha = 0;
+            m_GlyphBatches[batch].m_Vertices[index + 3].attrib.color.alpha = 0;
         }
 
         m_GlyphBatches[batch].m_UpdateBufferData = true;

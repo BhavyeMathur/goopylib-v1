@@ -80,14 +80,12 @@ namespace gp {
         BatchHandler<EllipseVertex> m_EllipseBatch;
 
         uint32_t m_NextTexturedQuadID = 0;
-        std::vector<Batch> m_TexturedQuadBatches;
-        std::vector<std::vector<TextureVertex>> m_TexturedQuadVertices;
+        std::vector<Batch<TextureVertex>> m_TexturedQuadBatches;
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
 
         uint32_t m_NextGlyphID = 0;
-        std::vector<Batch> m_GlyphBatches;
-        std::vector<std::vector<TextureVertex>> m_GlyphVertices;
+        std::vector<Batch<TextureVertex>> m_GlyphBatches;
         std::unordered_map<uint32_t, uint32_t> m_GlyphToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_GlyphToIndex;
 

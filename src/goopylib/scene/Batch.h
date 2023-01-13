@@ -5,11 +5,12 @@
 
 
 namespace gp {
+    template<class T>
     class Batch {
 
     public:
         int32_t m_Indices = 0;
-        int32_t m_Vertices = 0;
+        std::vector<T> m_Vertices;
 
         void *m_BufferData = nullptr;
         bool m_ReallocateBufferData = false;
@@ -42,12 +43,11 @@ namespace gp {
         friend class Renderer;
 
     public:
-        Batch m_Batch;
+        Batch<T> m_Batch;
 
     private:
         uint32_t m_NextID = 0;
         std::unordered_map<uint32_t, uint32_t> m_ToIndex;
-        std::vector<T> m_Vertices;
 
         uint32_t m_VerticesPerObject = 0;
         uint32_t m_IndicesPerObject = 0;
