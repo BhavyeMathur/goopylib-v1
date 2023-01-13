@@ -77,21 +77,9 @@ namespace gp {
 
     private:
         Batch<SolidVertex> m_LineBatch;
-
-        uint32_t m_NextTriangleID = 0;
-        BatchData m_TriangleBatch;
-        std::vector<SolidVertex> m_TriangleVertices;
-        std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
-
-        uint32_t m_NextQuadID = 0;
-        BatchData m_QuadBatch;
-        std::vector<SolidVertex> m_QuadVertices;
-        std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
-
-        uint32_t m_NextEllipseID = 0;
-        BatchData m_EllipseBatch;
-        std::vector<EllipseVertex> m_EllipseVertices;
-        std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;
+        Batch<SolidVertex> m_TriangleBatch;
+        Batch<SolidVertex> m_QuadBatch;
+        Batch<EllipseVertex> m_EllipseBatch;
 
         uint32_t m_NextTexturedQuadID = 0;
         std::vector<BatchData> m_TexturedQuadBatches;
@@ -132,9 +120,5 @@ namespace gp {
         uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);
 
         void _bindTextureBatch(uint32_t offset);
-
-        static void _updateRenderingObjectVBO(BatchData &object);
-
-        static void _updateRenderingObjectEBO(BatchData &object);
     };
 }

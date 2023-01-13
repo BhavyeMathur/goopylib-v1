@@ -4,10 +4,56 @@
 
 // Batch Data
 namespace gp {
-    BatchData::BatchData(const Ref<VertexArray> &VAO, void *bufferData, int32_t mode)
-            : VAO(VAO),
-              bufferData(bufferData),
-              mode(mode) {
+    BatchData::BatchData(const Ref<VertexArray> &VAO, void *bufferData, bool isQuad, int32_t mode)
+            : m_VAO(VAO),
+              m_BufferData(bufferData),
+              m_Mode(mode),
+              m_IsQuad(isQuad) {
+    }
+
+    void BatchData::update() {
+        if (m_IsQuad) {
+            _updateRenderingObjectEBO();
+        }
+        _updateRenderingObjectVBO();
+    }
+
+    void BatchData::_updateRenderingObjectVBO() {
+        if (m_ReallocateBufferData) {
+            m_VAO->getVertexBuffer()->setData(m_BufferData, m_Vertices);
+            m_ReallocateBufferData = false;
+            m_UpdateBufferData = false;
+        }
+        else if (m_UpdateBufferData) {
+            m_VAO->getVertexBuffer()->setData(m_BufferData, m_Vertices, 0);
+            m_UpdateBufferData = false;
+        }
+    }
+
+    void BatchData::_updateRenderingObjectEBO() const {
+        if (m_ReallocateBufferData) {
+            auto *indices = new uint32_t[m_Indices];
+
+            for (uint32_t i = 0; i < m_Vertices / 4; i++) {
+                uint32_t indicesIndex = i * 6;
+                uint32_t vertexIndex = i * 4;
+
+                indices[indicesIndex + 0] = vertexIndex + 0;
+                indices[indicesIndex + 1] = vertexIndex + 1;
+                indices[indicesIndex + 2] = vertexIndex + 2;
+
+                indices[indicesIndex + 3] = vertexIndex + 0;
+                indices[indicesIndex + 4] = vertexIndex + 2;
+                indices[indicesIndex + 5] = vertexIndex + 3;
+            }
+            m_VAO->setIndexBuffer(m_Indices, indices);
+
+            delete[] indices;
+        }
+    }
+
+    void BatchData::draw() {
+        m_VAO->draw(m_Indices, m_Mode);
     }
 }
 
@@ -21,6 +67,7 @@ namespace gp {
         }
 
     template Batch<SolidVertex>::Batch(BatchData data, uint32_t verticesPerObject, uint32_t indicesPerObject);
+    template Batch<EllipseVertex>::Batch(BatchData data, uint32_t verticesPerObject, uint32_t indicesPerObject);
 
     template<class T>
         uint32_t Batch<T>::newObject(T *vertices) {
@@ -34,18 +81,19 @@ namespace gp {
                 m_Vertices.push_back(vertices[i]);
             }
 
-            m_Data.indices += m_IndicesPerObject;
-            m_Data.vertices += m_VerticesPerObject;
-            m_Data.reallocateBufferData = true;
-            m_Data.bufferData = &m_Vertices[0];
+            m_Data.m_Indices += m_IndicesPerObject;
+            m_Data.m_Vertices += m_VerticesPerObject;
+            m_Data.m_ReallocateBufferData = true;
+            m_Data.m_BufferData = &m_Vertices[0];
 
             return ID;
         }
 
     template uint32_t Batch<SolidVertex>::newObject(SolidVertex *vertices);
+    template uint32_t Batch<EllipseVertex>::newObject(EllipseVertex *vertices);
 
     template<class T>
-        void Batch<T>::deleteObject(uint32_t ID) {
+        void Batch<T>::destroyObject(uint32_t ID) {
             uint32_t index = m_ToIndex[ID];
 
             m_Vertices.erase(std::next(m_Vertices.begin(), index),
@@ -59,13 +107,14 @@ namespace gp {
                 }
             }
 
-            m_Data.indices -= 2;
-            m_Data.vertices -= 2;
-            m_Data.bufferData = m_Vertices.empty() ? nullptr : &m_Vertices[0];
-            m_Data.reallocateBufferData = true;
+            m_Data.m_Indices -= 2;
+            m_Data.m_Vertices -= 2;
+            m_Data.m_BufferData = m_Vertices.empty() ? nullptr : &m_Vertices[0];
+            m_Data.m_ReallocateBufferData = true;
         }
 
-    template void Batch<SolidVertex>::deleteObject(uint32_t ID);
+    template void Batch<SolidVertex>::destroyObject(uint32_t ID);
+    template void Batch<EllipseVertex>::destroyObject(uint32_t ID);
 
     template<class T>
         void Batch<T>::updateObject(uint32_t ID, T *vertices) {
@@ -75,8 +124,20 @@ namespace gp {
                 m_Vertices[index + i] = vertices[i];
             }
 
-            m_Data.updateBufferData = true;
+            m_Data.m_UpdateBufferData = true;
         }
 
     template void Batch<SolidVertex>::updateObject(uint32_t ID, SolidVertex *vertices);
+    template void Batch<EllipseVertex>::updateObject(uint32_t ID, EllipseVertex *vertices);
+
+    template<class T>
+        void Batch<T>::draw() {
+            if (m_Data.m_Indices) {
+                m_Data.update();
+                m_Data.draw();
+            }
+        }
+
+    template void Batch<SolidVertex>::draw();
+    template void Batch<EllipseVertex>::draw();
 }

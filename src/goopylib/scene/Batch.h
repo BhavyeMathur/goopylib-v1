@@ -5,20 +5,34 @@
 
 
 namespace gp {
-    struct BatchData {
-        Ref<VertexArray> VAO;
+    class BatchData {
 
-        int32_t indices = 0;
-        int32_t vertices = 0;
-        void *bufferData;
-        bool reallocateBufferData = false;
-        bool updateBufferData = false;
+    public:
+        int32_t m_Indices = 0;
+        int32_t m_Vertices = 0;
+        void *m_BufferData;
+        bool m_ReallocateBufferData = false;
+        bool m_UpdateBufferData = false;
 
-        int32_t mode;
+        int32_t m_Mode = GP_DRAW_MODE_TRIANGLES;
+
+        bool m_IsQuad = false;
 
         BatchData(const Ref<VertexArray> &VAO = nullptr,
                   void *bufferData = nullptr,
+                  bool isQuad = false,
                   int32_t mode = GP_DRAW_MODE_TRIANGLES);
+
+        void update();
+
+        void draw();
+
+    private:
+        Ref<VertexArray> m_VAO;
+
+        void _updateRenderingObjectVBO();
+
+        void _updateRenderingObjectEBO() const;
     };
 
     template<class T>
@@ -44,6 +58,8 @@ namespace gp {
 
         void updateObject(uint32_t ID, T *vertices);
 
-        void deleteObject(uint32_t ID);
+        void destroyObject(uint32_t ID);
+
+        void draw();
     };
 }
