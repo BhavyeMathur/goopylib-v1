@@ -1,6 +1,8 @@
 #pragma once
 
 #include "gp.h"
+#include "TextureType.h"
+
 
 namespace gp {
     class Bitmap;
@@ -30,6 +32,8 @@ namespace gp {
 
         GPAPI uint32_t getChannels() const;
 
+        GPAPI TextureType getTextureType() const;
+
         GPAPI static void unbind();
 
         GPAPI static void init();
@@ -42,6 +46,7 @@ namespace gp {
         uint32_t m_Channels = 0;
 
         uint32_t m_RendererID = 0;
+        TextureType m_TextureType = TextureType::None;
 
         static int32_t s_TextureSlots;
 
@@ -52,5 +57,7 @@ namespace gp {
         uint32_t _getDataFormat() const;
 
         int32_t _getInternalFormat() const;
+
+        void _setTextureType();
     };
 }

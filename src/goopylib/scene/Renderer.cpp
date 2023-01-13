@@ -29,6 +29,10 @@
 #include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
 
+#define GP_GREYSCALE 0
+#define GP_RGB 1
+#define GP_RGBA 2
+
 const char *solidVertexShader =
 
         #include "src/goopylib/shader/solid.vert"
@@ -74,9 +78,9 @@ namespace gp {
         Texture2D::init();
         TextureAtlas::init();
 
-        m_AtlasMono = new TextureAtlas(1);
-        m_AtlasRGB = new TextureAtlas(3);
-        m_AtlasRGBA = new TextureAtlas(4);
+        m_TextureBatches = {{{new TextureAtlas(1)},
+                             {new TextureAtlas(3)},
+                             {new TextureAtlas(4)}}};
 
         GP_CORE_TRACE("Rendering::init() initializing Solid Shader");
         m_SolidShader = CreateRef<Shader>(solidVertexShader, solidFragmentShader);
@@ -113,9 +117,9 @@ namespace gp {
     }
 
     Renderer::~Renderer() {
-        delete m_AtlasMono;
-        delete m_AtlasRGB;
-        delete m_AtlasRGBA;
+        delete m_TextureBatches[GP_GREYSCALE].atlas;
+        delete m_TextureBatches[GP_RGB].atlas;
+        delete m_TextureBatches[GP_RGBA].atlas;
     }
 
     void Renderer::_createLineBuffer() {
@@ -179,26 +183,14 @@ namespace gp {
                                {ShaderDataType::Float2, "texCoord"},
                                {ShaderDataType::Int,    "texSlot"},};
 
-        auto VAO = Ref<VertexArray>(new VertexArray());
-        auto VBO = Ref<VertexBuffer>(new VertexBuffer());
-        VBO->setLayout(layout);
-        VAO->setVertexBuffer(VBO);
+        for (auto &batch: m_TextureBatches) {
+            auto VAO = Ref<VertexArray>(new VertexArray());
+            auto VBO = Ref<VertexBuffer>(new VertexBuffer());
+            VBO->setLayout(layout);
+            VAO->setVertexBuffer(VBO);
 
-        m_TextureBatchesMono.emplace_back(VAO, 6, 4);
-
-        VAO = Ref<VertexArray>(new VertexArray());
-        VBO = Ref<VertexBuffer>(new VertexBuffer());
-        VBO->setLayout(layout);
-        VAO->setVertexBuffer(VBO);
-
-        m_TextureBatchesRGB.emplace_back(VAO, 6, 4);
-
-        VAO = Ref<VertexArray>(new VertexArray());
-        VBO = Ref<VertexBuffer>(new VertexBuffer());
-        VBO->setLayout(layout);
-        VAO->setVertexBuffer(VBO);
-
-        m_TextureBatchesRGBA.emplace_back(VAO, 6, 4);
+            batch.batches.emplace_back(VAO, 6, 4);
+        }
     }
 
     void Renderer::destroy(uint32_t ID) {
@@ -296,22 +288,21 @@ namespace gp {
                                      {object->m_Points[3], object->m_V4, object->m_T4}};
 
         Batch<TextureVertex> *batch;
-        switch (texCoords.texture->getChannels()) {
-            case 1:
-                batch = &m_TextureBatchesMono[batchIndex];
+        switch (texCoords.texture->getTextureType()) {
+            case TextureType::Greyscale:
+                batch = &m_TextureBatches[GP_GREYSCALE].batches[batchIndex];
                 break;
 
-            case 3:
-                batch = &m_TextureBatchesRGB[batchIndex];
+            case TextureType::RGB:
+                batch = &m_TextureBatches[GP_RGB].batches[batchIndex];
                 break;
 
-            case 4:
-                batch = &m_TextureBatchesRGBA[batchIndex];
+            case TextureType::RGBA:
+                batch = &m_TextureBatches[GP_RGBA].batches[batchIndex];
                 break;
 
             default:
-                GP_VALUE_ERROR("Renderer::drawTexturedQuad() invalid channels ({0}) in bitmap",
-                               texCoords.texture->getChannels());
+                GP_VALUE_ERROR("Renderer::drawTexturedQuad() invalid texture type");
                 return -1;
         }
 
@@ -390,51 +381,22 @@ namespace gp {
 
         m_TextureShader->bind();
 
-        uint32_t textureOffset = 0;
-        for (uint32_t i = 0; i < m_TextureBatchesMono.size(); i += Texture2D::getTextureSlots()) {
-            auto &batch = m_TextureBatchesMono[i];
+        for (auto &textureBatch: m_TextureBatches) {
+            uint32_t textureOffset = 0;
+            for (uint32_t i = 0; i < textureBatch.batches.size(); i += Texture2D::getTextureSlots()) {
+                auto &batch = textureBatch.batches[i];
 
-            if (!batch.empty()) {
-                uint32_t textures = min(m_AtlasMono->getPages(), textureOffset + Texture2D::getTextureSlots());
-                textures %= Texture2D::getTextureSlots();
-                for (uint32_t j = 0; j < textures; j++) {
-                    m_AtlasMono->getTextureAt(textureOffset + j)->bind(j);
+                if (!batch.empty()) {
+                    uint32_t textures = min(textureBatch.atlas->getPages(),
+                                            textureOffset + Texture2D::getTextureSlots());
+                    textures %= Texture2D::getTextureSlots();
+                    for (uint32_t j = 0; j < textures; j++) {
+                        textureBatch.atlas->getTextureAt(textureOffset + j)->bind(j);
+                    }
+                    textureOffset += Texture2D::getTextureSlots();
+
+                    batch.draw();
                 }
-                textureOffset += Texture2D::getTextureSlots();
-
-                batch.draw();
-            }
-        }
-
-        textureOffset = 0;
-        for (uint32_t i = 0; i < m_TextureBatchesRGB.size(); i += Texture2D::getTextureSlots()) {
-            auto &batch = m_TextureBatchesRGB[i];
-
-            if (!batch.empty()) {
-                uint32_t textures = min(m_AtlasRGB->getPages(), textureOffset + Texture2D::getTextureSlots());
-                textures %= Texture2D::getTextureSlots();
-                for (uint32_t j = 0; j < textures; j++) {
-                    m_AtlasRGB->getTextureAt(textureOffset + j)->bind(j);
-                }
-                textureOffset += Texture2D::getTextureSlots();
-
-                batch.draw();
-            }
-        }
-
-        textureOffset = 0;
-        for (uint32_t i = 0; i < m_TextureBatchesRGBA.size(); i += Texture2D::getTextureSlots()) {
-            auto &batch = m_TextureBatchesRGBA[i];
-
-            if (!batch.empty()) {
-                uint32_t textures = min(m_AtlasRGBA->getPages(), textureOffset + Texture2D::getTextureSlots());
-                textures %= Texture2D::getTextureSlots();
-                for (uint32_t j = 0; j < textures; j++) {
-                    m_AtlasRGBA->getTextureAt(textureOffset + j)->bind(j);
-                }
-                textureOffset += Texture2D::getTextureSlots();
-
-                batch.draw();
             }
         }
     }
@@ -442,26 +404,27 @@ namespace gp {
     void Renderer::_cacheTexture(const std::string &name, const Ref<Bitmap> &bitmap) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
-        TextureCoords texCoords;
+        TextureAtlas *atlas;
         switch (bitmap->getChannels()) {
-            case 1:  // Monochrome
-                texCoords = m_AtlasMono->add(bitmap);
-                m_AtlasMono->createTextureAtlas();
+            case 1:
+                atlas = m_TextureBatches[GP_GREYSCALE].atlas;
                 break;
 
-            case 3:  // RGB
-                texCoords = m_AtlasRGB->add(bitmap);
-                m_AtlasRGB->createTextureAtlas();
+            case 3:
+                atlas = m_TextureBatches[GP_RGB].atlas;
                 break;
 
-            case 4:  // RGBA
-                texCoords = m_AtlasRGBA->add(bitmap);
-                m_AtlasRGBA->createTextureAtlas();
+            case 4:
+                atlas = m_TextureBatches[GP_RGBA].atlas;
                 break;
 
             default:
                 GP_VALUE_ERROR("Renderer::_cacheTexture() invalid channels ({0}) in bitmap", bitmap->getChannels());
+                return;
         }
+
+        TextureCoords texCoords = atlas->add(bitmap);
+        atlas->createTextureAtlas();
 
         m_TexturesCache.insert({name, texCoords});
         if (texCoords.page % Texture2D::getTextureSlots() == 0) {

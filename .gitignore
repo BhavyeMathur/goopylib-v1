@@ -23,6 +23,7 @@ dist/
 __pycache__/
 *~
 
+*.profraw
 *.ilk
 *.pdb
 
