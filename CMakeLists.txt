@@ -164,9 +164,11 @@ if (APPLE)
 endif ()
 
 
-add_executable(main main.cpp)
-target_link_libraries(main goopylib)
+if (NOT DEFINED $ENV{__GITHUB__})
+    add_executable(main main.cpp)
+    target_link_libraries(main goopylib)
 
-add_subdirectory(examples/BrickBreaker)
-add_subdirectory(examples/Minecraft)
-add_subdirectory(examples/algorithms/packing)
+    add_subdirectory(examples/BrickBreaker)
+    add_subdirectory(examples/Minecraft)
+    add_subdirectory(examples/algorithms/packing)
+endif()

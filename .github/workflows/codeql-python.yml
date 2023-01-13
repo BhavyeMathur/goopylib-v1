@@ -3,15 +3,11 @@
 name: "CodeQL Python"
 
 on:
-  workflow_dispatch:
-
   push:
-    branches: [ "master" ]
     paths:
       - goopylib/**
 
   pull_request:
-    branches: [ "master" ]
     paths:
       - goopylib/**
 

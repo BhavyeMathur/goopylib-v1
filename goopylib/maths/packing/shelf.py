@@ -170,6 +170,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
         super().__init__(bin_width, bin_height)
         self._bins: list[ShelvedBin] = [ShelvedBin(width=bin_width, height=bin_height)]
 
+    # pylint: disable-next=arguments-differ
     def pack(self, item: Item, allow_rotation: bool = True) -> None:
         """
         Packs a rectangular item using a shelf-based algorithm.
@@ -180,6 +181,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
         """
         raise NotImplementedError()
 
+    # pylint: disable-next=arguments-differ
     def pack_all(self,
                  items: list[Item],
                  sorting: Optional[SortingFunction] = sort_by_short_side(True),
@@ -313,6 +315,7 @@ class FirstFit(ShelfPackingAlgorithm):
                     shelf._add(item)
                     return True
 
+            # pylint: disable-next=undefined-loop-variable
             if shelf._fits_above(item):  # noqa W0631, each bin has at least 1 shelf
                 if allow_rotation and item.is_vertical():
                     item._rotate()
