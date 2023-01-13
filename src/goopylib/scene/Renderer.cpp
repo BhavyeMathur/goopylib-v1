@@ -64,8 +64,6 @@ namespace gp {
 
     }
 
-    Renderer::~Renderer() = default;
-
     void Renderer::init() {
         GP_CORE_INFO("Rendering::init() initializing Renderer");
 
@@ -117,7 +115,7 @@ namespace gp {
                             {ShaderDataType::Float4, "color"}});
         lineVAO->setVertexBuffer(lineVBO);
 
-        m_LineBatch = {{lineVAO, nullptr, false, GP_DRAW_MODE_LINES}, 2, 2};
+        m_LineBatch = {lineVAO, 2, 2};
     }
 
     void Renderer::_createTriangleBuffer() {
@@ -130,7 +128,7 @@ namespace gp {
                                 {ShaderDataType::Float4, "color"}});
         triangleVAO->setVertexBuffer(triangleVBO);
 
-        m_TriangleBatch = {{triangleVAO, nullptr}, 3, 3};
+        m_TriangleBatch = {triangleVAO, 3, 3};
     }
 
     void Renderer::_createQuadBuffer() {
@@ -143,7 +141,7 @@ namespace gp {
                             {ShaderDataType::Float4, "color"}});
         quadVAO->setVertexBuffer(quadVBO);
 
-        m_QuadBatch = {{quadVAO, nullptr, true}, 4, 6};
+        m_QuadBatch = {quadVAO, 4, 6};
     }
 
     void Renderer::_createEllipseBuffer() {
@@ -157,7 +155,7 @@ namespace gp {
                                {ShaderDataType::Float4, "color"}});
         ellipseVAO->setVertexBuffer(ellipseVBO);
 
-        m_EllipseBatch = {{ellipseVAO, nullptr, true}, 4, 6};
+        m_EllipseBatch = {ellipseVAO, 4, 6};
     }
 
     void Renderer::_createTexturedBuffer() {
@@ -172,7 +170,7 @@ namespace gp {
                              {ShaderDataType::Int,    "texSlot"},});
         imageVAO->setVertexBuffer(imageVBO);
 
-        m_TexturedQuadBatches.emplace_back(imageVAO, nullptr, true);
+        m_TexturedQuadBatches.emplace_back(imageVAO, 4);
         m_TexturedQuadVertices.emplace_back();
         m_TexturedQuadToIndex.emplace_back();
 
@@ -187,7 +185,7 @@ namespace gp {
                              {ShaderDataType::Int,    "texSlot"},});
         imageVAO->setVertexBuffer(imageVBO);
 
-        m_GlyphBatches.emplace_back(imageVAO, nullptr, true);
+        m_GlyphBatches.emplace_back(imageVAO, 4);
         m_GlyphVertices.emplace_back();
         m_GlyphToIndex.emplace_back();
     }
@@ -527,7 +525,7 @@ namespace gp {
 
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
 
-        if (m_LineBatch.m_Data.m_Indices or m_TriangleBatch.m_Data.m_Indices or m_QuadBatch.m_Data.m_Indices) {
+        if (!(m_LineBatch.m_Batch.empty() and m_TriangleBatch.m_Batch.empty() and m_QuadBatch.m_Batch.empty())) {
             m_SolidShader->bind();
         }
 
@@ -536,30 +534,27 @@ namespace gp {
         m_QuadBatch.draw();
 
 
-        if (m_EllipseBatch.m_Data.m_Indices) {
+        if (!m_EllipseBatch.m_Batch.empty()) {
             m_EllipseShader->bind();
             m_EllipseBatch.draw();
         }
-
 
         uint32_t textureSlotOffset = 0;
         for (uint32_t i = 0; i < m_TexturedQuadBatches.size(); i++) {
             _bindTextureBatch(textureSlotOffset);
             textureSlotOffset += Texture2D::getTextureSlots();
 
-            if (m_TexturedQuadBatches[i].m_Indices) {
+            if (!m_TexturedQuadBatches[i].empty()) {
                 m_TextureShader->bind();
 
                 auto &batch = m_TexturedQuadBatches[i];
-                batch.update();
                 batch.draw();
             }
 
-            if (m_GlyphBatches[i].m_Indices) {
+            if (!m_GlyphBatches[i].empty()) {
                 m_TextSDFShader->bind();
 
                 auto &batch = m_GlyphBatches[i];
-                batch.update();
                 batch.draw();
             }
         }

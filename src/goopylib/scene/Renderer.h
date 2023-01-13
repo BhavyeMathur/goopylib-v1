@@ -33,8 +33,6 @@ namespace gp {
         friend class Window;
 
     public:
-        GPAPI ~Renderer();
-
         GPAPI void init();
 
         GPAPI uint32_t drawLine(Line *object);
@@ -76,19 +74,19 @@ namespace gp {
         GPAPI void flush();
 
     private:
-        Batch<SolidVertex> m_LineBatch;
-        Batch<SolidVertex> m_TriangleBatch;
-        Batch<SolidVertex> m_QuadBatch;
-        Batch<EllipseVertex> m_EllipseBatch;
+        BatchHandler<SolidVertex> m_LineBatch;
+        BatchHandler<SolidVertex> m_TriangleBatch;
+        BatchHandler<SolidVertex> m_QuadBatch;
+        BatchHandler<EllipseVertex> m_EllipseBatch;
 
         uint32_t m_NextTexturedQuadID = 0;
-        std::vector<BatchData> m_TexturedQuadBatches;
+        std::vector<Batch> m_TexturedQuadBatches;
         std::vector<std::vector<TextureVertex>> m_TexturedQuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
 
         uint32_t m_NextGlyphID = 0;
-        std::vector<BatchData> m_GlyphBatches;
+        std::vector<Batch> m_GlyphBatches;
         std::vector<std::vector<TextureVertex>> m_GlyphVertices;
         std::unordered_map<uint32_t, uint32_t> m_GlyphToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_GlyphToIndex;

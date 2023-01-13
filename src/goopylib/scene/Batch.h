@@ -5,30 +5,31 @@
 
 
 namespace gp {
-    class BatchData {
+    class Batch {
 
     public:
         int32_t m_Indices = 0;
         int32_t m_Vertices = 0;
-        void *m_BufferData;
+
+        void *m_BufferData = nullptr;
         bool m_ReallocateBufferData = false;
         bool m_UpdateBufferData = false;
 
-        int32_t m_Mode = GP_DRAW_MODE_TRIANGLES;
+        Batch() = default;
 
-        bool m_IsQuad = false;
+        Batch(const Ref<VertexArray> &VAO, uint32_t verticesPerObject = 0);
 
-        BatchData(const Ref<VertexArray> &VAO = nullptr,
-                  void *bufferData = nullptr,
-                  bool isQuad = false,
-                  int32_t mode = GP_DRAW_MODE_TRIANGLES);
-
-        void update();
+        bool empty() const;
 
         void draw();
 
     private:
         Ref<VertexArray> m_VAO;
+        int32_t m_Mode = GP_DRAW_MODE_TRIANGLES;
+
+        bool m_IsQuad = false;
+
+        void _update();
 
         void _updateRenderingObjectVBO();
 
@@ -36,23 +37,24 @@ namespace gp {
     };
 
     template<class T>
-    class Batch {
+    class BatchHandler {
 
         friend class Renderer;
 
     public:
-        uint32_t m_NextID = 0;
-        BatchData m_Data;
-        std::vector<T> m_Vertices;
-        std::unordered_map<uint32_t, uint32_t> m_ToIndex;
+        Batch m_Batch;
 
     private:
+        uint32_t m_NextID = 0;
+        std::unordered_map<uint32_t, uint32_t> m_ToIndex;
+        std::vector<T> m_Vertices;
+
         uint32_t m_VerticesPerObject = 0;
         uint32_t m_IndicesPerObject = 0;
 
-        Batch() = default;
+        BatchHandler() = default;
 
-        Batch(BatchData data, uint32_t verticesPerObject,uint32_t indicesPerObject);
+        BatchHandler(const Ref<VertexArray> &VAO, uint32_t verticesPerObject, uint32_t indicesPerObject);
 
         uint32_t newObject(T *vertices);
 

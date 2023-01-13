@@ -4,21 +4,20 @@
 
 // Batch Data
 namespace gp {
-    BatchData::BatchData(const Ref<VertexArray> &VAO, void *bufferData, bool isQuad, int32_t mode)
+    Batch::Batch(const Ref<VertexArray> &VAO, uint32_t verticesPerObject)
             : m_VAO(VAO),
-              m_BufferData(bufferData),
-              m_Mode(mode),
-              m_IsQuad(isQuad) {
+              m_Mode(verticesPerObject == 2 ? GP_DRAW_MODE_LINES : GP_DRAW_MODE_TRIANGLES),
+              m_IsQuad(verticesPerObject == 4) {
     }
 
-    void BatchData::update() {
+    void Batch::_update() {
         if (m_IsQuad) {
             _updateRenderingObjectEBO();
         }
         _updateRenderingObjectVBO();
     }
 
-    void BatchData::_updateRenderingObjectVBO() {
+    void Batch::_updateRenderingObjectVBO() {
         if (m_ReallocateBufferData) {
             m_VAO->getVertexBuffer()->setData(m_BufferData, m_Vertices);
             m_ReallocateBufferData = false;
@@ -30,7 +29,7 @@ namespace gp {
         }
     }
 
-    void BatchData::_updateRenderingObjectEBO() const {
+    void Batch::_updateRenderingObjectEBO() const {
         if (m_ReallocateBufferData) {
             auto *indices = new uint32_t[m_Indices];
 
@@ -52,25 +51,35 @@ namespace gp {
         }
     }
 
-    void BatchData::draw() {
-        m_VAO->draw(m_Indices, m_Mode);
+    bool Batch::empty() const {
+        return m_Vertices == 0;
+    }
+
+    void Batch::draw() {
+        if (m_Indices) {
+            _update();
+            m_VAO->draw(m_Indices, m_Mode);
+        }
     }
 }
 
 // Batch
 namespace gp {
     template<class T>
-        Batch<T>::Batch(BatchData data, uint32_t verticesPerObject, uint32_t indicesPerObject)
-                : m_Data(std::move(data)),
+        BatchHandler<T>::BatchHandler(const Ref<VertexArray> &VAO, uint32_t verticesPerObject, uint32_t indicesPerObject)
+                : m_Batch({VAO, verticesPerObject}),
                   m_VerticesPerObject(verticesPerObject),
                   m_IndicesPerObject(indicesPerObject) {
         }
 
-    template Batch<SolidVertex>::Batch(BatchData data, uint32_t verticesPerObject, uint32_t indicesPerObject);
-    template Batch<EllipseVertex>::Batch(BatchData data, uint32_t verticesPerObject, uint32_t indicesPerObject);
+    template BatchHandler<SolidVertex>::BatchHandler(const Ref<VertexArray> &VAO, uint32_t verticesPerObject,
+                                                     uint32_t indicesPerObject);
+
+    template BatchHandler<EllipseVertex>::BatchHandler(const Ref<VertexArray> &VAO, uint32_t verticesPerObject,
+                                                       uint32_t indicesPerObject);
 
     template<class T>
-        uint32_t Batch<T>::newObject(T *vertices) {
+        uint32_t BatchHandler<T>::newObject(T *vertices) {
             uint32_t ID = m_NextID;
             m_NextID++;
 
@@ -81,19 +90,20 @@ namespace gp {
                 m_Vertices.push_back(vertices[i]);
             }
 
-            m_Data.m_Indices += m_IndicesPerObject;
-            m_Data.m_Vertices += m_VerticesPerObject;
-            m_Data.m_ReallocateBufferData = true;
-            m_Data.m_BufferData = &m_Vertices[0];
+            m_Batch.m_Indices += m_IndicesPerObject;
+            m_Batch.m_Vertices += m_VerticesPerObject;
+            m_Batch.m_ReallocateBufferData = true;
+            m_Batch.m_BufferData = &m_Vertices[0];
 
             return ID;
         }
 
-    template uint32_t Batch<SolidVertex>::newObject(SolidVertex *vertices);
-    template uint32_t Batch<EllipseVertex>::newObject(EllipseVertex *vertices);
+    template uint32_t BatchHandler<SolidVertex>::newObject(SolidVertex *vertices);
+
+    template uint32_t BatchHandler<EllipseVertex>::newObject(EllipseVertex *vertices);
 
     template<class T>
-        void Batch<T>::destroyObject(uint32_t ID) {
+        void BatchHandler<T>::destroyObject(uint32_t ID) {
             uint32_t index = m_ToIndex[ID];
 
             m_Vertices.erase(std::next(m_Vertices.begin(), index),
@@ -107,37 +117,37 @@ namespace gp {
                 }
             }
 
-            m_Data.m_Indices -= 2;
-            m_Data.m_Vertices -= 2;
-            m_Data.m_BufferData = m_Vertices.empty() ? nullptr : &m_Vertices[0];
-            m_Data.m_ReallocateBufferData = true;
+            m_Batch.m_Indices -= m_IndicesPerObject;
+            m_Batch.m_Vertices -= m_VerticesPerObject;
+            m_Batch.m_BufferData = m_Vertices.empty() ? nullptr : &m_Vertices[0];
+            m_Batch.m_ReallocateBufferData = true;
         }
 
-    template void Batch<SolidVertex>::destroyObject(uint32_t ID);
-    template void Batch<EllipseVertex>::destroyObject(uint32_t ID);
+    template void BatchHandler<SolidVertex>::destroyObject(uint32_t ID);
+
+    template void BatchHandler<EllipseVertex>::destroyObject(uint32_t ID);
 
     template<class T>
-        void Batch<T>::updateObject(uint32_t ID, T *vertices) {
+        void BatchHandler<T>::updateObject(uint32_t ID, T *vertices) {
             uint32_t index = m_ToIndex[ID];
 
             for (uint32_t i = 0; i < m_VerticesPerObject; i++) {
                 m_Vertices[index + i] = vertices[i];
             }
 
-            m_Data.m_UpdateBufferData = true;
+            m_Batch.m_UpdateBufferData = true;
         }
 
-    template void Batch<SolidVertex>::updateObject(uint32_t ID, SolidVertex *vertices);
-    template void Batch<EllipseVertex>::updateObject(uint32_t ID, EllipseVertex *vertices);
+    template void BatchHandler<SolidVertex>::updateObject(uint32_t ID, SolidVertex *vertices);
+
+    template void BatchHandler<EllipseVertex>::updateObject(uint32_t ID, EllipseVertex *vertices);
 
     template<class T>
-        void Batch<T>::draw() {
-            if (m_Data.m_Indices) {
-                m_Data.update();
-                m_Data.draw();
-            }
+        void BatchHandler<T>::draw() {
+            m_Batch.draw();
         }
 
-    template void Batch<SolidVertex>::draw();
-    template void Batch<EllipseVertex>::draw();
+    template void BatchHandler<SolidVertex>::draw();
+
+    template void BatchHandler<EllipseVertex>::draw();
 }
