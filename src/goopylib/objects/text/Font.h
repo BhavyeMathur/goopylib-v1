@@ -7,6 +7,11 @@
 
 #include "harfbuzz/hb.h"
 
+
+// TODO choice between SDF, anti-aliased, and sub-pixel anti-aliased rendering
+// TODO implement sub-pixel anti aliasing
+// TODO Multiple font styles under the same font
+
 namespace gp {
     class Font {
 

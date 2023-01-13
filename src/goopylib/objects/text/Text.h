@@ -4,6 +4,10 @@
 #include "TextCharacter.h"
 
 
+// TODO text alignment
+// TODO line breaks & spacing
+// TODO character spacing
+
 namespace gp {
     enum class TextDirection {
         LTR,
