@@ -50,7 +50,7 @@ const char *textureFragmentShader =
 
         #include "src/goopylib/shader/texture.frag"
 
-const char *textFragmentShader =
+const char *textBitmapFragmentShader =
 
         #include "src/goopylib/shader/text.frag"
 
@@ -84,12 +84,14 @@ namespace gp {
         _createQuadBuffer();
         _createEllipseBuffer();
 
-        GP_CORE_TRACE("Rendering::init() initializing text Shader");
-        m_TextShader = CreateRef<Shader>(textureVertexShader, textSDFFragmentShader);
+        GP_CORE_TRACE("Rendering::init() initializing text Shaders");
+        m_TextBitmapShader = CreateRef<Shader>(textureVertexShader, textBitmapFragmentShader);
+        m_TextSDFShader = CreateRef<Shader>(textureVertexShader, textSDFFragmentShader);
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
-        m_TextShader->set("Texture", Texture2D::getTextureSlots(), samplers);
+        m_TextBitmapShader->set("Texture", Texture2D::getTextureSlots(), samplers);
+        m_TextSDFShader->set("Texture", Texture2D::getTextureSlots(), samplers);
 
         GP_CORE_TRACE("Rendering::init() initializing texture Shader");
         m_TextureShader = CreateRef<Shader>(textureVertexShader, textureFragmentShader);
@@ -101,7 +103,8 @@ namespace gp {
         m_SolidShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
         m_EllipseShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
         m_TextureShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_TextShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        m_TextBitmapShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        m_TextSDFShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
     }
 
     void Renderer::_createLineBuffer() {
@@ -114,7 +117,7 @@ namespace gp {
                             {ShaderDataType::Float4, "color"}});
         lineVAO->setVertexBuffer(lineVBO);
 
-        m_LineBatch = {lineVAO, nullptr, GP_DRAW_MODE_LINES};
+        m_LineBatch = {{lineVAO, nullptr, GP_DRAW_MODE_LINES}, 2, 2};
     }
 
     void Renderer::_createTriangleBuffer() {
@@ -190,60 +193,32 @@ namespace gp {
     }
 
     uint32_t Renderer::drawLine(Line *object) {
-        uint32_t ID = m_NextLineID;
-        m_NextLineID++;
-        GP_CORE_DEBUG("Drawing Line {0}", ID);
-
-        uint32_t index = m_LineVertices.size();
-        m_LineToIndex.insert({ID, index});
-
-        m_LineVertices.push_back({object->m_Points[0], object->m_V1});
-        m_LineVertices.push_back({object->m_Points[1], object->m_V2});
+        SolidVertex vertices[2] = {{object->m_Points[0], object->m_V1},
+                                   {object->m_Points[1], object->m_V2}};
 
         if (object->isHidden()) {
-            m_LineVertices[index + 0].attrib.color.alpha = 0;
-            m_LineVertices[index + 1].attrib.color.alpha = 0;
+            vertices[0].attrib.color.alpha = 0;
+            vertices[1].attrib.color.alpha = 0;
         }
 
-        m_LineBatch.indices += 2;
-        m_LineBatch.vertices += 2;
-        m_LineBatch.bufferData = &m_LineVertices[0];
-        m_LineBatch.reallocateBufferData = true;
-
+        uint32_t ID = m_LineBatch.newObject(vertices);
         return ID;
     }
 
     void Renderer::destroyLine(uint32_t ID) {
-        uint32_t index = m_LineToIndex[ID];
-
-        m_LineVertices.erase(std::next(m_LineVertices.begin(), index),
-                             std::next(m_LineVertices.begin(), index + 2));
-
-        m_LineToIndex.erase(ID);
-        for (auto &i: m_LineToIndex) {
-            if (i.second > index) {
-                i.second -= 2;
-            }
-        }
-
-        m_LineBatch.indices -= 2;
-        m_LineBatch.vertices -= 2;
-        m_LineBatch.bufferData = m_LineVertices.empty() ? nullptr : &m_LineVertices[0];
-        m_LineBatch.reallocateBufferData = true;
+        m_LineBatch.deleteObject(ID);
     }
 
     void Renderer::updateLine(uint32_t ID, const Line *object) {
-        uint32_t index = m_LineToIndex[ID];
-
-        m_LineVertices[index + 0] = {object->m_Points[0], object->m_V1};
-        m_LineVertices[index + 1] = {object->m_Points[1], object->m_V2};
+        SolidVertex vertices[2] = {{object->m_Points[0], object->m_V1},
+                                   {object->m_Points[1], object->m_V2}};
 
         if (object->isHidden()) {
-            m_LineVertices[index + 0].attrib.color.alpha = 0;
-            m_LineVertices[index + 1].attrib.color.alpha = 0;
+            vertices[0].attrib.color.alpha = 0;
+            vertices[1].attrib.color.alpha = 0;
         }
 
-        m_LineBatch.updateBufferData = true;
+        m_LineBatch.updateObject(ID, vertices);
     }
 
     uint32_t Renderer::drawTriangle(Triangle *object) {
@@ -597,7 +572,7 @@ namespace gp {
         uint32_t index = imageIDs[ID];
 
         m_GlyphVertices[batch].erase(std::next(m_GlyphVertices[batch].begin(), index),
-                                            std::next(m_GlyphVertices[batch].begin(), index + 4));
+                                     std::next(m_GlyphVertices[batch].begin(), index + 4));
 
         imageIDs.erase(ID);
         for (auto &i: imageIDs) {
@@ -609,7 +584,7 @@ namespace gp {
         m_GlyphBatches[batch].indices -= 6;
         m_GlyphBatches[batch].vertices -= 4;
         m_GlyphBatches[batch].bufferData = m_GlyphVertices[batch].empty() ? nullptr
-                                                                                        : &m_GlyphVertices[batch][0];
+                                                                          : &m_GlyphVertices[batch][0];
         m_GlyphBatches[batch].reallocateBufferData = true;
     }
 
@@ -637,13 +612,13 @@ namespace gp {
 
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
 
-        if (m_LineBatch.indices or m_TriangleBatch.indices or m_QuadBatch.indices) {
+        if (m_LineBatch.m_Data.indices or m_TriangleBatch.indices or m_QuadBatch.indices) {
             m_SolidShader->bind();
         }
 
-        if (m_LineBatch.indices) {
-            _updateRenderingObjectVBO(m_LineBatch);
-            m_LineBatch.VAO->draw(m_LineBatch.indices, m_LineBatch.mode);
+        if (m_LineBatch.m_Data.indices) {
+            _updateRenderingObjectVBO(m_LineBatch.m_Data);
+            m_LineBatch.m_Data.VAO->draw(m_LineBatch.m_Data.indices, m_LineBatch.m_Data.mode);
         }
 
         if (m_TriangleBatch.indices) {
@@ -674,7 +649,7 @@ namespace gp {
             if (m_TexturedQuadBatches[i].indices) {
                 m_TextureShader->bind();
 
-                auto& batch = m_TexturedQuadBatches[i];
+                auto &batch = m_TexturedQuadBatches[i];
                 _updateRenderingObjectEBO(batch);
                 _updateRenderingObjectVBO(batch);
 
@@ -682,9 +657,9 @@ namespace gp {
             }
 
             if (m_GlyphBatches[i].indices) {
-                m_TextShader->bind();
+                m_TextSDFShader->bind();
 
-                auto& batch = m_GlyphBatches[i];
+                auto &batch = m_GlyphBatches[i];
                 _updateRenderingObjectEBO(batch);
                 _updateRenderingObjectVBO(batch);
 
@@ -693,7 +668,7 @@ namespace gp {
         }
     }
 
-    uint32_t Renderer::_cacheTexture(const std::string& name, const Bitmap& bitmap) {
+    uint32_t Renderer::_cacheTexture(const std::string &name, const Bitmap &bitmap) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
         auto texture = Ref<Texture2D>(new Texture2D(bitmap));
@@ -713,7 +688,7 @@ namespace gp {
         }
     }
 
-    void Renderer::_updateRenderingObjectVBO(RenderingBatch &object) {
+    void Renderer::_updateRenderingObjectVBO(BatchData &object) {
         if (object.reallocateBufferData) {
             object.VAO->m_VertexBuffer->setData(object.bufferData, object.vertices);
             object.reallocateBufferData = false;
@@ -725,7 +700,7 @@ namespace gp {
         }
     }
 
-    void Renderer::_updateRenderingObjectEBO(RenderingBatch &object) {
+    void Renderer::_updateRenderingObjectEBO(BatchData &object) {
         if (object.reallocateBufferData) {
 
             auto *indices = new uint32_t[object.indices];

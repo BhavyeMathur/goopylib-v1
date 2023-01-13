@@ -123,7 +123,7 @@ def format_annotation(annotation: Any, config: Config) -> str:  # noqa: C901 # t
     if annotation is None or annotation is type(None):  # noqa: E721
         return ":py:obj:`None`"
     if annotation is Ellipsis:
-        return ":py:data:`...<Ellipsis>`"
+        return ":py:m_Data:`...<Ellipsis>`"
 
     if isinstance(annotation, tuple):
         return format_internal_tuple(annotation, config)
@@ -143,7 +143,7 @@ def format_annotation(annotation: Any, config: Config) -> str:  # noqa: C901 # t
     fully_qualified: bool = getattr(config, "typehints_fully_qualified", False)
     prefix = "" if fully_qualified or full_name == class_name else "~"
     if module == "typing" and class_name in _PYDATA_ANNOTATIONS:
-        role = "data"
+        role = "m_Data"
     else:
         role = "class"
     args_format = "\\[{}]"
@@ -173,7 +173,7 @@ def format_annotation(annotation: Any, config: Config) -> str:  # noqa: C901 # t
             simplify_optional_unions: bool = getattr(config, "simplify_optional_unions", True)
             if not simplify_optional_unions:
                 full_name = "typing.Optional"
-                args_format = f"\\[:py:data:`{prefix}typing.Union`\\[{{}}]]"
+                args_format = f"\\[:py:m_Data:`{prefix}typing.Union`\\[{{}}]]"
                 args = tuple(x for x in args if x is not type(None))  # noqa: E721
     elif full_name == "typing.Callable" and args and args[0] is not ...:
         fmt = [format_annotation(arg, config) for arg in args]

@@ -130,6 +130,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/objects/text/TextCharacter.cpp
             src/goopylib/objects/text/Text.cpp
 
+            src/goopylib/scene/Batch.cpp
             src/goopylib/scene/Renderer.cpp
             src/goopylib/scene/Camera.cpp
             src/goopylib/scene/CameraController.cpp
@@ -171,4 +172,5 @@ if (NOT DEFINED $ENV{__GITHUB__})
     add_subdirectory(examples/BrickBreaker)
     add_subdirectory(examples/Minecraft)
     add_subdirectory(examples/algorithms/packing)
+    add_subdirectory(examples/mini/Gridlines)
 endif()

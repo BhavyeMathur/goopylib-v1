@@ -5,8 +5,8 @@
 
 #include "src/goopylib/objects/Vertex.h"
 #include "src/goopylib/texture/Texture2D.h"
-#include "src/goopylib/core/VertexArray.h"
 #include "src/goopylib/scene/Camera.h"
+#include "Batch.h"
 
 
 namespace gp {
@@ -26,26 +26,6 @@ namespace gp {
     struct TextureData {
         Ref<Texture2D> texture;
         uint32_t index;
-    };
-
-    struct RenderingBatch {
-        Ref<VertexArray> VAO;
-
-        int32_t indices = 0;
-        int32_t vertices = 0;
-        void *bufferData;
-        bool reallocateBufferData = false;
-        bool updateBufferData = false;
-
-        int32_t mode;
-
-        RenderingBatch(const Ref<VertexArray> &VAO = nullptr,
-                       void *bufferData = nullptr,
-                       int32_t mode = GP_DRAW_MODE_TRIANGLES)
-                : VAO(VAO),
-                  bufferData(bufferData),
-                  mode(mode) {
-        }
     };
 
     class Renderer {
@@ -96,34 +76,31 @@ namespace gp {
         GPAPI void flush();
 
     private:
-        uint32_t m_NextLineID = 0;
-        RenderingBatch m_LineBatch;
-        std::vector<SolidVertex> m_LineVertices;
-        std::unordered_map<uint32_t, uint32_t> m_LineToIndex;
+        Batch<SolidVertex> m_LineBatch;
 
         uint32_t m_NextTriangleID = 0;
-        RenderingBatch m_TriangleBatch;
+        BatchData m_TriangleBatch;
         std::vector<SolidVertex> m_TriangleVertices;
         std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
 
         uint32_t m_NextQuadID = 0;
-        RenderingBatch m_QuadBatch;
+        BatchData m_QuadBatch;
         std::vector<SolidVertex> m_QuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
 
         uint32_t m_NextEllipseID = 0;
-        RenderingBatch m_EllipseBatch;
+        BatchData m_EllipseBatch;
         std::vector<EllipseVertex> m_EllipseVertices;
         std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;
 
         uint32_t m_NextTexturedQuadID = 0;
-        std::vector<RenderingBatch> m_TexturedQuadBatches;
+        std::vector<BatchData> m_TexturedQuadBatches;
         std::vector<std::vector<TextureVertex>> m_TexturedQuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
 
         uint32_t m_NextGlyphID = 0;
-        std::vector<RenderingBatch> m_GlyphBatches;
+        std::vector<BatchData> m_GlyphBatches;
         std::vector<std::vector<TextureVertex>> m_GlyphVertices;
         std::unordered_map<uint32_t, uint32_t> m_GlyphToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_GlyphToIndex;
@@ -131,7 +108,8 @@ namespace gp {
         Ref<Shader> m_SolidShader;
         Ref<Shader> m_EllipseShader;
         Ref<Shader> m_TextureShader;
-        Ref<Shader> m_TextShader;
+        Ref<Shader> m_TextBitmapShader;
+        Ref<Shader> m_TextSDFShader;
 
         Camera m_Camera;
         Ref<UniformBuffer> m_ShaderUniform;
@@ -150,13 +128,13 @@ namespace gp {
         void _createEllipseBuffer();
 
         void _createTexturedBuffer();
-        
-        uint32_t _cacheTexture(const std::string& name, const Bitmap& bitmap);
+
+        uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);
 
         void _bindTextureBatch(uint32_t offset);
 
-        static void _updateRenderingObjectVBO(RenderingBatch &object);
+        static void _updateRenderingObjectVBO(BatchData &object);
 
-        static void _updateRenderingObjectEBO(RenderingBatch &object);
+        static void _updateRenderingObjectEBO(BatchData &object);
     };
 }

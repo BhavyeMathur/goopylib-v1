@@ -2,9 +2,6 @@
 
 #include "src/goopylib/core/Core.h"
 #include "src/goopylib/core/Window.h"
-#include "src/goopylib/core/Buffer.h"
-#include "src/goopylib/core/VertexArray.h"
-#include "src/goopylib/shader/Shader.h"
 
 #include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/events/KeyboardCodes.h"
@@ -29,12 +26,6 @@
 #include "src/goopylib/objects/Image.h"
 
 #include "src/goopylib/objects/text/Font.h"
-#include "src/goopylib/objects/text/Glyph.h"
 #include "src/goopylib/objects/text/Text.h"
-#include "src/goopylib/objects/text/TextCharacter.h"
-
-#include "src/goopylib/texture/Bitmap.h"
-#include "src/goopylib/texture/Texture2D.h"
-#include "src/goopylib/texture/TextureAtlas.h"
 
 #include "src/goopylib/scene/CameraController.h"

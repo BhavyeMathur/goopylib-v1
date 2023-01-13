@@ -49,8 +49,8 @@ struct GPAPI Point {
 
     Point() = default;
 
-    template<typename T>
-        Point(T x, T y) : x(x), y(y) {
+    template<typename T1, typename T2>
+        Point(T1 x, T2 y) : x(x), y(y) {
         }
 };
 
