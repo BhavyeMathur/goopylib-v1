@@ -118,7 +118,7 @@ namespace gp {
         GP_CORE_TRACE("gp::Renderable::update()");
 
         if (m_Drawn) {
-            _update();
+            _draw(m_Window);
         }
     }
 
@@ -138,6 +138,10 @@ namespace gp {
     bool Renderable::contains(float x, float y) const {
         GP_CORE_TRACE("gp::Renderable::contains({0}, {1})", x, y);
         return boxContains(x, y) and _contains(x, y);  // early exit if box doesn't contain point
+    }
+
+    uint32_t Renderable::getID() const {
+        return m_RendererID;
     }
 }
 
@@ -412,5 +416,9 @@ namespace gp {
         GP_CORE_TRACE_ALL("gp::Renderable::_contains({0}, {1})", x, y);
 
         return true;
+    }
+
+    void Renderable::_destroy() {
+        m_Window->m_Renderer.destroy(m_RendererID);
     }
 }

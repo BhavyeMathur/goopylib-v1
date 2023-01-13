@@ -53,12 +53,4 @@ namespace gp {
     uint32_t TexturedQuad::_draw(Window *window) {
         return window->m_Renderer.drawTexturedQuad(const_cast<TexturedQuad *>(this));
     }
-
-    void TexturedQuad::_destroy() const {
-        m_Window->m_Renderer.destroyTexturedQuad(m_RendererID);
-    }
-
-    void TexturedQuad::_update() {
-        m_Window->m_Renderer.updateTexturedQuad(m_RendererID, this);
-    }
 }

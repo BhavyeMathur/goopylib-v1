@@ -14,6 +14,8 @@ namespace gp {
 }
 
 namespace gp {
+    class Renderer;
+
     /**
      * Generic base class for renderables
      */
@@ -267,9 +269,11 @@ namespace gp {
          */
         [[nodiscard]] GPAPI bool contains(float x, float y) const;
 
+        GPAPI uint32_t getID() const;
+
     protected:
         Window *m_Window = nullptr;
-        uint32_t m_RendererID = 0;
+        uint32_t m_RendererID = -1;
 
         Point *m_Points = nullptr;
         uint32_t m_Vertices;
@@ -310,9 +314,7 @@ namespace gp {
 
         virtual uint32_t _draw(Window *window) = 0;
 
-        virtual void _destroy() const = 0;
-
-        virtual void _update() = 0;
+        virtual void _destroy();
 
         virtual void _onScale(float xfactor, float yfactor) {
         };

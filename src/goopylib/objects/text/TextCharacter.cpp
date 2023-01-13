@@ -19,12 +19,4 @@ namespace gp {
     uint32_t TextCharacter::_draw(Window *window) {
         return window->m_Renderer.drawGlyph(const_cast<TextCharacter *>(this));
     }
-
-    void TextCharacter::_destroy() const {
-        m_Window->m_Renderer.destroyGlyph(m_RendererID);
-    }
-
-    void TextCharacter::_update() {
-        m_Window->m_Renderer.updateGlyph(m_RendererID, this);
-    }
 }

@@ -1,7 +1,10 @@
 #include "Renderer.h"
 
-#include "src/goopylib/texture/TextureAtlas.h"
+#include "src/goopylib/core/VertexArray.h"
 #include "src/goopylib/shader/Shader.h"
+
+#include "src/goopylib/texture/Texture2D.h"
+#include "src/goopylib/texture/TextureAtlas.h"
 
 #include "src/goopylib/objects/Line.h"
 #include "src/goopylib/objects/Triangle.h"
@@ -108,84 +111,86 @@ namespace gp {
     void Renderer::_createLineBuffer() {
         GP_CORE_TRACE("Renderer::_createLineBuffer()");
 
-        auto lineVAO = Ref<VertexArray>(new VertexArray());
-        auto lineVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto VAO = Ref<VertexArray>(new VertexArray());
+        auto VBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        lineVBO->setLayout({{ShaderDataType::Float2, "position"},
-                            {ShaderDataType::Float4, "color"}});
-        lineVAO->setVertexBuffer(lineVBO);
+        VBO->setLayout({{ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float4, "color"}});
+        VAO->setVertexBuffer(VBO);
 
-        m_LineBatch = {lineVAO, 2, 2};
+        m_LineBatch = {VAO, 2, 2};
     }
 
     void Renderer::_createTriangleBuffer() {
         GP_CORE_TRACE("Renderer::_createTriangleBuffer()");
 
-        auto triangleVAO = Ref<VertexArray>(new VertexArray());
-        auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto VAO = Ref<VertexArray>(new VertexArray());
+        auto VBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        triangleVBO->setLayout({{ShaderDataType::Float2, "position"},
-                                {ShaderDataType::Float4, "color"}});
-        triangleVAO->setVertexBuffer(triangleVBO);
+        VBO->setLayout({{ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float4, "color"}});
+        VAO->setVertexBuffer(VBO);
 
-        m_TriangleBatch = {triangleVAO, 3, 3};
+        m_TriangleBatch = {VAO, 3, 3};
     }
 
     void Renderer::_createQuadBuffer() {
         GP_CORE_TRACE("Renderer::_createQuadBuffer()");
 
-        auto quadVAO = Ref<VertexArray>(new VertexArray());
-        auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto VAO = Ref<VertexArray>(new VertexArray());
+        auto VBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        quadVBO->setLayout({{ShaderDataType::Float2, "position"},
-                            {ShaderDataType::Float4, "color"}});
-        quadVAO->setVertexBuffer(quadVBO);
+        VBO->setLayout({{ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float4, "color"}});
+        VAO->setVertexBuffer(VBO);
 
-        m_QuadBatch = {quadVAO, 4, 6};
+        m_QuadBatch = {VAO, 6, 4};
     }
 
     void Renderer::_createEllipseBuffer() {
         GP_CORE_TRACE("Renderer::_createEllipseBuffer()");
 
-        auto ellipseVAO = Ref<VertexArray>(new VertexArray());
-        auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto VAO = Ref<VertexArray>(new VertexArray());
+        auto VBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        ellipseVBO->setLayout({{ShaderDataType::Float2, "position"},
-                               {ShaderDataType::Float2, "localCoord"},
-                               {ShaderDataType::Float4, "color"}});
-        ellipseVAO->setVertexBuffer(ellipseVBO);
+        VBO->setLayout({{ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float2, "localCoord"},
+                        {ShaderDataType::Float4, "color"}});
+        VAO->setVertexBuffer(VBO);
 
-        m_EllipseBatch = {ellipseVAO, 4, 6};
+        m_EllipseBatch = {VAO, 6, 4};
     }
 
     void Renderer::_createTexturedBuffer() {
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating TexturedQuad buffer");
 
-        auto imageVAO = Ref<VertexArray>(new VertexArray());
-        auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto VAO = Ref<VertexArray>(new VertexArray());
+        auto VBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        imageVBO->setLayout({{ShaderDataType::Float2, "position"},
-                             {ShaderDataType::Float4, "color"},
-                             {ShaderDataType::Float2, "texCoord"},
-                             {ShaderDataType::Int,    "texSlot"},});
-        imageVAO->setVertexBuffer(imageVBO);
+        VBO->setLayout({{ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float4, "color"},
+                        {ShaderDataType::Float2, "texCoord"},
+                        {ShaderDataType::Int,    "texSlot"},});
+        VAO->setVertexBuffer(VBO);
 
-        m_TexturedQuadBatches.emplace_back(imageVAO, 4);
-        m_TexturedQuadToIndex.emplace_back();
+        m_TexturedQuadBatches.emplace_back(VAO, 6, 4);
 
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating Glyph buffer");
 
-        imageVAO = Ref<VertexArray>(new VertexArray());
-        imageVBO = Ref<VertexBuffer>(new VertexBuffer());
+        VAO = Ref<VertexArray>(new VertexArray());
+        VBO = Ref<VertexBuffer>(new VertexBuffer());
 
-        imageVBO->setLayout({{ShaderDataType::Float2, "position"},
-                             {ShaderDataType::Float4, "color"},
-                             {ShaderDataType::Float2, "texCoord"},
-                             {ShaderDataType::Int,    "texSlot"},});
-        imageVAO->setVertexBuffer(imageVBO);
+        VBO->setLayout({{ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float4, "color"},
+                        {ShaderDataType::Float2, "texCoord"},
+                        {ShaderDataType::Int,    "texSlot"},});
+        VAO->setVertexBuffer(VBO);
 
-        m_GlyphBatches.emplace_back(imageVAO, 4);
-        m_GlyphToIndex.emplace_back();
+        m_GlyphBatches.emplace_back(VAO, 6, 4);
+    }
+
+    void Renderer::destroy(uint32_t ID) {
+        m_ToBatch[ID]->destroyObject(ID);
     }
 
     uint32_t Renderer::drawLine(Line *object) {
@@ -197,24 +202,15 @@ namespace gp {
             vertices[1].attrib.color.alpha = 0;
         }
 
-        uint32_t ID = m_LineBatch.newObject(vertices);
-        return ID;
-    }
-
-    void Renderer::destroyLine(uint32_t ID) {
-        m_LineBatch.destroyObject(ID);
-    }
-
-    void Renderer::updateLine(uint32_t ID, const Line *object) {
-        SolidVertex vertices[2] = {{object->m_Points[0], object->m_V1},
-                                   {object->m_Points[1], object->m_V2}};
-
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
+        if (m_LineBatch.contains(object->getID())) {
+            m_LineBatch.updateObject(object->getID(), vertices);
+            return 0;
         }
-
-        m_LineBatch.updateObject(ID, vertices);
+        else {
+            uint32_t ID = m_LineBatch.newObject(vertices);
+            m_ToBatch.insert({ID, &m_LineBatch});
+            return ID;
+        }
     }
 
     uint32_t Renderer::drawTriangle(Triangle *object) {
@@ -228,26 +224,15 @@ namespace gp {
             vertices[2].attrib.color.alpha = 0;
         }
 
-        uint32_t ID = m_TriangleBatch.newObject(vertices);
-        return ID;
-    }
-
-    void Renderer::destroyTriangle(uint32_t ID) {
-        m_TriangleBatch.destroyObject(ID);
-    }
-
-    void Renderer::updateTriangle(uint32_t ID, const Triangle *object) {
-        SolidVertex vertices[3] = {{object->m_Points[0], object->m_V1},
-                                   {object->m_Points[1], object->m_V2},
-                                   {object->m_Points[2], object->m_V3}};
-
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-            vertices[2].attrib.color.alpha = 0;
+        if (m_TriangleBatch.contains(object->getID())) {
+            m_TriangleBatch.updateObject(object->getID(), vertices);
+            return 0;
         }
-
-        m_TriangleBatch.updateObject(ID, vertices);
+        else {
+            uint32_t ID = m_TriangleBatch.newObject(vertices);
+            m_ToBatch.insert({ID, &m_TriangleBatch});
+            return ID;
+        }
     }
 
     uint32_t Renderer::drawQuad(Quad *object) {
@@ -263,28 +248,15 @@ namespace gp {
             vertices[3].attrib.color.alpha = 0;
         }
 
-        uint32_t ID = m_QuadBatch.newObject(vertices);
-        return ID;
-    }
-
-    void Renderer::destroyQuad(uint32_t ID) {
-        m_QuadBatch.destroyObject(ID);
-    }
-
-    void Renderer::updateQuad(uint32_t ID, const Quad *object) {
-        SolidVertex vertices[4] = {{object->m_Points[0], object->m_V1},
-                                   {object->m_Points[1], object->m_V2},
-                                   {object->m_Points[2], object->m_V3},
-                                   {object->m_Points[3], object->m_V4}};
-
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-            vertices[2].attrib.color.alpha = 0;
-            vertices[3].attrib.color.alpha = 0;
+        if (m_QuadBatch.contains(object->getID())) {
+            m_QuadBatch.updateObject(object->getID(), vertices);
+            return 0;
         }
-
-        m_QuadBatch.updateObject(ID, vertices);
+        else {
+            uint32_t ID = m_QuadBatch.newObject(vertices);
+            m_ToBatch.insert({ID, &m_QuadBatch});
+            return ID;
+        }
     }
 
     uint32_t Renderer::drawEllipse(Ellipse *object) {
@@ -300,35 +272,18 @@ namespace gp {
             vertices[3].attrib.color.alpha = 0;
         }
 
-        uint32_t ID = m_EllipseBatch.newObject(vertices);
-        return ID;
-    }
-
-    void Renderer::destroyEllipse(uint32_t ID) {
-        m_EllipseBatch.destroyObject(ID);
-    }
-
-    void Renderer::updateEllipse(uint32_t ID, const Ellipse *object) {
-        EllipseVertex vertices[4] = {{object->m_Points[0], object->m_V1},
-                                     {object->m_Points[1], object->m_V2},
-                                     {object->m_Points[2], object->m_V3},
-                                     {object->m_Points[3], object->m_V4}};
-
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-            vertices[2].attrib.color.alpha = 0;
-            vertices[3].attrib.color.alpha = 0;
+        if (m_EllipseBatch.contains(object->getID())) {
+            m_EllipseBatch.updateObject(object->getID(), vertices);
+            return 0;
         }
-
-        m_EllipseBatch.updateObject(ID, vertices);
+        else {
+            uint32_t ID = m_EllipseBatch.newObject(vertices);
+            m_ToBatch.insert({ID, &m_EllipseBatch});
+            return ID;
+        }
     }
 
     uint32_t Renderer::drawTexturedQuad(TexturedQuad *object) {
-        uint32_t ID = m_NextTexturedQuadID;
-        m_NextTexturedQuadID++;
-        GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
-
         uint32_t texIndex, texSlot;
         if (m_TexturesCache.find(object->getTextureName()) == m_TexturesCache.end()) {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->getTextureName());
@@ -356,75 +311,30 @@ namespace gp {
 
         uint32_t batch = texIndex / Texture2D::getTextureSlots();
 
-        uint32_t index = m_TexturedQuadBatches[batch].m_Vertices.size();
-        m_TexturedQuadToBatch.insert({ID, batch});
-        m_TexturedQuadToIndex[batch].insert({ID, index});
-
-        m_TexturedQuadBatches[batch].m_Vertices.push_back({object->m_Points[0], object->m_V1, object->m_T1});
-        m_TexturedQuadBatches[batch].m_Vertices.push_back({object->m_Points[1], object->m_V2, object->m_T2});
-        m_TexturedQuadBatches[batch].m_Vertices.push_back({object->m_Points[2], object->m_V3, object->m_T3});
-        m_TexturedQuadBatches[batch].m_Vertices.push_back({object->m_Points[3], object->m_V4, object->m_T4});
+        TextureVertex vertices[4] = {{object->m_Points[0], object->m_V1, object->m_T1},
+                                     {object->m_Points[1], object->m_V2, object->m_T2},
+                                     {object->m_Points[2], object->m_V3, object->m_T3},
+                                     {object->m_Points[3], object->m_V4, object->m_T4}};
 
         if (object->isHidden()) {
-            m_TexturedQuadBatches[batch].m_Vertices[index + 0].attrib.color.alpha = 0;
-            m_TexturedQuadBatches[batch].m_Vertices[index + 1].attrib.color.alpha = 0;
-            m_TexturedQuadBatches[batch].m_Vertices[index + 2].attrib.color.alpha = 0;
-            m_TexturedQuadBatches[batch].m_Vertices[index + 3].attrib.color.alpha = 0;
+            vertices[0].attrib.color.alpha = 0;
+            vertices[1].attrib.color.alpha = 0;
+            vertices[2].attrib.color.alpha = 0;
+            vertices[3].attrib.color.alpha = 0;
         }
 
-        m_TexturedQuadBatches[batch].m_Indices += 6;
-        m_TexturedQuadBatches[batch].m_BufferData = &m_TexturedQuadBatches[batch].m_Vertices[0];
-        m_TexturedQuadBatches[batch].m_ReallocateBufferData = true;
-
-        return ID;
-    }
-
-    void Renderer::destroyTexturedQuad(uint32_t ID) {
-        uint32_t batch = m_TexturedQuadToBatch[ID];
-        auto &imageIDs = m_TexturedQuadToIndex[batch];
-        uint32_t index = imageIDs[ID];
-
-        m_TexturedQuadBatches[batch].m_Vertices.erase(std::next(m_TexturedQuadBatches[batch].m_Vertices.begin(), index),
-                                                      std::next(m_TexturedQuadBatches[batch].m_Vertices.begin(),
-                                                                index + 4));
-
-        imageIDs.erase(ID);
-        for (auto &i: imageIDs) {
-            if (i.second > index) {
-                i.second -= 4;
-            }
+        if (m_TexturedQuadBatches[batch].contains(object->getID())) {
+            m_TexturedQuadBatches[batch].updateObject(object->getID(), vertices);
+            return 0;
         }
-
-        m_TexturedQuadBatches[batch].m_Indices -= 6;
-        m_TexturedQuadBatches[batch].m_BufferData = m_TexturedQuadBatches[batch].m_Vertices.empty() ? nullptr
-                                                                                                    : &m_TexturedQuadBatches[batch].m_Vertices[0];
-        m_TexturedQuadBatches[batch].m_ReallocateBufferData = true;
-    }
-
-    void Renderer::updateTexturedQuad(uint32_t ID, const TexturedQuad *object) {
-        uint32_t batch = m_TexturedQuadToBatch[ID];
-        uint32_t index = m_TexturedQuadToIndex[batch][ID];
-
-        m_TexturedQuadBatches[batch].m_Vertices[index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
-        m_TexturedQuadBatches[batch].m_Vertices[index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
-        m_TexturedQuadBatches[batch].m_Vertices[index + 2] = {object->m_Points[2], object->m_V3, object->m_T3};
-        m_TexturedQuadBatches[batch].m_Vertices[index + 3] = {object->m_Points[3], object->m_V4, object->m_T4};
-
-        if (object->isHidden()) {
-            m_TexturedQuadBatches[batch].m_Vertices[index + 0].attrib.color.alpha = 0;
-            m_TexturedQuadBatches[batch].m_Vertices[index + 1].attrib.color.alpha = 0;
-            m_TexturedQuadBatches[batch].m_Vertices[index + 2].attrib.color.alpha = 0;
-            m_TexturedQuadBatches[batch].m_Vertices[index + 3].attrib.color.alpha = 0;
+        else {
+            uint32_t ID = m_TexturedQuadBatches[batch].newObject(vertices);
+            m_ToBatch.insert({ID, &m_TexturedQuadBatches[batch]});
+            return ID;
         }
-
-        m_TexturedQuadBatches[batch].m_UpdateBufferData = true;
     }
 
     uint32_t Renderer::drawGlyph(TexturedQuad *object) {
-        uint32_t ID = m_NextGlyphID;
-        m_NextGlyphID++;
-        GP_CORE_DEBUG("gp::Renderer::drawGlyph({0})", ID);
-
         uint32_t texIndex, texSlot;
         if (m_TexturesCache.find(object->getTextureName()) == m_TexturesCache.end()) {
             GP_CORE_TRACE("gp::Renderer::drawGlyph() - no cached texture '{0}'", object->getTextureName());
@@ -452,67 +362,27 @@ namespace gp {
 
         uint32_t batch = texIndex / Texture2D::getTextureSlots();
 
-        uint32_t index = m_GlyphBatches[batch].m_Vertices.size();
-        m_GlyphToBatch.insert({ID, batch});
-        m_GlyphToIndex[batch].insert({ID, index});
-
-        m_GlyphBatches[batch].m_Vertices.push_back({object->m_Points[0], object->m_V1, object->m_T1});
-        m_GlyphBatches[batch].m_Vertices.push_back({object->m_Points[1], object->m_V2, object->m_T2});
-        m_GlyphBatches[batch].m_Vertices.push_back({object->m_Points[2], object->m_V3, object->m_T3});
-        m_GlyphBatches[batch].m_Vertices.push_back({object->m_Points[3], object->m_V4, object->m_T4});
+        TextureVertex vertices[4] = {{object->m_Points[0], object->m_V1, object->m_T1},
+                                     {object->m_Points[1], object->m_V2, object->m_T2},
+                                     {object->m_Points[2], object->m_V3, object->m_T3},
+                                     {object->m_Points[3], object->m_V4, object->m_T4}};
 
         if (object->isHidden()) {
-            m_GlyphBatches[batch].m_Vertices[index + 0].attrib.color.alpha = 0;
-            m_GlyphBatches[batch].m_Vertices[index + 1].attrib.color.alpha = 0;
-            m_GlyphBatches[batch].m_Vertices[index + 2].attrib.color.alpha = 0;
-            m_GlyphBatches[batch].m_Vertices[index + 3].attrib.color.alpha = 0;
+            vertices[0].attrib.color.alpha = 0;
+            vertices[1].attrib.color.alpha = 0;
+            vertices[2].attrib.color.alpha = 0;
+            vertices[3].attrib.color.alpha = 0;
         }
 
-        m_GlyphBatches[batch].m_Indices += 6;
-        m_GlyphBatches[batch].m_BufferData = &m_GlyphBatches[batch].m_Vertices[0];
-        m_GlyphBatches[batch].m_ReallocateBufferData = true;
-
-        return ID;
-    }
-
-    void Renderer::destroyGlyph(uint32_t ID) {
-        uint32_t batch = m_GlyphToBatch[ID];
-        auto &imageIDs = m_GlyphToIndex[batch];
-        uint32_t index = imageIDs[ID];
-
-        m_GlyphBatches[batch].m_Vertices.erase(std::next(m_GlyphBatches[batch].m_Vertices.begin(), index),
-                                               std::next(m_GlyphBatches[batch].m_Vertices.begin(), index + 4));
-
-        imageIDs.erase(ID);
-        for (auto &i: imageIDs) {
-            if (i.second > index) {
-                i.second -= 4;
-            }
+        if (m_GlyphBatches[batch].contains(object->getID())) {
+            m_GlyphBatches[batch].updateObject(object->getID(), vertices);
+            return 0;
         }
-
-        m_GlyphBatches[batch].m_Indices -= 6;
-        m_GlyphBatches[batch].m_BufferData = m_GlyphBatches[batch].m_Vertices.empty() ? nullptr
-                                                                                      : &m_GlyphBatches[batch].m_Vertices[0];
-        m_GlyphBatches[batch].m_ReallocateBufferData = true;
-    }
-
-    void Renderer::updateGlyph(uint32_t ID, const TexturedQuad *object) {
-        uint32_t batch = m_GlyphToBatch[ID];
-        uint32_t index = m_GlyphToIndex[batch][ID];
-
-        m_GlyphBatches[batch].m_Vertices[index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
-        m_GlyphBatches[batch].m_Vertices[index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
-        m_GlyphBatches[batch].m_Vertices[index + 2] = {object->m_Points[2], object->m_V3, object->m_T3};
-        m_GlyphBatches[batch].m_Vertices[index + 3] = {object->m_Points[3], object->m_V4, object->m_T4};
-
-        if (object->isHidden()) {
-            m_GlyphBatches[batch].m_Vertices[index + 0].attrib.color.alpha = 0;
-            m_GlyphBatches[batch].m_Vertices[index + 1].attrib.color.alpha = 0;
-            m_GlyphBatches[batch].m_Vertices[index + 2].attrib.color.alpha = 0;
-            m_GlyphBatches[batch].m_Vertices[index + 3].attrib.color.alpha = 0;
+        else {
+            uint32_t ID = m_GlyphBatches[batch].newObject(vertices);
+            m_ToBatch.insert({ID, &m_GlyphBatches[batch]});
+            return ID;
         }
-
-        m_GlyphBatches[batch].m_UpdateBufferData = true;
     }
 
     void Renderer::flush() {
@@ -520,7 +390,7 @@ namespace gp {
 
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
 
-        if (!(m_LineBatch.m_Batch.empty() and m_TriangleBatch.m_Batch.empty() and m_QuadBatch.m_Batch.empty())) {
+        if (!(m_LineBatch.empty() and m_TriangleBatch.empty() and m_QuadBatch.empty())) {
             m_SolidShader->bind();
         }
 
@@ -528,8 +398,7 @@ namespace gp {
         m_TriangleBatch.draw();
         m_QuadBatch.draw();
 
-
-        if (!m_EllipseBatch.m_Batch.empty()) {
+        if (!m_EllipseBatch.empty()) {
             m_EllipseShader->bind();
             m_EllipseBatch.draw();
         }
@@ -568,7 +437,9 @@ namespace gp {
     }
 
     void Renderer::_bindTextureBatch(uint32_t offset) {
-        uint32_t textures = min(offset + Texture2D::getTextureSlots(), (uint32_t) m_Textures.size());
+        uint32_t
+                textures = min(offset + Texture2D::getTextureSlots(), (uint32_t)
+                m_Textures.size());
 
         for (uint32_t i = offset; i < textures; i++) {
             m_Textures[i]->bind(i % Texture2D::getTextureSlots());

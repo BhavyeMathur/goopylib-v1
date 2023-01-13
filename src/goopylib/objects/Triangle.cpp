@@ -28,14 +28,6 @@ namespace gp {
         return window->m_Renderer.drawTriangle(const_cast<Triangle *>(this));
     }
 
-    void Triangle::_destroy() const {
-        m_Window->m_Renderer.destroyTriangle(m_RendererID);
-    }
-
-    void Triangle::_update() {
-        m_Window->m_Renderer.updateTriangle(m_RendererID, this);
-    }
-
     bool Triangle::_contains(float x, float y) const {
         return checkTriangleContains({x, y}, m_Points[0], m_Points[1], m_Points[2]);
     }

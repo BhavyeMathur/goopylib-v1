@@ -7,6 +7,8 @@
 namespace gp {
     class UniformBuffer;
 
+    class Renderer;
+
     std::string readFile(const char *filePath);
 
     class Shader final {

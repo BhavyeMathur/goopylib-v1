@@ -22,9 +22,5 @@ namespace gp {
 
     private:
         GPAPI uint32_t _draw(Window *window) override;
-
-        GPAPI void _destroy() const override;
-
-        GPAPI void _update() override;
     };
 }

@@ -26,14 +26,6 @@ namespace gp {
     uint32_t Line::_draw(Window *window) {
         return window->m_Renderer.drawLine(const_cast<Line *>(this));
     }
-
-    void Line::_destroy() const {
-        m_Window->m_Renderer.destroyLine(m_RendererID);
-    }
-
-    void Line::_update() {
-        m_Window->m_Renderer.updateLine(m_RendererID, this);
-    }
 }
 
 // Getter & Setter methods

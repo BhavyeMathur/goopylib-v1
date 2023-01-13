@@ -1,12 +1,10 @@
 #pragma once
 
 #include "gp.h"
-#include <unordered_map>
 
-#include "src/goopylib/objects/Vertex.h"
-#include "src/goopylib/texture/Texture2D.h"
-#include "src/goopylib/scene/Camera.h"
 #include "Batch.h"
+#include "Camera.h"
+#include "src/goopylib/objects/Vertex.h"
 
 
 namespace gp {
@@ -22,6 +20,12 @@ namespace gp {
 
     class Shader;
 
+    class Camera;
+
+    class Texture2D;
+
+    class Bitmap;
+
 
     struct TextureData {
         Ref<Texture2D> texture;
@@ -35,59 +39,31 @@ namespace gp {
     public:
         GPAPI void init();
 
+        GPAPI void destroy(uint32_t ID);
+
         GPAPI uint32_t drawLine(Line *object);
-
-        GPAPI void destroyLine(uint32_t ID);
-
-        GPAPI void updateLine(uint32_t ID, const Line *object);
 
         GPAPI uint32_t drawTriangle(Triangle *object);
 
-        GPAPI void destroyTriangle(uint32_t ID);
-
-        GPAPI void updateTriangle(uint32_t ID, const Triangle *object);
-
         GPAPI uint32_t drawQuad(Quad *object);
-
-        GPAPI void destroyQuad(uint32_t ID);
-
-        GPAPI void updateQuad(uint32_t ID, const Quad *object);
 
         GPAPI uint32_t drawEllipse(Ellipse *object);
 
-        GPAPI void destroyEllipse(uint32_t ID);
-
-        GPAPI void updateEllipse(uint32_t ID, const Ellipse *object);
-
         GPAPI uint32_t drawTexturedQuad(TexturedQuad *object);
 
-        GPAPI void destroyTexturedQuad(uint32_t ID);
-
-        GPAPI void updateTexturedQuad(uint32_t ID, const TexturedQuad *object);
-
         GPAPI uint32_t drawGlyph(TexturedQuad *object);
-
-        GPAPI void destroyGlyph(uint32_t ID);
-
-        GPAPI void updateGlyph(uint32_t ID, const TexturedQuad *object);
 
         GPAPI void flush();
 
     private:
-        BatchHandler<SolidVertex> m_LineBatch;
-        BatchHandler<SolidVertex> m_TriangleBatch;
-        BatchHandler<SolidVertex> m_QuadBatch;
-        BatchHandler<EllipseVertex> m_EllipseBatch;
-
-        uint32_t m_NextTexturedQuadID = 0;
+        Batch<SolidVertex> m_LineBatch;
+        Batch<SolidVertex> m_TriangleBatch;
+        Batch<SolidVertex> m_QuadBatch;
+        Batch<EllipseVertex> m_EllipseBatch;
         std::vector<Batch<TextureVertex>> m_TexturedQuadBatches;
-        std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
-        std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
-
-        uint32_t m_NextGlyphID = 0;
         std::vector<Batch<TextureVertex>> m_GlyphBatches;
-        std::unordered_map<uint32_t, uint32_t> m_GlyphToBatch;
-        std::vector<std::unordered_map<uint32_t, uint32_t>> m_GlyphToIndex;
+
+        std::unordered_map<uint32_t, BatchBase *> m_ToBatch;
 
         Ref<Shader> m_SolidShader;
         Ref<Shader> m_EllipseShader;

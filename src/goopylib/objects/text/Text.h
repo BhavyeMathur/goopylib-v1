@@ -73,9 +73,7 @@ namespace gp {
 
         uint32_t _draw(Window *window) override;
 
-        void _destroy() const override;
-
-        void _update() override;
+        void _destroy() override;
 
         static hb_direction_t getHarfbuffDirection(TextDirection direction);
     };

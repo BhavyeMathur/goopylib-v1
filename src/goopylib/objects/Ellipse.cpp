@@ -39,14 +39,6 @@ namespace gp {
         return window->m_Renderer.drawEllipse(const_cast<Ellipse *>(this));
     }
 
-    void Ellipse::_destroy() const {
-        m_Window->m_Renderer.destroyEllipse(m_RendererID);
-    }
-
-    void Ellipse::_update() {
-        m_Window->m_Renderer.updateEllipse(m_RendererID, this);
-    }
-
     bool Ellipse::_contains(float x, float y) const {
         x -= m_Position.x;
         y -= m_Position.y;

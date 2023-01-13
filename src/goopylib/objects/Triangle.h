@@ -55,10 +55,6 @@ namespace gp {
 
         uint32_t _draw(Window *window) override;
 
-        void _destroy() const override;
-
-        void _update() override;
-
         [[nodiscard]] bool _contains(float x, float y) const override;
     };
 }

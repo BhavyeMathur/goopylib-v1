@@ -51,9 +51,5 @@ namespace gp {
         Ref<Bitmap> m_Bitmap = nullptr;
 
         GPAPI uint32_t _draw(Window *window) override;
-
-        GPAPI void _destroy() const override;
-
-        GPAPI void _update() override;
     };
 }

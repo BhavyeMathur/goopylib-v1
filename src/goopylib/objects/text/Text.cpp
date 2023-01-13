@@ -44,6 +44,8 @@ namespace gp {
         else {
             m_Font = font;
         }
+
+        _createGlyphs();
     }
 
     Text::~Text() {
@@ -96,23 +98,15 @@ namespace gp {
     }
 
     uint32_t Text::_draw(Window *window) {
-        _createGlyphs();
-
         for (auto character: m_Characters) {
             character->draw(window);
         }
         return 0;
     }
 
-    void Text::_destroy() const {
+    void Text::_destroy() {
         for (auto character: m_Characters) {
             character->destroy();
-        }
-    }
-
-    void Text::_update() {
-        for (auto character: m_Characters) {
-            character->_update();
         }
     }
 }
@@ -135,9 +129,8 @@ namespace gp {
 
     void Text::setDirection(TextDirection direction) {
         m_Direction = direction;
-        if (m_Drawn) {
-            _draw(m_Window);
-        }
+        _createGlyphs();
+        update();
     }
 
     TextDirection Text::getDirection() const {
@@ -146,9 +139,8 @@ namespace gp {
 
     void Text::setScript(hb_script_t script) {
         m_Script = script;
-        if (m_Drawn) {
-            _draw(m_Window);
-        }
+        _createGlyphs();
+        update();
     }
 
     hb_script_t Text::getScript() const {
@@ -157,9 +149,8 @@ namespace gp {
 
     void Text::setLanguage(std::string language) {
         m_Language = std::move(language);
-        if (m_Drawn) {
-            _draw(m_Window);
-        }
+        _createGlyphs();
+        update();
     }
 
     std::string Text::getLanguage() const {
