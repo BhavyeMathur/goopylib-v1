@@ -13,6 +13,14 @@
 // TODO Multiple font styles under the same font
 
 namespace gp {
+    enum class FontRenderingMode {
+        Monochrome,
+        Greyscale,
+        Subpixel,
+        SDF,
+        MSDF,
+    };
+
     class Font {
 
         friend class Text;
@@ -26,6 +34,8 @@ namespace gp {
 
         GPAPI const char* getFamily();
 
+        GPAPI void setRenderingMode(FontRenderingMode mode);
+
         GPAPI static void init();
 
         GPAPI static void shutdown();
@@ -33,7 +43,7 @@ namespace gp {
         GPAPI static Ref<Font> load(const std::string &filepath, uint32_t faceIndex = 0, bool setDefault = true);
 
     private:
-        bool m_UseSDF = true;
+        FontRenderingMode m_RenderingMode = FontRenderingMode::SDF;
 
         FT_Face m_FTFace = nullptr;
         hb_font_t *m_HBFont;

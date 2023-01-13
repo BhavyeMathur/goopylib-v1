@@ -61,13 +61,30 @@ namespace gp {
     }
 
     void Font::rasterizeGlyph(uint32_t codepoint) {
-        if (FT_Error err = FT_Load_Glyph(m_FTFace, codepoint, FT_LOAD_RENDER)) {
-            GP_CORE_WARN("Font::Font() failed to load {0}: '{1}'", codepoint, err);
-            return;
+        if (m_RenderingMode == FontRenderingMode::Monochrome) {
+            if (FT_Error err = FT_Load_Glyph(m_FTFace, codepoint, FT_LOAD_MONOCHROME)) {
+                GP_CORE_WARN("Font::Font() failed to load {0}: '{1}'", codepoint, err);
+                return;
+            }
+        }
+        else {
+            if (FT_Error err = FT_Load_Glyph(m_FTFace, codepoint, FT_LOAD_RENDER)) {
+                GP_CORE_WARN("Font::Font() failed to load {0}: '{1}'", codepoint, err);
+                return;
+            }
         }
 
-        if (m_UseSDF) {
-            FT_Render_Glyph(m_FTFace->glyph, FT_RENDER_MODE_SDF);
+        switch (m_RenderingMode) {
+            case FontRenderingMode::Monochrome:
+            case FontRenderingMode::Greyscale:
+                break;
+
+            case FontRenderingMode::SDF:
+                FT_Render_Glyph(m_FTFace->glyph, FT_RENDER_MODE_SDF);
+                break;
+
+            default:
+                GP_VALUE_ERROR("Font rendering mode selected is not available yet!");
         }
 
         uint32_t xSize = m_FTFace->glyph->bitmap.width;

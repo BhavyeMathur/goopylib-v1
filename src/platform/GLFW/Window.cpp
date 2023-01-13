@@ -65,6 +65,8 @@ namespace gp {
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_ALWAYS);
 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
         s_Instances.push_back(this);
     }
 
