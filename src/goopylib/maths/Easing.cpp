@@ -1,15 +1,19 @@
 #include "Easing.h"
 
-#if !GP_LOG_EASING
-#undef GP_LOGGING_LEVEL
-#endif
+#include "src/config.h"
 
-#include "src/goopylib/debug/LogMacros.h"
+#if (GP_LOG_EASING != true) and (GP_LOG_EASING <= GP_LOGGING_LEVEL)
+#undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_EASING
+#endif
 
 #if !GP_VALUE_CHECK_EASING
 #undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
 #endif
 
+#include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
 
 #define EASE_IN(func, ...) func(t, ##__VA_ARGS__)

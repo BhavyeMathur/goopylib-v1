@@ -66,13 +66,10 @@ namespace gp {
             m_Textures.push_back(Ref<Texture2D>(new Texture2D(0, 0, m_Channels)));
         }
 
-        GP_CORE_WARN((void *) bitmap->getData());
-        GP_CORE_WARN(item->getUserObject());
-
         return {item->p1(), item->p2(), item->getPage(), m_Textures[item->getPage()]};
     }
 
-    std::vector<TextureCoords> TextureAtlas::add(const std::vector<Bitmap *> &bitmaps,
+    std::vector<TextureCoords> TextureAtlas::add(const std::vector<Ref<Bitmap>> &bitmaps,
                                                  bool allowRotation,
                                                  const packing::SortingFunction &sorting) {
         std::vector<Ref<packing::Item>> items;
@@ -81,8 +78,11 @@ namespace gp {
         texCoords.reserve(bitmaps.size());
 
         for (const auto &bitmap: bitmaps) {
+            m_Bitmaps.push_back(bitmap);
             items.emplace_back(
-                    new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight(), (void *) &bitmap));
+                    new packing::Item((float) bitmap->getWidth(),
+                                      (float) bitmap->getHeight(),
+                                      (void *) bitmap->getData()));
         }
 
         m_PackingAlgorithm->packAll(items, allowRotation, sorting);

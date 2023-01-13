@@ -390,34 +390,49 @@ namespace gp {
 
         m_TextureShader->bind();
 
-        for (uint32_t i = 0; i < m_AtlasMono->getPages(); i += Texture2D::getTextureSlots()) {
-            auto &batch = m_TextureBatchesMono[i / 16];
+        uint32_t textureOffset = 0;
+        for (uint32_t i = 0; i < m_TextureBatchesMono.size(); i += Texture2D::getTextureSlots()) {
+            auto &batch = m_TextureBatchesMono[i];
+
             if (!batch.empty()) {
-                for (uint32_t j = i; j < min(m_AtlasMono->getPages(), i + 16); j++) {
-                    m_AtlasMono->getTextureAt(j)->bind(j % 16);
+                uint32_t textures = min(m_AtlasMono->getPages(), textureOffset + Texture2D::getTextureSlots());
+                textures %= Texture2D::getTextureSlots();
+                for (uint32_t j = 0; j < textures; j++) {
+                    m_AtlasMono->getTextureAt(textureOffset + j)->bind(j);
                 }
+                textureOffset += Texture2D::getTextureSlots();
 
                 batch.draw();
             }
         }
 
-        for (uint32_t i = 0; i < m_AtlasRGB->getPages(); i += Texture2D::getTextureSlots()) {
-            auto &batch = m_TextureBatchesRGB[i / 16];
+        textureOffset = 0;
+        for (uint32_t i = 0; i < m_TextureBatchesRGB.size(); i += Texture2D::getTextureSlots()) {
+            auto &batch = m_TextureBatchesRGB[i];
+
             if (!batch.empty()) {
-                for (uint32_t j = i; j < min(m_AtlasRGB->getPages(), i + 16); j++) {
-                    m_AtlasRGB->getTextureAt(j)->bind(j % 16);
+                uint32_t textures = min(m_AtlasRGB->getPages(), textureOffset + Texture2D::getTextureSlots());
+                textures %= Texture2D::getTextureSlots();
+                for (uint32_t j = 0; j < textures; j++) {
+                    m_AtlasRGB->getTextureAt(textureOffset + j)->bind(j);
                 }
+                textureOffset += Texture2D::getTextureSlots();
 
                 batch.draw();
             }
         }
 
-        for (uint32_t i = 0; i < m_AtlasRGBA->getPages(); i += Texture2D::getTextureSlots()) {
-            auto &batch = m_TextureBatchesRGBA[i / 16];
+        textureOffset = 0;
+        for (uint32_t i = 0; i < m_TextureBatchesRGBA.size(); i += Texture2D::getTextureSlots()) {
+            auto &batch = m_TextureBatchesRGBA[i];
+
             if (!batch.empty()) {
-                for (uint32_t j = i; j < min(m_AtlasRGBA->getPages(), i + 16); j++) {
-                    m_AtlasRGBA->getTextureAt(j)->bind(j % 16);
+                uint32_t textures = min(m_AtlasRGBA->getPages(), textureOffset + Texture2D::getTextureSlots());
+                textures %= Texture2D::getTextureSlots();
+                for (uint32_t j = 0; j < textures; j++) {
+                    m_AtlasRGBA->getTextureAt(textureOffset + j)->bind(j);
                 }
+                textureOffset += Texture2D::getTextureSlots();
 
                 batch.draw();
             }

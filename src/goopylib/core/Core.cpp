@@ -15,6 +15,8 @@
 
 #endif
 
+#include "src/config.h"
+
 #if (GP_LOG_CORE != true) and (GP_LOG_CORE <= GP_LOGGING_LEVEL)
 #undef GP_LOGGING_LEVEL
 #define GP_LOGGING_LEVEL GP_LOG_CORE

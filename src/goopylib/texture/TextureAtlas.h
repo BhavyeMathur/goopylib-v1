@@ -38,7 +38,7 @@ namespace gp {
 
         GPAPI TextureCoords add(const Ref<Bitmap> &bitmap, bool allowRotation = true);
 
-        GPAPI std::vector<TextureCoords> add(const std::vector<Bitmap *> &bitmaps,
+        GPAPI std::vector<TextureCoords> add(const std::vector<Ref<Bitmap>> &bitmaps,
                                              bool allowRotation = true,
                                              const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 
