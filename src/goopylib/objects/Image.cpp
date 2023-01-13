@@ -22,7 +22,7 @@
 // Core Methods
 namespace gp {
     Image::Image(const char *path, Point position)
-            : TexturedRectangle(path, {-0.5, -0.5}, {0.5,  0.5}),
+            : TexturedRectangle(path, {-0.5, -0.5}, {0.5, 0.5}),
               m_Path(path) {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}))", path, position.x, position.y);
 
@@ -43,7 +43,7 @@ namespace gp {
     }
 
     Image::Image(const char *path, Point position, float width, float height)
-            : TexturedRectangle(path, {-0.5, -0.5}, {0.5,  0.5}),
+            : TexturedRectangle(path, {-0.5, -0.5}, {0.5, 0.5}),
               m_Path(path) {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}), {3}, {4})", path, position.x, position.y, width, height);
 
@@ -68,7 +68,7 @@ namespace gp {
         return m_Path;
     }
 
-    Bitmap Image::getBitmap() const {
-        return {m_Path};
+    Ref<Bitmap> Image::getBitmap() const {
+        return Bitmap::create(m_Path);
     }
 }

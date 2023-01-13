@@ -10,6 +10,9 @@ uniform sampler2D Texture[16];
 out vec4 FragColor;
 
 void main() {
-    FragColor = Color * texture(Texture[TexSlot], TexCoord);
+    vec2 TextureSize = textureSize(Texture[TexSlot], 0);
+    vec2 ScaledTexCoord = TexCoord / TextureSize;
+
+    FragColor = Color * texture(Texture[TexSlot], ScaledTexCoord);
 }
 )"";

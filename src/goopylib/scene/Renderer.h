@@ -5,6 +5,7 @@
 #include "Batch.h"
 #include "Camera.h"
 #include "src/goopylib/objects/Vertex.h"
+#include "src/goopylib/texture/TextureAtlas.h"
 
 
 namespace gp {
@@ -26,17 +27,15 @@ namespace gp {
 
     class Bitmap;
 
-
-    struct TextureData {
-        Ref<Texture2D> texture;
-        uint32_t index;
-    };
+    class TextureAtlas;
 
     class Renderer {
 
         friend class Window;
 
     public:
+        GPAPI ~Renderer();
+
         GPAPI void init();
 
         GPAPI void destroy(uint32_t ID);
@@ -60,8 +59,10 @@ namespace gp {
         Batch<SolidVertex> m_TriangleBatch;
         Batch<SolidVertex> m_QuadBatch;
         Batch<EllipseVertex> m_EllipseBatch;
-        std::vector<Batch<TextureVertex>> m_TexturedQuadBatches;
-        std::vector<Batch<TextureVertex>> m_GlyphBatches;
+        std::vector<Batch<TextureVertex>> m_TextureBatchesMono;
+        std::vector<Batch<TextureVertex>> m_TextureBatchesRGB;
+        std::vector<Batch<TextureVertex>> m_TextureBatchesRGBA;
+//        std::vector<Batch<TextureVertex>> m_GlyphBatches;
 
         std::unordered_map<uint32_t, BatchBase *> m_ToBatch;
 
@@ -71,11 +72,13 @@ namespace gp {
         Ref<Shader> m_TextBitmapShader;
         Ref<Shader> m_TextSDFShader;
 
+        TextureAtlas* m_AtlasMono;
+        TextureAtlas* m_AtlasRGB;
+        TextureAtlas* m_AtlasRGBA;
+        std::unordered_map<std::string, TextureCoords> m_TexturesCache;
+
         Camera m_Camera;
         Ref<UniformBuffer> m_ShaderUniform;
-
-        std::vector<Ref<Texture2D>> m_Textures;
-        std::unordered_map<std::string, TextureData> m_TexturesCache;
 
         Renderer(float width, float height);
 
@@ -89,8 +92,6 @@ namespace gp {
 
         void _createTexturedBuffer();
 
-        uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);
-
-        void _bindTextureBatch(uint32_t offset);
+        void _cacheTexture(const std::string &name, const Ref<Bitmap> &bitmap);
     };
 }

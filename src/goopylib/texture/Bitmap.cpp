@@ -67,4 +67,12 @@ namespace gp {
     void Bitmap::saveBitmap(const std::string &filepath) const {
         stbi_write_bmp(filepath.c_str(), (int32_t) m_Width, (int32_t) m_Height, 1, m_Data);
     }
+
+    Ref<Bitmap> Bitmap::create(const char *filepath) {
+        return Ref<Bitmap>(new Bitmap(filepath));
+    }
+
+    Ref<Bitmap> Bitmap::create(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data) {
+        return Ref<Bitmap>(new Bitmap(width, height, channels, data));
+    }
 }

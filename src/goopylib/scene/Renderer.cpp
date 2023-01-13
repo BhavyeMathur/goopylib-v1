@@ -74,6 +74,10 @@ namespace gp {
         Texture2D::init();
         TextureAtlas::init();
 
+        m_AtlasMono = new TextureAtlas(1);
+        m_AtlasRGB = new TextureAtlas(3);
+        m_AtlasRGBA = new TextureAtlas(4);
+
         GP_CORE_TRACE("Rendering::init() initializing Solid Shader");
         m_SolidShader = CreateRef<Shader>(solidVertexShader, solidFragmentShader);
 
@@ -106,6 +110,12 @@ namespace gp {
         m_TextureShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
         m_TextBitmapShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
         m_TextSDFShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+    }
+
+    Renderer::~Renderer() {
+        delete m_AtlasMono;
+        delete m_AtlasRGB;
+        delete m_AtlasRGBA;
     }
 
     void Renderer::_createLineBuffer() {
@@ -162,31 +172,33 @@ namespace gp {
     }
 
     void Renderer::_createTexturedBuffer() {
-        GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating TexturedQuad buffer");
+        GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating Textured buffer");
+
+        BufferLayout layout = {{ShaderDataType::Float2, "position"},
+                               {ShaderDataType::Float4, "color"},
+                               {ShaderDataType::Float2, "texCoord"},
+                               {ShaderDataType::Int,    "texSlot"},};
 
         auto VAO = Ref<VertexArray>(new VertexArray());
         auto VBO = Ref<VertexBuffer>(new VertexBuffer());
-
-        VBO->setLayout({{ShaderDataType::Float2, "position"},
-                        {ShaderDataType::Float4, "color"},
-                        {ShaderDataType::Float2, "texCoord"},
-                        {ShaderDataType::Int,    "texSlot"},});
+        VBO->setLayout(layout);
         VAO->setVertexBuffer(VBO);
 
-        m_TexturedQuadBatches.emplace_back(VAO, 6, 4);
-
-        GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating Glyph buffer");
+        m_TextureBatchesMono.emplace_back(VAO, 6, 4);
 
         VAO = Ref<VertexArray>(new VertexArray());
         VBO = Ref<VertexBuffer>(new VertexBuffer());
-
-        VBO->setLayout({{ShaderDataType::Float2, "position"},
-                        {ShaderDataType::Float4, "color"},
-                        {ShaderDataType::Float2, "texCoord"},
-                        {ShaderDataType::Int,    "texSlot"},});
+        VBO->setLayout(layout);
         VAO->setVertexBuffer(VBO);
 
-        m_GlyphBatches.emplace_back(VAO, 6, 4);
+        m_TextureBatchesRGB.emplace_back(VAO, 6, 4);
+
+        VAO = Ref<VertexArray>(new VertexArray());
+        VBO = Ref<VertexBuffer>(new VertexBuffer());
+        VBO->setLayout(layout);
+        VAO->setVertexBuffer(VBO);
+
+        m_TextureBatchesRGBA.emplace_back(VAO, 6, 4);
     }
 
     void Renderer::destroy(uint32_t ID) {
@@ -197,17 +209,12 @@ namespace gp {
         SolidVertex vertices[2] = {{object->m_Points[0], object->m_V1},
                                    {object->m_Points[1], object->m_V2}};
 
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-        }
-
         if (m_LineBatch.contains(object->getID())) {
-            m_LineBatch.updateObject(object->getID(), vertices);
+            m_LineBatch.updateObject(object->getID(), vertices, object->isHidden());
             return 0;
         }
         else {
-            uint32_t ID = m_LineBatch.newObject(vertices);
+            uint32_t ID = m_LineBatch.newObject(vertices, object->isHidden());
             m_ToBatch.insert({ID, &m_LineBatch});
             return ID;
         }
@@ -218,18 +225,12 @@ namespace gp {
                                    {object->m_Points[1], object->m_V2},
                                    {object->m_Points[2], object->m_V3}};
 
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-            vertices[2].attrib.color.alpha = 0;
-        }
-
         if (m_TriangleBatch.contains(object->getID())) {
-            m_TriangleBatch.updateObject(object->getID(), vertices);
+            m_TriangleBatch.updateObject(object->getID(), vertices, object->isHidden());
             return 0;
         }
         else {
-            uint32_t ID = m_TriangleBatch.newObject(vertices);
+            uint32_t ID = m_TriangleBatch.newObject(vertices, object->isHidden());
             m_ToBatch.insert({ID, &m_TriangleBatch});
             return ID;
         }
@@ -241,19 +242,12 @@ namespace gp {
                                    {object->m_Points[2], object->m_V3},
                                    {object->m_Points[3], object->m_V4}};
 
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-            vertices[2].attrib.color.alpha = 0;
-            vertices[3].attrib.color.alpha = 0;
-        }
-
         if (m_QuadBatch.contains(object->getID())) {
-            m_QuadBatch.updateObject(object->getID(), vertices);
+            m_QuadBatch.updateObject(object->getID(), vertices, object->isHidden());
             return 0;
         }
         else {
-            uint32_t ID = m_QuadBatch.newObject(vertices);
+            uint32_t ID = m_QuadBatch.newObject(vertices, object->isHidden());
             m_ToBatch.insert({ID, &m_QuadBatch});
             return ID;
         }
@@ -265,124 +259,115 @@ namespace gp {
                                      {object->m_Points[2], object->m_V3},
                                      {object->m_Points[3], object->m_V4}};
 
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-            vertices[2].attrib.color.alpha = 0;
-            vertices[3].attrib.color.alpha = 0;
-        }
-
         if (m_EllipseBatch.contains(object->getID())) {
-            m_EllipseBatch.updateObject(object->getID(), vertices);
+            m_EllipseBatch.updateObject(object->getID(), vertices, object->isHidden());
             return 0;
         }
         else {
-            uint32_t ID = m_EllipseBatch.newObject(vertices);
+            uint32_t ID = m_EllipseBatch.newObject(vertices, object->isHidden());
             m_ToBatch.insert({ID, &m_EllipseBatch});
             return ID;
         }
     }
 
     uint32_t Renderer::drawTexturedQuad(TexturedQuad *object) {
-        uint32_t texIndex, texSlot;
         if (m_TexturesCache.find(object->getTextureName()) == m_TexturesCache.end()) {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->getTextureName());
-
-            auto bitmap = object->getBitmap();
-            texIndex = _cacheTexture(object->getTextureName(), bitmap);
-            texSlot = texIndex % 16;
-
-            if (texSlot == 0) {
-                _createTexturedBuffer();
-            }
-        }
-        else {
-            GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - using cached texture '{0}'", object->getTextureName());
-            texIndex = m_TexturesCache[object->getTextureName()].index;
-            texSlot = texIndex % 16;
+            _cacheTexture(object->getTextureName(), object->getBitmap());
         }
 
-        GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - texIndex={0}, texSlot={1}", texIndex, texSlot);
+        TextureCoords texCoords = m_TexturesCache[object->getTextureName()];
+        uint32_t texSlot = texCoords.page % Texture2D::getTextureSlots();
+        uint32_t batchIndex = texCoords.page / Texture2D::getTextureSlots();
 
         object->m_T1.texSlot = texSlot;
         object->m_T2.texSlot = texSlot;
         object->m_T3.texSlot = texSlot;
         object->m_T4.texSlot = texSlot;
 
-        uint32_t batch = texIndex / Texture2D::getTextureSlots();
+        object->m_T1.texCoord = {texCoords.p1.x, texCoords.p2.y};
+        object->m_T2.texCoord = {texCoords.p2.x, texCoords.p2.y};
+        object->m_T3.texCoord = {texCoords.p2.x, texCoords.p1.y};
+        object->m_T4.texCoord = {texCoords.p1.x, texCoords.p1.y};
 
         TextureVertex vertices[4] = {{object->m_Points[0], object->m_V1, object->m_T1},
                                      {object->m_Points[1], object->m_V2, object->m_T2},
                                      {object->m_Points[2], object->m_V3, object->m_T3},
                                      {object->m_Points[3], object->m_V4, object->m_T4}};
 
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-            vertices[2].attrib.color.alpha = 0;
-            vertices[3].attrib.color.alpha = 0;
+        Batch<TextureVertex> *batch;
+        switch (texCoords.texture->getChannels()) {
+            case 1:
+                batch = &m_TextureBatchesMono[batchIndex];
+                break;
+
+            case 3:
+                batch = &m_TextureBatchesRGB[batchIndex];
+                break;
+
+            case 4:
+                batch = &m_TextureBatchesRGBA[batchIndex];
+                break;
+
+            default:
+                GP_VALUE_ERROR("Renderer::drawTexturedQuad() invalid channels ({0}) in bitmap",
+                               texCoords.texture->getChannels());
+                return -1;
         }
 
-        if (m_TexturedQuadBatches[batch].contains(object->getID())) {
-            m_TexturedQuadBatches[batch].updateObject(object->getID(), vertices);
+        if (batch->contains(object->getID())) {
+            batch->updateObject(object->getID(), vertices, object->isHidden());
             return 0;
         }
         else {
-            uint32_t ID = m_TexturedQuadBatches[batch].newObject(vertices);
-            m_ToBatch.insert({ID, &m_TexturedQuadBatches[batch]});
+            uint32_t ID = batch->newObject(vertices, object->isHidden());
+            m_ToBatch.insert({ID, batch});
             return ID;
         }
     }
 
     uint32_t Renderer::drawGlyph(TexturedQuad *object) {
-        uint32_t texIndex, texSlot;
-        if (m_TexturesCache.find(object->getTextureName()) == m_TexturesCache.end()) {
-            GP_CORE_TRACE("gp::Renderer::drawGlyph() - no cached texture '{0}'", object->getTextureName());
-
-            auto bitmap = object->getBitmap();
-            texIndex = _cacheTexture(object->getTextureName(), bitmap);
-            texSlot = texIndex % 16;
-
-            if (texSlot == 0) {
-                _createTexturedBuffer();
-            }
-        }
-        else {
-            GP_CORE_TRACE("gp::Renderer::drawGlyph() - using cached texture '{0}'", object->getTextureName());
-            texIndex = m_TexturesCache[object->getTextureName()].index;
-            texSlot = texIndex % 16;
-        }
-
-        GP_CORE_TRACE("gp::Renderer::drawGlyph() - texIndex={0}, texSlot={1}", texIndex, texSlot);
-
-        object->m_T1.texSlot = texSlot;
-        object->m_T2.texSlot = texSlot;
-        object->m_T3.texSlot = texSlot;
-        object->m_T4.texSlot = texSlot;
-
-        uint32_t batch = texIndex / Texture2D::getTextureSlots();
-
-        TextureVertex vertices[4] = {{object->m_Points[0], object->m_V1, object->m_T1},
-                                     {object->m_Points[1], object->m_V2, object->m_T2},
-                                     {object->m_Points[2], object->m_V3, object->m_T3},
-                                     {object->m_Points[3], object->m_V4, object->m_T4}};
-
-        if (object->isHidden()) {
-            vertices[0].attrib.color.alpha = 0;
-            vertices[1].attrib.color.alpha = 0;
-            vertices[2].attrib.color.alpha = 0;
-            vertices[3].attrib.color.alpha = 0;
-        }
-
-        if (m_GlyphBatches[batch].contains(object->getID())) {
-            m_GlyphBatches[batch].updateObject(object->getID(), vertices);
-            return 0;
-        }
-        else {
-            uint32_t ID = m_GlyphBatches[batch].newObject(vertices);
-            m_ToBatch.insert({ID, &m_GlyphBatches[batch]});
-            return ID;
-        }
+        //        uint32_t texIndex, texSlot;
+        //        if (m_TexturesCache.find(object->getTextureName()) == m_TexturesCache.end()) {
+        //            GP_CORE_TRACE("gp::Renderer::drawGlyph() - no cached texture '{0}'", object->getTextureName());
+        //
+        //            auto bitmap = object->getBitmap();
+        //            texIndex = _cacheTexture(object->getTextureName(), bitmap);
+        //            texSlot = texIndex % 16;
+        //
+        //            if (texSlot == 0) {
+        //                _createTexturedBuffer();
+        //            }
+        //        }
+        //        else {
+        //            GP_CORE_TRACE("gp::Renderer::drawGlyph() - using cached texture '{0}'", object->getTextureName());
+        //            texIndex = m_TexturesCache[object->getTextureName()].index;
+        //            texSlot = texIndex % 16;
+        //        }
+        //
+        //        GP_CORE_TRACE("gp::Renderer::drawGlyph() - texIndex={0}, texSlot={1}", texIndex, texSlot);
+        //
+        //        object->m_T1.texSlot = texSlot;
+        //        object->m_T2.texSlot = texSlot;
+        //        object->m_T3.texSlot = texSlot;
+        //        object->m_T4.texSlot = texSlot;
+        //
+        //        uint32_t batch = texIndex / Texture2D::getTextureSlots();
+        //
+        //        TextureVertex vertices[4] = {{object->m_Points[0], object->m_V1, object->m_T1},
+        //                                     {object->m_Points[1], object->m_V2, object->m_T2},
+        //                                     {object->m_Points[2], object->m_V3, object->m_T3},
+        //                                     {object->m_Points[3], object->m_V4, object->m_T4}};
+        //
+        //        if (m_GlyphBatches[batch].contains(object->getID())) {
+        //            m_GlyphBatches[batch].updateObject(object->getID(), vertices, object->isHidden());
+        //            return 0;
+        //        }
+        //        else {
+        //            uint32_t ID = m_GlyphBatches[batch].newObject(vertices, object->isHidden());
+        //            m_ToBatch.insert({ID, &m_GlyphBatches[batch]});
+        //            return ID;
+        //        }
     }
 
     void Renderer::flush() {
@@ -403,46 +388,69 @@ namespace gp {
             m_EllipseBatch.draw();
         }
 
-        uint32_t textureSlotOffset = 0;
-        for (uint32_t i = 0; i < m_TexturedQuadBatches.size(); i++) {
-            _bindTextureBatch(textureSlotOffset);
-            textureSlotOffset += Texture2D::getTextureSlots();
+        m_TextureShader->bind();
 
-            if (!m_TexturedQuadBatches[i].empty()) {
-                m_TextureShader->bind();
+        for (uint32_t i = 0; i < m_AtlasMono->getPages(); i += Texture2D::getTextureSlots()) {
+            auto &batch = m_TextureBatchesMono[i / 16];
+            if (!batch.empty()) {
+                for (uint32_t j = i; j < min(m_AtlasMono->getPages(), i + 16); j++) {
+                    m_AtlasMono->getTextureAt(j)->bind(j % 16);
+                }
 
-                auto &batch = m_TexturedQuadBatches[i];
                 batch.draw();
             }
+        }
 
-            if (!m_GlyphBatches[i].empty()) {
-                m_TextSDFShader->bind();
+        for (uint32_t i = 0; i < m_AtlasRGB->getPages(); i += Texture2D::getTextureSlots()) {
+            auto &batch = m_TextureBatchesRGB[i / 16];
+            if (!batch.empty()) {
+                for (uint32_t j = i; j < min(m_AtlasRGB->getPages(), i + 16); j++) {
+                    m_AtlasRGB->getTextureAt(j)->bind(j % 16);
+                }
 
-                auto &batch = m_GlyphBatches[i];
+                batch.draw();
+            }
+        }
+
+        for (uint32_t i = 0; i < m_AtlasRGBA->getPages(); i += Texture2D::getTextureSlots()) {
+            auto &batch = m_TextureBatchesRGBA[i / 16];
+            if (!batch.empty()) {
+                for (uint32_t j = i; j < min(m_AtlasRGBA->getPages(), i + 16); j++) {
+                    m_AtlasRGBA->getTextureAt(j)->bind(j % 16);
+                }
+
                 batch.draw();
             }
         }
     }
 
-    uint32_t Renderer::_cacheTexture(const std::string &name, const Bitmap &bitmap) {
+    void Renderer::_cacheTexture(const std::string &name, const Ref<Bitmap> &bitmap) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
-        auto texture = Ref<Texture2D>(new Texture2D(bitmap));
-        uint32_t texIndex = m_Textures.size();
+        TextureCoords texCoords;
+        switch (bitmap->getChannels()) {
+            case 1:  // Monochrome
+                texCoords = m_AtlasMono->add(bitmap);
+                m_AtlasMono->createTextureAtlas();
+                break;
 
-        m_TexturesCache.insert({name, {texture, texIndex}});
-        m_Textures.push_back(texture);
+            case 3:  // RGB
+                texCoords = m_AtlasRGB->add(bitmap);
+                m_AtlasRGB->createTextureAtlas();
+                break;
 
-        return texIndex;
-    }
+            case 4:  // RGBA
+                texCoords = m_AtlasRGBA->add(bitmap);
+                m_AtlasRGBA->createTextureAtlas();
+                break;
 
-    void Renderer::_bindTextureBatch(uint32_t offset) {
-        uint32_t
-                textures = min(offset + Texture2D::getTextureSlots(), (uint32_t)
-                m_Textures.size());
+            default:
+                GP_VALUE_ERROR("Renderer::_cacheTexture() invalid channels ({0}) in bitmap", bitmap->getChannels());
+        }
 
-        for (uint32_t i = offset; i < textures; i++) {
-            m_Textures[i]->bind(i % Texture2D::getTextureSlots());
+        m_TexturesCache.insert({name, texCoords});
+        if (texCoords.page % Texture2D::getTextureSlots() == 0) {
+            _createTexturedBuffer();
         }
     }
 }

@@ -61,8 +61,8 @@ namespace gp {
         }
     }
 
-    Texture2D::Texture2D(const Bitmap &bitmap)
-    : Texture2D(bitmap.getWidth(), bitmap.getHeight(), bitmap.getChannels(), bitmap.getData()) {
+    Texture2D::Texture2D(const Ref<Bitmap> &bitmap)
+    : Texture2D(bitmap->getWidth(), bitmap->getHeight(), bitmap->getChannels(), bitmap->getData()) {
 
     }
 
@@ -106,7 +106,7 @@ namespace gp {
     }
 
     void Texture2D::setData(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, const uint8_t *data) {
-        int32_t internalFormat = _getInternalFormat();
+        uint32_t dataFormat = _getDataFormat();
 
         bind(0);
         glTexSubImage2D(GL_TEXTURE_2D,
@@ -115,9 +115,21 @@ namespace gp {
                         (int32_t) yOffset,
                         (int32_t) width,
                         (int32_t) height,
-                        internalFormat,
+                        dataFormat,
                         GL_UNSIGNED_BYTE,
                         data);
+    }
+
+    uint32_t Texture2D::getWidth() const {
+        return m_Width;
+    }
+
+    uint32_t Texture2D::getHeight() const {
+        return m_Height;
+    }
+
+    uint32_t Texture2D::getChannels() const {
+        return m_Channels;
     }
 
     uint32_t Texture2D::_getDataFormat() const {

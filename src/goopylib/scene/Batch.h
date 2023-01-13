@@ -60,7 +60,7 @@ namespace gp {
                     : BatchBase(VAO, indicesPerObject, verticesPerObject) {
             }
 
-            uint32_t newObject(T *vertices) {
+            uint32_t newObject(T *vertices, bool hide) {
                 uint32_t ID = nextObjectID;
                 nextObjectID++;
 
@@ -68,6 +68,9 @@ namespace gp {
                 m_ToIndex.insert({ID, index});
 
                 for (uint32_t i = 0; i < m_VerticesPerObject; i++) {
+                    if (hide) {
+                        vertices[i].attrib.color.alpha = 0;
+                    }
                     m_Vertices.push_back(vertices[i]);
                 }
 
@@ -79,10 +82,13 @@ namespace gp {
                 return ID;
             }
 
-            void updateObject(uint32_t ID, T *vertices) {
+            void updateObject(uint32_t ID, T *vertices, bool hide) {
                 uint32_t index = m_ToIndex[ID];
 
                 for (uint32_t i = 0; i < m_VerticesPerObject; i++) {
+                    if (hide) {
+                        vertices[i].attrib.color.alpha = 0;
+                    }
                     m_Vertices[i + index] = vertices[i];
                 }
 

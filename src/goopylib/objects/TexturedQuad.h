@@ -38,13 +38,15 @@ namespace gp {
 
         GPAPI void setBitmap(const Ref<Bitmap>& bitmap);
 
-        GPAPI virtual Bitmap getBitmap() const;
+        GPAPI virtual Ref<Bitmap> getBitmap() const;
 
     protected:
         TextureVertexAttrib m_T1 = {{0, 1}};
         TextureVertexAttrib m_T2 = {{1, 1}};
         TextureVertexAttrib m_T3 = {{1, 0}};
         TextureVertexAttrib m_T4 = {{0, 0}};
+
+        uint32_t m_Channels = 0;
 
     private:
         std::string m_Texture;

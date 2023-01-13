@@ -30,7 +30,7 @@ namespace gp::packing {
         friend class shelf::ScoredFit;
 
     public:
-        GPAPI Item(float width, float height);
+        GPAPI Item(float width, float height, void *userObject = nullptr);
 
         GPAPI bool isVertical() const;
 
@@ -56,14 +56,21 @@ namespace gp::packing {
 
         GPAPI float getShortSide() const;
 
+        GPAPI uint32_t getPage() const;
+
+        GPAPI void* getUserObject() const;
+
     private:
         float m_Width;
         float m_Height;
         const float m_LongSide;
         const float m_ShortSide;
 
+        void *m_UserObject;
+
         float m_X = -1;
         float m_Y = -1;
+        uint32_t m_Page = 0;
 
         bool m_Rotated = false;
 
@@ -81,7 +88,7 @@ namespace gp::packing {
         friend class shelf::Shelf;
 
     public:
-        GPAPI virtual float packingRatio() const;
+        GPAPI virtual float packingRatio(bool countFullBin) const;
 
         GPAPI std::vector<Ref<Item>> items() const;
 
@@ -89,17 +96,16 @@ namespace gp::packing {
 
         GPAPI float getHeight() const;
 
-    protected:
-        const uint32_t m_ID;
+        GPAPI uint32_t getPage() const;
 
+    protected:
         const float m_Width;
         const float m_Height;
+        const uint32_t m_Page;
 
         std::vector<Ref<Item>> m_Items;
 
-        static uint32_t s_Bins;
-
-        Bin(float width, float height);
+        Bin(float width, float height, uint32_t page);
 
         void add(const Ref<Item>& item);
     };

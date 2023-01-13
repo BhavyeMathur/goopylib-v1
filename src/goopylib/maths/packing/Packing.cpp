@@ -23,12 +23,13 @@
 namespace gp::packing {
     uint32_t Item::s_Items = 0;
 
-    Item::Item(float width, float height)
+    Item::Item(float width, float height, void *userObject)
             : m_Width(width),
               m_Height(height),
               m_ID(Item::s_Items),
               m_LongSide(max(width, height)),
-              m_ShortSide(min(width, height)) {
+              m_ShortSide(min(width, height)),
+              m_UserObject(userObject) {
         Item::s_Items++;
     }
 
@@ -87,24 +88,30 @@ namespace gp::packing {
     float Item::getShortSide() const {
         return m_ShortSide;
     }
+
+    uint32_t Item::getPage() const {
+        return m_Page;
+    }
+
+    void *Item::getUserObject() const {
+        return m_UserObject;
+    }
 }
 
 // Bin Class
 namespace gp::packing {
-    uint32_t Bin::s_Bins = 0;
-
-    Bin::Bin(float width, float height)
+    Bin::Bin(float width, float height, uint32_t page)
             : m_Width(width),
               m_Height(height),
-              m_ID(Bin::s_Bins) {
-        Bin::s_Bins++;
+              m_Page(page) {
+        GP_CORE_INFO("gp::packing::Bin::Bin(width={0}, height={1}, page={2})", width, height, page);
     }
 
-    void Bin::add(const Ref<Item>& item) {
+    void Bin::add(const Ref<Item> &item) {
         m_Items.push_back(item);
     }
 
-    float Bin::packingRatio() const {
+    float Bin::packingRatio(bool countFullBin) const {
         float sum = 0;
         for (auto &item: m_Items) {
             sum += item->area();
@@ -114,8 +121,7 @@ namespace gp::packing {
     }
 
     std::vector<Ref<Item>> Bin::items() const {
-        std::vector<Ref<Item>> copy = m_Items;
-        return copy;
+        return m_Items;
     }
 
     float Bin::getWidth() const {
@@ -125,16 +131,20 @@ namespace gp::packing {
     float Bin::getHeight() const {
         return m_Height;
     }
+
+    uint32_t Bin::getPage() const {
+        return m_Page;
+    }
 }
 
 // Sorting Algorithms
 namespace gp::packing {
     SortingFunction sortByWidth(bool descending) {
         auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return item1->getWidth() > item2->getWidth();
                        } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return item1->getWidth() < item2->getWidth();
                        };
 
@@ -146,10 +156,10 @@ namespace gp::packing {
 
     SortingFunction sortByHeight(bool descending) {
         auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return item1->getHeight() > item2->getHeight();
                        } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return item1->getHeight() < item2->getHeight();
                        };
 
@@ -161,11 +171,11 @@ namespace gp::packing {
 
     SortingFunction sortByPerimeter(bool descending) {
         auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return (item1->getWidth() + item1->getHeight()) >
                                   (item2->getWidth() + item2->getHeight());
                        } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return (item1->getWidth() + item1->getHeight()) <
                                   (item2->getWidth() + item2->getHeight());
                        };
@@ -178,11 +188,11 @@ namespace gp::packing {
 
     SortingFunction sortByArea(bool descending) {
         auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return (item1->getWidth() * item1->getHeight()) >
                                   (item2->getWidth() * item2->getHeight());
                        } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return (item1->getWidth() * item1->getHeight()) <
                                   (item2->getWidth() * item2->getHeight());
                        };
@@ -195,11 +205,11 @@ namespace gp::packing {
 
     SortingFunction sortBySideRatio(bool descending) {
         auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return (item1->getWidth() / item1->getHeight()) >
                                   (item2->getWidth() / item2->getHeight());
                        } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return (item1->getWidth() / item1->getHeight()) <
                                   (item2->getWidth() / item2->getHeight());
                        };
@@ -212,10 +222,10 @@ namespace gp::packing {
 
     SortingFunction sortByLongSide(bool descending) {
         auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return item1->getLongSide() > item2->getLongSide();
                        } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return item1->getLongSide() < item2->getLongSide();
                        };
 
@@ -227,10 +237,10 @@ namespace gp::packing {
 
     SortingFunction sortByShortSide(bool descending) {
         auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return item1->getShortSide() > item2->getShortSide();
                        } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
+                       [](const Ref<Item> &item1, const Ref<Item> &item2) {
                            return item1->getShortSide() < item2->getShortSide();
                        };
 

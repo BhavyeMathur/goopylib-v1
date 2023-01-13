@@ -24,6 +24,12 @@ namespace gp {
 
         GPAPI void setData(uint32_t width, uint32_t height, uint32_t channels, const uint8_t *data = nullptr);
 
+        GPAPI uint32_t getWidth() const;
+
+        GPAPI uint32_t getHeight() const;
+
+        GPAPI uint32_t getChannels() const;
+
         GPAPI static void unbind();
 
         GPAPI static void init();
@@ -41,7 +47,7 @@ namespace gp {
 
         Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
 
-        Texture2D(const Bitmap& bitmap);
+        Texture2D(const Ref<Bitmap> &bitmap);
 
         uint32_t _getDataFormat() const;
 

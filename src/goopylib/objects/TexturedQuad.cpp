@@ -43,11 +43,12 @@ namespace gp {
     }
 
     void TexturedQuad::setBitmap(const Ref<Bitmap> &bitmap) {
+        m_Channels = bitmap->getChannels();
         m_Bitmap = bitmap;
     }
 
-    Bitmap TexturedQuad::getBitmap() const {
-        return *m_Bitmap;
+    Ref<Bitmap> TexturedQuad::getBitmap() const {
+        return m_Bitmap;
     }
 
     uint32_t TexturedQuad::_draw(Window *window) {

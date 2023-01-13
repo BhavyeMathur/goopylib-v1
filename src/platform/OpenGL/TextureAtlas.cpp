@@ -16,7 +16,7 @@
 
 namespace gp {
     void TextureAtlas::init() {
-        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &s_Width);
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, (int32_t *) &s_Width);
         s_Height = s_Width;
     }
 }

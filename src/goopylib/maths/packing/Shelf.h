@@ -87,7 +87,7 @@ namespace gp::packing {
         friend class shelf::ScoredFit;
 
     public:
-        GPAPI float packingRatio() const override;
+        GPAPI float packingRatio(bool countFullBin) const override;
 
         GPAPI Ref<shelf::Shelf> getOpenShelf();
 
@@ -101,7 +101,7 @@ namespace gp::packing {
         Ref<shelf::Shelf> m_OpenShelf;
         std::vector<Ref<shelf::Shelf>> m_Shelves;
 
-        ShelvedBin(float width, float height);
+        ShelvedBin(float width, float height, uint32_t page);
 
         Ref<shelf::Shelf> addShelf();
     };
@@ -128,6 +128,8 @@ namespace gp::packing::shelf {
                              const SortingFunction &sortingFunction = sortByLongSide(true));
 
         std::vector<Ref<ShelvedBin>> bins() const;
+
+        uint32_t getPages() const;
 
     protected:
         ShelfPackingAlgorithm(float binWidth, float binHeight);

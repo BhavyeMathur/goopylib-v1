@@ -6,10 +6,6 @@
 namespace gp {
     class Bitmap {
 
-        friend class Font;
-
-        friend class Image;
-
     public:
         GPAPI ~Bitmap();
 
@@ -22,6 +18,10 @@ namespace gp {
         GPAPI uint8_t* getData() const;
 
         GPAPI void saveBitmap(const std::string& filepath) const;
+
+        GPAPI static Ref<Bitmap> create(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
+
+        GPAPI static Ref<Bitmap> create(const char* filepath);
 
     private:
         uint32_t m_Width = 0;

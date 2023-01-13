@@ -95,7 +95,7 @@ namespace gp {
         std::copy(m_FTFace->glyph->bitmap.buffer,
                   m_FTFace->glyph->bitmap.buffer + xSize * ySize, bitmapBuffer);
 
-        auto bitmap = Ref<Bitmap>(new Bitmap(xSize, ySize, 1, bitmapBuffer));
+        auto bitmap = Bitmap::create(xSize, ySize, 1, bitmapBuffer);
         m_Glyphs.insert({codepoint, new Glyph(
                 (float) m_FTFace->glyph->advance.x,
                 (float) m_FTFace->glyph->advance.y,
