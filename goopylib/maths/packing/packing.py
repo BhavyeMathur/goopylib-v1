@@ -280,6 +280,7 @@ class PackingAlgorithm:
 # Sorting Algorithms
 
 
+# pylint: disable-next=unsubscriptable-object
 SortingFunction = Callable[[list[Item]], list[Item]]
 
 
