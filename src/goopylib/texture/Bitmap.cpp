@@ -43,6 +43,7 @@ namespace gp {
     }
 
     Bitmap::~Bitmap() {
+        GP_CORE_INFO("Bitmap::~Bitmap()");
         if (m_IsImage) {
             stbi_image_free(m_Data);
         }

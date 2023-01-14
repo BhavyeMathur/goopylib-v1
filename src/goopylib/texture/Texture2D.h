@@ -24,13 +24,15 @@ namespace gp {
                            uint32_t height,
                            const uint8_t *data);
 
-        GPAPI void setData(uint32_t width, uint32_t height, uint32_t channels, const uint8_t *data = nullptr);
+        GPAPI void setData(uint32_t width, uint32_t height, const uint8_t *data = nullptr);
 
         GPAPI uint32_t getWidth() const;
 
         GPAPI uint32_t getHeight() const;
 
         GPAPI uint32_t getChannels() const;
+
+        GPAPI void setTextureType(TextureType value);
 
         GPAPI TextureType getTextureType() const;
 
@@ -57,7 +59,5 @@ namespace gp {
         uint32_t _getDataFormat() const;
 
         int32_t _getInternalFormat() const;
-
-        void _setTextureType();
     };
 }

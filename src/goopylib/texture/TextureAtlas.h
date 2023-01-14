@@ -12,15 +12,17 @@ namespace gp {
         Point p1;
         Point p2;
         uint32_t page = 0;
+        bool rotated;
 
         Ref<Texture2D> texture;
 
         TextureCoords() = default;
 
-        TextureCoords(Point p1, Point p2, uint32_t page, Ref<Texture2D> texture)
+        TextureCoords(Point p1, Point p2, uint32_t page, bool rotated, Ref<Texture2D> texture)
                 : p1(p1),
                   p2(p2),
                   page(page),
+                  rotated(rotated),
                   texture(std::move(texture)) {
         }
     };

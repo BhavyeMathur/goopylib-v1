@@ -39,7 +39,7 @@ namespace gp {
         GLenum dataFormat = _getDataFormat();
         int32_t internalFormat = _getInternalFormat();
 
-        _setTextureType();
+        m_TextureType = getTextureTypeFromChannels(m_Channels);
 
         glGenTextures(1, &m_RendererID);
         bind(0);
@@ -88,15 +88,12 @@ namespace gp {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    void Texture2D::setData(uint32_t width, uint32_t height, uint32_t channels, const uint8_t *data) {
-        m_Channels = channels;
+    void Texture2D::setData(uint32_t width, uint32_t height, const uint8_t *data) {
         m_Width = width;
         m_Height = height;
 
         GLenum dataFormat = _getDataFormat();
         int32_t internalFormat = _getInternalFormat();
-
-        _setTextureType();
 
         bind(0);
         glTexImage2D(GL_TEXTURE_2D,

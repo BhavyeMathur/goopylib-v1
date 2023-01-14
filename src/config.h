@@ -19,7 +19,7 @@
  */
 
 #if __DEBUG__
-#define GP_LOGGING_LEVEL 7
+#define GP_LOGGING_LEVEL 3
 #else
 #define GP_LOGGING_LEVEL 3
 #endif
@@ -65,8 +65,8 @@
 #define GP_VALUE_CHECK_W3CX11 true
 #define GP_LOG_W3CX11 3
 
-#define GP_LOG_COLOR_CONVERSIONS true
 #define GP_VALUE_CHECK_COLOR_CONVERSIONS true
+#define GP_LOG_COLOR_CONVERSIONS 3
 
 // scene
 

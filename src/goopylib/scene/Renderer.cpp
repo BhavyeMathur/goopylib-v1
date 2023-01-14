@@ -277,17 +277,25 @@ namespace gp {
         object->m_T3.texSlot = texSlot;
         object->m_T4.texSlot = texSlot;
 
-        object->m_T1.texCoord = {texCoords.p1.x, texCoords.p2.y};
-        object->m_T2.texCoord = {texCoords.p2.x, texCoords.p2.y};
-        object->m_T3.texCoord = {texCoords.p2.x, texCoords.p1.y};
-        object->m_T4.texCoord = {texCoords.p1.x, texCoords.p1.y};
+        if (texCoords.rotated) {
+            object->m_T3.texCoord = {texCoords.p1.x, texCoords.p2.y};
+            object->m_T2.texCoord = {texCoords.p2.x, texCoords.p2.y};
+            object->m_T1.texCoord = {texCoords.p2.x, texCoords.p1.y};
+            object->m_T4.texCoord = {texCoords.p1.x, texCoords.p1.y};
+        }
+        else {
+            object->m_T1.texCoord = {texCoords.p1.x, texCoords.p2.y};
+            object->m_T2.texCoord = {texCoords.p2.x, texCoords.p2.y};
+            object->m_T3.texCoord = {texCoords.p2.x, texCoords.p1.y};
+            object->m_T4.texCoord = {texCoords.p1.x, texCoords.p1.y};
+        }
 
         TextureVertex vertices[4] = {{object->m_Points[0], object->m_V1, object->m_T1},
                                      {object->m_Points[1], object->m_V2, object->m_T2},
                                      {object->m_Points[2], object->m_V3, object->m_T3},
                                      {object->m_Points[3], object->m_V4, object->m_T4}};
 
-        Batch<TextureVertex> *batch;
+        Batch <TextureVertex> *batch;
         switch (texCoords.texture->getTextureType()) {
             case TextureType::Greyscale:
                 batch = &m_TextureBatches[GP_GREYSCALE].batches[batchIndex];
@@ -401,7 +409,7 @@ namespace gp {
         }
     }
 
-    void Renderer::_cacheTexture(const std::string &name, const Ref<Bitmap> &bitmap) {
+    void Renderer::_cacheTexture(const std::string &name, const Ref <Bitmap> &bitmap) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
         TextureAtlas *atlas;

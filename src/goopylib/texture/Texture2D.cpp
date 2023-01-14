@@ -20,20 +20,11 @@ namespace gp {
         return m_Channels;
     }
 
-    TextureType Texture2D::getTextureType() const {
-        return m_TextureType;
+    void Texture2D::setTextureType(TextureType value) {
+        m_TextureType = value;
     }
 
-    void Texture2D::_setTextureType() {
-        switch (m_Channels) {
-            case 1:
-                m_TextureType = TextureType::Greyscale;
-
-            case 3:
-                m_TextureType = TextureType::RGB;
-
-            case 4:
-                m_TextureType = TextureType::RGBA;
-        }
+    TextureType Texture2D::getTextureType() const {
+        return m_TextureType;
     }
 }

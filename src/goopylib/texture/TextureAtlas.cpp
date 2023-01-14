@@ -59,14 +59,13 @@ namespace gp {
     TextureCoords TextureAtlas::add(const Ref<Bitmap> &bitmap, bool allowRotation) {
         m_Bitmaps.push_back(bitmap);
         auto item = Ref<packing::Item>(
-                new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight(), (void *) bitmap->getData()));
+                new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight(), (void *) bitmap.get()));
 
         m_PackingAlgorithm->pack(item, allowRotation);
         while (m_Textures.size() < m_PackingAlgorithm->getPages()) {
             m_Textures.push_back(Ref<Texture2D>(new Texture2D(0, 0, m_Channels)));
         }
-
-        return {item->p1(), item->p2(), item->getPage(), m_Textures[item->getPage()]};
+        return {item->p1(), item->p2(), item->getPage(), item->isRotated(), m_Textures[item->getPage()]};
     }
 
     std::vector<TextureCoords> TextureAtlas::add(const std::vector<Ref<Bitmap>> &bitmaps,
@@ -82,7 +81,7 @@ namespace gp {
             items.emplace_back(
                     new packing::Item((float) bitmap->getWidth(),
                                       (float) bitmap->getHeight(),
-                                      (void *) bitmap->getData()));
+                                      (void *) bitmap.get()));
         }
 
         m_PackingAlgorithm->packAll(items, allowRotation, sorting);
@@ -91,7 +90,11 @@ namespace gp {
         }
 
         for (const auto &item: items) {
-            texCoords.emplace_back(item->p1(), item->p2(), item->getPage(), m_Textures[item->getPage()]);
+            texCoords.emplace_back(item->p1(),
+                                   item->p2(),
+                                   item->getPage(),
+                                   item->isRotated(),
+                                   m_Textures[item->getPage()]);
         }
 
         return texCoords;
@@ -116,14 +119,31 @@ namespace gp {
             }
 
             auto texture = m_Textures[i];
-            texture->setData(width, height, m_Channels);
+            texture->setData(width, height);
 
             for (const auto &item: bin->items()) {
-                texture->setData((uint32_t) item->getX(),
-                                 (uint32_t) item->getY(),
-                                 (uint32_t) item->getWidth(),
-                                 (uint32_t) item->getHeight(),
-                                 (uint8_t *) item->getUserObject());
+                auto bitmap = ((Bitmap *) item->getUserObject());
+                auto bitmapWidth = (uint32_t) item->getWidth();
+                auto bitmapHeight = (uint32_t) item->getHeight();
+                uint8_t *data = bitmap->getData();
+
+                if (item->isRotated()) {
+                    auto *transposedData = new uint8_t[m_Channels * bitmapWidth * bitmapHeight];
+
+                    uint32_t index = 0;
+                    for (uint32_t y = 0; y < bitmapWidth; y++) {
+                        for (uint32_t x = 0; x < bitmapHeight; x++) {
+                            for (uint32_t z = 0; z < m_Channels; z++) {
+                                transposedData[m_Channels * (x * bitmapWidth + y) + z] = data[index++];
+                            }
+                        }
+                    }
+
+                    data = transposedData;
+                }
+
+                texture->setData((uint32_t) item->getX(), (uint32_t) item->getY(),
+                                 bitmapWidth, bitmapHeight, data);
             }
             i++;
         }
