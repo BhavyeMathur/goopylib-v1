@@ -26,9 +26,12 @@ namespace gp {
             : m_PackingAlgorithm(packingAlgorithm),
               m_Channels(channels) {
         GP_CORE_INFO("gp::TextureAtlas::TextureAtlas(channels={0})", channels);
+
         if (m_PackingAlgorithm == nullptr) {
             m_PackingAlgorithm = new packing::shelf::BestAreaFit((float) s_Width, (float) s_Height);
         }
+
+        m_TextureType = getTextureTypeFromChannels(m_Channels);
     }
 
     TextureAtlas::~TextureAtlas() {
@@ -42,6 +45,14 @@ namespace gp {
 
     uint32_t TextureAtlas::getPages() const {
         return m_PackingAlgorithm->getPages();
+    }
+
+    void TextureAtlas::setTextureType(TextureType value) {
+        m_TextureType = value;
+    }
+
+    TextureType TextureAtlas::getTextureType() const {
+        return m_TextureType;
     }
 
     Ref<Texture2D> TextureAtlas::getTextureAt(uint32_t index) const {
@@ -63,7 +74,9 @@ namespace gp {
 
         m_PackingAlgorithm->pack(item, allowRotation);
         while (m_Textures.size() < m_PackingAlgorithm->getPages()) {
-            m_Textures.push_back(Ref<Texture2D>(new Texture2D(0, 0, m_Channels)));
+            auto texture = new Texture2D(0, 0, m_Channels);
+            texture->setTextureType(m_TextureType);
+            m_Textures.push_back(Ref<Texture2D>(texture));
         }
         return {item->p1(), item->p2(), item->getPage(), item->isRotated(), m_Textures[item->getPage()]};
     }
@@ -86,7 +99,9 @@ namespace gp {
 
         m_PackingAlgorithm->packAll(items, allowRotation, sorting);
         while (m_Textures.size() < m_PackingAlgorithm->getPages()) {
-            m_Textures.push_back(Ref<Texture2D>(new Texture2D(0, 0, m_Channels)));
+            auto texture = new Texture2D(0, 0, m_Channels);
+            texture->setTextureType(m_TextureType);
+            m_Textures.push_back(Ref<Texture2D>(texture));
         }
 
         for (const auto &item: items) {

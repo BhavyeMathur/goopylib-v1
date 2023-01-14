@@ -96,6 +96,7 @@ namespace gp {
                   m_FTFace->glyph->bitmap.buffer + xSize * ySize, bitmapBuffer);
 
         auto bitmap = Bitmap::create(xSize, ySize, 1, bitmapBuffer);
+        bitmap->setTextureType(TextureType::FontSDF);
         m_Glyphs.insert({codepoint, new Glyph(
                 (float) m_FTFace->glyph->advance.x,
                 (float) m_FTFace->glyph->advance.y,

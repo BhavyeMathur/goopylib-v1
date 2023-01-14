@@ -1,13 +1,16 @@
 #pragma once
 
+#include "gp.h"
+
 
 namespace gp {
     enum class TextureType {
         None = 0,
-        Monochrome,
         Greyscale,
         RGB,
         RGBA,
-        SDF
+        FontSDF,
     };
+
+    TextureType getTextureTypeFromChannels(uint32_t channels);
 }

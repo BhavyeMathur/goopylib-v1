@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gp.h"
+#include "TextureType.h"
 
 
 namespace gp {
@@ -17,6 +18,10 @@ namespace gp {
 
         GPAPI uint8_t* getData() const;
 
+        GPAPI void setTextureType(TextureType value);
+
+        GPAPI TextureType getTextureType() const;
+
         GPAPI void saveBitmap(const std::string& filepath) const;
 
         GPAPI static Ref<Bitmap> create(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
@@ -31,10 +36,12 @@ namespace gp {
         uint8_t *m_Data = nullptr;
         bool m_IsImage = false;
 
-        Bitmap() = default;
+        TextureType m_TextureType = TextureType::None;
 
-        Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
+        GPAPI Bitmap() = default;
 
-        Bitmap(const char* filepath);
+        GPAPI Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
+
+        GPAPI Bitmap(const char* filepath);
     };
 }

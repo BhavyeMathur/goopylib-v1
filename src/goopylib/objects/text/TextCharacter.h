@@ -19,8 +19,5 @@ namespace gp {
 
     public:
         GPAPI TextCharacter(const Ref<Font>& font, const Glyph &glyph, Point position);
-
-    private:
-        GPAPI uint32_t _draw(Window *window) override;
     };
 }

@@ -32,6 +32,7 @@
 #define GP_GREYSCALE 0
 #define GP_RGB 1
 #define GP_RGBA 2
+#define GP_FONT_SDF 3
 
 const char *solidVertexShader =
 
@@ -57,11 +58,11 @@ const char *textureFragmentShader =
 
         #include "src/goopylib/shader/texture.frag"
 
-const char *textBitmapFragmentShader =
+const char *fontBitmapFragmentShader =
 
         #include "src/goopylib/shader/text.frag"
 
-const char *textSDFFragmentShader =
+const char *fontSDFFragmentShader =
 
         #include "src/goopylib/shader/textSDF.frag"
 
@@ -78,10 +79,6 @@ namespace gp {
         Texture2D::init();
         TextureAtlas::init();
 
-        m_TextureBatches = {{{new TextureAtlas(1)},
-                             {new TextureAtlas(3)},
-                             {new TextureAtlas(4)}}};
-
         GP_CORE_TRACE("Rendering::init() initializing Solid Shader");
         m_SolidShader = CreateRef<Shader>(solidVertexShader, solidFragmentShader);
 
@@ -93,33 +90,39 @@ namespace gp {
         _createQuadBuffer();
         _createEllipseBuffer();
 
-        GP_CORE_TRACE("Rendering::init() initializing text Shaders");
-        m_TextBitmapShader = CreateRef<Shader>(textureVertexShader, textBitmapFragmentShader);
-        m_TextSDFShader = CreateRef<Shader>(textureVertexShader, textSDFFragmentShader);
+        GP_CORE_TRACE("Rendering::init() initializing texture Shaders");
+        auto textureShader = CreateRef<Shader>(textureVertexShader, textureFragmentShader);
+        // auto fontBitmapShader = CreateRef<Shader>(textureVertexShader, textBitmapFragmentShader);
+        auto fontSDFShader = CreateRef<Shader>(textureVertexShader, fontSDFFragmentShader);
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
-        m_TextBitmapShader->set("Texture", Texture2D::getTextureSlots(), samplers);
-        m_TextSDFShader->set("Texture", Texture2D::getTextureSlots(), samplers);
 
-        GP_CORE_TRACE("Rendering::init() initializing texture Shader");
-        m_TextureShader = CreateRef<Shader>(textureVertexShader, textureFragmentShader);
-        m_TextureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
+        // fontBitmapShader->set("Texture", Texture2D::getTextureSlots(), samplers);
+        fontSDFShader->set("Texture", Texture2D::getTextureSlots(), samplers);
+        textureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
 
         m_ShaderUniform = Ref<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1);
 
         m_SolidShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
         m_EllipseShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_TextureShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_TextBitmapShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_TextSDFShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        textureShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        // fontBitmapShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        fontSDFShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+
+        m_TextureBatches[GP_GREYSCALE] = {new TextureAtlas(1), textureShader};
+        m_TextureBatches[GP_RGB] = {new TextureAtlas(3), textureShader};
+        m_TextureBatches[GP_RGBA] = {new TextureAtlas(4), textureShader};
+        m_TextureBatches[GP_FONT_SDF] = {new TextureAtlas(1), fontSDFShader};
+        m_TextureBatches[GP_FONT_SDF].atlas->setTextureType(TextureType::FontSDF);
     }
 
     Renderer::~Renderer() {
         delete m_TextureBatches[GP_GREYSCALE].atlas;
         delete m_TextureBatches[GP_RGB].atlas;
         delete m_TextureBatches[GP_RGBA].atlas;
+        delete m_TextureBatches[GP_FONT_SDF].atlas;
     }
 
     void Renderer::_createLineBuffer() {
@@ -309,6 +312,10 @@ namespace gp {
                 batch = &m_TextureBatches[GP_RGBA].batches[batchIndex];
                 break;
 
+            case TextureType::FontSDF:
+                batch = &m_TextureBatches[GP_FONT_SDF].batches[batchIndex];
+                break;
+
             default:
                 GP_VALUE_ERROR("Renderer::drawTexturedQuad() invalid texture type");
                 return -1;
@@ -323,50 +330,6 @@ namespace gp {
             m_ToBatch.insert({ID, batch});
             return ID;
         }
-    }
-
-    uint32_t Renderer::drawGlyph(TexturedQuad *object) {
-        //        uint32_t texIndex, texSlot;
-        //        if (m_TexturesCache.find(object->getTextureName()) == m_TexturesCache.end()) {
-        //            GP_CORE_TRACE("gp::Renderer::drawGlyph() - no cached texture '{0}'", object->getTextureName());
-        //
-        //            auto bitmap = object->getBitmap();
-        //            texIndex = _cacheTexture(object->getTextureName(), bitmap);
-        //            texSlot = texIndex % 16;
-        //
-        //            if (texSlot == 0) {
-        //                _createTexturedBuffer();
-        //            }
-        //        }
-        //        else {
-        //            GP_CORE_TRACE("gp::Renderer::drawGlyph() - using cached texture '{0}'", object->getTextureName());
-        //            texIndex = m_TexturesCache[object->getTextureName()].index;
-        //            texSlot = texIndex % 16;
-        //        }
-        //
-        //        GP_CORE_TRACE("gp::Renderer::drawGlyph() - texIndex={0}, texSlot={1}", texIndex, texSlot);
-        //
-        //        object->m_T1.texSlot = texSlot;
-        //        object->m_T2.texSlot = texSlot;
-        //        object->m_T3.texSlot = texSlot;
-        //        object->m_T4.texSlot = texSlot;
-        //
-        //        uint32_t batch = texIndex / Texture2D::getTextureSlots();
-        //
-        //        TextureVertex vertices[4] = {{object->m_Points[0], object->m_V1, object->m_T1},
-        //                                     {object->m_Points[1], object->m_V2, object->m_T2},
-        //                                     {object->m_Points[2], object->m_V3, object->m_T3},
-        //                                     {object->m_Points[3], object->m_V4, object->m_T4}};
-        //
-        //        if (m_GlyphBatches[batch].contains(object->getID())) {
-        //            m_GlyphBatches[batch].updateObject(object->getID(), vertices, object->isHidden());
-        //            return 0;
-        //        }
-        //        else {
-        //            uint32_t ID = m_GlyphBatches[batch].newObject(vertices, object->isHidden());
-        //            m_ToBatch.insert({ID, &m_GlyphBatches[batch]});
-        //            return ID;
-        //        }
     }
 
     void Renderer::flush() {
@@ -387,14 +350,15 @@ namespace gp {
             m_EllipseBatch.draw();
         }
 
-        m_TextureShader->bind();
-
         for (auto &textureBatch: m_TextureBatches) {
+
             uint32_t textureOffset = 0;
             for (uint32_t i = 0; i < textureBatch.batches.size(); i += Texture2D::getTextureSlots()) {
                 auto &batch = textureBatch.batches[i];
 
                 if (!batch.empty()) {
+                    textureBatch.shader->bind();
+
                     uint32_t textures = min(textureBatch.atlas->getPages(),
                                             textureOffset + Texture2D::getTextureSlots());
                     textures %= Texture2D::getTextureSlots();
@@ -413,17 +377,21 @@ namespace gp {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
         TextureAtlas *atlas;
-        switch (bitmap->getChannels()) {
-            case 1:
+        switch (bitmap->getTextureType()) {
+            case TextureType::Greyscale:
                 atlas = m_TextureBatches[GP_GREYSCALE].atlas;
                 break;
 
-            case 3:
+            case TextureType::RGB:
                 atlas = m_TextureBatches[GP_RGB].atlas;
                 break;
 
-            case 4:
+            case TextureType::RGBA:
                 atlas = m_TextureBatches[GP_RGBA].atlas;
+                break;
+
+            case TextureType::FontSDF:
+                atlas = m_TextureBatches[GP_FONT_SDF].atlas;
                 break;
 
             default:

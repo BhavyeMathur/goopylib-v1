@@ -15,8 +15,4 @@ namespace gp {
                                  position.y + glyph.yOffset}) {
         setColor({0, 0, 0});
     }
-
-    uint32_t TextCharacter::_draw(Window *window) {
-        return window->m_Renderer.drawGlyph(const_cast<TextCharacter *>(this));
-    }
 }

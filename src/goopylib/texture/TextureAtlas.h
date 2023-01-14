@@ -1,8 +1,7 @@
 #pragma once
 
-#include <utility>
-
 #include "gp.h"
+#include "TextureType.h"
 #include "src/goopylib/maths/packing/Shelf.h"
 
 namespace gp {
@@ -50,6 +49,10 @@ namespace gp {
 
         GPAPI uint32_t getPages() const;
 
+        GPAPI void setTextureType(TextureType value);
+
+        GPAPI TextureType getTextureType() const;
+
         GPAPI Ref<Texture2D> getTextureAt(uint32_t index) const;
 
         GPAPI static void init();
@@ -62,6 +65,8 @@ namespace gp {
         packing::shelf::ShelfPackingAlgorithm *m_PackingAlgorithm = nullptr;
         std::vector<Ref<Texture2D>> m_Textures;
         std::vector<Ref<Bitmap>> m_Bitmaps;
+
+        TextureType m_TextureType = TextureType::None;
 
         uint32_t m_Channels = 0;
         static uint32_t s_Width;

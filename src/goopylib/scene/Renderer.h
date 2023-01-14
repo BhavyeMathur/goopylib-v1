@@ -31,6 +31,7 @@ namespace gp {
 
     struct TextureBatch {
         TextureAtlas *atlas;
+        Ref<Shader> shader;
         std::vector<Batch<TextureVertex>> batches;
     };
 
@@ -55,8 +56,6 @@ namespace gp {
 
         GPAPI uint32_t drawTexturedQuad(TexturedQuad *object);
 
-        GPAPI uint32_t drawGlyph(TexturedQuad *object);
-
         GPAPI void flush();
 
     private:
@@ -65,15 +64,12 @@ namespace gp {
         Batch<SolidVertex> m_QuadBatch;
         Batch<EllipseVertex> m_EllipseBatch;
 
-        std::array<TextureBatch, 3> m_TextureBatches;
+        std::array<TextureBatch, 4> m_TextureBatches;
 
         std::unordered_map<uint32_t, BatchBase *> m_ToBatch;
 
         Ref<Shader> m_SolidShader;
         Ref<Shader> m_EllipseShader;
-        Ref<Shader> m_TextureShader;
-        Ref<Shader> m_TextBitmapShader;
-        Ref<Shader> m_TextSDFShader;
 
         std::unordered_map<std::string, TextureCoords> m_TexturesCache;
 

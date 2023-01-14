@@ -26,7 +26,8 @@ namespace gp {
               m_Height(height),
               m_Channels(channels),
               m_Data(data) {
-
+        GP_CORE_INFO("gp::Bitmap::Bitmap(width={0}, height={1}, channels={2})", width, height, channels);
+        m_TextureType = getTextureTypeFromChannels(m_Channels);
     }
 
     Bitmap::Bitmap(const char *filepath)
@@ -40,6 +41,8 @@ namespace gp {
             GP_FILENOTFOUND_ERROR("gp::Bitmap::Bitmap() file '{0}' not found", filepath);
         }
         #endif
+
+        m_TextureType = getTextureTypeFromChannels(m_Channels);
     }
 
     Bitmap::~Bitmap() {
@@ -63,6 +66,14 @@ namespace gp {
 
     uint8_t *Bitmap::getData() const {
         return m_Data;
+    }
+
+    void Bitmap::setTextureType(TextureType value) {
+        m_TextureType = value;
+    }
+
+    TextureType Bitmap::getTextureType() const {
+        return m_TextureType;
     }
 
     void Bitmap::saveBitmap(const std::string &filepath) const {
