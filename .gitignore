@@ -34,6 +34,6 @@ venv*/
 
 wheelhouse/
 main.py
-main.cpp
+# main.cpp
 empty.cpp
 *.log
