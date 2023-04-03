@@ -28,54 +28,54 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_SOURCE_DIR}/src/vendor)
-include_directories(${CMAKE_SOURCE_DIR}/src/vendor/freetype)
+include_directories(${CMAKE_SOURCE_DIR}/vendor)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/freetype)
 
 link_directories(${CMAKE_SOURCE_DIR})
-link_directories(${CMAKE_SOURCE_DIR}/src/vendor/freetype)
-link_directories(${CMAKE_SOURCE_DIR}/src/vendor/harfbuzz)
+link_directories(${CMAKE_SOURCE_DIR}/vendor/freetype)
+link_directories(${CMAKE_SOURCE_DIR}/vendor/harfbuzz)
 
 if (WIN32)
-    set(WINDOWS_SOURCES src/vendor/glad/glad.c)
+    set(WINDOWS_SOURCES vendor/glad/glad.c)
 
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         if (MSVC_TOOLSET_VERSION EQUAL 110)
-            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2012)
+            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2012)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
 
         elseif (MSVC_TOOLSET_VERSION EQUAL 120)
-            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2013)
+            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2013)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
 
         elseif (MSVC_TOOLSET_VERSION EQUAL 140)
-            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2015)
+            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2015)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
 
         elseif (MSVC_TOOLSET_VERSION EQUAL 141)
-            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2017)
+            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2017)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
 
         elseif (MSVC_TOOLSET_VERSION EQUAL 142)
-            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2019)
+            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2019)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
             set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
 
         elseif (MSVC_TOOLSET_VERSION EQUAL 143)
-            link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-vc2022)
+            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2022)
 
             set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
@@ -83,7 +83,7 @@ if (WIN32)
 
         endif ()
     else ()
-        link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/win64/lib-mingw-w64)
+        link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-mingw-w64)
 
         set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-mingw-64)
         set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-mingw-64)
@@ -92,7 +92,7 @@ if (WIN32)
     endif ()
 
 elseif (APPLE)
-    link_directories(${CMAKE_SOURCE_DIR}/src/vendor/GLFW/macos)
+    link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/macos)
 
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
@@ -152,8 +152,8 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/VertexArray.cpp
             src/goopylib/shader/Shader.cpp
 
-            src/vendor/stb/stb_image.cpp
-            src/vendor/stb/stb_image_write.cpp)
+            vendor/stb/stb_image.cpp
+            vendor/stb/stb_image_write.cpp)
 
 target_link_libraries(goopylib glfw3)
 target_link_libraries(goopylib harfbuzz)

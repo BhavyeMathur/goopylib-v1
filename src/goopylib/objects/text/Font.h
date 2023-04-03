@@ -3,7 +3,7 @@
 #include "Glyph.h"
 
 #include "freetype/ft2build.h"
-#include "src/vendor/freetype/freetype/freetype.h"
+#include "freetype/freetype.h"
 
 #include "harfbuzz/hb.h"
 
