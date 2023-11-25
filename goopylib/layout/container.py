@@ -208,7 +208,7 @@ class Container:
         self._border = _LRTB(0, 0, 0, 0)
         self._padding = _LRTB(0, 0, 0, 0)
 
-        self._layout: layout_modes._LayoutMode = FlexLayout("nowrap", "start", "start")
+        self._layout: layout_modes._LayoutMode = Flex("nowrap", "start", "start")
 
         self._children: list[Container] = []
         self._parent: None | Container = Container._context_tree[-1] if len(Container._context_tree) > 0 else None
