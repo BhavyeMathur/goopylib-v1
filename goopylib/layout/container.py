@@ -177,6 +177,9 @@ class Dimension(int):
 
     @staticmethod
     def _parse_dimension(dim: str | int) -> tuple[int, _UNITS]:
+        if dim == "auto":
+            return 0, "auto"
+        
         if isinstance(dim, int):
             return dim, "px"
 

@@ -9,6 +9,12 @@ class _LayoutMode:
     def process_children(self, container: Container, x: int, y: int) -> None:
         raise NotImplemented()
 
+    def get_auto_width(self, container: Container) -> int:
+        raise NotImplemented()
+
+    def get_auto_height(self, container: Container) -> int:
+        raise NotImplemented()
+
 
 class FlexLayout(_LayoutMode):
     def __init__(self,
@@ -60,6 +66,8 @@ class FlexLayout(_LayoutMode):
             container.padding_box.width = container.width
         elif container.width.unit == "%":
             container.padding_box.width = container.width / 100 * container.parent.content_box.width
+        elif container.width.unit == "auto":
+            container.padding_box.width = container.padding.x + self.get_auto_width(container)
         else:
             raise ValueError()
 
@@ -67,6 +75,8 @@ class FlexLayout(_LayoutMode):
             container.padding_box.height = container.height
         elif container.height.unit == "%":
             container.padding_box.height = container.height / 100 * container.parent.content_box.height
+        elif container.height.unit == "auto":
+            container.padding_box.height = container.padding.y + self.get_auto_height(container)
         else:
             raise ValueError()
 
@@ -86,6 +96,16 @@ class FlexLayout(_LayoutMode):
         for child in (container.children[::-1] if self._wrap == "reverse" else container.children):
             child.layout.process_children(child, x, y)
             x = child.margin_box.x2
+
+    def get_auto_width(self, container: Container) -> int:
+        return sum(child.width + child.border.x + child.margin.x
+                   if child.width.unit == "px" else child.layout.get_auto_width(container)
+                   for child in container.children)
+
+    def get_auto_height(self, container: Container) -> int:
+        return max(child.width + child.border.x + child.margin.x
+                   if child.width.unit == "px" else child.layout.get_auto_width(container)
+                   for child in container.children)
 
 
 class FlowLayout(_LayoutMode):
