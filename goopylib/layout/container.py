@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Union, Literal, get_args
 
 
-_UNITS = Literal["px", "%"]
+_UNITS = Literal["px", "%", "auto"]
 _LRTB_SETTER_TYPE = Union[int, tuple[int], tuple[int, int], tuple[int, int, int], tuple[int, int, int, int]]
 
 
@@ -168,13 +168,13 @@ class _Box:
         self._y2 += dy
 
 
-class Dimension(int):
-    def __new__(cls, value) -> int:
-        x = int.__new__(cls, Dimension._parse_dimension(value)[0])
+class _Dimension(int):
+    def __new__(cls, value: int | str) -> int:
+        x = int.__new__(cls, _Dimension._parse_dimension(value)[0])
         return x
 
-    def __init__(self, value):
-        self._dimension, self._unit = Dimension._parse_dimension(value)
+    def __init__(self, value: int | str):
+        self._dimension, self._unit = _Dimension._parse_dimension(value)
         super().__init__()
 
     @property
@@ -201,8 +201,8 @@ class Container:
     _containers: list[Container] = []  # could consider making a dictionary
 
     def __init__(self, width, height, tag: str = "") -> None:
-        self._width = Dimension(width)
-        self._height = Dimension(height)
+        self._width = _Dimension(width)
+        self._height = _Dimension(height)
 
         self._margin = _LRTB(0, 0, 0, 0)
         self._border = _LRTB(0, 0, 0, 0)
@@ -281,20 +281,20 @@ class Container:
         self._border.set_values(value)
 
     @property
-    def width(self) -> Dimension:
+    def width(self) -> _Dimension:
         return self._width
 
     @width.setter
     def width(self, value: int | str) -> None:
-        self._width = Dimension(value)
+        self._width = _Dimension(value)
 
     @property
-    def height(self) -> Dimension:
+    def height(self) -> _Dimension:
         return self._height
 
     @height.setter
     def height(self, value: int | str) -> None:
-        self._height = Dimension(value)
+        self._height = _Dimension(value)
 
     @property
     def tag(self) -> str:
@@ -327,5 +327,5 @@ class Container:
         return tuple(Container._containers)
 
 
-from .layout_modes import *
-import goopylib.layout.layout_modes as layout_modes
+from .flex_layout import *
+import goopylib.layout.layout_mode as layout_modes

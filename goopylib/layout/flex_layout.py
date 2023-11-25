@@ -1,14 +1,13 @@
 from typing import Literal
 
 from .layout_mode import _LayoutMode
-from .layout_mode import *
+from .container import Container
 
 import goopylib.layout.align_offset_funcs as align_offset_funcs
 
-
 _FLEX_WRAP_TYPE = Literal["nowrap", "wrap", "reverse"]
 _FLEX_ALIGN_TYPE = Literal["start", "centre", "end", "space-around", "space-between", "space-evenly"]
-_FLEX_CROSS_ITEM_ALIGN_TYPE = Literal["start", "centre", "end"]
+_FLEX_ITEM_ALIGN_TYPE = Literal["start", "centre", "end"]
 
 
 class FlexLayout(_LayoutMode):
@@ -16,11 +15,11 @@ class FlexLayout(_LayoutMode):
                  wrap: _FLEX_WRAP_TYPE = "nowrap",
                  align: _FLEX_ALIGN_TYPE = "start",
                  cross_align: _FLEX_ALIGN_TYPE = "start",
-                 cross_item_align: _FLEX_CROSS_ITEM_ALIGN_TYPE = "start") -> None:
+                 item_align: _FLEX_ITEM_ALIGN_TYPE = "start") -> None:
         self._wrap = wrap
         self._align = align
         self._cross_align = cross_align
-        self._cross_item_align = cross_item_align
+        self._item_align = item_align
 
     @property
     def wrap(self) -> _FLEX_WRAP_TYPE:
@@ -40,19 +39,19 @@ class FlexLayout(_LayoutMode):
 
     @property
     def cross_align(self) -> _FLEX_ALIGN_TYPE:
-        return self._cross_item_align
+        return self._item_align
 
     @cross_align.setter
     def cross_align(self, value: _FLEX_ALIGN_TYPE):
-        self._cross_item_align = value
+        self._item_align = value
 
     @property
-    def cross_item_align(self) -> _FLEX_ALIGN_TYPE:
-        return self._cross_item_align
+    def item_align(self) -> _FLEX_ALIGN_TYPE:
+        return self._item_align
 
-    @cross_item_align.setter
-    def cross_item_align(self, value: _FLEX_CROSS_ITEM_ALIGN_TYPE):
-        self._cross_item_align = value
+    @item_align.setter
+    def item_align(self, value: _FLEX_ITEM_ALIGN_TYPE):
+        self._item_align = value
 
     def process_children(self, container: Container, x: int, y: int, _only_direct: bool = False) -> None:
         container.margin_box.x1 = x
@@ -125,7 +124,7 @@ class FlexLayout(_LayoutMode):
                     x = container.content_box.x1
                     y += max_child_height
 
-                    self._align_wrap_queue(xspace, max_child_height, wrap_queue)
+                    self._align_row(xspace, max_child_height, wrap_queue)
                     row_containers.append(wrap_queue)
                     wrap_queue = []
 
@@ -142,7 +141,7 @@ class FlexLayout(_LayoutMode):
             max_child_height = max(max_child_height, child.margin_box.height)
             x = child.margin_box.x2
 
-        self._align_wrap_queue(xspace, max_child_height, wrap_queue)
+        self._align_row(xspace, max_child_height, wrap_queue)
 
         row_containers.append(wrap_queue)
         self._vertical_align(yspace - max_child_height, row_containers)
@@ -151,9 +150,9 @@ class FlexLayout(_LayoutMode):
             for child in container.children:
                 child.layout.process_children(child, *child.margin_box.start)
 
-    def _align_wrap_queue(self, whitespace: int, row_height: int, wrap_queue: list[Container]) -> None:
-        self._horizontal_align_row(whitespace, wrap_queue)
-        self._cross_item_align_wrap_queue(row_height, wrap_queue)
+    def _align_row(self, whitespace: int, row_height: int, items: list[Container]) -> None:
+        self._horizontal_align_row(whitespace, items)
+        self._align_items_row(row_height, items)
 
     def _horizontal_align_row(self, whitespace: int, items: list[Container]) -> None:
         if self._align == "start":
@@ -174,24 +173,13 @@ class FlexLayout(_LayoutMode):
             for child in row:
                 child.translate(0, offset(i))
 
-    def _cross_item_align_wrap_queue(self, row_height: int, wrap_queue: list[Container]) -> None:
-        if self._cross_item_align == "start":
+    def _align_items_row(self, row_height: int, items: list[Container]) -> None:
+        if self._item_align == "start":
             return
 
-        if self._cross_item_align == "centre":
-            self._cross_item_align_wrap_queue_centre(row_height, wrap_queue)
-        elif self._cross_item_align == "end":
-            self._cross_item_align_wrap_queue_end(row_height, wrap_queue)
-
-    @staticmethod
-    def _cross_item_align_wrap_queue_centre(row_height: int, wrap_queue: list[Container]):
-        for child in wrap_queue:
-            child.translate(0, (row_height - child.margin_box.height) // 2)
-
-    @staticmethod
-    def _cross_item_align_wrap_queue_end(row_height: int, wrap_queue: list[Container]):
-        for child in wrap_queue:
-            child.translate(0, row_height - child.margin_box.height)
+        offset = align_offset_funcs._get_item_offset(self._item_align, row_height)
+        for child in items:
+            child.translate(0, offset(child.margin_box.height))
 
     def get_auto_width(self, container: Container) -> int:
         if len(container.children) == 0:

@@ -37,3 +37,20 @@ _align_to_offset_func: dict[str, Callable[[int, int], Callable[[int], int]]] = \
      "space-between": _align_space_between_offset,
      "space-evenly":  _align_space_evenly_offset,
      "end":           _align_end_offset}
+
+
+def _get_item_offset(align: str, row_height: int) -> Callable[[int], int]:
+    return _item_align_to_offset_func[align](row_height)
+
+
+def _item_align_centre_offset(row_height: int) -> Callable[[int], int]:
+    return lambda height: (row_height - height) // 2
+
+
+def _item_align_end_offset(row_height: int) -> Callable[[int], int]:
+    return lambda height: (row_height - height) // 2
+
+
+_item_align_to_offset_func: dict[str, Callable[[int], Callable[[int], int]]] = \
+    {"centre": _item_align_centre_offset,
+     "end": _item_align_end_offset}
