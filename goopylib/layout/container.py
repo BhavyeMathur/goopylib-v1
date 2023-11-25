@@ -324,9 +324,13 @@ class Container:
         self.padding_box.translate(dx, dy)
         self.content_box.translate(dx, dy)
 
+    def process(self, x: int = 0, y: int = 0, _only_direct: bool = False):
+        _FlexManager(self, self._flex).process_children(x, y, _only_direct)
+
     @staticmethod
     def get_containers() -> tuple[Container, ...]:
         return tuple(Container._containers)
 
 
-from .flex_layout import *
+from .flex import *
+from .manager import _FlexManager

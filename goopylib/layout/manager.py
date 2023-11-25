@@ -37,7 +37,7 @@ class _FlexManager:
         elif self._div.width.unit == "%":
             self._div.padding_box.width = self._div.width / 100 * self._div.parent.content_box.width
         elif self._div.width.unit == "auto":
-            self._div.padding_box.width = self._div.padding.x + self.get_auto_width(self._div)
+            self._div.padding_box.width = self._div.padding.x + self._get_auto_width(self._div)
         else:
             raise ValueError()
 
@@ -50,7 +50,7 @@ class _FlexManager:
         elif self._div.height.unit == "%":
             self._div.padding_box.height = self._div.height / 100 * self._div.parent.content_box.height
         elif self._div.height.unit == "auto":
-            self._div.padding_box.height = self._div.padding.y + self.get_auto_height(self._div)
+            self._div.padding_box.height = self._div.padding.y + self._get_auto_height(self._div)
         else:
             raise ValueError()
 
@@ -58,9 +58,9 @@ class _FlexManager:
         self._div.border_box.height = self._div.padding_box.height + self._div.border.y
         self._div.margin_box.height = self._div.border_box.height + self._div.margin.y
 
-        self.process_flex_items(_only_direct)
+        self._process_flex_items(_only_direct)
 
-    def process_flex_items(self, _only_direct: bool):
+    def _process_flex_items(self, _only_direct: bool):
         wrap = self._flex._wrap != "nowrap"
         self.__init__(self._div, self._flex)
 
@@ -72,7 +72,7 @@ class _FlexManager:
                 elif child.width.unit == "%":
                     width = (child.width * child.parent.content_box.width) // 100
                 elif child.width.unit == "auto":
-                    width = self.get_auto_width(child)
+                    width = self._get_auto_width(child)
                 else:
                     raise ValueError()
                 width += child.margin.x + child.border.x
@@ -81,7 +81,7 @@ class _FlexManager:
                     self._end_row()
 
             if not _only_direct:
-                child.flex.process_children(self.x, self.y, True)
+                child.process(self.x, self.y, True)
             self.wrap_queue.append(child)
 
             if wrap:
@@ -94,7 +94,7 @@ class _FlexManager:
 
         if not _only_direct:
             for child in self._div.children:
-                child.flex.process_children(*child.margin_box.start)
+                child.process(*child.margin_box.start)
 
     def _end_row(self) -> None:
         self.x = self._div.content_box.x1
@@ -140,17 +140,17 @@ class _FlexManager:
             child.translate(0, offset(child.margin_box.height))
 
     @staticmethod
-    def get_auto_width(container: Container) -> int:
+    def _get_auto_width(container: Container) -> int:
         if len(container.children) == 0:
             return 0
 
         return sum(child.border.x + child.margin.x +
                    (child.width
-                    if child.width.unit == "px" else child.padding.x + _FlexManager.get_auto_width(child))
+                    if child.width.unit == "px" else child.padding.x + _FlexManager._get_auto_width(child))
                    for child in container.children)
 
     @staticmethod
-    def get_auto_height(container: Container) -> int:
+    def _get_auto_height(container: Container) -> int:
         if len(container.children) == 0:
             return 0
 
@@ -167,7 +167,7 @@ class _FlexManager:
                 elif child.width.unit == "%":
                     width = (child.width * child.parent.content_box.width) // 100
                 elif child.width.unit == "auto":
-                    width = _FlexManager.get_auto_width(child)
+                    width = _FlexManager._get_auto_width(child)
                 else:
                     raise ValueError()
 
@@ -179,14 +179,15 @@ class _FlexManager:
 
                 max_row_height = max(max_row_height, child.border.y + child.margin.y
                                      + (child.height if child.height.unit == "px"
-                                        else child.padding.y + _FlexManager.get_auto_height(child)))
+                                        else child.padding.y + _FlexManager._get_auto_height(child)))
 
             return height + max_row_height
 
         return max(child.border.y + child.margin.y +
                    (child.height
-                    if child.height.unit == "px" else child.padding.y + _FlexManager.get_auto_height(child))
+                    if child.height.unit == "px" else child.padding.y + _FlexManager._get_auto_height(child))
                    for child in container.children)
 
 
-from .flex_layout import Flex, Container
+from .flex import Flex
+from .container import Container

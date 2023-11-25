@@ -1,8 +1,6 @@
 from __future__ import annotations
 from typing import Literal
 
-from .container import Container
-
 
 _FLEX_WRAP_TYPE = Literal["nowrap", "wrap", "reverse"]
 _FLEX_ALIGN_TYPE = Literal["start", "centre", "end", "space-around", "space-between", "space-evenly"]
@@ -53,9 +51,3 @@ class Flex:
     @item_align.setter
     def item_align(self, value: _FLEX_ITEM_ALIGN_TYPE):
         self._item_align = value
-
-    def process_children(self, x: int, y: int, _only_direct: bool = False) -> None:
-        _FlexManager(self._container, self).process_children(x, y, _only_direct)
-
-
-from .flex_manager import _FlexManager
