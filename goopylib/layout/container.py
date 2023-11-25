@@ -161,6 +161,12 @@ class _Box:
     def end(self) -> tuple[int, int]:
         return self._x2, self._y2
 
+    def translate(self, dx: int, dy: int) -> None:
+        self._x1 += dx
+        self._x2 += dx
+        self._y1 += dy
+        self._y2 += dy
+
 
 class Dimension(int):
     def __new__(cls, value) -> int:
@@ -309,6 +315,12 @@ class Container:
     @layout.setter
     def layout(self, value: layout_modes._LayoutMode) -> None:
         self._layout = value
+
+    def translate(self, dx: int, dy: int) -> None:
+        self.margin_box.translate(dx, dy)
+        self.border_box.translate(dx, dy)
+        self.padding_box.translate(dx, dy)
+        self.content_box.translate(dx, dy)
 
     @staticmethod
     def get_containers() -> tuple[Container, ...]:
