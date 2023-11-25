@@ -1,9 +1,10 @@
 from __future__ import annotations
 from typing import Literal
 
+import goopylib.layout.align_offset_funcs as align_offset_funcs
+
 _FLEX_WRAP_TYPE = Literal["nowrap", "wrap", "reverse"]
 _FLEX_ALIGN_TYPE = Literal["start", "centre", "end", "space-around", "space-between", "space-evenly"]
-_FLEX_CROSS_ALIGN_TYPE = Literal["start", "centre", "end", "space-around", "space-between", "space-evenly"]
 _FLEX_CROSS_ITEM_ALIGN_TYPE = Literal["start", "centre", "end"]
 
 
@@ -22,9 +23,11 @@ class FlexLayout(_LayoutMode):
     def __init__(self,
                  wrap: _FLEX_WRAP_TYPE = "nowrap",
                  align: _FLEX_ALIGN_TYPE = "start",
+                 cross_align: _FLEX_ALIGN_TYPE = "start",
                  cross_item_align: _FLEX_CROSS_ITEM_ALIGN_TYPE = "start") -> None:
         self._wrap = wrap
         self._align = align
+        self._cross_align = cross_align
         self._cross_item_align = cross_item_align
 
     @property
@@ -44,7 +47,15 @@ class FlexLayout(_LayoutMode):
         self._align = value
 
     @property
-    def cross_item_align(self) -> _FLEX_CROSS_ITEM_ALIGN_TYPE:
+    def cross_align(self) -> _FLEX_ALIGN_TYPE:
+        return self._cross_item_align
+
+    @cross_align.setter
+    def cross_align(self, value: _FLEX_ALIGN_TYPE):
+        self._cross_item_align = value
+
+    @property
+    def cross_item_align(self) -> _FLEX_ALIGN_TYPE:
         return self._cross_item_align
 
     @cross_item_align.setter
@@ -97,10 +108,13 @@ class FlexLayout(_LayoutMode):
         y = container.content_box.y1
 
         max_child_height = 0
+        row_containers = []
+        
         wrap = self._wrap != "nowrap"
         wrap_queue = []
 
-        whitespace = container.content_box.width
+        xspace = container.content_box.width
+        yspace = container.content_box.height
 
         for child in (container.children[::-1] if self._wrap == "reverse" else container.children):
 
@@ -119,9 +133,12 @@ class FlexLayout(_LayoutMode):
                     x = container.content_box.x1
                     y += max_child_height
 
-                    self._align_wrap_queue(whitespace, max_child_height, wrap_queue)
+                    self._align_wrap_queue(xspace, max_child_height, wrap_queue)
+                    row_containers.append(wrap_queue)
+                    wrap_queue = []
 
-                    whitespace = container.content_box.width
+                    xspace = container.content_box.width
+                    yspace -= max_child_height
                     max_child_height = 0
 
             if not _only_direct:
@@ -129,35 +146,41 @@ class FlexLayout(_LayoutMode):
             wrap_queue.append(child)
 
             if wrap:
-                whitespace -= child.margin_box.width
+                xspace -= child.margin_box.width
             max_child_height = max(max_child_height, child.margin_box.height)
             x = child.margin_box.x2
 
-        self._align_wrap_queue(whitespace, max_child_height, wrap_queue)
+        self._align_wrap_queue(xspace, max_child_height, wrap_queue)
+
+        row_containers.append(wrap_queue)
+        self._vertical_align(yspace - max_child_height, row_containers)
 
         if not _only_direct:
             for child in container.children:
                 child.layout.process_children(child, *child.margin_box.start)
 
     def _align_wrap_queue(self, whitespace: int, row_height: int, wrap_queue: list[Container]) -> None:
-        self._horizontal_align_wrap_queue(whitespace, wrap_queue)
+        self._horizontal_align_row(whitespace, wrap_queue)
         self._cross_item_align_wrap_queue(row_height, wrap_queue)
-        wrap_queue.clear()
 
-    def _horizontal_align_wrap_queue(self, whitespace: int, wrap_queue: list[Container]) -> None:
+    def _horizontal_align_row(self, whitespace: int, items: list[Container]) -> None:
         if self._align == "start":
             return
 
-        if self._align == "centre":
-            self._align_wrap_queue_centre(whitespace, wrap_queue)
-        elif self._align == "space-around":
-            self._align_wrap_queue_space_around(whitespace, wrap_queue)
-        elif self._align == "space-between":
-            self._align_wrap_queue_space_between(whitespace, wrap_queue)
-        elif self._align == "space-evenly":
-            self._align_wrap_queue_space_evenly(whitespace, wrap_queue)
-        elif self._align == "end":
-            self._align_wrap_queue_end(whitespace, wrap_queue)
+        offset = align_offset_funcs._get_offset(self._align, whitespace, len(items))
+        for i, child in enumerate(items):
+            child.translate(offset(i), 0)
+
+    def _vertical_align(self, whitespace: int, items: list[list[Container]]) -> None:
+        if whitespace < 1:
+            return
+        if self._cross_align == "start":
+            return
+
+        offset = align_offset_funcs._get_offset(self._cross_align, whitespace, len(items))
+        for i, row in enumerate(items):
+            for child in row:
+                child.translate(0, offset(i))
 
     def _cross_item_align_wrap_queue(self, row_height: int, wrap_queue: list[Container]) -> None:
         if self._cross_item_align == "start":
@@ -177,38 +200,6 @@ class FlexLayout(_LayoutMode):
     def _cross_item_align_wrap_queue_end(row_height: int, wrap_queue: list[Container]):
         for child in wrap_queue:
             child.translate(0, row_height - child.margin_box.height)
-
-    @staticmethod
-    def _align_wrap_queue_centre(whitespace: int, wrap_queue: list[Container]):
-        offset = whitespace // 2
-        for child in wrap_queue:
-            child.translate(offset, 0)
-
-    @staticmethod
-    def _align_wrap_queue_end(whitespace: int, wrap_queue: list[Container]):
-        for child in wrap_queue:
-            child.translate(whitespace, 0)
-
-    @staticmethod
-    def _align_wrap_queue_space_around(whitespace: int, wrap_queue: list[Container]):
-        offset = whitespace / (2 * len(wrap_queue))
-
-        for i, child in enumerate(wrap_queue):
-            child.translate((i * 2 + 1) * offset, 0)
-
-    @staticmethod
-    def _align_wrap_queue_space_between(whitespace: int, wrap_queue: list[Container]):
-        offset = whitespace / (len(wrap_queue) - 1)
-
-        for i, child in enumerate(wrap_queue):
-            child.translate(i * offset, 0)
-
-    @staticmethod
-    def _align_wrap_queue_space_evenly(whitespace: int, wrap_queue: list[Container]):
-        offset = whitespace / (len(wrap_queue) + 1)
-
-        for i, child in enumerate(wrap_queue):
-            child.translate((i + 1) * offset, 0)
 
     def get_auto_width(self, container: Container) -> int:
         if len(container.children) == 0:
