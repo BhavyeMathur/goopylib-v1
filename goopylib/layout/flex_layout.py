@@ -1,22 +1,14 @@
-from __future__ import annotations
 from typing import Literal
 
+from .layout_mode import _LayoutMode
+from .layout_mode import *
+
 import goopylib.layout.align_offset_funcs as align_offset_funcs
+
 
 _FLEX_WRAP_TYPE = Literal["nowrap", "wrap", "reverse"]
 _FLEX_ALIGN_TYPE = Literal["start", "centre", "end", "space-around", "space-between", "space-evenly"]
 _FLEX_CROSS_ITEM_ALIGN_TYPE = Literal["start", "centre", "end"]
-
-
-class _LayoutMode:
-    def process_children(self, container: Container, x: int, y: int, _only_direct: bool = False) -> None:
-        raise NotImplemented()
-
-    def get_auto_width(self, container: Container) -> int:
-        raise NotImplemented()
-
-    def get_auto_height(self, container: Container) -> int:
-        raise NotImplemented()
 
 
 class FlexLayout(_LayoutMode):
@@ -109,7 +101,7 @@ class FlexLayout(_LayoutMode):
 
         max_child_height = 0
         row_containers = []
-        
+
         wrap = self._wrap != "nowrap"
         wrap_queue = []
 
@@ -185,7 +177,7 @@ class FlexLayout(_LayoutMode):
     def _cross_item_align_wrap_queue(self, row_height: int, wrap_queue: list[Container]) -> None:
         if self._cross_item_align == "start":
             return
-        
+
         if self._cross_item_align == "centre":
             self._cross_item_align_wrap_queue_centre(row_height, wrap_queue)
         elif self._cross_item_align == "end":
@@ -218,7 +210,7 @@ class FlexLayout(_LayoutMode):
             height = 0
             max_row_height = 0
             whitespace = container.content_box.width
-            
+
             # TODO - Don't like this repeated code
 
             for child in container.children:
@@ -247,14 +239,3 @@ class FlexLayout(_LayoutMode):
                    (child.height
                     if child.height.unit == "px" else child.padding.y + child.layout.get_auto_height(child))
                    for child in container.children)
-
-
-class FlowLayout(_LayoutMode):
-    def __init__(self) -> None:
-        pass
-
-    def process_children(self, container: Container, x: int, y: int) -> None:
-        pass
-
-
-from .container import Container
