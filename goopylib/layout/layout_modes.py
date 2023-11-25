@@ -71,19 +71,18 @@ class FlexLayout(_LayoutMode):
         else:
             raise ValueError()
 
+        container.content_box.width = container.padding_box.width - container.padding.x
+        container.border_box.width = container.padding_box.width + container.border.x
+        container.margin_box.width = container.border_box.width + container.margin.x
+
         if container.height.unit == "px":
             container.padding_box.height = container.height
         elif container.height.unit == "%":
             container.padding_box.height = container.height / 100 * container.parent.content_box.height
         elif container.height.unit == "auto":
-            print(1, _only_direct)
             container.padding_box.height = container.padding.y + self.get_auto_height(container)
         else:
             raise ValueError()
-
-        container.content_box.width = container.padding_box.width - container.padding.x
-        container.border_box.width = container.padding_box.width + container.border.x
-        container.margin_box.width = container.border_box.width + container.margin.x
 
         container.content_box.height = container.padding_box.height - container.padding.y
         container.border_box.height = container.padding_box.height + container.border.y
@@ -200,8 +199,6 @@ class FlexLayout(_LayoutMode):
             max_row_height = 0
             whitespace = container.content_box.width
 
-            print(container, whitespace)
-
             for child in container.children:
                 if child.width.unit == "px":
                     width = child.width
@@ -213,9 +210,8 @@ class FlexLayout(_LayoutMode):
                     raise ValueError()
 
                 whitespace -= width + child.margin.x + child.border.x
-                # print("\t", whitespace)
                 if whitespace < 0:
-                    whitespace = container.content_box.width
+                    whitespace = container.content_box.width - width
                     height += max_row_height
                     max_row_height = 0
 
@@ -223,8 +219,7 @@ class FlexLayout(_LayoutMode):
                                      + (child.height if child.height.unit == "px"
                                         else child.padding.y + child.layout.get_auto_height(child)))
 
-            print(height)
-            return height
+            return height + max_row_height
 
         return max(child.border.y + child.margin.y +
                    (child.height
