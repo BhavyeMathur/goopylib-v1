@@ -50,6 +50,8 @@ class FlexLayout(_LayoutMode):
         self._cross_align = value
 
     def process_children(self, container: Container, x: int, y: int) -> None:
+        wrap = self._wrap != "nowrap"
+
         container.margin_box.x1 = x
         container.margin_box.y1 = y
 
@@ -93,8 +95,29 @@ class FlexLayout(_LayoutMode):
         x = container.content_box.x1
         y = container.content_box.y1
 
+        max_child_height = 0
+
         for child in (container.children[::-1] if self._wrap == "reverse" else container.children):
+
+            if child.width.unit == "px":
+                width = child.width
+            elif child.width.unit == "%":
+                width = (child.width * child.parent.content_box.width) // 100
+            elif child.width.unit == "auto":
+                width = self.get_auto_width(child)
+            else:
+                raise ValueError()
+
+            width += child.margin.x + child.border.x
+            if wrap and (x + width > container.content_box.x2):
+                x = container.content_box.x1
+                y += max_child_height
+                max_child_height = 0
+
             child.layout.process_children(child, x, y)
+
+            if wrap:
+                max_child_height = max(max_child_height, child.margin_box.height)
             x = child.margin_box.x2
 
     def get_auto_width(self, container: Container) -> int:
