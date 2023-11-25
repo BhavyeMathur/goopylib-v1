@@ -121,13 +121,15 @@ class FlexLayout(_LayoutMode):
             x = child.margin_box.x2
 
     def get_auto_width(self, container: Container) -> int:
-        return sum(child.width + child.border.x + child.margin.x
-                   if child.width.unit == "px" else child.layout.get_auto_width(container)
+        return sum(child.border.x + child.margin.x +
+                   (child.width
+                    if child.width.unit == "px" else child.padding.x + child.layout.get_auto_width(child))
                    for child in container.children)
 
     def get_auto_height(self, container: Container) -> int:
-        return max(child.width + child.border.x + child.margin.x
-                   if child.width.unit == "px" else child.layout.get_auto_width(container)
+        return max(child.border.y + child.margin.y +
+                   (child.height
+                    if child.height.unit == "px" else child.padding.y + child.layout.get_auto_height(child))
                    for child in container.children)
 
 
