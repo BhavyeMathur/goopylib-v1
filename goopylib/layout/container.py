@@ -1,11 +1,8 @@
 from __future__ import annotations
-from typing import Literal, get_args, Union
+from typing import Union, Literal, get_args
+
 
 _UNITS = Literal["px", "%"]
-_DISPLAY_OPTIONS = Literal["flex"]
-_FLEX_WRAP_TYPE = Literal["nowrap", "wrap", "reverse"]
-_FLEX_ALIGN_TYPE = Literal["start", "centre", "end", "space-around", "space-between", "space-evenly"]
-
 _LRTB_SETTER_TYPE = Union[int, tuple[int], tuple[int, int], tuple[int, int, int], tuple[int, int, int, int]]
 
 
@@ -142,9 +139,19 @@ class _Box:
     def width(self) -> int:
         return self._width
 
+    @width.setter
+    def width(self, value: int):
+        self._x2 = self._x1 + value
+        self._width = value
+
     @property
     def height(self) -> int:
         return self._height
+
+    @height.setter
+    def height(self, value: int):
+        self._y2 = self._y1 + value
+        self._height = value
 
     @property
     def start(self) -> tuple[int, int]:
@@ -155,9 +162,14 @@ class _Box:
         return self._x2, self._y2
 
 
-class Dimension:
-    def __init__(self, dimension: str | int):
-        self._dimension, self._unit = Dimension._parse_dimension(dimension)
+class Dimension(int):
+    def __new__(cls, value) -> int:
+        x = int.__new__(cls, Dimension._parse_dimension(value)[0])
+        return x
+
+    def __init__(self, value):
+        self._dimension, self._unit = Dimension._parse_dimension(value)
+        super().__init__()
 
     @property
     def unit(self) -> _UNITS:
@@ -175,37 +187,6 @@ class Dimension:
         raise ValueError(dim)
 
 
-class FlexProps:
-    def __init__(self, wrap: _FLEX_WRAP_TYPE, align: _FLEX_ALIGN_TYPE, cross_align: _FLEX_ALIGN_TYPE):
-        self._wrap = wrap
-        self._align = align
-        self._cross_align = cross_align
-
-    @property
-    def wrap(self) -> _FLEX_WRAP_TYPE:
-        return self._wrap
-
-    @wrap.setter
-    def wrap(self, value: _FLEX_WRAP_TYPE):
-        self._wrap = value
-
-    @property
-    def align(self) -> _FLEX_ALIGN_TYPE:
-        return self._align
-
-    @align.setter
-    def align(self, value: _FLEX_ALIGN_TYPE):
-        self._align = value
-
-    @property
-    def cross_align(self) -> _FLEX_ALIGN_TYPE:
-        return self._cross_align
-
-    @cross_align.setter
-    def cross_align(self, value: _FLEX_ALIGN_TYPE):
-        self._cross_align = value
-
-
 class Container:
     _context_tree: list[Container] = []
     _containers: list[Container] = []  # could consider making a dictionary
@@ -218,8 +199,7 @@ class Container:
         self._border = _LRTB(0, 0, 0, 0)
         self._padding = _LRTB(0, 0, 0, 0)
 
-        self._display: _DISPLAY_OPTIONS = "flex"
-        self._flex = FlexProps("nowrap", "start", "start")
+        self._layout: layout_modes._LayoutMode = FlexLayout("nowrap", "start", "start")
 
         self._children: list[Container] = []
         self._parent: None | Container = Container._context_tree[-1] if len(Container._context_tree) > 0 else None
@@ -236,7 +216,7 @@ class Container:
         self._content_box = _Box()
 
         # debug attributes
-        self.color = None
+        self.color: None | tuple[int, float, float] = None
 
     def __repr__(self) -> str:
         return f"Container({self._tag}) @ ({self._border_box.start})"
@@ -281,7 +261,7 @@ class Container:
 
     @padding.setter
     def padding(self, value: _LRTB_SETTER_TYPE) -> None:
-        self._margin.set_values(value)
+        self._padding.set_values(value)
 
     @property
     def border(self) -> _LRTB:
@@ -289,15 +269,23 @@ class Container:
 
     @border.setter
     def border(self, value: _LRTB_SETTER_TYPE) -> None:
-        self._margin.set_values(value)
+        self._border.set_values(value)
 
     @property
-    def display(self) -> _DISPLAY_OPTIONS:
-        return self._display
+    def width(self) -> Dimension:
+        return self._width
+
+    @width.setter
+    def width(self, value: int | str) -> None:
+        self._width = Dimension(value)
 
     @property
-    def flex(self) -> FlexProps:
-        return self._flex
+    def height(self) -> Dimension:
+        return self._height
+
+    @height.setter
+    def height(self, value: int | str) -> None:
+        self._height = Dimension(value)
 
     @property
     def tag(self) -> str:
@@ -311,6 +299,18 @@ class Container:
     def parent(self) -> Container | None:
         return self._parent
 
+    @property
+    def layout(self) -> layout_modes._LayoutMode:
+        return self._layout
+
+    @layout.setter
+    def layout(self, value: layout_modes._LayoutMode) -> None:
+        self._layout = value
+
     @staticmethod
     def get_containers() -> tuple[Container, ...]:
         return tuple(Container._containers)
+
+
+from .layout_modes import *
+import goopylib.layout.layout_modes as layout_modes

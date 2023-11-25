@@ -1,46 +1,11 @@
-from .container import Container
+from .layout_modes import *
 
 
-def process_container(container: Container, x=0, y=0):
-    container.margin_box.x1 = x
-    container.margin_box.y1 = y
+def process_container(container: Container):
+    assert container.parent is None
+    assert container.width.unit == "px"
 
-    container.margin_box.width = container.margin.x + get_rendered_dimension(container, "width")
-    container.margin_box.height = container.margin.y + get_rendered_dimension(container, "height")
-
-    container.rendered_width = get_rendered_dimension(container, "width")
-    container.rendered_height = get_rendered_dimension(container, "height")
-
-    if container.display == "flex":
-        _process_flex_children(container, x + container.padding_left, y - container.padding_top)
-
-    return x + container.rendered_width + container.margin_right, y - container.margin_bottom
-
-
-def _process_flex_children(container, x, y):
-    max_child_height = 0
-    wrap_queue = []
-
-    for child in container.children:
-        if container.flex_wrap != "nowrap":
-            next_x = x + get_rendered_dimension(child, "width") + child.margin_left + child.margin_right
-            if next_x > container.x + container.rendered_width - container.padding_right:
-                _align_flex_wrap_queue(container, wrap_queue)
-
-                x = container.x + container.padding_left
-                y -= max_child_height
-                max_child_height = 0
-
-                wrap_queue = []
-
-        x, _ = process_container(child, x, y)
-
-        if container.flex_wrap != "nowrap":
-            wrap_queue.append(child)
-            max_child_height = max(max_child_height, child.rendered_height + child.margin_top + child.margin_bottom)
-
-    _align_flex_wrap_queue(container, wrap_queue)
-    return x, y
+    container.layout.process_children(container, 0, 0)
 
 
 def _align_flex_wrap_queue(container, wrap_queue):
