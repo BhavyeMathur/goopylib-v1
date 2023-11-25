@@ -1,4 +1,4 @@
-from .layout_mode import *
+from .container import Container
 
 
 def process_container(container: Container):

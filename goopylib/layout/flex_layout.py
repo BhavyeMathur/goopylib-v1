@@ -1,7 +1,6 @@
 from __future__ import annotations
 from typing import Literal
 
-from .layout_mode import _LayoutMode
 from .container import Container
 
 import goopylib.layout.align_offset_funcs as align_offset_funcs
@@ -195,7 +194,7 @@ class _FlexManager:
                    for child in container.children)
 
 
-class Flex(_LayoutMode):
+class Flex:
     def __init__(self,
                  wrap: _FLEX_WRAP_TYPE = "nowrap",
                  align: _FLEX_ALIGN_TYPE = "start",

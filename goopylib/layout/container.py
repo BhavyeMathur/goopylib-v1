@@ -208,7 +208,7 @@ class Container:
         self._border = _LRTB(0, 0, 0, 0)
         self._padding = _LRTB(0, 0, 0, 0)
 
-        self._layout: layout_modes._LayoutMode = Flex("nowrap", "start", "start")
+        self._layout = Flex("nowrap", "start", "start")
 
         self._children: list[Container] = []
         self._parent: None | Container = Container._context_tree[-1] if len(Container._context_tree) > 0 else None
@@ -309,11 +309,11 @@ class Container:
         return self._parent
 
     @property
-    def layout(self) -> layout_modes._LayoutMode:
+    def layout(self) -> Flex:
         return self._layout
 
     @layout.setter
-    def layout(self, value: layout_modes._LayoutMode) -> None:
+    def layout(self, value: Flex) -> None:
         self._layout = value
 
     def translate(self, dx: int, dy: int) -> None:
@@ -328,4 +328,3 @@ class Container:
 
 
 from .flex_layout import *
-import goopylib.layout.layout_mode as layout_modes
