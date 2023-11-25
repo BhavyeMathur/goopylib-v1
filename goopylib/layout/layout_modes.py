@@ -76,7 +76,7 @@ class FlexLayout(_LayoutMode):
         elif container.height.unit == "%":
             container.padding_box.height = container.height / 100 * container.parent.content_box.height
         elif container.height.unit == "auto":
-            print(1)
+            print(1, _only_direct)
             container.padding_box.height = container.padding.y + self.get_auto_height(container)
         else:
             raise ValueError()
@@ -133,8 +133,9 @@ class FlexLayout(_LayoutMode):
 
         self._align_wrap_queue(whitespace, wrap_queue)
 
-        for child in container.children:
-            child.layout.process_children(child, *child.margin_box.start)
+        if not _only_direct:
+            for child in container.children:
+                child.layout.process_children(child, *child.margin_box.start)
 
     def _align_wrap_queue(self, whitespace: int, wrap_queue: list[Container]):
         if self.align == "start":
@@ -212,6 +213,7 @@ class FlexLayout(_LayoutMode):
                     raise ValueError()
 
                 whitespace -= width + child.margin.x + child.border.x
+                # print("\t", whitespace)
                 if whitespace < 0:
                     whitespace = container.content_box.width
                     height += max_row_height
