@@ -59,7 +59,7 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
     xspace = container.content_box.width
     yspace = container.content_box.height
 
-    def _end_row():
+    def _end_row() -> None:
         nonlocal x, y, max_child_height, xspace, yspace, wrap_queue
 
         x = container.content_box.x1
@@ -93,10 +93,10 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
 
         if not _only_direct:
             child.process(x, y, True)
+            xspace -= child.margin_box.width
+
         wrap_queue.append(child)
 
-        if wrap:
-            xspace -= child.margin_box.width
         max_child_height = max(max_child_height, child.margin_box.height)
         x = child.margin_box.x2
 
@@ -109,6 +109,8 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
 
 
 def _horizontal_align_row(flex: Flex, whitespace: int, items: list[Container]) -> None:
+    if whitespace < 1:
+        return
     if flex.align == "start":
         return
 
