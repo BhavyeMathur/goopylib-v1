@@ -211,7 +211,6 @@ class Container:
         self._padding = _LRTB(0, 0, 0, 0)
 
         self._flex = Flex("nowrap", "start", "start")
-        self._flex._container = self
 
         self._children: list[Container] = []
         self._parent: None | Container = Container._context_tree[-1] if len(Container._context_tree) > 0 else None
@@ -318,7 +317,6 @@ class Container:
     @flex.setter
     def flex(self, value: Flex) -> None:
         self._flex = value
-        self._flex._container = self
 
     def translate(self, dx: int, dy: int) -> None:
         self.margin_box.translate(dx, dy)

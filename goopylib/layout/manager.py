@@ -65,7 +65,7 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
         nonlocal x, y, max_child_height, xspace, yspace, wrap_queue
 
         x = container.content_box.x1
-        y += max_child_height
+        y += max_child_height + flex.row_gap
 
         _horizontal_align_row(flex, xspace, wrap_queue)
         _align_items_row(flex, max_child_height, wrap_queue)
@@ -166,7 +166,7 @@ def _get_auto_wrap_height(container: Container) -> int:
         xspace -= width
         if xspace < 0:
             xspace = container.content_box.width - width
-            height += max_row_height
+            height += max_row_height + container.flex.row_gap
             max_row_height = 0
 
         max_row_height = max(max_row_height, child.border.y + child.margin.y

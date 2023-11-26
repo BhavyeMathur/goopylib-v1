@@ -12,13 +12,18 @@ class Flex:
                  wrap: _FLEX_WRAP_TYPE = "nowrap",
                  align: _FLEX_ALIGN_TYPE = "start",
                  cross_align: _FLEX_ALIGN_TYPE = "start",
-                 item_align: _FLEX_ITEM_ALIGN_TYPE = "start") -> None:
+                 item_align: _FLEX_ITEM_ALIGN_TYPE = "start",
+                 row_gap: int = 0) -> None:
         self._wrap = wrap
         self._align = align
         self._cross_align = cross_align
         self._item_align = item_align
-
-        self._container = None
+        # TODO self._order: int
+        # self._direction: str
+        # self._grow: float
+        # self._cross_align_self
+        self._row_gap: int = row_gap
+        # self._column_gap
 
     @property
     def wrap(self) -> _FLEX_WRAP_TYPE:
@@ -51,3 +56,11 @@ class Flex:
     @item_align.setter
     def item_align(self, value: _FLEX_ITEM_ALIGN_TYPE):
         self._item_align = value
+
+    @property
+    def row_gap(self) -> int:
+        return self._row_gap
+
+    @row_gap.setter
+    def row_gap(self, value: int):
+        self._row_gap = value
