@@ -55,27 +55,20 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
 
     max_child_height = 0
     row_containers = []
-
     wrap_queue = []
 
-    xspace = container.content_box.width
-    yspace = container.content_box.height
-
     def _end_row() -> None:
-        nonlocal x, y, max_child_height, xspace, yspace, wrap_queue
+        nonlocal x, y, max_child_height, wrap_queue
 
-        x = container.content_box.x1
-        y += max_child_height + flex.row_gap
-
-        _horizontal_align_row(flex, xspace, wrap_queue)
+        _horizontal_align_row(flex, container.content_box.x2 - x + flex.column_gap, wrap_queue)
         _align_items_row(flex, max_child_height, wrap_queue)
+
+        y += max_child_height + flex.row_gap
+        x = container.content_box.x1
+        max_child_height = 0
 
         row_containers.append(wrap_queue)
         wrap_queue = []
-
-        xspace = container.content_box.width
-        yspace -= max_child_height
-        max_child_height = 0
 
     for child in (container.children[::-1] if flex.wrap == "reverse" else container.children):
 
@@ -86,15 +79,14 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
 
         if not _only_direct:
             process(child, x, y, _only_direct=True)
-            xspace -= child.margin_box.width
 
         wrap_queue.append(child)
 
         max_child_height = max(max_child_height, child.margin_box.height)
-        x = child.margin_box.x2
+        x = child.margin_box.x2 + flex.column_gap
 
     _end_row()
-    _vertical_align(flex, yspace, row_containers)
+    _vertical_align(flex, container.content_box.y2 - y, row_containers)
 
     if not _only_direct:
         for child in container.children:
@@ -140,7 +132,7 @@ def _get_auto_width(container: Container) -> int:
     return sum(child.border.x + child.margin.x +
                (child.width
                 if child.width.unit == "px" else child.padding.x + _get_auto_width(child))
-               for child in container.children)
+               for child in container.children) + container.flex.column_gap * (len(container.children) - 1)
 
 
 def _get_auto_height(container: Container) -> int:
