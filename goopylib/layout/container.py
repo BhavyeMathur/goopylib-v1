@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import Union, Literal, get_args
 
+from .flex import Flex
+
 
 _UNITS = Literal["px", "%", "auto"]
 _LRTB_SETTER_TYPE = Union[int, tuple[int], tuple[int, int], tuple[int, int, int], tuple[int, int, int, int]]
@@ -324,13 +326,6 @@ class Container:
         self.padding_box.translate(dx, dy)
         self.content_box.translate(dx, dy)
 
-    def process(self, x: int = 0, y: int = 0, _only_direct: bool = False):
-        process(self, x, y, _only_direct)
-
     @staticmethod
     def get_containers() -> tuple[Container, ...]:
         return tuple(Container._containers)
-
-
-from .flex import *
-from .manager import *

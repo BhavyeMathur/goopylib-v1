@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import goopylib.layout.align_offset_funcs as align_offset_funcs
+from .container import Container
+from .flex import Flex
 
 
 def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
@@ -83,7 +85,7 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
                 _end_row()
 
         if not _only_direct:
-            child.process(x, y, True)
+            process(child, x, y, _only_direct=True)
             xspace -= child.margin_box.width
 
         wrap_queue.append(child)
@@ -96,7 +98,7 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
 
     if not _only_direct:
         for child in container.children:
-            child.process(*child.margin_box.start)
+            process(child, *child.margin_box.start)
 
 
 def _horizontal_align_row(flex: Flex, whitespace: int, items: list[Container]) -> None:
@@ -146,28 +148,32 @@ def _get_auto_height(container: Container) -> int:
         return 0
 
     if container.flex.wrap != "nowrap" and container.width.unit != "auto":
-        height = 0
-        max_row_height = 0
-        xspace = container.content_box.width
-
-        for child in container.children:
-            width = _get_rendered_width(child) + child.margin.x + child.border.x
-            xspace -= width
-            if xspace < 0:
-                xspace = container.content_box.width - width
-                height += max_row_height
-                max_row_height = 0
-
-            max_row_height = max(max_row_height, child.border.y + child.margin.y
-                                 + (child.height if child.height.unit == "px"
-                                    else child.padding.y + _get_auto_height(child)))
-
-        return height + max_row_height
+        return _get_auto_wrap_height(container)
 
     return max(child.border.y + child.margin.y +
                (child.height
                 if child.height.unit == "px" else child.padding.y + _get_auto_height(child))
                for child in container.children)
+
+
+def _get_auto_wrap_height(container: Container) -> int:
+    height = 0
+    max_row_height = 0
+    xspace = container.content_box.width
+
+    for child in container.children:
+        width = _get_rendered_width(child) + child.margin.x + child.border.x
+        xspace -= width
+        if xspace < 0:
+            xspace = container.content_box.width - width
+            height += max_row_height
+            max_row_height = 0
+
+        max_row_height = max(max_row_height, child.border.y + child.margin.y
+                             + (child.height if child.height.unit == "px"
+                                else child.padding.y + _get_auto_height(child)))
+
+    return height + max_row_height
 
 
 def _get_rendered_width(container: Container) -> int:
@@ -179,7 +185,3 @@ def _get_rendered_width(container: Container) -> int:
         return _get_auto_width(container)
     else:
         raise ValueError()
-    
-
-from .container import Container
-from .flex import Flex
