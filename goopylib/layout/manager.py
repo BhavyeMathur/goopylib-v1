@@ -3,191 +3,189 @@ from __future__ import annotations
 import goopylib.layout.align_offset_funcs as align_offset_funcs
 
 
-class _FlexManager:
-    def __init__(self, container: Container, flex: Flex):
-        self._div = container
-        self._flex = flex
+def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
+    container.margin_box.x1 = x
+    container.margin_box.y1 = y
 
-        self.x = self._div.content_box.x1
-        self.y = self._div.content_box.y1
+    container.border_box.x1 = x + container.margin.left
+    container.border_box.y1 = y + container.margin.top
 
-        self.max_child_height = 0
-        self.row_containers = []
+    container.padding_box.x1 = container.border_box.x1 + container.border.left
+    container.padding_box.y1 = container.border_box.y1 + container.border.top
 
-        self.wrap_queue = []
+    container.content_box.x1 = container.padding_box.x1 + container.padding.left
+    container.content_box.y1 = container.padding_box.y1 + container.padding.top
 
-        self.xspace = self._div.content_box.width
-        self.yspace = self._div.content_box.height
+    if container.width.unit == "px":
+        container.padding_box.width = container.width
+    elif container.width.unit == "%":
+        container.padding_box.width = container.width / 100 * container.parent.content_box.width
+    elif container.width.unit == "auto":
+        container.padding_box.width = container.padding.x + _get_auto_width(container)
+    else:
+        raise ValueError()
 
-    def process_children(self, x: int, y: int, _only_direct: bool):
-        self._div.margin_box.x1 = x
-        self._div.margin_box.y1 = y
+    container.content_box.width = container.padding_box.width - container.padding.x
+    container.border_box.width = container.padding_box.width + container.border.x
+    container.margin_box.width = container.border_box.width + container.margin.x
 
-        self._div.border_box.x1 = x + self._div.margin.left
-        self._div.border_box.y1 = y + self._div.margin.top
+    if container.height.unit == "px":
+        container.padding_box.height = container.height
+    elif container.height.unit == "%":
+        container.padding_box.height = container.height / 100 * container.parent.content_box.height
+    elif container.height.unit == "auto":
+        container.padding_box.height = container.padding.y + _get_auto_height(container)
+    else:
+        raise ValueError()
 
-        self._div.padding_box.x1 = self._div.border_box.x1 + self._div.border.left
-        self._div.padding_box.y1 = self._div.border_box.y1 + self._div.border.top
+    container.content_box.height = container.padding_box.height - container.padding.y
+    container.border_box.height = container.padding_box.height + container.border.y
+    container.margin_box.height = container.border_box.height + container.margin.y
 
-        self._div.content_box.x1 = self._div.padding_box.x1 + self._div.padding.left
-        self._div.content_box.y1 = self._div.padding_box.y1 + self._div.padding.top
+    _process_flex_items(container, container.flex, _only_direct)
 
-        if self._div.width.unit == "px":
-            self._div.padding_box.width = self._div.width
-        elif self._div.width.unit == "%":
-            self._div.padding_box.width = self._div.width / 100 * self._div.parent.content_box.width
-        elif self._div.width.unit == "auto":
-            self._div.padding_box.width = self._div.padding.x + self._get_auto_width(self._div)
-        else:
-            raise ValueError()
 
-        self._div.content_box.width = self._div.padding_box.width - self._div.padding.x
-        self._div.border_box.width = self._div.padding_box.width + self._div.border.x
-        self._div.margin_box.width = self._div.border_box.width + self._div.margin.x
+def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
+    wrap = flex.wrap != "nowrap"
 
-        if self._div.height.unit == "px":
-            self._div.padding_box.height = self._div.height
-        elif self._div.height.unit == "%":
-            self._div.padding_box.height = self._div.height / 100 * self._div.parent.content_box.height
-        elif self._div.height.unit == "auto":
-            self._div.padding_box.height = self._div.padding.y + self._get_auto_height(self._div)
-        else:
-            raise ValueError()
+    x = container.content_box.x1
+    y = container.content_box.y1
 
-        self._div.content_box.height = self._div.padding_box.height - self._div.padding.y
-        self._div.border_box.height = self._div.padding_box.height + self._div.border.y
-        self._div.margin_box.height = self._div.border_box.height + self._div.margin.y
+    max_child_height = 0
+    row_containers = []
 
-        self._process_flex_items(_only_direct)
+    wrap_queue = []
 
-    def _process_flex_items(self, _only_direct: bool):
-        wrap = self._flex._wrap != "nowrap"
-        self.__init__(self._div, self._flex)
+    xspace = container.content_box.width
+    yspace = container.content_box.height
 
-        for child in (self._div.children[::-1] if self._flex._wrap == "reverse" else self._div.children):
+    def _end_row():
+        nonlocal x, y, max_child_height, xspace, yspace, wrap_queue
 
-            if wrap:
-                if child.width.unit == "px":
-                    width = child.width
-                elif child.width.unit == "%":
-                    width = (child.width * child.parent.content_box.width) // 100
-                elif child.width.unit == "auto":
-                    width = self._get_auto_width(child)
-                else:
-                    raise ValueError()
-                width += child.margin.x + child.border.x
+        x = container.content_box.x1
+        y += max_child_height
 
-                if self.x + width > self._div.content_box.x2:
-                    self._end_row()
+        _horizontal_align_row(flex, xspace, wrap_queue)
+        _align_items_row(flex, max_child_height, wrap_queue)
 
-            if not _only_direct:
-                child.process(self.x, self.y, True)
-            self.wrap_queue.append(child)
+        row_containers.append(wrap_queue)
+        wrap_queue = []
 
-            if wrap:
-                self.xspace -= child.margin_box.width
-            self.max_child_height = max(self.max_child_height, child.margin_box.height)
-            self.x = child.margin_box.x2
+        xspace = container.content_box.width
+        yspace -= max_child_height
+        max_child_height = 0
 
-        self._end_row()
-        self._vertical_align(self.yspace, self.row_containers)
+    for child in (container.children[::-1] if flex.wrap == "reverse" else container.children):
+
+        if wrap:
+            if child.width.unit == "px":
+                width = child.width
+            elif child.width.unit == "%":
+                width = (child.width * child.parent.content_box.width) // 100
+            elif child.width.unit == "auto":
+                width = _get_auto_width(child)
+            else:
+                raise ValueError()
+            width += child.margin.x + child.border.x
+
+            if x + width > container.content_box.x2:
+                _end_row()
 
         if not _only_direct:
-            for child in self._div.children:
-                child.process(*child.margin_box.start)
+            child.process(x, y, True)
+        wrap_queue.append(child)
 
-    def _end_row(self) -> None:
-        self.x = self._div.content_box.x1
-        self.y += self.max_child_height
+        if wrap:
+            xspace -= child.margin_box.width
+        max_child_height = max(max_child_height, child.margin_box.height)
+        x = child.margin_box.x2
 
-        self._align_row(self.xspace, self.max_child_height, self.wrap_queue)
-        self.row_containers.append(self.wrap_queue)
-        self.wrap_queue = []
+    _end_row()
+    _vertical_align(flex, yspace, row_containers)
 
-        self.xspace = self._div.content_box.width
-        self.yspace -= self.max_child_height
-        self.max_child_height = 0
-
-    def _align_row(self, whitespace: int, row_height: int, items: list[Container]) -> None:
-        self._horizontal_align_row(whitespace, items)
-        self._align_items_row(row_height, items)
-
-    def _horizontal_align_row(self, whitespace: int, items: list[Container]) -> None:
-        if self._flex._align == "start":
-            return
-
-        offset = align_offset_funcs._get_offset(self._flex._align, whitespace, len(items))
-        for i, child in enumerate(items):
-            child.translate(offset(i), 0)
-
-    def _vertical_align(self, whitespace: int, items: list[list[Container]]) -> None:
-        if whitespace < 1:
-            return
-        if self._flex._cross_align == "start":
-            return
-
-        offset = align_offset_funcs._get_offset(self._flex._cross_align, whitespace, len(items))
-        for i, row in enumerate(items):
-            for child in row:
-                child.translate(0, offset(i))
-
-    def _align_items_row(self, row_height: int, items: list[Container]) -> None:
-        if self._flex._item_align == "start":
-            return
-
-        offset = align_offset_funcs._get_item_offset(self._flex._item_align, row_height)
-        for child in items:
-            child.translate(0, offset(child.margin_box.height))
-
-    @staticmethod
-    def _get_auto_width(container: Container) -> int:
-        if len(container.children) == 0:
-            return 0
-
-        return sum(child.border.x + child.margin.x +
-                   (child.width
-                    if child.width.unit == "px" else child.padding.x + _FlexManager._get_auto_width(child))
-                   for child in container.children)
-
-    @staticmethod
-    def _get_auto_height(container: Container) -> int:
-        if len(container.children) == 0:
-            return 0
-
-        if container.flex.wrap != "nowrap" and container.width.unit != "auto":
-            height = 0
-            max_row_height = 0
-            whitespace = container.content_box.width
-
-            # TODO - Don't like this repeated code
-
-            for child in container.children:
-                if child.width.unit == "px":
-                    width = child.width
-                elif child.width.unit == "%":
-                    width = (child.width * child.parent.content_box.width) // 100
-                elif child.width.unit == "auto":
-                    width = _FlexManager._get_auto_width(child)
-                else:
-                    raise ValueError()
-
-                whitespace -= width + child.margin.x + child.border.x
-                if whitespace < 0:
-                    whitespace = container.content_box.width - width
-                    height += max_row_height
-                    max_row_height = 0
-
-                max_row_height = max(max_row_height, child.border.y + child.margin.y
-                                     + (child.height if child.height.unit == "px"
-                                        else child.padding.y + _FlexManager._get_auto_height(child)))
-
-            return height + max_row_height
-
-        return max(child.border.y + child.margin.y +
-                   (child.height
-                    if child.height.unit == "px" else child.padding.y + _FlexManager._get_auto_height(child))
-                   for child in container.children)
+    if not _only_direct:
+        for child in container.children:
+            child.process(*child.margin_box.start)
 
 
-from .flex import Flex
+def _horizontal_align_row(flex: Flex, whitespace: int, items: list[Container]) -> None:
+    if flex.align == "start":
+        return
+
+    offset = align_offset_funcs._get_offset(flex.align, whitespace, len(items))
+    for i, child in enumerate(items):
+        child.translate(offset(i), 0)
+
+
+def _vertical_align(flex: Flex, whitespace: int, items: list[list[Container]]) -> None:
+    if whitespace < 1:
+        return
+    if flex.cross_align == "start":
+        return
+
+    offset = align_offset_funcs._get_offset(flex.cross_align, whitespace, len(items))
+    for i, row in enumerate(items):
+        for child in row:
+            child.translate(0, offset(i))
+
+
+def _align_items_row(flex: Flex, row_height: int, items: list[Container]) -> None:
+    if flex.item_align == "start":
+        return
+
+    offset = align_offset_funcs._get_item_offset(flex.item_align, row_height)
+    for child in items:
+        child.translate(0, offset(child.margin_box.height))
+
+
+def _get_auto_width(container: Container) -> int:
+    if len(container.children) == 0:
+        return 0
+
+    return sum(child.border.x + child.margin.x +
+               (child.width
+                if child.width.unit == "px" else child.padding.x + _get_auto_width(child))
+               for child in container.children)
+
+
+def _get_auto_height(container: Container) -> int:
+    if len(container.children) == 0:
+        return 0
+
+    if container.flex.wrap != "nowrap" and container.width.unit != "auto":
+        height = 0
+        max_row_height = 0
+        whitespace = container.content_box.width
+
+        # TODO - Don't like this repeated code
+
+        for child in container.children:
+            if child.width.unit == "px":
+                width = child.width
+            elif child.width.unit == "%":
+                width = (child.width * child.parent.content_box.width) // 100
+            elif child.width.unit == "auto":
+                width = _get_auto_width(child)
+            else:
+                raise ValueError()
+
+            whitespace -= width + child.margin.x + child.border.x
+            if whitespace < 0:
+                whitespace = container.content_box.width - width
+                height += max_row_height
+                max_row_height = 0
+
+            max_row_height = max(max_row_height, child.border.y + child.margin.y
+                                 + (child.height if child.height.unit == "px"
+                                    else child.padding.y + _get_auto_height(child)))
+
+        return height + max_row_height
+
+    return max(child.border.y + child.margin.y +
+               (child.height
+                if child.height.unit == "px" else child.padding.y + _get_auto_height(child))
+               for child in container.children)
+
+
 from .container import Container
+from .flex import Flex
