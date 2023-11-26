@@ -47,11 +47,11 @@ class Flex:
 
     @property
     def cross_align(self) -> _FLEX_ALIGN_TYPE:
-        return self._item_align
+        return self._cross_align
 
     @cross_align.setter
     def cross_align(self, value: _FLEX_ALIGN_TYPE):
-        self._item_align = value
+        self._cross_align = value
 
     @property
     def item_align(self) -> _FLEX_ALIGN_TYPE:
