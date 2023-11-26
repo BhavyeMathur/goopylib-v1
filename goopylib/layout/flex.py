@@ -14,15 +14,16 @@ class Flex:
                  cross_align: _FLEX_ALIGN_TYPE = "start",
                  item_align: _FLEX_ITEM_ALIGN_TYPE = "start",
                  row_gap: int = 0,
-                 column_gap: int = 0) -> None:
+                 column_gap: int = 0,
+                 order: int = 0) -> None:
         self._wrap = wrap
         self._align = align
         self._cross_align = cross_align
         self._item_align = item_align
-        # TODO self._order: int
-        # self._direction: str
-        # self._grow: float
-        # self._cross_align_self
+        self._order: int = order
+        # TODO self._direction: str
+        # TODO self._grow: float
+        # TODO self._cross_align_self: _FLEX_ALIGN_TYPE
         self._row_gap: int = row_gap
         self._column_gap: int = column_gap
 
@@ -73,3 +74,11 @@ class Flex:
     @column_gap.setter
     def column_gap(self, value: int):
         self._column_gap = value
+
+    @property
+    def order(self) -> int:
+        return self._order
+
+    @order.setter
+    def order(self, value: int):
+        self._order = value

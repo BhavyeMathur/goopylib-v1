@@ -70,8 +70,7 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
         row_containers.append(wrap_queue)
         wrap_queue = []
 
-    for child in (container.children[::-1] if flex.wrap == "reverse" else container.children):
-
+    for child in _get_order_sorted_children(container):
         if wrap:
             width = _get_rendered_width(child) + child.margin.x + child.border.x
             if x + width > container.content_box.x2:
@@ -91,6 +90,14 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
     if not _only_direct:
         for child in container.children:
             process(child, *child.margin_box.start)
+
+
+def _get_order_sorted_children(container: Container) -> list[Container]:
+    children = sorted(container.children, key=lambda child: child.flex.order)
+
+    if container.flex.wrap == "reverse":
+        return children[::-1]
+    return children
 
 
 def _horizontal_align_row(flex: Flex, whitespace: int, items: list[Container]) -> None:
