@@ -57,11 +57,15 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
     row_containers = []
     wrap_queue = []
 
+    if container.tag == "square-container":
+        pass
+
     def _end_row() -> None:
         nonlocal x, y, max_child_height, wrap_queue
 
-        _horizontal_align_row(flex, container.content_box.x2 - x + flex.column_gap, wrap_queue)
-        _align_items_row(flex, max_child_height, wrap_queue)
+        if not _only_direct:
+            _horizontal_align_row(flex, container.content_box.x2 - x + flex.column_gap, wrap_queue)
+            _align_items_row(flex, max_child_height, wrap_queue)
 
         y += max_child_height + flex.row_gap
         x = container.content_box.x1
@@ -71,8 +75,9 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
         wrap_queue = []
 
     for child in _get_order_sorted_children(container):
+        width = _get_rendered_width(child) + child.margin.x + child.border.x
+
         if wrap:
-            width = _get_rendered_width(child) + child.margin.x + child.border.x
             if x + width > container.content_box.x2:
                 _end_row()
 
@@ -82,14 +87,14 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
         wrap_queue.append(child)
 
         max_child_height = max(max_child_height, child.margin_box.height)
-        x = child.margin_box.x2 + flex.column_gap
-
-    _end_row()
-    _vertical_align(flex, container.content_box.y2 - y, row_containers)
+        x += width + flex.column_gap
 
     if not _only_direct:
+        _end_row()
+        _vertical_align(flex, container.content_box.y2 - y, row_containers)
+
         for child in container.children:
-            process(child, *child.margin_box.start)
+            _process_flex_items(child, child.flex, False)
 
 
 def _get_order_sorted_children(container: Container) -> list[Container]:
@@ -102,6 +107,22 @@ def _get_order_sorted_children(container: Container) -> list[Container]:
 
 def _horizontal_align_row(flex: Flex, whitespace: int, items: list[Container]) -> None:
     if whitespace < 1:
+        return
+
+    grow_sum = sum(child.flex.grow for child in items)
+
+    if grow_sum > 0:
+        total_grow = max(1, grow_sum)
+        offset = 0
+
+        for child in items:
+            child.translate_x1(int(offset))
+            offset += whitespace * (child.flex.grow / total_grow)
+            child.translate_x2(int(offset))
+
+        whitespace -= int(offset)
+
+    if grow_sum >= 1:
         return
     if flex.align == "start":
         return

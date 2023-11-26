@@ -15,17 +15,19 @@ class Flex:
                  item_align: _FLEX_ITEM_ALIGN_TYPE = "start",
                  row_gap: int = 0,
                  column_gap: int = 0,
-                 order: int = 0) -> None:
+                 order: int = 0,
+                 grow: float = 0) -> None:
         self._wrap = wrap
         self._align = align
         self._cross_align = cross_align
         self._item_align = item_align
-        self._order: int = order
-        # TODO self._direction: str
-        # TODO self._grow: float
-        # TODO self._cross_align_self: _FLEX_ALIGN_TYPE
         self._row_gap: int = row_gap
         self._column_gap: int = column_gap
+        # TODO self._direction: str
+
+        self._order: int = order
+        self._grow: float = grow
+        # TODO self._cross_align_self: _FLEX_ALIGN_TYPE
 
     @property
     def wrap(self) -> _FLEX_WRAP_TYPE:
@@ -82,3 +84,11 @@ class Flex:
     @order.setter
     def order(self, value: int):
         self._order = value
+
+    @property
+    def grow(self) -> float:
+        return self._grow
+
+    @grow.setter
+    def grow(self, value: float):
+        self._grow = value
