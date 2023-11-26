@@ -78,7 +78,16 @@ def _process_flex_items(container: Container, flex: Flex, _only_direct: bool):
     for child in (container.children[::-1] if flex.wrap == "reverse" else container.children):
 
         if wrap:
-            width = _get_container_rendered_width(container) + child.margin.x + child.border.x
+            if child.width.unit == "px":
+                width = child.width
+            elif child.width.unit == "%":
+                width = (child.width * child.parent.content_box.width) // 100
+            elif child.width.unit == "auto":
+                width = _get_auto_width(child)
+            else:
+                raise ValueError()
+            width += child.margin.x + child.border.x
+
             if x + width > container.content_box.x2:
                 _end_row()
 
@@ -136,7 +145,8 @@ def _get_auto_width(container: Container) -> int:
         return 0
 
     return sum(child.border.x + child.margin.x +
-               (child.width if child.width.unit == "px" else child.padding.x + _get_auto_width(child))
+               (child.width
+                if child.width.unit == "px" else child.padding.x + _get_auto_width(child))
                for child in container.children)
 
 
@@ -147,14 +157,23 @@ def _get_auto_height(container: Container) -> int:
     if container.flex.wrap != "nowrap" and container.width.unit != "auto":
         height = 0
         max_row_height = 0
-        xspace = container.content_box.width
+        whitespace = container.content_box.width
+
+        # TODO - Don't like this repeated code
 
         for child in container.children:
-            width = _get_container_rendered_width(container) + child.margin.x + child.border.x
-            xspace -= width
+            if child.width.unit == "px":
+                width = child.width
+            elif child.width.unit == "%":
+                width = (child.width * child.parent.content_box.width) // 100
+            elif child.width.unit == "auto":
+                width = _get_auto_width(child)
+            else:
+                raise ValueError()
 
-            if xspace < 0:
-                xspace = container.content_box.width - width
+            whitespace -= width + child.margin.x + child.border.x
+            if whitespace < 0:
+                whitespace = container.content_box.width - width
                 height += max_row_height
                 max_row_height = 0
 
@@ -165,20 +184,10 @@ def _get_auto_height(container: Container) -> int:
         return height + max_row_height
 
     return max(child.border.y + child.margin.y +
-               (child.height if child.height.unit == "px" else child.padding.y + _get_auto_height(child))
+               (child.height
+                if child.height.unit == "px" else child.padding.y + _get_auto_height(child))
                for child in container.children)
 
-
-def _get_container_rendered_width(container: Container):
-    if container.width.unit == "px":
-        return container.width
-    elif container.width.unit == "%":
-        return (container.width * container.parent.content_box.width) // 100
-    elif container.width.unit == "auto":
-        return _get_auto_width(container)
-    else:
-        raise ValueError()
-    
 
 from .container import Container
 from .flex import Flex
