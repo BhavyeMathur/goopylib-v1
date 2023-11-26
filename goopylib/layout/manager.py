@@ -106,8 +106,21 @@ def _get_order_sorted_children(container: Container) -> list[Container]:
 
 
 def _horizontal_align_row(flex: Flex, whitespace: int, items: list[Container]) -> None:
+    whitespace = _process_flex_grow(whitespace, items)
     if whitespace < 1:
         return
+
+    if flex.align == "start":
+        return
+
+    offset = align_offset_funcs._get_offset(flex.align, whitespace, len(items))
+    for i, child in enumerate(items):
+        child.translate(offset(i), 0)
+
+
+def _process_flex_grow(whitespace: int, items: list[Container]) -> int:
+    if whitespace < 1:
+        return whitespace
 
     grow_sum = sum(child.flex.grow for child in items)
 
@@ -120,16 +133,8 @@ def _horizontal_align_row(flex: Flex, whitespace: int, items: list[Container]) -
             offset += whitespace * (child.flex.grow / total_grow)
             child.translate_x2(int(offset))
 
-        whitespace -= int(offset)
-
-    if grow_sum >= 1:
-        return
-    if flex.align == "start":
-        return
-
-    offset = align_offset_funcs._get_offset(flex.align, whitespace, len(items))
-    for i, child in enumerate(items):
-        child.translate(offset(i), 0)
+        return whitespace - int(offset)
+    return whitespace
 
 
 def _vertical_align(flex: Flex, whitespace: int, items: list[list[Container]]) -> None:
