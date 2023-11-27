@@ -221,44 +221,67 @@ def _get_auto_width(container: Container) -> int:
     if len(container.children) == 0:
         return 0
 
-    return sum(child.border.x + child.margin.x +
-               (child.width
-                if child.width.unit == "px" else child.padding.x + _get_auto_width(child))
-               for child in container.children) + container.flex.column_gap * (len(container.children) - 1)
+    if container.flex.direction == "column" or container.flex.direction == "column-reverse":
+        if container.flex.wrap != "nowrap" and container.height.unit != "auto":
+            return _get_auto_wrap_size(container)
+
+    children_sizes = (child.border.x + child.margin.x +
+                      (child.width if child.width.unit == "px" else child.padding.x + _get_auto_width(child))
+                      for child in container.children)
+
+    if container.flex.direction == "column" or container.flex.direction == "column-reverse":
+        return max(children_sizes)
+
+    return sum(children_sizes) + container.flex.column_gap * (len(container.children) - 1)
 
 
 def _get_auto_height(container: Container) -> int:
     if len(container.children) == 0:
         return 0
 
-    if container.flex.wrap != "nowrap" and container.width.unit != "auto":
-        return _get_auto_wrap_height(container)
+    if container.flex.direction == "row" or container.flex.direction == "row-reverse":
+        if container.flex.wrap != "nowrap" and container.width.unit != "auto":
+            return _get_auto_wrap_size(container)
 
-    return max(child.border.y + child.margin.y +
-               (child.height
-                if child.height.unit == "px" else child.padding.y + _get_auto_height(child))
-               for child in container.children)
+    children_sizes = (child.border.y + child.margin.y +
+                      (child.height if child.height.unit == "px" else child.padding.y + _get_auto_height(child))
+                      for child in container.children)
+
+    if container.flex.direction == "row" or container.flex.direction == "row-reverse":
+        return max(children_sizes)
+
+    return sum(children_sizes) + container.flex.row_gap * (len(container.children) - 1)
 
 
 # TODO test with flex direction column
-def _get_auto_wrap_height(container: Container) -> int:
-    height = 0
-    max_row_height = 0
-    xspace = container.content_box.width
+def _get_auto_wrap_size(container: Container) -> int:
+    size = 0
+    max_line_size = 0
+
+    if container.flex.direction == "row" or container.flex.direction != "row-reverse":
+        main_size = container.content_box.width
+        cross_gap = container.flex.row_gap
+        cross_size = lambda c: c.border.y + c.margin.y + (c.height if c.height.unit == "px"
+                                                          else c.padding.y + _get_auto_height(c))
+    else:
+        main_size = container.content_box.height
+        cross_gap = container.flex.column_gap
+        cross_size = lambda c: c.border.x + c.margin.x + (c.width if c.width.unit == "px"
+                                                          else c.padding.x + _get_auto_width(c))
+
+    space = main_size
 
     for child in container.children:
-        width = _get_rendered_width(child) + child.margin.x + child.border.x
-        xspace -= width
-        if xspace < 0:
-            xspace = container.content_box.width - width
-            height += max_row_height + container.flex.row_gap
-            max_row_height = 0
+        child_size = _get_rendered_width(child) + child.margin.x + child.border.x
+        space -= child_size
+        if space < 0:
+            space = main_size - child_size
+            size += max_line_size + cross_gap
+            max_line_size = 0
 
-        max_row_height = max(max_row_height, child.border.y + child.margin.y
-                             + (child.height if child.height.unit == "px"
-                                else child.padding.y + _get_auto_height(child)))
+        max_line_size = max(max_line_size, cross_size(child))
 
-    return height + max_row_height
+    return size + max_line_size
 
 
 def _get_rendered_width(container: Container) -> int:
@@ -267,7 +290,7 @@ def _get_rendered_width(container: Container) -> int:
     elif container.width.unit == "%":
         return (container.width * container.parent.content_box.width) // 100
     elif container.width.unit == "auto":
-        return _get_auto_width(container)
+        return container.padding.x + _get_auto_width(container)
     else:
         raise ValueError()
 
@@ -278,6 +301,6 @@ def _get_rendered_height(container: Container) -> int:
     elif container.height.unit == "%":
         return (container.height * container.parent.content_box.height) // 100
     elif container.height.unit == "auto":
-        return _get_auto_height(container)
+        return container.padding.y + _get_auto_height(container)
     else:
         raise ValueError()
