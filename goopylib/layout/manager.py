@@ -155,6 +155,14 @@ def _align_items_row(flex: Flex, row_height: int, items: list[Container]) -> Non
 
     offset = align_offset_funcs._get_item_offset(flex.item_align, row_height)
     for child in items:
+
+        if child.flex.cross_align_self is not None:
+            if child.flex.cross_align_self == "start":
+                continue
+            child_offset = align_offset_funcs._get_item_offset(child.flex.cross_align_self, row_height)
+            child.translate(0, child_offset(child.margin_box.height))
+            continue
+
         child.translate(0, offset(child.margin_box.height))
 
 
