@@ -48,7 +48,7 @@ def _item_align_centre_offset(row_height: int) -> Callable[[int], int]:
 
 
 def _item_align_end_offset(row_height: int) -> Callable[[int], int]:
-    return lambda height: (row_height - height) // 2
+    return lambda height: row_height - height
 
 
 _item_align_to_offset_func: dict[str, Callable[[int], Callable[[int], int]]] = \

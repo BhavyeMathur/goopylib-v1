@@ -336,6 +336,18 @@ class Container:
         self.padding_box.x2 += dx
         self.content_box.x2 += dx
 
+    def translate_y1(self, dy: int) -> None:
+        self.margin_box.y1 += dy
+        self.border_box.y1 += dy
+        self.padding_box.y1 += dy
+        self.content_box.y1 += dy
+
+    def translate_y2(self, dy: int) -> None:
+        self.margin_box.y2 += dy
+        self.border_box.y2 += dy
+        self.padding_box.y2 += dy
+        self.content_box.y2 += dy
+
     @staticmethod
     def get_containers() -> tuple[Container, ...]:
         return tuple(Container._containers)

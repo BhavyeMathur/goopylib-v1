@@ -5,6 +5,7 @@ from typing import Literal
 _FLEX_WRAP_TYPE = Literal["nowrap", "wrap", "reverse"]
 _FLEX_ALIGN_TYPE = Literal["start", "centre", "end", "space-around", "space-between", "space-evenly"]
 _FLEX_ITEM_ALIGN_TYPE = Literal["start", "centre", "end"]
+_FLEX_DIRECTION_TYPE = Literal["row", "row-reverse", "column", "column-reverse"]
 
 
 class Flex:
@@ -15,6 +16,7 @@ class Flex:
                  item_align: _FLEX_ITEM_ALIGN_TYPE = "start",
                  row_gap: int = 0,
                  column_gap: int = 0,
+                 direction: _FLEX_DIRECTION_TYPE = "row",
                  
                  order: int = 0,
                  grow: float = 0,
@@ -25,7 +27,7 @@ class Flex:
         self._item_align = item_align
         self._row_gap = row_gap
         self._column_gap = column_gap
-        # TODO self._direction
+        self._direction = direction
 
         self._order = order
         self._grow = grow
@@ -78,6 +80,14 @@ class Flex:
     @column_gap.setter
     def column_gap(self, value: int):
         self._column_gap = value
+
+    @property
+    def direction(self) -> _FLEX_DIRECTION_TYPE:
+        return self._direction
+
+    @direction.setter
+    def direction(self, value: _FLEX_DIRECTION_TYPE):
+        self._direction = value
 
     @property
     def order(self) -> int:
