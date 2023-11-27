@@ -240,13 +240,11 @@ def _get_auto_wrap_size(container: Container) -> int:
     if container.flex.direction == "row" or container.flex.direction != "row-reverse":
         main_size = _get_rendered_width(container)
         cross_gap = container.flex.row_gap
-        cross_size = lambda c: c.border.y + c.margin.y + (c.height if c.height.unit == "px"
-                                                          else c.padding.y + _get_auto_height(c))
+        cross_size = lambda c: c.border.y + c.margin.y + _get_rendered_height(c)
     else:
         main_size = _get_rendered_height(container)
         cross_gap = container.flex.column_gap
-        cross_size = lambda c: c.border.x + c.margin.x + (c.width if c.width.unit == "px"
-                                                          else c.padding.x + _get_auto_width(c))
+        cross_size = lambda c: c.border.x + c.margin.x + _get_rendered_width(c)
 
     space = main_size
 
@@ -267,8 +265,13 @@ def _get_rendered_width(container: Container) -> int:
     if container.width.unit == "px":
         return container.width
     elif container.width.unit == "%":
-        return min((container.width * container.parent.content_box.width) // 100,
-                   container.parent.content_box.width - container.margin.x - container.border.x)
+        if container.parent.width.unit == "auto":
+            return 0  # TODO go through all non-auto sister elements, then figure out %
+
+        parent_content_width = _get_rendered_width(container.parent) - container.parent.padding.x
+        return min((container.width * parent_content_width) // 100,
+                   parent_content_width - container.margin.x - container.border.x)
+
     elif container.width.unit == "auto":
         return container.padding.x + _get_auto_width(container)
     else:
@@ -279,8 +282,13 @@ def _get_rendered_height(container: Container) -> int:
     if container.height.unit == "px":
         return container.height
     elif container.height.unit == "%":
-        return min((container.height * container.parent.content_box.height) // 100,
-                   container.parent.content_box.height - container.margin.y - container.border.y)
+        if container.parent.height.unit == "auto":
+            return 0
+
+        parent_content_height = _get_rendered_height(container.parent) - container.parent.padding.y
+        return min((container.height * parent_content_height) // 100,
+                   parent_content_height - container.margin.y - container.border.y)
+
     elif container.height.unit == "auto":
         return container.padding.y + _get_auto_height(container)
     else:
