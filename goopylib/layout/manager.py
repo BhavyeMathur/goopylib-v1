@@ -281,10 +281,11 @@ def _get_rendered_width(container: Container, attr: None | str = None) -> int:
         return_val = width
     elif width.unit == "%":
         return_val = _width_percentage_to_pixels(container, width)
-    elif width.unit == "auto" and attr == "min_width":
-        return -1
     elif width.unit == "auto":
-        return_val = container.padding.x + _get_auto_width(container)
+        if attr == "min_width":
+            return_val = -1
+        else:
+            return_val = container.padding.x + _get_auto_width(container)
     else:
         raise ValueError()
 
@@ -293,6 +294,8 @@ def _get_rendered_width(container: Container, attr: None | str = None) -> int:
 
 
 def _width_percentage_to_pixels(container: Container, width: _Dimension) -> int:
+    if container.parent is None:
+        return 0
     if container.parent.width.unit == "auto":
         return 0  # TODO go through all non-auto sister elements, then figure out %
 
@@ -311,10 +314,11 @@ def _get_rendered_height(container: Container, attr: None | str = None) -> int:
         return_val = height
     elif height.unit == "%":
         return_val = _height_percentage_to_pixels(container, height)
-    elif height.unit == "auto" and attr == "min_height":
-        return -1
     elif height.unit == "auto":
-        return_val = container.padding.y + _get_auto_height(container)
+        if attr == "min_height":
+            return_val = -1
+        else:
+            return_val = container.padding.y + _get_auto_height(container)
     else:
         raise ValueError()
 
@@ -323,6 +327,8 @@ def _get_rendered_height(container: Container, attr: None | str = None) -> int:
 
 
 def _height_percentage_to_pixels(container: Container, height: _Dimension) -> int:
+    if container.parent is None:
+        return 0
     if container.parent.height.unit == "auto":
         return 0
 
