@@ -8,8 +8,10 @@ from .flex import Flex
 def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
     _rendered_width_cache[None].clear()
     _rendered_width_cache["min_width"].clear()
+    _rendered_width_cache["max_width"].clear()
     _rendered_height_cache[None].clear()
     _rendered_height_cache["min_height"].clear()
+    _rendered_height_cache["max_height"].clear()
 
     if container.parent is not None and container.parent.flex.direction in {"column", "column-reverse"}:
         x, y = y, x
@@ -266,8 +268,8 @@ def _get_auto_wrap_size(container: Container) -> int:
     return size + max_line_size
 
 
-_rendered_width_cache = {None: {}, "min_width": {}}
-_rendered_height_cache = {None: {}, "min_height": {}}
+_rendered_width_cache = {None: {}, "min_width": {}, "max_width": {}}
+_rendered_height_cache = {None: {}, "min_height": {}, "max_height": {}}
 
 
 def _get_rendered_width(container: Container, attr: None | str = None) -> int:
@@ -280,7 +282,10 @@ def _get_rendered_width(container: Container, attr: None | str = None) -> int:
     if width.unit == "px":
         return_val = width
     elif width.unit == "%":
-        return_val = _width_percentage_to_pixels(container, width)
+        if attr == "max_width" and (container.parent is None or container.parent.width.unit == "auto"):
+            return_val = 2147483647
+        else:
+            return_val = _width_percentage_to_pixels(container, width)
     elif width.unit == "auto":
         if attr == "min_width":
             return_val = -1
@@ -289,8 +294,18 @@ def _get_rendered_width(container: Container, attr: None | str = None) -> int:
     else:
         raise ValueError()
 
+    if attr is not None:
+        _rendered_width_cache[attr][container] = return_val
+        return return_val
+
+    min_width = _get_rendered_width(container, "min_width")
+    max_width = _get_rendered_width(container, "max_width")
+    if min_width > max_width:
+        return_val = 0
+
+    return_val = min(max(return_val, min_width), max_width)
     _rendered_width_cache[attr][container] = return_val
-    return max(return_val, _get_rendered_width(container, "min_width")) if attr is None else return_val
+    return return_val
 
 
 def _width_percentage_to_pixels(container: Container, width: _Dimension) -> int:
@@ -313,7 +328,10 @@ def _get_rendered_height(container: Container, attr: None | str = None) -> int:
     if height.unit == "px":
         return_val = height
     elif height.unit == "%":
-        return_val = _height_percentage_to_pixels(container, height)
+        if attr == "max_height" and (container.parent is None or container.parent.height.unit == "auto"):
+            return_val = 2147483647
+        else:
+            return_val = _height_percentage_to_pixels(container, height)
     elif height.unit == "auto":
         if attr == "min_height":
             return_val = -1
@@ -322,8 +340,16 @@ def _get_rendered_height(container: Container, attr: None | str = None) -> int:
     else:
         raise ValueError()
 
+    if attr is not None:
+        _rendered_height_cache[attr][container] = return_val
+        return return_val
+
+    min_height = _get_rendered_height(container, "min_height")
+    max_height = _get_rendered_height(container, "max_height")
+
+    return_val = min(max(return_val, min_height), max_height)
     _rendered_height_cache[attr][container] = return_val
-    return max(return_val, _get_rendered_height(container, "min_height")) if attr is None else return_val
+    return return_val
 
 
 def _height_percentage_to_pixels(container: Container, height: _Dimension) -> int:

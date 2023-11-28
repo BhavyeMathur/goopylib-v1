@@ -208,6 +208,8 @@ class Container:
 
         self._min_width = _Dimension("auto")
         self._min_height = _Dimension("auto")
+        self._max_width = _Dimension("100%")
+        self._max_height = _Dimension("100%")
 
         self._margin = _LRTB(0, 0, 0, 0)  # TODO % margins, padding, & border
         self._border = _LRTB(0, 0, 0, 0)
@@ -317,6 +319,22 @@ class Container:
     @min_height.setter
     def min_height(self, value: int | str) -> None:
         self._min_height = _Dimension(value)
+
+    @property
+    def max_width(self) -> _Dimension:
+        return self._max_width
+
+    @max_width.setter
+    def max_width(self, value: int | str) -> None:
+        self._max_width = _Dimension(value)
+
+    @property
+    def max_height(self) -> _Dimension:
+        return self._max_height
+
+    @max_height.setter
+    def max_height(self, value: int | str) -> None:
+        self._max_height = _Dimension(value)
 
     @property
     def tag(self) -> str:
