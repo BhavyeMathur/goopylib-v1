@@ -6,6 +6,9 @@ from .flex import Flex
 
 
 def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
+    _rendered_width_cache.clear()
+    _rendered_height_cache.clear()
+
     if container.parent is not None and container.parent.flex.direction in {"column", "column-reverse"}:
         x, y = y, x
 
@@ -261,35 +264,59 @@ def _get_auto_wrap_size(container: Container) -> int:
     return size + max_line_size
 
 
+_rendered_width_cache = {}
+_rendered_height_cache = {}
+
+
 def _get_rendered_width(container: Container) -> int:
+    cached = _rendered_width_cache.get(container)
+    if cached:
+        return cached
+
     if container.width.unit == "px":
-        return container.width
+        return_val = container.width
     elif container.width.unit == "%":
-        if container.parent.width.unit == "auto":
-            return 0  # TODO go through all non-auto sister elements, then figure out %
-
-        parent_content_width = _get_rendered_width(container.parent) - container.parent.padding.x
-        return min((container.width * parent_content_width) // 100,
-                   parent_content_width - container.margin.x - container.border.x)
-
+        return_val = _width_percentage_to_pixels(container)
     elif container.width.unit == "auto":
-        return container.padding.x + _get_auto_width(container)
+        return_val = container.padding.x + _get_auto_width(container)
     else:
         raise ValueError()
+
+    _rendered_width_cache[container] = return_val
+    return return_val
+
+
+def _width_percentage_to_pixels(container: Container) -> int:
+    if container.parent.width.unit == "auto":
+        return 0  # TODO go through all non-auto sister elements, then figure out %
+
+    parent_content_width = _get_rendered_width(container.parent) - container.parent.padding.x
+    return min((container.width * parent_content_width) // 100,
+               parent_content_width - container.margin.x - container.border.x)
 
 
 def _get_rendered_height(container: Container) -> int:
+    cached = _rendered_height_cache.get(container)
+    if cached:
+        return cached
+
     if container.height.unit == "px":
-        return container.height
+        return_val = container.height
     elif container.height.unit == "%":
-        if container.parent.height.unit == "auto":
-            return 0
-
-        parent_content_height = _get_rendered_height(container.parent) - container.parent.padding.y
-        return min((container.height * parent_content_height) // 100,
-                   parent_content_height - container.margin.y - container.border.y)
-
+        return_val = _height_percentage_to_pixels(container)
     elif container.height.unit == "auto":
-        return container.padding.y + _get_auto_height(container)
+        return_val = container.padding.y + _get_auto_height(container)
     else:
         raise ValueError()
+
+    _rendered_height_cache[container] = return_val
+    return return_val
+
+
+def _height_percentage_to_pixels(container: Container) -> int:
+    if container.parent.height.unit == "auto":
+        return 0
+
+    parent_content_height = _get_rendered_height(container.parent) - container.parent.padding.y
+    return min((container.height * parent_content_height) // 100,
+               parent_content_height - container.margin.y - container.border.y)
