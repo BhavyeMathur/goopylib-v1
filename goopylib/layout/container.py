@@ -206,7 +206,10 @@ class Container:
         self._width = _Dimension(width)
         self._height = _Dimension(height)
 
-        self._margin = _LRTB(0, 0, 0, 0)
+        self._min_width = _Dimension("auto")
+        self._min_height = _Dimension("auto")
+
+        self._margin = _LRTB(0, 0, 0, 0)  # TODO % margins, padding, & border
         self._border = _LRTB(0, 0, 0, 0)
         self._padding = _LRTB(0, 0, 0, 0)
 
@@ -219,6 +222,7 @@ class Container:
 
         Container._containers.append(self)
         self._tag: str = tag
+        self._id: int = len(Container._containers)
 
         # rendered attributes
         self._margin_box = _Box()
@@ -299,6 +303,22 @@ class Container:
         self._height = _Dimension(value)
 
     @property
+    def min_width(self) -> _Dimension:
+        return self._min_width
+
+    @min_width.setter
+    def min_width(self, value: int | str) -> None:
+        self._min_width = _Dimension(value)
+
+    @property
+    def min_height(self) -> _Dimension:
+        return self._min_height
+
+    @min_height.setter
+    def min_height(self, value: int | str) -> None:
+        self._min_height = _Dimension(value)
+
+    @property
     def tag(self) -> str:
         return self._tag
 
@@ -317,6 +337,10 @@ class Container:
     @flex.setter
     def flex(self, value: Flex) -> None:
         self._flex = value
+
+    @property
+    def id(self) -> int:
+        return self._id
 
     def translate(self, dx: int, dy: int) -> None:
         self.margin_box.translate(dx, dy)

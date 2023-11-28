@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import goopylib.layout.align_offset_funcs as align_offset_funcs
-from .container import Container
+from .container import Container, _Dimension
 from .flex import Flex
 
 
 def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
-    _rendered_width_cache.clear()
-    _rendered_height_cache.clear()
+    _rendered_width_cache[None].clear()
+    _rendered_width_cache["min_width"].clear()
+    _rendered_height_cache[None].clear()
+    _rendered_height_cache["min_height"].clear()
 
     if container.parent is not None and container.parent.flex.direction in {"column", "column-reverse"}:
         x, y = y, x
@@ -264,59 +266,65 @@ def _get_auto_wrap_size(container: Container) -> int:
     return size + max_line_size
 
 
-_rendered_width_cache = {}
-_rendered_height_cache = {}
+_rendered_width_cache = {None: {}, "min_width": {}}
+_rendered_height_cache = {None: {}, "min_height": {}}
 
 
-def _get_rendered_width(container: Container) -> int:
-    cached = _rendered_width_cache.get(container)
+def _get_rendered_width(container: Container, attr: None | str = None) -> int:
+    cached = _rendered_width_cache[attr].get(container)
     if cached:
         return cached
 
-    if container.width.unit == "px":
-        return_val = container.width
-    elif container.width.unit == "%":
-        return_val = _width_percentage_to_pixels(container)
-    elif container.width.unit == "auto":
+    width = container.width if attr is None else getattr(container, attr)
+
+    if width.unit == "px":
+        return_val = width
+    elif width.unit == "%":
+        return_val = _width_percentage_to_pixels(container, width)
+    elif width.unit == "auto" and attr == "min_width":
+        return -1
+    elif width.unit == "auto":
         return_val = container.padding.x + _get_auto_width(container)
     else:
         raise ValueError()
 
-    _rendered_width_cache[container] = return_val
-    return return_val
+    _rendered_width_cache[attr][container] = return_val
+    return max(return_val, _get_rendered_width(container, "min_width")) if attr is None else return_val
 
 
-def _width_percentage_to_pixels(container: Container) -> int:
+def _width_percentage_to_pixels(container: Container, width: _Dimension) -> int:
     if container.parent.width.unit == "auto":
         return 0  # TODO go through all non-auto sister elements, then figure out %
 
     parent_content_width = _get_rendered_width(container.parent) - container.parent.padding.x
-    return min((container.width * parent_content_width) // 100,
-               parent_content_width - container.margin.x - container.border.x)
+    return min((width * parent_content_width) // 100, parent_content_width - container.margin.x - container.border.x)
 
 
-def _get_rendered_height(container: Container) -> int:
-    cached = _rendered_height_cache.get(container)
+def _get_rendered_height(container: Container, attr: None | str = None) -> int:
+    cached = _rendered_height_cache[attr].get(container)
     if cached:
         return cached
 
-    if container.height.unit == "px":
-        return_val = container.height
-    elif container.height.unit == "%":
-        return_val = _height_percentage_to_pixels(container)
-    elif container.height.unit == "auto":
+    height = container.height if attr is None else getattr(container, attr)
+
+    if height.unit == "px":
+        return_val = height
+    elif height.unit == "%":
+        return_val = _height_percentage_to_pixels(container, height)
+    elif height.unit == "auto" and attr == "min_height":
+        return -1
+    elif height.unit == "auto":
         return_val = container.padding.y + _get_auto_height(container)
     else:
         raise ValueError()
 
-    _rendered_height_cache[container] = return_val
-    return return_val
+    _rendered_height_cache[attr][container] = return_val
+    return max(return_val, _get_rendered_height(container, "min_height")) if attr is None else return_val
 
 
-def _height_percentage_to_pixels(container: Container) -> int:
+def _height_percentage_to_pixels(container: Container, height: _Dimension) -> int:
     if container.parent.height.unit == "auto":
         return 0
 
     parent_content_height = _get_rendered_height(container.parent) - container.parent.padding.y
-    return min((container.height * parent_content_height) // 100,
-               parent_content_height - container.margin.y - container.border.y)
+    return min((height * parent_content_height) // 100, parent_content_height - container.margin.y - container.border.y)
