@@ -6,8 +6,6 @@ from .flex import Flex
 
 
 def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
-    print(f"process({container})")
-
     _rendered_width_cache[None].clear()
     _rendered_width_cache["min_width"].clear()
     _rendered_width_cache["max_width"].clear()
@@ -45,7 +43,6 @@ def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = F
 
 
 def _process_flex_items(container: Container, flex: Flex):
-    print(f"_process_flex_items({container})")
     wrap = flex.wrap != "nowrap"
 
     if container.tag == "test":
