@@ -6,7 +6,7 @@ from .flex import Flex
 
 
 def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
-    # print(f"process({container}, _only_direct={_only_direct})")
+    print(f"process({container})")
 
     _rendered_width_cache[None].clear()
     _rendered_width_cache["min_width"].clear()
@@ -45,7 +45,7 @@ def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = F
 
 
 def _process_flex_items(container: Container, flex: Flex):
-    # print(f"_process_flex_items({container}, _only_direct={_only_direct})")
+    print(f"_process_flex_items({container})")
     wrap = flex.wrap != "nowrap"
 
     if container.tag == "test":
@@ -58,7 +58,7 @@ def _process_flex_items(container: Container, flex: Flex):
     def _wrap_content() -> None:
         nonlocal main_pos, cross_pos, max_child_size, wrap_queue
 
-        _main_align_row(flex, main_content_end - main_pos + main_gap, wrap_queue)
+        _main_align_row(flex, direction, direction * (main_content_end - main_pos) + main_gap, wrap_queue)
         _cross_align_items_line(flex, max_child_size, wrap_queue)
 
         cross_pos += max_child_size + cross_gap
@@ -99,16 +99,21 @@ def _process_flex_items(container: Container, flex: Flex):
 
     if container.flex.direction.endswith("reverse"):
         main_pos, main_content_end = main_content_end, main_pos
-        cross_pos, cross_content_end = cross_content_end, cross_pos
         direction = -1
 
         def _wrap_check() -> bool:
             return main_pos - size < main_content_end
+
+        def _child_main_pos() -> int:
+            return main_pos - size
     else:
         direction = 1
 
         def _wrap_check() -> bool:
             return main_pos + size > main_content_end
+
+        def _child_main_pos() -> int:
+            return main_pos
 
     main_content_start = main_pos
 
@@ -118,7 +123,7 @@ def _process_flex_items(container: Container, flex: Flex):
         if wrap and _wrap_check():
             _wrap_content()
 
-        process(child, main_pos, cross_pos, _only_direct=True)
+        process(child, _child_main_pos(), cross_pos, _only_direct=True)
 
         wrap_queue.append(child)
 
@@ -140,7 +145,7 @@ def _get_order_sorted_children(container: Container) -> list[Container]:
     return children
 
 
-def _main_align_row(flex: Flex, whitespace: int, items: list[Container]) -> None:
+def _main_align_row(flex: Flex, direction: int, whitespace: int, items: list[Container]) -> None:
     whitespace = _process_flex_grow(flex, whitespace, items)
     if whitespace < 1:
         return
@@ -151,9 +156,9 @@ def _main_align_row(flex: Flex, whitespace: int, items: list[Container]) -> None
     offset = align_offset_funcs._get_offset(flex.align, whitespace, len(items))
 
     if flex.direction == "row" or flex.direction == "row-reverse":
-        shift = lambda c, distance: c.translate(distance, 0)
+        shift = lambda c, distance: c.translate(direction * distance, 0)
     else:
-        shift = lambda c, distance: c.translate(0, distance)
+        shift = lambda c, distance: c.translate(0, direction * distance)
 
     for i, child in enumerate(items):
         shift(child, offset(i))
@@ -261,7 +266,7 @@ def _get_auto_wrap_size(container: Container) -> int:
     size = 0
     max_line_size = 0
 
-    if container.flex.direction == "row" or container.flex.direction != "row-reverse":
+    if container.flex.direction == "row" or container.flex.direction == "row-reverse":
         main_size = _get_rendered_width(container)
         cross_gap = container.flex.row_gap
         cross_size = lambda c: c.border.y + c.margin.y + _get_rendered_height(c)
