@@ -202,20 +202,36 @@ class Container:
     _context_tree: list[Container] = []
     _containers: list[Container] = []  # could consider making a dictionary
 
-    def __init__(self, width, height, tag: str = "") -> None:
+    def __init__(self,
+                 width: int | str,
+                 height: int | str,
+                 margin: _LRTB_SETTER_TYPE = (0, 0, 0, 0),
+                 border: _LRTB_SETTER_TYPE = (0, 0, 0, 0),
+                 padding: _LRTB_SETTER_TYPE = (0, 0, 0, 0),
+                 flex: Flex = Flex("nowrap", "start", "start"),
+                 min_width: int | str = "auto",
+                 min_height: int | str = "auto",
+                 max_width: int | str = "100%",
+                 max_height: int | str = "100%",
+                 tag: str = "") -> None:
+
         self._width = _Dimension(width)
         self._height = _Dimension(height)
 
-        self._min_width = _Dimension("auto")
-        self._min_height = _Dimension("auto")
-        self._max_width = _Dimension("100%")
-        self._max_height = _Dimension("100%")
+        self._min_width = _Dimension(min_width)
+        self._min_height = _Dimension(min_height)
+        self._max_width = _Dimension(max_width)
+        self._max_height = _Dimension(max_height)
 
         self._margin = _LRTB(0, 0, 0, 0)  # TODO % margins, padding, & border
         self._border = _LRTB(0, 0, 0, 0)
         self._padding = _LRTB(0, 0, 0, 0)
 
-        self._flex = Flex("nowrap", "start", "start")
+        self._margin.set_values(margin)
+        self._border.set_values(border)
+        self._padding.set_values(padding)
+
+        self._flex = flex
 
         self._children: list[Container] = []
         self._parent: None | Container = Container._context_tree[-1] if len(Container._context_tree) > 0 else None
@@ -225,15 +241,13 @@ class Container:
         Container._containers.append(self)
         self._tag: str = tag
         self._id: int = len(Container._containers)
+        self._layer: int = self._parent.layer + 1 if self._parent else 0
 
         # rendered attributes
         self._margin_box = _Box()
         self._border_box = _Box()
         self._padding_box = _Box()
         self._content_box = _Box()
-
-        # debug attributes
-        self.color: None | tuple[int, float, float] = None
 
     def __repr__(self) -> str:
         return f"Container({self._tag}) @ ({self._border_box.start})"
@@ -339,6 +353,10 @@ class Container:
     @property
     def tag(self) -> str:
         return self._tag
+
+    @property
+    def layer(self) -> int:
+        return self._layer
 
     @property
     def children(self) -> tuple[Container, ...]:
