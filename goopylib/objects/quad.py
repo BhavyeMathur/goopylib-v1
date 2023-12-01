@@ -44,7 +44,7 @@ class Quad(Renderable):
         """
         self._renderable: Quad = _quad.Quad(p1, p2, p3, p4)
 
-    def set_color(self, *args) -> None:
+    def set_color(self, *args) -> None:  # TODO should accept colour strings or RGB/CMYK tuples
         """
         Sets the fill color of the object
 

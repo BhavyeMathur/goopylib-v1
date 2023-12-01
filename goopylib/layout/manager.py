@@ -19,24 +19,19 @@ def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = F
     container.margin_box.x1 = x
     container.margin_box.y1 = y
 
-    container.border_box.x1 = x + container.margin.left
-    container.border_box.y1 = y + container.margin.top
-
-    container.padding_box.x1 = container.border_box.x1 + container.border.left
-    container.padding_box.y1 = container.border_box.y1 + container.border.top
+    container.padding_box.x1 = x + container.margin.left
+    container.padding_box.y1 = y + container.margin.top
 
     container.content_box.x1 = container.padding_box.x1 + container.padding.left
     container.content_box.y1 = container.padding_box.y1 + container.padding.top
 
     container.padding_box.width = _get_rendered_width(container)
     container.content_box.width = container.padding_box.width - container.padding.x
-    container.border_box.width = container.padding_box.width + container.border.x
-    container.margin_box.width = container.border_box.width + container.margin.x
+    container.margin_box.width = container.padding_box.width + container.margin.x
 
     container.padding_box.height = _get_rendered_height(container)
     container.content_box.height = container.padding_box.height - container.padding.y
-    container.border_box.height = container.padding_box.height + container.border.y
-    container.margin_box.height = container.border_box.height + container.margin.y
+    container.margin_box.height = container.padding_box.height + container.margin.y
 
     if not _only_direct:
         _process_flex_items(container, container.flex)
@@ -73,7 +68,6 @@ def _process_flex_items(container: Container, flex: Flex):
         rendered_main_size = _get_rendered_width
 
         main_margin = lambda c: c.margin.x
-        main_border = lambda c: c.border.x
         cross_margin_size = lambda c: c.margin_box.height
         main_content_end = container.content_box.x2
         cross_content_end = container.content_box.y2
@@ -86,7 +80,6 @@ def _process_flex_items(container: Container, flex: Flex):
         rendered_main_size = _get_rendered_height
 
         main_margin = lambda c: c.margin.y
-        main_border = lambda c: c.border.y
         cross_margin_size = lambda c: c.margin_box.width
         main_content_end = container.content_box.y2
         cross_content_end = container.content_box.x2
@@ -115,7 +108,7 @@ def _process_flex_items(container: Container, flex: Flex):
     main_content_start = main_pos
 
     for child in _get_order_sorted_children(container):
-        size = rendered_main_size(child) + main_margin(child) + main_border(child)
+        size = rendered_main_size(child) + main_margin(child)
 
         if wrap and _wrap_check():
             _wrap_content()
@@ -235,7 +228,7 @@ def _get_auto_width(container: Container) -> int:
         if container.flex.wrap != "nowrap" and container.height.unit != "auto":
             return _get_auto_wrap_size(container)
 
-    children_sizes = (child.border.x + child.margin.x + _get_rendered_width(child) for child in container.children)
+    children_sizes = (child.margin.x + _get_rendered_width(child) for child in container.children)
 
     if container.flex.direction == "column" or container.flex.direction == "column-reverse":
         return max(children_sizes)
@@ -251,7 +244,7 @@ def _get_auto_height(container: Container) -> int:
         if container.flex.wrap != "nowrap" and container.width.unit != "auto":
             return _get_auto_wrap_size(container)
 
-    children_sizes = (child.border.y + child.margin.y + _get_rendered_height(child) for child in container.children)
+    children_sizes = (child.margin.y + _get_rendered_height(child) for child in container.children)
 
     if container.flex.direction == "row" or container.flex.direction == "row-reverse":
         return max(children_sizes)
@@ -266,16 +259,16 @@ def _get_auto_wrap_size(container: Container) -> int:
     if container.flex.direction == "row" or container.flex.direction == "row-reverse":
         main_size = _get_rendered_width(container)
         cross_gap = container.flex.row_gap
-        cross_size = lambda c: c.border.y + c.margin.y + _get_rendered_height(c)
+        cross_size = lambda c: c.margin.y + _get_rendered_height(c)
     else:
         main_size = _get_rendered_height(container)
         cross_gap = container.flex.column_gap
-        cross_size = lambda c: c.border.x + c.margin.x + _get_rendered_width(c)
+        cross_size = lambda c: c.margin.x + _get_rendered_width(c)
 
     space = main_size
 
     for child in container.children:
-        child_size = _get_rendered_width(child) + child.margin.x + child.border.x
+        child_size = _get_rendered_width(child) + child.margin.x
         space -= child_size
         if space < 0:
             space = main_size - child_size
@@ -334,7 +327,7 @@ def _width_percentage_to_pixels(container: Container, width: _Dimension) -> int:
         return 0  # TODO go through all non-auto sister elements, then figure out %
 
     parent_content_width = _get_rendered_width(container.parent) - container.parent.padding.x
-    return min((width * parent_content_width) // 100, parent_content_width - container.margin.x - container.border.x)
+    return min((width * parent_content_width) // 100, parent_content_width - container.margin.x)
 
 
 def _get_rendered_height(container: Container, attr: None | str = None) -> int:
@@ -378,4 +371,4 @@ def _height_percentage_to_pixels(container: Container, height: _Dimension) -> in
         return 0
 
     parent_content_height = _get_rendered_height(container.parent) - container.parent.padding.y
-    return min((height * parent_content_height) // 100, parent_content_height - container.margin.y - container.border.y)
+    return min((height * parent_content_height) // 100, parent_content_height - container.margin.y)

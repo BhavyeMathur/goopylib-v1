@@ -206,7 +206,6 @@ class Container:
                  width: int | str,
                  height: int | str,
                  margin: _LRTB_SETTER_TYPE = (0, 0, 0, 0),
-                 border: _LRTB_SETTER_TYPE = (0, 0, 0, 0),
                  padding: _LRTB_SETTER_TYPE = (0, 0, 0, 0),
                  flex: Flex = Flex("nowrap", "start", "start"),
                  min_width: int | str = "auto",
@@ -223,12 +222,10 @@ class Container:
         self._max_width = _Dimension(max_width)
         self._max_height = _Dimension(max_height)
 
-        self._margin = _LRTB(0, 0, 0, 0)  # TODO % margins, padding, & border
-        self._border = _LRTB(0, 0, 0, 0)
+        self._margin = _LRTB(0, 0, 0, 0)  # TODO % margin & padding
         self._padding = _LRTB(0, 0, 0, 0)
 
         self._margin.set_values(margin)
-        self._border.set_values(border)
         self._padding.set_values(padding)
 
         self._flex = flex
@@ -245,12 +242,11 @@ class Container:
 
         # rendered attributes
         self._margin_box = _Box()
-        self._border_box = _Box()
         self._padding_box = _Box()
         self._content_box = _Box()
 
     def __repr__(self) -> str:
-        return f"Container({self._tag}) @ ({self._border_box.start})"
+        return f"Container({self._tag}) @ ({self._padding_box.start})"
 
     def __enter__(self) -> Container:
         Container._context_tree.append(self)
@@ -265,10 +261,6 @@ class Container:
     @property
     def margin_box(self) -> _Box:
         return self._margin_box
-
-    @property
-    def border_box(self) -> _Box:
-        return self._border_box
 
     @property
     def padding_box(self) -> _Box:
@@ -293,14 +285,6 @@ class Container:
     @padding.setter
     def padding(self, value: _LRTB_SETTER_TYPE) -> None:
         self._padding.set_values(value)
-
-    @property
-    def border(self) -> _LRTB:
-        return self._border
-
-    @border.setter
-    def border(self, value: _LRTB_SETTER_TYPE) -> None:
-        self._border.set_values(value)
 
     @property
     def width(self) -> _Dimension:
@@ -380,31 +364,26 @@ class Container:
 
     def translate(self, dx: int, dy: int) -> None:
         self.margin_box.translate(dx, dy)
-        self.border_box.translate(dx, dy)
         self.padding_box.translate(dx, dy)
         self.content_box.translate(dx, dy)
 
     def translate_x1(self, dx: int) -> None:
         self.margin_box.x1 += dx
-        self.border_box.x1 += dx
         self.padding_box.x1 += dx
         self.content_box.x1 += dx
 
     def translate_x2(self, dx: int) -> None:
         self.margin_box.x2 += dx
-        self.border_box.x2 += dx
         self.padding_box.x2 += dx
         self.content_box.x2 += dx
 
     def translate_y1(self, dy: int) -> None:
         self.margin_box.y1 += dy
-        self.border_box.y1 += dy
         self.padding_box.y1 += dy
         self.content_box.y1 += dy
 
     def translate_y2(self, dy: int) -> None:
         self.margin_box.y2 += dy
-        self.border_box.y2 += dy
         self.padding_box.y2 += dy
         self.content_box.y2 += dy
 
