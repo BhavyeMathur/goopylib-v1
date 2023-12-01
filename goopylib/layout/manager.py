@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 import goopylib.layout.align_offset_funcs as align_offset_funcs
-from .container import Container, _Dimension
+from .container import Div, _Dimension
 from .flex import Flex
 
 
 # TODO - Add responsive layouts at different screen sizes
 
 
-def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
+def process(container: Div, x: int = 0, y: int = 0, _only_direct: bool = False):
     if container.parent is not None and container.parent.flex.direction in {"column", "column-reverse"}:
         x, y = y, x
 
@@ -38,10 +38,10 @@ def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = F
         _process_flex_items(container, container.flex)
 
 
-def _process_flex_items(container: Container, flex: Flex):
+def _process_flex_items(container: Div, flex: Flex):
     wrap = flex.wrap != "nowrap"
 
-    if container.tag == "test":
+    if container.classes == "test":
         pass
 
     max_child_size = 0
@@ -128,7 +128,7 @@ def _process_flex_items(container: Container, flex: Flex):
         _process_flex_items(child, child.flex)
 
 
-def _get_order_sorted_children(container: Container) -> list[Container]:
+def _get_order_sorted_children(container: Div) -> list[Div]:
     children = sorted(container.children, key=lambda child: child.flex.order)
 
     if container.flex.wrap == "reverse":
@@ -136,7 +136,7 @@ def _get_order_sorted_children(container: Container) -> list[Container]:
     return children
 
 
-def _main_align_row(flex: Flex, direction: int, whitespace: int, items: list[Container]) -> None:
+def _main_align_row(flex: Flex, direction: int, whitespace: int, items: list[Div]) -> None:
     whitespace = _process_flex_grow(flex, whitespace, items)
     if whitespace < 1:
         return
@@ -155,7 +155,7 @@ def _main_align_row(flex: Flex, direction: int, whitespace: int, items: list[Con
         shift(child, offset(i))
 
 
-def _process_flex_grow(flex: Flex, whitespace: int, items: list[Container]) -> int:
+def _process_flex_grow(flex: Flex, whitespace: int, items: list[Div]) -> int:
     if whitespace < 1:
         return whitespace
 
@@ -181,7 +181,7 @@ def _process_flex_grow(flex: Flex, whitespace: int, items: list[Container]) -> i
     return whitespace
 
 
-def _cross_align(flex: Flex, whitespace: int, items: list[list[Container]]) -> None:
+def _cross_align(flex: Flex, whitespace: int, items: list[list[Div]]) -> None:
     if whitespace < 1:
         return
     if flex.cross_align == "start":
@@ -199,7 +199,7 @@ def _cross_align(flex: Flex, whitespace: int, items: list[list[Container]]) -> N
             shift(child, offset(i))
 
 
-def _cross_align_items_line(flex: Flex, line_size: int, items: list[Container]) -> None:
+def _cross_align_items_line(flex: Flex, line_size: int, items: list[Div]) -> None:
     if flex.item_align == "start":
         return
 
@@ -221,7 +221,7 @@ def _cross_align_items_line(flex: Flex, line_size: int, items: list[Container]) 
         shift(child, offset)
 
 
-def _get_auto_width(container: Container) -> int:
+def _get_auto_width(container: Div) -> int:
     if len(container.children) == 0:
         return 0
 
@@ -237,7 +237,7 @@ def _get_auto_width(container: Container) -> int:
     return sum(children_sizes) + container.flex.column_gap * (len(container.children) - 1)
 
 
-def _get_auto_height(container: Container) -> int:
+def _get_auto_height(container: Div) -> int:
     if len(container.children) == 0:
         return 0
 
@@ -253,7 +253,7 @@ def _get_auto_height(container: Container) -> int:
     return sum(children_sizes) + container.flex.row_gap * (len(container.children) - 1)
 
 
-def _get_auto_wrap_size(container: Container) -> int:
+def _get_auto_wrap_size(container: Div) -> int:
     size = 0
     max_line_size = 0
 
@@ -285,7 +285,7 @@ _rendered_width_cache = {None: {}, "min_width": {}, "max_width": {}}
 _rendered_height_cache = {None: {}, "min_height": {}, "max_height": {}}
 
 
-def _get_rendered_width(container: Container, attr: None | str = None) -> int:
+def _get_rendered_width(container: Div, attr: None | str = None) -> int:
     cached = _rendered_width_cache[attr].get(container)
     if cached is not None:
         return cached
@@ -321,7 +321,7 @@ def _get_rendered_width(container: Container, attr: None | str = None) -> int:
     return return_val
 
 
-def _width_percentage_to_pixels(container: Container, width: _Dimension) -> int:
+def _width_percentage_to_pixels(container: Div, width: _Dimension) -> int:
     if container.parent is None:
         return 0
     if container.parent.width.unit == "auto":
@@ -331,7 +331,7 @@ def _width_percentage_to_pixels(container: Container, width: _Dimension) -> int:
     return min((width * parent_content_width) // 100, parent_content_width - container.margin.x)
 
 
-def _get_rendered_height(container: Container, attr: None | str = None) -> int:
+def _get_rendered_height(container: Div, attr: None | str = None) -> int:
     cached = _rendered_height_cache[attr].get(container)
     if cached:
         return cached
@@ -365,7 +365,7 @@ def _get_rendered_height(container: Container, attr: None | str = None) -> int:
     return return_val
 
 
-def _height_percentage_to_pixels(container: Container, height: _Dimension) -> int:
+def _height_percentage_to_pixels(container: Div, height: _Dimension) -> int:
     if container.parent is None:
         return 0
     if container.parent.height.unit == "auto":

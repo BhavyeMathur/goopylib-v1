@@ -55,8 +55,6 @@ def main():
             images.append(img)
 
     while window.is_open():
-        gp.update()
-
         for img in images:
             img.set_transparency(0.1)
 
@@ -96,6 +94,8 @@ def main():
         set_transparency4(x + 2, y - 2, 0.1, 0.1, 0.1, 0.3)
         set_transparency4(x - 2, y + 2, 0.1, 0.3, 0.1, 0.1)
         set_transparency4(x + 2, y + 2, 0.2, 0.1, 0.1, 0.1)
+
+        gp.update()
 
 
 if __name__ == "__main__":
