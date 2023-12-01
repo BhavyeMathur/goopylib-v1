@@ -33,7 +33,7 @@ venv*/
 
 wheelhouse/
 main.py
-main.cpp
+/main.cpp
 main.css
 empty.cpp
 *.log
