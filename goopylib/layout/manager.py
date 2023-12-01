@@ -6,13 +6,6 @@ from .flex import Flex
 
 
 def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = False):
-    _rendered_width_cache[None].clear()
-    _rendered_width_cache["min_width"].clear()
-    _rendered_width_cache["max_width"].clear()
-    _rendered_height_cache[None].clear()
-    _rendered_height_cache["min_height"].clear()
-    _rendered_height_cache["max_height"].clear()
-
     if container.parent is not None and container.parent.flex.direction in {"column", "column-reverse"}:
         x, y = y, x
 
@@ -34,6 +27,11 @@ def process(container: Container, x: int = 0, y: int = 0, _only_direct: bool = F
     container.margin_box.height = container.padding_box.height + container.margin.y
 
     if not _only_direct:
+        global _rendered_width_cache, _rendered_height_cache
+
+        _rendered_width_cache = {None: {}, "min_width": {}, "max_width": {}}
+        _rendered_height_cache = {None: {}, "min_height": {}, "max_height": {}}
+
         _process_flex_items(container, container.flex)
 
 
@@ -286,7 +284,7 @@ _rendered_height_cache = {None: {}, "min_height": {}, "max_height": {}}
 
 def _get_rendered_width(container: Container, attr: None | str = None) -> int:
     cached = _rendered_width_cache[attr].get(container)
-    if cached:
+    if cached is not None:
         return cached
 
     width = container.width if attr is None else getattr(container, attr)
