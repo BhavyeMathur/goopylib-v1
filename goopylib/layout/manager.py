@@ -1,33 +1,34 @@
 from __future__ import annotations
 
 import goopylib.layout.align_offset_funcs as align_offset_funcs
-from .container import Div, _Dimension
+from .div import Div
+from ._internal import _Dimension
 from .flex import Flex
 
 
 # TODO - Add responsive layouts at different screen sizes
 
 
-def process(container: Div, x: int = 0, y: int = 0, _only_direct: bool = False):
-    if container.parent is not None and container.parent.flex.direction in {"column", "column-reverse"}:
+def process(div: Div, x: int = 0, y: int = 0, _only_direct: bool = False):
+    if div.parent is not None and div.parent.flex.direction in {"column", "column-reverse"}:
         x, y = y, x
 
-    container.margin_box.x1 = x
-    container.margin_box.y1 = y
+    div.margin_box.x1 = x
+    div.margin_box.y1 = y
 
-    container.padding_box.x1 = x + container.margin.left
-    container.padding_box.y1 = y + container.margin.top
+    div.padding_box.x1 = x + div.margin.left
+    div.padding_box.y1 = y + div.margin.top
 
-    container.content_box.x1 = container.padding_box.x1 + container.padding.left
-    container.content_box.y1 = container.padding_box.y1 + container.padding.top
+    div.content_box.x1 = div.padding_box.x1 + div.padding.left
+    div.content_box.y1 = div.padding_box.y1 + div.padding.top
 
-    container.padding_box.width = _get_rendered_width(container)
-    container.content_box.width = container.padding_box.width - container.padding.x
-    container.margin_box.width = container.padding_box.width + container.margin.x
+    div.padding_box.width = _get_rendered_width(div)
+    div.content_box.width = div.padding_box.width - div.padding.x
+    div.margin_box.width = div.padding_box.width + div.margin.x
 
-    container.padding_box.height = _get_rendered_height(container)
-    container.content_box.height = container.padding_box.height - container.padding.y
-    container.margin_box.height = container.padding_box.height + container.margin.y
+    div.padding_box.height = _get_rendered_height(div)
+    div.content_box.height = div.padding_box.height - div.padding.y
+    div.margin_box.height = div.padding_box.height + div.margin.y
 
     if not _only_direct:
         global _rendered_width_cache, _rendered_height_cache
@@ -35,17 +36,17 @@ def process(container: Div, x: int = 0, y: int = 0, _only_direct: bool = False):
         _rendered_width_cache = {None: {}, "min_width": {}, "max_width": {}}
         _rendered_height_cache = {None: {}, "min_height": {}, "max_height": {}}
 
-        _process_flex_items(container, container.flex)
+        _process_flex_items(div, div.flex)
 
 
-def _process_flex_items(container: Div, flex: Flex):
+def _process_flex_items(div: Div, flex: Flex):
     wrap = flex.wrap != "nowrap"
 
-    if container.classes == "test":
+    if div.classes == "test":
         pass
 
     max_child_size = 0
-    row_containers = []
+    row_divs = []
     wrap_queue = []
 
     def _wrap_content() -> None:
@@ -57,38 +58,38 @@ def _process_flex_items(container: Div, flex: Flex):
         cross_pos += max_child_size + cross_gap
         main_pos = main_content_start
 
-        row_containers.append(wrap_queue)
+        row_divs.append(wrap_queue)
         max_child_size = 0
         wrap_queue = []
 
-    if container.flex.direction.startswith("row"):
-        main_pos = container.content_box.x1
-        cross_pos = container.content_box.y1
+    if div.flex.direction.startswith("row"):
+        main_pos = div.content_box.x1
+        cross_pos = div.content_box.y1
         main_gap = flex.column_gap
         cross_gap = flex.row_gap
         rendered_main_size = _get_rendered_width
 
         main_margin = lambda c: c.margin.x
         cross_margin_size = lambda c: c.margin_box.height
-        main_content_end = container.content_box.x2
-        cross_content_end = container.content_box.y2
+        main_content_end = div.content_box.x2
+        cross_content_end = div.content_box.y2
 
-    elif container.flex.direction.startswith("column"):
-        main_pos = container.content_box.y1
-        cross_pos = container.content_box.x1
+    elif div.flex.direction.startswith("column"):
+        main_pos = div.content_box.y1
+        cross_pos = div.content_box.x1
         main_gap = flex.row_gap
         cross_gap = flex.column_gap
         rendered_main_size = _get_rendered_height
 
         main_margin = lambda c: c.margin.y
         cross_margin_size = lambda c: c.margin_box.width
-        main_content_end = container.content_box.y2
-        cross_content_end = container.content_box.x2
+        main_content_end = div.content_box.y2
+        cross_content_end = div.content_box.x2
 
     else:
-        raise ValueError(container.flex.direction)
+        raise ValueError(div.flex.direction)
 
-    if container.flex.direction.endswith("reverse"):
+    if div.flex.direction.endswith("reverse"):
         main_pos, main_content_end = main_content_end, main_pos
         direction = -1
 
@@ -108,7 +109,7 @@ def _process_flex_items(container: Div, flex: Flex):
 
     main_content_start = main_pos
 
-    for child in _get_order_sorted_children(container):
+    for child in _get_order_sorted_children(div):
         size = rendered_main_size(child) + main_margin(child)
 
         if wrap and _wrap_check():
@@ -122,16 +123,16 @@ def _process_flex_items(container: Div, flex: Flex):
         main_pos += direction * (size + main_gap)
 
     _wrap_content()
-    _cross_align(flex, cross_content_end - cross_pos + cross_gap, row_containers)
+    _cross_align(flex, cross_content_end - cross_pos + cross_gap, row_divs)
 
-    for child in container.children:
+    for child in div.children:
         _process_flex_items(child, child.flex)
 
 
-def _get_order_sorted_children(container: Div) -> list[Div]:
-    children = sorted(container.children, key=lambda child: child.flex.order)
+def _get_order_sorted_children(div: Div) -> list[Div]:
+    children = sorted(div.children, key=lambda child: child.flex.order)
 
-    if container.flex.wrap == "reverse":
+    if div.flex.wrap == "reverse":
         return children[::-1]
     return children
 
@@ -221,54 +222,54 @@ def _cross_align_items_line(flex: Flex, line_size: int, items: list[Div]) -> Non
         shift(child, offset)
 
 
-def _get_auto_width(container: Div) -> int:
-    if len(container.children) == 0:
+def _get_auto_width(div: Div) -> int:
+    if len(div.children) == 0:
         return 0
 
-    if container.flex.direction == "column" or container.flex.direction == "column-reverse":
-        if container.flex.wrap != "nowrap" and container.height.unit != "auto":
-            return _get_auto_wrap_size(container)
+    if div.flex.direction == "column" or div.flex.direction == "column-reverse":
+        if div.flex.wrap != "nowrap" and div.height.unit != "auto":
+            return _get_auto_wrap_size(div)
 
-    children_sizes = (child.margin.x + _get_rendered_width(child) for child in container.children)
+    children_sizes = (child.margin.x + _get_rendered_width(child) for child in div.children)
 
-    if container.flex.direction == "column" or container.flex.direction == "column-reverse":
+    if div.flex.direction == "column" or div.flex.direction == "column-reverse":
         return max(children_sizes)
 
-    return sum(children_sizes) + container.flex.column_gap * (len(container.children) - 1)
+    return sum(children_sizes) + div.flex.column_gap * (len(div.children) - 1)
 
 
-def _get_auto_height(container: Div) -> int:
-    if len(container.children) == 0:
+def _get_auto_height(div: Div) -> int:
+    if len(div.children) == 0:
         return 0
 
-    if container.flex.direction == "row" or container.flex.direction == "row-reverse":
-        if container.flex.wrap != "nowrap" and container.width.unit != "auto":
-            return _get_auto_wrap_size(container)
+    if div.flex.direction == "row" or div.flex.direction == "row-reverse":
+        if div.flex.wrap != "nowrap" and div.width.unit != "auto":
+            return _get_auto_wrap_size(div)
 
-    children_sizes = (child.margin.y + _get_rendered_height(child) for child in container.children)
+    children_sizes = (child.margin.y + _get_rendered_height(child) for child in div.children)
 
-    if container.flex.direction == "row" or container.flex.direction == "row-reverse":
+    if div.flex.direction == "row" or div.flex.direction == "row-reverse":
         return max(children_sizes)
 
-    return sum(children_sizes) + container.flex.row_gap * (len(container.children) - 1)
+    return sum(children_sizes) + div.flex.row_gap * (len(div.children) - 1)
 
 
-def _get_auto_wrap_size(container: Div) -> int:
+def _get_auto_wrap_size(div: Div) -> int:
     size = 0
     max_line_size = 0
 
-    if container.flex.direction == "row" or container.flex.direction == "row-reverse":
-        main_size = _get_rendered_width(container)
-        cross_gap = container.flex.row_gap
+    if div.flex.direction == "row" or div.flex.direction == "row-reverse":
+        main_size = _get_rendered_width(div)
+        cross_gap = div.flex.row_gap
         cross_size = lambda c: c.margin.y + _get_rendered_height(c)
     else:
-        main_size = _get_rendered_height(container)
-        cross_gap = container.flex.column_gap
+        main_size = _get_rendered_height(div)
+        cross_gap = div.flex.column_gap
         cross_size = lambda c: c.margin.x + _get_rendered_width(c)
 
     space = main_size
 
-    for child in container.children:
+    for child in div.children:
         child_size = _get_rendered_width(child) + child.margin.x
         space -= child_size
         if space < 0:
@@ -285,91 +286,91 @@ _rendered_width_cache = {None: {}, "min_width": {}, "max_width": {}}
 _rendered_height_cache = {None: {}, "min_height": {}, "max_height": {}}
 
 
-def _get_rendered_width(container: Div, attr: None | str = None) -> int:
-    cached = _rendered_width_cache[attr].get(container)
+def _get_rendered_width(div: Div, attr: None | str = None) -> int:
+    cached = _rendered_width_cache[attr].get(div)
     if cached is not None:
         return cached
 
-    width = container.width if attr is None else getattr(container, attr)
+    width = div.width if attr is None else getattr(div, attr)
 
     if width.unit == "px":
         return_val = width
     elif width.unit == "%":
-        if attr == "max_width" and (container.parent is None or container.parent.width.unit == "auto"):
+        if attr == "max_width" and (div.parent is None or div.parent.width.unit == "auto"):
             return_val = 2147483647
         else:
-            return_val = _width_percentage_to_pixels(container, width)
+            return_val = _width_percentage_to_pixels(div, width)
     elif width.unit == "auto":
         if attr == "min_width":
             return_val = -1
         else:
-            return_val = container.padding.x + _get_auto_width(container)
+            return_val = div.padding.x + _get_auto_width(div)
     else:
         raise ValueError()
 
     if attr is not None:
-        _rendered_width_cache[attr][container] = return_val
+        _rendered_width_cache[attr][div] = return_val
         return return_val
 
-    min_width = _get_rendered_width(container, "min_width")
-    max_width = _get_rendered_width(container, "max_width")
+    min_width = _get_rendered_width(div, "min_width")
+    max_width = _get_rendered_width(div, "max_width")
     if min_width > max_width:
         return_val = 0
 
     return_val = min(max(return_val, min_width), max_width)
-    _rendered_width_cache[attr][container] = return_val
+    _rendered_width_cache[attr][div] = return_val
     return return_val
 
 
-def _width_percentage_to_pixels(container: Div, width: _Dimension) -> int:
-    if container.parent is None:
+def _width_percentage_to_pixels(div: Div, width: _Dimension) -> int:
+    if div.parent is None:
         return 0
-    if container.parent.width.unit == "auto":
+    if div.parent.width.unit == "auto":
         return 0  # TODO ? go through all non-auto sister elements, then figure out %
 
-    parent_content_width = _get_rendered_width(container.parent) - container.parent.padding.x
-    return min((width * parent_content_width) // 100, parent_content_width - container.margin.x)
+    parent_content_width = _get_rendered_width(div.parent) - div.parent.padding.x
+    return min((width * parent_content_width) // 100, parent_content_width - div.margin.x)
 
 
-def _get_rendered_height(container: Div, attr: None | str = None) -> int:
-    cached = _rendered_height_cache[attr].get(container)
+def _get_rendered_height(div: Div, attr: None | str = None) -> int:
+    cached = _rendered_height_cache[attr].get(div)
     if cached:
         return cached
 
-    height = container.height if attr is None else getattr(container, attr)
+    height = div.height if attr is None else getattr(div, attr)
 
     if height.unit == "px":
         return_val = height
     elif height.unit == "%":
-        if attr == "max_height" and (container.parent is None or container.parent.height.unit == "auto"):
+        if attr == "max_height" and (div.parent is None or div.parent.height.unit == "auto"):
             return_val = 2147483647
         else:
-            return_val = _height_percentage_to_pixels(container, height)
+            return_val = _height_percentage_to_pixels(div, height)
     elif height.unit == "auto":
         if attr == "min_height":
             return_val = -1
         else:
-            return_val = container.padding.y + _get_auto_height(container)
+            return_val = div.padding.y + _get_auto_height(div)
     else:
         raise ValueError()
 
     if attr is not None:
-        _rendered_height_cache[attr][container] = return_val
+        _rendered_height_cache[attr][div] = return_val
         return return_val
 
-    min_height = _get_rendered_height(container, "min_height")
-    max_height = _get_rendered_height(container, "max_height")
+    min_height = _get_rendered_height(div, "min_height")
+    max_height = _get_rendered_height(div, "max_height")
 
     return_val = min(max(return_val, min_height), max_height)
-    _rendered_height_cache[attr][container] = return_val
+    _rendered_height_cache[attr][div] = return_val
     return return_val
 
 
-def _height_percentage_to_pixels(container: Div, height: _Dimension) -> int:
-    if container.parent is None:
+def _height_percentage_to_pixels(div: Div, height: _Dimension) -> int:
+    if div.parent is None:
         return 0
-    if container.parent.height.unit == "auto":
+    if div.parent.height.unit == "auto":
         return 0
 
-    parent_content_height = _get_rendered_height(container.parent) - container.parent.padding.y
-    return min((height * parent_content_height) // 100, parent_content_height - container.margin.y)
+    parent_content_height = _get_rendered_height(div.parent) - div.parent.padding.y
+    return min((height * parent_content_height) // 100, parent_content_height - div.margin.y)

@@ -6,7 +6,7 @@ from ._internal import _Box, _LRTB, _Dimension, _LRTB_SETTER_TYPE
 
 class Div:
     _context_tree: list[Div] = []
-    _containers: list[Div] = []  # could consider making a dictionary
+    _instances: list[Div] = []  # could consider making a dictionary
 
     def __init__(self,
                  width: int | str,
@@ -41,7 +41,7 @@ class Div:
         if self._parent:
             self._parent._add_child(self)
 
-        Div._containers.append(self)
+        Div._instances.append(self)
         self._classes: list[str] = classes.copy() if isinstance(classes, list) else classes.split()
         self._layer: int = self._parent.layer + 1 if self._parent else 0
 
@@ -51,7 +51,7 @@ class Div:
         self._content_box = _Box()
 
     def __repr__(self) -> str:
-        return f"Container({self._classes}) @ ({self._padding_box.start})"
+        return f"Div({self._classes}) @ ({self._padding_box.start})"
 
     def __enter__(self) -> Div:
         Div._context_tree.append(self)
@@ -189,5 +189,5 @@ class Div:
         self.content_box.y2 += dy
 
     @staticmethod
-    def get_divs() -> tuple[Div, ...]:
-        return tuple(Div._containers)
+    def get_instances() -> tuple[Div, ...]:
+        return tuple(Div._instances)
