@@ -222,36 +222,40 @@ def _cross_align_items_line(flex: Flex, line_size: int, items: list[Div]) -> Non
         shift(child, offset)
 
 
-def _get_auto_width(div: Div) -> int:
+def _get_auto_width(div: Div, attr: None | str) -> int:
+    if attr == "min_width":
+        return -1
     if len(div.children) == 0:
-        return 0
+        return div.padding.x
 
     if div.flex.direction == "column" or div.flex.direction == "column-reverse":
         if div.flex.wrap != "nowrap" and div.height.unit != "auto":
-            return _get_auto_wrap_size(div)
+            return div.padding.x + _get_auto_wrap_size(div)
 
     children_sizes = (child.margin.x + _get_rendered_width(child) for child in div.children)
 
     if div.flex.direction == "column" or div.flex.direction == "column-reverse":
-        return max(children_sizes)
+        return div.padding.x + max(children_sizes)
 
-    return sum(children_sizes) + div.flex.column_gap * (len(div.children) - 1)
+    return div.padding.x + sum(children_sizes) + div.flex.column_gap * (len(div.children) - 1)
 
 
-def _get_auto_height(div: Div) -> int:
+def _get_auto_height(div: Div, attr: None | str) -> int:
+    if attr == "min_height":
+        return -1
     if len(div.children) == 0:
-        return 0
+        return div.padding.y
 
     if div.flex.direction == "row" or div.flex.direction == "row-reverse":
         if div.flex.wrap != "nowrap" and div.width.unit != "auto":
-            return _get_auto_wrap_size(div)
+            return div.padding.y + _get_auto_wrap_size(div)
 
     children_sizes = (child.margin.y + _get_rendered_height(child) for child in div.children)
 
     if div.flex.direction == "row" or div.flex.direction == "row-reverse":
-        return max(children_sizes)
+        return div.padding.y + max(children_sizes)
 
-    return sum(children_sizes) + div.flex.row_gap * (len(div.children) - 1)
+    return div.padding.y + sum(children_sizes) + div.flex.row_gap * (len(div.children) - 1)
 
 
 def _get_auto_wrap_size(div: Div) -> int:
@@ -296,33 +300,34 @@ def _get_rendered_width(div: Div, attr: None | str = None) -> int:
     if width.unit == "px":
         return_val = width
     elif width.unit == "%":
-        if attr == "max_width" and (div.parent is None or div.parent.width.unit == "auto"):
-            return_val = 2147483647
-        else:
-            return_val = _width_percentage_to_pixels(div, width)
+        return_val = _width_percentage_to_pixels(div, attr, width)
     elif width.unit == "auto":
-        if attr == "min_width":
-            return_val = -1
-        else:
-            return_val = div.padding.x + _get_auto_width(div)
+        return_val = div.padding.x + _get_auto_width(div, attr)
     else:
         raise ValueError()
-
-    if attr is not None:
-        _rendered_width_cache[attr][div] = return_val
-        return return_val
-
-    min_width = _get_rendered_width(div, "min_width")
-    max_width = _get_rendered_width(div, "max_width")
-    if min_width > max_width:
-        return_val = 0
-
-    return_val = min(max(return_val, min_width), max_width)
+    
+    if attr is None:
+        return_val = _get_clamped_width(div, return_val)
+        
     _rendered_width_cache[attr][div] = return_val
     return return_val
 
 
-def _width_percentage_to_pixels(div: Div, width: _Dimension) -> int:
+def _get_clamped_width(div: Div, width: int) -> int:
+    min_width = _get_rendered_width(div, "min_width")
+    max_width = _get_rendered_width(div, "max_width")
+
+    if min_width > max_width:
+        width = 0
+    else:
+        width = min(max(width, min_width), max_width)
+
+    return width
+
+
+def _width_percentage_to_pixels(div: Div, attr: None | str, width: _Dimension) -> int:
+    if attr == "max_width" and (div.parent is None or div.parent.width.unit == "auto"):
+        return 2147483647
     if div.parent is None:
         return 0
     if div.parent.width.unit == "auto":
@@ -342,31 +347,34 @@ def _get_rendered_height(div: Div, attr: None | str = None) -> int:
     if height.unit == "px":
         return_val = height
     elif height.unit == "%":
-        if attr == "max_height" and (div.parent is None or div.parent.height.unit == "auto"):
-            return_val = 2147483647
-        else:
-            return_val = _height_percentage_to_pixels(div, height)
+        return_val = _height_percentage_to_pixels(div, attr, height)
     elif height.unit == "auto":
-        if attr == "min_height":
-            return_val = -1
-        else:
-            return_val = div.padding.y + _get_auto_height(div)
+        return_val = _get_auto_height(div, attr)
     else:
         raise ValueError()
 
     if attr is not None:
-        _rendered_height_cache[attr][div] = return_val
-        return return_val
+        return_val = _get_clamped_height(div, return_val)
 
-    min_height = _get_rendered_height(div, "min_height")
-    max_height = _get_rendered_height(div, "max_height")
-
-    return_val = min(max(return_val, min_height), max_height)
     _rendered_height_cache[attr][div] = return_val
     return return_val
 
 
-def _height_percentage_to_pixels(div: Div, height: _Dimension) -> int:
+def _get_clamped_height(div: Div, height: int) -> int:
+    min_height = _get_rendered_height(div, "min_height")
+    max_height = _get_rendered_height(div, "max_height")
+
+    if min_height > max_height:
+        height = 0
+    else:
+        height = min(max(height, min_height), max_height)
+
+    return height
+
+
+def _height_percentage_to_pixels(div: Div, attr: None | str, height: _Dimension) -> int:
+    if attr == "max_height" and (div.parent is None or div.parent.height.unit == "auto"):
+        return 2147483647
     if div.parent is None:
         return 0
     if div.parent.height.unit == "auto":
