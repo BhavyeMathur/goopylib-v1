@@ -32,4 +32,6 @@ if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
         }                                                               \
     } while (0)
 
-#define isinstance(object, type) PyObject_IsInstance(object, (PyObject *) (type))
+static bool isinstance(PyObject *object, PyTypeObject *type) {
+    return PyObject_IsInstance(object, (PyObject *) type);
+}

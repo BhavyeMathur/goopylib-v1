@@ -19,6 +19,8 @@ namespace gp {
          */
         GPAPI Line(Point p1, Point p2);
 
+        GPAPI virtual ~Line() = default;
+
         /**
          * Sets the outline color of the line
          * @param color the color of the line

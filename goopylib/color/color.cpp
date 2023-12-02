@@ -47,9 +47,9 @@ struct ColorHSLObject {
 };
 
 namespace color {
-    static bool isinstance(PyObject * object) {
-        GP_PY_TRACE("gp.color.isinstance()");
-        return PyObject_IsInstance(object, (PyObject *) &ColorType);
+    static bool isinstance(PyObject *object){
+            GP_PY_TRACE("gp.color.isinstance()");
+            return PyObject_IsInstance(object, (PyObject *) &ColorType);
     }
 
     // Create color instances
@@ -98,8 +98,12 @@ namespace color {
         PyErr_Clear();
 
         int red, green, blue;
-        if (PyArg_ParseTuple(args, "iii|f", &red, &green, &blue, &alpha)) {
+        if (PyArg_ParseTuple(args, "iii|f", &red, &green, &blue, &alpha) or
+            PyArg_ParseTuple(args, "(iiif)", &red, &green, &blue, &alpha) or
+            PyArg_ParseTuple(args, "(iii)|f", &red, &green, &blue, &alpha)) {
             CHECK_RGBA(-1)
+
+            PyErr_Clear();
 
             self->color = CreateRef<gp::Color>(red, green, blue, alpha);
             return 0;

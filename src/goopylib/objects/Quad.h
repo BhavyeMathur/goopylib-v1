@@ -22,7 +22,7 @@ namespace gp {
          */
         GPAPI Quad(Point p1, Point p2, Point p3, Point p4);
 
-        virtual ~Quad() = default;
+        GPAPI virtual ~Quad() = default;
 
         // TODO colour alpha should affect shape transparency
 

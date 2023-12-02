@@ -136,7 +136,7 @@ namespace quad {
 
         if (!isinstance(arg1, ColorType)) {
             color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
-            GP_CHECK_NULL(color1, nullptr, "Invalid arguments to set color")
+            GP_CHECK_NULL(color1, nullptr, "Invalid argument to set color")
         }
         else {
             color1 = arg1;

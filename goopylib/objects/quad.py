@@ -54,7 +54,6 @@ class Quad(Renderable):
         Raises:
             TypeError: arguments must be colors
         """
-        print(tuple(arg._color if isinstance(arg, Color) else arg for arg in args))
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
     def set_transparency(self, *args: float) -> None:
