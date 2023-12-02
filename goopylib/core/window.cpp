@@ -65,8 +65,8 @@ namespace window {
             INITIALIZE_PYOBJECT(self->background, Py_None);
             INITIALIZE_PYOBJECT(self->camera, Py_None);
 
-            //self->key_callbacks = PyDict_New();
-            //self->mouse_callbacks = PyDict_New();
+            self->key_callbacks = PyDict_New();
+            self->mouse_callbacks = PyDict_New();
         }
         return (PyObject *) self;
     }
