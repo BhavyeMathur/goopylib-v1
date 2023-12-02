@@ -748,7 +748,7 @@ namespace color {
                 return 0;
             }
 
-            RAISE_VALUE_ERROR(-1, "invalid HSV format");
+            RAISE_VALUE_ERROR(-1, "invalid HSL format");
         }
 
         // Getter & Setters

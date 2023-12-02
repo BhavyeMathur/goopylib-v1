@@ -15,7 +15,7 @@ if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
     Py_DECREF(m); \
     return nullptr; }
 
-#define INITIALIZE_PYOBJECT(variable, value) Py_INCREF((value)); variable = value
+#define INITIALIZE_PYOBJECT(variable, value) Py_INCREF((value)); (variable) = value
 #define SET_PYOBJECT(variable, value) PyObject *tmp = variable; INITIALIZE_PYOBJECT(variable, value); Py_XDECREF(tmp)
 #define RETURN_PYOBJECT(name) Py_INCREF(name); return name
 #define PYOBJECT_NAME(object) object->ob_type->tp_name
@@ -25,9 +25,3 @@ if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
 static bool isinstance(PyObject *object, PyTypeObject *type) {
     return PyObject_IsInstance(object, (PyObject *) type);
 }
-
-template<typename T>
-    using Scope = std::unique_ptr<T>;
-
-template<typename T>
-    using Ref = std::shared_ptr<T>;
