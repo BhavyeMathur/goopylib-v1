@@ -93,39 +93,24 @@ namespace triangle {
             PyObject *color2, *color3;
 
             if (!isinstance(arg1, ColorType)) {
-                color1 = PyObject_CallObject((PyObject *) ColorType, arg1);
-
-                #if GP_TYPE_CHECKING
-                if (color1 == nullptr) {
-                    return nullptr;
-                }
-                #endif
+                color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
+                GP_CHECK_NULL(color1, nullptr, "Invalid arguments to set 1st color")
             }
             else {
                 color1 = arg1;
             }
 
             if (!isinstance(arg2, ColorType)) {
-                color2 = PyObject_CallObject((PyObject *) ColorType, arg2);
-
-                #if GP_TYPE_CHECKING
-                if (color2 == nullptr) {
-                    return nullptr;
-                }
-                #endif
+                color2 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg2));
+                GP_CHECK_NULL(color2, nullptr, "Invalid arguments to set 2nd color")
             }
             else {
                 color2 = arg2;
             }
 
             if (!isinstance(arg3, ColorType)) {
-                color3 = PyObject_CallObject((PyObject *) ColorType, arg3);
-
-                #if GP_TYPE_CHECKING
-                if (color3 == nullptr) {
-                    return nullptr;
-                }
-                #endif
+                color3 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg3));
+                GP_CHECK_NULL(color3, nullptr, "Invalid arguments to set 3rd color")
             }
             else {
                 color3 = arg3;
@@ -143,13 +128,8 @@ namespace triangle {
         }
 
         if (!isinstance(arg1, ColorType)) {
-            color1 = PyObject_CallObject((PyObject *) ColorType, arg1);
-
-            #if GP_TYPE_CHECKING
-            if (color1 == nullptr) {
-                return nullptr;
-            }
-            #endif
+            color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
+            GP_CHECK_NULL(color1, nullptr, "Invalid arguments to set color")
         }
         else {
             color1 = arg1;
