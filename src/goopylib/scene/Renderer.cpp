@@ -339,7 +339,6 @@ namespace gp {
             m_QuadVertices[index + 3].attrib.color.alpha = 0;
         }
 
-
         m_QuadBatch.updateBufferData = true;
     }
 

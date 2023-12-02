@@ -122,6 +122,7 @@ namespace gp {
 
         #if GP_USING_GLFW
         GP_CORE_DEBUG("gp::terminate() terminating GLFW");
+
         glfwTerminate();
         is_initialized = false;
         #endif
