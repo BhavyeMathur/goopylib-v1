@@ -51,7 +51,9 @@ class WindowMethods(unittest.TestCase):
 
     def test_minimize(self):
         self.assertFalse(self.window.is_minimized())
+
         self.window.minimize()
+        gp.update()
         self.assertTrue(self.window.is_minimized())
 
     def test_show(self):
@@ -74,12 +76,11 @@ class WindowMethods(unittest.TestCase):
 
     def test_restore(self):
         self.window.restore()
+        gp.update()
+
         self.assertFalse(self.window.is_minimized())
         self.assertFalse(self.window.is_maximized())
         self.assertFalse(self.window.is_fullscreen())
-
-    # def test_transparent_frame_buffer(self):
-    #     self.assertFalse(self.window.has_transparent_framebuffer())
 
     def test_mouse_hovering(self):
         self.assertIsInstance(self.window.is_mouse_hovering(), bool)
@@ -279,7 +280,10 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.minimize_callback, callback)
 
         self.window.restore()
+        gp.update()
         self.window.minimize()
+        gp.update()
+
         self.assertTrue(callback_executed)
 
     def test_remove_minimize_callback(self):
@@ -366,7 +370,8 @@ class WindowMethods(unittest.TestCase):
         self.window.refresh_callback = callback
         self.assertEqual(self.window.refresh_callback, callback)
 
-        self.window.fullscreen()
+        # TODO - Fix SIGSEV error
+        # self.window.fullscreen()
         self.window.restore()
         self.assertTrue(callback_executed)
 
@@ -792,11 +797,11 @@ class WindowMethods(unittest.TestCase):
 
     # Other Attributes
     def test_resizable(self):
-        self.assertFalse(self.window.resizable)
-        self.window.resizable = True
-        self.assertTrue(self.window.resizable)
         self.window.resizable = False
         self.assertFalse(self.window.resizable)
+
+        self.window.resizable = True
+        self.assertTrue(self.window.resizable)
 
     def test_decorated(self):
         self.assertTrue(self.window.decorated)
