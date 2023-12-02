@@ -66,8 +66,6 @@ namespace gp {
 
         friend class Image;
 
-        friend class TextCharacter;
-
     public:
         /**
          * Creates a window that can be used to draw graphics and widgets.
@@ -80,6 +78,8 @@ namespace gp {
          * @throws std::invalid_argument height must be greater than 0
          */
         GPAPI Window(int width, int height, const char *title = "goopylib Window");
+
+        GPAPI Window (const Window&) = delete;
 
         GPAPI ~Window();
 

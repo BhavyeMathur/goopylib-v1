@@ -43,6 +43,8 @@ namespace gp {
 
         Texture2D(const Bitmap& bitmap);
 
+        GPAPI Texture2D (const Texture2D&) = delete;
+
         uint32_t _getDataFormat() const;
 
         int32_t _getInternalFormat() const;

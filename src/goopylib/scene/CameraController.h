@@ -21,6 +21,8 @@ namespace gp {
          */
         GPAPI CameraController(Window* window);
 
+        GPAPI CameraController (const CameraController&) = delete;
+
         /**
          * Updates the controller. Call this method in the mainloop.
          */

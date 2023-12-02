@@ -33,7 +33,7 @@ namespace gp {
                                              bool allowRotation = true,
                                              const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 
-        GPAPI std::vector<Texture2D> createTextureAtlas() const;
+        GPAPI std::vector<Ref<Texture2D>> createTextureAtlas() const;
 
         GPAPI static void init();
 
@@ -49,5 +49,7 @@ namespace gp {
         static int32_t s_Height;
 
         TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
+
+        GPAPI TextureAtlas (const TextureAtlas&) = delete;
     };
 }

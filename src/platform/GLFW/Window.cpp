@@ -70,9 +70,8 @@ namespace gp {
 
     Window::~Window() {
         GP_CORE_INFO("gp::Window::~Window() - '{0}'", m_Title);
-        GP_CORE_WARN(0);
+
         destroy();
-        GP_CORE_WARN(1);
 
         s_Instances.erase(std::remove(s_Instances.begin(), s_Instances.end(), this), s_Instances.end());
     }

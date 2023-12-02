@@ -16,6 +16,8 @@ namespace gp {
     public:
         Shader(const char *vertexShaderSource, const char *fragmentShaderSource);
 
+        GPAPI Shader (const Shader&) = delete;
+
         ~Shader();
 
         void setUniformBlock(const Ref<UniformBuffer> &uniform, const char *name, uint32_t binding) const;

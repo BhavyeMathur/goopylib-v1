@@ -32,6 +32,8 @@ namespace gp::packing {
     public:
         GPAPI Item(float width, float height);
 
+        GPAPI Item (const Item&) = delete;
+
         GPAPI bool isVertical() const;
 
         GPAPI bool isHorizontal() const;
@@ -101,6 +103,8 @@ namespace gp::packing {
 
         Bin(float width, float height);
 
+        GPAPI Bin (const Bin&) = delete;
+
         void add(const Ref<Item>& item);
     };
 }
@@ -130,6 +134,8 @@ namespace gp::packing {
 
     protected:
         PackingAlgorithm(float binWidth, float binHeight);
+
+        GPAPI PackingAlgorithm (const PackingAlgorithm&) = delete;
 
         const float m_BinWidth;
         const float m_BinHeight;

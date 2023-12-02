@@ -26,6 +26,8 @@ namespace gp {
          */
         GPAPI Camera(float left, float right, float bottom, float top);
 
+        GPAPI Camera (const Camera&) = delete;
+
         GPAPI ~Camera() = default;
 
         /**

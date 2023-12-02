@@ -68,7 +68,7 @@ namespace gp {
         return m_Path;
     }
 
-    Bitmap Image::getBitmap() const {
-        return {m_Path};
+    Ref<Bitmap> Image::getBitmap() const {
+        return Ref<Bitmap>(new Bitmap(m_Path));
     }
 }

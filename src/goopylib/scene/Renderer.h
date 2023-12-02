@@ -128,6 +128,8 @@ namespace gp {
 
         Renderer(float width, float height);
 
+        GPAPI Renderer (const Renderer&) = delete;
+
         void _createLineBuffer();
 
         void _createTriangleBuffer();

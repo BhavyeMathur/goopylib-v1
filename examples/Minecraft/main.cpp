@@ -8,10 +8,10 @@
 int main(int argc, char *argv[]) {
     gp::init();
 
-    auto window = gp::Window(812, 812, "Transparency-based Lighting");
+    gp::Window window = {812, 812, "Transparency-based Lighting"};
     window.setBackground(gp::Color(20, 20, 20));
 
-    auto controller = gp::CameraController(&window);
+    gp::CameraController controller = {&window};
 
     int xN = 24;
     int yN = 24;
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
             images.push_back({paths[rand() % 17].c_str(), {x, y}, width, height});
             images.back().setAnchor(0, 0);
-            images.back().draw(&window);
+            images.back().draw(window);
         }
     }
 

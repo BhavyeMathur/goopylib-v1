@@ -417,7 +417,7 @@ namespace gp {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->getTextureName());
 
             auto bitmap = object->getBitmap();
-            texIndex = _cacheTexture(object->getTextureName(), bitmap);
+            texIndex = _cacheTexture(object->getTextureName(), *bitmap);
             texSlot = texIndex % 16;
 
             if (texSlot == 0) {

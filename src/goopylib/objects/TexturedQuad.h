@@ -38,7 +38,7 @@ namespace gp {
 
         GPAPI void setBitmap(const Ref<Bitmap>& bitmap);
 
-        GPAPI virtual Bitmap getBitmap() const;
+        GPAPI virtual Ref<Bitmap> getBitmap() const;
 
     protected:
         TextureVertexAttrib m_T1 = {{0, 1}};
