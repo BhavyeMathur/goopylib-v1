@@ -84,11 +84,11 @@ namespace gp {
         m_Height = m_MaxY - m_MinY;
     }
 
-    void Renderable::draw(Window *window) {
+    void Renderable::draw(Window &window) {
         GP_CORE_DEBUG("gp::Renderable::draw({0})", window->getTitle());
 
         #if GP_ERROR_CHECKING
-        if (window->m_IsDestroyed) {
+        if (window.m_IsDestroyed) {
             GP_RUNTIME_ERROR("Renderable::draw() window has been destroyed");
         }
         #endif
@@ -98,7 +98,7 @@ namespace gp {
         }
 
         m_RendererID = _draw(window);
-        m_Window = window;
+        m_Window = &window;
         m_Drawn = true;
     }
 

@@ -24,8 +24,8 @@ namespace gp {
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
     }
 
-    uint32_t Quad::_draw(Window *window) {
-        return window->m_Renderer.drawQuad(this);
+    uint32_t Quad::_draw(Window &window) {
+        return window.m_Renderer.drawQuad(this);
     }
 
     void Quad::_destroy() const {

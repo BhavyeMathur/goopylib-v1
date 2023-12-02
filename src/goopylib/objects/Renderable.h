@@ -29,7 +29,7 @@ namespace gp {
          *
          * @throws std::runtime_error the window has been destroyed
          */
-        GPAPI void draw(Window *window);
+        GPAPI void draw(Window &window);
 
         /**
          * Destroys and undraws the object
@@ -308,7 +308,7 @@ namespace gp {
 
         [[nodiscard]] virtual bool _contains(float x, float y) const;
 
-        virtual uint32_t _draw(Window *window) = 0;
+        virtual uint32_t _draw(Window &window) = 0;
 
         virtual void _destroy() const = 0;
 

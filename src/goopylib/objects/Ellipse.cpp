@@ -35,8 +35,8 @@ namespace gp {
         GP_CORE_DEBUG("Initializing Ellipse ({0}, {1}), ({2}, {3})", p1.x, p1.y, p2.x, p2.y);
     }
 
-    uint32_t Ellipse::_draw(Window *window) {
-        return window->m_Renderer.drawEllipse(const_cast<Ellipse *>(this));
+    uint32_t Ellipse::_draw(Window &window) {
+        return window.m_Renderer.drawEllipse(this);
     }
 
     void Ellipse::_destroy() const {

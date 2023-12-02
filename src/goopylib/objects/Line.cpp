@@ -23,8 +23,8 @@ namespace gp {
 
     }
 
-    uint32_t Line::_draw(Window *window) {
-        return window->m_Renderer.drawLine(const_cast<Line *>(this));
+    uint32_t Line::_draw(Window &window) {
+        return window.m_Renderer.drawLine(this);
     }
 
     void Line::_destroy() const {

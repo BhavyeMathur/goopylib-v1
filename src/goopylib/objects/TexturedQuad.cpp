@@ -50,8 +50,8 @@ namespace gp {
         return *m_Bitmap;
     }
 
-    uint32_t TexturedQuad::_draw(Window *window) {
-        return window->m_Renderer.drawTexturedQuad(const_cast<TexturedQuad *>(this));
+    uint32_t TexturedQuad::_draw(Window &window) {
+        return window.m_Renderer.drawTexturedQuad(this);
     }
 
     void TexturedQuad::_destroy() const {

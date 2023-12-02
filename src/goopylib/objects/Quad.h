@@ -108,7 +108,7 @@ namespace gp {
         GPAPI void _update() override;
 
     private:
-        GPAPI uint32_t _draw(Window *window) override;
+        GPAPI uint32_t _draw(Window &window) override;
 
         GPAPI void _destroy() const override;
 

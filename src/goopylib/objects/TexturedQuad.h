@@ -50,7 +50,7 @@ namespace gp {
         std::string m_Texture;
         Ref<Bitmap> m_Bitmap = nullptr;
 
-        GPAPI uint32_t _draw(Window *window) override;
+        GPAPI uint32_t _draw(Window &window) override;
 
         GPAPI void _destroy() const override;
 
