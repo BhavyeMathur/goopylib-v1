@@ -80,7 +80,7 @@ namespace color {
             CHECK_ALPHA(-1)
 
             try {
-                self->color = std::make_shared<gp::Color>(hexstring, alpha);
+                self->color = CreateRef<gp::Color>(hexstring, alpha);
             }
             catch (const std::invalid_argument &) {
                 RAISE_VALUE_ERROR(-1, "invalid hexstring format");
@@ -92,21 +92,21 @@ namespace color {
 
         PyObject * obj;
         if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-            self->color = std::make_shared<gp::Color>(*(((ColorObject *) obj)->color));
+            self->color = CreateRef<gp::Color>(*(((ColorObject *) obj)->color));
             return 0;
         }
         PyErr_Clear();
 
         int red, green, blue;
-        if (!PyArg_ParseTuple(args, "iii|f", &red, &green, &blue, &alpha)) {
-            RAISE_VALUE_ERROR(-1, "invalid color format");
+        if (PyArg_ParseTuple(args, "iii|f", &red, &green, &blue, &alpha)) {
+            CHECK_RGBA(-1)
+
+            self->color = CreateRef<gp::Color>(red, green, blue, alpha);
+            return 0;
         }
+        PyErr_Clear();
 
-        CHECK_RED(-1)
-        CHECK_RGBA(-1)
-
-        self->color = std::make_shared<gp::Color>(red, green, blue, alpha);
-        return 0;
+        RAISE_VALUE_ERROR(-1, "invalid color format");
     }
 
     static PyObject *repr(ColorObject *self) {
@@ -441,7 +441,7 @@ namespace color {
             if (PyArg_ParseTuple(args, "iii|f", &red, &green, &blue, &alpha)) {
                 CHECK_RGBA(-1)
 
-                self->color = std::make_shared<gp::ColorRGB>(red, green, blue, alpha);
+                self->color = CreateRef<gp::ColorRGB>(red, green, blue, alpha);
                 self->base.color = self->color;
                 return 0;
             }
@@ -449,7 +449,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = std::make_shared<gp::ColorRGB>(((ColorObject *) obj)->color.get());
+                self->color = CreateRef<gp::ColorRGB>(((ColorObject *) obj)->color.get());
                 self->base.color = self->color;
                 return 0;
             }
@@ -471,7 +471,7 @@ namespace color {
                 CHECK_ALPHA(-1)
 
                 try {
-                    self->color = std::make_shared<gp::ColorHex>(hexstring, alpha);
+                    self->color = CreateRef<gp::ColorHex>(hexstring, alpha);
                 }
                 catch (const std::invalid_argument &) {
                     RAISE_VALUE_ERROR(-1, "invalid hexstring format");
@@ -484,7 +484,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = std::make_shared<gp::ColorHex>(((ColorObject *) obj)->color.get());
+                self->color = CreateRef<gp::ColorHex>(((ColorObject *) obj)->color.get());
                 self->base.color = self->color;
                 return 0;
             }
@@ -504,7 +504,7 @@ namespace color {
             if (PyArg_ParseTuple(args, "ffff|f", &cyan, &magenta, &yellow, &key, &alpha)) {
                 CHECK_CMYKA(-1)
 
-                self->color = std::make_shared<gp::ColorCMYK>(cyan, magenta, yellow, key, alpha);
+                self->color = CreateRef<gp::ColorCMYK>(cyan, magenta, yellow, key, alpha);
                 self->base.color = self->color;
                 return 0;
             }
@@ -512,7 +512,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = std::make_shared<gp::ColorCMYK>(((ColorObject *) obj)->color.get());
+                self->color = CreateRef<gp::ColorCMYK>(((ColorObject *) obj)->color.get());
                 self->base.color = self->color;
                 return 0;
             }
@@ -631,7 +631,7 @@ namespace color {
             if (PyArg_ParseTuple(args, "iff|f", &hue, &saturation, &value, &alpha)) {
                 CHECK_HSVA(-1)
 
-                self->color = std::make_shared<gp::ColorHSV>(hue, saturation, value, alpha);
+                self->color = CreateRef<gp::ColorHSV>(hue, saturation, value, alpha);
                 self->base.color = self->color;
                 return 0;
             }
@@ -639,7 +639,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = std::make_shared<gp::ColorHSV>(((ColorObject *) obj)->color.get());
+                self->color = CreateRef<gp::ColorHSV>(((ColorObject *) obj)->color.get());
                 self->base.color = self->color;
                 return 0;
             }
@@ -735,7 +735,7 @@ namespace color {
             if (PyArg_ParseTuple(args, "iff|f", &hue, &saturation, &luminance, &alpha)) {
                 CHECK_HSLA(-1)
 
-                self->color = std::make_shared<gp::ColorHSL>(hue, saturation, luminance, alpha);
+                self->color = CreateRef<gp::ColorHSL>(hue, saturation, luminance, alpha);
                 self->base.color = self->color;
                 return 0;
             }
@@ -743,7 +743,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = std::make_shared<gp::ColorHSL>(((ColorObject *) obj)->color.get());
+                self->color = CreateRef<gp::ColorHSL>(((ColorObject *) obj)->color.get());
                 self->base.color = self->color;
                 return 0;
             }

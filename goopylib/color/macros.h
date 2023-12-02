@@ -89,7 +89,7 @@ static PyTypeObject name##Type = { \
     nullptr, \
     nullptr, \
     nullptr, \
-    (PyGetSetDef *) getset,  \
+    (PyGetSetDef *) (getset),  \
     nullptr, \
     nullptr, \
     nullptr, \
