@@ -68,7 +68,7 @@ public:
         setColor(gp::Color(255, 255, 255));
     }
 
-    void update() {
+    void updateController() {
         auto pos = m_Window->toWorld(m_Window->getMousePosition());
 
         float tmp = m_Position.x;
@@ -84,7 +84,7 @@ public:
 int main(int argc, char *argv[]) {
     gp::init();
 
-    auto window = gp::Window(900, 600, "Brick Breaker using goopylib!");
+    gp::Window window = {900, 600, "Brick Breaker using goopylib!"};
     window.setBackground(gp::Color(25, 25, 25));
     window.setResizable(true);
 
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
     std::string path = base + "/vignette.png";
 
     auto vignette = gp::Image(path.c_str(), {0, 0}, 900, 600);
-    vignette.draw(&window);
+    vignette.draw(window);
     vignette.setTransparency(0.3, 0.3, 0.8, 0.8);
 
     while (window.isOpen()) {
@@ -107,10 +107,10 @@ int main(int argc, char *argv[]) {
         camera.setZoom(1);
 
         auto controller = Controller();
-        controller.draw(&window);
+        controller.draw(window);
 
         auto ball = Ball();
-        ball.draw(&window);
+        ball.draw(window);
 
         float transparency = 0;
 
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
         for (int i = 0; i < 900 / Brick::s_Width; i++) {
             for (int j = 0; j < 4; j++) {
                 bricks.push_back(Brick(i, j));
-                bricks.back().draw(&window);
+                bricks.back().draw(window);
             }
         }
 
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
                 ball.setTransparency(min(1.0f, transparency));
             }
 
-            controller.update();
+            controller.updateController();
             gp::update();
         }
 
@@ -167,7 +167,7 @@ int main(int argc, char *argv[]) {
                 camera.setX(0);
             }
 
-            controller.update();
+            controller.updateController();
             ball.update(dt);
             gp::update();
 
@@ -186,17 +186,17 @@ int main(int argc, char *argv[]) {
             camera.setRotation(4 * val);
             camera.setZoom(1 - 0.02 * val);
 
-            controller.update();
+            controller.updateController();
             gp::update();
         }
 
         while (window.isOpen() and !window.checkLeftClick()) {
-            controller.update();
+            controller.updateController();
             gp::update();
         }
 
         while (window.isOpen() and window.checkLeftClick()) {
-            controller.update();
+            controller.updateController();
             gp::update();
         }
 
@@ -204,7 +204,7 @@ int main(int argc, char *argv[]) {
             camera.rotate(-0.2);
             camera.setZoom(1 - 0.005 * camera.getRotation());
 
-            controller.update();
+            controller.updateController();
             gp::update();
         }
 

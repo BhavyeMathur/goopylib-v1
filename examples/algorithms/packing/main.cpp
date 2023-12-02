@@ -30,64 +30,64 @@ int main() {
     std::cout << choices;
     getline(std::cin, choice);
 
-    std::vector<gp::Ref<gp::packing::Item>> items;
+    std::vector<Ref<gp::packing::Item>> items;
     for (int i = 0; i < 500; i++) {
         items.emplace_back(new gp::packing::Item(5 + (float) (rand() % 6500) / 100,
                                                  5 + (float) (rand() % 7500) / 100));
     }
 
-    std::vector<gp::Ref<gp::packing::ShelvedBin>> bins;
+    std::vector<Ref<gp::packing::ShelvedBin>> bins;
     if (choice == "") {
-        auto algorithm = gp::packing::shelf::BestAreaFit(800, 800);
+        gp::packing::shelf::BestAreaFit algorithm = {800, 800};
         algorithm.packAll(items);
         bins = algorithm.bins();
     }
     else {
         switch (std::stoi(choice)) {
             case 1: {
-                auto algorithm = gp::packing::shelf::NextFit(800, 800);
+                gp::packing::shelf::NextFit algorithm = {800, 800};
                 algorithm.packAll(items);
                 bins = algorithm.bins();
                 break;
             }
             case 2: {
-                auto algorithm = gp::packing::shelf::FirstFit(800, 800);
+                gp::packing::shelf::FirstFit algorithm = {800, 800};
                 algorithm.packAll(items);
                 bins = algorithm.bins();
                 break;
             }
             case 3: {
-                auto algorithm = gp::packing::shelf::BestWidthFit(800, 800);
+                gp::packing::shelf::BestWidthFit algorithm = {800, 800};
                 algorithm.packAll(items);
                 bins = algorithm.bins();
                 break;
             }
             case 4: {
-                auto algorithm = gp::packing::shelf::WorstWidthFit(800, 800);
+                gp::packing::shelf::WorstWidthFit algorithm = {800, 800};
                 algorithm.packAll(items);
                 bins = algorithm.bins();
                 break;
             }
             case 5: {
-                auto algorithm = gp::packing::shelf::BestHeightFit(800, 800);
+                gp::packing::shelf::BestHeightFit algorithm = {800, 800};
                 algorithm.packAll(items);
                 bins = algorithm.bins();
                 break;
             }
             case 6: {
-                auto algorithm = gp::packing::shelf::WorstHeightFit(800, 800);
+                gp::packing::shelf::WorstHeightFit algorithm = {800, 800};
                 algorithm.packAll(items);
                 bins = algorithm.bins();
                 break;
             }
             case 7: {
-                auto algorithm = gp::packing::shelf::BestAreaFit(800, 800);
+                gp::packing::shelf::BestAreaFit algorithm = {800, 800};
                 algorithm.packAll(items);
                 bins = algorithm.bins();
                 break;
             }
             case 8: {
-                auto algorithm = gp::packing::shelf::WorstAreaFit(800, 800);
+                gp::packing::shelf::WorstAreaFit algorithm = {800, 800};
                 algorithm.packAll(items);
                 bins = algorithm.bins();
                 break;
@@ -98,7 +98,7 @@ int main() {
         }
     }
 
-    auto window = gp::Window(800, 800);
+    gp::Window window = {800, 800};
     std::vector<std::vector<gp::Rectangle>> objects;
 
     gp::Color colors[5] = {gp::Color(65, 110, 230),
@@ -122,7 +122,7 @@ int main() {
             if (i != 0) {
                 obj.hide();
             }
-            obj.draw(&window);
+            obj.draw(window);
             objects.back().push_back(obj);
         }
 
