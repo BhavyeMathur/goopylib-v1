@@ -34,7 +34,7 @@ namespace color {
 
         PARSE_RGB
 
-        gp::CMYK color_cmyk = gp::rgb::toCMYK(red, green, blue);
+        const gp::CMYK color_cmyk = gp::rgb::toCMYK(red, green, blue);
 
         return Py_BuildValue("ffff", color_cmyk.cyan, color_cmyk.magenta, color_cmyk.yellow, color_cmyk.key);
     }
@@ -44,7 +44,7 @@ namespace color {
 
         PARSE_RGB
 
-        gp::HSV color_hsv = gp::rgb::toHSV(red, green, blue);
+        const gp::HSV color_hsv = gp::rgb::toHSV(red, green, blue);
 
         return Py_BuildValue("iff", color_hsv.hue, color_hsv.saturation, color_hsv.value);
     }
@@ -54,7 +54,7 @@ namespace color {
 
         PARSE_RGB
 
-        gp::HSL color_hsl = gp::rgb::toHSL(red, green, blue);
+        const gp::HSL color_hsl = gp::rgb::toHSL(red, green, blue);
 
         return Py_BuildValue("iff", color_hsl.hue, color_hsl.saturation, color_hsl.luminance);
     }
@@ -66,7 +66,7 @@ namespace color {
 
         PARSE_HEX
 
-        gp::RGB color_rgb = gp::hex::toRGB(hexstring);
+        const gp::RGB color_rgb = gp::hex::toRGB(hexstring);
 
         return Py_BuildValue("iii", color_rgb.red, color_rgb.green, color_rgb.blue);
     }
@@ -176,7 +176,7 @@ namespace color {
 
         PARSE_HSV
 
-        gp::HSL color_hsl = gp::hsv::toHSL(hue, saturation, value);
+        const gp::HSL color_hsl = gp::hsv::toHSL(hue, saturation, value);
 
         return Py_BuildValue("iff", color_hsl.hue, color_hsl.saturation, color_hsl.luminance);
     }
@@ -188,7 +188,7 @@ namespace color {
 
         PARSE_HSL
 
-        gp::RGB color_rgb = gp::hsl::toRGB(hue, saturation, luminance);
+        const gp::RGB color_rgb = gp::hsl::toRGB(hue, saturation, luminance);
 
         return Py_BuildValue("iii", color_rgb.red, color_rgb.green, color_rgb.blue);
     }
@@ -206,7 +206,7 @@ namespace color {
 
         PARSE_HSL
 
-        gp::CMYK color_cmyk = gp::hsl::toCMYK(hue, saturation, luminance);
+        const gp::CMYK color_cmyk = gp::hsl::toCMYK(hue, saturation, luminance);
 
         return Py_BuildValue("ffff", color_cmyk.cyan, color_cmyk.magenta, color_cmyk.yellow, color_cmyk.key);
     }
@@ -216,7 +216,7 @@ namespace color {
 
         PARSE_HSL
 
-        gp::HSV color_hsv = gp::hsl::toHSV(hue, saturation, luminance);
+        const gp::HSV color_hsv = gp::hsl::toHSV(hue, saturation, luminance);
 
         return Py_BuildValue("iff", color_hsv.hue, color_hsv.saturation, color_hsv.value);
     }
@@ -305,7 +305,7 @@ static struct PyModuleDef ColorConversionsModule = {
         "conversions",
         "",
 -1,
-        ColorConversionMethods,
+        (PyMethodDef *) ColorConversionMethods,
 };
 
 

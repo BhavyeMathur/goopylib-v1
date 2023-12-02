@@ -1,6 +1,5 @@
 #include "Core.h"
 #include "src/goopylib/core/Window.h"
-#include "src/goopylib/objects/text/Text.h"
 
 #if GP_USING_GLAD
 
@@ -114,9 +113,6 @@ namespace gp {
         #if GP_USING_GLFW
         initGLFW();
         #endif
-
-        Font::init();
-        Text::init();
     }
 
     void terminate() {
@@ -129,8 +125,6 @@ namespace gp {
         glfwTerminate();
         is_initialized = false;
         #endif
-
-        Font::shutdown();
     }
 
     bool isInitialized() {

@@ -107,14 +107,6 @@
 #define GP_VALUE_CHECK_IMAGE true
 #define GP_LOG_IMAGE 3
 
-// text
-
-#define GP_VALUE_CHECK_TEXT true
-#define GP_LOG_TEXT 3
-
-#define GP_VALUE_CHECK_FONT true
-#define GP_LOG_FONT 3
-
 // texture
 
 #define GP_VALUE_CHECK_TEXTURE2D true

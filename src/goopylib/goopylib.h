@@ -28,11 +28,6 @@
 #include "src/goopylib/objects/Circle.h"
 #include "src/goopylib/objects/Image.h"
 
-#include "src/goopylib/objects/text/Font.h"
-#include "src/goopylib/objects/text/Glyph.h"
-#include "src/goopylib/objects/text/Text.h"
-#include "src/goopylib/objects/text/TextCharacter.h"
-
 #include "src/goopylib/texture/Bitmap.h"
 #include "src/goopylib/texture/Texture2D.h"
 #include "src/goopylib/texture/TextureAtlas.h"

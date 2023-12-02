@@ -87,12 +87,6 @@ namespace gp {
 
         GPAPI void updateTexturedQuad(uint32_t ID, const TexturedQuad *object);
 
-        GPAPI uint32_t drawGlyph(TexturedQuad *object);
-
-        GPAPI void destroyGlyph(uint32_t ID);
-
-        GPAPI void updateGlyph(uint32_t ID, const TexturedQuad *object);
-
         GPAPI void flush();
 
     private:
@@ -122,16 +116,9 @@ namespace gp {
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
 
-        uint32_t m_NextGlyphID = 0;
-        std::vector<RenderingBatch> m_GlyphBatches;
-        std::vector<std::vector<TextureVertex>> m_GlyphVertices;
-        std::unordered_map<uint32_t, uint32_t> m_GlyphToBatch;
-        std::vector<std::unordered_map<uint32_t, uint32_t>> m_GlyphToIndex;
-
         Ref<Shader> m_SolidShader;
         Ref<Shader> m_EllipseShader;
         Ref<Shader> m_TextureShader;
-        Ref<Shader> m_TextShader;
 
         Camera m_Camera;
         Ref<UniformBuffer> m_ShaderUniform;
