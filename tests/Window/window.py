@@ -64,8 +64,12 @@ class WindowMethods(unittest.TestCase):
 
     def test_maximize(self):
         self.window.restore()
+        gp.update()
         self.assertFalse(self.window.is_maximized())
+
+        self.window.resizable = True
         self.window.maximize()
+        gp.update()
         self.assertTrue(self.window.is_maximized())
 
     def test_restore(self):
