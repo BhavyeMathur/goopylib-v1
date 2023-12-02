@@ -1,6 +1,6 @@
 import unittest
 import goopylib as gp
-import maths
+import math
 
 
 class WindowMethods(unittest.TestCase):
@@ -99,7 +99,7 @@ class WindowMethods(unittest.TestCase):
     # Aspect Ratio Functions
 
     def test_get_aspect_ratio(self):
-        gcd = maths.gcd(self.initial_width, self.initial_height)
+        gcd = math.gcd(self.initial_width, self.initial_height)
 
         self.assertEqual(self.window.get_aspect_ratio(), (self.initial_width // gcd, self.initial_height // gcd))
 
@@ -333,6 +333,7 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.focus_callback, callback)
 
         self.window.minimize()
+        gp.update()
         self.window.focus()
         self.assertTrue(callback_executed)
 
