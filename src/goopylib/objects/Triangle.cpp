@@ -55,8 +55,8 @@ namespace gp {
         update();
     }
 
-    void Triangle::setColor(const char *hexstring) {
-        m_V1.color = Color(hexstring).getRGBAf();
+    void Triangle::setColor(const char *hexstring, float alpha) {
+        m_V1.color = Color(hexstring, alpha).getRGBAf();
         m_V2.color = m_V1.color;
         m_V3.color = m_V1.color;
 
@@ -67,6 +67,14 @@ namespace gp {
         m_V1.color = Color(hex1).getRGBAf();
         m_V2.color = Color(hex2).getRGBAf();
         m_V3.color = Color(hex3).getRGBAf();
+
+        update();
+    }
+
+    void Triangle::setColor(int red, int green, int blue, float alpha) {
+        m_V1.color = Color(red, green, blue, alpha).getRGBAf();
+        m_V2.color = m_V1.color;
+        m_V3.color = m_V1.color;
 
         update();
     }

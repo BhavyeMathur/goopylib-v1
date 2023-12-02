@@ -52,8 +52,8 @@ namespace gp {
         update();
     }
 
-    void Line::setColor(const char *hexstring) {
-        m_V1.color = Color(hexstring).getRGBAf();
+    void Line::setColor(const char *hexstring, float alpha) {
+        m_V1.color = Color(hexstring, alpha).getRGBAf();
         m_V2.color = m_V1.color;
 
         update();
@@ -62,6 +62,13 @@ namespace gp {
     void Line::setColor(const char *hex1, const char *hex2) {
         m_V1.color = Color(hex1).getRGBAf();
         m_V2.color = Color(hex2).getRGBAf();
+
+        update();
+    }
+
+    void Line::setColor(int red, int green, int blue, float alpha) {
+        m_V1.color = Color(red, green, blue, alpha).getRGBAf();
+        m_V2.color = m_V1.color;
 
         update();
     }
