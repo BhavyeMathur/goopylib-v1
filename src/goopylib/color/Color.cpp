@@ -26,10 +26,10 @@ namespace gp {
             m_Alpha(alpha) {
         GP_CORE_INFO("gp::Color::Color(RGB({0}, {1}, {2}), alpha={1})", color.red, color.green, color.blue, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(color.red, 0, 255, "Color red value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(color.green, 0, 255, "Color green value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(color.blue, 0, 255, "Color blue value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(color.red, 0, 255, "Color red value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(color.green, 0, 255, "Color green value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(color.blue, 0, 255, "Color blue value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
 
         update();
     }
@@ -51,10 +51,10 @@ namespace gp {
             m_Alpha(alpha) {
         GP_CORE_INFO("gp::Color::Color({0}, {1}, {2}, alpha={3})", red, green, blue, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
 
         update();
     }
@@ -102,7 +102,7 @@ namespace gp {
     }
 
     void Color::setRed(int value) {
-        GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color red value must be between 0 and 255");
+        GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color red value must be between 0 and 255")
 
         m_Red = value;
         m_Redf = (float) value / 255.0f;
@@ -113,7 +113,7 @@ namespace gp {
     }
 
     void Color::setGreen(int value) {
-        GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color green value must be between 0 and 255");
+        GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color green value must be between 0 and 255")
 
         m_Green = value;
         m_Greenf = (float) value / 255.0f;
@@ -124,7 +124,7 @@ namespace gp {
     }
 
     void Color::setBlue(int value) {
-        GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color blue value must be between 0 and 255");
+        GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color blue value must be between 0 and 255")
 
         m_Blue = value;
         m_Bluef = (float) value / 255.0f;
@@ -135,7 +135,7 @@ namespace gp {
     }
 
     void Color::setAlpha(float value) {
-        GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color alpha value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color alpha value must be between 0 and 1")
 
         m_Alpha = value;
     }
@@ -232,10 +232,10 @@ namespace gp {
             : Color(red, green, blue, alpha) {
         GP_CORE_INFO("gp::ColorRGB::ColorRGB({0}, {1}, {2}, alpha={3})", red, green, blue, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255");
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 }
 
@@ -250,7 +250,7 @@ namespace gp {
             : Color(hex::toRGB(hexstring), alpha) {
         GP_CORE_INFO("gp::ColorHex::ColorHex({0}, alpha={1})", hexstring, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
     std::string ColorHex::toString() const {
@@ -264,7 +264,7 @@ namespace gp {
             : Color(*color) {
         GP_CORE_INFO("gp::ColorCMYK::ColorCMYK({0})", color->toString());
 
-        CMYK data = rgb::toCMYK(m_Red, m_Green, m_Blue);
+        const CMYK data = rgb::toCMYK(m_Red, m_Green, m_Blue);
 
         m_Cyan = data.cyan;
         m_Magenta = data.magenta;
@@ -280,12 +280,12 @@ namespace gp {
               m_Key(key) {
         GP_CORE_INFO("gp::ColorCMYK::ColorCMYK({0}, {1}, {2}, {3}, alpha={4})", cyan, magenta, yellow, key, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(cyan, 0, 1, "Color cyan value must be between 0 and 1");
-        GP_CHECK_INCLUSIVE_RANGE(magenta, 0, 1, "Color magenta value must be between 0 and 1");
-        GP_CHECK_INCLUSIVE_RANGE(yellow, 0, 1, "Color yellow value must be between 0 and 1");
-        GP_CHECK_INCLUSIVE_RANGE(key, 0, 1, "Color key value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(cyan, 0, 1, "Color cyan value must be between 0 and 1")
+        GP_CHECK_INCLUSIVE_RANGE(magenta, 0, 1, "Color magenta value must be between 0 and 1")
+        GP_CHECK_INCLUSIVE_RANGE(yellow, 0, 1, "Color yellow value must be between 0 and 1")
+        GP_CHECK_INCLUSIVE_RANGE(key, 0, 1, "Color key value must be between 0 and 1")
 
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
     std::string ColorCMYK::toString() const {
@@ -298,7 +298,7 @@ namespace gp {
 
     void ColorCMYK::setCyan(float value) {
         m_Cyan = value;
-        RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
+        const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
         fromRGB(data, m_Alpha);
     }
 
@@ -308,7 +308,7 @@ namespace gp {
 
     void ColorCMYK::setMagenta(float value) {
         m_Magenta = value;
-        RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
+        const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
         fromRGB(data, m_Alpha);
     }
 
@@ -318,7 +318,7 @@ namespace gp {
 
     void ColorCMYK::setYellow(float value) {
         m_Yellow = value;
-        RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
+        const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
         fromRGB(data, m_Alpha);
     }
 
@@ -328,7 +328,7 @@ namespace gp {
 
     void ColorCMYK::setKey(float value) {
         m_Key = value;
-        RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
+        const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
         fromRGB(data, m_Alpha);
     }
 }
@@ -339,7 +339,7 @@ namespace gp {
             : Color(*color) {
         GP_CORE_INFO("gp::ColorHSV::ColorHSV({0})", color->toString());
 
-        HSV data = rgb::toHSV(m_Red, m_Green, m_Blue);
+        const HSV data = rgb::toHSV(m_Red, m_Green, m_Blue);
 
         m_Hue = data.hue;
         m_Saturation = data.saturation;
@@ -353,11 +353,11 @@ namespace gp {
               m_Value(value) {
         GP_CORE_INFO("gp::ColorHSV::ColorHSV({0}, {1}, {2}, alpha={3})", hue, saturation, value, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360");
-        GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1");
-        GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color 'value' value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
+        GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
+        GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color 'value' value must be between 0 and 1")
 
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
     std::string ColorHSV::toString() const {
@@ -370,7 +370,7 @@ namespace gp {
 
     void ColorHSV::setHue(int value) {
         m_Hue = value;
-        RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
+        const RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
         fromRGB(data, m_Alpha);
     }
 
@@ -380,7 +380,7 @@ namespace gp {
 
     void ColorHSV::setSaturation(float value) {
         m_Saturation = value;
-        RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
+        const RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
         fromRGB(data, m_Alpha);
     }
 
@@ -390,7 +390,7 @@ namespace gp {
 
     void ColorHSV::setValue(float value) {
         m_Value = value;
-        RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
+        const RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
         fromRGB(data, m_Alpha);
     }
 }
@@ -401,7 +401,7 @@ namespace gp {
             : Color(*color) {
         GP_CORE_INFO("gp::ColorHSL::ColorHSL({0})", color->toString());
 
-        HSL data = rgb::toHSL(m_Red, m_Green, m_Blue);
+        const HSL data = rgb::toHSL(m_Red, m_Green, m_Blue);
 
         m_Hue = data.hue;
         m_Saturation = data.saturation;
@@ -415,11 +415,11 @@ namespace gp {
               m_Luminance(luminance) {
         GP_CORE_INFO("gp::ColorHSL::ColorHSL({0}, {1}, {2}, alpha={3})", hue, saturation, luminance, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360");
-        GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1");
-        GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
+        GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
+        GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
 
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1");
+        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
     std::string ColorHSL::toString() const {
@@ -432,7 +432,7 @@ namespace gp {
 
     void ColorHSL::setHue(int value) {
         m_Hue = value;
-        RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
+        const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
         fromRGB(data, m_Alpha);
     }
 
@@ -442,7 +442,7 @@ namespace gp {
 
     void ColorHSL::setSaturation(float value) {
         m_Saturation = value;
-        RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
+        const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
         fromRGB(data, m_Alpha);
     }
 
@@ -452,7 +452,7 @@ namespace gp {
 
     void ColorHSL::setLuminance(float value) {
         m_Luminance = value;
-        RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
+        const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
         fromRGB(data, m_Alpha);
     }
 }

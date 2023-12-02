@@ -14,8 +14,8 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
+//#include "src/goopylib/debug/LogMacros.h"
+//#include "src/goopylib/debug/Error.h"
 
 namespace gp {
     Glyph::Glyph(float xAdvance, float yAdvance, float xOffset, float yOffset, uint32_t code, const Ref<Bitmap> &bitmap)

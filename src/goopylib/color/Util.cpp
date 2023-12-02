@@ -15,16 +15,18 @@
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
+// #include "src/goopylib/debug/Error.h"
 
 #include <random>
 
-static std::random_device rand_dev;
-static std::mt19937 generator(rand_dev());
+namespace {
+    std::random_device rand_dev;
+    std::mt19937 generator(rand_dev());
 
-static std::uniform_int_distribution<int> rgb_distribution(0, 255);
-static std::uniform_int_distribution<int> angle_distribution(0, 360);
-static std::uniform_real_distribution<float> normalized_distribution(0.0f, 1.0f);
+    std::uniform_int_distribution<int> rgb_distribution(0, 255);
+    std::uniform_int_distribution<int> angle_distribution(0, 360);
+    std::uniform_real_distribution<float> normalized_distribution(0.0f, 1.0f);
+}
 
 namespace gp {
     ColorRGB randomRGB() {
@@ -38,9 +40,9 @@ namespace gp {
     ColorHex randomHex() {
         GP_CORE_INFO("gp::randomHex()");
 
-        return ColorHex(rgb::toHex(rgb_distribution(generator),
+        return {rgb::toHex(rgb_distribution(generator),
                            rgb_distribution(generator),
-                           rgb_distribution(generator)));
+                           rgb_distribution(generator))};
     }
 
     ColorCMYK randomCMYK() {

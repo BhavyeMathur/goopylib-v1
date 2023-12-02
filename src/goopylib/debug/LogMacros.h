@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glm/gtx/string_cast.hpp>
-
 #if (GP_LOGGING_LEVEL >= 1)
 #define GP_CORE_CRITICAL(...) gp::Log::getCoreLogger()->critical(__VA_ARGS__)
 #define GP_CRITICAL(...)      gp::Log::ClientLogger()->critical(__VA_ARGS__)
