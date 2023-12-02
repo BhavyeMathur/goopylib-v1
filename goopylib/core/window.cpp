@@ -85,7 +85,7 @@ namespace window {
 
         self->background = PyObject_CallObject((PyObject *) ColorType, Py_BuildValue("iii", 255, 255, 255));
 
-        self->window = CreateScope<gp::Window>(width, height, PyUnicode_AsUTF8(tmp));
+        self->window = Scope<gp::Window>(new gp::Window(width, height, PyUnicode_AsUTF8(tmp)));
         self->window->setBackground(*((ColorObject *) self->background)->color);
 
         self->camera = PyObject_CallObject((PyObject *) CameraType, Py_BuildValue("iiii", 0, 0, 0, 0));
@@ -851,10 +851,10 @@ namespace window {
         Py_RETURN_NONE;
     }
 
-    static PyObject *hide(WindowObject *self, PyObject *Py_UNUSED(args)) {
+    static PyObject *hide(WindowObject *self, PyObject *arg) {
         CHECK_ACTIVE(nullptr);
 
-        self->window->hide();
+        self->window->hide(arg == Py_True);
         Py_RETURN_NONE;
     }
 
@@ -1629,7 +1629,7 @@ namespace window {
 
             {"show",                      (PyCFunction) show,                      METH_NOARGS,
                     "Makes the Window visible"},
-            {"hide",                      (PyCFunction) hide,                      METH_NOARGS,
+            {"hide",                      (PyCFunction) hide,                      METH_O,
                     "Makes the Window invisible"},
             {"is_visible",                (PyCFunction) is_visible,                METH_NOARGS,
                     "Returns if the Window is visible"},

@@ -22,7 +22,7 @@ class WindowMethods(unittest.TestCase):
     """Core Window Methods ------------------------------------------------------------------------------------------"""
 
     def test_repr(self):
-        self.assertEqual(self.window.__repr__(), f"Window(500, 200, 'New Window!')")
+        self.assertEqual(self.window.__repr__(), f"Window({self.window.width}, {self.window.height}, 'New Window!')")
 
     # Window States ----------------------------------------------------------------------------------------------------
 
@@ -57,12 +57,18 @@ class WindowMethods(unittest.TestCase):
         self.assertTrue(self.window.is_minimized())
 
     def test_show(self):
+        self.window.hide()
+        self.assertFalse(self.window.is_visible())
+
         self.window.show()
         self.assertTrue(self.window.is_visible())
 
     def test_hide(self):
         self.window.hide()
         self.assertFalse(self.window.is_visible())
+
+        self.window.hide(False)
+        self.assertTrue(self.window.is_visible())
 
     def test_maximize(self):
         self.window.restore()

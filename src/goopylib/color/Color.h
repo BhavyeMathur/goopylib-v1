@@ -60,6 +60,8 @@ namespace gp {
          */
         [[nodiscard]] GPAPI int getRed() const;
 
+        // TODO changing RGB values should update HSL/HSV/CMYK/Hex values
+
         /**
          * @param value between 0-255
          * @throws std::invalid_argument value must be in the range specified

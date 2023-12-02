@@ -544,9 +544,11 @@ namespace gp {
         /**
          * Makes the window invisible to the user.
          *
+         * @param hide: whether to hide/show the window
+         *
          * @throws std::runtime_error window has been destroyed
          */
-        GPAPI void hide();
+        GPAPI void hide(bool hide = true);
 
         /**
          * @return whether the window is visible to the user.

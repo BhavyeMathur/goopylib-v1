@@ -201,9 +201,14 @@ namespace gp {
         return (bool) glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED);
     }
 
-    void Window::hide() {
+    void Window::hide(bool hide) {
         GP_CORE_INFO("gp::Window::hide() - '{0}'", m_Title);
-        glfwHideWindow(m_Window);
+        if (hide) {
+            glfwHideWindow(m_Window);
+        }
+        else {
+            glfwShowWindow(m_Window);
+        }
     }
 
     void Window::show() {

@@ -666,10 +666,7 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        if hide:  # TODO implement in C++
-            self._window.hide()
-        else:
-            self._window.show()
+        self._window.hide(hide)
 
     def is_visible(self) -> bool:
         """

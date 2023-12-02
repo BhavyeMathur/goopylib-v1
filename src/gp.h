@@ -38,6 +38,5 @@
 #define Ref std::shared_ptr
 #define CreateRef std::make_shared
 #define Scope std::unique_ptr
-#define CreateScope std::make_unique
 
 #include "src/config.h"
