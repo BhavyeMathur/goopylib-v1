@@ -97,10 +97,10 @@ namespace gp {
             // TODO figure out a better way of doing this that doesn't construct a static string
             static char *hex_string[8];
 
-            if (snprintf(reinterpret_cast<char *>(hex_string), 8, "#%02x%02x%02x", red, green, blue) < 0) {
+            if (snprintf((char *) (hex_string), 8, "#%02x%02x%02x", red, green, blue) < 0) {
                 GP_CORE_ERROR("gp::rgb::toHex(red={0}, green={1}, blue={2}) Error formatting string", red, green, blue);
             }
-            return reinterpret_cast<char *>(hex_string);
+            return (char *)(hex_string);
         }
 
         CMYK toCMYK(int red, int green, int blue) {

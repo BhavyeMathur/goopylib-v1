@@ -297,7 +297,7 @@ namespace gp {
         GP_CHECK_GT(numerator, 0, "Aspect ratio numerator must be greater than 0");
         GP_CHECK_GT(denominator, 0, "Aspect ratio denominator must be greater than 0");
 
-        int g = gcd(numerator, denominator);
+        const int g = gcd(numerator, denominator);
         _updateAspectRatio(numerator / g, denominator / g);
 
     }
@@ -305,7 +305,7 @@ namespace gp {
     AspectRatio Window::getAspectRatio() const {
         GP_CORE_TRACE("gp::Window::getAspectRatio() - '{0}'", m_Title);
 
-        int g = gcd(m_Width, m_Height);
+        const int g = gcd(m_Width, m_Height);
         return AspectRatio{m_Width / g, m_Height / g};
     }
 }
@@ -443,7 +443,7 @@ namespace gp {
     }
 
     // Key Press
-    void Window::onKeyPress(int key, int scancode, int action, int mods) {
+    void Window::onKeyPress(int key, __attribute__((unused)) int scancode, int action, int mods) {
         GP_CORE_TRACE_ALL("gp::Window::onKeyPress({1}, {2}, {3}, {4}) - '{0}'", m_Title, key, scancode, action, mods);
 
         m_KeyModifiers = mods;
@@ -524,8 +524,8 @@ namespace gp {
 
         auto pos = m_Renderer.m_Camera.m_ProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
 
-        float halfWidth = (float) (m_Width >> 1);
-        float halfHeight = (float) (m_Height >> 1);
+        const float halfWidth = (float) (m_Width >> 1);
+        const float halfHeight = (float) (m_Height >> 1);
 
         pos.x *= halfWidth;
         pos.x += halfWidth;

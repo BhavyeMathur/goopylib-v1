@@ -25,7 +25,7 @@ namespace gp {
     }
 
     uint32_t Quad::_draw(Window *window) {
-        return window->m_Renderer.drawQuad(const_cast<Quad *>(this));
+        return window->m_Renderer.drawQuad(this);
     }
 
     void Quad::_destroy() const {

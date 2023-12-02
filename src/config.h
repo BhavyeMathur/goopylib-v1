@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cppcoreguidelines-macro-usage"
 #pragma once
 
 #define GP_USING_GLFW true
@@ -123,3 +125,5 @@
 
 #define GP_VALUE_CHECK_BITMAP true
 #define GP_LOG_BITMAP 3
+
+#pragma clang diagnostic pop

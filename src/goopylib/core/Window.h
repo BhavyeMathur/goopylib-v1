@@ -1098,7 +1098,7 @@ namespace gp {
 
         void onScroll(float xScroll, float yScroll);
 
-        void onKeyPress(int key, int scancode, int action, int mods);
+        void onKeyPress(int key, __attribute__((unused)) int scancode, int action, int mods);
 
         void onMousePress(int button, int action, int mods);
 

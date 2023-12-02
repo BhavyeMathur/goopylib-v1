@@ -1,7 +1,6 @@
 #include "Core.h"
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/objects/text/Text.h"
-#include "src/goopylib/color/W3CX11.h"
 
 #if GP_USING_GLAD
 
@@ -229,7 +228,7 @@ namespace gp {
     std::string openglVersion() {
         GP_CORE_TRACE("gp::openglVersion()");
 
-        return {(char *) glGetString(GL_VERSION)};
+        return {(char *)(glGetString(GL_VERSION))};
     }
 
     #endif

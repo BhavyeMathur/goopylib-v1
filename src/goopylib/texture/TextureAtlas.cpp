@@ -1,5 +1,16 @@
 #include "TextureAtlas.h"
 
+#if (GP_LOG_TEXTURE_ATLAS != true) and (GP_LOG_TEXTURE_ATLAS <= GP_LOGGING_LEVEL)
+#undef GP_LOGGING_LEVEL
+#define GP_LOGGING_LEVEL GP_LOG_TEXTURE_ATLAS
+#endif
+
+#if !GP_VALUE_CHECK_TEXTURE_ATLAS
+#undef GP_VALUE_CHECKING
+#undef GP_TYPE_CHECKING
+#undef GP_ERROR_CHECKING
+#endif
+
 
 namespace gp {
     int32_t TextureAtlas::s_Width = 0;
