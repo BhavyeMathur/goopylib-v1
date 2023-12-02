@@ -55,6 +55,22 @@ namespace gp {
         update();
     }
 
+    void Triangle::setColor(const char *hexstring) {
+        m_V1.color = Color(hexstring).getRGBAf();
+        m_V2.color = m_V1.color;
+        m_V3.color = m_V1.color;
+
+        update();
+    }
+
+    void Triangle::setColor(const char *hex1, const char *hex2, const char *hex3) {
+        m_V1.color = Color(hex1).getRGBAf();
+        m_V2.color = Color(hex2).getRGBAf();
+        m_V3.color = Color(hex3).getRGBAf();
+
+        update();
+    }
+
     void Triangle::setTransparency(float value) {
         setTransparency(value, value, value);
     }

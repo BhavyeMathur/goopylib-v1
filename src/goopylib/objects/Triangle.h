@@ -36,7 +36,28 @@ namespace gp {
          */
         GPAPI void setColor(const Color& color1, const Color& color2, const Color& color3);
 
+        /**
+         * Sets the fill color of the object
+         * @param color the color of the object
+         */
+        void GPAPI setColor(const char *hexstring);
 
+        /**
+         * Sets the fill color of the object
+         *
+         * @param color1 the color of the 1st vertex
+         * @param color2 the color of the 2nd vertex
+         * @param color3 the color of the 3rd vertex
+         */
+        void GPAPI setColor(const char *hex1, const char *hex2, const char *hex3);
+
+        /**
+         * Sets the transparency of the object
+         *
+         * @param value transparency of the object between 0-1
+         *
+         * @throws std::invalid_argument if values are not between 0 and 1
+         */
         GPAPI void setTransparency(float value) override;
 
         /**

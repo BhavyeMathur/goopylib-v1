@@ -22,14 +22,16 @@ namespace gp {
          */
         GPAPI Quad(Point p1, Point p2, Point p3, Point p4);
 
+        // TODO colour alpha should affect shape transparency
+
         /**
-         * Sets the fill color of the quad
-         * @param color the color of the quad
+         * Sets the fill color of the object
+         * @param color the color of the object
          */
         void GPAPI setColor(const Color& color);
 
         /**
-         * Sets the fill color of the quad
+         * Sets the fill color of the object
          *
          * @param color1 the color of the 1st vertex
          * @param color2 the color of the 2nd vertex
@@ -38,10 +40,33 @@ namespace gp {
          */
         void GPAPI setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
 
+        /**
+         * Sets the fill color of the object
+         * @param color the color of the object
+         */
+        void GPAPI setColor(const char *hexstring);
+
+        /**
+         * Sets the fill color of the object
+         *
+         * @param color1 the color of the 1st vertex
+         * @param color2 the color of the 2nd vertex
+         * @param color3 the color of the 3rd vertex
+         * @param color4 the color of the 4th vertex
+         */
+        void GPAPI setColor(const char *hex1, const char *hex2, const char *hex3, const char *hex4);
+
+        /**
+         * Sets the transparency of the object
+         *
+         * @param value transparency of the object between 0-1
+         *
+         * @throws std::invalid_argument if values are not between 0 and 1
+         */
         void GPAPI setTransparency(float value) override;
 
         /**
-         * Sets the transparency of the quad
+         * Sets the transparency of the object
          *
          * @param v1 transparency of the 1st vertex between 0-1
          * @param v2 transparency of the 2nd vertex between 0-1

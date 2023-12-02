@@ -56,6 +56,24 @@ namespace gp {
         update();
     }
 
+    void Quad::setColor(const char *hexstring) {
+        m_V1.color = Color(hexstring).getRGBAf();
+        m_V2.color = m_V1.color;
+        m_V3.color = m_V1.color;
+        m_V4.color = m_V1.color;
+
+        update();
+    }
+
+    void Quad::setColor(const char *hex1, const char *hex2, const char *hex3, const char *hex4) {
+        m_V1.color = Color(hex1).getRGBAf();
+        m_V2.color = Color(hex2).getRGBAf();
+        m_V3.color = Color(hex3).getRGBAf();
+        m_V4.color = Color(hex4).getRGBAf();
+
+        update();
+    }
+
     void Quad::setTransparency(float value) {
         setTransparency(value, value, value, value);
     }
