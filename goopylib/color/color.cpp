@@ -173,7 +173,7 @@ namespace color {
             }
             #endif
 
-            int val = (int) PyLong_AsLong(o1);
+            const int val = (int) PyLong_AsLong(o1);
             red += val;
             green += val;
             blue += val;
@@ -221,7 +221,7 @@ namespace color {
             }
             #endif
 
-            int val = (int) PyLong_AsLong(o1);
+            const int val = (int) PyLong_AsLong(o1);
             red += val;
             green += val;
             blue += val;
@@ -300,7 +300,7 @@ namespace color {
         }
         #endif
 
-        int red = (int) PyLong_AsLong(value);
+        const int red = (int) PyLong_AsLong(value);
 
         CHECK_RED(-1)
 
@@ -322,7 +322,7 @@ namespace color {
         }
         #endif
 
-        int green = (int) PyLong_AsLong(value);
+        const int green = (int) PyLong_AsLong(value);
 
         CHECK_GREEN(-1)
 
@@ -344,7 +344,7 @@ namespace color {
         }
         #endif
 
-        int blue = (int) PyLong_AsLong(value);
+        const int blue = (int) PyLong_AsLong(value);
 
         CHECK_BLUE(-1)
 
@@ -657,7 +657,7 @@ namespace color {
             }
             #endif
 
-            int hue = (int) PyLong_AsLong(value);
+            const int hue = (int) PyLong_AsLong(value);
 
             CHECK_HUE(-1)
 
@@ -716,9 +716,9 @@ namespace color {
 
         // Color Type
         static PyGetSetDef getsetters[] = {
-                {"hue",        (getter) get_hue,        (setter) set_hue,        "hue",        nullptr},
-                {"saturation", (getter) get_saturation, (setter) set_saturation, "saturation", nullptr},
-                {"value",      (getter) get_value,      (setter) set_value,      "value",      nullptr},
+                GETTER_SETTER(hue),
+                GETTER_SETTER(saturation),
+                GETTER_SETTER(value),
                 {nullptr}
         };
     }
@@ -761,7 +761,7 @@ namespace color {
             }
             #endif
 
-            int hue = (int) PyLong_AsLong(value);
+            const int hue = (int) PyLong_AsLong(value);
 
             CHECK_HUE(-1)
 
@@ -858,7 +858,7 @@ PyTypeObject ColorType = {
         nullptr,
         nullptr,
         nullptr,
-        color::getsetters,
+        (PyGetSetDef *) color::getsetters,
         nullptr,
         nullptr,
         nullptr,
@@ -911,7 +911,7 @@ PyMODINIT_FUNC PyInit_color() {
         return nullptr;
     }
 
-    EXPOSE_PYOBJECT_CLASS(ColorType, "Color");
+    EXPOSE_PYOBJECT_CLASS(ColorType, "Color")
 
     ColorRGBType.tp_base = &ColorType;
     ColorHexType.tp_base = &ColorType;
@@ -919,11 +919,11 @@ PyMODINIT_FUNC PyInit_color() {
     ColorHSVType.tp_base = &ColorType;
     ColorHSLType.tp_base = &ColorType;
 
-    EXPOSE_PYOBJECT_CLASS(ColorRGBType, "ColorRGB");
-    EXPOSE_PYOBJECT_CLASS(ColorHexType, "ColorHex");
-    EXPOSE_PYOBJECT_CLASS(ColorCMYKType, "ColorCMYK");
-    EXPOSE_PYOBJECT_CLASS(ColorHSVType, "ColorHSV");
-    EXPOSE_PYOBJECT_CLASS(ColorHSLType, "ColorHSL");
+    EXPOSE_PYOBJECT_CLASS(ColorRGBType, "ColorRGB")
+    EXPOSE_PYOBJECT_CLASS(ColorHexType, "ColorHex")
+    EXPOSE_PYOBJECT_CLASS(ColorCMYKType, "ColorCMYK")
+    EXPOSE_PYOBJECT_CLASS(ColorHSVType, "ColorHSV")
+    EXPOSE_PYOBJECT_CLASS(ColorHSLType, "ColorHSL")
 
     static void *PyColor_API[PyColor_API_pointers];
     PyObject * c_api_object;

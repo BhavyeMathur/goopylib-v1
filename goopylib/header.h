@@ -8,14 +8,12 @@
 #include <stdexcept>
 
 #define EXPOSE_PYOBJECT_CLASS(ObjectType, name) \
-do { if (PyType_Ready(&(ObjectType)) < 0) return nullptr; \
-    Py_INCREF(&(ObjectType)); \
-    if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
-        Py_DECREF(&(ObjectType)); \
-        Py_DECREF(m); \
-        return nullptr; \
-    }                                      \
-} while (0)
+if (PyType_Ready(&(ObjectType)) < 0) return nullptr; \
+Py_INCREF(&(ObjectType)); \
+if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
+    Py_DECREF(&(ObjectType)); \
+    Py_DECREF(m); \
+    return nullptr; }
 
 #define INITIALIZE_PYOBJECT(variable, value) Py_INCREF((value)); variable = value
 #define SET_PYOBJECT(variable, value) PyObject *tmp = variable; INITIALIZE_PYOBJECT(variable, value); Py_XDECREF(tmp)
