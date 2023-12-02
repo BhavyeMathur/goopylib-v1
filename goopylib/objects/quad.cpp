@@ -91,52 +91,32 @@ namespace quad {
             PyObject *color2, *color3, *color4;
 
             if (!isinstance(arg1, ColorType)) {
-                color1 = PyObject_CallObject((PyObject *) ColorType, arg1);
-
-                #if GP_TYPE_CHECKING
-                if (color1 == nullptr) {
-                    return nullptr;
-                }
-                #endif
+                color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
+                GP_CHECK_NULL(color1, nullptr, "Invalid 1st color argument")
             }
             else {
                 color1 = arg1;
             }
 
             if (!isinstance(arg2, ColorType)) {
-                color2 = PyObject_CallObject((PyObject *) ColorType, arg2);
-
-                #if GP_TYPE_CHECKING
-                if (color2 == nullptr) {
-                    return nullptr;
-                }
-                #endif
+                color2 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg2));
+                GP_CHECK_NULL(color2, nullptr, "Invalid 2nd color argument")
             }
             else {
                 color2 = arg2;
             }
 
             if (!isinstance(arg3, ColorType)) {
-                color3 = PyObject_CallObject((PyObject *) ColorType, arg3);
-
-                #if GP_TYPE_CHECKING
-                if (color3 == nullptr) {
-                    return nullptr;
-                }
-                #endif
+                color3 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg3));
+                GP_CHECK_NULL(color3, nullptr, "Invalid 3rd color argument")
             }
             else {
                 color3 = arg3;
             }
 
             if (!isinstance(arg4, ColorType)) {
-                color4 = PyObject_CallObject((PyObject *) ColorType, arg4);
-
-                #if GP_TYPE_CHECKING
-                if (color4 == nullptr) {
-                    return nullptr;
-                }
-                #endif
+                color4 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg4));
+                GP_CHECK_NULL(color4, nullptr, "Invalid 4th color argument")
             }
             else {
                 color4 = arg4;
@@ -155,13 +135,8 @@ namespace quad {
         }
 
         if (!isinstance(arg1, ColorType)) {
-            color1 = PyObject_CallObject((PyObject *) ColorType, arg1);
-
-            #if GP_TYPE_CHECKING
-            if (color1 == nullptr) {
-                return nullptr;
-            }
-            #endif
+            color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
+            GP_CHECK_NULL(color1, nullptr, "Invalid arguments to set color")
         }
         else {
             color1 = arg1;
@@ -238,7 +213,7 @@ PyTypeObject QuadType = {
         0,
         nullptr,
         nullptr,
-        quad::methods,
+        (PyMethodDef *) quad::methods,
         nullptr,
         nullptr,
         nullptr,
