@@ -98,7 +98,7 @@ namespace gp {
         }
 
         m_RendererID = _draw(window);
-        m_Window = Ref<gp::Window>(&window);
+        m_Window = &window;
         m_Drawn = true;
     }
 

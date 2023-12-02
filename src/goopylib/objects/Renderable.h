@@ -268,7 +268,7 @@ namespace gp {
         [[nodiscard]] GPAPI bool contains(float x, float y) const;
 
     protected:
-        Ref<Window> m_Window = nullptr;
+        Window* m_Window;
         uint32_t m_RendererID = 0;
 
         Point *m_Points = nullptr;
