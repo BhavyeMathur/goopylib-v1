@@ -375,16 +375,16 @@ namespace renderable {
     };
 
     static PyGetSetDef getsetters[] = {
-            {"x", (getter) get_x, (setter) set_x, "x", nullptr},
-            {"y", (getter) get_y, (setter) set_y, "y", nullptr},
-            {"position", (getter) get_position, (setter) set_position, "position", nullptr},
+            GETTER_SETTER(x),
+            GETTER_SETTER(y),
+            GETTER_SETTER(position),
 
-            {"rotation", (getter) get_rotation, (setter) set_rotation, "rotation", nullptr},
-            {"xscale", (getter) get_xscale, (setter) set_xscale, "xscale", nullptr},
-            {"yscale", (getter) get_yscale, (setter) set_yscale, "yscale", nullptr},
+            GETTER_SETTER(rotation),
+            GETTER_SETTER(xscale),
+            GETTER_SETTER(yscale),
 
-            {"width", (getter) get_width, (setter) set_width, "width", nullptr},
-            {"height", (getter) get_height, (setter) set_height, "height", nullptr},
+            GETTER_SETTER(width),
+            GETTER_SETTER(height),
 
             {nullptr}
     };
@@ -418,9 +418,9 @@ PyTypeObject RenderableType = {
         0,
         nullptr,
         nullptr,
-        renderable::methods,
+        (PyMethodDef *) renderable::methods,
         nullptr,
-        renderable::getsetters,
+        (PyGetSetDef *) renderable::getsetters,
         nullptr,
         nullptr,
         nullptr,

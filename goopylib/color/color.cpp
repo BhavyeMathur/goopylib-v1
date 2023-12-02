@@ -383,10 +383,10 @@ namespace color {
 // Color Type
 namespace color {
     static PyGetSetDef getsetters[] = {
-            {"red",   (getter) get_red,   (setter) set_red,   "red",   nullptr},
-            {"green", (getter) get_green, (setter) set_green, "green", nullptr},
-            {"blue",  (getter) get_blue,  (setter) set_blue,  "blue",  nullptr},
-            {"alpha", (getter) get_alpha, (setter) set_alpha, "alpha", nullptr},
+            GETTER_SETTER(red),
+            GETTER_SETTER(green),
+            GETTER_SETTER(blue),
+            GETTER_SETTER(alpha),
 
             {nullptr}
     };
@@ -611,10 +611,11 @@ namespace color {
 
         // Color Type
         static PyGetSetDef getsetters[] = {
-                {"cyan",    (getter) get_cyan,    (setter) set_cyan,    "cyan",    nullptr},
-                {"magenta", (getter) get_magenta, (setter) set_magenta, "magenta", nullptr},
-                {"yellow",  (getter) get_yellow,  (setter) set_yellow,  "yellow",  nullptr},
-                {"key",     (getter) get_key,     (setter) set_key,     "key",     nullptr},
+                GETTER_SETTER(cyan),
+                GETTER_SETTER(magenta),
+                GETTER_SETTER(yellow),
+                GETTER_SETTER(key),
+
                 {nullptr}
         };
     }
@@ -719,6 +720,7 @@ namespace color {
                 GETTER_SETTER(hue),
                 GETTER_SETTER(saturation),
                 GETTER_SETTER(value),
+
                 {nullptr}
         };
     }
@@ -820,9 +822,10 @@ namespace color {
         }
 
         static PyGetSetDef getsetters[] = {
-                {"hue",        (getter) get_hue,        (setter) set_hue,        "hue",        nullptr},
-                {"saturation", (getter) get_saturation, (setter) set_saturation, "saturation", nullptr},
-                {"luminance",  (getter) get_luminance,  (setter) set_luminance,  "luminance",  nullptr},
+                GETTER_SETTER(hue),
+                GETTER_SETTER(saturation),
+                GETTER_SETTER(luminance),
+
                 {nullptr}
         };
     }

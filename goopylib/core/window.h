@@ -135,28 +135,28 @@ namespace window {
     // Resizable
     static int set_resizable(WindowObject *self, PyObject *value, void *closure);
 
-    static PyObject *is_resizable(WindowObject *self, PyObject *args);
+    static PyObject *get_resizable(WindowObject *self, PyObject *args);
 
     // Decorated
     static int set_decorated(WindowObject *self, PyObject *value, void *closure);
 
-    static PyObject *is_decorated(WindowObject *self, PyObject *args);
+    static PyObject *get_decorated(WindowObject *self, PyObject *args);
 
     // Floating
     static int set_floating(WindowObject *self, PyObject *value, void *closure);
 
-    static PyObject *is_floating(WindowObject *self, PyObject *args);
+    static PyObject *get_floating(WindowObject *self, PyObject *args);
 
     // Auto Minimized
     static int set_auto_minimized(WindowObject *self, PyObject *value, void *closure);
 
-    static PyObject *is_auto_minimized(WindowObject *self, PyObject *args);
+    static PyObject *get_auto_minimized(WindowObject *self, PyObject *args);
 
 
     // Focused on Show
     static int set_focused_on_show(WindowObject *self, PyObject *value, void *closure);
 
-    static PyObject *is_focused_on_show(WindowObject *self, PyObject *args);
+    static PyObject *get_focused_on_show(WindowObject *self, PyObject *args);
 }
 
 // Window States

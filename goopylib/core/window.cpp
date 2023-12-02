@@ -85,7 +85,7 @@ namespace window {
 
         self->background = PyObject_CallObject((PyObject *) ColorType, Py_BuildValue("iii", 255, 255, 255));
 
-        self->window = std::unique_ptr<gp::Window>(new gp::Window(width, height, PyUnicode_AsUTF8(tmp)));
+        self->window = CreateScope<gp::Window>(width, height, PyUnicode_AsUTF8(tmp));
         self->window->setBackground(*((ColorObject *) self->background)->color);
 
         self->camera = PyObject_CallObject((PyObject *) CameraType, Py_BuildValue("iiii", 0, 0, 0, 0));
@@ -236,7 +236,7 @@ namespace window {
         }
         #endif
 
-        int width = (int) PyLong_AsLong(value);
+        const int width = (int) PyLong_AsLong(value);
 
         GP_CHECK_GT(width, 0, -1, "width must be greater than 0")
 
@@ -259,7 +259,7 @@ namespace window {
         }
         #endif
 
-        int height = (int) PyLong_AsLong(value);
+        const int height = (int) PyLong_AsLong(value);
 
         GP_CHECK_GT(height, 0, -1, "width must be greater than 0")
 
@@ -371,7 +371,7 @@ namespace window {
         }
         #endif
 
-        int minWidth = (int) PyLong_AsLong(value);
+        const int minWidth = (int) PyLong_AsLong(value);
 
         GP_CHECK_GE(minWidth, 0, -1, "minimum width must be greater than or equal to 0")
 
@@ -394,7 +394,7 @@ namespace window {
         }
         #endif
 
-        int minHeight = (int) PyLong_AsLong(value);
+        const int minHeight = (int) PyLong_AsLong(value);
         GP_CHECK_GE(minHeight, 0, -1, "minimum height must be greater than or equal to 0")
 
         self->window->setMinHeight(minHeight);
@@ -411,7 +411,7 @@ namespace window {
         CHECK_ACTIVE(-1);
 
         if (PyLong_Check(value)) {
-            int maxWidth = (int) PyLong_AsLong(value);
+            const int maxWidth = (int) PyLong_AsLong(value);
 
             GP_CHECK_GE(maxWidth, self->window->getMinWidth(), -1,
                         "maximum width must be greater than or equal to minimum width")
@@ -437,7 +437,7 @@ namespace window {
         CHECK_ACTIVE(-1);
 
         if (PyLong_Check(value)) {
-            int maxHeight = (int) PyLong_AsLong(value);
+            const int maxHeight = (int) PyLong_AsLong(value);
 
             GP_CHECK_GE(maxHeight, self->window->getMinHeight(), -1,
                         "maximum height must be greater than or equal to minimum height")
@@ -629,8 +629,8 @@ namespace window {
         }
         #endif
 
-        int numerator = (int) PyLong_AsLong(tmp_numerator);
-        int denominator = (int) PyLong_AsLong(tmp_denominator);
+        const int numerator = (int) PyLong_AsLong(tmp_numerator);
+        const int denominator = (int) PyLong_AsLong(tmp_denominator);
 
         GP_CHECK_GT(numerator, 0, nullptr, "aspect ratio numerator must be None or greater than 0")
         GP_CHECK_GT(denominator, 0, nullptr, "aspect ratio denominator must be None or greater than 0")
@@ -642,7 +642,7 @@ namespace window {
     static PyObject *get_aspect_ratio(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_ACTIVE(nullptr);
 
-        gp::AspectRatio value = self->window->getAspectRatio();
+        const gp::AspectRatio value = self->window->getAspectRatio();
         return PyTuple_Pack(2, PyLong_FromLong(value.numerator), PyLong_FromLong(value.denominator));
     }
 
@@ -650,21 +650,21 @@ namespace window {
     static PyObject *get_frame_size(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_ACTIVE(nullptr);
 
-        gp::WindowFrame value = self->window->getFrameSize();
+        const gp::WindowFrame value = self->window->getFrameSize();
         return Py_BuildValue("iiii", value.left, value.top, value.right, value.bottom);
     }
 
     static PyObject *get_content_scale(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_ACTIVE(nullptr);
 
-        gp::ContentScale value = self->window->getContentScale();
+        const gp::ContentScale value = self->window->getContentScale();
         return PyTuple_Pack(2, PyFloat_FromDouble(value.xScale), PyFloat_FromDouble(value.yScale));
     }
 
     static PyObject *get_framebuffer_size(WindowObject *self, void *Py_UNUSED(closure)) {
         CHECK_ACTIVE(nullptr);
 
-        gp::FramebufferSize value = self->window->getFramebufferSize();
+        const gp::FramebufferSize value = self->window->getFramebufferSize();
         return PyTuple_Pack(2, PyLong_FromLong(value.width), PyLong_FromLong(value.height));
     }
 }
@@ -684,7 +684,7 @@ namespace window {
         return 0;
     }
 
-    static PyObject *is_resizable(WindowObject *self, PyObject *Py_UNUSED(args)) {
+    static PyObject *get_resizable(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_ACTIVE(nullptr);
 
         if (self->window->isResizable()) {
@@ -707,7 +707,7 @@ namespace window {
         return 0;
     }
 
-    static PyObject *is_decorated(WindowObject *self, PyObject *Py_UNUSED(args)) {
+    static PyObject *get_decorated(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_ACTIVE(nullptr);
 
         if (self->window->isDecorated()) {
@@ -730,7 +730,7 @@ namespace window {
         return 0;
     }
 
-    static PyObject *is_floating(WindowObject *self, PyObject *Py_UNUSED(args)) {
+    static PyObject *get_floating(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_ACTIVE(nullptr);
 
         if (self->window->isFloating()) {
@@ -753,7 +753,7 @@ namespace window {
         return 0;
     }
 
-    static PyObject *is_auto_minimized(WindowObject *self, PyObject *Py_UNUSED(args)) {
+    static PyObject *get_auto_minimized(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_ACTIVE(nullptr);
 
         if (self->window->isAutoMinimized()) {
@@ -777,7 +777,7 @@ namespace window {
         return 0;
     }
 
-    static PyObject *is_focused_on_show(WindowObject *self, PyObject *Py_UNUSED(args)) {
+    static PyObject *get_focused_on_show(WindowObject *self, PyObject *Py_UNUSED(args)) {
         CHECK_ACTIVE(nullptr);
 
         if (self->window->isFocusedOnShow()) {
@@ -1053,11 +1053,13 @@ namespace window {
 
         PyDict_SetItem(self->key_callbacks, key, callback);
 
-        self->window->setKeyCallback((int) PyLong_AsLong(key), [callback](gp::Window *window, int action) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(callback, "i", action);
-            PyGILState_Release(gstate);
-        });
+        self->window->setKeyCallback(
+                (int) PyLong_AsLong(key),
+                [callback](gp::Window *Py_UNUSED(window), int action) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(callback, "i", action);
+                    PyGILState_Release(gstate);
+                });
 
         Py_RETURN_NONE;
     }
@@ -1088,11 +1090,13 @@ namespace window {
 
         PyDict_SetItem(self->mouse_callbacks, button, callback);
 
-        self->window->setMouseButtonCallback((int) PyLong_AsLong(button), [callback](gp::Window *window, int action) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(callback, "O", action ? Py_True : Py_False);
-            PyGILState_Release(gstate);
-        });
+        self->window->setMouseButtonCallback(
+                (int) PyLong_AsLong(button),
+                [callback](gp::Window *Py_UNUSED(window), int action) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(callback, "O", action ? Py_True : Py_False);
+                    PyGILState_Release(gstate);
+                });
 
         Py_RETURN_NONE;
     }
@@ -1117,11 +1121,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setResizeCallback([self](gp::Window *window, int width, int height) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(self->resize_callback, "ii", width, height);
-            PyGILState_Release(gstate);
-        });
+        self->window->setResizeCallback(
+                [self](gp::Window *Py_UNUSED(window), int width, int height) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(self->resize_callback, "ii", width, height);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1147,11 +1152,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setCloseCallback([self](gp::Window *window) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_Call(self->close_callback, Py_None, nullptr);
-            PyGILState_Release(gstate);
-        });
+        self->window->setCloseCallback(
+                [self](gp::Window *Py_UNUSED(window)) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_Call(self->close_callback, Py_None, nullptr);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1177,11 +1183,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setDestroyCallback([self](gp::Window *window) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_Call(self->destroy_callback, Py_None, nullptr);
-            PyGILState_Release(gstate);
-        });
+        self->window->setDestroyCallback(
+                [self](gp::Window *Py_UNUSED(window)) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_Call(self->destroy_callback, Py_None, nullptr);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1207,11 +1214,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setPositionCallback([self](gp::Window *window, int xPos, int yPos) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(self->position_callback, "ii", xPos, yPos);
-            PyGILState_Release(gstate);
-        });
+        self->window->setPositionCallback(
+                [self](gp::Window *Py_UNUSED(window), int xPos, int yPos) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(self->position_callback, "ii", xPos, yPos);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1237,11 +1245,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setMinimizeCallback([self](gp::Window *window, bool minimized) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(self->minimize_callback, "O", minimized ? Py_True : Py_False);
-            PyGILState_Release(gstate);
-        });
+        self->window->setMinimizeCallback(
+                [self](gp::Window *Py_UNUSED(window), bool minimized) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(self->minimize_callback, "O", minimized ? Py_True : Py_False);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1267,11 +1276,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setMaximizeCallback([self](gp::Window *window, bool maximized) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(self->maximize_callback, "O", maximized ? Py_True : Py_False);
-            PyGILState_Release(gstate);
-        });
+        self->window->setMaximizeCallback(
+                [self](gp::Window *Py_UNUSED(window), bool maximized) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(self->maximize_callback, "O", maximized ? Py_True : Py_False);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1297,8 +1307,8 @@ namespace window {
             return 0;
         }
 
-        self->window->setFocusCallback([self](gp::Window *window, bool focused) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
+        self->window->setFocusCallback([self](gp::Window *Py_UNUSED(window), bool focused) {
+            const PyGILState_STATE gstate = PyGILState_Ensure();
             PyObject_CallFunction(self->focus_callback, "O", focused ? Py_True : Py_False);
             PyGILState_Release(gstate);
         });
@@ -1327,11 +1337,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setRefreshCallback([self](gp::Window *window) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_Call(self->refresh_callback, Py_None, nullptr);
-            PyGILState_Release(gstate);
-        });
+        self->window->setRefreshCallback(
+                [self](gp::Window *Py_UNUSED(window)) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_Call(self->refresh_callback, Py_None, nullptr);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1357,8 +1368,8 @@ namespace window {
             return 0;
         }
 
-        self->window->setContentScaleCallback([self](gp::Window *window, float xScale, float yScale) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
+        self->window->setContentScaleCallback([self](gp::Window *Py_UNUSED(window), float xScale, float yScale) {
+            const PyGILState_STATE gstate = PyGILState_Ensure();
             PyObject_CallFunction(self->content_scale_callback, "ff", xScale, yScale);
             PyGILState_Release(gstate);
         });
@@ -1387,11 +1398,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setFramebufferSizeCallback([self](gp::Window *window, int width, int height) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(self->framebuffer_size_callback, "ii", width, height);
-            PyGILState_Release(gstate);
-        });
+        self->window->setFramebufferSizeCallback(
+                [self](gp::Window *Py_UNUSED(window), int width, int height) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(self->framebuffer_size_callback, "ii", width, height);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1417,11 +1429,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setMouseMotionCallback([self](gp::Window *window, float xPos, float yPos) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(self->mouse_motion_callback, "ff", xPos, yPos);
-            PyGILState_Release(gstate);
-        });
+        self->window->setMouseMotionCallback(
+                [self](gp::Window *Py_UNUSED(window), float xPos, float yPos) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(self->mouse_motion_callback, "ff", xPos, yPos);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1447,11 +1460,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setMouseEnterCallback([self](gp::Window *window, bool entered) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(self->mouse_enter_callback, "O", entered ? Py_True : Py_False);
-            PyGILState_Release(gstate);
-        });
+        self->window->setMouseEnterCallback(
+                [self](gp::Window *Py_UNUSED(window), bool entered) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(self->mouse_enter_callback, "O", entered ? Py_True : Py_False);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1477,11 +1491,12 @@ namespace window {
             return 0;
         }
 
-        self->window->setScrollCallback([self](gp::Window *window, float xScroll, float yScroll) {
-            PyGILState_STATE gstate = PyGILState_Ensure();
-            PyObject_CallFunction(self->scroll_callback, "ff", xScroll, yScroll);
-            PyGILState_Release(gstate);
-        });
+        self->window->setScrollCallback(
+                [self](gp::Window *Py_UNUSED(window), float xScroll, float yScroll) {
+                    const PyGILState_STATE gstate = PyGILState_Ensure();
+                    PyObject_CallFunction(self->scroll_callback, "ff", xScroll, yScroll);
+                    PyGILState_Release(gstate);
+                });
 
         return 0;
     }
@@ -1499,7 +1514,7 @@ namespace window {
     }
 
     static PyObject *get_left_click_callback(WindowObject *self, void *Py_UNUSED(closure)) {
-        PyObject *button = PyLong_FromLong(GP_MOUSE_LEFT_BUTTON);
+        PyObject * button = PyLong_FromLong(GP_MOUSE_LEFT_BUTTON);
 
         if (PyDict_Contains(self->mouse_callbacks, button)) {
             RETURN_PYOBJECT(PyDict_GetItem(self->mouse_callbacks, button));
@@ -1515,7 +1530,7 @@ namespace window {
     }
 
     static PyObject *get_middle_click_callback(WindowObject *self, void *Py_UNUSED(closure)) {
-        PyObject *button = PyLong_FromLong(GP_MOUSE_MIDDLE_BUTTON);
+        PyObject * button = PyLong_FromLong(GP_MOUSE_MIDDLE_BUTTON);
 
         if (PyDict_Contains(self->mouse_callbacks, button)) {
             RETURN_PYOBJECT(PyDict_GetItem(self->mouse_callbacks, button));
@@ -1531,7 +1546,7 @@ namespace window {
     }
 
     static PyObject *get_right_click_callback(WindowObject *self, void *Py_UNUSED(closure)) {
-        PyObject *button = PyLong_FromLong(GP_MOUSE_RIGHT_BUTTON);
+        PyObject * button = PyLong_FromLong(GP_MOUSE_RIGHT_BUTTON);
 
         if (PyDict_Contains(self->mouse_callbacks, button)) {
             RETURN_PYOBJECT(PyDict_GetItem(self->mouse_callbacks, button));
@@ -1676,43 +1691,46 @@ namespace window {
     };
 
     static PyGetSetDef getsetters[] = {
-            {"width",                     (getter) get_width,                     (setter) set_width,                     "width",                     nullptr},
-            {"height",                    (getter) get_height,                    (setter) set_height,                    "height",                    nullptr},
-            {"title",                     (getter) get_title,                     (setter) set_title,                     "title",                     nullptr},
+            GETTER_SETTER(width),
+            GETTER_SETTER(height),
+            GETTER_SETTER(title),
 
-            {"xpos",                      (getter) get_xpos,                      (setter) set_xpos,                      "x position",                nullptr},
-            {"ypos",                      (getter) get_ypos,                      (setter) set_ypos,                      "y position",                nullptr},
+            GETTER_SETTER(xpos),
+            GETTER_SETTER(ypos),
 
-            {"background",                (getter) get_background,                (setter) set_background,                "background",                nullptr},
+            GETTER_SETTER(background),
 
-            {"min_width",                 (getter) get_min_width,                 (setter) set_min_width,                 "minimum width",             nullptr},
-            {"max_width",                 (getter) get_max_width,                 (setter) set_max_width,                 "maximum width",             nullptr},
-            {"min_height",                (getter) get_min_height,                (setter) set_min_height,                "minimum height",            nullptr},
-            {"max_height",                (getter) get_max_height,                (setter) set_max_height,                "maximum height",            nullptr},
+            GETTER_SETTER(min_width),
+            GETTER_SETTER(max_width),
+            GETTER_SETTER(min_height),
+            GETTER_SETTER(max_height),
 
-            {"resizable",                 (getter) is_resizable,                  (setter) set_resizable,                 "resizable",                 nullptr},
-            {"decorated",                 (getter) is_decorated,                  (setter) set_decorated,                 "decorated",                 nullptr},
-            {"auto_minimized",            (getter) is_auto_minimized,             (setter) set_auto_minimized,            "auto minimized",            nullptr},
-            {"floating",                  (getter) is_floating,                   (setter) set_floating,                  "floating",                  nullptr},
-            {"focused_on_show",           (getter) is_focused_on_show,            (setter) set_focused_on_show,           "focused on show",           nullptr},
+            GETTER_SETTER(resizable),
+            GETTER_SETTER(decorated),
+            GETTER_SETTER(auto_minimized),
+            GETTER_SETTER(floating),
+            GETTER_SETTER(focused_on_show),
 
-            {"resize_callback",           (getter) get_resize_callback,           (setter) set_resize_callback,           "resize callback",           nullptr},
-            {"position_callback",         (getter) get_position_callback,         (setter) set_position_callback,         "position callback",         nullptr},
-            {"framebuffer_size_callback", (getter) get_framebuffer_size_callback, (setter) set_framebuffer_size_callback, "framebuffer size callback", nullptr},
-            {"close_callback",            (getter) get_close_callback,            (setter) set_close_callback,            "close callback",            nullptr},
-            {"content_scale_callback",    (getter) get_content_scale_callback,    (setter) set_content_scale_callback,    "content scale callback",    nullptr},
-            {"destroy_callback",          (getter) get_destroy_callback,          (setter) set_destroy_callback,          "destroy callback",          nullptr},
-            {"minimize_callback",         (getter) get_minimize_callback,         (setter) set_minimize_callback,         "minimize callback",         nullptr},
-            {"maximize_callback",         (getter) get_maximize_callback,         (setter) set_maximize_callback,         "maximize callback",         nullptr},
-            {"focus_callback",            (getter) get_focus_callback,            (setter) set_focus_callback,            "focus callback",            nullptr},
-            {"refresh_callback",          (getter) get_refresh_callback,          (setter) set_refresh_callback,          "refresh callback",          nullptr},
-            {"mouse_motion_callback",     (getter) get_mouse_motion_callback,     (setter) set_mouse_motion_callback,     "mouse motion callback",     nullptr},
-            {"mouse_enter_callback",      (getter) get_mouse_enter_callback,      (setter) set_mouse_enter_callback,      "mouse enter callback",      nullptr},
-            {"scroll_callback",           (getter) get_scroll_callback,           (setter) set_scroll_callback,           "scroll callback",           nullptr},
+            GETTER_SETTER(resize_callback),
+            GETTER_SETTER(position_callback),
+            GETTER_SETTER(framebuffer_size_callback),
+            GETTER_SETTER(content_scale_callback),
 
-            {"left_click_callback",       (getter) get_left_click_callback,       (setter) set_left_click_callback,       "left click callback",       nullptr},
-            {"middle_click_callback",     (getter) get_middle_click_callback,     (setter) set_middle_click_callback,     "middle click callback",     nullptr},
-            {"right_click_callback",      (getter) get_right_click_callback,      (setter) set_right_click_callback,      "right click callback",      nullptr},
+            GETTER_SETTER(close_callback),
+            GETTER_SETTER(destroy_callback),
+
+            GETTER_SETTER(minimize_callback),
+            GETTER_SETTER(maximize_callback),
+            GETTER_SETTER(focus_callback),
+            GETTER_SETTER(refresh_callback),
+
+            GETTER_SETTER(mouse_motion_callback),
+            GETTER_SETTER(mouse_enter_callback),
+            GETTER_SETTER(scroll_callback),
+
+            GETTER_SETTER(left_click_callback),
+            GETTER_SETTER(middle_click_callback),
+            GETTER_SETTER(right_click_callback),
 
             {nullptr}
     };
@@ -1746,9 +1764,9 @@ PyTypeObject WindowType = {
         0,
         nullptr,
         nullptr,
-        window::methods,
+        (PyMethodDef *) window::methods,
         nullptr,
-        window::getsetters,
+        (PyGetSetDef *) window::getsetters,
         nullptr,
         nullptr,
         nullptr,

@@ -216,12 +216,11 @@ namespace camera {
     };
 
     static PyGetSetDef getsetters[] = {
-            {"x", (getter) get_x, (setter) set_x, "x", nullptr},
-            {"y", (getter) get_y, (setter) set_y, "y", nullptr},
-            {"position", (getter) get_position, (setter) set_position, "position", nullptr},
-
-            {"rotation", (getter) get_rotation, (setter) set_rotation, "rotation", nullptr},
-            {"zoom", (getter) get_zoom, (setter) set_zoom, "zoom", nullptr},
+            GETTER_SETTER(x),
+            GETTER_SETTER(y),
+            GETTER_SETTER(position),
+            GETTER_SETTER(rotation),
+            GETTER_SETTER(zoom),
 
             {nullptr}
     };
@@ -255,9 +254,9 @@ PyTypeObject CameraType = {
         0,
         nullptr,
         nullptr,
-        camera::methods,
+        (PyMethodDef *) camera::methods,
         nullptr,
-        camera::getsetters,
+        (PyGetSetDef *) camera::getsetters,
         nullptr,
         nullptr,
         nullptr,

@@ -22,6 +22,16 @@ if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
 
 #define GETTER_SETTER(name) {#name, (getter) get_##name, (setter) set_##name, #name, nullptr}
 
+#undef Py_VISIT
+#define Py_VISIT(op)                                                    \
+    do {                                                                \
+        if (op) {                                                       \
+            const int vret = visit(_PyObject_CAST(op), arg);            \
+            if (vret)                                                   \
+                return vret;                                            \
+        }                                                               \
+    } while (0)
+
 static bool isinstance(PyObject *object, PyTypeObject *type) {
     return PyObject_IsInstance(object, (PyObject *) type);
 }

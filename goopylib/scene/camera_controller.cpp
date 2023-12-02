@@ -282,10 +282,10 @@ namespace controller {
     };
 
     static PyGetSetDef getsetters[] = {
-            {"horizontal_speed", (getter) get_horizontal_speed, (setter) set_horizontal_speed, "horizontal_speed", nullptr},
-            {"vertical_speed", (getter) get_vertical_speed, (setter) set_vertical_speed, "vertical_speed", nullptr},
-            {"rotate_speed", (getter) get_rotate_speed, (setter) set_rotate_speed, "rotate_speed", nullptr},
-            {"zoom_speed", (getter) get_zoom_speed, (setter) set_zoom_speed, "zoom_speed", nullptr},
+            GETTER_SETTER(horizontal_speed),
+            GETTER_SETTER(vertical_speed),
+            GETTER_SETTER(rotate_speed),
+            GETTER_SETTER(zoom_speed),
 
             {nullptr}
     };
