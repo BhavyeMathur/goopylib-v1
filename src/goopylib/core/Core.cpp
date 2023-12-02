@@ -125,8 +125,6 @@ namespace gp {
 
         Window::destroyAll();
 
-        deallocateW3CX11();
-
         #if GP_USING_GLFW
         GP_CORE_DEBUG("gp::terminate() terminating GLFW");
         glfwTerminate();
