@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Log.h"
+#include "LogMacros.h"
 
 namespace gp {
     enum class ErrorType {

@@ -10,8 +10,6 @@
 #undef GP_VALUE_CHECKING
 #endif
 
-#include "src/goopylib/debug/Error.h"
-
 namespace gp {
     GPAPI std::unordered_map<std::string, Scope<ColorHex>> colors;
 

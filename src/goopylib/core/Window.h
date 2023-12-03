@@ -1042,7 +1042,7 @@ namespace gp {
         int m_WindowedYPos;
 
         bool m_IsDestroyed = false;
-        int m_KeyModifiers = 0;  // check if shift, control, alt, and super keys are pressed
+        int m_KeyModifiers = 0;  // check if the shift, control, alt, and super keys are pressed
 
         Renderer m_Renderer;
 

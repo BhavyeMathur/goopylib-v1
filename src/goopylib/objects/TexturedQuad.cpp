@@ -17,7 +17,6 @@
 #endif
 
 #include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 // Core Methods
 namespace gp {

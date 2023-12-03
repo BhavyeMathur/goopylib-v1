@@ -1,7 +1,5 @@
 #include "Packing.h"
 
-#include <iostream>
-
 #include "src/config.h"
 
 #if (GP_LOG_PACKING != true) and (GP_LOG_PACKING <= GP_LOGGING_LEVEL)
@@ -14,9 +12,6 @@
 #undef GP_TYPE_CHECKING
 #undef GP_ERROR_CHECKING
 #endif
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 
 // Item Class

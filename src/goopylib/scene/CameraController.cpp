@@ -11,7 +11,6 @@
 #undef GP_ERROR_CHECKING
 #endif
 
-#include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
 
 
