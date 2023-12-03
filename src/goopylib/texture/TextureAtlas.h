@@ -25,6 +25,8 @@ namespace gp {
         friend class Renderer;
 
     public:
+        GPAPI TextureAtlas (const TextureAtlas&) = delete;
+
         GPAPI ~TextureAtlas();
 
         GPAPI TextureCoords add(const Ref<Bitmap> &bitmap, bool allowRotation = true);
@@ -49,7 +51,5 @@ namespace gp {
         static int32_t s_Height;
 
         TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
-
-        GPAPI TextureAtlas (const TextureAtlas&) = delete;
     };
 }

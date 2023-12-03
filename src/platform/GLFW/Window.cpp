@@ -363,7 +363,7 @@ namespace gp {
         m_ResizeCallback = std::move(callback);
 
         glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onResize(width, height);
         });
     }
@@ -380,7 +380,7 @@ namespace gp {
         }
 
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onClose();
         });
     }
@@ -391,7 +391,7 @@ namespace gp {
         m_PositionCallback = std::move(callback);
 
         glfwSetWindowPosCallback(m_Window, [](GLFWwindow *window, int xPos, int yPos) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMove(xPos, yPos);
             return;
         });
@@ -409,7 +409,7 @@ namespace gp {
         }
 
         glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow *window, int iconified) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMinimize(iconified == GLFW_TRUE);
         });
     }
@@ -427,7 +427,7 @@ namespace gp {
 
         // TODO fix issue with maximize callback not working. Tested on M1 MacOS Monterey 12.4, 3.3.8 Cocoa NSGL EGL OSMesa dynamic, OpenGL 4.1
         glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *window, int maximized) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMaximize(maximized == GLFW_TRUE);
         });
     }
@@ -444,7 +444,7 @@ namespace gp {
         }
 
         glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *window, int focused) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onFocus(focused == GLFW_TRUE);
         });
     }
@@ -461,7 +461,7 @@ namespace gp {
         }
 
         glfwSetWindowRefreshCallback(m_Window, [](GLFWwindow *window) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onRefreshRequired();
         });
     }
@@ -478,7 +478,7 @@ namespace gp {
         }
 
         glfwSetWindowContentScaleCallback(m_Window, [](GLFWwindow *window, float xScale, float yScale) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onContentScale(xScale, yScale);
         });
     }
@@ -495,7 +495,7 @@ namespace gp {
         }
 
         glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onFramebufferSize(width, height);
         });
     }
@@ -512,7 +512,7 @@ namespace gp {
         }
 
         glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xPos, double yPos) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMouseMotion((float) xPos, (float) yPos);
         });
     }
@@ -529,7 +529,7 @@ namespace gp {
         }
 
         glfwSetCursorEnterCallback(m_Window, [](GLFWwindow *window, int entered) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMouseEnter((bool) entered);
         });
     }
@@ -546,7 +546,7 @@ namespace gp {
         }
 
         glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xScroll, double yScroll) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onScroll((float) xScroll, (float) yScroll);
         });
     }
@@ -555,7 +555,7 @@ namespace gp {
         GP_CORE_DEBUG("gp::Window::_setKeyCallback() - '{0}'", m_Title);
 
         glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onKeyPress(key, scancode, action, mods);
         });
     }
@@ -564,7 +564,7 @@ namespace gp {
         GP_CORE_DEBUG("gp::Window::_setMouseButtonCallback() - '{0}'", m_Title);
 
         glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button, int action, int mods) {
-            Window *windowObject = (Window *) glfwGetWindowUserPointer(window);
+            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->onMousePress(button, action, mods);
         });
     }

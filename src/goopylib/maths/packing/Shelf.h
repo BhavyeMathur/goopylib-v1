@@ -135,7 +135,7 @@ namespace gp::packing::shelf {
         std::vector<Ref<ShelvedBin>> m_Bins;
     };
 
-    class NextFit : public ShelfPackingAlgorithm {
+    class NextFit final : public ShelfPackingAlgorithm {
 
     public:
         NextFit(float binWidth, float binHeight);
@@ -146,7 +146,7 @@ namespace gp::packing::shelf {
         Ref<Shelf> m_Shelf;
     };
 
-    class FirstFit : public ShelfPackingAlgorithm {
+    class FirstFit final : public ShelfPackingAlgorithm {
 
     public:
         FirstFit(float binWidth, float binHeight);
@@ -165,37 +165,37 @@ namespace gp::packing::shelf {
         ScoringFunction m_ScoringFunction;
     };
 
-    class BestWidthFit : public ScoredFit {
+    class BestWidthFit final : public ScoredFit {
 
     public:
         BestWidthFit(float binWidth, float binHeight);
     };
 
-    class WorstWidthFit : public ScoredFit {
+    class WorstWidthFit final : public ScoredFit {
 
     public:
         WorstWidthFit(float binWidth, float binHeight);
     };
 
-    class BestHeightFit : public ScoredFit {
+    class BestHeightFit final : public ScoredFit {
 
     public:
         BestHeightFit(float binWidth, float binHeight);
     };
 
-    class WorstHeightFit : public ScoredFit {
+    class WorstHeightFit final : public ScoredFit {
 
     public:
         WorstHeightFit(float binWidth, float binHeight);
     };
 
-    class BestAreaFit : public ScoredFit {
+    class BestAreaFit final : public ScoredFit {
 
     public:
         BestAreaFit(float binWidth, float binHeight);
     };
 
-    class WorstAreaFit : public ScoredFit {
+    class WorstAreaFit final : public ScoredFit {
 
     public:
         WorstAreaFit(float binWidth, float binHeight);

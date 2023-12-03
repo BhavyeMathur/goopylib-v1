@@ -160,11 +160,11 @@ namespace gp {
     }
 
     uint32_t Renderer::drawLine(Line *object) {
-        uint32_t ID = m_NextLineID;
+        const uint32_t ID = m_NextLineID;
         m_NextLineID++;
         GP_CORE_DEBUG("Drawing Line {0}", ID);
 
-        uint32_t index = m_LineVertices.size();
+        const uint32_t index = m_LineVertices.size();
         m_LineToIndex.insert({ID, index});
 
         m_LineVertices.push_back({object->m_Points[0], object->m_V1});
@@ -184,7 +184,7 @@ namespace gp {
     }
 
     void Renderer::destroyLine(uint32_t ID) {
-        uint32_t index = m_LineToIndex[ID];
+        const uint32_t index = m_LineToIndex[ID];
 
         m_LineVertices.erase(std::next(m_LineVertices.begin(), index),
                              std::next(m_LineVertices.begin(), index + 2));
@@ -203,7 +203,7 @@ namespace gp {
     }
 
     void Renderer::updateLine(uint32_t ID, const Line *object) {
-        uint32_t index = m_LineToIndex[ID];
+        const uint32_t index = m_LineToIndex[ID];
 
         m_LineVertices[index + 0] = {object->m_Points[0], object->m_V1};
         m_LineVertices[index + 1] = {object->m_Points[1], object->m_V2};
@@ -217,11 +217,11 @@ namespace gp {
     }
 
     uint32_t Renderer::drawTriangle(Triangle *object) {
-        uint32_t ID = m_NextTriangleID;
+        const uint32_t ID = m_NextTriangleID;
         m_NextTriangleID++;
         GP_CORE_DEBUG("Drawing Triangle {0}", ID);
 
-        uint32_t index = m_TriangleVertices.size();
+        const uint32_t index = m_TriangleVertices.size();
         m_TriangleToIndex.insert({ID, index});
 
         m_TriangleVertices.push_back({object->m_Points[0], object->m_V1});
@@ -243,7 +243,7 @@ namespace gp {
     }
 
     void Renderer::destroyTriangle(uint32_t ID) {
-        uint32_t index = m_TriangleToIndex[ID];
+        const uint32_t index = m_TriangleToIndex[ID];
 
         m_TriangleVertices.erase(std::next(m_TriangleVertices.begin(), index),
                                  std::next(m_TriangleVertices.begin(), index + 3));
@@ -262,7 +262,7 @@ namespace gp {
     }
 
     void Renderer::updateTriangle(uint32_t ID, const Triangle *object) {
-        uint32_t index = m_TriangleToIndex[ID];
+        const uint32_t index = m_TriangleToIndex[ID];
 
         m_TriangleVertices[index + 0] = {object->m_Points[0], object->m_V1};
         m_TriangleVertices[index + 1] = {object->m_Points[1], object->m_V2};
@@ -278,11 +278,11 @@ namespace gp {
     }
 
     uint32_t Renderer::drawQuad(Quad *object) {
-        uint32_t ID = m_NextQuadID;
+        const uint32_t ID = m_NextQuadID;
         m_NextQuadID++;
         GP_CORE_DEBUG("Drawing Quad {0}", ID);
 
-        uint32_t index = m_QuadVertices.size();
+        const uint32_t index = m_QuadVertices.size();
         m_QuadToIndex.insert({ID, index});
 
         m_QuadVertices.push_back({object->m_Points[0], object->m_V1});
@@ -306,7 +306,7 @@ namespace gp {
     }
 
     void Renderer::destroyQuad(uint32_t ID) {
-        uint32_t index = m_QuadToIndex[ID];
+        const uint32_t index = m_QuadToIndex[ID];
 
         m_QuadVertices.erase(std::next(m_QuadVertices.begin(), index),
                              std::next(m_QuadVertices.begin(), index + 4));
@@ -325,7 +325,7 @@ namespace gp {
     }
 
     void Renderer::updateQuad(uint32_t ID, const Quad *object) {
-        uint32_t index = m_QuadToIndex[ID];
+        const uint32_t index = m_QuadToIndex[ID];
 
         m_QuadVertices[index + 0] = {object->m_Points[0], object->m_V1};
         m_QuadVertices[index + 1] = {object->m_Points[1], object->m_V2};
@@ -343,11 +343,11 @@ namespace gp {
     }
 
     uint32_t Renderer::drawEllipse(Ellipse *object) {
-        uint32_t ID = m_NextEllipseID;
+        const uint32_t ID = m_NextEllipseID;
         m_NextEllipseID++;
         GP_CORE_DEBUG("Drawing Ellipse {0}", ID);
 
-        uint32_t index = m_EllipseVertices.size();
+        const uint32_t index = m_EllipseVertices.size();
         m_EllipseToIndex.insert({ID, index});
 
         m_EllipseVertices.push_back({object->m_Points[0], object->m_V1});
@@ -371,7 +371,7 @@ namespace gp {
     }
 
     void Renderer::destroyEllipse(uint32_t ID) {
-        uint32_t index = m_EllipseToIndex[ID];
+        const uint32_t index = m_EllipseToIndex[ID];
 
         m_EllipseVertices.erase(std::next(m_EllipseVertices.begin(), index),
                                 std::next(m_EllipseVertices.begin(), index + 4));
@@ -390,7 +390,7 @@ namespace gp {
     }
 
     void Renderer::updateEllipse(uint32_t ID, const Ellipse *object) {
-        uint32_t index = m_EllipseToIndex[ID];
+        const uint32_t index = m_EllipseToIndex[ID];
 
         m_EllipseVertices[index + 0] = {object->m_Points[0], object->m_V1};
         m_EllipseVertices[index + 1] = {object->m_Points[1], object->m_V2};
@@ -408,7 +408,7 @@ namespace gp {
     }
 
     uint32_t Renderer::drawTexturedQuad(TexturedQuad *object) {
-        uint32_t ID = m_NextTexturedQuadID;
+        const uint32_t ID = m_NextTexturedQuadID;
         m_NextTexturedQuadID++;
         GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
@@ -437,9 +437,9 @@ namespace gp {
         object->m_T3.texSlot = texSlot;
         object->m_T4.texSlot = texSlot;
 
-        uint32_t batch = texIndex / Texture2D::getTextureSlots();
+        const uint32_t batch = texIndex / Texture2D::getTextureSlots();
 
-        uint32_t index = m_TexturedQuadVertices[batch].size();
+        const uint32_t index = m_TexturedQuadVertices[batch].size();
         m_TexturedQuadToBatch.insert({ID, batch});
         m_TexturedQuadToIndex[batch].insert({ID, index});
 
@@ -464,9 +464,9 @@ namespace gp {
     }
 
     void Renderer::destroyTexturedQuad(uint32_t ID) {
-        uint32_t batch = m_TexturedQuadToBatch[ID];
+        const uint32_t batch = m_TexturedQuadToBatch[ID];
         auto &imageIDs = m_TexturedQuadToIndex[batch];
-        uint32_t index = imageIDs[ID];
+        const uint32_t index = imageIDs[ID];
 
         m_TexturedQuadVertices[batch].erase(std::next(m_TexturedQuadVertices[batch].begin(), index),
                                             std::next(m_TexturedQuadVertices[batch].begin(), index + 4));
@@ -486,8 +486,8 @@ namespace gp {
     }
 
     void Renderer::updateTexturedQuad(uint32_t ID, const TexturedQuad *object) {
-        uint32_t batch = m_TexturedQuadToBatch[ID];
-        uint32_t index = m_TexturedQuadToIndex[batch][ID];
+        const uint32_t batch = m_TexturedQuadToBatch[ID];
+        const uint32_t index = m_TexturedQuadToIndex[batch][ID];
 
         m_TexturedQuadVertices[batch][index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
         m_TexturedQuadVertices[batch][index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
@@ -539,14 +539,13 @@ namespace gp {
 
 
         uint32_t textureSlotOffset = 0;
-        for (uint32_t i = 0; i < m_TexturedQuadBatches.size(); i++) {
+        for (auto &batch: m_TexturedQuadBatches) {
             _bindTextureBatch(textureSlotOffset);
             textureSlotOffset += Texture2D::getTextureSlots();
 
-            if (m_TexturedQuadBatches[i].indices) {
+            if (batch.indices) {
                 m_TextureShader->bind();
 
-                auto& batch = m_TexturedQuadBatches[i];
                 _updateRenderingObjectEBO(batch);
                 _updateRenderingObjectVBO(batch);
 
@@ -559,7 +558,7 @@ namespace gp {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
         auto texture = Ref<Texture2D>(new Texture2D(bitmap));
-        uint32_t texIndex = m_Textures.size();
+        const uint32_t texIndex = m_Textures.size();
 
         m_TexturesCache.insert({name, {texture, texIndex}});
         m_Textures.push_back(texture);
@@ -568,7 +567,7 @@ namespace gp {
     }
 
     void Renderer::_bindTextureBatch(uint32_t offset) {
-        uint32_t textures = min(offset + Texture2D::getTextureSlots(), (uint32_t) m_Textures.size());
+        const uint32_t textures = min(offset + Texture2D::getTextureSlots(), (uint32_t) m_Textures.size());
 
         for (uint32_t i = offset; i < textures; i++) {
             m_Textures[i]->bind(i % Texture2D::getTextureSlots());
@@ -593,8 +592,8 @@ namespace gp {
             auto *indices = new uint32_t[object.indices];
 
             for (uint32_t i = 0; i < object.vertices / 4; i++) {
-                uint32_t indicesIndex = i * 6;
-                uint32_t vertexIndex = i * 4;
+                const uint32_t indicesIndex = i * 6;
+                const uint32_t vertexIndex = i * 4;
 
                 indices[indicesIndex + 0] = vertexIndex + 0;
                 indices[indicesIndex + 1] = vertexIndex + 1;

@@ -32,7 +32,7 @@ namespace gp {
     void Line::init() {
 
         GLfloat lineWidthRange[2] = {0.0f, 0.0f};
-        glGetFloatv(GL_LINE_WIDTH_RANGE, lineWidthRange);
+        glGetFloatv(GL_LINE_WIDTH_RANGE, (GLfloat *) lineWidthRange);
 
         s_MinWidth = lineWidthRange[0];
         s_MaxWidth = lineWidthRange[1];

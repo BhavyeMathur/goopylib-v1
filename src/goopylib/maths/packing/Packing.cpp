@@ -28,7 +28,7 @@ namespace gp::packing {
     }
 
     void Item::rotate() {
-        float tmp = m_Width;
+        const float tmp = m_Width;
         m_Width = m_Height;
         m_Height = tmp;
 

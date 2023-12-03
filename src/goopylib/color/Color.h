@@ -48,7 +48,7 @@ namespace gp {
          */
         GPAPI Color(const char *hexstring, float alpha = 1);
 
-        GPAPI ~Color();
+        GPAPI virtual ~Color();
 
         /**
          * @return a string representation of the color

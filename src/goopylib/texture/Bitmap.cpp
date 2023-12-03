@@ -30,10 +30,9 @@ namespace gp {
     }
 
     Bitmap::Bitmap(const char *filepath)
-            : m_IsImage(true) {
+            : m_IsImage(true),
+            m_Data(stbi_load(filepath, (int32_t *) &m_Width, (int32_t *) &m_Height, (int32_t *) &m_Channels, 0)) {
         GP_CORE_INFO("gp::Bitmap::Bitmap({0})", filepath);
-
-        m_Data = stbi_load(filepath, (int32_t *) &m_Width, (int32_t *) &m_Height, (int32_t *) &m_Channels, 0);
 
         #if GP_ERROR_CHECKING
         if (m_Width == 0 and m_Height == 0 and m_Channels == 0) {

@@ -80,7 +80,7 @@ namespace gp {
                 height += (int32_t) shelf->getHeight();
             }
 
-            Ref<Texture2D> texture = Ref<Texture2D>(new Texture2D(width, height, 1));
+            const Ref<Texture2D> texture = Ref<Texture2D>(new Texture2D(width, height, 1));
 
             for (const auto &item: bin->items()) {
                 texture->setData((uint32_t) item->getX(),

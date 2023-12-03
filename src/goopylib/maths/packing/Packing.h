@@ -83,6 +83,8 @@ namespace gp::packing {
         friend class shelf::Shelf;
 
     public:
+        GPAPI Bin (const Bin&) = delete;
+
         GPAPI virtual float packingRatio() const;
 
         GPAPI std::vector<Ref<Item>> items() const;
@@ -102,8 +104,6 @@ namespace gp::packing {
         static uint32_t s_Bins;
 
         Bin(float width, float height);
-
-        GPAPI Bin (const Bin&) = delete;
 
         void add(const Ref<Item>& item);
     };
@@ -132,10 +132,11 @@ namespace gp::packing {
 namespace gp::packing {
     class PackingAlgorithm {
 
+    public:
+        GPAPI PackingAlgorithm (const PackingAlgorithm&) = delete;
+
     protected:
         PackingAlgorithm(float binWidth, float binHeight);
-
-        GPAPI PackingAlgorithm (const PackingAlgorithm&) = delete;
 
         const float m_BinWidth;
         const float m_BinHeight;
