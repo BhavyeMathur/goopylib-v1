@@ -12,6 +12,9 @@ on:
       - goopylib/**
       # - src/**
       - binaries/**
+      - pyproject.toml
+      - setup.py
+      - tools/setup_extensions.py
 
   pull_request:
     branches: [ "master" ]
@@ -19,6 +22,9 @@ on:
       - goopylib/**
       # - src/**
       - binaries/**
+      - pyproject.toml
+      - setup.py
+      - tools/setup_extensions.py
 
 jobs:
   build_wheels:
