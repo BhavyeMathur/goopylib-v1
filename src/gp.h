@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <functional>
 
 #define GP_BUILD_DLL
 
