@@ -443,7 +443,7 @@ namespace gp {
     }
 
     // Key Press
-    void Window::onKeyPress(int key, __attribute__((unused)) int scancode, int action, int mods) {
+    void Window::onKeyPress(int key, [[maybe_unused]] int scancode, int action, int mods) {
         GP_CORE_TRACE_ALL("gp::Window::onKeyPress({1}, {2}, {3}, {4}) - '{0}'", m_Title, key, scancode, action, mods);
 
         m_KeyModifiers = mods;
