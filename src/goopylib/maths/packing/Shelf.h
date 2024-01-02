@@ -115,19 +115,19 @@ namespace gp::packing::shelf {
     class ShelfPackingAlgorithm : public PackingAlgorithm {
 
     public:
-        virtual void pack(const Ref<Item>& item, bool allowRotation = true);
+        GPAPI virtual void pack(const Ref<Item>& item, bool allowRotation = true);
 
-        void packAll(std::vector<Ref<Item>> items,
+        GPAPI void packAll(std::vector<Ref<Item>> items,
                      bool allowRotation = true,
                      const SortingFunction &sortingFunction = sortByShortSide(true));
 
-        void packOriented(const Ref<Item>& item, bool orientVertically = true);
+        GPAPI void packOriented(const Ref<Item>& item, bool orientVertically = true);
 
-        void packAllOriented(std::vector<Ref<Item>> items,
+        GPAPI void packAllOriented(std::vector<Ref<Item>> items,
                              bool orientVertically = true,
                              const SortingFunction &sortingFunction = sortByLongSide(true));
 
-        std::vector<Ref<ShelvedBin>> bins() const;
+        GPAPI std::vector<Ref<ShelvedBin>> bins() const;
 
     protected:
         ShelfPackingAlgorithm(float binWidth, float binHeight);
@@ -138,9 +138,9 @@ namespace gp::packing::shelf {
     class NextFit final : public ShelfPackingAlgorithm {
 
     public:
-        NextFit(float binWidth, float binHeight);
+        GPAPI NextFit(float binWidth, float binHeight);
 
-        void pack(const Ref<Item> &item, bool allowRotation) override;
+        GPAPI void pack(const Ref<Item> &item, bool allowRotation) override;
 
     private:
         Ref<Shelf> m_Shelf;
@@ -149,17 +149,17 @@ namespace gp::packing::shelf {
     class FirstFit final : public ShelfPackingAlgorithm {
 
     public:
-        FirstFit(float binWidth, float binHeight);
+        GPAPI FirstFit(float binWidth, float binHeight);
 
-        void pack(const Ref<Item> &item, bool allowRotation) override;
+        GPAPI void pack(const Ref<Item> &item, bool allowRotation) override;
     };
 
     class ScoredFit : public ShelfPackingAlgorithm {
 
     public:
-        ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction);
+        GPAPI ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction);
 
-        void pack(const Ref<Item> &item, bool allowRotation) override;
+        GPAPI void pack(const Ref<Item> &item, bool allowRotation) override;
 
     private:
         ScoringFunction m_ScoringFunction;
@@ -168,36 +168,36 @@ namespace gp::packing::shelf {
     class BestWidthFit final : public ScoredFit {
 
     public:
-        BestWidthFit(float binWidth, float binHeight);
+        GPAPI BestWidthFit(float binWidth, float binHeight);
     };
 
     class WorstWidthFit final : public ScoredFit {
 
     public:
-        WorstWidthFit(float binWidth, float binHeight);
+        GPAPI WorstWidthFit(float binWidth, float binHeight);
     };
 
     class BestHeightFit final : public ScoredFit {
 
     public:
-        BestHeightFit(float binWidth, float binHeight);
+        GPAPI BestHeightFit(float binWidth, float binHeight);
     };
 
     class WorstHeightFit final : public ScoredFit {
 
     public:
-        WorstHeightFit(float binWidth, float binHeight);
+        GPAPI WorstHeightFit(float binWidth, float binHeight);
     };
 
     class BestAreaFit final : public ScoredFit {
 
     public:
-        BestAreaFit(float binWidth, float binHeight);
+        GPAPI BestAreaFit(float binWidth, float binHeight);
     };
 
     class WorstAreaFit final : public ScoredFit {
 
     public:
-        WorstAreaFit(float binWidth, float binHeight);
+        GPAPI WorstAreaFit(float binWidth, float binHeight);
     };
 }

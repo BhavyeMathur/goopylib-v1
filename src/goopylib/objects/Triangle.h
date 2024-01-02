@@ -96,12 +96,12 @@ namespace gp {
     private:
         SolidVertexAttrib m_V1, m_V2, m_V3;
 
-        uint32_t _draw(Window &window) override;
+        GPAPI uint32_t _draw(Window &window) override;
 
-        void _destroy() const override;
+        GPAPI void _destroy() const override;
 
-        void _update() override;
+        GPAPI void _update() override;
 
-        [[nodiscard]] bool _contains(float x, float y) const override;
+        [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
     };
 }

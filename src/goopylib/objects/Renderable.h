@@ -304,17 +304,17 @@ namespace gp {
         bool m_Hidden = false;
 
     private:
-        void _calculateAttributes();
+        GPAPI void _calculateAttributes();
 
-        [[nodiscard]] virtual bool _contains(float x, float y) const;
+        [[nodiscard]] GPAPI virtual bool _contains(float x, float y) const;
 
-        virtual uint32_t _draw(Window &window) = 0;
+        GPAPI virtual uint32_t _draw(Window &window) = 0;
 
-        virtual void _destroy() const = 0;
+        GPAPI virtual void _destroy() const = 0;
 
-        virtual void _update() = 0;
+        GPAPI virtual void _update() = 0;
 
-        virtual void _onScale(float xfactor, float yfactor) {
+        GPAPI virtual void _onScale(float xfactor, float yfactor) {
         };
     };
 }
