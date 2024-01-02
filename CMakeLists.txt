@@ -30,6 +30,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 include_directories(${CMAKE_SOURCE_DIR}/vendor)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/glad)
 include_directories(${CMAKE_SOURCE_DIR}/vendor/glm)
 include_directories(${CMAKE_SOURCE_DIR}/vendor/spdlog/include)
 include_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/include)
