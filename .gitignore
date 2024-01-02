@@ -31,8 +31,6 @@ venv*/
 .vs/
 .idea/
 
-vendor/
-
 wheelhouse/
 main.py
 /main.cpp

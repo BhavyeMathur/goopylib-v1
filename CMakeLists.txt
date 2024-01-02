@@ -28,76 +28,11 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/src)
+
 include_directories(${CMAKE_SOURCE_DIR}/vendor)
-include_directories(${CMAKE_SOURCE_DIR}/vendor/freetype)
-
-link_directories(${CMAKE_SOURCE_DIR})
-link_directories(${CMAKE_SOURCE_DIR}/vendor/freetype)
-link_directories(${CMAKE_SOURCE_DIR}/vendor/harfbuzz)
-
-if (WIN32)
-    set(WINDOWS_SOURCES vendor/glad/glad.c)
-
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        if (MSVC_TOOLSET_VERSION EQUAL 110)
-            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2012)
-
-            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
-            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
-            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2012)
-
-        elseif (MSVC_TOOLSET_VERSION EQUAL 120)
-            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2013)
-
-            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
-            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
-            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2013)
-
-        elseif (MSVC_TOOLSET_VERSION EQUAL 140)
-            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2015)
-
-            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
-            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
-            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2015)
-
-        elseif (MSVC_TOOLSET_VERSION EQUAL 141)
-            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2017)
-
-            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
-            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
-            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2017)
-
-        elseif (MSVC_TOOLSET_VERSION EQUAL 142)
-            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2019)
-
-            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
-            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
-            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2019)
-
-        elseif (MSVC_TOOLSET_VERSION EQUAL 143)
-            link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-vc2022)
-
-            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
-            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
-            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022)
-
-        endif ()
-    else ()
-        link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/win64/lib-mingw-w64)
-
-        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-mingw-64)
-        set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-mingw-64)
-        set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-mingw-64)
-
-    endif ()
-
-elseif (APPLE)
-    link_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/macos)
-
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-macos)
-endif ()
+include_directories(${CMAKE_SOURCE_DIR}/vendor/glm)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/spdlog/include)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/include)
 
 add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/Core.cpp
@@ -148,16 +83,47 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             vendor/stb/stb_image.cpp
             vendor/stb/stb_image_write.cpp)
 
-target_link_libraries(goopylib glfw3)
-target_link_libraries(goopylib harfbuzz)
-target_link_libraries(goopylib freetype)
+if (WIN32)
+    set(WINDOWS_SOURCES vendor/glad/glad.c)
 
-if (APPLE)
-    target_link_libraries(goopylib "-framework OpenGL")
-    target_link_libraries(goopylib "-framework Cocoa")
-    target_link_libraries(goopylib "-framework IOKit")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        if (MSVC_TOOLSET_VERSION EQUAL 110)
+            set(GOOPYLIB_PLATFORM_NAME vc2012)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 120)
+            set(GOOPYLIB_PLATFORM_NAME vc2013)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 140)
+            set(GOOPYLIB_PLATFORM_NAME vc2015)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 141)
+            set(GOOPYLIB_PLATFORM_NAME vc2017)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 142)
+            set(GOOPYLIB_PLATFORM_NAME vc2019)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 143)
+            set(GOOPYLIB_PLATFORM_NAME vc2022)
+        endif ()
+    else ()
+        set(GOOPYLIB_PLATFORM_NAME mingw-64)
+    endif ()
+elseif (APPLE)
+    set(GOOPYLIB_PLATFORM_NAME macos)
+
+    target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
+    target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
+    target_link_libraries(${PROJECT_NAME} "-framework IOKit")
 endif ()
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
+
+set(GLFW_DIR vendor/GLFW)
+set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
+set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
+set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
+set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
+add_subdirectory(${GLFW_DIR})
+target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
+target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
 
 add_executable(main main.cpp)
 target_link_libraries(main goopylib)
