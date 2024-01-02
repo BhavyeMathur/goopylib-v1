@@ -95,7 +95,7 @@ namespace gp::packing {
         Bin::s_Bins++;
     }
 
-    void Bin::add(const Ref<Item>& item) {
+    void Bin::add(const Ref<Item> &item) {
         m_Items.push_back(item);
     }
 
@@ -122,117 +122,120 @@ namespace gp::packing {
     }
 }
 
+#define RETURN_SORTING_FUNC return [compare](std::vector<Ref<Item>> items) {std::sort(items.begin(), items.end(), compare); return items;}
+
 // Sorting Algorithms
 namespace gp::packing {
     SortingFunction sortByWidth(bool descending) {
-        auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return item1->getWidth() > item2->getWidth();
-                       } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return item1->getWidth() < item2->getWidth();
-                       };
 
-        return [compare](std::vector<Ref<Item>> items) {
-            std::sort(items.begin(), items.end(), compare);
-            return items;
-        };
+        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
+
+        if (descending)
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return item1->getWidth() > item2->getWidth();
+            };
+        else
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return item1->getWidth() < item2->getWidth();
+            };
+
+        RETURN_SORTING_FUNC;
     }
 
     SortingFunction sortByHeight(bool descending) {
-        auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return item1->getHeight() > item2->getHeight();
-                       } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return item1->getHeight() < item2->getHeight();
-                       };
+        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
 
-        return [compare](std::vector<Ref<Item>> items) {
-            std::sort(items.begin(), items.end(), compare);
-            return items;
-        };
+        if (descending)
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return item1->getHeight() > item2->getHeight();
+            };
+        else
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return item1->getHeight() < item2->getHeight();
+            };
+
+        RETURN_SORTING_FUNC;
     }
 
     SortingFunction sortByPerimeter(bool descending) {
-        auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return (item1->getWidth() + item1->getHeight()) >
-                                  (item2->getWidth() + item2->getHeight());
-                       } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return (item1->getWidth() + item1->getHeight()) <
-                                  (item2->getWidth() + item2->getHeight());
-                       };
+        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
 
-        return [compare](std::vector<Ref<Item>> items) {
-            std::sort(items.begin(), items.end(), compare);
-            return items;
-        };
+        if (descending)
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return (item1->getWidth() + item1->getHeight()) >
+                       (item2->getWidth() + item2->getHeight());
+            };
+        else
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return (item1->getWidth() + item1->getHeight()) <
+                       (item2->getWidth() + item2->getHeight());
+            };
+
+        RETURN_SORTING_FUNC;
     }
 
     SortingFunction sortByArea(bool descending) {
-        auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return (item1->getWidth() * item1->getHeight()) >
-                                  (item2->getWidth() * item2->getHeight());
-                       } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return (item1->getWidth() * item1->getHeight()) <
-                                  (item2->getWidth() * item2->getHeight());
-                       };
+        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
 
-        return [compare](std::vector<Ref<Item>> items) {
-            std::sort(items.begin(), items.end(), compare);
-            return items;
-        };
+        if (descending)
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return (item1->getWidth() * item1->getHeight()) >
+                       (item2->getWidth() * item2->getHeight());
+            };
+        else
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return (item1->getWidth() * item1->getHeight()) <
+                       (item2->getWidth() * item2->getHeight());
+            };
+
+        RETURN_SORTING_FUNC;
     }
 
     SortingFunction sortBySideRatio(bool descending) {
-        auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return (item1->getWidth() / item1->getHeight()) >
-                                  (item2->getWidth() / item2->getHeight());
-                       } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return (item1->getWidth() / item1->getHeight()) <
-                                  (item2->getWidth() / item2->getHeight());
-                       };
+        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
 
-        return [compare](std::vector<Ref<Item>> items) {
-            std::sort(items.begin(), items.end(), compare);
-            return items;
-        };
+        if (descending)
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return (item1->getWidth() / item1->getHeight()) >
+                       (item2->getWidth() / item2->getHeight());
+            };
+        else
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return (item1->getWidth() / item1->getHeight()) <
+                       (item2->getWidth() / item2->getHeight());
+            };
+
+        RETURN_SORTING_FUNC;
     }
 
     SortingFunction sortByLongSide(bool descending) {
-        auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return item1->getLongSide() > item2->getLongSide();
-                       } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return item1->getLongSide() < item2->getLongSide();
-                       };
+        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
 
-        return [compare](std::vector<Ref<Item>> items) {
-            std::sort(items.begin(), items.end(), compare);
-            return items;
-        };
+        if (descending)
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return item1->getLongSide() > item2->getLongSide();
+            };
+        else
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return item1->getLongSide() < item2->getLongSide();
+            };
+
+        RETURN_SORTING_FUNC;
     }
 
     SortingFunction sortByShortSide(bool descending) {
-        auto compare = descending ?
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return item1->getShortSide() > item2->getShortSide();
-                       } :
-                       [](const Ref<Item>&item1, const Ref<Item>&item2) {
-                           return item1->getShortSide() < item2->getShortSide();
-                       };
+        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
 
-        return [compare](std::vector<Ref<Item>> items) {
-            std::sort(items.begin(), items.end(), compare);
-            return items;
-        };
+        if (descending)
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return item1->getShortSide() > item2->getShortSide();
+            };
+        else
+            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+                return item1->getShortSide() < item2->getShortSide();
+            };
+
+        RETURN_SORTING_FUNC;
     }
 }
 
