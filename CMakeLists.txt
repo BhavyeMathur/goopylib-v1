@@ -11,10 +11,11 @@ if (APPLE)
 
     set(CMAKE_CXX_FLAGS_DEBUG -g)
     set(CMAKE_CXX_FLAGS_RELEASE -O3)
-    set(CMAKE_CXX_FLAGS -Wno-c++17-extensions)
+    set(CMAKE_CXX_FLAGS "-Wall")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_DEBUG /Od)
     set(CMAKE_CXX_FLAGS_RELEASE /O2)
+    set(CMAKE_CXX_FLAGS "-Wall -Wno-unknown-pragmas")
 endif ()
 
 set(CMAKE_CXX_STANDARD 17)

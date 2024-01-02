@@ -3,6 +3,8 @@
 #include "gp.h"
 #include "src/goopylib/maths/gpmath.h"
 
+#include <algorithm>
+
 namespace gp::packing::shelf {
     class Shelf;
 
