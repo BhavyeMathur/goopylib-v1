@@ -11,11 +11,10 @@ if (APPLE)
 
     set(CMAKE_CXX_FLAGS_DEBUG -g)
     set(CMAKE_CXX_FLAGS_RELEASE -O3)
-    set(CMAKE_CXX_FLAGS "-Wall")
+    set(CMAKE_CXX_FLAGS "-Wall -Wno-unknown-pragmas")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_DEBUG /Od)
     set(CMAKE_CXX_FLAGS_RELEASE /O2)
-    set(CMAKE_CXX_FLAGS "-Wall -Wno-unknown-pragmas")
 endif ()
 
 set(CMAKE_CXX_STANDARD 17)
@@ -25,6 +24,10 @@ find_package(OpenGL REQUIRED)
 # needed to silence errors in IDE
 find_package(PythonInterp REQUIRED)
 find_package(PythonLibs REQUIRED)
+if(POLICY CMP0148)
+    cmake_policy(SET CMP0148 OLD)
+endif()
+
 include_directories(${PYTHON_INCLUDE_DIRS})
 
 include_directories(${CMAKE_SOURCE_DIR})
@@ -89,6 +92,8 @@ if (WIN32)
     set(WINDOWS_SOURCES vendor/glad/glad.c)
 
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set(CMAKE_CXX_FLAGS "-wd4068")
+
         if (MSVC_TOOLSET_VERSION EQUAL 110)
             set(GOOPYLIB_PLATFORM_NAME vc2012)
         elseif (MSVC_TOOLSET_VERSION EQUAL 120)
