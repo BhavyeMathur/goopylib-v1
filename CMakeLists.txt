@@ -39,6 +39,32 @@ include_directories(${CMAKE_SOURCE_DIR}/vendor/glm)
 include_directories(${CMAKE_SOURCE_DIR}/vendor/spdlog/include)
 include_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/include)
 
+if (WIN32)
+    set(WINDOWS_SOURCES vendor/glad/glad.c)
+
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set(CMAKE_CXX_FLAGS "-wd4068")
+
+        if (MSVC_TOOLSET_VERSION EQUAL 110)
+            set(GOOPYLIB_PLATFORM_NAME vc2012)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 120)
+            set(GOOPYLIB_PLATFORM_NAME vc2013)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 140)
+            set(GOOPYLIB_PLATFORM_NAME vc2015)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 141)
+            set(GOOPYLIB_PLATFORM_NAME vc2017)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 142)
+            set(GOOPYLIB_PLATFORM_NAME vc2019)
+        elseif (MSVC_TOOLSET_VERSION EQUAL 143)
+            set(GOOPYLIB_PLATFORM_NAME vc2022)
+        endif ()
+    else ()
+        set(GOOPYLIB_PLATFORM_NAME mingw-64)
+    endif ()
+elseif (APPLE)
+    set(GOOPYLIB_PLATFORM_NAME macos)
+endif ()
+
 add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/Core.cpp
             src/goopylib/core/BufferLayout.cpp
@@ -88,35 +114,11 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             vendor/stb/stb_image.cpp
             vendor/stb/stb_image_write.cpp)
 
-if (WIN32)
-    set(WINDOWS_SOURCES vendor/glad/glad.c)
-
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set(CMAKE_CXX_FLAGS "-wd4068")
-
-        if (MSVC_TOOLSET_VERSION EQUAL 110)
-            set(GOOPYLIB_PLATFORM_NAME vc2012)
-        elseif (MSVC_TOOLSET_VERSION EQUAL 120)
-            set(GOOPYLIB_PLATFORM_NAME vc2013)
-        elseif (MSVC_TOOLSET_VERSION EQUAL 140)
-            set(GOOPYLIB_PLATFORM_NAME vc2015)
-        elseif (MSVC_TOOLSET_VERSION EQUAL 141)
-            set(GOOPYLIB_PLATFORM_NAME vc2017)
-        elseif (MSVC_TOOLSET_VERSION EQUAL 142)
-            set(GOOPYLIB_PLATFORM_NAME vc2019)
-        elseif (MSVC_TOOLSET_VERSION EQUAL 143)
-            set(GOOPYLIB_PLATFORM_NAME vc2022)
-        endif ()
-    else ()
-        set(GOOPYLIB_PLATFORM_NAME mingw-64)
-    endif ()
-elseif (APPLE)
-    set(GOOPYLIB_PLATFORM_NAME macos)
-
+if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
     target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
     target_link_libraries(${PROJECT_NAME} "-framework IOKit")
-endif ()
+endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
