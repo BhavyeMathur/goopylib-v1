@@ -78,7 +78,7 @@ namespace renderable {
         }
         #endif
 
-        self->renderable->draw(((WindowObject *) arg)->window.get());
+        self->renderable->draw(*((WindowObject *) arg)->window);
         RETURN_PYOBJECT((PyObject *) self);
     }
 
