@@ -125,8 +125,10 @@ target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
 
-add_executable(main main.cpp)
-target_link_libraries(main goopylib)
+if(EXISTS main.cpp)
+    add_executable(main main.cpp)
+    target_link_libraries(main goopylib)
+endif()
 
 add_subdirectory(examples/BrickBreaker)
 add_subdirectory(examples/Minecraft)
