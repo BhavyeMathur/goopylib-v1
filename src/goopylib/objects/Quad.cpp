@@ -43,6 +43,7 @@ namespace gp {
 
 // Quad Methods
 namespace gp {
+    // TODO - get color methods
     void Quad::setColor(const Color &color) {
         setColor(color, color, color, color);
     }
@@ -83,6 +84,7 @@ namespace gp {
         update();
     }
 
+    // TODO - get transparency methods
     void Quad::setTransparency(float value) {
         setTransparency(value, value, value, value);
     }

@@ -60,7 +60,7 @@ namespace gp {
          */
         [[nodiscard]] GPAPI int getRed() const;
 
-        // TODO changing RGB values should update HSL/HSV/CMYK/Hex values
+        // TODO
 
         /**
          * @param value between 0-255
@@ -150,6 +150,8 @@ namespace gp {
         void fromRGB(const RGB &color, float alpha);
 
         void update();
+
+        virtual void _update() {};
 
     private:
         float m_Redf = 0;
@@ -308,6 +310,9 @@ namespace gp {
          */
         GPAPI void setKey(float value);
 
+    protected:
+        void _update() override;
+
     private:
         float m_Cyan;
         float m_Magenta;
@@ -385,6 +390,9 @@ namespace gp {
          */
         GPAPI void setValue(float value);
 
+    protected:
+        void _update() override;
+
     private:
         int m_Hue;
         float m_Saturation;
@@ -460,6 +468,9 @@ namespace gp {
          * @throws std::invalid_argument value must be in the range specified
          */
         GPAPI void setLuminance(float value);
+
+    protected:
+        void _update() override;
 
     private:
         int m_Hue;

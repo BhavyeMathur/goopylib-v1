@@ -133,7 +133,7 @@ target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
 
-if(EXISTS main.cpp)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${FILE_WORKING_ON})
     add_executable(main main.cpp)
     target_link_libraries(main goopylib)
 endif()

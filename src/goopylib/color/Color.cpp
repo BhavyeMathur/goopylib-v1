@@ -91,6 +91,8 @@ namespace gp {
         m_Redf = (float) m_Red / 255.0f;
         m_Greenf = (float) m_Green / 255.0f;
         m_Bluef = (float) m_Blue / 255.0f;
+
+        _update();
     }
 
     std::string Color::toString() const {
@@ -106,6 +108,7 @@ namespace gp {
 
         m_Red = value;
         m_Redf = (float) value / 255.0f;
+        _update();
     }
 
     int Color::getGreen() const {
@@ -117,6 +120,7 @@ namespace gp {
 
         m_Green = value;
         m_Greenf = (float) value / 255.0f;
+        _update();
     }
 
     int Color::getBlue() const {
@@ -128,6 +132,7 @@ namespace gp {
 
         m_Blue = value;
         m_Bluef = (float) value / 255.0f;
+        _update();
     }
 
     float Color::getAlpha() const {
@@ -331,6 +336,15 @@ namespace gp {
         const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
         fromRGB(data, m_Alpha);
     }
+
+    void ColorCMYK::_update() {
+        auto cmyk = rgb::toCMYK(m_Red, m_Green, m_Blue);
+
+        m_Cyan = cmyk.cyan;
+        m_Magenta = cmyk.magenta;
+        m_Yellow = cmyk.yellow;
+        m_Key = cmyk.key;
+    }
 }
 
 // Color HSV Class
@@ -393,6 +407,14 @@ namespace gp {
         const RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
         fromRGB(data, m_Alpha);
     }
+
+    void ColorHSV::_update() {
+        auto hsv = rgb::toHSV(m_Red, m_Green, m_Blue);
+
+        m_Hue = hsv.hue;
+        m_Saturation = hsv.saturation;
+        m_Value = hsv.value;
+    }
 }
 
 // Color HSL Class
@@ -454,5 +476,13 @@ namespace gp {
         m_Luminance = value;
         const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
         fromRGB(data, m_Alpha);
+    }
+
+    void ColorHSL::_update() {
+        auto hsl = rgb::toHSL(m_Red, m_Green, m_Blue);
+
+        m_Hue = hsl.hue;
+        m_Saturation = hsl.saturation;
+        m_Luminance = hsl.luminance;
     }
 }

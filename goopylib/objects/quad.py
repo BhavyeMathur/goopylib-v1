@@ -44,6 +44,7 @@ class Quad(Renderable):
         """
         self._renderable: Quad = _quad.Quad(p1, p2, p3, p4)
 
+    # TODO - color should be a @property
     def set_color(self, *args) -> None:
         """
         Sets the fill color of the object
@@ -56,6 +57,7 @@ class Quad(Renderable):
         """
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
+    # TODO - Transparency should be a @property
     def set_transparency(self, *args: float) -> None:
         """
         Sets the transparency of the object
