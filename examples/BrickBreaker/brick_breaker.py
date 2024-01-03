@@ -68,7 +68,7 @@ class Controller(gp.Rectangle):
         self.velx = self.x - tmp
 
 
-def main():
+def setup_window():
     window = gp.Window(900, 600, "Brick Breaker using goopylib!")
     window.background = (25, 25, 25)
     window.resizable = True
@@ -76,68 +76,86 @@ def main():
     window.set_min_size(600, 400)
     window.set_aspect_ratio(900, 600)
 
-    camera = window.get_camera()
-
     gp.Image(f"{PATH}/vignette.png", (0, 0), 900, 600).draw(window).set_transparency(0.3, 0.3, 0.8, 0.8)
 
-    while window.is_open():
-        camera.rotation = 0
-        camera.zoom = 1
+    return window
 
+
+def main():
+    window = setup_window()
+    camera = window.get_camera()
+
+    controller = Controller()
+    ball = Ball()
+    bricks = []
+
+    lasthit = 0
+
+    def setup_game():
+        nonlocal controller, ball
         controller = Controller().draw(window)
         ball = Ball().draw(window)
-        transparency = 0
 
-        bricks = []
+        bricks.clear()
         for i in range(900 // Brick.width):
             for j in range(4):
                 bricks.append(Brick(i, j).draw(window))
 
+    def check_gameover():
+        return ball.y < -300 or len(bricks) == 0
+
+    def do_controller_collision():
+        if controller.contains(*ball.position):
+            ball.collide()
+            ball.velx = max(-12, min(12, ball.velx * 0.85 + controller.velx * 0.2))
+            ball.y += 12
+
+    def do_brick_collision():
+        nonlocal lasthit
+
+        for brick in bricks:
+            if brick.box_contains(*ball.position):
+                ball.collide()
+                brick.hit()
+                lasthit = time.time()
+
+                if brick.hits == 4:
+                    brick.destroy()
+                    bricks.remove(brick)
+                return
+
+    def shake_camera():
+        if time.time() - lasthit < 0.2:
+            camera.x = random.choice((-4, -3, -2, 2, 3, 4))
+        else:
+            camera.x = 0
+
+    def wait_for_left_press():
+        while window.is_open() and not window.check_left_click():
+            controller.update()
+            gp.update()
+
+        while window.is_open() and window.check_left_click():
+            controller.update()
+            gp.update()
+
+    def intro_animation():
+        camera.rotation = 0
+        camera.zoom = 1
+
+        transparency = 0
+
         while window.is_open() and not window.check_left_click():
             if transparency < 1:
                 transparency += 0.02
-                ball.set_transparency(min(1, transparency))
+                ball.set_transparency(transparency)
 
             controller.update()
             gp.update()
 
         ball.set_transparency(1)
 
-        dt = 0
-        lasthit = 0
-        while window.is_open():
-            start = time.time()
-
-            if ball.y < -300 or len(bricks) == 0:
-                break
-
-            if controller.contains(*ball.position):
-                ball.collide()
-                ball.velx = max(-12, min(12, ball.velx * 0.85 + controller.velx * 0.2))
-                ball.y += 12
-    
-            for brick in bricks:
-                if brick.box_contains(*ball.position):
-                    ball.collide()
-                    brick.hit()
-                    lasthit = time.time()
-
-                    if brick.hits == 4:
-                        brick.destroy()
-                        bricks.remove(brick)
-                    break
-
-            if time.time() - lasthit < 0.2:
-                camera.x = random.choice((-4, -3, -2, 2, 3, 4))
-            else:
-                camera.x = 0
-
-            controller.update()
-            ball.update(dt)
-            gp.update()
-
-            dt = time.time() - start
-
+    def gameover_animation():
         ball.destroy()
         start = time.time()
         ease = gp.ease_bounce_out()
@@ -152,14 +170,7 @@ def main():
             controller.update()
             gp.update()
 
-        while window.is_open() and not window.check_left_click():
-            controller.update()
-            gp.update()
-
-        while window.is_open() and window.check_left_click():
-            controller.update()
-            gp.update()
-
+    def reset_animation():
         while window.is_open() and camera.rotation > 0:
             camera.rotation -= 0.2
             camera.zoom = 1 - 0.005 * camera.rotation
@@ -168,9 +179,28 @@ def main():
             gp.update()
 
         controller.destroy()
-
         for brick in bricks:
             brick.destroy()
+
+    while window.is_open():
+        setup_game()
+        intro_animation()
+
+        while window.is_open() and not check_gameover():
+            start = time.time()
+            gp.update()
+
+            do_controller_collision()
+            do_brick_collision()
+            shake_camera()
+
+            controller.update()
+            ball.update(time.time() - start)
+
+        gameover_animation()
+        wait_for_left_press()
+
+        reset_animation()
 
 
 if __name__ == "__main__":

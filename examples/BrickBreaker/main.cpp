@@ -1,4 +1,5 @@
 #include "goopylib/goopylib.h"
+#include <iostream>
 
 
 class Brick : public gp::Rectangle {
@@ -81,138 +82,175 @@ public:
 };
 
 
-int main(int argc, char *argv[]) {
-    gp::init();
-
-    gp::Window window = {900, 600, "Brick Breaker using goopylib!"};
+void setupWindow(gp::Window& window, char *argv[]) {
     window.setBackground(gp::Color(25, 25, 25));
     window.setResizable(true);
 
     window.setMinSize(600, 400);
     window.setAspectRatio(900, 600);
 
-    auto &camera = window.getCamera();
-
     std::string argv_str(argv[0]);
     std::string base = argv_str.substr(0, argv_str.find_last_of('/'));
-
     std::string path = base + "/vignette.png";
 
     auto vignette = gp::Image(path.c_str(), {0, 0}, 900, 600);
     vignette.draw(window);
     vignette.setTransparency(0.3, 0.3, 0.8, 0.8);
+}
+
+
+void setupGame(gp::Window& window, Controller& controller, Ball& ball, std::vector <Brick>& bricks) {
+    controller = Controller();
+    controller.draw(window);
+
+    ball = Ball();
+    ball.draw(window);
+
+    bricks.clear();
+    for (int i = 0; i < 900 / Brick::s_Width; i++) {
+        for (int j = 0; j < 4; j++) {
+            bricks.emplace_back(i, j);
+            bricks.back().draw(window);
+        }
+    }
+}
+
+bool checkGameover(Ball& ball, std::vector <Brick>& bricks) {
+    return ball.getY() < -300 or bricks.size() == 0;
+}
+
+void doControllerCollision(Controller& controller, Ball& ball) {
+    if (controller.contains(ball.getPosition())) {
+        ball.collide();
+        ball.m_xVel = max(-12.0f, min(12.0f, ball.m_xVel * 0.85f + controller.m_xVel * 0.2f));
+        ball.move(0, 12);
+    }
+}
+
+void doBrickCollision(std::vector <Brick>& bricks, Ball& ball, float& lasthit) {
+    for (auto &brick: bricks) {
+        if (brick.isDrawn() and brick.contains(ball.getPosition())) {
+            ball.collide();
+            brick.hit();
+            lasthit = gp::getTime();
+            return;
+        }
+    }
+}
+
+bool shakeCamera(gp::Window& window, float lasthit) {
+    auto &camera = window.getCamera();
+
+    if (gp::getTime() - lasthit < 0.2) {
+        camera.setX(rand() % 8 - 4);
+    }
+    else {
+        camera.setX(0);
+    }
+}
+
+void waitForLeftPress(gp::Window& window, Controller& controller) {
+    while (window.isOpen() and !window.checkLeftClick()) {
+        controller.updateController();
+        gp::update();
+    }
+
+    while (window.isOpen() and window.checkLeftClick()) {
+        controller.updateController();
+        gp::update();
+    }
+}
+
+
+void introAnimation(gp::Window& window, Controller& controller, Ball& ball) {
+    auto &camera = window.getCamera();
+    camera.setRotation(0);
+    camera.setZoom(1);
+
+    float transparency = 0;
+
+    while (window.isOpen() and !window.checkLeftClick()) {
+        if (transparency < 0.99) {
+            transparency += 0.02;
+            ball.setTransparency(transparency);
+        }
+
+        controller.updateController();
+        gp::update();
+    }
+
+    ball.setTransparency(1);
+}
+
+void gameoverAnimation(gp::Window& window, Controller& controller, Ball& ball) {
+    auto &camera = window.getCamera();
+
+    ball.destroy();
+    auto start = gp::getTime();
+    auto ease = gp::easeBounceOut(4, 0.8);
+    float easet = 0.7;
+
+    controller.m_MaxX = 350;
+
+    while (window.isOpen() and gp::getTime() - start < easet) {
+        float val = ease(gp::getTime() - start);
+        camera.setRotation(4 * val);
+        camera.setZoom(1 - 0.02 * val);
+
+        controller.updateController();
+        gp::update();
+    }
+}
+
+void resetAnimation(gp::Window& window, Controller& controller, Ball& ball, std::vector <Brick>& bricks) {
+    auto &camera = window.getCamera();
+
+    while (window.isOpen() and camera.getRotation() > 0) {
+        camera.rotate(-0.2);
+        camera.setZoom(1 - 0.005 * camera.getRotation());
+
+        controller.updateController();
+        gp::update();
+    }
+
+    controller.destroy();
+    for (auto &brick: bricks) {
+        brick.destroy();
+    }
+}
+
+
+int main(int argc, char *argv[]) {
+    gp::init();
+
+    gp::Window window = {900, 600, "Brick Breaker using goopylib!"};
+    setupWindow(window, argv);
+    
+    auto controller = Controller();
+    auto ball = Ball();
+    std::vector <Brick> bricks;
 
     while (window.isOpen()) {
-        camera.setRotation(0);
-        camera.setZoom(1);
+        setupGame(window, controller, ball, bricks);
+        introAnimation(window, controller, ball);
 
-        auto controller = Controller();
-        controller.draw(window);
-
-        auto ball = Ball();
-        ball.draw(window);
-
-        float transparency = 0;
-
-        std::vector <Brick> bricks;
-
-        for (int i = 0; i < 900 / Brick::s_Width; i++) {
-            for (int j = 0; j < 4; j++) {
-                bricks.push_back(Brick(i, j));
-                bricks.back().draw(window);
-            }
-        }
-
-        while (window.isOpen() and !window.checkLeftClick()) {
-            if (transparency < 1) {
-                transparency += 0.02;
-                ball.setTransparency(min(1.0f, transparency));
-            }
-
-            controller.updateController();
-            gp::update();
-        }
-
-        ball.setTransparency(1);
-
-        float dt = 0;
         float lasthit = 0;
 
-        while (window.isOpen()) {
+        while (window.isOpen() and not checkGameover(ball, bricks)) {
             float start = gp::getTime();
-
-            if (ball.getY() < -300 or bricks.size() == 0) {
-                break;
-            }
-
-            if (controller.contains(ball.getPosition())) {
-                ball.collide();
-                ball.m_xVel = max(-12.0f, min(12.0f, ball.m_xVel * 0.85f + controller.m_xVel * 0.2f));
-                ball.move(0, 12);
-            }
-
-            for (auto &brick: bricks) {
-                if (brick.isDrawn() and brick.contains(ball.getPosition())) {
-                    ball.collide();
-                    brick.hit();
-                    lasthit = gp::getTime();
-                    break;
-                }
-            }
-
-            if (gp::getTime() - lasthit < 0.2) {
-                camera.setX(rand() % 8 - 4);
-            }
-            else {
-                camera.setX(0);
-            }
-
-            controller.updateController();
-            ball.update(dt);
             gp::update();
 
-            dt = gp::getTime() - start;
-        }
-
-        ball.destroy();
-        auto start = gp::getTime();
-        auto ease = gp::easeBounceOut(4, 0.8);
-        float easet = 0.7;
-
-        controller.m_MaxX = 350;
-
-        while (window.isOpen() and gp::getTime() - start < easet) {
-            float val = ease(gp::getTime() - start);
-            camera.setRotation(4 * val);
-            camera.setZoom(1 - 0.02 * val);
+            doControllerCollision(controller, ball);
+            doBrickCollision(bricks, ball, lasthit);
+            shakeCamera(window, lasthit);
 
             controller.updateController();
-            gp::update();
+            ball.update(gp::getTime() - start);
         }
 
-        while (window.isOpen() and !window.checkLeftClick()) {
-            controller.updateController();
-            gp::update();
-        }
-
-        while (window.isOpen() and window.checkLeftClick()) {
-            controller.updateController();
-            gp::update();
-        }
-
-        while (window.isOpen() and camera.getRotation() > 0) {
-            camera.rotate(-0.2);
-            camera.setZoom(1 - 0.005 * camera.getRotation());
-
-            controller.updateController();
-            gp::update();
-        }
-
-        controller.destroy();
-
-        for (auto &brick: bricks) {
-            brick.destroy();
-        }
+        gameoverAnimation(window, controller, ball);
+        waitForLeftPress(window, controller);
+        resetAnimation(window, controller, ball, bricks);
     }
 
     gp::terminate();
