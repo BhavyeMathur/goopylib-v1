@@ -3,6 +3,45 @@ import random
 import goopylib.imports as gp
 
 
+def get_packing_algorithm():
+    choices = """
+        Choose an algorithm:
+             ⏎ default
+
+            Shelf Algorithms
+            ----------------
+
+             1. Shelf Next-Fit
+             2. Shelf First-Fit
+
+             3. Shelf Best Width Fit
+             4. Shelf Worst Width Fit
+
+             5. Shelf Best Height Fit
+             6. Shelf Worst Height Fit
+
+             7. Shelf Best Area Fit
+             8. Shelf Worst Area Fit
+
+        Enter Choice: """
+
+    if (choice := input(choices)) == "":
+        func = gp.packing.shelf.BestAreaFit
+    else:
+        func = [gp.packing.shelf.NextFit,
+                gp.packing.shelf.FirstFit,
+                gp.packing.shelf.BestWidthFit,
+                gp.packing.shelf.WorstWidthFit,
+                gp.packing.shelf.BestHeightFit,
+                gp.packing.shelf.WorstHeightFit,
+                gp.packing.shelf.BestAreaFit,
+                gp.packing.shelf.WorstAreaFit,
+
+                ][int(choice) - 1]
+
+    return func
+
+
 def create_random_items(n):
     return [gp.packing.Item(width=5 + 65 * random.random(),
                             height=5 + 75 * random.random()) for _ in range(n)]
@@ -77,41 +116,6 @@ def main(packing, window_size=(800, 800)):
 
 
 if __name__ == "__main__":
-    choices = """
-    Choose an algorithm:
-         ⏎ default
-            
-        Shelf Algorithms
-        ----------------
-            
-         1. Shelf Next-Fit
-         2. Shelf First-Fit
-            
-         3. Shelf Best Width Fit
-         4. Shelf Worst Width Fit
-            
-         5. Shelf Best Height Fit
-         6. Shelf Worst Height Fit
-            
-         7. Shelf Best Area Fit
-         8. Shelf Worst Area Fit
-    
-    Enter Choice: """
-
-    if (choice := input(choices)) == "":
-        func = gp.packing.shelf.BestAreaFit
-    else:
-        func = [gp.packing.shelf.NextFit,
-                gp.packing.shelf.FirstFit,
-                gp.packing.shelf.BestWidthFit,
-                gp.packing.shelf.WorstWidthFit,
-                gp.packing.shelf.BestHeightFit,
-                gp.packing.shelf.WorstHeightFit,
-                gp.packing.shelf.BestAreaFit,
-                gp.packing.shelf.WorstAreaFit,
-
-                ][int(choice) - 1]
-
-    main(packing=func)
+    main(packing=get_packing_algorithm())
 
 gp.terminate()
