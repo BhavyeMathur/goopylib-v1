@@ -32,9 +32,9 @@
 #define APIENTRY __stdcall
 #endif
 
-#ifndef APIENTRY
-#define APIENTRY
-#endif
+//#ifndef APIENTRY
+//#define APIENTRY
+//#endif
 #ifndef APIENTRYP
 #define APIENTRYP APIENTRY *
 #endif

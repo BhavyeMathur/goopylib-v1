@@ -21,12 +21,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(OpenGL REQUIRED)
 
-# needed to silence errors in IDE
-find_package(PythonInterp REQUIRED)
-find_package(PythonLibs REQUIRED)
 if(POLICY CMP0148)
     cmake_policy(SET CMP0148 OLD)
 endif()
+find_package(PythonInterp REQUIRED)
+find_package(PythonLibs REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 
@@ -43,7 +42,7 @@ if (WIN32)
     set(WINDOWS_SOURCES vendor/glad/glad.c)
 
     if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set(CMAKE_CXX_FLAGS "-wd4068")
+        set(CMAKE_CXX_FLAGS "-wd4068 /EHsc")
 
         if (MSVC_TOOLSET_VERSION EQUAL 110)
             set(GOOPYLIB_PLATFORM_NAME vc2012)

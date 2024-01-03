@@ -13,13 +13,13 @@ namespace gp {
         
         GPAPI ~Bitmap();
 
-        GPAPI uint32_t getWidth() const;
+        [[nodiscard]] GPAPI uint32_t getWidth() const;
 
-        GPAPI uint32_t getHeight() const;
+        [[nodiscard]] GPAPI uint32_t getHeight() const;
 
-        GPAPI uint32_t getChannels() const;
+        [[nodiscard]] GPAPI uint32_t getChannels() const;
 
-        GPAPI uint8_t* getData() const;
+        [[nodiscard]] GPAPI uint8_t* getData() const;
 
         GPAPI void saveBitmap(const std::string& filepath) const;
 
@@ -31,10 +31,10 @@ namespace gp {
         bool m_IsImage = false;
         uint8_t *m_Data = nullptr;
 
-        Bitmap() = default;
+        GPAPI Bitmap() = default;
 
-        Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
+        GPAPI Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
 
-        Bitmap(const char* filepath);
+        GPAPI Bitmap(const char* filepath);
     };
 }

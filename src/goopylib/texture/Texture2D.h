@@ -12,7 +12,9 @@ namespace gp {
         friend class TextureAtlas;
 
     public:
-        ~Texture2D();
+        GPAPI Texture2D (const Texture2D&) = delete;
+
+        GPAPI ~Texture2D();
 
         GPAPI void bind(uint32_t slot) const;
 
@@ -28,7 +30,7 @@ namespace gp {
 
         GPAPI static void init();
 
-        GPAPI static int32_t getTextureSlots();
+        [[nodiscard]] GPAPI static int32_t getTextureSlots();
 
     private:
         uint32_t m_Width = 0;
@@ -39,14 +41,12 @@ namespace gp {
 
         static int32_t s_TextureSlots;
 
-        Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
+        GPAPI Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
 
-        Texture2D(const Bitmap& bitmap);
+        GPAPI Texture2D(const Bitmap& bitmap);
 
-        GPAPI Texture2D (const Texture2D&) = delete;
+        [[nodiscard]] GPAPI uint32_t _getDataFormat() const;
 
-        uint32_t _getDataFormat() const;
-
-        int32_t _getInternalFormat() const;
+        [[nodiscard]] GPAPI int32_t _getInternalFormat() const;
     };
 }

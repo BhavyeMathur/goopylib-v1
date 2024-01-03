@@ -107,6 +107,7 @@ namespace gp {
             case ShaderDataType::Bool:
                 return 1;
             case ShaderDataType::None:
+            default:
                 GP_CORE_ERROR("Unrecognised Shader Type");
                 return 0;
         }
