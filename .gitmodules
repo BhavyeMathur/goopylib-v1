@@ -7,3 +7,6 @@
 [submodule "vendor/glm"]
 	path = vendor/glm
 	url = https://github.com/icaven/glm
+[submodule "examples/SolarSystem"]
+	path = examples/SolarSystem
+	url = https://github.com/BhavyeMathur/goopylib-solar-system-simulation
