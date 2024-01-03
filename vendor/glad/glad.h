@@ -32,9 +32,9 @@
 #define APIENTRY __stdcall
 #endif
 
-//#ifndef APIENTRY
-//#define APIENTRY
-//#endif
+#ifndef APIENTRY
+#define APIENTRY
+#endif
 #ifndef APIENTRYP
 #define APIENTRYP APIENTRY *
 #endif
@@ -3691,4 +3691,8 @@ GLAPI PFNGLPOLYGONOFFSETCLAMPPROC glad_glPolygonOffsetClamp;
 }
 #endif
 
+#endif
+
+#ifdef APIENTRY
+#undef APIENTRY
 #endif
