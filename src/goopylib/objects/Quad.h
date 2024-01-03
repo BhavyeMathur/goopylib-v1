@@ -24,8 +24,6 @@ namespace gp {
 
         GPAPI virtual ~Quad() = default;
 
-        // TODO colour alpha should affect shape transparency
-
         /**
          * Sets the fill color of the object
          * @param color the color of the object

@@ -111,7 +111,7 @@ class Renderable:
         Raises:
             TypeError: scale factor must be numbers
         """
-        return self._renderable.zoom(*args)  # TODO .zoom method not working
+        return self._renderable.scale(*args)  # TODO .zoom method not working
 
     def set_size(self, width: float, height: float) -> None:
         """

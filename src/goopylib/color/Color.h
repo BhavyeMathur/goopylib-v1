@@ -60,7 +60,7 @@ namespace gp {
          */
         [[nodiscard]] GPAPI int getRed() const;
 
-        // TODO
+        // TODO unittests for changing RGB components and effect on HSV/HSL/CMYK/Hexstring
 
         /**
          * @param value between 0-255
