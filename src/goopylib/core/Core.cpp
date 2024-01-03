@@ -10,6 +10,9 @@
 #if GP_USING_GLFW
 
 #include <GLFW/glfw3.h>
+#ifdef APIENTRY
+#undef APIENTRY
+#endif
 
 #endif
 

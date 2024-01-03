@@ -4,6 +4,9 @@
 #include "src/goopylib/color/Color.h"
 
 #include <GLFW/glfw3.h>
+#ifdef APIENTRY
+#undef APIENTRY
+#endif
 
 // TODO implement window icons
 // TODO window autoflush
