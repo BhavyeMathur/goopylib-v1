@@ -28,8 +28,8 @@ namespace gp {
         uint32_t m_Height = 0;
         uint32_t m_Channels = 0;
 
-        uint8_t *m_Data = nullptr;
         bool m_IsImage = false;
+        uint8_t *m_Data = nullptr;
 
         Bitmap() = default;
 

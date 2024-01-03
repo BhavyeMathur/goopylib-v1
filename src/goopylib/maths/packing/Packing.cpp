@@ -21,9 +21,9 @@ namespace gp::packing {
     Item::Item(float width, float height)
             : m_Width(width),
               m_Height(height),
-              m_ID(Item::s_Items),
               m_LongSide(max(width, height)),
-              m_ShortSide(min(width, height)) {
+              m_ShortSide(min(width, height)),
+              m_ID(Item::s_Items) {
         Item::s_Items++;
     }
 

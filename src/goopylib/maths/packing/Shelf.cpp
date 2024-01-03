@@ -22,10 +22,10 @@
 // Shelf Class
 namespace gp::packing::shelf {
     Shelf::Shelf(float verticalOffset, Bin &bin)
-            : m_Bin(bin),
+            : m_Width(bin.getWidth()),
+              m_AvailableWidth(bin.getWidth()),
               m_VerticalOffset(verticalOffset),
-              m_Width(bin.getWidth()),
-              m_AvailableWidth(bin.getWidth()) {
+              m_Bin(bin) {
 
     }
 

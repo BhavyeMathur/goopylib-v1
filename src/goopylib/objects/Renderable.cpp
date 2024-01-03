@@ -16,8 +16,8 @@
 
 namespace gp {
     Renderable::Renderable(Point position, std::initializer_list<Point> points)
-            : m_Position(position),
-            m_Vertices(points.size()) {
+            : m_Vertices(points.size()),
+              m_Position(position) {
         GP_CORE_DEBUG("gp::Renderable::Renderable(({0}, {1}), vertices={2})", position.x, position.y, points.size());
 
         m_Points = new Point[m_Vertices];

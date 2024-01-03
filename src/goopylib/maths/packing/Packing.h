@@ -96,10 +96,10 @@ namespace gp::packing {
         GPAPI float getHeight() const;
 
     protected:
-        const uint32_t m_ID;
-
         const float m_Width;
         const float m_Height;
+
+        const uint32_t m_ID;
 
         std::vector<Ref<Item>> m_Items;
 

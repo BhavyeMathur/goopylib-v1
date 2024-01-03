@@ -31,19 +31,19 @@ namespace gp::packing::shelf {
         friend class shelf::ScoredFit;
 
     public:
-        GPAPI std::string toString() const;
+        [[nodiscard]] GPAPI std::string toString() const;
 
-        GPAPI float getWidth() const;
+        [[nodiscard]] GPAPI float getWidth() const;
 
-        GPAPI float getHeight() const;
+        [[nodiscard]] GPAPI float getHeight() const;
 
-        GPAPI float getVerticalOffset() const;
+        [[nodiscard]] GPAPI float getVerticalOffset() const;
 
-        GPAPI float getPackedWidth() const;
+        [[nodiscard]] GPAPI float getPackedWidth() const;
 
-        GPAPI float getAvailableWidth() const;
+        [[nodiscard]] GPAPI float getAvailableWidth() const;
 
-        GPAPI bool isOpen() const;
+        [[nodiscard]] GPAPI bool isOpen() const;
 
     private:
         const float m_Width;
@@ -58,23 +58,23 @@ namespace gp::packing::shelf {
         Bin &m_Bin;
         std::vector<Ref<Item>> m_Items;
 
-        Shelf(float verticalOffset, Bin &bin);
+        GPAPI Shelf(float verticalOffset, Bin &bin);
 
-        bool fits(const Ref<Item> &item) const;
+        [[nodiscard]] GPAPI bool fits(const Ref<Item> &item) const;
 
-        bool fitsAbove(const Ref<Item> &item) const;
+        [[nodiscard]] GPAPI bool fitsAbove(const Ref<Item> &item) const;
 
-        void add(const Ref<Item>& item);
+        GPAPI void add(const Ref<Item>& item);
 
-        void close();
+        GPAPI void close();
 
-        float packedArea() const;
+        [[nodiscard]] GPAPI float packedArea() const;
     };
 }
 
 // Shelved Bin Class
 namespace gp::packing {
-    class ShelvedBin : public Bin {
+    class ShelvedBin final : public Bin {
 
         friend class shelf::Shelf;
 
@@ -87,7 +87,7 @@ namespace gp::packing {
         friend class shelf::ScoredFit;
 
     public:
-        GPAPI float packingRatio() const override;
+        [[nodiscard]] GPAPI float packingRatio() const override;
 
         GPAPI Ref<shelf::Shelf> getOpenShelf();
 
@@ -101,9 +101,9 @@ namespace gp::packing {
         Ref<shelf::Shelf> m_OpenShelf;
         std::vector<Ref<shelf::Shelf>> m_Shelves;
 
-        ShelvedBin(float width, float height);
+        GPAPI ShelvedBin(float width, float height);
 
-        Ref<shelf::Shelf> addShelf();
+        GPAPI Ref<shelf::Shelf> addShelf();
     };
 }
 
@@ -115,6 +115,8 @@ namespace gp::packing::shelf {
     class ShelfPackingAlgorithm : public PackingAlgorithm {
 
     public:
+        GPAPI virtual ~ShelfPackingAlgorithm() = default;
+
         GPAPI virtual void pack(const Ref<Item>& item, bool allowRotation = true);
 
         GPAPI void packAll(std::vector<Ref<Item>> items,
@@ -127,10 +129,10 @@ namespace gp::packing::shelf {
                              bool orientVertically = true,
                              const SortingFunction &sortingFunction = sortByLongSide(true));
 
-        GPAPI std::vector<Ref<ShelvedBin>> bins() const;
+        [[nodiscard]] GPAPI std::vector<Ref<ShelvedBin>> bins() const;
 
     protected:
-        ShelfPackingAlgorithm(float binWidth, float binHeight);
+        GPAPI ShelfPackingAlgorithm(float binWidth, float binHeight);
 
         std::vector<Ref<ShelvedBin>> m_Bins;
     };

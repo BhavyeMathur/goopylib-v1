@@ -77,9 +77,9 @@ namespace gp {
     BufferElement::BufferElement(ShaderDataType type, const char *name, bool normalized)
             : m_Name(name),
               m_Type(type),
+              m_Normalized(normalized),
               m_Size(shaderTypeSize(type)),
-              m_Offset(0),
-              m_Normalized(normalized) {
+              m_Offset(0) {
     }
 
     int32_t BufferElement::getCount() const {
