@@ -84,7 +84,8 @@ else:
 
 
 def find_extensions():
-    ext_kwargs = {"include_dirs":         [".", "goopylib", "src", "src/vendor"],
+    ext_kwargs = {"include_dirs":         [".", "goopylib", "src", "vendor", "vendor/glad", "vendor/glm",
+                                           "vendor/spdlog/include", "vendor/GLFW/include"],
                   "library_dirs":         library_dirs,
                   "runtime_library_dirs": RUNTIME_LIBRARY_DIRS,
                   "libraries":            ["goopylib"],

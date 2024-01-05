@@ -27,6 +27,7 @@ def main():
     width = window.width / xN
     height = window.height / yN
 
+    # TODO add relative paths
     paths = [f"{PATH}/assets/cobblestone.png",
              f"{PATH}/assets/andesite.png",
              f"{PATH}/assets/cracked_stone_bricks.png",

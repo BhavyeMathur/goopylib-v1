@@ -24,7 +24,6 @@ class Renderable:
         """
         self._renderable = None
         self.window: Window = None
-        raise NotImplementedError("Cannot create renderable")
 
     def draw(self, window: Window) -> Renderable:
         """
