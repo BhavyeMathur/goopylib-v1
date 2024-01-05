@@ -27,5 +27,3 @@ namespace gp {
         return m_IndexBuffer;
     }
 }
-
-#undef GP_LOGGING_LEVEL

@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 6
+#define GP_LOGGING_LEVEL 3
 #include "src/goopylib/debug/LogMacros.h"
 
 #include "Bitmap.h"
@@ -54,5 +54,3 @@ namespace gp {
         stbi_write_bmp(filepath.c_str(), (int32_t) m_Width, (int32_t) m_Height, 1, m_Data);
     }
 }
-
-#undef GP_LOGGING_LEVEL

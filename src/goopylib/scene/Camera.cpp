@@ -100,5 +100,3 @@ namespace gp {
         return m_Zoom;
     }
 }
-
-#undef GP_LOGGING_LEVEL

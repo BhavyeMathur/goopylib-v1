@@ -168,5 +168,3 @@ namespace gp {
         colors["yellowgreen"] = CreateScope<ColorHex>("9acd32");
     }
 }
-
-#undef GP_LOGGING_LEVEL

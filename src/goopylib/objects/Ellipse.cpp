@@ -117,5 +117,3 @@ namespace gp {
         update();
     }
 }
-
-#undef GP_LOGGING_LEVEL

@@ -109,5 +109,3 @@ namespace gp {
         return s_Width;
     }
 }
-
-#undef GP_LOGGING_LEVEL

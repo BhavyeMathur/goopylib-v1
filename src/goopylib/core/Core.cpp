@@ -218,5 +218,3 @@ namespace gp {
 
     #endif
 }
-
-#undef GP_LOGGING_LEVEL

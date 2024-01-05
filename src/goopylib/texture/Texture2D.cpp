@@ -8,5 +8,3 @@ namespace gp {
         return s_TextureSlots;
     }
 }
-
-#undef GP_LOGGING_LEVEL

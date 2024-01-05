@@ -44,5 +44,3 @@ namespace gp {
         return m_Uniforms[name];
     }
 }
-
-#undef GP_LOGGING_LEVEL

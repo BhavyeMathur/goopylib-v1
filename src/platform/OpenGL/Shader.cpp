@@ -237,5 +237,3 @@ namespace gp {
         return glGetUniformLocation(m_RendererID, name);
     }
 }
-
-#undef GP_LOGGING_LEVEL

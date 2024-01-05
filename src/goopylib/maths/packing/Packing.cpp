@@ -234,5 +234,3 @@ namespace gp::packing {
               m_BinHeight(binHeight) {
     }
 }
-
-#undef GP_LOGGING_LEVEl

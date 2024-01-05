@@ -56,5 +56,3 @@ namespace gp {
                 normalized_distribution(generator)};
     }
 }
-
-#undef GP_LOGGING_LEVEL

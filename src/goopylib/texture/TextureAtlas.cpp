@@ -87,5 +87,3 @@ namespace gp {
         return textures;
     }
 }
-
-#undef GP_LOGGING_LEVEL

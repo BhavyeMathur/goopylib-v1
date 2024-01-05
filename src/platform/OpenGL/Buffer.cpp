@@ -148,5 +148,3 @@ namespace gp {
         glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_RendererID);
     }
 }
-
-#undef GP_LOGGING_LEVEL

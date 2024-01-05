@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 7
+#define GP_LOGGING_LEVEL 3
 #include "goopylib/debug.h"
 
 #include "image.h"

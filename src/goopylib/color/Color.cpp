@@ -475,5 +475,3 @@ namespace gp {
         m_Luminance = hsl.luminance;
     }
 }
-
-#undef GP_LOGGING_LEVEL

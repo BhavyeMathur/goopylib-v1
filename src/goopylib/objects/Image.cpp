@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 7
+#define GP_LOGGING_LEVEL 3
 #include "src/goopylib/debug/LogMacros.h"
 
 #include "Image.h"
@@ -60,5 +60,3 @@ namespace gp {
         return Ref<Bitmap>(new Bitmap(m_Path.c_str()));
     }
 }
-
-#undef GP_LOGGING_LEVEL

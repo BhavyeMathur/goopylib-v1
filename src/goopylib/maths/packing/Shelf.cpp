@@ -356,5 +356,3 @@ namespace gp::packing::shelf {
                         }) {
     }
 }
-
-#undef GP_LOGGING_LEVEL

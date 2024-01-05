@@ -21,5 +21,3 @@ namespace gp {
         return p.x * p.x + p.y * p.y < m_RadiusSquared;
     }
 }
-
-#undef GP_LOGGING_LEVEL

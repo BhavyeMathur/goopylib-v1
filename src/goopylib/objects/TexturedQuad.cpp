@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 6
+#define GP_LOGGING_LEVEL 3
 
 #include "TexturedQuad.h"
 
@@ -53,5 +53,3 @@ namespace gp {
         m_Window->m_Renderer.updateTexturedQuad(m_RendererID, this);
     }
 }
-
-#undef GP_LOGGING_LEVEL

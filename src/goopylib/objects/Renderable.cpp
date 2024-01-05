@@ -405,5 +405,3 @@ namespace gp {
         return true;
     }
 }
-
-#undef GP_LOGGING_LEVEL

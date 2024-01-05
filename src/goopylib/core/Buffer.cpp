@@ -34,5 +34,3 @@ namespace gp {
         return m_Layout;
     }
 }
-
-#undef GP_LOGGING_LEVEL

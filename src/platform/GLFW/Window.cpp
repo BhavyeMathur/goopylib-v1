@@ -558,5 +558,3 @@ namespace gp {
         });
     }
 }
-
-#undef GP_LOGGING_LEVEL
