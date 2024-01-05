@@ -1,20 +1,10 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "Camera.h"
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
-#if (GP_LOG_CAMERA != true) and (GP_LOG_CAMERA <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_CAMERA
-#endif
-
-#if !GP_VALUE_CHECK_CAMERA
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
 #include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 namespace gp {
     Camera::Camera(float left, float right, float bottom, float top)
@@ -110,3 +100,5 @@ namespace gp {
         return m_Zoom;
     }
 }
+
+#undef GP_LOGGING_LEVEL

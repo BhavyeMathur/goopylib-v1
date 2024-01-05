@@ -1,3 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+#include "goopylib/debug.h"
+
 #define WINDOW_MODULE
 
 #include "window.h"
@@ -15,21 +18,6 @@
 
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/events/MouseCodes.h"
-
-#include "config.h"
-
-#if (GP_LOG_WINDOW != true) and (GP_LOG_WINDOW <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_WINDOW
-#endif
-
-#if !GP_VALUE_CHECK_WINDOW
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "goopylib/debug.h"
 
 #if GP_ERROR_CHECKING
 #define CHECK_ACTIVE(val) \

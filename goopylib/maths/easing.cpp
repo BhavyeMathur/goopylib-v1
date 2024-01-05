@@ -1,20 +1,8 @@
+#define GP_LOGGING_LEVEL 3
+#include "goopylib/debug.h"
+
 #include "easing.h"
 #include "src/goopylib/maths/Easing.h"
-
-#include "config.h"
-
-#if (GP_LOG_EASING != true) and (GP_LOG_EASING <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_EASING
-#endif
-
-#if !GP_VALUE_CHECK_EASING
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "goopylib/debug.h"
 
 // TODO Easing base class
 

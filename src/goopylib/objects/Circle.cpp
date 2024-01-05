@@ -1,17 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "Circle.h"
-
-#if (GP_LOG_CIRCLE != true) and (GP_LOG_CIRCLE <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_CIRCLE
-#endif
-
-#if !GP_VALUE_CHECK_CIRCLE
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/Error.h"
 
 
 namespace gp {
@@ -32,3 +21,5 @@ namespace gp {
         return p.x * p.x + p.y * p.y < m_RadiusSquared;
     }
 }
+
+#undef GP_LOGGING_LEVEL

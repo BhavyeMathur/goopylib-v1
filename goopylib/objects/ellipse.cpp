@@ -1,3 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+#include "goopylib/debug.h"
+
 #define ELLIPSE_MODULE
 
 #include "ellipse.h"
@@ -10,21 +13,6 @@
 #include "goopylib/color/color_module.h"
 
 #include "src/goopylib/objects/Ellipse.h"
-
-#include "config.h"
-
-#if (GP_LOG_ELLIPSE != true) and (GP_LOG_ELLIPSE <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_ELLIPSE
-#endif
-
-#if !GP_VALUE_CHECK_ELLIPSE
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "goopylib/debug.h"
 
 
 // Ellipse Core

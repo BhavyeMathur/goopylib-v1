@@ -55,3 +55,5 @@
 #define GP_CORE_TRACE_ALL(...) nullptr
 #define GP_TRACE_ALL(...) nullptr
 #endif
+
+#include "Error.h"

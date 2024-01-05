@@ -1,18 +1,6 @@
+#define GP_LOGGING_LEVEl 3
+
 #include "Packing.h"
-
-#include "src/config.h"
-
-#if (GP_LOG_PACKING != true) and (GP_LOG_PACKING <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_PACKING
-#endif
-
-#if !GP_VALUE_CHECK_PACKING
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
 
 // Item Class
 namespace gp::packing {
@@ -246,3 +234,5 @@ namespace gp::packing {
               m_BinHeight(binHeight) {
     }
 }
+
+#undef GP_LOGGING_LEVEl

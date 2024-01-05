@@ -1,20 +1,9 @@
+#define GP_LOGGING_LEVEL 3
+#include "goopylib/debug.h"
+
 #include "conversions.h"
 #include "src/goopylib/color/ColorConversions.h"
 
-#include "config.h"
-
-#if (GP_LOG_COLOR_CONVERSIONS != true) and (GP_LOG_COLOR_CONVERSIONS <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_COLOR_CONVERSIONS
-#endif
-
-#if !GP_VALUE_CHECK_COLOR_CONVERSIONS
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "goopylib/debug.h"
 #include "macros.h"
 
 namespace color {

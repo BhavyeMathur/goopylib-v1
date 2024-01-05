@@ -1,3 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+#include "src/goopylib/debug/LogMacros.h"
+
 #include "src/goopylib/texture/TextureAtlas.h"
 
 #if GP_USING_OPENGL
@@ -22,3 +25,5 @@ namespace gp {
 }
 
 #endif
+
+#undef GP_LOGGING_LEVEL

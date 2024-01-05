@@ -1,22 +1,11 @@
+#define GP_LOGGING_LEVEl 3
+
 #include "Shelf.h"
 
 #include <cfloat>
 #include <utility>
 
-#include "src/config.h"
-
-#if (GP_LOG_SHELF_PACKING != true) and (GP_LOG_SHELF_PACKING <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_SHELF_PACKING
-#endif
-
-#if !GP_VALUE_CHECK_SHELF_PACKING
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/Error.h"
+#include "src/goopylib/debug/LogMacros.h"
 
 
 // Shelf Class
@@ -367,3 +356,5 @@ namespace gp::packing::shelf {
                         }) {
     }
 }
+
+#undef GP_LOGGING_LEVEL

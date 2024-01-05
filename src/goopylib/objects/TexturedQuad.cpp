@@ -1,20 +1,9 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "TexturedQuad.h"
 
 #include <utility>
 #include "src/goopylib/texture/Bitmap.h"
-
-#include "src/config.h"
-
-#if (GP_LOG_TEXTURED_QUAD != true) and (GP_LOG_TEXTURED_QUAD <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_TEXTURED_QUAD
-#endif
-
-#if !GP_VALUE_CHECK_TEXTURED_QUAD
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
 
 #include "src/goopylib/debug/LogMacros.h"
 
@@ -61,3 +50,5 @@ namespace gp {
         m_Window->m_Renderer.updateTexturedQuad(m_RendererID, this);
     }
 }
+
+#undef GP_LOGGING_LEVEL

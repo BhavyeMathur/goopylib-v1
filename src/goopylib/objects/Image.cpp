@@ -1,22 +1,9 @@
+#define GP_LOGGING_LEVEL 7
+#include "src/goopylib/debug/LogMacros.h"
+
 #include "Image.h"
 #include "src/goopylib/texture/Bitmap.h"
 #include <stb/stb_image.h>
-
-#include "src/config.h"
-
-#if (GP_LOG_IMAGE != true) and (GP_LOG_IMAGE <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_IMAGE
-#endif
-
-#if !GP_VALUE_CHECK_IMAGE
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 
 // Core Methods
@@ -72,3 +59,5 @@ namespace gp {
         return Ref<Bitmap>(new Bitmap(m_Path));
     }
 }
+
+#undef GP_LOGGING_LEVEL

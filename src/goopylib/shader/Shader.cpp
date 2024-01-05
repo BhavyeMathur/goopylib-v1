@@ -1,18 +1,7 @@
-#include "src/goopylib/shader/Shader.h"
-
-#if (GP_LOG_SHADER != true) and (GP_LOG_SHADER <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_SHADER
-#endif
-
-#if !GP_VALUE_CHECK_SHADER
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
+#define GP_LOGGING_LEVEL 3
 #include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
+
+#include "src/goopylib/shader/Shader.h"
 
 
 namespace gp {
@@ -55,3 +44,5 @@ namespace gp {
         return m_Uniforms[name];
     }
 }
+
+#undef GP_LOGGING_LEVEL

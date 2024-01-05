@@ -1,3 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+#include "src/goopylib/debug/LogMacros.h"
+
 #include "src/goopylib/core/VertexArray.h"
 
 #if GP_USING_OPENGL
@@ -14,20 +17,6 @@
 #endif
 
 #endif
-
-#if (GP_LOG_VERTEX_ARRAY != true) and (GP_LOG_VERTEX_ARRAY <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_VERTEX_ARRAY
-#endif
-
-#if !GP_VALUE_CHECK_VERTEX_ARRAY
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 
 namespace gp {
@@ -153,3 +142,5 @@ namespace gp {
         }
     }
 }
+
+#undef GP_LOGGING_LEVEL

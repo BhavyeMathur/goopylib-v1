@@ -1,23 +1,10 @@
+#define GP_LOGGING_LEVEL 3
+#include "src/goopylib/debug/LogMacros.h"
+
 #include "Bitmap.h"
 
 #include <stb/stb_image.h>
 #include <stb/stb_image_write.h>
-
-#include "src/config.h"
-
-#if (GP_LOG_BITMAP != true) and (GP_LOG_BITMAP <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_BITMAP
-#endif
-
-#if !GP_VALUE_CHECK_BITMAP
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 
 namespace gp {
@@ -67,3 +54,5 @@ namespace gp {
         stbi_write_bmp(filepath.c_str(), (int32_t) m_Width, (int32_t) m_Height, 1, m_Data);
     }
 }
+
+#undef GP_LOGGING_LEVEL

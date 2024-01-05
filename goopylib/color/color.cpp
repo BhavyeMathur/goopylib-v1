@@ -1,3 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+#include "goopylib/debug.h"
+
 #define COLOR_MODULE
 
 #include "color.h"
@@ -5,20 +8,6 @@
 #include "color_module.h"
 #include "color_capsule.h"
 
-#include "config.h"
-
-#if (GP_LOG_COLOR != true) and (GP_LOG_COLOR <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_COLOR
-#endif
-
-#if !GP_VALUE_CHECK_COLOR
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "goopylib/debug.h"
 #include "macros.h"
 
 struct ColorRGBObject {

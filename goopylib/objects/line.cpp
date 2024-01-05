@@ -1,3 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+#include "goopylib/debug.h"
+
 #include "line.h"
 #include "renderable_module.h"
 #include "renderable_object.h"
@@ -6,21 +9,6 @@
 #include "goopylib/color/color_module.h"
 
 #include "src/goopylib/objects/Line.h"
-
-#include "config.h"
-
-#if (GP_LOG_LINE != true) and (GP_LOG_LINE <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_LINE
-#endif
-
-#if !GP_VALUE_CHECK_LINE
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "goopylib/debug.h"
 
 
 struct LineObject {

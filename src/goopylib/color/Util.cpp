@@ -1,18 +1,7 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "Util.h"
 #include "ColorConversions.h"
-
-#include "src/config.h"
-
-#if (GP_LOG_COLOR_UTIL != true) and (GP_LOG_COLOR_UTIL <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_COLOR_UTIL
-#endif
-
-#if !GP_VALUE_CHECK_COLOR_UTIL
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
 
 #include "src/goopylib/debug/LogMacros.h"
 
@@ -67,3 +56,5 @@ namespace gp {
                 normalized_distribution(generator)};
     }
 }
+
+#undef GP_LOGGING_LEVEL

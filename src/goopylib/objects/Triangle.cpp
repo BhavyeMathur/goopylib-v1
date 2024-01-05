@@ -1,18 +1,8 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "Triangle.h"
 
-#if (GP_LOG_TRIANGLE != true) and (GP_LOG_TRIANGLE <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_TRIANGLE
-#endif
-
-#if !GP_VALUE_CHECK_TRIANGLE
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
 #include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 // Core Methods
 namespace gp {
@@ -91,3 +81,5 @@ namespace gp {
         update();
     }
 }
+
+#undef GP_LOGGING_LEVEL

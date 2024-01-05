@@ -1,3 +1,4 @@
+#define GP_LOGGING_LEVEL 3
 #include "Texture2D.h"
 
 namespace gp {
@@ -7,3 +8,5 @@ namespace gp {
         return s_TextureSlots;
     }
 }
+
+#undef GP_LOGGING_LEVEL

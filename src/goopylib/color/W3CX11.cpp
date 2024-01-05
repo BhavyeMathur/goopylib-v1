@@ -1,14 +1,9 @@
-#include "W3CX11.h"
+#define GP_LOGGING_LEVEL 3
 
-#if !GP_LOG_W3CX11
-#undef GP_LOGGING_LEVEL
-#endif
+#include "W3CX11.h"
 
 #include "src/goopylib/debug/LogMacros.h"
 
-#if !GP_VALUE_CHECK_W3CX11
-#undef GP_VALUE_CHECKING
-#endif
 
 namespace gp {
     GPAPI std::unordered_map<std::string, Scope<ColorHex>> colors;
@@ -173,3 +168,5 @@ namespace gp {
         colors["yellowgreen"] = CreateScope<ColorHex>("9acd32");
     }
 }
+
+#undef GP_LOGGING_LEVEL

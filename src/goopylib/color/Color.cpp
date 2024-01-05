@@ -1,19 +1,8 @@
+#define GP_LOGGING_LEVEL 3
+#include "src/goopylib/debug/LogMacros.h"
+
 #include "Color.h"
 #include "ColorConversions.h"
-
-#if (GP_LOG_COLOR != true) and (GP_LOG_COLOR <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_COLOR
-#endif
-
-#if !GP_VALUE_CHECK_COLOR
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 
 // Color Base Class
@@ -486,3 +475,5 @@ namespace gp {
         m_Luminance = hsl.luminance;
     }
 }
+
+#undef GP_LOGGING_LEVEL

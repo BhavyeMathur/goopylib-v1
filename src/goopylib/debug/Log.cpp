@@ -1,8 +1,6 @@
 #include "Log.h"
 #include "LogMacros.h"
 
-#include "src/config.h"
-
 namespace gp {
     Ref<spdlog::logger> Log::s_CoreLogger;
     Ref<spdlog::logger> Log::s_PythonLogger;

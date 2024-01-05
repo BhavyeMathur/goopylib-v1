@@ -1,3 +1,5 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "Renderer.h"
 
 #include "src/goopylib/texture/TextureAtlas.h"
@@ -8,19 +10,6 @@
 #include "src/goopylib/objects/Quad.h"
 #include "src/goopylib/objects/Ellipse.h"
 #include "src/goopylib/objects/TexturedQuad.h"
-
-#include "src/config.h"
-
-#if (GP_LOG_RENDERER != true) and (GP_LOG_RENDERER <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_RENDERER
-#endif
-
-#if !GP_VALUE_CHECK_RENDERER
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
 
 #include "src/goopylib/debug/LogMacros.h"
 
@@ -609,3 +598,5 @@ namespace gp {
         }
     }
 }
+
+#undef GP_LOGGING_LEVEL

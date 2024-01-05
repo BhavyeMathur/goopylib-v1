@@ -1,16 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "src/goopylib/core/Buffer.h"
-
-#if (GP_LOG_BUFFER != true) and (GP_LOG_BUFFER <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_BUFFER
-#endif
-
-#if !GP_VALUE_CHECK_BUFFER
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
 #include "src/goopylib/debug/LogMacros.h"
 
 
@@ -44,3 +34,5 @@ namespace gp {
         return m_Layout;
     }
 }
+
+#undef GP_LOGGING_LEVEL

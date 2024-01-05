@@ -1,18 +1,7 @@
-#include "ColorConversions.h"
-
-#if (GP_LOG_COLOR_CONVERSIONS != true) and (GP_LOG_COLOR_CONVERSIONS <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_COLOR_CONVERSIONS
-#endif
-
-#if !GP_VALUE_CHECK_COLOR
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
+#define GP_LOGGING_LEVEL 3
 #include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
+
+#include "ColorConversions.h"
 
 namespace {
     int digitToInt(char digit) {
@@ -467,3 +456,5 @@ namespace gp {
         }
     }
 }
+
+#undef GP_LOGGING_LEVEL

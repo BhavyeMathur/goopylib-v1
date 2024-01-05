@@ -1,21 +1,8 @@
+#define GP_LOGGING_LEVEL 3
+#include "src/goopylib/debug/LogMacros.h"
+
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/events/MouseCodes.h"
-
-#include "src/config.h"
-
-#if (GP_LOG_WINDOW != true) and (GP_LOG_WINDOW <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_WINDOW
-#endif
-
-#if !GP_VALUE_CHECK_WINDOW
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 // TODO some of the docstrings (especially the callback functions) are essentially plagiarised from GLFW's docs.
 
@@ -554,3 +541,5 @@ namespace gp {
         }
     }
 }
+
+#undef GP_LOGGING_LEVEL

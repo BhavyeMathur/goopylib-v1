@@ -1,15 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "Line.h"
-
-#if (GP_LOG_LINE != true) and (GP_LOG_LINE <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_LINE
-#endif
-
-#if !GP_VALUE_CHECK_LINE
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
 
 #include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/debug/Error.h"
@@ -118,3 +109,5 @@ namespace gp {
         return s_Width;
     }
 }
+
+#undef GP_LOGGING_LEVEL

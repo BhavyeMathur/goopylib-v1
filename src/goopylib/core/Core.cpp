@@ -1,10 +1,11 @@
+#define GP_LOGGING_LEVEL 3
+#include "src/goopylib/debug/LogMacros.h"
+
 #include "Core.h"
 #include "src/goopylib/core/Window.h"
 
 #if GP_USING_GLAD
-
 #include <glad/glad.h>
-
 #endif
 
 #if GP_USING_GLFW
@@ -15,20 +16,6 @@
 #endif
 
 #endif
-
-#if (GP_LOG_CORE != true) and (GP_LOG_CORE <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_CORE
-#endif
-
-#if !GP_VALUE_CHECK_CORE
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 
 namespace gp {
@@ -231,3 +218,5 @@ namespace gp {
 
     #endif
 }
+
+#undef GP_LOGGING_LEVEL

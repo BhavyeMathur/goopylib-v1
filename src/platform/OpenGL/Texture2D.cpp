@@ -1,3 +1,6 @@
+#define GP_LOGGING_LEVEL 3
+#include "src/goopylib/debug/LogMacros.h"
+
 #include "src/goopylib/texture/Texture2D.h"
 
 #if GP_USING_OPENGL
@@ -15,20 +18,6 @@
 #include <glad/glad.h>
 
 #endif
-
-#if (GP_LOG_TEXTURE2D != true) and (GP_LOG_TEXTURE2D <= GP_LOGGING_LEVEL)
-#undef GP_LOGGING_LEVEL
-#define GP_LOGGING_LEVEL GP_LOG_TEXTURE2D
-#endif
-
-#if !GP_VALUE_CHECK_TEXTURE2D
-#undef GP_VALUE_CHECKING
-#undef GP_TYPE_CHECKING
-#undef GP_ERROR_CHECKING
-#endif
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
 
 
 namespace gp {
@@ -154,3 +143,5 @@ namespace gp {
 }
 
 #endif
+
+#undef GP_LOGGING_LEVEL
