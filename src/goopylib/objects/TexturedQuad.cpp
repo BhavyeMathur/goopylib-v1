@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 6
 
 #include "TexturedQuad.h"
 
@@ -12,7 +12,7 @@ namespace gp {
     TexturedQuad::TexturedQuad(std::string texture, Point p1, Point p2, Point p3, Point p4)
             : Quad(p1, p2, p3, p4),
               m_Texture(std::move(texture)) {
-        GP_CORE_DEBUG("gp::TexturedQuad::TexturedQuad({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
+        GP_CORE_DEBUG("gp::TexturedQuad::TexturedQuad(({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
 
         m_V1.color = {1, 1, 1, 1};
@@ -23,6 +23,9 @@ namespace gp {
 
     TexturedQuad::TexturedQuad(std::string texture, const Ref<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4)
             : TexturedQuad(std::move(texture), p1, p2, p3, p4) {
+        GP_CORE_DEBUG("gp::TexturedQuad::TexturedQuad({8}, ({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
+                      p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y, texture);
+
         m_Bitmap = bitmap;
     }
 

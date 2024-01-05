@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 6
 #include "src/goopylib/debug/LogMacros.h"
 
 #include "Bitmap.h"
@@ -13,7 +13,7 @@ namespace gp {
               m_Height(height),
               m_Channels(channels),
               m_Data(data) {
-
+        GP_CORE_INFO("gp::Bitmap::Bitmap({0}x{1}x{2})", width, height, channels);
     }
 
     Bitmap::Bitmap(const char *filepath)

@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 7
 #include "goopylib/debug.h"
 
 #include "image.h"
@@ -119,7 +119,7 @@ namespace image {
 
     static PyObject *get_path(ImageObject *self, PyObject *Py_UNUSED(args)) {
         GP_PY_DEBUG("gp.image.Image.get_path()");
-        return PyUnicode_FromString(self->image->getPath());
+        return PyUnicode_FromString(self->image->getPath().c_str());
     }
 }
 

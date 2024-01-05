@@ -8,13 +8,13 @@
 
 // Core Methods
 namespace gp {
-    Image::Image(const char *path, Point position)
+    Image::Image(std::string path, Point position)
             : TexturedRectangle(path, {-0.5, -0.5}, {0.5,  0.5}),
               m_Path(path) {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}))", path, position.x, position.y);
 
         int width, height;
-        stbi_info(path, &width, &height, nullptr);
+        stbi_info(path.c_str(), &width, &height, nullptr);
 
         #if GP_ERROR_CHECKING
         if (width == 0 and height == 0) {
@@ -29,7 +29,7 @@ namespace gp {
         move(position.x, position.y);
     }
 
-    Image::Image(const char *path, Point position, float width, float height)
+    Image::Image(std::string path, Point position, float width, float height)
             : TexturedRectangle(path, {-0.5, -0.5}, {0.5,  0.5}),
               m_Path(path) {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}), {3}, {4})", path, position.x, position.y, width, height);
@@ -41,7 +41,7 @@ namespace gp {
         move(position.x, position.y);
     }
 
-    Image::Image(const char *path, Point p1, Point p2)
+    Image::Image(std::string path, Point p1, Point p2)
             : TexturedRectangle(path, p1, p2),
               m_Path(path) {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}), ({3}, {4}))", path, p1.x, p1.y, p2.x, p2.y);
@@ -50,13 +50,14 @@ namespace gp {
 
 // Getter & Setter Methods
 namespace gp {
-    const char *Image::getPath() const {
+    std::string Image::getPath() const {
         GP_CORE_TRACE_ALL("gp::Image::getPath() - '{0}'", m_Path);
         return m_Path;
     }
 
     Ref<Bitmap> Image::getBitmap() const {
-        return Ref<Bitmap>(new Bitmap(m_Path));
+        GP_CORE_TRACE("gp::Image::getBitmap() - '{0}'", m_Path);
+        return Ref<Bitmap>(new Bitmap(m_Path.c_str()));
     }
 }
 

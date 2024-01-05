@@ -21,7 +21,7 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        GPAPI Image(const char *path, Point position);
+        GPAPI Image(std::string path, Point position);
 
         /**
          * An object representing a textured rectangle - an image
@@ -34,7 +34,7 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        GPAPI Image(const char *path, Point position, float width, float height);
+        GPAPI Image(std::string path, Point position, float width, float height);
 
         /**
          * An object representing a textured rectangle - an image
@@ -46,17 +46,17 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        GPAPI Image(const char *path, Point p1, Point p2);
+        GPAPI Image(std::string path, Point p1, Point p2);
 
         /**
          *
          * @return the filepath used by the image
          */
-        [[nodiscard]] GPAPI const char *getPath() const;
+        [[nodiscard]] GPAPI std::string getPath() const;
 
-        GPAPI Ref<Bitmap> getBitmap() const override;
+        [[nodiscard]] GPAPI Ref<Bitmap> getBitmap() const override;
 
     private:
-        const char *m_Path;
+        const std::string m_Path;
     };
 }
