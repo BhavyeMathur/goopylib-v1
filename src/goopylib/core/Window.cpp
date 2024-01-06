@@ -3,7 +3,7 @@
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/core/Buffer.h"
 
-#include "src/goopylib/events/MouseCodes.h"
+#include "src/platform/events/MouseCodes.h"
 
 // TODO some of the docstrings (especially the callback functions) are essentially plagiarised from GLFW's docs.
 
