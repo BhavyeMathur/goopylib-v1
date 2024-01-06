@@ -36,8 +36,9 @@ const char *textureFragmentShader =
         #include "src/goopylib/shader/texture.frag"
 
 namespace gp {
-    Renderer::Renderer(float width, float height)
-            : m_Camera(-width / 2, width / 2, -height / 2, height / 2) {
+    Renderer::Renderer(const Window& window, float width, float height)
+            : m_Camera(-width / 2, width / 2, -height / 2, height / 2),
+            m_Window(window) {
 
     }
 

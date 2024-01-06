@@ -16,7 +16,7 @@ namespace gp {
               m_WindowedXPos(m_xPos),
               m_WindowedYPos(m_yPos),
 
-              m_Renderer((float) m_Width, (float) m_Height) {
+              m_Renderer(*this, (float) m_Width, (float) m_Height) {
         GP_CORE_INFO("gp::Window::Window({0}, {1} '{2}')", m_Width, m_Height, m_Title);
 
         GP_CHECK_GT(width, 0, "Window width must be greater than 0");

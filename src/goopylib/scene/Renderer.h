@@ -53,6 +53,8 @@ namespace gp {
         friend class Window;
 
     public:
+        GPAPI Renderer (const Renderer&) = delete;
+
         GPAPI ~Renderer();
 
         GPAPI void init();
@@ -118,17 +120,17 @@ namespace gp {
 
         Ref<Shader> m_SolidShader;
         Ref<Shader> m_EllipseShader;
-        Ref<Shader> m_TextureShader;
+        Ref<Shader> m_TextureShader;  // TODO why are these Ref?
 
         Camera m_Camera;
         Ref<UniformBuffer> m_ShaderUniform;
 
+        const Window& m_Window;
+
         std::vector<Ref<Texture2D>> m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 
-        Renderer(float width, float height);
-
-        GPAPI Renderer (const Renderer&) = delete;
+        Renderer(const Window& window, float width, float height);
 
         void _createLineBuffer();
 
