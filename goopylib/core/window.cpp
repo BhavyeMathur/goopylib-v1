@@ -17,7 +17,7 @@
 #include "goopylib/scene/camera_module.h"
 
 #include "src/goopylib/core/Window.h"
-#include "src/goopylib/events/MouseCodes.h"
+#include "src/platform/eventsMouseCodes.h"
 
 #if GP_ERROR_CHECKING
 #define CHECK_ACTIVE(val) \
