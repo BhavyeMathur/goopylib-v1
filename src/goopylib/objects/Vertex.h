@@ -8,14 +8,12 @@ namespace gp {
     // TODO pack 3x32-bit float color data into 1x32-bit unsigned int
 
     struct SolidVertexAttrib {
+        float z = 0;
         RGBAf color;
-
-        SolidVertexAttrib(RGBAf color)
-                : color(color) {
-        }
     };
 
     struct EllipseVertexAttrib {
+        float z = 0;
         Point texCoord;
         RGBAf color;
     };

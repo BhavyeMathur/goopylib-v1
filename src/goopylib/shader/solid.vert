@@ -2,7 +2,8 @@ R""(
 #version 410 core
 
 layout (location = 0) in vec2 point;
-layout (location = 1) in vec4 color;
+layout (location = 1) in float z;
+layout (location = 2) in vec4 color;
 
 layout (std140) uniform Projection {
     mat4 ProjectionViewMatrix;
@@ -11,7 +12,7 @@ layout (std140) uniform Projection {
 out vec4 Color;
 
 void main() {
-    gl_Position = ProjectionViewMatrix * vec4(point, 0.0f, 1.0f);
+    gl_Position = ProjectionViewMatrix * vec4(point, z, 1.0f);
     Color = color;
 }
 )"";

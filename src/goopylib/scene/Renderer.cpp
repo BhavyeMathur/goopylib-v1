@@ -83,6 +83,7 @@ namespace gp {
         auto lineVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         lineVBO->setLayout({{ShaderDataType::Float2, "position"},
+                            {ShaderDataType::Float, "z"},
                             {ShaderDataType::Float4, "color"}});
         lineVAO->setVertexBuffer(lineVBO);
 
@@ -96,6 +97,7 @@ namespace gp {
         auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         triangleVBO->setLayout({{ShaderDataType::Float2, "position"},
+                                {ShaderDataType::Float, "z"},
                                 {ShaderDataType::Float4, "color"}});
         triangleVAO->setVertexBuffer(triangleVBO);
 
@@ -109,6 +111,7 @@ namespace gp {
         auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         quadVBO->setLayout({{ShaderDataType::Float2, "position"},
+                            {ShaderDataType::Float, "z"},
                             {ShaderDataType::Float4, "color"}});
         quadVAO->setVertexBuffer(quadVBO);
 
@@ -122,6 +125,7 @@ namespace gp {
         auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         ellipseVBO->setLayout({{ShaderDataType::Float2, "position"},
+                               {ShaderDataType::Float, "z"},
                                {ShaderDataType::Float2, "localCoord"},
                                {ShaderDataType::Float4, "color"}});
         ellipseVAO->setVertexBuffer(ellipseVBO);
@@ -136,6 +140,7 @@ namespace gp {
         auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
 
         imageVBO->setLayout({{ShaderDataType::Float2, "position"},
+                             {ShaderDataType::Float, "z"},
                              {ShaderDataType::Float4, "color"},
                              {ShaderDataType::Float2, "texCoord"},
                              {ShaderDataType::Int,    "texSlot"},});

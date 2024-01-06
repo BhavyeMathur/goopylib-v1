@@ -66,7 +66,7 @@ def check_version():
 
 
 if sys.platform == "darwin":
-    compile_args = ["-std=c++11", "-Wno-macro-redefined", "-Wno-unused-function", "-Wno-unknown-pragmas"]
+    compile_args = ["-std=c++17", "-Wno-macro-redefined", "-Wno-unused-function", "-Wno-unknown-pragmas"]
     compile_args += ["-Wno-deprecated-volatile"]  # suppress warnings caused by glm
 
     library_dirs = ["binaries/lib-macos"]

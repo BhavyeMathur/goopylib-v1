@@ -98,10 +98,10 @@ namespace gp {
         void GPAPI setTransparency(float v1, float v2, float v3, float v4);
 
     protected:
-        SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
-        SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
-        SolidVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
-        SolidVertexAttrib m_V4 = {{0.0f, 0.55f, 0.9f}};
+        SolidVertexAttrib m_V1 = {0, {0.0f, 0.55f, 0.9f}};
+        SolidVertexAttrib m_V2 = {0, {0.0f, 0.55f, 0.9f}};
+        SolidVertexAttrib m_V3 = {0, {0.0f, 0.55f, 0.9f}};
+        SolidVertexAttrib m_V4 = {0, {0.0f, 0.55f, 0.9f}};
 
         GPAPI void _update() override;
 

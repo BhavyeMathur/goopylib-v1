@@ -106,10 +106,10 @@ namespace gp {
         GPAPI void setTransparency(float v1, float v2, float v3, float v4);
 
     private:
-        EllipseVertexAttrib m_V1 = {{-1, -1},  {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V2 = {{1, -1},  {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V3 = {{1, 1},  {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V4 = {{-1, 1},  {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V1 = {1, {-1, -1},  {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V2 = {1, {1, -1},  {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V3 = {1, {1, 1},  {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V4 = {1, {-1, 1},  {0.0f, 0.55f, 0.9f}};
 
         float m_Radius1;
         float m_Radius2;
