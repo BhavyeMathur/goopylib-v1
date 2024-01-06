@@ -3,9 +3,30 @@ Module defining an Orthographic camera
 """
 
 from __future__ import annotations
+from typing import TypedDict
+
+from frozendict import FrozenOrderedDict
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.camera as _camera
+
+
+class CameraFrame(TypedDict):
+    """
+    A dictionary containing the left, right, top, and bottom values of a camera frame
+    """
+    left: float
+    right: float
+    top: float
+    bottom: float
+
+
+class CameraFrameSize(TypedDict):
+    """
+    A dictionary containing the width and height of a camera frame
+    """
+    width: float
+    height: float
 
 
 class Camera:
@@ -51,6 +72,62 @@ class Camera:
             TypeError: arguments must be numbers
         """
         self._camera.set_projection(left, right, bottom, top)
+
+    def get_visible_frame(self) -> CameraFrame:
+        """
+        Returns:
+            The currently visible camera frame with left, right, bottom, and top values as a dictionary
+        """
+        return FrozenOrderedDict(self._camera.get_visible_frame())
+
+    def get_projection_frame(self) -> CameraFrame:
+        """
+        Returns:
+            The camera projection frame (zoom=1) with left, right, bottom, and top values as a dictionary
+        """
+        return FrozenOrderedDict(self._camera.get_projection_frame())
+
+    def get_visible_width(self) -> float:
+        """
+        Returns:
+            The currently visible camera frame width
+        """
+        return self._camera.get_visible_width()
+
+    def get_visible_height(self) -> float:
+        """
+        Returns:
+            The currently visible camera frame height
+        """
+        return self._camera.get_visible_height()
+
+    def get_projection_width(self) -> float:
+        """
+        Returns:
+            The camera projection (zoom=1) width
+        """
+        return self._camera.get_projection_width()
+
+    def get_projection_height(self) -> float:
+        """
+        Returns:
+            The camera projection (zoom=1) height
+        """
+        return self._camera.get_projection_height()
+
+    def get_visible_size(self) -> CameraFrameSize:
+        """
+        Returns:
+            The currently visible camera frame width & height as a dictionary
+        """
+        return FrozenOrderedDict(self._camera.get_visible_size())
+
+    def get_projection_size(self) -> CameraFrameSize:
+        """
+        Returns:
+            The camera projection (zoom=1) width & height as a dictionary
+        """
+        return FrozenOrderedDict(self._camera.get_projection_size())
 
     def move(self, dx: float, dy: float) -> None:
         """

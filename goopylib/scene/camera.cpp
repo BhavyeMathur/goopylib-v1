@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "goopylib/debug.h"
 
 #define CAMERA_MODULE
@@ -70,6 +71,68 @@ namespace camera {
 
         self->camera->setProjection(left, right, bottom, top);
         Py_RETURN_NONE;
+    }
+
+    static PyObject *get_visible_frame(CameraObject *self, PyObject *args) {
+        auto val = self->camera->getVisibleFrame();
+
+        PyObject * return_dict = PyDict_New();
+
+        PyDict_SetItemString(return_dict, "left", PyFloat_FromDouble(val.left));
+        PyDict_SetItemString(return_dict, "right", PyFloat_FromDouble(val.right));
+        PyDict_SetItemString(return_dict, "top", PyFloat_FromDouble(val.top));
+        PyDict_SetItemString(return_dict, "bottom", PyFloat_FromDouble(val.bottom));
+
+        return return_dict;
+    }
+
+    static PyObject *get_projection_frame(CameraObject *self, PyObject *args) {
+        auto val = self->camera->getProjectionFrame();
+
+        PyObject * return_dict = PyDict_New();
+
+        PyDict_SetItemString(return_dict, "left", PyFloat_FromDouble(val.left));
+        PyDict_SetItemString(return_dict, "right", PyFloat_FromDouble(val.right));
+        PyDict_SetItemString(return_dict, "top", PyFloat_FromDouble(val.top));
+        PyDict_SetItemString(return_dict, "bottom", PyFloat_FromDouble(val.bottom));
+
+        return return_dict;
+    }
+
+    static PyObject *get_visible_width(CameraObject *self, PyObject *args) {
+        return PyFloat_FromDouble(self->camera->getVisibleWidth());
+    }
+
+    static PyObject *get_visible_height(CameraObject *self, PyObject *args) {
+        return PyFloat_FromDouble(self->camera->getVisibleHeight());
+    }
+
+    static PyObject *get_projection_width(CameraObject *self, PyObject *args) {
+        return PyFloat_FromDouble(self->camera->getProjectionWidth());
+    }
+
+    static PyObject *get_projection_height(CameraObject *self, PyObject *args) {
+        return PyFloat_FromDouble(self->camera->getProjectionHeight());
+    }
+
+    static PyObject *get_visible_size(CameraObject *self, PyObject *args) {
+        auto val = self->camera->getVisibleSize();
+
+        PyObject * return_dict = PyDict_New();
+        PyDict_SetItemString(return_dict, "width", PyFloat_FromDouble(val.width));
+        PyDict_SetItemString(return_dict, "height", PyFloat_FromDouble(val.height));
+
+        return return_dict;
+    }
+
+    static PyObject *get_projection_size(CameraObject *self, PyObject *args) {
+        auto val = self->camera->getProjectionSize();
+
+        PyObject * return_dict = PyDict_New();
+        PyDict_SetItemString(return_dict, "width", PyFloat_FromDouble(val.width));
+        PyDict_SetItemString(return_dict, "height", PyFloat_FromDouble(val.height));
+
+        return return_dict;
     }
 
     static PyObject *move(CameraObject *self, PyObject *args) {
@@ -190,14 +253,32 @@ namespace camera {
 // Camera Type
 namespace camera {
     static PyMethodDef methods[] = {
-            {"set_projection", (PyCFunction) set_projection, METH_VARARGS,
+            {"set_projection",        (PyCFunction) set_projection,        METH_VARARGS,
                     "Sets the projection of the camera"},
 
-            {"move",           (PyCFunction) move,           METH_VARARGS,
+            {"get_visible_frame",     (PyCFunction) get_visible_frame,     METH_NOARGS,
+                    "Gets the currently visible camera frame with left, right, bottom, and top values"},
+            {"get_visible_width",     (PyCFunction) get_visible_width,     METH_NOARGS,
+                    "Gets the currently visible camera frame width"},
+            {"get_visible_height",    (PyCFunction) get_visible_height,    METH_NOARGS,
+                    "Gets the currently visible camera frame height"},
+            {"get_visible_size",      (PyCFunction) get_visible_size,      METH_NOARGS,
+                    "Gets the currently visible camera frame size as width, height"},
+
+            {"get_projection_frame",  (PyCFunction) get_projection_frame,  METH_NOARGS,
+                    "Gets the camera projection frame (zoom=1) with left, right, bottom, and top values"},
+            {"get_projection_width",  (PyCFunction) get_projection_width,  METH_NOARGS,
+                    "Gets the camera projection (zoom=1) width"},
+            {"get_projection_height", (PyCFunction) get_projection_height, METH_NOARGS,
+                    "Gets the camera projection (zoom=1) height"},
+            {"get_projection_size",   (PyCFunction) get_projection_size,   METH_NOARGS,
+                    "Gets the camera projection (zoom=1) size as width, height"},
+
+            {"move",                  (PyCFunction) move,                  METH_VARARGS,
                     "Moves the camera"},
-            {"rotate",         (PyCFunction) rotate,         METH_O,
+            {"rotate",                (PyCFunction) rotate,                METH_O,
                     "Rotates the camera"},
-            {"zoomin",         (PyCFunction) zoomin,         METH_O,
+            {"zoomin",                (PyCFunction) zoomin,                METH_O,
                     "Zooms in the camera"},
 
             {nullptr}
@@ -279,7 +360,7 @@ PyMODINIT_FUNC PyInit_camera(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_camera()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&CameraModule);
+    PyObject * m = PyModule_Create(&CameraModule);
     if (m == nullptr) {
         return nullptr;
     }
@@ -287,7 +368,7 @@ PyMODINIT_FUNC PyInit_camera(void) {
     EXPOSE_PYOBJECT_CLASS(CameraType, "Camera");
 
     static void *PyCamera_API[PyCamera_API_pointers];
-    PyObject *c_api_object;
+    PyObject * c_api_object;
 
     PyCamera_API[Camera_pytype_NUM] = (void *) Camera_pytype;
     c_api_object = PyCapsule_New((void *) PyCamera_API, "goopylib.ext.camera._C_API", nullptr);

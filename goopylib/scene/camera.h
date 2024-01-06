@@ -24,6 +24,22 @@ namespace camera {
 namespace camera {
     static PyObject *set_projection(CameraObject *self, PyObject *args);
 
+    static PyObject *get_visible_frame(CameraObject *self, PyObject *args);
+
+    static PyObject *get_projection_frame(CameraObject *self, PyObject *args);
+    
+    static PyObject *get_visible_width(CameraObject *self, PyObject *args);
+    
+    static PyObject *get_visible_height(CameraObject *self, PyObject *args);
+    
+    static PyObject *get_projection_width(CameraObject *self, PyObject *args);
+    
+    static PyObject *get_projection_height(CameraObject *self, PyObject *args);
+
+    static PyObject *get_visible_size(CameraObject *self, PyObject *args);
+
+    static PyObject *get_projection_size(CameraObject *self, PyObject *args);
+
     static PyObject *move(CameraObject *self, PyObject *args);
 
     static PyObject *rotate(CameraObject *self, PyObject *arg);
