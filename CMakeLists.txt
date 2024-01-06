@@ -21,9 +21,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(OpenGL REQUIRED)
 
-if(POLICY CMP0148)
+if (POLICY CMP0148)
     cmake_policy(SET CMP0148 OLD)
-endif()
+endif ()
 find_package(PythonInterp REQUIRED)
 find_package(PythonLibs REQUIRED)
 
@@ -80,7 +80,12 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/maths/packing/Shelf.cpp
 
             src/goopylib/color/Color.cpp
-            src/goopylib/color/ColorConversions.cpp
+            src/goopylib/color/ColorRGB.cpp
+            src/goopylib/color/ColorHex.cpp
+            src/goopylib/color/ColorCMYK.cpp
+            src/goopylib/color/ColorHSL.cpp
+            src/goopylib/color/ColorHSV.cpp
+
             src/goopylib/color/Util.cpp
             src/goopylib/color/W3CX11.cpp
 
@@ -117,13 +122,14 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/shader/Shader.cpp
 
             vendor/stb/stb_image.cpp
-            vendor/stb/stb_image_write.cpp)
+            vendor/stb/stb_image_write.cpp
+            )
 
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
     target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
     target_link_libraries(${PROJECT_NAME} "-framework IOKit")
-endif()
+endif ()
 
 set(GLFW_DIR vendor/GLFW)
 set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
@@ -135,10 +141,10 @@ target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
 
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
     add_executable(main main.cpp)
     target_link_libraries(main goopylib)
-endif()
+endif ()
 
 add_subdirectory(examples/BrickBreaker)
 add_subdirectory(examples/Minecraft)

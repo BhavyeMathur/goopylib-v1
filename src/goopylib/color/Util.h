@@ -1,7 +1,11 @@
 #pragma once
 
 #include "gp.h"
-#include "Color.h"
+#include "ColorRGB.h"
+#include "ColorHex.h"
+#include "ColorCMYK.h"
+#include "ColorHSL.h"
+#include "ColorHSV.h"
 
 namespace gp {
     /**

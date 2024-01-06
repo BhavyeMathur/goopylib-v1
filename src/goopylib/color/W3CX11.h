@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gp.h"
-#include "Color.h"
+#include "ColorHex.h"
 #include <unordered_map>
 
 namespace gp {
