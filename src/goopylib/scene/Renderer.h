@@ -118,13 +118,6 @@ namespace gp {
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
 
-        Ref<Shader> m_SolidShader;
-        Ref<Shader> m_EllipseShader;
-        Ref<Shader> m_TextureShader;  // TODO why are these Ref?
-
-        Camera m_Camera;
-        Ref<UniformBuffer> m_ShaderUniform;
-
         const Window& m_Window;
 
         std::vector<Ref<Texture2D>> m_Textures;

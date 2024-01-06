@@ -69,6 +69,8 @@ namespace gp {
 
         friend class Image;
 
+        friend class Renderer;
+
     public:
         /**
          * Creates a window that can be used to draw graphics and widgets.
@@ -1048,6 +1050,13 @@ namespace gp {
         int m_KeyModifiers = 0;  // check if the shift, control, alt, and super keys are pressed
 
         Renderer m_Renderer;
+
+        Ref<Shader> m_SolidShader;
+        Ref<Shader> m_EllipseShader;
+        Ref<Shader> m_TextureShader;  // TODO why are these Ref?
+
+        Camera m_Camera;
+        Ref<UniformBuffer> m_ShaderUniform;
 
         std::function<void(Window *window, int width, int height)> m_ResizeCallback;
         std::function<void(Window *window)> m_CloseCallback;

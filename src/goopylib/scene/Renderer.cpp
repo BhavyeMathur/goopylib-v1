@@ -11,34 +11,9 @@
 #include "src/goopylib/objects/Ellipse.h"
 #include "src/goopylib/objects/TexturedQuad.h"
 
-const char *solidVertexShader =
-
-        #include "src/goopylib/shader/solid.vert"
-
-const char *solidFragmentShader =
-
-        #include "src/goopylib/shader/solid.frag"
-
-const char *ellipseVertexShader =
-
-        #include "src/goopylib/shader/ellipse.vert"
-
-const char *ellipseFragmentShader =
-
-        #include "src/goopylib/shader/ellipse.frag"
-
-const char *textureVertexShader =
-
-        #include "src/goopylib/shader/texture.vert"
-
-const char *textureFragmentShader =
-
-        #include "src/goopylib/shader/texture.frag"
-
 namespace gp {
     Renderer::Renderer(const Window& window, float width, float height)
-            : m_Camera(-width / 2, width / 2, -height / 2, height / 2),
-            m_Window(window) {
+            : m_Window(window) {
 
     }
 
@@ -51,30 +26,10 @@ namespace gp {
         Texture2D::init();
         TextureAtlas::init();
 
-        GP_CORE_TRACE("Rendering::init() initializing Solid Shader");
-        m_SolidShader = CreateRef<Shader>(solidVertexShader, solidFragmentShader);
-
-        GP_CORE_TRACE("Rendering::init() initializing Ellipse Shader");
-        m_EllipseShader = CreateRef<Shader>(ellipseVertexShader, ellipseFragmentShader);
-
         _createLineBuffer();
         _createTriangleBuffer();
         _createQuadBuffer();
         _createEllipseBuffer();
-
-        int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
-                                9, 10, 11, 12, 13, 14, 15};
-
-        GP_CORE_TRACE("Rendering::init() initializing texture Shader");
-        m_TextureShader = CreateRef<Shader>(textureVertexShader, textureFragmentShader);
-        m_TextureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
-
-        m_ShaderUniform = Ref<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
-        m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1);
-
-        m_SolidShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_EllipseShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_TextureShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
     }
 
     void Renderer::_createLineBuffer() {
@@ -501,10 +456,10 @@ namespace gp {
     void Renderer::flush() {
         GP_CORE_TRACE_ALL("gp::Renderer::flush()");
 
-        m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
+        m_Window.m_ShaderUniform->setData(&m_Window.m_Camera.m_ProjectionViewMatrix, 1, 0);
 
         if (m_LineBatch.indices or m_TriangleBatch.indices or m_QuadBatch.indices) {
-            m_SolidShader->bind();
+            m_Window.m_SolidShader->bind();
         }
 
         if (m_LineBatch.indices) {
@@ -527,7 +482,7 @@ namespace gp {
             _updateRenderingObjectEBO(m_EllipseBatch);
             _updateRenderingObjectVBO(m_EllipseBatch);
 
-            m_EllipseShader->bind();
+            m_Window.m_EllipseShader->bind();
             m_EllipseBatch.VAO->draw(m_EllipseBatch.indices, m_EllipseBatch.mode);
         }
 
@@ -538,7 +493,7 @@ namespace gp {
             textureSlotOffset += Texture2D::getTextureSlots();
 
             if (batch.indices) {
-                m_TextureShader->bind();
+                m_Window.m_TextureShader->bind();
 
                 _updateRenderingObjectEBO(batch);
                 _updateRenderingObjectVBO(batch);

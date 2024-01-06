@@ -73,9 +73,9 @@ namespace gp {
 namespace gp {
     class UniformBuffer final : public Buffer {
 
-        friend class Renderer;
-
     public:
+        GPAPI UniformBuffer(BufferLayout &&layout);
+
         GPAPI ~UniformBuffer() override;
 
         GPAPI void bind() const;
@@ -92,7 +92,5 @@ namespace gp {
 
     private:
         BufferLayout m_Layout;
-
-        UniformBuffer(BufferLayout &&layout);
     };
 }

@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 6
+#define GP_LOGGING_LEVEL 3
 
 #include "src/goopylib/shader/Shader.h"
 #include "src/goopylib/core/Buffer.h"
