@@ -7,6 +7,18 @@
 
 
 namespace gp {
+    struct CameraFrame {
+        float left;
+        float top;
+        float right;
+        float bottom;
+    };
+
+    struct CameraFrameSize {
+        float width;
+        float height;
+    };
+
     /**
      * An orthographic camera associated with a Window.
      */
@@ -39,6 +51,46 @@ namespace gp {
          * @param top top clipping plane
          */
         GPAPI void setProjection(float left, float right, float bottom, float top);
+
+        /**
+         * Gets the currently visible camera frame with left, right, bottom, and top values
+         */
+        [[nodiscard]] GPAPI CameraFrame getVisibleFrame() const;
+
+        /**
+         * Gets the camera projection frame (zoom=1) with left, right, bottom, and top values
+         */
+        [[nodiscard]] GPAPI CameraFrame getProjectionFrame() const;
+
+        /**
+         * Gets the currently visible camera frame width
+         */
+        [[nodiscard]] GPAPI float getVisibleWidth() const;
+
+        /**
+         * Gets the currently visible camera frame height
+         */
+        [[nodiscard]] GPAPI float getVisibleHeight() const;
+
+        /**
+         * Gets the camera projection (zoom=1) width
+         */
+        [[nodiscard]] GPAPI float getProjectionWidth() const;
+
+        /**
+         * Gets the camera projection (zoom=1) height
+         */
+        [[nodiscard]] GPAPI float getProjectionHeight() const;
+
+        /**
+         * Gets the currently visible camera frame size as width, height
+         */
+        [[nodiscard]] GPAPI CameraFrameSize getVisibleSize() const;
+
+        /**
+         * Gets the camera projection (zoom=1) size as width, height
+         */
+        [[nodiscard]] GPAPI CameraFrameSize getProjectionSize() const;
 
         /**
          * Moves (translate) the camera's position

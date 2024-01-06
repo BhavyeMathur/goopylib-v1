@@ -29,6 +29,38 @@ namespace gp {
         m_InverseProjectionViewMatrix = glm::inverse(m_ProjectionViewMatrix);
     }
 
+    CameraFrame Camera::getVisibleFrame() const {
+        return {m_Left / m_Zoom, m_Right / m_Zoom, m_Bottom / m_Zoom, m_Top / m_Zoom};
+    }
+
+    CameraFrame Camera::getProjectionFrame() const {
+        return {m_Left, m_Right, m_Bottom, m_Top};
+    }
+
+    float Camera::getVisibleWidth() const {
+        return abs(m_Left - m_Right) / m_Zoom;
+    }
+
+    float Camera::getVisibleHeight() const {
+        return abs(m_Top - m_Bottom) / m_Zoom;
+    }
+
+    float Camera::getProjectionWidth() const {
+        return abs(m_Left - m_Right);
+    }
+
+    float Camera::getProjectionHeight() const {
+        return abs(m_Top - m_Bottom);
+    }
+
+    CameraFrameSize Camera::getVisibleSize() const {
+        return {getVisibleWidth(), getVisibleHeight()};
+    }
+
+    CameraFrameSize Camera::getProjectionSize() const {
+        return {getProjectionWidth(), getProjectionHeight()};
+    }
+
     void Camera::update() {
         auto transform = glm::translate(glm::mat4(1.0f), m_Position);
         transform *= glm::rotate(glm::mat4(1.0f), m_RotationRadians, {0, 0, 1});
