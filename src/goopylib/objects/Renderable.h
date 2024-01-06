@@ -289,15 +289,6 @@ namespace gp {
         Point *m_Points = nullptr;
         uint32_t m_Vertices;
 
-        Renderable(Point position, std::initializer_list<Point> points);
-
-        Renderable(std::initializer_list<Point> points);
-
-        void update();
-
-    protected:
-        void _move(float x, float y);
-
         Point m_Position = {0, 0};
         float m_Width;
         float m_Height;
@@ -320,12 +311,20 @@ namespace gp {
 
         float m_ZPosition = 0;
 
+        GPAPI Renderable(Point position, std::initializer_list<Point> points);
+
+        GPAPI Renderable(std::initializer_list<Point> points);
+
+        GPAPI void update();
+
+        GPAPI void _move(float x, float y);
+
     private:
         GPAPI void _calculateAttributes();
 
         [[nodiscard]] GPAPI virtual bool _contains(float x, float y) const;
 
-        GPAPI virtual uint32_t _draw(Window &window) = 0;
+        [[nodiscard]] GPAPI virtual uint32_t _draw(Window &window) = 0;
 
         GPAPI virtual void _destroy() const = 0;
 

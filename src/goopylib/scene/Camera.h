@@ -191,6 +191,6 @@ namespace gp {
         float m_RotationRadians = 0;
         float m_Zoom = 1;
 
-        void update();
+        GPAPI void _update();
     };
 }

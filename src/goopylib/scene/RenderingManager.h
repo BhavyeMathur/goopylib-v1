@@ -58,12 +58,12 @@ namespace gp {
         /**
          * @return the background color of the Window
          */
-        GPAPI Color &getBackground();
+        [[nodiscard]] GPAPI Color &getBackground();
 
         /**
          * @return the Camera object associated with the Window
          */
-        GPAPI Camera &getCamera();
+        [[nodiscard]] GPAPI Camera &getCamera();
 
         /**
          * Converts coordinates in screen space to world space.
@@ -74,7 +74,7 @@ namespace gp {
          * @param p a struct with (x, y) in screen coordinates
          * @return a struct with (x, y) in world coordinates
          */
-        GPAPI Point toWorld(Point p);
+        [[nodiscard]] GPAPI Point toWorld(Point p);
 
         /**
          * Converts coordinates in world space to screen space.
@@ -84,33 +84,33 @@ namespace gp {
          * @param p a struct with (x, y) in world coordinates
          * @return a struct with (x, y) in screen coordinates
          */
-        GPAPI Point toScreen(Point p);
+        [[nodiscard]] GPAPI Point toScreen(Point p);
 
-        GPAPI uint32_t drawLine(Line *object);
+        [[nodiscard]] GPAPI uint32_t drawLine(Line *object);
 
         GPAPI void destroyLine(uint32_t ID);
 
         GPAPI void updateLine(uint32_t ID, const Line *object);
 
-        GPAPI uint32_t drawTriangle(Triangle *object);
+        [[nodiscard]] GPAPI uint32_t drawTriangle(Triangle *object);
 
         GPAPI void destroyTriangle(uint32_t ID);
 
         GPAPI void updateTriangle(uint32_t ID, const Triangle *object);
 
-        GPAPI uint32_t drawQuad(Quad *object);
+        [[nodiscard]] GPAPI uint32_t drawQuad(Quad *object);
 
         GPAPI void destroyQuad(uint32_t ID);
 
         GPAPI void updateQuad(uint32_t ID, const Quad *object);
 
-        GPAPI uint32_t drawEllipse(Ellipse *object);
+        [[nodiscard]] GPAPI uint32_t drawEllipse(Ellipse *object);
 
         GPAPI void destroyEllipse(uint32_t ID);
 
         GPAPI void updateEllipse(uint32_t ID, const Ellipse *object);
 
-        GPAPI uint32_t drawTexturedQuad(TexturedQuad *object);
+        [[nodiscard]] GPAPI uint32_t drawTexturedQuad(TexturedQuad *object);
 
         GPAPI void destroyTexturedQuad(uint32_t ID);
 

@@ -61,7 +61,7 @@ namespace gp {
         return {getProjectionWidth(), getProjectionHeight()};
     }
 
-    void Camera::update() {
+    void Camera::_update() {
         auto transform = glm::translate(glm::mat4(1.0f), m_Position);
         transform *= glm::rotate(glm::mat4(1.0f), m_RotationRadians, {0, 0, 1});
 
@@ -74,7 +74,7 @@ namespace gp {
         m_Position.x += dx;
         m_Position.y += dy;
 
-        update();
+        _update();
     }
 
     void Camera::setX(float x) {
@@ -105,7 +105,7 @@ namespace gp {
         m_RotationDegrees += angle;
         m_RotationRadians = m_RotationDegrees / 57.2957795131f;
 
-        update();
+        _update();
     }
 
     void Camera::setRotation(float angle) {

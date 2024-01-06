@@ -47,7 +47,7 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        void GPAPI setColor(const char *hexstring, float alpha = 1);
+        GPAPI void setColor(const char *hexstring, float alpha = 1);
 
         /**
          * Sets the fill color of the object
@@ -58,7 +58,7 @@ namespace gp {
          *
          * @throws std::invalid_argument invalid hexstring
          */
-        void GPAPI setColor(const char *hex1, const char *hex2, const char *hex3);
+        GPAPI void setColor(const char *hex1, const char *hex2, const char *hex3);
 
         /**
          * Sets the fill color of the object
@@ -71,7 +71,7 @@ namespace gp {
          * @throws std::invalid_argument RGB must be between 0-255
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        void GPAPI setColor(int red, int green, int blue, float alpha = 1);
+        GPAPI void setColor(int red, int green, int blue, float alpha = 1);
 
         /**
          * Sets the transparency of the object
@@ -98,7 +98,7 @@ namespace gp {
         SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
 
-        GPAPI uint32_t _draw(Window &window) override;
+        [[nodiscard]] GPAPI uint32_t _draw(Window &window) override;
 
         GPAPI void _destroy() const override;
 

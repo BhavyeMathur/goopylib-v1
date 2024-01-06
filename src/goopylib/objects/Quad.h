@@ -28,7 +28,7 @@ namespace gp {
          * Sets the fill color of the object
          * @param color the color of the object
          */
-        void GPAPI setColor(const Color& color);
+        GPAPI void setColor(const Color& color);
 
         /**
          * Sets the fill color of the object
@@ -38,7 +38,7 @@ namespace gp {
          * @param color3 the color of the 3rd vertex
          * @param color4 the color of the 4th vertex
          */
-        void GPAPI setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
+        GPAPI void setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
 
         /**
          * Sets the fill color of the object
@@ -49,7 +49,7 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        void GPAPI setColor(const char *hexstring, float alpha = 1);
+        GPAPI void setColor(const char *hexstring, float alpha = 1);
 
         /**
          * Sets the fill color of the object
@@ -61,7 +61,7 @@ namespace gp {
          *
          * @throws std::invalid_argument invalid hexstring
          */
-        void GPAPI setColor(const char *hex1, const char *hex2, const char *hex3, const char *hex4);
+        GPAPI void setColor(const char *hex1, const char *hex2, const char *hex3, const char *hex4);
 
         /**
          * Sets the fill color of the object
@@ -74,7 +74,7 @@ namespace gp {
          * @throws std::invalid_argument RGB must be between 0-255
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        void GPAPI setColor(int red, int green, int blue, float alpha = 1);
+        GPAPI void setColor(int red, int green, int blue, float alpha = 1);
 
         /**
          * Sets the transparency of the object
@@ -83,7 +83,7 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        void GPAPI setTransparency(float value) override;
+        GPAPI void setTransparency(float value) override;
 
         /**
          * Sets the transparency of the object
@@ -95,7 +95,7 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        void GPAPI setTransparency(float v1, float v2, float v3, float v4);
+        GPAPI void setTransparency(float v1, float v2, float v3, float v4);
 
     protected:
         SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
