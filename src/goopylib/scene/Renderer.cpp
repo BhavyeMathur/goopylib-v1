@@ -3,6 +3,8 @@
 #include "Renderer.h"
 
 #include "src/goopylib/shader/Shader.h"
+#include "src/goopylib/core/VertexArray.h"
+#include "src/goopylib/texture/Texture2D.h"
 
 #include "src/goopylib/objects/Line.h"
 #include "src/goopylib/objects/Triangle.h"

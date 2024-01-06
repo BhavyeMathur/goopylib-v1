@@ -5,8 +5,6 @@
 namespace gp {
     Window::Window(int width, int height, const char *title)
             : RenderingManager(*this, width, height),
-              m_Width(width),
-              m_Height(height),
               m_Title(title),
 
               m_xPos(50),

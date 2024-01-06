@@ -132,34 +132,6 @@ namespace gp {
 
         /* Getters & Setters -----------------------------------------------------------------------------------------*/
 
-        // Width
-        /**
-         * @param value in screen coordinates
-         *
-         * @throws std::invalid_argument value must be greater than 0
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        GPAPI void setWidth(int value);
-
-        /**
-         * @return in screen coordinates
-         */
-        [[nodiscard]] GPAPI int getWidth() const;
-
-        // Height
-        /**
-         * @param value in screen coordinates
-         *
-         * @throws std::invalid_argument value must be greater than 0
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        GPAPI void setHeight(int value);
-
-        /**
-         * @return in screen coordinates
-         */
-        [[nodiscard]] GPAPI int getHeight() const;
-
         // Title
         /**
          * @param value the title string to show in the title menu
@@ -986,33 +958,6 @@ namespace gp {
          */
         GPAPI void setRightClickCallback(std::function<void(Window *window, bool pressed)> callback);
 
-        /* Other Window Methods --------------------------------------------------------------------------------------*/
-
-        /**
-         * @return the Camera object associated with the Window
-         */
-        GPAPI Camera &getCamera();
-
-        /**
-         * Converts coordinates in screen space to world space.
-         * \n\n
-         * (0, 0) is the upper-left of the window in screen space\n
-         * (width, height) is the lower-right in screen space
-         *
-         * @param p a struct with (x, y) in screen coordinates
-         * @return a struct with (x, y) in world coordinates
-         */
-        GPAPI Point toWorld(Point p);
-
-        /**
-         * Converts coordinates in world space to screen space.
-         * \n\n
-         * With the default camera projection, (0, 0) is the center in world space.
-         *
-         * @param p a struct with (x, y) in world coordinates
-         * @return a struct with (x, y) in screen coordinates
-         */
-        GPAPI Point toScreen(Point p);
 
         /* Static Methods --------------------------------------------------------------------------------------------*/
 
@@ -1027,8 +972,6 @@ namespace gp {
         GPAPI static void destroyAll();
 
     private:
-        int m_Width;
-        int m_Height;
         const char *m_Title;
 
         int m_xPos;
@@ -1074,61 +1017,61 @@ namespace gp {
 
         static std::vector<Window *> s_Instances;
 
-        void super();
+        GPAPI void super();
 
         // Callback Functions
-        void onResize(int width, int height);
+        GPAPI void onResize(int width, int height);
 
-        void onClose();
+        GPAPI void onClose();
 
-        void onDestroy();
+        GPAPI void onDestroy();
 
-        void onMove(int xPos, int yPos);
+        GPAPI void onMove(int xPos, int yPos);
 
-        void onMinimize(bool iconified);
+        GPAPI void onMinimize(bool iconified);
 
-        void onMaximize(bool maximized);
+        GPAPI void onMaximize(bool maximized);
 
-        void onFocus(bool focused);
+        GPAPI void onFocus(bool focused);
 
-        void onRefreshRequired();
+        GPAPI void onRefreshRequired();
 
-        void onContentScale(float xScale, float yScale);
+        GPAPI void onContentScale(float xScale, float yScale);
 
-        void onFramebufferSize(int width, int height);
+        GPAPI void onFramebufferSize(int width, int height);
 
-        void onMouseMotion(float xPos, float yPos);
+        GPAPI void onMouseMotion(float xPos, float yPos);
 
-        void onMouseEnter(bool entered);
+        GPAPI void onMouseEnter(bool entered);
 
-        void onScroll(float xScroll, float yScroll);
+        GPAPI void onScroll(float xScroll, float yScroll);
 
-        void onKeyPress(int key, int scancode, int action, int mods);
+        GPAPI void onKeyPress(int key, int scancode, int action, int mods);
 
-        void onMousePress(int button, int action, int mods);
+        GPAPI void onMousePress(int button, int action, int mods);
 
-        void _swapBuffers() const;
+        GPAPI void _swapBuffers() const;
 
-        void _destroy() const;
+        GPAPI void _destroy() const;
 
-        void _updateSize() const;
+        GPAPI void _updateSize() const override;
 
-        void _updatePosition() const;
+        GPAPI void _updatePosition() const;
 
-        void _updateBackground() const;
+        GPAPI void _updateBackground() const;
 
-        void _updateSizeLimits() const;
+        GPAPI void _updateSizeLimits() const;
 
-        void _updateAspectRatio(int numerator, int denominator) const;
+        GPAPI void _updateAspectRatio(int numerator, int denominator) const;
 
-        void _fullscreen() const;
+        GPAPI void _fullscreen() const;
 
-        void _unfullscreen(int width, int height, int xPos, int yPos) const;
+        GPAPI void _unfullscreen(int width, int height, int xPos, int yPos) const;
 
-        void _restore() const;
+        GPAPI void _restore() const;
 
-        void _setKeyCallback() const;
+        GPAPI void _setKeyCallback() const;
 
-        void _setMouseButtonCallback() const;
+        GPAPI void _setMouseButtonCallback() const;
     };
 }

@@ -2,10 +2,13 @@
 
 #include "gp.h"
 #include "src/goopylib/scene/Renderer.h"
+#include "src/goopylib/scene/Camera.h"
 
 
 namespace gp {
     class Shader;
+
+    class UniformBuffer;
 
     class RenderingManager {
 
@@ -15,6 +18,60 @@ namespace gp {
         GPAPI RenderingManager(const Window&, int width, int height);
 
         GPAPI void render();
+
+        // Width
+        /**
+         * @param value in screen coordinates
+         *
+         * @throws std::invalid_argument value must be greater than 0
+         * @throws std::runtime_error cannot set the attribute of a destroyed window
+         */
+        GPAPI void setWidth(int value);
+
+        /**
+         * @return in screen coordinates
+         */
+        [[nodiscard]] GPAPI int getWidth() const;
+
+        // Height
+        /**
+         * @param value in screen coordinates
+         *
+         * @throws std::invalid_argument value must be greater than 0
+         * @throws std::runtime_error cannot set the attribute of a destroyed window
+         */
+        GPAPI void setHeight(int value);
+
+        /**
+         * @return in screen coordinates
+         */
+        [[nodiscard]] GPAPI int getHeight() const;
+
+        /**
+         * @return the Camera object associated with the Window
+         */
+        GPAPI Camera &getCamera();
+
+        /**
+         * Converts coordinates in screen space to world space.
+         * \n\n
+         * (0, 0) is the upper-left of the window in screen space\n
+         * (width, height) is the lower-right in screen space
+         *
+         * @param p a struct with (x, y) in screen coordinates
+         * @return a struct with (x, y) in world coordinates
+         */
+        GPAPI Point toWorld(Point p);
+
+        /**
+         * Converts coordinates in world space to screen space.
+         * \n\n
+         * With the default camera projection, (0, 0) is the center in world space.
+         *
+         * @param p a struct with (x, y) in world coordinates
+         * @return a struct with (x, y) in screen coordinates
+         */
+        GPAPI Point toScreen(Point p);
 
         GPAPI uint32_t drawLine(Line *object);
 
@@ -47,11 +104,15 @@ namespace gp {
         GPAPI void updateTexturedQuad(uint32_t ID, const TexturedQuad *object);
 
     protected:
-        Camera m_Camera;
+        int m_Width;
+        int m_Height;
 
         GPAPI void init();
 
+        GPAPI virtual void _updateSize() const = 0;
+
     private:
+        Camera m_Camera;
         Renderer m_Renderer;
 
         Ref<Shader> m_SolidShader;

@@ -43,4 +43,13 @@
 #define CreateScope std::make_unique
 
 #include "src/config.h"
+
+#if GP_USING_OPENGL
+#define GP_DRAW_MODE_TRIANGLES GL_TRIANGLES
+#define GP_DRAW_MODE_LINES GL_LINES
+#else
+#define GP_DRAW_MODE_TRIANGLES
+#define GP_DRAW_MODE_LINES
+#endif
+
 #include "src/goopylib/debug/LogMacros.h"

@@ -1,13 +1,16 @@
 #include "RenderingManager.h"
 
+#include "src/goopylib/core/Buffer.h"
 #include "src/goopylib/texture/TextureAtlas.h"
 #include "src/goopylib/shader/ShaderFiles.h"
 #include "src/goopylib/objects/Line.h"
 
 namespace gp {
     RenderingManager::RenderingManager(const Window& window, int width, int height) :
-            m_Renderer(window),
-            m_Camera(-width / 2, width / 2, -height / 2, height / 2) {
+            m_Width(width),
+            m_Height(height),
+            m_Camera(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f),
+            m_Renderer(window) {
 
     }
 
@@ -42,6 +45,74 @@ namespace gp {
     void RenderingManager::render() {
          m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
          m_Renderer.flush();
+    }
+}
+
+namespace gp {
+    // Width
+    void RenderingManager::setWidth(int value) {
+        GP_CORE_DEBUG("gp::RenderingManager::setWidth({1}) - '{0}'", m_Title, value);
+
+        GP_CHECK_GT(value, 0, "Window width must be greater than 0");
+
+        m_Width = value;
+        _updateSize();
+    }
+
+    int RenderingManager::getWidth() const {
+        GP_CORE_TRACE("gp::RenderingManager::getWidth() - '{0}'", m_Title);
+        return m_Width;
+    }
+
+    // Height
+    void RenderingManager::setHeight(int value) {
+        GP_CORE_DEBUG("gp::RenderingManager::setHeight({1}) - '{0}'", m_Title, value);
+
+        GP_CHECK_GT(value, 0, "Window height must be greater than 0");
+
+        m_Height = value;
+        _updateSize();
+    }
+
+    int RenderingManager::getHeight() const {
+        GP_CORE_TRACE("gp::RenderingManager::getHeight() - '{0}'", m_Title);
+        return m_Height;
+    }
+    
+    Camera &RenderingManager::getCamera() {
+        GP_CORE_TRACE("gp::RenderingManager::getCamera() - '{0}'", m_Title);
+        return m_Camera;
+    }
+
+    Point RenderingManager::toWorld(Point p) {
+        GP_CORE_TRACE_ALL("gp::RenderingManager::toWorld({1}, {2}) - '{0}'", m_Title, p.x, p.y);
+
+        p.x /= (float) (m_Width >> 1);
+        p.y /= (float) (m_Height >> 1);
+
+        p.x -= 1;
+        p.y = 1 - p.y;
+
+        auto pos = m_Camera.m_InverseProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
+
+        return {pos.x, pos.y};
+    }
+
+    Point RenderingManager::toScreen(Point p) {
+        GP_CORE_TRACE_ALL("gp::RenderingManager::toScreen({1}, {2}) - '{0}'", m_Title, p.x, p.y);
+
+        auto pos = m_Camera.m_ProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
+
+        const auto halfWidth = (float) (m_Width >> 1);
+        const auto halfHeight = (float) (m_Height >> 1);
+
+        pos.x *= halfWidth;
+        pos.x += halfWidth;
+
+        pos.y *= halfHeight;
+        pos.y = halfHeight - pos.y;
+
+        return {pos.x, pos.y};
     }
 }
 

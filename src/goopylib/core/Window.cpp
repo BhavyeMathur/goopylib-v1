@@ -66,36 +66,6 @@ namespace gp {
 
 // Window getters & setters
 namespace gp {
-    // Width
-    void Window::setWidth(int value) {
-        GP_CORE_DEBUG("gp::Window::setWidth({1}) - '{0}'", m_Title, value);
-
-        GP_CHECK_GT(value, 0, "Window width must be greater than 0");
-
-        m_Width = value;
-        _updateSize();
-    }
-
-    int Window::getWidth() const {
-        GP_CORE_TRACE("gp::Window::getWidth() - '{0}'", m_Title);
-        return m_Width;
-    }
-
-    // Height
-    void Window::setHeight(int value) {
-        GP_CORE_DEBUG("gp::Window::setHeight({1}) - '{0}'", m_Title, value);
-
-        GP_CHECK_GT(value, 0, "Window height must be greater than 0");
-
-        m_Height = value;
-        _updateSize();
-    }
-
-    int Window::getHeight() const {
-        GP_CORE_TRACE("gp::Window::getHeight() - '{0}'", m_Title);
-        return m_Height;
-    }
-
     const char *Window::getTitle() const {
         GP_CORE_TRACE("gp::Window::getTitle() - '{0}'", m_Title);
         return m_Title;
@@ -482,44 +452,6 @@ namespace gp {
 
     void Window::setRightClickCallback(std::function<void(Window *, bool)> callback) {
         setMouseButtonCallback(GP_MOUSE_RIGHT_BUTTON, std::move(callback));
-    }
-}
-
-namespace gp {
-    Camera &Window::getCamera() {
-        GP_CORE_TRACE("gp::Window::getCamera() - '{0}'", m_Title);
-        return m_Camera;
-    }
-
-    Point Window::toWorld(Point p) {
-        GP_CORE_TRACE_ALL("gp::Window::toWorld({1}, {2}) - '{0}'", m_Title, p.x, p.y);
-
-        p.x /= (float) (m_Width >> 1);
-        p.y /= (float) (m_Height >> 1);
-
-        p.x -= 1;
-        p.y = 1 - p.y;
-
-        auto pos = m_Camera.m_InverseProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
-
-        return {pos.x, pos.y};
-    }
-
-    Point Window::toScreen(Point p) {
-        GP_CORE_TRACE_ALL("gp::Window::toScreen({1}, {2}) - '{0}'", m_Title, p.x, p.y);
-
-        auto pos = m_Camera.m_ProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
-
-        const auto halfWidth = (float) (m_Width >> 1);
-        const auto halfHeight = (float) (m_Height >> 1);
-
-        pos.x *= halfWidth;
-        pos.x += halfWidth;
-
-        pos.y *= halfHeight;
-        pos.y = halfHeight - pos.y;
-
-        return {pos.x, pos.y};
     }
 }
 

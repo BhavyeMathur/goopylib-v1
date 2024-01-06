@@ -3,13 +3,6 @@
 #include "gp.h"
 #include "Buffer.h"
 
-#if GP_USING_OPENGL
-#define GP_DRAW_MODE_TRIANGLES GL_TRIANGLES
-#define GP_DRAW_MODE_LINES GL_LINES
-#else
-#define GP_DRAW_MODE_TRIANGLES
-#define GP_DRAW_MODE_LINES
-#endif
 
 namespace gp {
     class Window;

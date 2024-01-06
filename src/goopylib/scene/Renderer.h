@@ -4,9 +4,14 @@
 #include <unordered_map>
 
 #include "src/goopylib/objects/Vertex.h"
-#include "src/goopylib/texture/Texture2D.h"
-#include "src/goopylib/core/VertexArray.h"
-#include "src/goopylib/scene/Camera.h"
+
+#if __APPLE__
+#include <OpenGL/gl.h>
+#endif
+
+#if GP_USING_GLAD
+#include <glad/glad.h>
+#endif
 
 
 namespace gp {
@@ -21,6 +26,14 @@ namespace gp {
     class TexturedQuad;
 
     class Shader;
+
+    class Texture2D;
+
+    class Bitmap;
+
+    class VertexArray;
+
+    class Window;
 
 
     struct TextureData {
