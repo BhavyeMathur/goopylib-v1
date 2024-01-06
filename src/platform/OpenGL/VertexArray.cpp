@@ -65,7 +65,7 @@ namespace gp {
         const BufferLayout layout = vertexBuffer->getLayout();
 
         for (const BufferElement element: layout) {
-            ShaderDataType type = element.m_Type;
+            ShaderDataType type = element.getDataType();
 
             switch (type) {
                 case ShaderDataType::Float:
@@ -82,9 +82,9 @@ namespace gp {
                     glVertexAttribPointer(attrIndex,
                                           element.getCount(),
                                           GL_FLOAT,
-                                          element.m_Normalized ? GL_TRUE : GL_FALSE,
+                                          element.isNormalised() ? GL_TRUE : GL_FALSE,
                                           layout.m_Stride,
-                                          (const void *) element.m_Offset);
+                                          (const void *) element.getOffset());
                     attrIndex++;
                     break;
                 }
@@ -103,7 +103,7 @@ namespace gp {
                                            element.getCount(),
                                            shaderOpenGLType(type),
                                            layout.m_Stride,
-                                           (const void *) element.m_Offset);
+                                           (const void *) element.getOffset());
                     attrIndex++;
                     break;
                 }
@@ -111,7 +111,7 @@ namespace gp {
                 case ShaderDataType::Mat4: {
 
                     GLenum glType = shaderOpenGLType(type);
-                    bool normalized = element.m_Normalized ? GL_TRUE : GL_FALSE;
+                    bool normalized = element.isNormalised() ? GL_TRUE : GL_FALSE;
                     int32_t count = element.getCount();
                     int32_t stride = layout.m_Stride;
 
@@ -128,7 +128,7 @@ namespace gp {
                                               glType,
                                               normalized,
                                               stride,
-                                              (const void *) (element.m_Offset + sizeof(float) * count * i));
+                                              (const void *) (element.getOffset() + sizeof(float) * count * i));
                         glVertexAttribDivisor(attrIndex, 1);
                         attrIndex++;
                     }

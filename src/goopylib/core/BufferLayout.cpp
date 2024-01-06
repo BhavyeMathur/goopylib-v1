@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "BufferLayout.h"
 
 
@@ -98,6 +99,18 @@ namespace gp {
                 GP_CORE_ERROR("Unrecognised Shader Type");
                 return 0;
         }
+    }
+
+    ShaderDataType BufferElement::getDataType() const {
+        return m_Type;
+    }
+
+    bool BufferElement::isNormalised() const {
+        return m_Normalized;
+    }
+
+    size_t BufferElement::getOffset() const {
+        return m_Offset;
     }
 }
 

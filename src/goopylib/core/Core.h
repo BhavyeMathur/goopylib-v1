@@ -65,52 +65,52 @@ namespace gp {
      * @return the refresh rate of the primary monitor in Hertz
      * @throws std::runtime_error: if goopylib has not been initialized
      */
-    GPAPI int getRefreshRate();
+    [[nodiscard]] GPAPI int getRefreshRate();
 
     /**
      *
      * @return the screen width in screen coordinates
      * @throws std::runtime_error: if goopylib has not been initialized
      */
-    GPAPI int getScreenWidth();
+    [[nodiscard]] GPAPI int getScreenWidth();
 
     /**
      *
      * @return the screen height in screen coordinates
      * @throws std::runtime_error: if goopylib has not been initialized
      */
-    GPAPI int getScreenHeight();
+    [[nodiscard]] GPAPI int getScreenHeight();
 
     /**
      *
      * @return the number of monitors connected.
      * @throws std::runtime_error: if goopylib has not been initialized
      */
-    GPAPI int getNumberOfMonitors();
+    [[nodiscard]] GPAPI int getNumberOfMonitors();
 
     /**
      *
      * @return the number of seconds since goopylib was initialized
      */
-    GPAPI float getTime();
+    [[nodiscard]] GPAPI float getTime();
 
     /**
      *
      * @return whether a graphics context is currently active
      */
-    GPAPI bool hasActiveContext();
+    [[nodiscard]] GPAPI bool hasActiveContext();
 
     /**
      *
      * @return the version of GLFW that goopylib was compiled with.
      */
-    GPAPI std::string glfwCompiledVersion();
+    [[nodiscard]] GPAPI std::string glfwCompiledVersion();
 
     /**
      *
      * @return the version of GLFW that is currently running.
      */
-    GPAPI std::string glfwCurrentVersion();
+    [[nodiscard]] GPAPI std::string glfwCurrentVersion();
 
     #endif
 
@@ -120,7 +120,7 @@ namespace gp {
      *
      * @return the version of OpenGL being used.
      */
-    GPAPI std::string openglVersion();
+    [[nodiscard]] GPAPI std::string openglVersion();
 
     #endif
 }

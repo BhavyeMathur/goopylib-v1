@@ -992,35 +992,35 @@ namespace gp {
         // Callback Functions
 
         // TODO all goopylib private functions need to follow a consistent naming scheme (_ or no?)
-        GPAPI void onResize(int width, int height);
+        GPAPI void _onResize(int width, int height);
 
-        GPAPI void onClose();
+        GPAPI void _onClose();
 
-        GPAPI void onDestroy();
+        GPAPI void _onDestroy();
 
-        GPAPI void onMove(int xPos, int yPos);
+        GPAPI void _onMove(int xPos, int yPos);
 
-        GPAPI void onMinimize(bool iconified);
+        GPAPI void _onMinimize(bool iconified);
 
-        GPAPI void onMaximize(bool maximized);
+        GPAPI void _onMaximize(bool maximized);
 
-        GPAPI void onFocus(bool focused);
+        GPAPI void _onFocus(bool focused);
 
-        GPAPI void onRefreshRequired();
+        GPAPI void _onRefreshRequired();
 
-        GPAPI void onContentScale(float xScale, float yScale);
+        GPAPI void _onContentScale(float xScale, float yScale);
 
-        GPAPI void onFramebufferSize(int width, int height);
+        GPAPI void _onFramebufferSize(int width, int height);
 
-        GPAPI void onMouseMotion(float xPos, float yPos);
+        GPAPI void _onMouseMotion(float xPos, float yPos);
 
-        GPAPI void onMouseEnter(bool entered);
+        GPAPI void _onMouseEnter(bool entered);
 
-        GPAPI void onScroll(float xScroll, float yScroll);
+        GPAPI void _onScroll(float xScroll, float yScroll);
 
-        GPAPI void onKeyPress(int key, int scancode, int action, int mods);
+        GPAPI void _onKeyPress(int key, int scancode, int action, int mods);
 
-        GPAPI void onMousePress(int button, int action, int mods);
+        GPAPI void _onMousePress(int button, int action, int mods);
 
         GPAPI void _swapBuffers() const;
 

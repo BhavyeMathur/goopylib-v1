@@ -60,7 +60,7 @@ namespace gp {
         if (!m_IsDestroyed) {
             _destroy();
             m_IsDestroyed = true;
-            onDestroy();
+            _onDestroy();
         }
     }
 }
@@ -304,7 +304,7 @@ namespace gp {
         m_DestroyCallback = std::move(callback);
     }
 
-    void Window::onResize(int width, int height) {
+    void Window::_onResize(int width, int height) {
         GP_CORE_TRACE_ALL("gp::Window::on({1}, {2}) - '{0}'", m_Title, width, height);
 
         m_Width = width;
@@ -317,21 +317,21 @@ namespace gp {
         update();
     }
 
-    void Window::onClose() {
-        GP_CORE_DEBUG("gp::Window::onClose() - '{0}'", m_Title);
+    void Window::_onClose() {
+        GP_CORE_DEBUG("gp::Window::_onClose() - '{0}'", m_Title);
         m_CloseCallback((Window *) this);
     }
 
-    void Window::onDestroy() {
-        GP_CORE_DEBUG("gp::Window::onDestroy() - '{0}'", m_Title);
+    void Window::_onDestroy() {
+        GP_CORE_DEBUG("gp::Window::_onDestroy() - '{0}'", m_Title);
         if (m_DestroyCallback) {
             m_DestroyCallback((Window *) this);
         }
     }
 
     // Move
-    void Window::onMove(int xPos, int yPos) {
-        GP_CORE_TRACE_ALL("gp::Window::onMove({1}, {2}) - '{0}'", m_Title, xPos, yPos);
+    void Window::_onMove(int xPos, int yPos) {
+        GP_CORE_TRACE_ALL("gp::Window::_onMove({1}, {2}) - '{0}'", m_Title, xPos, yPos);
 
         m_xPos = xPos;
         m_yPos = yPos;
@@ -341,54 +341,54 @@ namespace gp {
         }
     }
 
-    void Window::onMinimize(bool iconified) {
-        GP_CORE_DEBUG("gp::Window::onMinimize() - '{0}'", m_Title);
+    void Window::_onMinimize(bool iconified) {
+        GP_CORE_DEBUG("gp::Window::_onMinimize() - '{0}'", m_Title);
         m_MinimizeCallback((Window *) this, iconified);
     }
 
-    void Window::onMaximize(bool maximized) {
-        GP_CORE_DEBUG("gp::Window::onMaximize() - '{0}'", m_Title);
+    void Window::_onMaximize(bool maximized) {
+        GP_CORE_DEBUG("gp::Window::_onMaximize() - '{0}'", m_Title);
         m_MaximizeCallback((Window *) this, maximized);
     }
 
-    void Window::onFocus(bool focused) {
-        GP_CORE_DEBUG("gp::Window::onFocus() - '{0}'", m_Title);
+    void Window::_onFocus(bool focused) {
+        GP_CORE_DEBUG("gp::Window::_onFocus() - '{0}'", m_Title);
         m_FocusedCallback((Window *) this, focused);
     }
 
-    void Window::onRefreshRequired() {
-        GP_CORE_TRACE_ALL("gp::Window::onRefreshRequired() - '{0}'", m_Title);
+    void Window::_onRefreshRequired() {
+        GP_CORE_TRACE_ALL("gp::Window::_onRefreshRequired() - '{0}'", m_Title);
         m_RefreshCallback((Window *) this);
     }
 
-    void Window::onContentScale(float xScale, float yScale) {
-        GP_CORE_TRACE_ALL("gp::Window::onContentScale({1}, {2}) - '{0}'", m_Title, xScale, yScale);
+    void Window::_onContentScale(float xScale, float yScale) {
+        GP_CORE_TRACE_ALL("gp::Window::_onContentScale({1}, {2}) - '{0}'", m_Title, xScale, yScale);
         m_ContentScaleCallback((Window *) this, xScale, yScale);
     }
 
-    void Window::onFramebufferSize(int width, int height) {
-        GP_CORE_TRACE_ALL("gp::Window::onFramebufferSize({1}, {2}) - '{0}'", m_Title, width, height);
+    void Window::_onFramebufferSize(int width, int height) {
+        GP_CORE_TRACE_ALL("gp::Window::_onFramebufferSize({1}, {2}) - '{0}'", m_Title, width, height);
         m_FramebufferSizeCallback((Window *) this, width, height);
     }
 
-    void Window::onMouseMotion(float xPos, float yPos) {
-        GP_CORE_TRACE_ALL("gp::Window::onMouseMotion({1}, {2}) - '{0}'", m_Title, xPos, yPos);
+    void Window::_onMouseMotion(float xPos, float yPos) {
+        GP_CORE_TRACE_ALL("gp::Window::_onMouseMotion({1}, {2}) - '{0}'", m_Title, xPos, yPos);
         m_MouseMotionCallback((Window *) this, xPos, yPos);
     }
 
-    void Window::onMouseEnter(bool entered) {
-        GP_CORE_TRACE_ALL("gp::Window::onMouseEnter({1}) - '{0}'", m_Title, entered);
+    void Window::_onMouseEnter(bool entered) {
+        GP_CORE_TRACE_ALL("gp::Window::_onMouseEnter({1}) - '{0}'", m_Title, entered);
         m_MouseEnterCallback((Window *) this, entered);
     }
 
-    void Window::onScroll(float xScroll, float yScroll) {
-        GP_CORE_TRACE_ALL("gp::Window::onScroll({1}, {2}) - '{0}'", m_Title, xScroll, yScroll);
+    void Window::_onScroll(float xScroll, float yScroll) {
+        GP_CORE_TRACE_ALL("gp::Window::_onScroll({1}, {2}) - '{0}'", m_Title, xScroll, yScroll);
         m_ScrollCallback((Window *) this, xScroll, yScroll);
     }
 
     // Key Press
-    void Window::onKeyPress(int key, [[maybe_unused]] int scancode, int action, int mods) {
-        GP_CORE_TRACE_ALL("gp::Window::onKeyPress({1}, {2}, {3}, {4}) - '{0}'", m_Title, key, scancode, action, mods);
+    void Window::_onKeyPress(int key, [[maybe_unused]] int scancode, int action, int mods) {
+        GP_CORE_TRACE_ALL("gp::Window::_onKeyPress({1}, {2}, {3}, {4}) - '{0}'", m_Title, key, scancode, action, mods);
 
         m_KeyModifiers = mods;
         if (m_KeyCallbacks.find(key) != m_KeyCallbacks.end()) {
@@ -409,8 +409,8 @@ namespace gp {
     }
 
     // Mouse Button
-    void Window::onMousePress(int button, int action, int mods) {
-        GP_CORE_TRACE_ALL("gp::Window::onMousePress({1}, {2}, {3}) - '{0}'", m_Title, button, action, mods);
+    void Window::_onMousePress(int button, int action, int mods) {
+        GP_CORE_TRACE_ALL("gp::Window::_onMousePress({1}, {2}, {3}) - '{0}'", m_Title, button, action, mods);
 
         m_KeyModifiers = mods;
         if (m_MouseCallbacks.find(button) != m_MouseCallbacks.end()) {

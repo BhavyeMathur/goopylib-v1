@@ -15,9 +15,9 @@ namespace gp {
         uint32_t m_Count = 0;
         uint32_t m_RendererID = 0;
 
-        Buffer() = default;
+        GPAPI Buffer() = default;
 
-        Buffer(uint32_t count);
+        GPAPI Buffer(uint32_t count);
     };
 }
 
@@ -28,6 +28,8 @@ namespace gp {
         friend class Renderer;
 
     public:
+        GPAPI VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
+
         GPAPI ~VertexBuffer() override;
 
         GPAPI void bind() const;
@@ -44,8 +46,6 @@ namespace gp {
 
     private:
         BufferLayout m_Layout{};
-
-        VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
     };
 }
 
@@ -56,16 +56,15 @@ namespace gp {
         friend class VertexArray;
 
     public:
+        GPAPI IndexBuffer(uint32_t count, uint32_t *indices);
+
+        GPAPI IndexBuffer(std::initializer_list<uint32_t> indices);
+
         GPAPI ~IndexBuffer() override;
 
         GPAPI void bind() const;
 
         GPAPI static void unbind();
-
-    private:
-        IndexBuffer(uint32_t count, uint32_t *indices);
-
-        IndexBuffer(std::initializer_list<uint32_t> indices);
     };
 }
 

@@ -12,11 +12,13 @@ namespace gp {
         friend class Renderer;
 
     public:
+        GPAPI VertexArray();
+
         GPAPI ~VertexArray();
 
         GPAPI void bind() const;
 
-        GPAPI static void unbind() ;
+        GPAPI static void unbind();
 
         GPAPI void draw(int32_t count = 0, int32_t mode = GP_DRAW_MODE_TRIANGLES) const;
 
@@ -35,7 +37,5 @@ namespace gp {
 
         Ref<VertexBuffer> m_VertexBuffer;
         Ref<IndexBuffer> m_IndexBuffer;
-
-        VertexArray();
     };
 }

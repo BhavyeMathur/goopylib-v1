@@ -27,11 +27,11 @@ namespace gp {
 
     #if GP_USING_OPENGL
 
-    GLenum shaderOpenGLType(ShaderDataType type);
+    [[nodiscard]] GLenum shaderOpenGLType(ShaderDataType type);
 
     #endif
 
-    int32_t shaderTypeSize(ShaderDataType type);
+    [[nodiscard]] int32_t shaderTypeSize(ShaderDataType type);
 }
 
 // Buffer Layout Element
@@ -39,12 +39,17 @@ namespace gp {
     class BufferElement {
 
         friend class BufferLayout;
-        friend class VertexArray;
 
     public:
-        BufferElement(ShaderDataType type, const char *name, bool normalized = false);
+        GPAPI BufferElement(ShaderDataType type, const char *name, bool normalized = false);
 
-        [[nodiscard]] int32_t getCount() const;
+        [[nodiscard]] GPAPI int32_t getCount() const;
+
+        [[nodiscard]] GPAPI ShaderDataType getDataType() const;
+
+        [[nodiscard]] GPAPI bool isNormalised() const;
+
+        [[nodiscard]] GPAPI size_t getOffset() const;
 
     private:
         const char *m_Name;
@@ -65,24 +70,23 @@ namespace gp {
         friend class UniformBuffer;
 
     public:
-        BufferLayout(BufferElement *elements, int32_t count);
+        GPAPI BufferLayout(BufferElement *elements, int32_t count);
 
-        BufferLayout(std::initializer_list<BufferElement> elements);
+        GPAPI BufferLayout(std::initializer_list<BufferElement> elements);
 
-    private:
-        std::vector<BufferElement>::iterator begin();
+        [[nodiscard]] GPAPI std::vector<BufferElement>::iterator begin();
 
-        std::vector<BufferElement>::iterator end();
+        [[nodiscard]] GPAPI std::vector<BufferElement>::iterator end();
 
-        [[nodiscard]] std::vector<BufferElement>::const_iterator begin() const;
+        [[nodiscard]] GPAPI std::vector<BufferElement>::const_iterator begin() const;
 
-        [[nodiscard]] std::vector<BufferElement>::const_iterator end() const;
+        [[nodiscard]] GPAPI std::vector<BufferElement>::const_iterator end() const;
+
+        GPAPI void calculateOffsetAndStride();
 
     private:
         std::vector<BufferElement> m_Elements;
         int32_t m_Stride = 0;
         uint32_t m_Count = 0;
-
-        void calculateOffsetAndStride();
     };
 }
