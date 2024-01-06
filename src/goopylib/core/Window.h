@@ -1,7 +1,6 @@
 #pragma once
 
 #include "src/goopylib/scene/RenderingManager.h"
-#include "src/goopylib/color/Color.h"
 
 #include <GLFW/glfw3.h>
 #ifdef APIENTRY
@@ -54,20 +53,6 @@ namespace gp {
      * @param title displayed in the title bar
      */
     class Window : public RenderingManager {
-
-        friend class Renderable;
-
-        friend class Line;
-
-        friend class Triangle;
-
-        friend class Quad;
-
-        friend class TexturedQuad;
-
-        friend class Ellipse;
-
-        friend class Image;
 
         friend class Renderer;
 
@@ -167,19 +152,6 @@ namespace gp {
          * @return in screen coordinates, the position of the lower-right corner of the Window
          */
         [[nodiscard]] GPAPI int getYPos() const;
-
-        // Background
-        /**
-         * The background color of the window.
-         * 
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        GPAPI void setBackground(const Color &value);
-
-        /**
-         * @return the background color of the Window
-         */
-        GPAPI Color &getBackground();
 
         // Minimum Width
         /**
@@ -977,8 +949,6 @@ namespace gp {
         int m_xPos;
         int m_yPos;
 
-        Color m_Background;
-
         int m_MinWidth = 0;
         int m_MinHeight = 0;
         int m_MaxWidth = INT_MAX;
@@ -1057,8 +1027,6 @@ namespace gp {
         GPAPI void _updateSize() const override;
 
         GPAPI void _updatePosition() const;
-
-        GPAPI void _updateBackground() const;
 
         GPAPI void _updateSizeLimits() const;
 

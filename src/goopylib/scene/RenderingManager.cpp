@@ -6,9 +6,10 @@
 #include "src/goopylib/objects/Line.h"
 
 namespace gp {
-    RenderingManager::RenderingManager(const Window& window, int width, int height) :
+    RenderingManager::RenderingManager(const Window &window, int width, int height) :
             m_Width(width),
             m_Height(height),
+            m_Background(Color(255, 255, 255)),
             m_Camera(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f),
             m_Renderer(window) {
 
@@ -43,8 +44,13 @@ namespace gp {
     }
 
     void RenderingManager::render() {
-         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
-         m_Renderer.flush();
+        glClearColor(m_Background.getRedf(),
+                     m_Background.getGreenf(),
+                     m_Background.getBluef(), 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
+        m_Renderer.flush();
     }
 }
 
@@ -78,7 +84,19 @@ namespace gp {
         GP_CORE_TRACE("gp::RenderingManager::getHeight() - '{0}'", m_Title);
         return m_Height;
     }
-    
+
+    // Background
+    void RenderingManager::setBackground(const Color &value) {
+        GP_CORE_DEBUG("gp::RenderingManager::setBackground({1}) - '{0}'", m_Title, value.toString());
+
+        m_Background = value;
+    }
+
+    Color &RenderingManager::getBackground() {
+        GP_CORE_TRACE("gp::RenderingManager::getBackground() - '{0}'", m_Title);
+        return m_Background;
+    }
+
     Camera &RenderingManager::getCamera() {
         GP_CORE_TRACE("gp::RenderingManager::getCamera() - '{0}'", m_Title);
         return m_Camera;

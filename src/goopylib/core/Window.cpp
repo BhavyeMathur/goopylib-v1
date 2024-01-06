@@ -48,7 +48,8 @@ namespace gp {
     void Window::update() {
         GP_CORE_TRACE_ALL("gp::Window::update() - '{0}'", m_Title);
 
-        _updateBackground();
+        glfwMakeContextCurrent(m_Window);
+
         render();
         _swapBuffers();
     }
@@ -95,19 +96,6 @@ namespace gp {
     int Window::getYPos() const {
         GP_CORE_TRACE("gp::Window::getYPos() - '{0}'", m_Title);
         return m_yPos;
-    }
-
-    // Background
-    void Window::setBackground(const Color &value) {
-        GP_CORE_DEBUG("gp::Window::setBackground({1}) - '{0}'", m_Title, value.toString());
-
-        m_Background = value;
-        _updateBackground();
-    }
-
-    Color &Window::getBackground() {
-        GP_CORE_TRACE("gp::Window::getBackground() - '{0}'", m_Title);
-        return m_Background;
     }
 
     // Minimum Width

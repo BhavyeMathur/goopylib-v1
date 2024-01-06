@@ -3,7 +3,7 @@
 #include "gp.h"
 #include "src/goopylib/scene/Renderer.h"
 #include "src/goopylib/scene/Camera.h"
-
+#include "src/goopylib/color/Color.h"
 
 namespace gp {
     class Shader;
@@ -46,6 +46,19 @@ namespace gp {
          * @return in screen coordinates
          */
         [[nodiscard]] GPAPI int getHeight() const;
+
+        // Background
+        /**
+         * The background color of the window.
+         *
+         * @throws std::runtime_error cannot set the attribute of a destroyed window
+         */
+        GPAPI void setBackground(const Color &value);
+
+        /**
+         * @return the background color of the Window
+         */
+        GPAPI Color &getBackground();
 
         /**
          * @return the Camera object associated with the Window
@@ -106,6 +119,8 @@ namespace gp {
     protected:
         int m_Width;
         int m_Height;
+
+        Color m_Background;
 
         GPAPI void init();
 

@@ -75,7 +75,7 @@ namespace gp {
         GP_CORE_DEBUG("gp::Renderable::draw({0})", window->getTitle());
 
         #if GP_ERROR_CHECKING
-        if (window.m_IsDestroyed) {
+        if (window.isDestroyed()) {
             GP_RUNTIME_ERROR("Renderable::draw() window has been destroyed");
         }
         #endif

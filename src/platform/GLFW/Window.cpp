@@ -9,7 +9,6 @@ namespace gp {
 
               m_xPos(50),
               m_yPos(50),
-              m_Background(Color(255, 255, 255)),
 
               m_WindowedWidth(m_Width),
               m_WindowedHeight(m_Height),
@@ -294,15 +293,6 @@ namespace gp {
     void Window::_updatePosition() const {
         GP_CORE_TRACE("gp::Window::_updatePosition() - '{0}'", m_Title);
         glfwSetWindowPos(m_Window, m_xPos, m_yPos);
-    }
-
-    void Window::_updateBackground() const {
-        GP_CORE_TRACE_ALL("gp::Window::_updateBackground() - '{0}'", m_Title);
-        glfwMakeContextCurrent(m_Window);
-        glClearColor(m_Background.getRedf(),
-                     m_Background.getGreenf(),
-                     m_Background.getBluef(), 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void Window::_updateSizeLimits() const {
