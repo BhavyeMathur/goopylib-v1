@@ -1,8 +1,12 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 6
 
 #include "src/goopylib/shader/Shader.h"
 #include "src/goopylib/core/Buffer.h"
 #include <glm/gtc/type_ptr.hpp>
+
+#if GP_LOGGING_LEVEL >= 6
+#include <glm/gtx/string_cast.hpp>
+#endif
 
 #if GP_USING_OPENGL
 
