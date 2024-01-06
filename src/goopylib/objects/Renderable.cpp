@@ -352,6 +352,15 @@ namespace gp {
         GP_CORE_TRACE("gp::Renderable::isHidden()");
         return m_Hidden;
     }
+
+    void Renderable::setZPosition(float value) {
+        m_ZPosition = value;
+        update();
+    }
+
+    float Renderable::getZPosition() const {
+        return m_ZPosition;
+    }
 }
 
 // Internal Methods

@@ -105,7 +105,8 @@ namespace gp {
         static void init();
 
     private:
-        SolidVertexAttrib m_V1, m_V2;
+        SolidVertexAttrib m_V1 = {{0.0f, 0.0f, 0.0f}};
+        SolidVertexAttrib m_V2 = {{0.0f, 0.0f, 0.0f}};
 
         static float s_Width;
         static float s_MinWidth;

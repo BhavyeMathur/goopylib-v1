@@ -159,8 +159,8 @@ namespace gp {
         const uint32_t index = m_LineVertices.size();
         m_LineToIndex.insert({ID, index});
 
-        m_LineVertices.push_back({object->m_Points[0], object->m_V1});
-        m_LineVertices.push_back({object->m_Points[1], object->m_V2});
+        m_LineVertices.emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1);
+        m_LineVertices.emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2);
 
         if (object->isHidden()) {
             m_LineVertices[index + 0].attrib.color.alpha = 0;
@@ -197,8 +197,8 @@ namespace gp {
     void Renderer::updateLine(uint32_t ID, const Line *object) {
         const uint32_t index = m_LineToIndex[ID];
 
-        m_LineVertices[index + 0] = {object->m_Points[0], object->m_V1};
-        m_LineVertices[index + 1] = {object->m_Points[1], object->m_V2};
+        m_LineVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
+        m_LineVertices[index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2};
 
         if (object->isHidden()) {
             m_LineVertices[index + 0].attrib.color.alpha = 0;
@@ -216,9 +216,9 @@ namespace gp {
         const uint32_t index = m_TriangleVertices.size();
         m_TriangleToIndex.insert({ID, index});
 
-        m_TriangleVertices.push_back({object->m_Points[0], object->m_V1});
-        m_TriangleVertices.push_back({object->m_Points[1], object->m_V2});
-        m_TriangleVertices.push_back({object->m_Points[2], object->m_V3});
+        m_TriangleVertices.emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1);
+        m_TriangleVertices.emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2);
+        m_TriangleVertices.emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3);
 
         if (object->isHidden()) {
             m_TriangleVertices[index + 0].attrib.color.alpha = 0;
@@ -256,9 +256,9 @@ namespace gp {
     void Renderer::updateTriangle(uint32_t ID, const Triangle *object) {
         const uint32_t index = m_TriangleToIndex[ID];
 
-        m_TriangleVertices[index + 0] = {object->m_Points[0], object->m_V1};
-        m_TriangleVertices[index + 1] = {object->m_Points[1], object->m_V2};
-        m_TriangleVertices[index + 2] = {object->m_Points[2], object->m_V3};
+        m_TriangleVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
+        m_TriangleVertices[index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2};
+        m_TriangleVertices[index + 2] = {object->m_Points[2], object->m_ZPosition, object->m_V3};
 
         if (object->isHidden()) {
             m_TriangleVertices[index + 0].attrib.color.alpha = 0;
@@ -277,10 +277,10 @@ namespace gp {
         const uint32_t index = m_QuadVertices.size();
         m_QuadToIndex.insert({ID, index});
 
-        m_QuadVertices.push_back({object->m_Points[0], object->m_V1});
-        m_QuadVertices.push_back({object->m_Points[1], object->m_V2});
-        m_QuadVertices.push_back({object->m_Points[2], object->m_V3});
-        m_QuadVertices.push_back({object->m_Points[3], object->m_V4});
+        m_QuadVertices.emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1);
+        m_QuadVertices.emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2);
+        m_QuadVertices.emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3);
+        m_QuadVertices.emplace_back(object->m_Points[3], object->m_ZPosition, object->m_V4);
 
         if (object->isHidden()) {
             m_QuadVertices[index + 0].attrib.color.alpha = 0;
@@ -319,10 +319,10 @@ namespace gp {
     void Renderer::updateQuad(uint32_t ID, const Quad *object) {
         const uint32_t index = m_QuadToIndex[ID];
 
-        m_QuadVertices[index + 0] = {object->m_Points[0], object->m_V1};
-        m_QuadVertices[index + 1] = {object->m_Points[1], object->m_V2};
-        m_QuadVertices[index + 2] = {object->m_Points[2], object->m_V3};
-        m_QuadVertices[index + 3] = {object->m_Points[3], object->m_V4};
+        m_QuadVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
+        m_QuadVertices[index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2};
+        m_QuadVertices[index + 2] = {object->m_Points[2], object->m_ZPosition, object->m_V3};
+        m_QuadVertices[index + 3] = {object->m_Points[3], object->m_ZPosition, object->m_V4};
 
         if (object->isHidden()) {
             m_QuadVertices[index + 0].attrib.color.alpha = 0;
@@ -342,10 +342,10 @@ namespace gp {
         const uint32_t index = m_EllipseVertices.size();
         m_EllipseToIndex.insert({ID, index});
 
-        m_EllipseVertices.push_back({object->m_Points[0], object->m_V1});
-        m_EllipseVertices.push_back({object->m_Points[1], object->m_V2});
-        m_EllipseVertices.push_back({object->m_Points[2], object->m_V3});
-        m_EllipseVertices.push_back({object->m_Points[3], object->m_V4});
+        m_EllipseVertices.emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1);
+        m_EllipseVertices.emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2);
+        m_EllipseVertices.emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3);
+        m_EllipseVertices.emplace_back(object->m_Points[3], object->m_ZPosition, object->m_V4);
 
         if (object->isHidden()) {
             m_EllipseVertices[index + 0].attrib.color.alpha = 0;
@@ -384,10 +384,10 @@ namespace gp {
     void Renderer::updateEllipse(uint32_t ID, const Ellipse *object) {
         const uint32_t index = m_EllipseToIndex[ID];
 
-        m_EllipseVertices[index + 0] = {object->m_Points[0], object->m_V1};
-        m_EllipseVertices[index + 1] = {object->m_Points[1], object->m_V2};
-        m_EllipseVertices[index + 2] = {object->m_Points[2], object->m_V3};
-        m_EllipseVertices[index + 3] = {object->m_Points[3], object->m_V4};
+        m_EllipseVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
+        m_EllipseVertices[index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2};
+        m_EllipseVertices[index + 2] = {object->m_Points[2], object->m_ZPosition, object->m_V3};
+        m_EllipseVertices[index + 3] = {object->m_Points[3], object->m_ZPosition, object->m_V4};
 
         if (object->isHidden()) {
             m_EllipseVertices[index + 0].attrib.color.alpha = 0;
@@ -436,10 +436,10 @@ namespace gp {
         m_TexturedQuadToBatch.insert({ID, batch});
         m_TexturedQuadToIndex[batch].insert({ID, index});
 
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[0], object->m_V1, object->m_T1});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[1], object->m_V2, object->m_T2});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[2], object->m_V3, object->m_T3});
-        m_TexturedQuadVertices[batch].push_back({object->m_Points[3], object->m_V4, object->m_T4});
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1, object->m_T1);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2, object->m_T2);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3, object->m_T3);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[3], object->m_ZPosition, object->m_V4, object->m_T4);
 
         if (object->isHidden()) {
             m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;
@@ -482,10 +482,10 @@ namespace gp {
         const uint32_t batch = m_TexturedQuadToBatch[ID];
         const uint32_t index = m_TexturedQuadToIndex[batch][ID];
 
-        m_TexturedQuadVertices[batch][index + 0] = {object->m_Points[0], object->m_V1, object->m_T1};
-        m_TexturedQuadVertices[batch][index + 1] = {object->m_Points[1], object->m_V2, object->m_T2};
-        m_TexturedQuadVertices[batch][index + 2] = {object->m_Points[2], object->m_V3, object->m_T3};
-        m_TexturedQuadVertices[batch][index + 3] = {object->m_Points[3], object->m_V4, object->m_T4};
+        m_TexturedQuadVertices[batch][index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1, object->m_T1};
+        m_TexturedQuadVertices[batch][index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2, object->m_T2};
+        m_TexturedQuadVertices[batch][index + 2] = {object->m_Points[2], object->m_ZPosition, object->m_V3, object->m_T3};
+        m_TexturedQuadVertices[batch][index + 3] = {object->m_Points[3], object->m_ZPosition, object->m_V4, object->m_T4};
 
         if (object->isHidden()) {
             m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;

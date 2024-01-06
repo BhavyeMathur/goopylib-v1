@@ -321,6 +321,22 @@ namespace renderable {
         self->renderable->setHeight((float) PyFloat_AsDouble(value));
         return 0;
     }
+
+    // Z-Position
+    static PyObject *get_z(RenderableObject *self, void *Py_UNUSED(closure)) {
+        return PyFloat_FromDouble(self->renderable->getZPosition());
+    }
+
+    static int set_z(RenderableObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        #if GP_TYPE_CHECKING
+        if (!PyNumber_Check(value)) {
+            RAISE_TYPE_ERROR(-1, "number", value);
+        }
+        #endif
+
+        self->renderable->setZPosition((float) PyFloat_AsDouble(value));
+        return 0;
+    }
 }
 
 // Renderable Type
@@ -373,6 +389,8 @@ namespace renderable {
 
             GETTER_SETTER(width),
             GETTER_SETTER(height),
+
+            GETTER_SETTER(z),
 
             {nullptr}
     };

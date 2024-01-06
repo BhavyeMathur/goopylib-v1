@@ -91,6 +91,11 @@ namespace renderable {
     static PyObject *get_height(RenderableObject *self, void *closure);
 
     static int set_height(RenderableObject *self, PyObject *value, void *closure);
+
+    // Z-Position
+    static PyObject *get_z(RenderableObject *self, void *closure);
+
+    static int set_z(RenderableObject *self, PyObject *value, void *closure);
 }
 
 

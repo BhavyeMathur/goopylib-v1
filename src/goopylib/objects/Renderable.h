@@ -227,6 +227,21 @@ namespace gp {
          */
         [[nodiscard]] GPAPI bool isHidden() const;
 
+        /**
+         * Sets the z-index/position of the object
+         *
+         * @param value the z-position of the object
+         *
+         */
+        GPAPI void setZPosition(float value);
+
+        /**
+         *
+         * @return the z-position of the object
+         *
+         */
+        [[nodiscard]] GPAPI float getZPosition() const;
+
         /* Methods */
 
         /**
@@ -302,6 +317,8 @@ namespace gp {
 
         bool m_Drawn = false;
         bool m_Hidden = false;
+
+        float m_ZPosition = 0;
 
     private:
         GPAPI void _calculateAttributes();

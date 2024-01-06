@@ -240,6 +240,20 @@ class Renderable:
     def height(self, value: float) -> None:
         self._renderable.height = value
 
+    @property
+    def z(self) -> float:
+        """
+        The z-position of the object
+
+        Raises:
+            TypeError: value must be a number
+        """
+        return self._renderable.z
+
+    @z.setter
+    def z(self, value: float) -> None:
+        self._renderable.z = value
+
     def hide(self, hide=True) -> None:
         """
         Hides the object from the window
