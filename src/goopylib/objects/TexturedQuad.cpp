@@ -1,11 +1,8 @@
 #define GP_LOGGING_LEVEL 3
-
 #include "TexturedQuad.h"
 
 #include <utility>
 #include "src/goopylib/texture/Bitmap.h"
-
-#include "src/goopylib/debug/LogMacros.h"
 
 // Core Methods
 namespace gp {

@@ -11,8 +11,6 @@
 #include "src/goopylib/objects/Ellipse.h"
 #include "src/goopylib/objects/TexturedQuad.h"
 
-#include "src/goopylib/debug/LogMacros.h"
-
 const char *solidVertexShader =
 
         #include "src/goopylib/shader/solid.vert"

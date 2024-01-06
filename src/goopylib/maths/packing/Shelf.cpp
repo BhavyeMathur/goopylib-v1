@@ -5,8 +5,6 @@
 #include <cfloat>
 #include <utility>
 
-#include "src/goopylib/debug/LogMacros.h"
-
 
 // Shelf Class
 namespace gp::packing::shelf {

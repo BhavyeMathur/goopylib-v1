@@ -43,3 +43,4 @@
 #define CreateScope std::make_unique
 
 #include "src/config.h"
+#include "src/goopylib/debug/LogMacros.h"

@@ -1,6 +1,4 @@
 #define GP_LOGGING_LEVEL 3
-#include "src/goopylib/debug/LogMacros.h"
-
 #include "Bitmap.h"
 
 #include <stb/stb_image.h>

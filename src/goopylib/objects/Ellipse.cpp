@@ -1,10 +1,5 @@
 #define GP_LOGGING_LEVEL 3
-
 #include "Ellipse.h"
-
-#include "src/goopylib/debug/LogMacros.h"
-#include "src/goopylib/debug/Error.h"
-
 
 // Core Methods
 namespace gp {

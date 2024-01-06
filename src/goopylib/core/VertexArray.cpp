@@ -1,7 +1,5 @@
 #define GP_LOGGING_LEVEL 3
-
 #include "src/goopylib/core/VertexArray.h"
-#include "src/goopylib/debug/LogMacros.h"
 
 
 namespace gp {

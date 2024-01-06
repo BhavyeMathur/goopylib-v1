@@ -1,8 +1,5 @@
 #define GP_LOGGING_LEVEL 3
-
 #include "W3CX11.h"
-
-#include "src/goopylib/debug/LogMacros.h"
 
 
 namespace gp {

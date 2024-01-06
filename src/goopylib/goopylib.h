@@ -6,7 +6,6 @@
 #include "src/goopylib/core/VertexArray.h"
 #include "src/goopylib/shader/Shader.h"
 
-#include "src/goopylib/debug/LogMacros.h"
 #include "src/goopylib/events/KeyboardCodes.h"
 
 #include "src/goopylib/maths/Easing.h"

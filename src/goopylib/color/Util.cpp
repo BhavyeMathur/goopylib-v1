@@ -3,8 +3,6 @@
 #include "Util.h"
 #include "ColorConversions.h"
 
-#include "src/goopylib/debug/LogMacros.h"
-
 #include <random>
 
 std::random_device rand_dev;
