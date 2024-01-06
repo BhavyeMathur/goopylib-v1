@@ -44,10 +44,7 @@ namespace gp {
     }
 
     void RenderingManager::render() {
-        glClearColor(m_Background.getRedf(),
-                     m_Background.getGreenf(),
-                     m_Background.getBluef(), 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        _updateBackground();
 
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
         m_Renderer.flush();

@@ -95,6 +95,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/objects/Image.cpp
 
             src/goopylib/scene/RenderingManager.cpp
+            src/platform/OpenGL/RenderingManager.cpp
             src/goopylib/scene/Renderer.cpp
             src/goopylib/scene/Camera.cpp
             src/goopylib/scene/CameraController.cpp

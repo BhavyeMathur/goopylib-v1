@@ -135,5 +135,7 @@ namespace gp {
         Ref<Shader> m_TextureShader;  // TODO why are these Ref?
 
         Ref<UniformBuffer> m_ShaderUniform;
+
+        GPAPI void _updateBackground();
     };
 }

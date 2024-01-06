@@ -990,6 +990,8 @@ namespace gp {
         GPAPI void super();
 
         // Callback Functions
+
+        // TODO all goopylib private functions need to follow a consistent naming scheme (_ or no?)
         GPAPI void onResize(int width, int height);
 
         GPAPI void onClose();
