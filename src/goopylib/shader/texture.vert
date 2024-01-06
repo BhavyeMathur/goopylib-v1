@@ -16,7 +16,7 @@ out vec2 TexCoord;
 flat out int TexSlot;
 
 void main() {
-    gl_Position = ProjectionViewMatrix * vec4(point, 0.0f, 1.0f);
+    gl_Position = ProjectionViewMatrix * vec4(point, z, 1.0f);
 
     Color = color;
     TexCoord = texCoord;
