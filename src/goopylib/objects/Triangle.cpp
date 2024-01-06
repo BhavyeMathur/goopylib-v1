@@ -9,15 +9,15 @@ namespace gp {
     }
 
     uint32_t Triangle::_draw(Window &window) {
-        return window.m_Renderer.drawTriangle(this);
+        return window.drawTriangle(this);
     }
 
     void Triangle::_destroy() const {
-        m_Window->m_Renderer.destroyTriangle(m_RendererID);
+        m_Window->destroyTriangle(m_RendererID);
     }
 
     void Triangle::_update() {
-        m_Window->m_Renderer.updateTriangle(m_RendererID, this);
+        m_Window->updateTriangle(m_RendererID, this);
     }
 
     bool Triangle::_contains(float x, float y) const {

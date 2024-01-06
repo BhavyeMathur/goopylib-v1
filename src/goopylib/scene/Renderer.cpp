@@ -2,7 +2,6 @@
 
 #include "Renderer.h"
 
-#include "src/goopylib/texture/TextureAtlas.h"
 #include "src/goopylib/shader/Shader.h"
 
 #include "src/goopylib/objects/Line.h"
@@ -12,7 +11,7 @@
 #include "src/goopylib/objects/TexturedQuad.h"
 
 namespace gp {
-    Renderer::Renderer(const Window& window, float width, float height)
+    Renderer::Renderer(const Window& window)
             : m_Window(window) {
 
     }
@@ -21,10 +20,6 @@ namespace gp {
 
     void Renderer::init() {
         GP_CORE_INFO("Rendering::init() initializing Renderer");
-
-        Line::init();
-        Texture2D::init();
-        TextureAtlas::init();
 
         _createLineBuffer();
         _createTriangleBuffer();
@@ -456,8 +451,6 @@ namespace gp {
     void Renderer::flush() {
         GP_CORE_TRACE_ALL("gp::Renderer::flush()");
 
-        m_Window.m_ShaderUniform->setData(&m_Window.m_Camera.m_ProjectionViewMatrix, 1, 0);
-
         if (m_LineBatch.indices or m_TriangleBatch.indices or m_QuadBatch.indices) {
             m_Window.m_SolidShader->bind();
         }
@@ -485,7 +478,6 @@ namespace gp {
             m_Window.m_EllipseShader->bind();
             m_EllipseBatch.VAO->draw(m_EllipseBatch.indices, m_EllipseBatch.mode);
         }
-
 
         uint32_t textureSlotOffset = 0;
         for (auto &batch: m_TexturedQuadBatches) {

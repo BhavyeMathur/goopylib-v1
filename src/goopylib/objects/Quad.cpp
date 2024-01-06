@@ -10,15 +10,15 @@ namespace gp {
     }
 
     uint32_t Quad::_draw(Window &window) {
-        return window.m_Renderer.drawQuad(this);
+        return window.drawQuad(this);
     }
 
     void Quad::_destroy() const {
-        m_Window->m_Renderer.destroyQuad(m_RendererID);
+        m_Window->destroyQuad(m_RendererID);
     }
 
     void Quad::_update() {
-        m_Window->m_Renderer.updateQuad(m_RendererID, this);
+        m_Window->updateQuad(m_RendererID, this);
     }
 
     bool Quad::_contains(float x, float y) const {

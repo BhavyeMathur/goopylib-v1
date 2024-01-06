@@ -22,15 +22,15 @@ namespace gp {
     }
 
     uint32_t Ellipse::_draw(Window &window) {
-        return window.m_Renderer.drawEllipse(this);
+        return window.drawEllipse(this);
     }
 
     void Ellipse::_destroy() const {
-        m_Window->m_Renderer.destroyEllipse(m_RendererID);
+        m_Window->destroyEllipse(m_RendererID);
     }
 
     void Ellipse::_update() {
-        m_Window->m_Renderer.updateEllipse(m_RendererID, this);
+        m_Window->updateEllipse(m_RendererID, this);
     }
 
     bool Ellipse::_contains(float x, float y) const {

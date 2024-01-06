@@ -52,6 +52,8 @@ namespace gp {
 
         friend class Window;
 
+        friend class RenderingManager;
+
     public:
         GPAPI Renderer (const Renderer&) = delete;
 
@@ -118,29 +120,29 @@ namespace gp {
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
 
-        const Window& m_Window;
-
         std::vector<Ref<Texture2D>> m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 
-        Renderer(const Window& window, float width, float height);
+        const Window& m_Window;
 
-        void _createLineBuffer();
+        GPAPI Renderer(const Window& window);
 
-        void _createTriangleBuffer();
+        GPAPI void _createLineBuffer();
 
-        void _createQuadBuffer();
+        GPAPI void _createTriangleBuffer();
 
-        void _createEllipseBuffer();
+        GPAPI void _createQuadBuffer();
 
-        void _createTexturedBuffer();
+        GPAPI void _createEllipseBuffer();
+
+        GPAPI void _createTexturedBuffer();
         
-        uint32_t _cacheTexture(const std::string& name, const Bitmap& bitmap);
+        [[nodiscard]] GPAPI uint32_t _cacheTexture(const std::string& name, const Bitmap& bitmap);
 
-        void _bindTextureBatch(uint32_t offset);
+        GPAPI void _bindTextureBatch(uint32_t offset);
 
-        static void _updateRenderingObjectVBO(RenderingBatch &object);
+        GPAPI static void _updateRenderingObjectVBO(RenderingBatch &object);
 
-        static void _updateRenderingObjectEBO(RenderingBatch &object);
+        GPAPI static void _updateRenderingObjectEBO(RenderingBatch &object);
     };
 }

@@ -2,7 +2,7 @@
 
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/core/Buffer.h"
-#include "src/goopylib/shader/Shader.h"
+
 #include "src/goopylib/events/MouseCodes.h"
 
 // TODO some of the docstrings (especially the callback functions) are essentially plagiarised from GLFW's docs.
@@ -11,57 +11,13 @@
 // This would involve maintaining an unordered map of key codes to the key state
 // Inside GLFW's key callback, this map would be updated
 
-const char *solidVertexShader =
-
-        #include "src/goopylib/shader/solid.vert"
-
-const char *solidFragmentShader =
-
-        #include "src/goopylib/shader/solid.frag"
-
-const char *ellipseVertexShader =
-
-        #include "src/goopylib/shader/ellipse.vert"
-
-const char *ellipseFragmentShader =
-
-        #include "src/goopylib/shader/ellipse.frag"
-
-const char *textureVertexShader =
-
-        #include "src/goopylib/shader/texture.vert"
-
-const char *textureFragmentShader =
-
-        #include "src/goopylib/shader/texture.frag"
-
 namespace gp {
     std::vector<Window *> Window::s_Instances;
 
     void Window::super() {
         GP_CORE_DEBUG("gp::Window::super() - '{0}'", m_Title);
 
-        m_Renderer.init();
-
-        GP_CORE_TRACE("Rendering::init() initializing Solid Shader");
-        m_SolidShader = CreateRef<Shader>(solidVertexShader, solidFragmentShader);
-
-        GP_CORE_TRACE("Rendering::init() initializing Ellipse Shader");
-        m_EllipseShader = CreateRef<Shader>(ellipseVertexShader, ellipseFragmentShader);
-
-        int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
-                                9, 10, 11, 12, 13, 14, 15};
-
-        GP_CORE_TRACE("Rendering::init() initializing texture Shader");
-        m_TextureShader = CreateRef<Shader>(textureVertexShader, textureFragmentShader);
-        m_TextureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
-
-        m_ShaderUniform = Ref<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
-        m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1);
-
-        m_SolidShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_EllipseShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_TextureShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        init();
 
         _updatePosition();
         _updateSizeLimits();
@@ -93,9 +49,7 @@ namespace gp {
         GP_CORE_TRACE_ALL("gp::Window::update() - '{0}'", m_Title);
 
         _updateBackground();
-
-        m_Renderer.flush();
-
+        render();
         _swapBuffers();
     }
 

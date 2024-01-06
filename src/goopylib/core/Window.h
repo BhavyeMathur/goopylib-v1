@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/goopylib/scene/Renderer.h"
+#include "src/goopylib/scene/RenderingManager.h"
 #include "src/goopylib/color/Color.h"
 
 #include <GLFW/glfw3.h>
@@ -53,7 +53,7 @@ namespace gp {
      * @param height in screen coordinates
      * @param title displayed in the title bar
      */
-    class Window {
+    class Window : public RenderingManager {
 
         friend class Renderable;
 
@@ -1048,15 +1048,6 @@ namespace gp {
 
         bool m_IsDestroyed = false;
         int m_KeyModifiers = 0;  // check if the shift, control, alt, and super keys are pressed
-
-        Renderer m_Renderer;
-
-        Ref<Shader> m_SolidShader;
-        Ref<Shader> m_EllipseShader;
-        Ref<Shader> m_TextureShader;  // TODO why are these Ref?
-
-        Camera m_Camera;
-        Ref<UniformBuffer> m_ShaderUniform;
 
         std::function<void(Window *window, int width, int height)> m_ResizeCallback;
         std::function<void(Window *window)> m_CloseCallback;

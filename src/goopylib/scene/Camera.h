@@ -24,8 +24,9 @@ namespace gp {
      */
     class Camera {
 
-        friend class Renderer;
         friend class Window;
+        friend class Renderer;
+        friend class RenderingManager;
 
     public:
         /**

@@ -1,9 +1,11 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "src/goopylib/core/Window.h"
 
 namespace gp {
     Window::Window(int width, int height, const char *title)
-            : m_Width(width),
+            : RenderingManager(*this, width, height),
+              m_Width(width),
               m_Height(height),
               m_Title(title),
 
@@ -14,10 +16,7 @@ namespace gp {
               m_WindowedWidth(m_Width),
               m_WindowedHeight(m_Height),
               m_WindowedXPos(m_xPos),
-              m_WindowedYPos(m_yPos),
-
-              m_Renderer(*this, (float) m_Width, (float) m_Height),
-              m_Camera(-width / 2, width / 2, -height / 2, height / 2){
+              m_WindowedYPos(m_yPos) {
         GP_CORE_INFO("gp::Window::Window({0}, {1} '{2}')", m_Width, m_Height, m_Title);
 
         GP_CHECK_GT(width, 0, "Window width must be greater than 0");
