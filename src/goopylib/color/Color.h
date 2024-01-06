@@ -145,13 +145,13 @@ namespace gp {
         int m_Blue;
         float m_Alpha;
 
-        Color(const RGB &color, float alpha);
+        GPAPI Color(const RGB &color, float alpha);
 
-        void fromRGB(const RGB &color, float alpha);
+        GPAPI void fromRGB(const RGB &color, float alpha);
 
-        void update();
+        GPAPI void update();
 
-        virtual void _update() {};
+        GPAPI virtual void _update() {};
 
     private:
         float m_Redf = 0;

@@ -73,7 +73,7 @@ namespace gp {
         GPAPI void setValue(float value);
 
     protected:
-        void _update() override;
+        GPAPI void _update() override;
 
     private:
         int m_Hue;

@@ -7,5 +7,5 @@
 namespace gp {
     GPAPI extern std::unordered_map<std::string, Scope<ColorHex>> colors;
 
-    void GPAPI initW3CX11();
+    GPAPI void initW3CX11();
 }

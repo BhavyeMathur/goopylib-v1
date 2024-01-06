@@ -84,7 +84,7 @@ namespace gp {
         GPAPI void setKey(float value);
 
     protected:
-        void _update() override;
+        GPAPI void _update() override;
 
     private:
         float m_Cyan;
