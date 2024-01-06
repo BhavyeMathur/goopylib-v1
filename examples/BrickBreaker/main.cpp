@@ -236,7 +236,7 @@ int main(int argc, char *argv[]) {
 
         float lasthit = 0;
 
-        while (window.isOpen() and not checkGameover(ball, bricks)) {
+        while (window.isOpen() and !checkGameover(ball, bricks)) {
             float start = gp::getTime();
             gp::update();
 
