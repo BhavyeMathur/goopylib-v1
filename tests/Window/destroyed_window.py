@@ -278,7 +278,7 @@ class DestroyedWindowMethods(unittest.TestCase):
 
     def test_position2(self):
         with self.assertRaises(RuntimeError):
-            self.window.set_position(100, 100)
+            self.window.position = (100, 100)
     
     # Title
     def test_title1(self):

@@ -17,7 +17,7 @@
 #include "goopylib/scene/camera_module.h"
 
 #include "src/goopylib/core/Window.h"
-#include "src/platform/eventsMouseCodes.h"
+#include "src/platform/events/MouseCodes.h"
 
 #if GP_ERROR_CHECKING
 #define CHECK_ACTIVE(val) \
@@ -315,6 +315,26 @@ namespace window {
         return PyLong_FromLong(self->window->getYPos());
     }
 
+    // Position
+    static int set_position(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_TRACE("gp.window.Window.set_position({0})", PyUnicode_AsUTF8(PyObject_Repr(value)));
+
+        CHECK_ACTIVE(-1);
+
+        int xpos, ypos;
+        if (!PyArg_ParseTuple(value, "(ii)", &xpos, &ypos)) {
+            RAISE_TYPE_ERROR(-1, "tuple of integer", value);
+        }
+
+        self->window->setPosition(xpos, ypos);
+        return 0;
+    }
+
+    static PyObject *get_position(WindowObject *self, void *Py_UNUSED(closure)) {
+        CHECK_ACTIVE(nullptr);
+        return PyTuple_Pack(2, PyLong_FromLong(self->window->getXPos()), PyLong_FromLong(self->window->getYPos()));
+    }
+
     // Background
     static int set_background(WindowObject *self, PyObject *value, void *Py_UNUSED(closure)) {
         CHECK_ACTIVE(-1);
@@ -574,24 +594,6 @@ namespace window {
 
         return PyTuple_Pack(2, PyLong_FromLong(self->window->getMaxWidth()),
                             PyLong_FromLong(self->window->getMaxHeight()));
-    }
-
-    // Position
-    static PyObject *set_position(WindowObject *self, PyObject *args) {
-        CHECK_ACTIVE(nullptr);
-
-        int xpos, ypos;
-        if (!PyArg_ParseTuple(args, "ii", &xpos, &ypos)) {
-            return nullptr;
-        }
-
-        self->window->setPosition(xpos, ypos);
-        Py_RETURN_NONE;
-    }
-
-    static PyObject *get_position(WindowObject *self, void *Py_UNUSED(closure)) {
-        CHECK_ACTIVE(nullptr);
-        return PyTuple_Pack(2, PyLong_FromLong(self->window->getXPos()), PyLong_FromLong(self->window->getYPos()));
     }
 
     // Aspect Ratio
@@ -1583,9 +1585,6 @@ namespace window {
             {"set_max_size",              (PyCFunction) set_max_size,              METH_VARARGS,
                     "Sets the maximum size for the window"},
 
-            {"set_position",              (PyCFunction) set_position,              METH_VARARGS,
-                    "Sets the Window's x and y position"},
-
             {"set_aspect_ratio",          (PyCFunction) set_aspect_ratio,          METH_VARARGS,
                     "Sets the aspect ratio of the window"},
             {"get_aspect_ratio",          (PyCFunction) get_aspect_ratio,          METH_NOARGS,
@@ -1685,6 +1684,7 @@ namespace window {
 
             GETTER_SETTER(xpos),
             GETTER_SETTER(ypos),
+            GETTER_SETTER(position),
 
             GETTER_SETTER(background),
 

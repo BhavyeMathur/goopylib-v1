@@ -174,7 +174,7 @@ class WindowMethods(unittest.TestCase):
         self.window.position_callback = callback
         self.assertEqual(self.window.position_callback, callback)
 
-        self.window.set_position(0, 0)
+        self.window.position = (0, 0)
         self.assertTrue(callback_executed)
 
     def test_remove_position_callback(self):
@@ -487,20 +487,20 @@ class WindowMethods(unittest.TestCase):
     # Size
 
     def test_position1(self):
-        self.window.set_position(200, 250)
-        # self.assertEqual(self.window.get_position(), (200, 250))
+        self.window = (200, 250)
+        # self.assertEqual(self.window.position, (200, 250))
 
     def test_position2(self):
-        self.window.set_position(ypos=105, xpos=115)
+        self.window.position = (115, 105)
         self.assertEqual((self.window.xpos, self.window.ypos), (115, 105))
 
     def test_position_errors(self):
         initial_value = (self.window.xpos, self.window.ypos)
 
         with self.assertRaises(TypeError):
-            self.window.set_position("wrong", 100)
+            self.window.position = ("wrong", 100)
         with self.assertRaises(TypeError):
-            self.window.set_position(100, "wrong")
+            self.window.position = (100, "wrong")
 
         self.assertEqual((self.window.xpos, self.window.ypos), initial_value)
 

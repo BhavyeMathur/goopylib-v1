@@ -188,6 +188,24 @@ class Window:
     def ypos(self, value: int) -> None:
         self._window.ypos = value
 
+    @property
+    def position(self) -> tuple[int, int]:
+        """
+        An (x, y) tuple representing the position of the top-left of the window on the screen.
+
+        Returns:
+            A tuple representing the (xpos, ypos) of the window in screen coordinates
+
+        Raises:
+            TypeError: position must be a tuple of integers
+            RuntimeError: window has been destroyed
+        """
+        return self._window.position
+
+    @position.setter
+    def position(self, value: tuple[int, int]) -> None:
+        self._window.position = value
+
     # Background Color
     @property
     def background(self) -> Color:
@@ -369,20 +387,6 @@ class Window:
             RuntimeError: window has been destroyed
         """
         self._window.set_max_size(max_width, max_height)
-
-    def set_position(self, xpos: int, ypos: int) -> None:
-        """
-        Sets the position of the top-left of the window on the screen.
-
-        Args:
-            xpos: in screen coordinates
-            ypos: in screen coordinates
-
-        Raises:
-            TypeError: xpos and ypos must be integers
-            RuntimeError: window has been destroyed
-        """
-        self._window.set_position(xpos, ypos)
 
     def set_aspect_ratio(self, numerator: Union[int], denominator: Union[int]) -> None:
         """

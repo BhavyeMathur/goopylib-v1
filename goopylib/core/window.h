@@ -67,6 +67,11 @@ namespace window {
 
     static PyObject *get_ypos(WindowObject *self, void *closure);
 
+    // Position
+    static int set_position(WindowObject *self, PyObject *value, void *closure);
+
+    static PyObject *get_position(WindowObject *self, void *closure);
+
     // Background
     static int set_background(WindowObject *self, PyObject *value, void *closure);
 
@@ -112,11 +117,6 @@ namespace window {
     static PyObject *set_max_size(WindowObject *self, PyObject *args);
 
     static PyObject *get_max_size(WindowObject *self, void *closure);
-
-    // Position
-    static PyObject *set_position(WindowObject *self, PyObject *args);
-
-    static PyObject *get_position(WindowObject *self, void *closure);
 
     // Aspect Ratio
     static PyObject *set_aspect_ratio(WindowObject *self, PyObject *args);
