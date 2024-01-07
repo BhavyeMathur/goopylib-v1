@@ -29,17 +29,18 @@ namespace gp {
         TextureAtlas::init();
 
         m_Renderer.init();
+        m_AlphaRenderer.init();
 
-        GP_CORE_TRACE("Rendering::init() initializing Solid Shader");
+        GP_CORE_TRACE("RenderingManager::init() initializing Solid Shader");
         m_SolidShader = CreateScope<Shader>(solidVertexShader, solidFragmentShader);
 
-        GP_CORE_TRACE("Rendering::init() initializing Ellipse Shader");
+        GP_CORE_TRACE("RenderingManager::init() initializing Ellipse Shader");
         m_EllipseShader = CreateScope<Shader>(ellipseVertexShader, ellipseFragmentShader);
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
 
-        GP_CORE_TRACE("Rendering::init() initializing texture Shader");
+        GP_CORE_TRACE("RenderingManager::init() initializing texture Shader");
         m_TextureShader = CreateScope<Shader>(textureVertexShader, textureFragmentShader);
         m_TextureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
 
@@ -142,6 +143,8 @@ namespace gp {
 
 namespace gp {
     uint32_t RenderingManager::drawLine(Line *object) {
+        GP_CORE_TRACE("gp::RenderingManager::drawLine()");
+
         const uint32_t ID = m_NextObjectID;
         m_NextObjectID++;
         
@@ -151,14 +154,24 @@ namespace gp {
     }
 
     void RenderingManager::destroyLine(uint32_t ID, const Line *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).destroyLine(ID);
+        GP_CORE_TRACE("gp::RenderingManager::destroyLine({0})", ID);
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyLine(ID);
+        m_ObjectToIsOpaque.erase(ID);
     }
 
     void RenderingManager::updateLine(uint32_t ID, const Line *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).updateLine(ID, object);
+        GP_CORE_TRACE("gp::RenderingManager::updateLine({0})", ID);
+        if (m_ObjectToIsOpaque[ID] == object->isOpaque()) {
+            return (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).updateLine(ID, object);
+        }
+
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyLine(ID);
+        (m_ObjectToIsOpaque[ID] ? m_AlphaRenderer : m_Renderer).drawLine(ID, object);
+        m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
     }
 
     uint32_t RenderingManager::drawTriangle(Triangle *object) {
+        GP_CORE_TRACE("gp::RenderingManager::drawTriangle()");
         const uint32_t ID = m_NextObjectID;
         m_NextObjectID++;
         
@@ -168,14 +181,24 @@ namespace gp {
     }
 
     void RenderingManager::destroyTriangle(uint32_t ID, const Triangle *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).destroyTriangle(ID);
+        GP_CORE_TRACE("gp::RenderingManager::destroyTriangle({0})", ID);
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyTriangle(ID);
+        m_ObjectToIsOpaque.erase(ID);
     }
 
     void RenderingManager::updateTriangle(uint32_t ID, const Triangle *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).updateTriangle(ID, object);
+        GP_CORE_TRACE("gp::RenderingManager::updateTriangle({0})", ID);
+        if (m_ObjectToIsOpaque[ID] == object->isOpaque()) {
+            return (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).updateTriangle(ID, object);
+        }
+
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyTriangle(ID);
+        (m_ObjectToIsOpaque[ID] ? m_AlphaRenderer : m_Renderer).drawTriangle(ID, object);
+        m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
     }
 
     uint32_t RenderingManager::drawQuad(Quad *object) {
+        GP_CORE_TRACE("gp::RenderingManager::drawQuad()");
         const uint32_t ID = m_NextObjectID;
         m_NextObjectID++;
         
@@ -185,14 +208,24 @@ namespace gp {
     }
 
     void RenderingManager::destroyQuad(uint32_t ID, const Quad *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).destroyQuad(ID);
+        GP_CORE_TRACE("gp::RenderingManager::destroyQuad({0})", ID);
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyQuad(ID);
+        m_ObjectToIsOpaque.erase(ID);
     }
 
     void RenderingManager::updateQuad(uint32_t ID, const Quad *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).updateQuad(ID, object);
+        GP_CORE_TRACE("gp::RenderingManager::updateQuad({0})", ID);
+        if (m_ObjectToIsOpaque[ID] == object->isOpaque()) {
+            return (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).updateQuad(ID, object);
+        }
+
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyQuad(ID);
+        (m_ObjectToIsOpaque[ID] ? m_AlphaRenderer : m_Renderer).drawQuad(ID, object);
+        m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
     }
 
     uint32_t RenderingManager::drawEllipse(Ellipse *object) {
+        GP_CORE_TRACE("gp::RenderingManager::drawEllipse()");
         const uint32_t ID = m_NextObjectID;
         m_NextObjectID++;
         
@@ -202,14 +235,24 @@ namespace gp {
     }
 
     void RenderingManager::destroyEllipse(uint32_t ID, const Ellipse *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).destroyEllipse(ID);
+        GP_CORE_TRACE("gp::RenderingManager::destroyEllipse({0})", ID);
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyEllipse(ID);
+        m_ObjectToIsOpaque.erase(ID);
     }
 
     void RenderingManager::updateEllipse(uint32_t ID, const Ellipse *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).updateEllipse(ID, object);
+        GP_CORE_TRACE("gp::RenderingManager::updateEllipse({0})", ID);
+        if (m_ObjectToIsOpaque[ID] == object->isOpaque()) {
+            return (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).updateEllipse(ID, object);
+        }
+
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyEllipse(ID);
+        (m_ObjectToIsOpaque[ID] ? m_AlphaRenderer : m_Renderer).drawEllipse(ID, object);
+        m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
     }
 
     uint32_t RenderingManager::drawTexturedQuad(TexturedQuad *object) {
+        GP_CORE_TRACE("gp::RenderingManager::drawTexturedQuad()");
         const uint32_t ID = m_NextObjectID;
         m_NextObjectID++;
         
@@ -219,10 +262,19 @@ namespace gp {
     }
 
     void RenderingManager::destroyTexturedQuad(uint32_t ID, const TexturedQuad *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).destroyTexturedQuad(ID);
+        GP_CORE_TRACE("gp::RenderingManager::destroyTexturedQuad({0})", ID);
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyTexturedQuad(ID);
+        m_ObjectToIsOpaque.erase(ID);
     }
 
-    void RenderingManager::updateTexturedQuad(uint32_t ID, const TexturedQuad *object) {
-        return (object->isOpaque() ? m_Renderer : m_AlphaRenderer).updateTexturedQuad(ID, object);
+    void RenderingManager::updateTexturedQuad(uint32_t ID, TexturedQuad *object) {
+        GP_CORE_TRACE("gp::RenderingManager::updateTexturedQuad({0})", ID);
+        if (m_ObjectToIsOpaque[ID] == object->isOpaque()) {
+            return (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).updateTexturedQuad(ID, object);
+        }
+
+        (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyTexturedQuad(ID);
+        (m_ObjectToIsOpaque[ID] ? m_AlphaRenderer : m_Renderer).drawTexturedQuad(ID, object);
+        m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
     }
 }

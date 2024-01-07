@@ -5,7 +5,6 @@
 namespace gp {
     Window::Window(int width, int height, const char *title)
             : RenderingManager(*this, width, height),
-              m_Title(title),
 
               m_xPos(50),
               m_yPos(50),
@@ -14,6 +13,8 @@ namespace gp {
               m_WindowedHeight(m_Height),
               m_WindowedXPos(m_xPos),
               m_WindowedYPos(m_yPos) {
+
+        m_Title = title;
         GP_CORE_INFO("gp::Window::Window({0}, {1} '{2}')", m_Width, m_Height, m_Title);
 
         GP_CHECK_GT(width, 0, "Window width must be greater than 0");

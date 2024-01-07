@@ -43,7 +43,7 @@ namespace gp {
     }
 
     void TexturedQuad::_destroy() const {
-        m_Window->destroyTexturedQuad(m_RendererID);
+        m_Window->destroyTexturedQuad(m_RendererID, this);
     }
 
     void TexturedQuad::_update() {

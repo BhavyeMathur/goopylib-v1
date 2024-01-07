@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "goopylib/debug.h"
 
 #define COLOR_MODULE
@@ -9,6 +10,12 @@
 #include "color_capsule.h"
 
 #include "macros.h"
+
+#include <goopylib/color/ColorRGB.h>
+#include <goopylib/color/ColorHex.h>
+#include <goopylib/color/ColorCMYK.h>
+#include <goopylib/color/ColorHSV.h>
+#include <goopylib/color/ColorHSL.h>
 
 struct ColorRGBObject {
     ColorObject base;
@@ -36,9 +43,9 @@ struct ColorHSLObject {
 };
 
 namespace color {
-    static bool isinstance(PyObject *object){
-            GP_PY_TRACE("gp.color.isinstance()");
-            return PyObject_IsInstance(object, (PyObject *) &ColorType);
+    static bool isinstance(PyObject * object) {
+        GP_PY_TRACE("gp.color.isinstance()");
+        return PyObject_IsInstance(object, (PyObject *) &ColorType);
     }
 
     // Create color instances

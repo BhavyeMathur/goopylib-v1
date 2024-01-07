@@ -116,11 +116,12 @@ namespace gp {
 
         GPAPI void destroyTexturedQuad(uint32_t ID, const TexturedQuad *object);
 
-        GPAPI void updateTexturedQuad(uint32_t ID, const TexturedQuad *object);
+        GPAPI void updateTexturedQuad(uint32_t ID, TexturedQuad *object);
 
     protected:
         int m_Width;
         int m_Height;
+        const char *m_Title;
 
         Color m_Background;
 

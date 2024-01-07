@@ -14,7 +14,7 @@ namespace gp {
     }
 
     void Quad::_destroy() const {
-        m_Window->destroyQuad(m_RendererID);
+        m_Window->destroyQuad(m_RendererID, this);
     }
 
     void Quad::_update() {

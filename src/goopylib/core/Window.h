@@ -53,7 +53,7 @@ namespace gp {
      * @param height in screen coordinates
      * @param title displayed in the title bar
      */
-    class Window : public RenderingManager {
+    class Window final : public RenderingManager {
 
         friend class Renderer;
 
@@ -947,8 +947,6 @@ namespace gp {
         GPAPI static void destroyAll();
 
     private:
-        const char *m_Title;
-
         int m_xPos;
         int m_yPos;
 

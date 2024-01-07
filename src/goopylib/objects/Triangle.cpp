@@ -13,7 +13,7 @@ namespace gp {
     }
 
     void Triangle::_destroy() const {
-        m_Window->destroyTriangle(m_RendererID);
+        m_Window->destroyTriangle(m_RendererID, this);
     }
 
     void Triangle::_update() {

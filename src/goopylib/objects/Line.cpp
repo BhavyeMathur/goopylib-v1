@@ -13,7 +13,7 @@ namespace gp {
     }
 
     void Line::_destroy() const {
-        m_Window->destroyLine(m_RendererID);
+        m_Window->destroyLine(m_RendererID, this);
     }
 
     void Line::_update() {

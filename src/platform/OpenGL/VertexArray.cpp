@@ -32,7 +32,7 @@ namespace gp {
     }
 
     void VertexArray::bind() const {
-        GP_CORE_TRACE_ALL("Binding Vertex Array {0}", m_RendererID);
+        GP_CORE_TRACE("Binding Vertex Array {0}", m_RendererID);
         glBindVertexArray(m_RendererID);
     }
 
@@ -75,8 +75,8 @@ namespace gp {
 
                     GP_CORE_DEBUG(
                             "Vertex Array Attribute index={0}, size={1}, type=GL_FLOAT, normalized={2}, stride={3}, offset={4}",
-                            attrIndex, element.getCount(), element.m_Normalized, layout.m_Stride,
-                            (const void *) element.m_Offset);
+                            attrIndex, element.getCount(), element.isNormalised(), layout.m_Stride,
+                            (const void *) element.getOffset());
 
                     glEnableVertexAttribArray(attrIndex);
                     glVertexAttribPointer(attrIndex,
@@ -96,7 +96,7 @@ namespace gp {
 
                     GP_CORE_DEBUG("Vertex Array Attribute index={0}, size={1}, type={2}, stride={3}, offset={4}",
                                   attrIndex, element.getCount(), shaderOpenGLType(type), layout.m_Stride,
-                                  (const void *) element.m_Offset);
+                                  (const void *) element.getOffset());
 
                     glEnableVertexAttribArray(attrIndex);
                     glVertexAttribIPointer(attrIndex,
@@ -120,7 +120,7 @@ namespace gp {
                         GP_CORE_DEBUG(
                                 "Vertex Array Attribute index={0}, size={1}, type={2}, isNormalized={3}, strideSize={4}, offset={5}",
                                 attrIndex, count, glType, normalized, stride,
-                                (const void *) (element.m_Offset + sizeof(float) * count * i));
+                                (const void *) (element.getOffset() + sizeof(float) * count * i));
 
                         glEnableVertexAttribArray(attrIndex);
                         glVertexAttribPointer(attrIndex,

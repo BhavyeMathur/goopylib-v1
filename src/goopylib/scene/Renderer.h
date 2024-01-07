@@ -78,25 +78,25 @@ namespace gp {
 
         GPAPI void init();
 
-        GPAPI void drawLine(uint32_t ID, Line *object);
+        GPAPI void drawLine(uint32_t ID, const Line *object);
 
         GPAPI void destroyLine(uint32_t ID);
 
         GPAPI void updateLine(uint32_t ID, const Line *object);
 
-        GPAPI void drawTriangle(uint32_t ID, Triangle *object);
+        GPAPI void drawTriangle(uint32_t ID, const Triangle *object);
 
         GPAPI void destroyTriangle(uint32_t ID);
 
         GPAPI void updateTriangle(uint32_t ID, const Triangle *object);
 
-        GPAPI void drawQuad(uint32_t ID, Quad *object);
+        GPAPI void drawQuad(uint32_t ID, const Quad *object);
 
         GPAPI void destroyQuad(uint32_t ID);
 
         GPAPI void updateQuad(uint32_t ID, const Quad *object);
 
-        GPAPI void drawEllipse(uint32_t ID, Ellipse *object);
+        GPAPI void drawEllipse(uint32_t ID, const Ellipse *object);
 
         GPAPI void destroyEllipse(uint32_t ID);
 

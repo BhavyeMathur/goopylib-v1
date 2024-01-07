@@ -26,7 +26,7 @@ namespace gp {
     }
 
     void Ellipse::_destroy() const {
-        m_Window->destroyEllipse(m_RendererID);
+        m_Window->destroyEllipse(m_RendererID, this);
     }
 
     void Ellipse::_update() {
