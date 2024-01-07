@@ -103,10 +103,8 @@ namespace gp {
         m_TexturedQuadToIndex.emplace_back();
     }
 
-    uint32_t Renderer::drawLine(Line *object) {
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
-        GP_CORE_DEBUG("Drawing Line {0}", ID);
+    void Renderer::drawLine(uint32_t ID, Line *object) {
+        GP_CORE_DEBUG("gp::Renderer::drawLine{0})", ID);
 
         const uint32_t index = m_LineVertices.size();
         m_LineToIndex.insert({ID, index});
@@ -123,8 +121,6 @@ namespace gp {
         m_LineBatch.vertices += 2;
         m_LineBatch.bufferData = &m_LineVertices[0];
         m_LineBatch.reallocateBufferData = true;
-
-        return ID;
     }
 
     void Renderer::destroyLine(uint32_t ID) {
@@ -160,10 +156,8 @@ namespace gp {
         m_LineBatch.updateBufferData = true;
     }
 
-    uint32_t Renderer::drawTriangle(Triangle *object) {
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
-        GP_CORE_DEBUG("Drawing Triangle {0}", ID);
+    void Renderer::drawTriangle(uint32_t ID, Triangle *object) {
+        GP_CORE_DEBUG("gp::Renderer::drawTriangle{0})", ID);
 
         const uint32_t index = m_TriangleVertices.size();
         m_TriangleToIndex.insert({ID, index});
@@ -182,8 +176,6 @@ namespace gp {
         m_TriangleBatch.vertices += 3;
         m_TriangleBatch.bufferData = &m_TriangleVertices[0];
         m_TriangleBatch.reallocateBufferData = true;
-
-        return ID;
     }
 
     void Renderer::destroyTriangle(uint32_t ID) {
@@ -221,10 +213,8 @@ namespace gp {
         m_TriangleBatch.updateBufferData = true;
     }
 
-    uint32_t Renderer::drawQuad(Quad *object) {
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
-        GP_CORE_DEBUG("Drawing Quad {0}", ID);
+    void Renderer::drawQuad(uint32_t ID, Quad *object) {
+        GP_CORE_DEBUG("gp::Renderer::drawQuad{0})", ID);
 
         const uint32_t index = m_QuadVertices.size();
         m_QuadToIndex.insert({ID, index});
@@ -245,8 +235,6 @@ namespace gp {
         m_QuadBatch.vertices += 4;
         m_QuadBatch.bufferData = &m_QuadVertices[0];
         m_QuadBatch.reallocateBufferData = true;
-
-        return ID;
     }
 
     void Renderer::destroyQuad(uint32_t ID) {
@@ -286,10 +274,8 @@ namespace gp {
         m_QuadBatch.updateBufferData = true;
     }
 
-    uint32_t Renderer::drawEllipse(Ellipse *object) {
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
-        GP_CORE_DEBUG("Drawing Ellipse {0}", ID);
+    void Renderer::drawEllipse(uint32_t ID, Ellipse *object) {
+        GP_CORE_DEBUG("gp::Renderer::drawEllipse{0})", ID);
 
         const uint32_t index = m_EllipseVertices.size();
         m_EllipseToIndex.insert({ID, index});
@@ -310,8 +296,6 @@ namespace gp {
         m_EllipseBatch.vertices += 4;
         m_EllipseBatch.bufferData = &m_EllipseVertices[0];
         m_EllipseBatch.reallocateBufferData = true;
-
-        return ID;
     }
 
     void Renderer::destroyEllipse(uint32_t ID) {
@@ -351,9 +335,7 @@ namespace gp {
         m_EllipseBatch.updateBufferData = true;
     }
 
-    uint32_t Renderer::drawTexturedQuad(TexturedQuad *object) {
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
+    void Renderer::drawTexturedQuad(uint32_t ID, TexturedQuad *object) {
         GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
         uint32_t texIndex, texSlot;
@@ -404,8 +386,6 @@ namespace gp {
         m_TexturedQuadBatches[batch].vertices += 4;
         m_TexturedQuadBatches[batch].bufferData = &m_TexturedQuadVertices[batch][0];
         m_TexturedQuadBatches[batch].reallocateBufferData = true;
-
-        return ID;
     }
 
     void Renderer::destroyTexturedQuad(uint32_t ID) {

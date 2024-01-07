@@ -139,6 +139,7 @@ namespace gp {
 
         Scope<UniformBuffer> m_ShaderUniform;
 
+        uint32_t m_NextObjectID = 0;
         std::unordered_map<uint32_t, bool> m_ObjectToIsOpaque;
 
         GPAPI void _updateBackground();

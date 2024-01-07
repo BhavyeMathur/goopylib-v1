@@ -78,31 +78,31 @@ namespace gp {
 
         GPAPI void init();
 
-        [[nodiscard]] GPAPI uint32_t drawLine(Line *object);
+        GPAPI void drawLine(uint32_t ID, Line *object);
 
         GPAPI void destroyLine(uint32_t ID);
 
         GPAPI void updateLine(uint32_t ID, const Line *object);
 
-        [[nodiscard]] GPAPI uint32_t drawTriangle(Triangle *object);
+        GPAPI void drawTriangle(uint32_t ID, Triangle *object);
 
         GPAPI void destroyTriangle(uint32_t ID);
 
         GPAPI void updateTriangle(uint32_t ID, const Triangle *object);
 
-        [[nodiscard]] GPAPI uint32_t drawQuad(Quad *object);
+        GPAPI void drawQuad(uint32_t ID, Quad *object);
 
         GPAPI void destroyQuad(uint32_t ID);
 
         GPAPI void updateQuad(uint32_t ID, const Quad *object);
 
-        [[nodiscard]] GPAPI uint32_t drawEllipse(Ellipse *object);
+        GPAPI void drawEllipse(uint32_t ID, Ellipse *object);
 
         GPAPI void destroyEllipse(uint32_t ID);
 
         GPAPI void updateEllipse(uint32_t ID, const Ellipse *object);
 
-        [[nodiscard]] GPAPI uint32_t drawTexturedQuad(TexturedQuad *object);
+        GPAPI void drawTexturedQuad(uint32_t ID, TexturedQuad *object);
 
         GPAPI void destroyTexturedQuad(uint32_t ID);
 
@@ -111,8 +111,6 @@ namespace gp {
         GPAPI void flush();
 
     private:
-        uint32_t m_NextObjectID = 0;
-
         RenderingBatch m_LineBatch;
         std::vector<SolidVertex> m_LineVertices;
         std::unordered_map<uint32_t, uint32_t> m_LineToIndex;

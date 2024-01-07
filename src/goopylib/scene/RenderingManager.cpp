@@ -142,9 +142,12 @@ namespace gp {
 
 namespace gp {
     uint32_t RenderingManager::drawLine(Line *object) {
-        uint32_t rendererID = (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawLine(object);
-        m_ObjectToIsOpaque[rendererID] = object->isOpaque();
-        return rendererID;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
+        
+        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawLine(ID, object);
+        m_ObjectToIsOpaque[ID] = object->isOpaque();
+        return ID;
     }
 
     void RenderingManager::destroyLine(uint32_t ID, const Line *object) {
@@ -156,9 +159,12 @@ namespace gp {
     }
 
     uint32_t RenderingManager::drawTriangle(Triangle *object) {
-        uint32_t rendererID = (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawTriangle(object);
-        m_ObjectToIsOpaque[rendererID] = object->isOpaque();
-        return rendererID;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
+        
+        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawTriangle(ID, object);
+        m_ObjectToIsOpaque[ID] = object->isOpaque();
+        return ID;
     }
 
     void RenderingManager::destroyTriangle(uint32_t ID, const Triangle *object) {
@@ -170,9 +176,12 @@ namespace gp {
     }
 
     uint32_t RenderingManager::drawQuad(Quad *object) {
-        uint32_t rendererID = (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawQuad(object);
-        m_ObjectToIsOpaque[rendererID] = object->isOpaque();
-        return rendererID;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
+        
+        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawQuad(ID, object);
+        m_ObjectToIsOpaque[ID] = object->isOpaque();
+        return ID;
     }
 
     void RenderingManager::destroyQuad(uint32_t ID, const Quad *object) {
@@ -184,9 +193,12 @@ namespace gp {
     }
 
     uint32_t RenderingManager::drawEllipse(Ellipse *object) {
-        uint32_t rendererID = (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawEllipse(object);
-        m_ObjectToIsOpaque[rendererID] = object->isOpaque();
-        return rendererID;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
+        
+        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawEllipse(ID, object);
+        m_ObjectToIsOpaque[ID] = object->isOpaque();
+        return ID;
     }
 
     void RenderingManager::destroyEllipse(uint32_t ID, const Ellipse *object) {
@@ -198,9 +210,12 @@ namespace gp {
     }
 
     uint32_t RenderingManager::drawTexturedQuad(TexturedQuad *object) {
-        uint32_t rendererID = (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawTexturedQuad(object);
-        m_ObjectToIsOpaque[rendererID] = object->isOpaque();
-        return rendererID;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
+        
+        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawTexturedQuad(ID, object);
+        m_ObjectToIsOpaque[ID] = object->isOpaque();
+        return ID;
     }
 
     void RenderingManager::destroyTexturedQuad(uint32_t ID, const TexturedQuad *object) {
