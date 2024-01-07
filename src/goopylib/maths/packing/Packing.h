@@ -36,29 +36,29 @@ namespace gp::packing {
 
         GPAPI Item (const Item&) = delete;
 
-        GPAPI bool isVertical() const;
+        [[nodiscard]] GPAPI bool isVertical() const;
 
-        GPAPI bool isHorizontal() const;
+        [[nodiscard]] GPAPI bool isHorizontal() const;
 
-        GPAPI bool isRotated() const;
+        [[nodiscard]] GPAPI bool isRotated() const;
 
-        GPAPI float area() const;
+        [[nodiscard]] GPAPI float area() const;
 
-        GPAPI Point p1() const;
+        [[nodiscard]] GPAPI Point p1() const;
 
-        GPAPI Point p2() const;
+        [[nodiscard]] GPAPI Point p2() const;
 
-        GPAPI float getX() const;
+        [[nodiscard]] GPAPI float getX() const;
 
-        GPAPI float getY() const;
+        [[nodiscard]] GPAPI float getY() const;
 
-        GPAPI float getWidth() const;
+        [[nodiscard]] GPAPI float getWidth() const;
 
-        GPAPI float getHeight() const;
+        [[nodiscard]] GPAPI float getHeight() const;
 
-        GPAPI float getLongSide() const;
+        [[nodiscard]] GPAPI float getLongSide() const;
 
-        GPAPI float getShortSide() const;
+        [[nodiscard]] GPAPI float getShortSide() const;
 
     private:
         float m_Width;
@@ -87,13 +87,13 @@ namespace gp::packing {
     public:
         GPAPI Bin (const Bin&) = delete;
 
-        GPAPI virtual float packingRatio() const;
+        [[nodiscard]] GPAPI virtual float packingRatio() const;
 
-        GPAPI std::vector<Ref<Item>> items() const;
+        [[nodiscard]] GPAPI std::vector<Ref<Item>> items() const;
 
-        GPAPI float getWidth() const;
+        [[nodiscard]] GPAPI float getWidth() const;
 
-        GPAPI float getHeight() const;
+        [[nodiscard]] GPAPI float getHeight() const;
 
     protected:
         const float m_Width;

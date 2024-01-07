@@ -51,6 +51,8 @@ namespace gp {
 
         [[nodiscard]] GPAPI size_t getOffset() const;
 
+        [[nodiscard]] GPAPI const char* getName() const;
+
     private:
         const char *m_Name;
         ShaderDataType m_Type;

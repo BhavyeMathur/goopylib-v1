@@ -3,6 +3,7 @@
 #include "src/goopylib/scene/RenderingManager.h"
 
 #include <GLFW/glfw3.h>
+
 #ifdef APIENTRY
 #undef APIENTRY
 #endif
@@ -69,14 +70,14 @@ namespace gp {
          */
         GPAPI Window(int width, int height, const char *title = "goopylib Window");
 
-        GPAPI Window (const Window&) = delete;
+        GPAPI Window(const Window &) = delete;
 
         GPAPI ~Window();
 
         GPAPI std::string toString();
 
         #if GP_USING_GLFW
-        
+
         /**
          * @return a pointer to the underlying GLFW context.
          *
@@ -85,7 +86,7 @@ namespace gp {
         GPAPI GLFWwindow *getWindowGLFW();
 
         #endif
-    
+
         /**
          * @return whether the window is closed.
          */
@@ -95,19 +96,19 @@ namespace gp {
          * @return whether the window is open.
          */
         [[nodiscard]] GPAPI bool isOpen() const;
-    
+
         /**
          * @return whether the window has been destroyed.
          */
         [[nodiscard]] GPAPI bool isDestroyed() const;
-    
+
         /**
          * Refreshes the window.
          *
          * @throws std::runtime_error window has been destroyed
          */
         GPAPI void update();
-    
+
         /**
          * Destroys & closes the window.
          * 

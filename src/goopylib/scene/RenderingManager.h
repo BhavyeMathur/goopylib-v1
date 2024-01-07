@@ -4,11 +4,9 @@
 #include "src/goopylib/scene/Renderer.h"
 #include "src/goopylib/scene/Camera.h"
 #include "src/goopylib/color/Color.h"
+#include "src/goopylib/shader/Shader.h"
 
 namespace gp {
-    class Shader;
-
-    class UniformBuffer;
 
     class RenderingManager {
 
@@ -130,11 +128,11 @@ namespace gp {
         Camera m_Camera;
         Renderer m_Renderer;
 
-        Ref<Shader> m_SolidShader;
-        Ref<Shader> m_EllipseShader;
-        Ref<Shader> m_TextureShader;  // TODO why are these Ref?
+        Scope<Shader> m_SolidShader;
+        Scope<Shader> m_EllipseShader;
+        Scope<Shader> m_TextureShader;  // TODO can we make these non-heap allocated?
 
-        Ref<UniformBuffer> m_ShaderUniform;
+        Scope<UniformBuffer> m_ShaderUniform;
 
         GPAPI void _updateBackground();
     };

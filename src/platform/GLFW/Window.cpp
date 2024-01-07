@@ -400,7 +400,7 @@ namespace gp {
             return;
         }
 
-        // TODO fix issue with maximize callback not working. Tested on M1 MacOS Monterey 12.4, 3.3.8 Cocoa NSGL EGL OSMesa dynamic, OpenGL 4.1
+        // TODO fix issue with maximize callback not working. Tested on M1 macOS Monterey 12.4, 3.3.8 Cocoa NSGL EGL OSMesa dynamic, OpenGL 4.1
         glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *window, int maximized) {
             auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
             windowObject->_onMaximize(maximized == GLFW_TRUE);

@@ -112,6 +112,10 @@ namespace gp {
     size_t BufferElement::getOffset() const {
         return m_Offset;
     }
+
+    const char *BufferElement::getName() const {
+        return m_Name;
+    }
 }
 
 // Buffer Layout

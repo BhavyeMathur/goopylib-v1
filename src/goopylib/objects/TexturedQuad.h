@@ -34,11 +34,11 @@ namespace gp {
          */
         GPAPI TexturedQuad(std::string texture, const Ref<Bitmap>& bitmap, Point p1, Point p2, Point p3, Point p4);
 
-        GPAPI std::string getTextureName() const;
+        [[nodiscard]] GPAPI std::string getTextureName() const;
 
         GPAPI void setBitmap(const Ref<Bitmap>& bitmap);
 
-        GPAPI virtual Ref<Bitmap> getBitmap() const;
+        [[nodiscard]] GPAPI virtual Ref<Bitmap> getBitmap() const;
 
     protected:
         TextureVertexAttrib m_T1 = {{0, 1}};

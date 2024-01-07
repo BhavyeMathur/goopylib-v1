@@ -1,3 +1,5 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "RenderingManager.h"
 
 #include "src/goopylib/core/Buffer.h"
@@ -23,24 +25,24 @@ namespace gp {
         m_Renderer.init();
 
         GP_CORE_TRACE("Rendering::init() initializing Solid Shader");
-        m_SolidShader = CreateRef<Shader>(solidVertexShader, solidFragmentShader);
+        m_SolidShader = CreateScope<Shader>(solidVertexShader, solidFragmentShader);
 
         GP_CORE_TRACE("Rendering::init() initializing Ellipse Shader");
-        m_EllipseShader = CreateRef<Shader>(ellipseVertexShader, ellipseFragmentShader);
+        m_EllipseShader = CreateScope<Shader>(ellipseVertexShader, ellipseFragmentShader);
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
 
         GP_CORE_TRACE("Rendering::init() initializing texture Shader");
-        m_TextureShader = CreateRef<Shader>(textureVertexShader, textureFragmentShader);
+        m_TextureShader = CreateScope<Shader>(textureVertexShader, textureFragmentShader);
         m_TextureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
 
-        m_ShaderUniform = Ref<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
+        m_ShaderUniform = Scope<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1);
 
-        m_SolidShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_EllipseShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
-        m_TextureShader->setUniformBlock(m_ShaderUniform, "Projection", 0);
+        m_SolidShader->setUniformBlock(*m_ShaderUniform, "Projection", 0);
+        m_EllipseShader->setUniformBlock(*m_ShaderUniform, "Projection", 0);
+        m_TextureShader->setUniformBlock(*m_ShaderUniform, "Projection", 0);
     }
 
     void RenderingManager::render() {

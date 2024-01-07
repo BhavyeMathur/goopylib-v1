@@ -1,7 +1,6 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 6
 
 #include "src/goopylib/shader/Shader.h"
-#include "src/goopylib/core/Buffer.h"
 #include <glm/gtc/type_ptr.hpp>
 
 #if GP_LOGGING_LEVEL >= 6
@@ -55,7 +54,7 @@ namespace gp {
 
         m_RendererID = glCreateProgram();
 
-        GP_CORE_DEBUG("gp::Shader::Shader() - Linking Shader");
+        GP_CORE_DEBUG("gp::Shader::Shader() - Linking Shader {0}", m_RendererID);
 
         glAttachShader(m_RendererID, vertexShader);
         glAttachShader(m_RendererID, fragmentShader);
@@ -86,8 +85,8 @@ namespace gp {
         glUseProgram(0);
     }
 
-    void Shader::setUniformBlock(const Ref<UniformBuffer> &uniform, const char *name, uint32_t binding) const {
-        uniform->setBinding(binding);
+    void Shader::setUniformBlock(const UniformBuffer &uniform, const char *name, uint32_t binding) const {
+        uniform.setBinding(binding);
 
         uint32_t index = glGetUniformBlockIndex(m_RendererID, name);
         glUniformBlockBinding(m_RendererID, index, binding);

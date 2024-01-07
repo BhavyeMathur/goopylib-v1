@@ -1,12 +1,12 @@
 #pragma once
 
 #include "gp.h"
+
+#include "src/goopylib/core/Buffer.h"
 #include <glm/fwd.hpp>
 #include <unordered_map>
 
 namespace gp {
-    class UniformBuffer;
-
     GPAPI std::string readFile(const char *filePath);
 
     class Shader final {
@@ -14,18 +14,22 @@ namespace gp {
         friend class Renderer;
 
     public:
-        GPAPI Shader(const char *vertexShaderSource, const char *fragmentShaderSource);
+        GPAPI Shader() = delete;
 
-        GPAPI Shader (const Shader&) = delete;
+        GPAPI Shader(const Shader &) = delete;
+
+        // GPAPI Shader(Shader &&other) = delete;
+
+        GPAPI Shader(const char *vertexShaderSource, const char *fragmentShaderSource);
 
         GPAPI ~Shader();
 
-        GPAPI void setUniformBlock(const Ref<UniformBuffer> &uniform, const char *name, uint32_t binding) const;
+        GPAPI void setUniformBlock(const UniformBuffer &uniform, const char *name, uint32_t binding) const;
 
         template<typename... T>
             GPAPI void set(const char *name, T &&... args) {
                 bind();
-                _setUniform(_getLocation(name), std::forward < T > (args)...);
+                _setUniform(_getLocation(name), std::forward<T>(args)...);
             }
 
         [[nodiscard]] GPAPI static Ref<Shader> load(const char *vertexShaderPath, const char *fragmentShaderPath) {
