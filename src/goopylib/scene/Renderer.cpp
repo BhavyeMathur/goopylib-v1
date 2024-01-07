@@ -104,8 +104,8 @@ namespace gp {
     }
 
     uint32_t Renderer::drawLine(Line *object) {
-        const uint32_t ID = m_NextLineID;
-        m_NextLineID++;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
         GP_CORE_DEBUG("Drawing Line {0}", ID);
 
         const uint32_t index = m_LineVertices.size();
@@ -161,8 +161,8 @@ namespace gp {
     }
 
     uint32_t Renderer::drawTriangle(Triangle *object) {
-        const uint32_t ID = m_NextTriangleID;
-        m_NextTriangleID++;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
         GP_CORE_DEBUG("Drawing Triangle {0}", ID);
 
         const uint32_t index = m_TriangleVertices.size();
@@ -222,8 +222,8 @@ namespace gp {
     }
 
     uint32_t Renderer::drawQuad(Quad *object) {
-        const uint32_t ID = m_NextQuadID;
-        m_NextQuadID++;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
         GP_CORE_DEBUG("Drawing Quad {0}", ID);
 
         const uint32_t index = m_QuadVertices.size();
@@ -287,8 +287,8 @@ namespace gp {
     }
 
     uint32_t Renderer::drawEllipse(Ellipse *object) {
-        const uint32_t ID = m_NextEllipseID;
-        m_NextEllipseID++;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
         GP_CORE_DEBUG("Drawing Ellipse {0}", ID);
 
         const uint32_t index = m_EllipseVertices.size();
@@ -352,8 +352,8 @@ namespace gp {
     }
 
     uint32_t Renderer::drawTexturedQuad(TexturedQuad *object) {
-        const uint32_t ID = m_NextTexturedQuadID;
-        m_NextTexturedQuadID++;
+        const uint32_t ID = m_NextObjectID;
+        m_NextObjectID++;
         GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
         uint32_t texIndex, texSlot;

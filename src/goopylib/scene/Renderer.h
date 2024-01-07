@@ -111,27 +111,24 @@ namespace gp {
         GPAPI void flush();
 
     private:
-        uint32_t m_NextLineID = 0;
+        uint32_t m_NextObjectID = 0;
+
         RenderingBatch m_LineBatch;
         std::vector<SolidVertex> m_LineVertices;
         std::unordered_map<uint32_t, uint32_t> m_LineToIndex;
 
-        uint32_t m_NextTriangleID = 0;
         RenderingBatch m_TriangleBatch;
         std::vector<SolidVertex> m_TriangleVertices;
         std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
 
-        uint32_t m_NextQuadID = 0;
         RenderingBatch m_QuadBatch;
         std::vector<SolidVertex> m_QuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
 
-        uint32_t m_NextEllipseID = 0;
         RenderingBatch m_EllipseBatch;
         std::vector<EllipseVertex> m_EllipseVertices;
         std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;
 
-        uint32_t m_NextTexturedQuadID = 0;
         std::vector<RenderingBatch> m_TexturedQuadBatches;
         std::vector<std::vector<TextureVertex>> m_TexturedQuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
