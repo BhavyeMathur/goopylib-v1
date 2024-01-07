@@ -5,7 +5,12 @@
 #include "src/goopylib/core/Buffer.h"
 #include "src/goopylib/texture/TextureAtlas.h"
 #include "src/goopylib/shader/ShaderFiles.h"
+
+#include "src/goopylib/objects/Triangle.h"
+#include "src/goopylib/objects/Rectangle.h"
+#include "src/goopylib/objects/Circle.h"
 #include "src/goopylib/objects/Line.h"
+#include "src/goopylib/objects/Image.h"
 
 namespace gp {
     RenderingManager::RenderingManager(const Window &window, int width, int height) :
@@ -183,6 +188,9 @@ namespace gp {
     }
 
     uint32_t RenderingManager::drawTexturedQuad(TexturedQuad *object) {
+        if (object->) {
+
+        }
         return m_Renderer.drawTexturedQuad(object);
     }
 

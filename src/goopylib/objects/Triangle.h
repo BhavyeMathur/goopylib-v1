@@ -93,6 +93,13 @@ namespace gp {
          */
         GPAPI void setTransparency(float v1, float v2, float v3);
 
+        /**
+         *
+         * @return the transparency at each vertex of the object
+         *
+         */
+        [[nodiscard]] GPAPI Float3 getTransparency();
+
     private:
         SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};

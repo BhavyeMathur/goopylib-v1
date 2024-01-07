@@ -74,6 +74,10 @@ namespace gp {
 
         update();
     }
+
+    Float2 Line::getTransparency() {
+        return {m_V1.color.alpha, m_V2.color.alpha};
+    }
 }
 
 // Static Methods

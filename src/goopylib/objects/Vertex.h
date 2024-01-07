@@ -61,4 +61,22 @@ namespace gp {
 
         }
     };
+
+    struct Float4 {
+        float a1;
+        float a2;
+        float a3;
+        float a4;
+    };
+
+    struct Float3 {
+        float a1;
+        float a2;
+        float a3;
+    };
+
+    struct Float2 {
+        float a1;
+        float a2;
+    };
 }

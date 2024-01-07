@@ -105,6 +105,13 @@ namespace gp {
          */
         GPAPI void setTransparency(float v1, float v2, float v3, float v4);
 
+        /**
+         *
+         * @return the transparency at each vertex of the object
+         *
+         */
+        [[nodiscard]] GPAPI Float4 getTransparency();
+
     private:
         EllipseVertexAttrib m_V1 = {{-1, -1},  {0.0f, 0.55f, 0.9f}};
         EllipseVertexAttrib m_V2 = {{1, -1},  {0.0f, 0.55f, 0.9f}};

@@ -87,4 +87,8 @@ namespace gp {
 
         update();
     }
+
+    Float4 Quad::getTransparency() {
+        return {m_V1.color.alpha, m_V2.color.alpha, m_V3.color.alpha, m_V4.color.alpha};
+    }
 }

@@ -88,6 +88,13 @@ namespace gp {
          */
         GPAPI void setTransparency(float value1, float value2);
 
+        /**
+         *
+         * @return the transparency at each vertex of the line
+         *
+         */
+        [[nodiscard]] GPAPI Float2 getTransparency();
+
         // Static Methods
 
         /**
