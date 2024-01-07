@@ -13,7 +13,7 @@ namespace gp {
         friend class Renderer;
 
     public:
-        GPAPI RenderingManager(const Window&, int width, int height);
+        GPAPI RenderingManager(const Window &, int width, int height);
 
         GPAPI RenderingManager(const RenderingManager &) = delete;
 
@@ -144,5 +144,9 @@ namespace gp {
         std::unordered_map<uint32_t, bool> m_ObjectToIsOpaque;
 
         GPAPI void _updateBackground();
+
+        GPAPI static void _enableDepthWriting();
+
+        GPAPI static void _disableDepthWriting();
     };
 }

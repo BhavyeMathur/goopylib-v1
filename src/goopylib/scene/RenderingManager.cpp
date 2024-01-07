@@ -53,10 +53,13 @@ namespace gp {
     }
 
     void RenderingManager::render() {
+        _enableDepthWriting();
         _updateBackground();
 
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
         m_Renderer.flush();
+
+        _disableDepthWriting();
         m_AlphaRenderer.flush();
     }
 }
