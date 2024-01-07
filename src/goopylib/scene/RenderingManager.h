@@ -90,31 +90,31 @@ namespace gp {
 
         [[nodiscard]] GPAPI uint32_t drawLine(Line *object);
 
-        GPAPI void destroyLine(uint32_t ID);
+        GPAPI void destroyLine(uint32_t ID, const Line *object);
 
         GPAPI void updateLine(uint32_t ID, const Line *object);
 
         [[nodiscard]] GPAPI uint32_t drawTriangle(Triangle *object);
 
-        GPAPI void destroyTriangle(uint32_t ID);
+        GPAPI void destroyTriangle(uint32_t ID, const Triangle *object);
 
         GPAPI void updateTriangle(uint32_t ID, const Triangle *object);
 
         [[nodiscard]] GPAPI uint32_t drawQuad(Quad *object);
 
-        GPAPI void destroyQuad(uint32_t ID);
+        GPAPI void destroyQuad(uint32_t ID, const Quad *object);
 
         GPAPI void updateQuad(uint32_t ID, const Quad *object);
 
         [[nodiscard]] GPAPI uint32_t drawEllipse(Ellipse *object);
 
-        GPAPI void destroyEllipse(uint32_t ID);
+        GPAPI void destroyEllipse(uint32_t ID, const Ellipse *object);
 
         GPAPI void updateEllipse(uint32_t ID, const Ellipse *object);
 
         [[nodiscard]] GPAPI uint32_t drawTexturedQuad(TexturedQuad *object);
 
-        GPAPI void destroyTexturedQuad(uint32_t ID);
+        GPAPI void destroyTexturedQuad(uint32_t ID, const TexturedQuad *object);
 
         GPAPI void updateTexturedQuad(uint32_t ID, const TexturedQuad *object);
 
@@ -131,12 +131,15 @@ namespace gp {
     private:
         Camera m_Camera;
         Renderer m_Renderer;
+        Renderer m_AlphaRenderer;
 
         Scope<Shader> m_SolidShader;
         Scope<Shader> m_EllipseShader;
         Scope<Shader> m_TextureShader;  // TODO can we make these non-heap allocated?
 
         Scope<UniformBuffer> m_ShaderUniform;
+
+        std::unordered_map<uint32_t, bool> m_ObjectToIsOpaque;
 
         GPAPI void _updateBackground();
     };
