@@ -25,7 +25,7 @@ namespace gp {
         friend class Renderer;
 
     public:
-        GPAPI TextureAtlas (const TextureAtlas&) = delete;
+        GPAPI TextureAtlas(const TextureAtlas &) = delete;
 
         GPAPI ~TextureAtlas();
 

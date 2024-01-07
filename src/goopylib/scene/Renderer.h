@@ -6,7 +6,9 @@
 #include "src/goopylib/objects/Vertex.h"
 
 #if __APPLE__
+
 #include <OpenGL/gl.h>
+
 #endif
 
 #if GP_USING_GLAD
@@ -68,7 +70,9 @@ namespace gp {
         friend class RenderingManager;
 
     public:
-        GPAPI Renderer (const Renderer&) = delete;
+        GPAPI Renderer(const Renderer &) = delete;
+
+        GPAPI Renderer(Renderer &&other) = delete;
 
         GPAPI ~Renderer();
 
@@ -136,9 +140,9 @@ namespace gp {
         std::vector<Ref<Texture2D>> m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 
-        const Window& m_Window;
+        const Window &m_Window;
 
-        GPAPI Renderer(const Window& window);
+        GPAPI Renderer(const Window &window);
 
         GPAPI void _createLineBuffer();
 
@@ -149,8 +153,8 @@ namespace gp {
         GPAPI void _createEllipseBuffer();
 
         GPAPI void _createTexturedBuffer();
-        
-        [[nodiscard]] GPAPI uint32_t _cacheTexture(const std::string& name, const Bitmap& bitmap);
+
+        [[nodiscard]] GPAPI uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);
 
         GPAPI void _bindTextureBatch(uint32_t offset);
 

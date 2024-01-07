@@ -18,7 +18,7 @@ namespace gp {
 
         GPAPI Shader(const Shader &) = delete;
 
-        // GPAPI Shader(Shader &&other) = delete;
+        GPAPI Shader(Shader &&other) = delete;
 
         GPAPI Shader(const char *vertexShaderSource, const char *fragmentShaderSource);
 

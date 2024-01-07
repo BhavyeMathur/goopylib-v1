@@ -7,7 +7,9 @@
 #if GP_USING_OPENGL
 
 #if __APPLE__
+
 #include <OpenGL/gl.h>
+
 #endif
 
 #if GP_USING_GLAD
@@ -51,7 +53,7 @@ namespace gp {
 
         [[nodiscard]] GPAPI size_t getOffset() const;
 
-        [[nodiscard]] GPAPI const char* getName() const;
+        [[nodiscard]] GPAPI const char *getName() const;
 
     private:
         const char *m_Name;
@@ -68,7 +70,9 @@ namespace gp {
     class BufferLayout {
 
         friend class VertexArray;
+
         friend class VertexBuffer;
+
         friend class UniformBuffer;
 
     public:

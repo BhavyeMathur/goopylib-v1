@@ -15,6 +15,10 @@ namespace gp {
     public:
         GPAPI RenderingManager(const Window&, int width, int height);
 
+        GPAPI RenderingManager(const RenderingManager &) = delete;
+
+        GPAPI RenderingManager(RenderingManager &&other) = delete;
+
         GPAPI void render();
 
         // Width

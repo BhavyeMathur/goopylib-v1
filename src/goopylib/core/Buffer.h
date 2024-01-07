@@ -7,9 +7,13 @@
 namespace gp {
     class Buffer {
     public:
-        virtual ~Buffer() = default;
+        GPAPI Buffer(const Buffer &) = delete;
 
-        [[nodiscard]] uint32_t count() const;
+        GPAPI Buffer(Buffer &&other) = delete;
+
+        GPAPI virtual ~Buffer() = default;
+
+        [[nodiscard]] GPAPI uint32_t count() const;
 
     protected:
         uint32_t m_Count = 0;
@@ -28,6 +32,10 @@ namespace gp {
         friend class Renderer;
 
     public:
+        GPAPI VertexBuffer(const VertexBuffer &) = delete;
+
+        GPAPI VertexBuffer(VertexBuffer &&other) = delete;
+
         GPAPI VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
 
         GPAPI ~VertexBuffer() override;
@@ -56,6 +64,10 @@ namespace gp {
         friend class VertexArray;
 
     public:
+        GPAPI IndexBuffer(const IndexBuffer &) = delete;
+
+        GPAPI IndexBuffer(IndexBuffer &&other) = delete;
+
         GPAPI IndexBuffer(uint32_t count, uint32_t *indices);
 
         GPAPI IndexBuffer(std::initializer_list<uint32_t> indices);
@@ -73,6 +85,10 @@ namespace gp {
     class UniformBuffer final : public Buffer {
 
     public:
+        GPAPI UniformBuffer(const UniformBuffer &) = delete;
+
+        GPAPI UniformBuffer(UniformBuffer &&other) = delete;
+
         GPAPI UniformBuffer(BufferLayout &&layout);
 
         GPAPI ~UniformBuffer() override;

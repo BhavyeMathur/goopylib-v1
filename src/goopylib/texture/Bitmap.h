@@ -9,8 +9,10 @@ namespace gp {
         friend class Image;
 
     public:
-        GPAPI Bitmap (const Bitmap&) = delete;
-        
+        GPAPI Bitmap(const Bitmap &) = delete;
+
+        GPAPI Bitmap(Bitmap &&other) = delete;
+
         GPAPI ~Bitmap();
 
         [[nodiscard]] GPAPI uint32_t getWidth() const;
@@ -19,9 +21,9 @@ namespace gp {
 
         [[nodiscard]] GPAPI uint32_t getChannels() const;
 
-        [[nodiscard]] GPAPI uint8_t* getData() const;
+        [[nodiscard]] GPAPI uint8_t *getData() const;
 
-        GPAPI void saveBitmap(const std::string& filepath) const;
+        GPAPI void saveBitmap(const std::string &filepath) const;
 
     private:
         uint32_t m_Width = 0;
@@ -35,6 +37,6 @@ namespace gp {
 
         GPAPI Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
 
-        GPAPI Bitmap(const char* filepath);
+        GPAPI Bitmap(const char *filepath);
     };
 }

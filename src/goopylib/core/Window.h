@@ -72,6 +72,8 @@ namespace gp {
 
         GPAPI Window(const Window &) = delete;
 
+        GPAPI Window(Window &&other) = delete;
+
         GPAPI ~Window();
 
         GPAPI std::string toString();

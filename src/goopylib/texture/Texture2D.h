@@ -12,7 +12,9 @@ namespace gp {
         friend class TextureAtlas;
 
     public:
-        GPAPI Texture2D (const Texture2D&) = delete;
+        GPAPI Texture2D(const Texture2D &) = delete;
+
+        GPAPI Texture2D(Texture2D &&other) = delete;
 
         GPAPI ~Texture2D();
 
@@ -43,7 +45,7 @@ namespace gp {
 
         GPAPI Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
 
-        GPAPI Texture2D(const Bitmap& bitmap);
+        GPAPI Texture2D(const Bitmap &bitmap);
 
         [[nodiscard]] GPAPI uint32_t _getDataFormat() const;
 

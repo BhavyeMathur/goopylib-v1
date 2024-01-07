@@ -12,6 +12,10 @@ namespace gp {
         friend class Renderer;
 
     public:
+        GPAPI VertexArray(const VertexArray &) = delete;
+
+        GPAPI VertexArray(VertexArray &&other) = delete;
+
         GPAPI VertexArray();
 
         GPAPI ~VertexArray();
