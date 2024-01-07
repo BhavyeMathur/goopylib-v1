@@ -78,4 +78,8 @@ namespace gp {
     Float3 Triangle::getTransparency() {
         return {m_V1.color.alpha, m_V2.color.alpha, m_V3.color.alpha};
     }
+
+    bool Triangle::isOpaque() const {
+        return (m_V1.color.alpha == 1) && (m_V2.color.alpha == 1) && (m_V3.color.alpha == 1);
+    }
 }

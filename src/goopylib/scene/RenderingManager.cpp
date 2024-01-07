@@ -188,7 +188,7 @@ namespace gp {
     }
 
     uint32_t RenderingManager::drawTexturedQuad(TexturedQuad *object) {
-        if (object->) {
+        if (object->isOpaque()) {
 
         }
         return m_Renderer.drawTexturedQuad(object);

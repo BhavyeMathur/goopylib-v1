@@ -100,6 +100,8 @@ namespace gp {
          */
         [[nodiscard]] GPAPI Float3 getTransparency();
 
+        [[nodiscard]] GPAPI bool isOpaque() const override;
+
     private:
         SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};

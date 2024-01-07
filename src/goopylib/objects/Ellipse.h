@@ -105,12 +105,15 @@ namespace gp {
          */
         GPAPI void setTransparency(float v1, float v2, float v3, float v4);
 
+        // TODO python API for get transparency methods
         /**
          *
          * @return the transparency at each vertex of the object
          *
          */
         [[nodiscard]] GPAPI Float4 getTransparency();
+
+        [[nodiscard]] GPAPI bool isOpaque() const override;
 
     private:
         EllipseVertexAttrib m_V1 = {{-1, -1},  {0.0f, 0.55f, 0.9f}};

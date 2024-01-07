@@ -91,4 +91,8 @@ namespace gp {
     Float4 Quad::getTransparency() {
         return {m_V1.color.alpha, m_V2.color.alpha, m_V3.color.alpha, m_V4.color.alpha};
     }
+
+    bool Quad::isOpaque() const {
+        return (m_V1.color.alpha == 1) && (m_V2.color.alpha == 1) && (m_V3.color.alpha == 1) && (m_V4.color.alpha == 1);
+    }
 }

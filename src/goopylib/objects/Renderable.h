@@ -282,6 +282,12 @@ namespace gp {
          */
         [[nodiscard]] GPAPI bool contains(float x, float y) const;
 
+        /**
+         *
+         * @return whether the object is fully opaque or not
+         */
+        [[nodiscard]] GPAPI virtual bool isOpaque() const = 0;
+
     protected:
         Window* m_Window = nullptr;
         uint32_t m_RendererID = 0;

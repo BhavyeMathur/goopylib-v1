@@ -95,6 +95,8 @@ namespace gp {
          */
         [[nodiscard]] GPAPI Float2 getTransparency();
 
+        [[nodiscard]] GPAPI bool isOpaque() const override;
+
         // Static Methods
 
         /**

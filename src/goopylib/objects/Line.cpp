@@ -78,6 +78,10 @@ namespace gp {
     Float2 Line::getTransparency() {
         return {m_V1.color.alpha, m_V2.color.alpha};
     }
+
+    bool Line::isOpaque() const {
+        return (m_V1.color.alpha == 1) && (m_V2.color.alpha == 1);
+    }
 }
 
 // Static Methods
