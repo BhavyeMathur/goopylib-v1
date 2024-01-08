@@ -17,7 +17,7 @@ namespace gp {
         friend class Renderable;
 
     public:
-        GPAPI RenderingManager(const Window &, int width, int height);
+        GPAPI RenderingManager(const Window &, int width, int height, const char *title);
 
         GPAPI RenderingManager(const RenderingManager &) = delete;
 

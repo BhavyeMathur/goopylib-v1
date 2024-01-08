@@ -13,9 +13,10 @@
 #include "src/goopylib/objects/Image.h"
 
 namespace gp {
-    RenderingManager::RenderingManager(const Window &window, int width, int height) :
+    RenderingManager::RenderingManager(const Window &window, int width, int height, const char *title) :
             m_Width(width),
             m_Height(height),
+            m_Title(title),
             m_Background(Color(255, 255, 255)),
             m_Camera(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f),
             m_Renderer(window),
