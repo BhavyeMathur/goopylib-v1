@@ -116,20 +116,23 @@ def find_extensions():
                   sources=["goopylib/objects/renderable.cpp"],
                   **ext_kwargs),
 
-        Extension(name="goopylib.ext.line",
-                  sources=["goopylib/objects/line.cpp"],
-                  **ext_kwargs),
-
         Extension(name="goopylib.ext.triangle",
                   sources=["goopylib/objects/triangle.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.quad",
-                  sources=["goopylib/objects/quad.cpp"],
+                  sources=["goopylib/objects/quad.cpp",
+                           "goopylib/objects/quad_object.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.rectangle",
-                  sources=["goopylib/objects/rectangle.cpp"],
+                  sources=["goopylib/objects/rectangle.cpp",
+                           "goopylib/objects/quad_object.cpp"],
+                  **ext_kwargs),
+
+        Extension(name="goopylib.ext.line",
+                  sources=["goopylib/objects/line.cpp",
+                           "goopylib/objects/quad_object.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.ellipse",
@@ -141,7 +144,8 @@ def find_extensions():
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.image",
-                  sources=["goopylib/objects/image.cpp"],
+                  sources=["goopylib/objects/image.cpp",
+                           "goopylib/objects/quad_object.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.camera",
