@@ -64,6 +64,22 @@ namespace gp {
          */
         [[nodiscard]] GPAPI float getThickness() const;
 
+        GPAPI void setP1(Point point) override;
+
+        [[nodiscard]] GPAPI Point getP1() const override;
+
+        GPAPI void setP2(Point point) override;
+
+        [[nodiscard]] GPAPI Point getP2() const  override;
+
+        GPAPI void setP3(Point point) override;
+
+        [[nodiscard]] GPAPI Point getP3() const override;
+
+        GPAPI void setP4(Point point) override;
+
+        [[nodiscard]] GPAPI Point getP4() const  override;
+
     private:
         float m_Thickness;
     };

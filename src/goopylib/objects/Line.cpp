@@ -1,15 +1,21 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "Line.h"
 
 namespace {
-    gp::Quad getLineQuad(Point p1, Point p2, float thickness) {
+    Point getLineQuadDeltas(Point p1, Point p2, float thickness) {
         float theta = atan((p2.y - p1.y) / (p2.x - p1.x));
         float cos_theta = cos(theta);
         float sin_theta = sin(theta);
 
         thickness /= 2;
-        float dx = sin_theta * thickness;
-        float dy = cos_theta * thickness;
+        return {sin_theta * thickness, cos_theta * thickness};
+    }
+
+    gp::Quad getLineQuad(Point p1, Point p2, float thickness) {
+        Point delta = getLineQuadDeltas(p1, p2, thickness);
+        float dx = delta.x;
+        float dy = delta.y;
 
         return {{p1.x - dx, p1.y + dy},
                 {p2.x - dx, p2.y + dy},
@@ -22,7 +28,7 @@ namespace {
 namespace gp {
     Line::Line(Point p1, Point p2, float thickness)
             : Quad(getLineQuad(p1, p2, thickness)),
-            m_Thickness(thickness) {
+              m_Thickness(thickness) {
 
     }
 }
@@ -43,9 +49,68 @@ namespace gp {
 
     void Line::setThickness(float value) {
         m_Thickness = value;
+        // TODO update quad
     }
 
     float Line::getThickness() const {
         return m_Thickness;
+    }
+
+    void Line::setP1(Point point) {
+        Point p2 = getP2();
+
+        Point delta = getLineQuadDeltas(point, p2, m_Thickness);
+        float dx = delta.x;
+        float dy = delta.y;
+
+        m_Points[0] = {point.x - dx, point.y + dy};
+        m_Points[1] = {p2.x - dx, p2.y + dy};
+        m_Points[2] = {p2.x + dx, p2.y - dy};
+        m_Points[3] = {point.x + dx, point.y - dy};
+
+        _calculateAttributes();
+        update();
+    }
+
+    Point Line::getP1() const {
+        return {(m_Points[0].x + m_Points[3].x) / 2, (m_Points[0].y + m_Points[3].y) / 2};
+    }
+
+    void Line::setP2(Point point) {
+        Point p1 = getP1();
+
+        Point delta = getLineQuadDeltas(p1, point, m_Thickness);
+        float dx = delta.x;
+        float dy = delta.y;
+
+        m_Points[0] = {p1.x - dx, p1.y + dy};
+        m_Points[1] = {point.x - dx, point.y + dy};
+        m_Points[2] = {point.x + dx, point.y - dy};
+        m_Points[3] = {p1.x + dx, p1.y - dy};
+
+        _calculateAttributes();
+        update();
+    }
+
+    Point Line::getP2() const {
+        return {(m_Points[1].x + m_Points[2].x) / 2, (m_Points[1].y + m_Points[2].y) / 2};
+    }
+
+    void Line::setP3(Point point) {
+        GP_CORE_ERROR("gp::Line cannot set point 3");
+    }
+
+    Point Line::getP3() const {
+        GP_CORE_ERROR("gp::Line cannot get point 3");
+        return {NAN, NAN};
+    }
+
+    void Line::setP4(Point point) {
+        GP_CORE_ERROR("gp::Line cannot set point 4");
+    }
+
+    Point Line::getP4() const {
+        GP_CORE_ERROR("gp::Line cannot set point 4");
+        return {NAN, NAN};
     }
 }
