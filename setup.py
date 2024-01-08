@@ -137,7 +137,9 @@ def find_extensions():
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.circle",
-                  sources=["goopylib/objects/circle.cpp"],
+                  sources=["goopylib/objects/circle/module.cpp",
+                           "goopylib/objects/circle/circle.cpp",
+                           "goopylib/objects/circle/type.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.image",
