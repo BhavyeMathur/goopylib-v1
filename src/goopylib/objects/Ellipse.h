@@ -124,14 +124,10 @@ namespace gp {
         float m_Radius1;
         float m_Radius2;
 
-        [[nodiscard]] GPAPI uint32_t _draw(Window &window) override;
-
-        GPAPI void _destroy() const override;
-
-        GPAPI void _update() override;
-
         [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
 
         GPAPI void _onScale(float xfactor, float yfactor) override;
+
+        [[nodiscard]] GPAPI RenderableSubclass _getRenderableSubclass() override;
     };
 }

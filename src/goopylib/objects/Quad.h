@@ -112,11 +112,7 @@ namespace gp {
         SolidVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V4 = {{0.0f, 0.55f, 0.9f}};
 
-        GPAPI void _update() override;
-
     private:
-
-        GPAPI void _destroy() const override;
 
         [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
 

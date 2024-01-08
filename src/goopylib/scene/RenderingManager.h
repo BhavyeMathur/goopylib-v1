@@ -14,6 +14,8 @@ namespace gp {
 
         friend class Renderer;
 
+        friend class Renderable;
+
     public:
         GPAPI RenderingManager(const Window &, int width, int height);
 
@@ -90,30 +92,6 @@ namespace gp {
          */
         [[nodiscard]] GPAPI Point toScreen(Point p);
 
-        [[nodiscard]] GPAPI uint32_t draw(Renderable *object);
-
-        GPAPI void destroyLine(uint32_t ID, const Line *object);
-
-        GPAPI void updateLine(uint32_t ID, const Line *object);
-
-        GPAPI void destroyTriangle(uint32_t ID, const Triangle *object);
-
-        GPAPI void updateTriangle(uint32_t ID, const Triangle *object);
-
-        GPAPI void destroyQuad(uint32_t ID, const Quad *object);
-
-        GPAPI void updateQuad(uint32_t ID, const Quad *object);
-
-        GPAPI void destroyEllipse(uint32_t ID, const Ellipse *object);
-
-        GPAPI void updateEllipse(uint32_t ID, const Ellipse *object);
-
-        [[nodiscard]] GPAPI uint32_t drawTexturedQuad(TexturedQuad *object);
-
-        GPAPI void destroyTexturedQuad(uint32_t ID, const TexturedQuad *object);
-
-        GPAPI void updateTexturedQuad(uint32_t ID, TexturedQuad *object);
-
     protected:
         int m_Width;
         int m_Height;
@@ -144,5 +122,11 @@ namespace gp {
         GPAPI static void _enableDepthWriting();
 
         GPAPI static void _disableDepthWriting();
+
+        GPAPI uint32_t _drawRenderable(Renderable *object);
+
+        GPAPI void _undrawRenderable(Renderable *object);
+
+        GPAPI void _updateRenderable(Renderable *object);
     };
 }

@@ -38,14 +38,6 @@ namespace gp {
         return m_Bitmap;
     }
 
-    void TexturedQuad::_destroy() const {
-        m_Window->destroyTexturedQuad(m_RendererID, this);
-    }
-
-    void TexturedQuad::_update() {
-        m_Window->updateTexturedQuad(m_RendererID, this);
-    }
-
     RenderableSubclass TexturedQuad::_getRenderableSubclass() {
         return RenderableSubclass::TexturedQuad;
     }

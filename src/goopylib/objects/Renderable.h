@@ -31,7 +31,7 @@ namespace gp {
         /**
          * Draws the object to a window
          *
-         * @param window the Window to draw to
+         * @param window the Window to _drawRenderable to
          *
          * @throws std::runtime_error the window has been destroyed
          */
@@ -335,10 +335,6 @@ namespace gp {
         GPAPI void _calculateAttributes();
 
         [[nodiscard]] GPAPI virtual bool _contains(float x, float y) const;
-
-        GPAPI virtual void _destroy() const = 0;
-
-        GPAPI virtual void _update() = 0;
 
         GPAPI virtual void _onScale(float xfactor, float yfactor) {
         };

@@ -8,14 +8,6 @@ namespace gp {
         GP_CORE_DEBUG("Initializing Triangle ({0}, {1}), ({2}, {3}), ({4}, {5})", p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
     }
 
-    void Triangle::_destroy() const {
-        m_Window->destroyTriangle(m_RendererID, this);
-    }
-
-    void Triangle::_update() {
-        m_Window->updateTriangle(m_RendererID, this);
-    }
-
     bool Triangle::_contains(float x, float y) const {
         return checkTriangleContains({x, y}, m_Points[0], m_Points[1], m_Points[2]);
     }

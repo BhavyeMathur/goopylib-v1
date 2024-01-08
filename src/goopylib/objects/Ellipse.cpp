@@ -21,18 +21,6 @@ namespace gp {
         GP_CORE_DEBUG("Initializing Ellipse ({0}, {1}), ({2}, {3})", p1.x, p1.y, p2.x, p2.y);
     }
 
-    uint32_t Ellipse::_draw(Window &window) {
-        return window.drawEllipse(this);
-    }
-
-    void Ellipse::_destroy() const {
-        m_Window->destroyEllipse(m_RendererID, this);
-    }
-
-    void Ellipse::_update() {
-        m_Window->updateEllipse(m_RendererID, this);
-    }
-
     bool Ellipse::_contains(float x, float y) const {
         x -= m_Position.x;
         y -= m_Position.y;
@@ -49,6 +37,10 @@ namespace gp {
     void Ellipse::_onScale(float xfactor, float yfactor) {
         m_Radius1 *= xfactor;  // Since these variables are used only by _contains(),
         m_Radius2 *= yfactor;  // we do not need to care about the rotation
+    }
+
+    RenderableSubclass Ellipse::_getRenderableSubclass() {
+        return RenderableSubclass::Ellipse;
     }
 }
 

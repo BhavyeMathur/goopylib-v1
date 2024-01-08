@@ -50,10 +50,6 @@ namespace gp {
         std::string m_Texture;
         Ref<Bitmap> m_Bitmap = nullptr;
 
-        GPAPI void _destroy() const override;
-
-        GPAPI void _update() override;
-
         [[nodiscard]] GPAPI RenderableSubclass _getRenderableSubclass() override;
     };
 }

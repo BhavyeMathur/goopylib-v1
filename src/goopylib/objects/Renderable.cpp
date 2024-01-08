@@ -72,19 +72,19 @@ namespace gp {
     }
 
     void Renderable::draw(Window &window) {
-        GP_CORE_DEBUG("gp::Renderable::draw({0})", window->getTitle());
+        GP_CORE_DEBUG("gp::Renderable::_drawRenderable({0})", window->getTitle());
 
         #if GP_ERROR_CHECKING
         if (window.isDestroyed()) {
-            GP_RUNTIME_ERROR("Renderable::draw() window has been destroyed");
+            GP_RUNTIME_ERROR("Renderable::_drawRenderable() window has been destroyed");
         }
         #endif
 
         if (m_Drawn) {
-            _destroy();
+            m_Window->_undrawRenderable(this);
         }
 
-        m_RendererID = _draw(window);
+        m_RendererID = window._drawRenderable(this);
         m_Window = &window;
         m_Drawn = true;
     }
@@ -93,7 +93,7 @@ namespace gp {
         GP_CORE_INFO("gp::Renderable::destroy()");
 
         if (m_Drawn) {
-            _destroy();
+            m_Window->_undrawRenderable(this);
 
             m_Window = nullptr;
             m_Drawn = false;
@@ -105,7 +105,7 @@ namespace gp {
         GP_CORE_TRACE("gp::Renderable::_update()");
 
         if (m_Drawn) {
-            _update();
+            m_Window->_updateRenderable(this);
         }
     }
 
