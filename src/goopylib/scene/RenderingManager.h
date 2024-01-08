@@ -8,6 +8,8 @@
 
 namespace gp {
 
+    class Renderable;
+
     class RenderingManager {
 
         friend class Renderer;
@@ -88,25 +90,19 @@ namespace gp {
          */
         [[nodiscard]] GPAPI Point toScreen(Point p);
 
-        [[nodiscard]] GPAPI uint32_t drawLine(Line *object);
+        [[nodiscard]] GPAPI uint32_t draw(Renderable *object);
 
         GPAPI void destroyLine(uint32_t ID, const Line *object);
 
         GPAPI void updateLine(uint32_t ID, const Line *object);
 
-        [[nodiscard]] GPAPI uint32_t drawTriangle(Triangle *object);
-
         GPAPI void destroyTriangle(uint32_t ID, const Triangle *object);
 
         GPAPI void updateTriangle(uint32_t ID, const Triangle *object);
 
-        [[nodiscard]] GPAPI uint32_t drawQuad(Quad *object);
-
         GPAPI void destroyQuad(uint32_t ID, const Quad *object);
 
         GPAPI void updateQuad(uint32_t ID, const Quad *object);
-
-        [[nodiscard]] GPAPI uint32_t drawEllipse(Ellipse *object);
 
         GPAPI void destroyEllipse(uint32_t ID, const Ellipse *object);
 

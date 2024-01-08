@@ -8,16 +8,16 @@ namespace gp {
 
     }
 
-    uint32_t Line::_draw(Window &window) {
-        return window.drawLine(this);
-    }
-
     void Line::_destroy() const {
         m_Window->destroyLine(m_RendererID, this);
     }
 
     void Line::_update() {
         m_Window->updateLine(m_RendererID, this);
+    }
+
+    RenderableSubclass Line::_getRenderableSubclass() {
+        return RenderableSubclass::Line;
     }
 }
 

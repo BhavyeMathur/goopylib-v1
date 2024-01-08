@@ -145,13 +145,32 @@ namespace gp {
 }
 
 namespace gp {
-    uint32_t RenderingManager::drawLine(Line *object) {
-        GP_CORE_TRACE("gp::RenderingManager::drawLine()");
+    uint32_t RenderingManager::draw(Renderable *object) {
+        GP_CORE_TRACE("gp::RenderingManager::draw()");
 
         const uint32_t ID = m_NextObjectID;
         m_NextObjectID++;
-        
-        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawLine(ID, object);
+
+        Renderer& renderer = (object->isOpaque() ? m_Renderer : m_AlphaRenderer);
+
+        switch (object->_getRenderableSubclass()) {
+            case RenderableSubclass::Line:
+                renderer.drawLine(ID, dynamic_cast<const Line *>(object));
+                break;
+            case RenderableSubclass::Triangle:
+                renderer.drawTriangle(ID, dynamic_cast<const Triangle *>(object));
+                break;
+            case RenderableSubclass::Quad:
+                renderer.drawQuad(ID, dynamic_cast<const Quad *>(object));
+                break;
+            case RenderableSubclass::Ellipse:
+                renderer.drawEllipse(ID, dynamic_cast<const Ellipse *>(object));
+                break;
+            case RenderableSubclass::TexturedQuad:
+                renderer.drawTexturedQuad(ID, dynamic_cast<TexturedQuad *>(object));
+                break;
+        }
+
         m_ObjectToIsOpaque[ID] = object->isOpaque();
         return ID;
     }
@@ -173,16 +192,6 @@ namespace gp {
         m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
     }
 
-    uint32_t RenderingManager::drawTriangle(Triangle *object) {
-        GP_CORE_TRACE("gp::RenderingManager::drawTriangle()");
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
-        
-        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawTriangle(ID, object);
-        m_ObjectToIsOpaque[ID] = object->isOpaque();
-        return ID;
-    }
-
     void RenderingManager::destroyTriangle(uint32_t ID, const Triangle *object) {
         GP_CORE_TRACE("gp::RenderingManager::destroyTriangle({0})", ID);
         (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyTriangle(ID);
@@ -198,16 +207,6 @@ namespace gp {
         (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyTriangle(ID);
         (m_ObjectToIsOpaque[ID] ? m_AlphaRenderer : m_Renderer).drawTriangle(ID, object);
         m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
-    }
-
-    uint32_t RenderingManager::drawQuad(Quad *object) {
-        GP_CORE_TRACE("gp::RenderingManager::drawQuad()");
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
-        
-        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawQuad(ID, object);
-        m_ObjectToIsOpaque[ID] = object->isOpaque();
-        return ID;
     }
 
     void RenderingManager::destroyQuad(uint32_t ID, const Quad *object) {
@@ -227,16 +226,6 @@ namespace gp {
         m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
     }
 
-    uint32_t RenderingManager::drawEllipse(Ellipse *object) {
-        GP_CORE_TRACE("gp::RenderingManager::drawEllipse()");
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
-        
-        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawEllipse(ID, object);
-        m_ObjectToIsOpaque[ID] = object->isOpaque();
-        return ID;
-    }
-
     void RenderingManager::destroyEllipse(uint32_t ID, const Ellipse *object) {
         GP_CORE_TRACE("gp::RenderingManager::destroyEllipse({0})", ID);
         (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyEllipse(ID);
@@ -252,16 +241,6 @@ namespace gp {
         (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer).destroyEllipse(ID);
         (m_ObjectToIsOpaque[ID] ? m_AlphaRenderer : m_Renderer).drawEllipse(ID, object);
         m_ObjectToIsOpaque[ID] = !m_ObjectToIsOpaque[ID];
-    }
-
-    uint32_t RenderingManager::drawTexturedQuad(TexturedQuad *object) {
-        GP_CORE_TRACE("gp::RenderingManager::drawTexturedQuad()");
-        const uint32_t ID = m_NextObjectID;
-        m_NextObjectID++;
-        
-        (object->isOpaque() ? m_Renderer : m_AlphaRenderer).drawTexturedQuad(ID, object);
-        m_ObjectToIsOpaque[ID] = object->isOpaque();
-        return ID;
     }
 
     void RenderingManager::destroyTexturedQuad(uint32_t ID, const TexturedQuad *object) {

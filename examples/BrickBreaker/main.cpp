@@ -138,7 +138,7 @@ void doBrickCollision(std::vector <Brick>& bricks, Ball& ball, float& lasthit) {
     }
 }
 
-bool shakeCamera(gp::Window& window, float lasthit) {
+void shakeCamera(gp::Window& window, float lasthit) {
     auto &camera = window.getCamera();
 
     if (gp::getTime() - lasthit < 0.2) {

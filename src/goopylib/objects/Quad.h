@@ -115,10 +115,11 @@ namespace gp {
         GPAPI void _update() override;
 
     private:
-        GPAPI uint32_t _draw(Window &window) override;
 
         GPAPI void _destroy() const override;
 
         [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
+
+        [[nodiscard]] GPAPI RenderableSubclass _getRenderableSubclass() override;
     };
 }

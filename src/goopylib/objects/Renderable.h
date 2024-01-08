@@ -14,12 +14,18 @@ namespace gp {
 }
 
 namespace gp {
+    enum class RenderableSubclass {
+        Line, Triangle, Quad, Ellipse, TexturedQuad
+    };
+
     /**
      * Generic base class for renderables
      */
     class Renderable {
 
         friend class Renderer;
+
+        friend class RenderingManager;
 
     public:
         /**
@@ -330,13 +336,13 @@ namespace gp {
 
         [[nodiscard]] GPAPI virtual bool _contains(float x, float y) const;
 
-        [[nodiscard]] GPAPI virtual uint32_t _draw(Window &window) = 0;
-
         GPAPI virtual void _destroy() const = 0;
 
         GPAPI virtual void _update() = 0;
 
         GPAPI virtual void _onScale(float xfactor, float yfactor) {
         };
+
+        GPAPI virtual RenderableSubclass _getRenderableSubclass() = 0;
     };
 }
