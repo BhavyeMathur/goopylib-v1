@@ -50,6 +50,7 @@ namespace gp {
          */
         GPAPI void setTransparency(float value1, float value2);
 
+        // TODO raise error for negative value in C++ and Python APIs
         /**
          * Sets the thickness of the line
          *

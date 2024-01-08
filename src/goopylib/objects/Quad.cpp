@@ -61,7 +61,6 @@ namespace gp {
         update();
     }
 
-    // TODO - get transparency methods
     void Quad::setTransparency(float value) {
         setTransparency(value, value, value, value);
     }
@@ -86,5 +85,44 @@ namespace gp {
 
     bool Quad::isOpaque() const {
         return (m_V1.color.alpha == 1) && (m_V2.color.alpha == 1) && (m_V3.color.alpha == 1) && (m_V4.color.alpha == 1);
+    }
+}
+
+// Quad Getter & Setters
+namespace gp {
+    void Quad::setP1(Point point) {
+        m_Points[0] = point;
+        update();
+    }
+
+    Point Quad::getP1() const {
+        return m_Points[0];
+    }
+
+    void Quad::setP2(Point point) {
+        m_Points[1] = point;
+        update();
+    }
+
+    Point Quad::getP2() const {
+        return m_Points[1];
+    }
+
+    void Quad::setP3(Point point) {
+        m_Points[2] = point;
+        update();
+    }
+
+    Point Quad::getP3() const {
+        return m_Points[2];
+    }
+
+    void Quad::setP4(Point point) {
+        m_Points[3] = point;
+        update();
+    }
+
+    Point Quad::getP4() const {
+        return m_Points[3];
     }
 }

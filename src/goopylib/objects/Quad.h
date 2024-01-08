@@ -106,6 +106,66 @@ namespace gp {
 
         [[nodiscard]] GPAPI bool isOpaque() const override;
 
+        /**
+        * Sets the position of the 1st vertex of the object
+        *
+        * @param point the (x, y) coordinate of the 1st vertex in world space
+        *
+        */
+        GPAPI virtual void setP1(Point point);
+
+        /**
+         *
+         * @return returns the (x, y) coordinates of the 1st vertex in world space
+         *
+         */
+        [[nodiscard]] virtual GPAPI Point getP1() const;
+
+        /**
+         * Sets the position of the 2nd vertex of the object
+         *
+         * @param point the (x, y) coordinate of the 2nd vertex in world space
+         *
+         */
+        GPAPI virtual void setP2(Point point);
+
+        /**
+         *
+         * @return returns the (x, y) coordinates of the 2nd vertex in world space
+         *
+         */
+        [[nodiscard]] virtual GPAPI Point getP2() const;
+
+        /**
+         * Sets the position of the 3rd vertex of the object
+         *
+         * @param point the (x, y) coordinate of the 3rd vertex in world space
+         *
+         */
+        GPAPI virtual void setP3(Point point);
+
+        /**
+         *
+         * @return returns the (x, y) coordinates of the 3rd vertex in world space
+         *
+         */
+        [[nodiscard]] virtual GPAPI Point getP3() const;
+
+        /**
+         * Sets the position of the 4th vertex of the object
+         *
+         * @param point the (x, y) coordinate of the 4th vertex in world space
+         *
+         */
+        GPAPI virtual void setP4(Point point);
+
+        /**
+         *
+         * @return returns the (x, y) coordinates of the 4th vertex in world space
+         *
+         */
+        [[nodiscard]] virtual GPAPI Point getP4() const;
+
     protected:
         SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
