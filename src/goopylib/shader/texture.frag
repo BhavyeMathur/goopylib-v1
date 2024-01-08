@@ -11,5 +11,9 @@ out vec4 FragColor;
 
 void main() {
     FragColor = Color * texture(Texture[TexSlot], TexCoord);
+
+    if ((FragColor.a) == 0) {
+        discard;
+    }
 }
 )"";
