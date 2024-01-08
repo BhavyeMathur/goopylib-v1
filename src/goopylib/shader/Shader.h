@@ -49,13 +49,13 @@ namespace gp {
 
         [[nodiscard]] GPAPI int32_t _getLocation(const char *name);
 
-        GPAPI void _setUniform(int32_t location, float value) const;
+        GPAPI static void _setUniform(int32_t location, float value) ;
 
-        GPAPI void _setUniform(int32_t location, float v1, float v2) const;
+        GPAPI static void _setUniform(int32_t location, float v1, float v2) ;
 
-        GPAPI void _setUniform(int32_t location, float v1, float v2, float v3) const;
+        GPAPI static void _setUniform(int32_t location, float v1, float v2, float v3) ;
 
-        GPAPI void _setUniform(int32_t location, float v1, float v2, float v3, float v4) const;
+        GPAPI static void _setUniform(int32_t location, float v1, float v2, float v3, float v4) ;
 
         GPAPI void _setUniform(int32_t location, double value) const;
 
@@ -65,47 +65,47 @@ namespace gp {
 
         GPAPI void _setUniform(int32_t location, double v1, double v2, double v3, double v4) const;
 
-        GPAPI void _setUniform(int32_t location, int32_t value) const;
+        GPAPI static void _setUniform(int32_t location, int32_t value) ;
 
-        GPAPI void _setUniform(int32_t location, int32_t v1, int32_t v2) const;
+        GPAPI static void _setUniform(int32_t location, int32_t v1, int32_t v2) ;
 
-        GPAPI void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3) const;
+        GPAPI static void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3) ;
 
-        GPAPI void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3, int32_t v4) const;
+        GPAPI static void _setUniform(int32_t location, int32_t v1, int32_t v2, int32_t v3, int32_t v4) ;
 
-        GPAPI void _setUniform(int32_t location, uint32_t value) const;
+        GPAPI static void _setUniform(int32_t location, uint32_t value) ;
 
-        GPAPI void _setUniform(int32_t location, uint32_t v1, uint32_t v2) const;
+        GPAPI static void _setUniform(int32_t location, uint32_t v1, uint32_t v2) ;
 
-        GPAPI void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3) const;
+        GPAPI static void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3) ;
 
-        GPAPI void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4) const;
+        GPAPI static void _setUniform(int32_t location, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t v4) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat2 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat2 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat3 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat3 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat4 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat4 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat2x3 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat2x3 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat3x2 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat3x2 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat2x4 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat2x4 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat4x2 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat4x2 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat3x4 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat3x4 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, const glm::mat4x3 &value, bool transpose = false) const;
+        GPAPI static void _setUniform(int32_t location, const glm::mat4x3 &value, bool transpose = false) ;
 
-        GPAPI void _setUniform(int32_t location, int32_t count, float *value) const;
+        GPAPI static void _setUniform(int32_t location, int32_t count, float *value) ;
 
         GPAPI void _setUniform(int32_t location, int32_t count, double *value) const;
 
-        GPAPI void _setUniform(int32_t location, int32_t count, uint32_t *value) const;
+        GPAPI static void _setUniform(int32_t location, int32_t count, uint32_t *value) ;
 
-        GPAPI void _setUniform(int32_t location, int32_t count, int32_t *value) const;
+        GPAPI static void _setUniform(int32_t location, int32_t count, int32_t *value) ;
 
         [[nodiscard]] GPAPI int32_t _getUniform(const char *name) const;
     };

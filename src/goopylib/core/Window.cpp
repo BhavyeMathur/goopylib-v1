@@ -1,7 +1,6 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "src/goopylib/core/Window.h"
-#include "src/goopylib/core/Buffer.h"
 
 #include "src/platform/events/MouseCodes.h"
 
