@@ -1,16 +1,13 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 6
+
 #include "goopylib/debug.h"
 
 #define QUAD_MODULE
 
-#include "quad.h"
 #include "quad_object.h"
 #include "quad_module.h"
 #include "quad_capsule.h"
 #include "renderable_module.h"
-
-#include "goopylib/color/color_object.h"
-#include "goopylib/color/color_module.h"
 
 #include "src/goopylib/objects/Quad.h"
 
@@ -64,99 +61,6 @@ namespace quad {
         PyObject_GC_UnTrack(self);
         clear(self);
         Py_TYPE(self)->tp_free((PyObject *) self);
-    }
-}
-
-// Quad methods
-namespace quad {
-    static PyObject *set_color(QuadObject *self, PyObject *args) {
-        GP_PY_DEBUG("gp.quad.Quad.set_color({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
-
-        PyObject *arg1, *arg2, *arg3, *arg4;
-        PyObject *color1;
-        if (PyArg_ParseTuple(args, "OOOO", &arg1, &arg2, &arg3, &arg4)) {
-
-            PyObject *color2, *color3, *color4;
-
-            if (!isinstance(arg1, ColorType)) {
-                color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
-                GP_CHECK_NULL(color1, nullptr, "Invalid 1st color argument")
-            }
-            else {
-                color1 = arg1;
-            }
-
-            if (!isinstance(arg2, ColorType)) {
-                color2 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg2));
-                GP_CHECK_NULL(color2, nullptr, "Invalid 2nd color argument")
-            }
-            else {
-                color2 = arg2;
-            }
-
-            if (!isinstance(arg3, ColorType)) {
-                color3 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg3));
-                GP_CHECK_NULL(color3, nullptr, "Invalid 3rd color argument")
-            }
-            else {
-                color3 = arg3;
-            }
-
-            if (!isinstance(arg4, ColorType)) {
-                color4 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg4));
-                GP_CHECK_NULL(color4, nullptr, "Invalid 4th color argument")
-            }
-            else {
-                color4 = arg4;
-            }
-
-            self->quad->setColor(*((ColorObject *) color1)->color,
-                                 *((ColorObject *) color2)->color,
-                                 *((ColorObject *) color3)->color,
-                                 *((ColorObject *) color4)->color);
-            Py_RETURN_NONE;
-        }
-        PyErr_Clear();
-
-        if (!PyArg_ParseTuple(args, "O", &arg1)) {
-            return nullptr;
-        }
-
-        if (!isinstance(arg1, ColorType)) {
-            color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
-            GP_CHECK_NULL(color1, nullptr, "Invalid argument to set color")
-        }
-        else {
-            color1 = arg1;
-        }
-
-        self->quad->setColor(*((ColorObject *) color1)->color);
-        Py_RETURN_NONE;
-    }
-
-    static PyObject *set_transparency(QuadObject *self, PyObject *args) {
-        GP_PY_DEBUG("gp.quad.Quad.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
-
-        float v1, v2, v3, v4;
-        if (PyArg_ParseTuple(args, "ffff", &v1, &v2, &v3, &v4)) {
-            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v4, 0, 1, nullptr, "transparency must be between 0 and 1")
-
-            self->quad->setTransparency(v1, v2, v3, v4);
-            Py_RETURN_NONE;
-        }
-        PyErr_Clear();
-
-        if (!PyArg_ParseTuple(args, "f", &v1)) {
-            return nullptr;
-        }
-
-        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
-
-        self->quad->setTransparency(v1);
-        Py_RETURN_NONE;
     }
 }
 
@@ -238,7 +142,7 @@ PyMODINIT_FUNC PyInit_quad(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_quad()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&QuadModule);
+    PyObject * m = PyModule_Create(&QuadModule);
     if (m == nullptr) {
         return nullptr;
     }
@@ -276,7 +180,7 @@ PyMODINIT_FUNC PyInit_quad(void) {
     // Exposing Capsule
 
     static void *PyQuad_API[PyQuad_API_pointers];
-    PyObject *c_api_object;
+    PyObject * c_api_object;
 
     PyQuad_API[Quad_pytype_NUM] = (void *) Quad_pytype;
     c_api_object = PyCapsule_New((void *) PyQuad_API, "goopylib.ext.quad._C_API", nullptr);

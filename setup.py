@@ -66,7 +66,7 @@ def check_version():
 
 
 if sys.platform == "darwin":
-    compile_args = ["-std=c++17", "-Wno-macro-redefined", "-Wno-unused-function", "-Wno-unknown-pragmas"]
+    compile_args = ["-std=c++17", "-Wno-macro-redefined", "-Wno-unused-function", "-Wno-unknown-pragmas", "-O0"]
     compile_args += ["-Wno-deprecated-volatile"]  # suppress warnings caused by glm
 
     library_dirs = ["binaries/lib-macos"]
@@ -121,18 +121,15 @@ def find_extensions():
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.quad",
-                  sources=["goopylib/objects/quad.cpp",
-                           "goopylib/objects/quad_object.cpp"],
+                  sources=["goopylib/objects/quad.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.rectangle",
-                  sources=["goopylib/objects/rectangle.cpp",
-                           "goopylib/objects/quad_object.cpp"],
+                  sources=["goopylib/objects/rectangle.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.line",
-                  sources=["goopylib/objects/line.cpp",
-                           "goopylib/objects/quad_object.cpp"],
+                  sources=["goopylib/objects/line.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.ellipse",
@@ -144,8 +141,7 @@ def find_extensions():
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.image",
-                  sources=["goopylib/objects/image.cpp",
-                           "goopylib/objects/quad_object.cpp"],
+                  sources=["goopylib/objects/image.cpp"],
                   **ext_kwargs),
 
         Extension(name="goopylib.ext.camera",

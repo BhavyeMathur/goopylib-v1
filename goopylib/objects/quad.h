@@ -25,11 +25,5 @@ namespace quad {
     static void dealloc(QuadObject *self);
 }
 
-namespace quad {
-    static PyObject *set_color(QuadObject *self, PyObject *args);
-
-    static PyObject *set_transparency(QuadObject *self, PyObject *args);
-}
-
 
 extern PyTypeObject QuadType;

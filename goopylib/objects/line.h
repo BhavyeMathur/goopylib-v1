@@ -2,11 +2,8 @@
 
 #include "goopylib/header.h"
 
-static void **PyRenderable_API;
-static PyTypeObject *RenderableType;
-
-static void **PyColor_API;
-static PyTypeObject *ColorType;
+static void **PyQuad_API;
+// static PyTypeObject *QuadType;
 
 
 struct LineObject;

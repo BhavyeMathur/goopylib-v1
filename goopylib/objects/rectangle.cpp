@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "goopylib/debug.h"
 
 #include "rectangle.h"
@@ -20,9 +21,6 @@ namespace rectangle {
         RectangleObject *self;
         self = (RectangleObject *) type->tp_alloc(type, 0);
 
-        if (self != nullptr) {
-
-        }
         return (PyObject *) self;
     }
 
@@ -141,7 +139,7 @@ PyMODINIT_FUNC PyInit_rectangle(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_rectangle()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&RectangleModule);
+    PyObject * m = PyModule_Create(&RectangleModule);
     if (m == nullptr) {
         return nullptr;
     }

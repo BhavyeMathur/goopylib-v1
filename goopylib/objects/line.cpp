@@ -1,9 +1,10 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 6
+
 #include "goopylib/debug.h"
 
 #include "line.h"
-#include "renderable_module.h"
-#include "renderable_object.h"
+#include "quad_module.h"
+#include "quad_object.h"
 
 #include "goopylib/color/color_object.h"
 #include "goopylib/color/color_module.h"
@@ -12,7 +13,7 @@
 
 
 struct LineObject {
-    RenderableObject base;
+    QuadObject base;
     Ref<gp::Line> line;
 };
 
@@ -23,9 +24,6 @@ namespace line {
         LineObject *self;
         self = (LineObject *) type->tp_alloc(type, 0);
 
-        if (self != nullptr) {
-
-        }
         return (PyObject *) self;
     }
 
@@ -34,13 +32,14 @@ namespace line {
 
         float x1, x2;
         float y1, y2;
-        if (!PyArg_ParseTuple(args, "(ff)(ff)", &x1, &y1, &x2, &y2)) {
+        float thickness;
+        if (!PyArg_ParseTuple(args, "(ff)(ff)f", &x1, &y1, &x2, &y2, &thickness)) {
             return -1;
         }
 
-        self->line = Ref<gp::Line>(new gp::Line({x1, y1}, {x2, y2}));
-        self->base.renderable = self->line;
-
+        self->line = Ref<gp::Line>(new gp::Line({x1, y1}, {x2, y2}, thickness));
+        self->base.quad = self->line;
+        self->base.base.renderable = self->line;
         return 0;
     }
 
@@ -74,11 +73,11 @@ namespace line {
     static PyObject *set_color(LineObject *self, PyObject *args) {
         GP_PY_DEBUG("gp.line.Line.set_color({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
-        PyObject *arg1, *arg2;
-        PyObject *color1;
+        PyObject * arg1, *arg2;
+        PyObject * color1;
         if (PyArg_ParseTuple(args, "OO", &arg1, &arg2)) {
 
-            PyObject *color2;
+            PyObject * color2;
 
             if (!isinstance(arg1, ColorType)) {
                 color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
@@ -102,20 +101,20 @@ namespace line {
         }
         PyErr_Clear();
 
-        if (!PyArg_ParseTuple(args, "O", &arg1)) {
-            return nullptr;
-        }
+        if (PyArg_ParseTuple(args, "O", &arg1)) {
+            if (!isinstance(arg1, ColorType)) {
+                color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
+                GP_CHECK_NULL(color1, nullptr, "Invalid arguments to set color")
+            }
+            else {
+                color1 = arg1;
+            }
 
-        if (!isinstance(arg1, ColorType)) {
-            color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
-            GP_CHECK_NULL(color1, nullptr, "Invalid arguments to set color")
+            self->line->setColor(*((ColorObject *) color1)->color);
         }
-        else {
-            color1 = arg1;
-        }
+        PyErr_Clear();
 
-        self->line->setColor(*((ColorObject *) color1)->color);
-        Py_RETURN_NONE;
+        return quad::set_color(reinterpret_cast<QuadObject *>(self), args);
     }
 
     static PyObject *set_transparency(LineObject *self, PyObject *args) {
@@ -131,14 +130,15 @@ namespace line {
         }
         PyErr_Clear();
 
-        if (!PyArg_ParseTuple(args, "f", &v1)) {
-            return nullptr;
+        if (PyArg_ParseTuple(args, "f", &v1)) {
+            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
+
+            self->line->setTransparency(v1);
+            Py_RETURN_NONE;
         }
+        PyErr_Clear();
 
-        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
-
-        self->line->setTransparency(v1);
-        Py_RETURN_NONE;
+        return quad::set_transparency(reinterpret_cast<QuadObject *>(self), args);
     }
 }
 
@@ -220,23 +220,15 @@ PyMODINIT_FUNC PyInit_line(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_line()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&LineModule);
+    PyObject * m = PyModule_Create(&LineModule);
     if (m == nullptr) {
         return nullptr;
     }
 
-    #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_line() - import_renderable()" << std::endl;
-    #endif
-    PyRenderable_API = (void **) PyCapsule_Import("goopylib.ext.renderable._C_API", 0);
-    if (PyRenderable_API == nullptr) {
-        return nullptr;
-    }
-
-    RenderableType = Renderable_pytype();
+    // Importing Color
 
     #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_line() - import_color()" << std::endl;
+    std::cout << "[--:--:--] PYTHON: PyInit_quad() - import_color()" << std::endl;
     #endif
     PyColor_API = (void **) PyCapsule_Import("goopylib.ext.color._C_API", 0);
     if (PyColor_API == nullptr) {
@@ -245,7 +237,19 @@ PyMODINIT_FUNC PyInit_line(void) {
 
     ColorType = Color_pytype();
 
-    LineType.tp_base = RenderableType;
+    // Importing Quad
+
+    #if GP_LOGGING_LEVEL >= 6
+    std::cout << "[--:--:--] PYTHON: PyInit_line() - import_quad()" << std::endl;
+    #endif
+    PyQuad_API = (void **) PyCapsule_Import("goopylib.ext.quad._C_API", 0);
+    if (PyQuad_API == nullptr) {
+        return nullptr;
+    }
+
+    QuadType = *Quad_pytype();
+
+    LineType.tp_base = &QuadType;
 
     EXPOSE_PYOBJECT_CLASS(LineType, "Line");
 
