@@ -15,6 +15,12 @@ if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
     Py_DECREF(m); \
     return nullptr; }
 
+#if GP_LOGGING_LEVEL >= 6
+#define IMPORT_GP_MODULE_LOG(this, module) std::cout << "[--:--:--] PYTHON: PyInit_##this() - import_##module()" << std::endl;
+#else
+#define IMPORT_GP_MODULE_LOG(this, module)
+#endif
+
 #define INITIALIZE_PYOBJECT(variable, value) Py_INCREF((value)); (variable) = value
 #define SET_PYOBJECT(variable, value) PyObject *tmp = variable; INITIALIZE_PYOBJECT(variable, value); Py_XDECREF(tmp)
 #define RETURN_PYOBJECT(name) Py_INCREF(name); return name
@@ -32,6 +38,6 @@ if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
         }                                                               \
     } while (0)
 
-static bool isinstance(PyObject *object, PyTypeObject *type) {
+static bool isinstance(PyObject * object, PyTypeObject * type) {
     return PyObject_IsInstance(object, (PyObject *) type);
 }

@@ -1,31 +1,21 @@
 #pragma once
 
-#include "goopylib/debug.h"
-
-#include "goopylib/color/color_module.h"
-#include "goopylib/color/color_object.h"
-
-#include "renderable_object.h"
-
-#include "quad.h"
+#include "object.h"
 #include "src/goopylib/objects/Quad.h"
 
-
-struct QuadObject {
-    RenderableObject base;
-    Ref<gp::Quad> quad;
-};
+extern void **PyColor_API;
+extern PyTypeObject *ColorType;
 
 namespace quad {
     PyObject *set_color(QuadObject *self, PyObject *args) {
         GP_PY_DEBUG("gp.quad.Quad.set_color({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
-        PyObject *arg1, *arg2, *arg3, *arg4;
-        PyObject *color1;
+        PyObject * arg1, *arg2, *arg3, *arg4;
+        PyObject * color1;
 
         if (PyArg_ParseTuple(args, "OOOO", &arg1, &arg2, &arg3, &arg4)) {
 
-            PyObject *color2, *color3, *color4;
+            PyObject * color2, *color3, *color4;
 
             if (!isinstance(arg1, ColorType)) {
                 color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));

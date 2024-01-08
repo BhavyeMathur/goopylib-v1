@@ -1,22 +1,27 @@
-#include "circle.h"
+#include "line.h"
 
-namespace circle {
+namespace line {
     static PyMethodDef methods[] = {
+            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
+                    "Sets the color of the object"},
+            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
+                    "Sets the transparency of the object"},
+
             {nullptr}
     };
 }
 
-PyTypeObject CircleType = {
+PyTypeObject LineType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        "goopylib.Circle",
-        sizeof(CircleObject),
+        "goopylib.Line",
+        sizeof(LineObject),
         0,
-        (destructor) circle::dealloc,
+        (destructor) line::dealloc,
         0,
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) circle::repr,
+        (reprfunc) line::repr,
         nullptr,
         nullptr,
         nullptr,
@@ -28,13 +33,13 @@ PyTypeObject CircleType = {
         nullptr,
         Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
         "",
-        (traverseproc) circle::traverse,
-        (inquiry) circle::clear,
+        (traverseproc) line::traverse,
+        (inquiry) line::clear,
         nullptr,
         0,
         nullptr,
         nullptr,
-        circle::methods,
+        line::methods,
         nullptr,
         nullptr,
         nullptr,
@@ -42,9 +47,9 @@ PyTypeObject CircleType = {
         nullptr,
         nullptr,
         0,
-        (initproc) circle::init,
+        (initproc) line::init,
         nullptr,
-        circle::new_,
+        line::new_,
         nullptr,
         nullptr,
         nullptr,

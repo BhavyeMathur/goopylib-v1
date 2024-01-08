@@ -1,22 +1,27 @@
-#include "circle.h"
+#include "ellipse.h"
 
-namespace circle {
+namespace ellipse {
     static PyMethodDef methods[] = {
+            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
+                    "Sets the color of the object"},
+            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
+                    "Sets the transparency of the object"},
+
             {nullptr}
     };
 }
 
-PyTypeObject CircleType = {
+PyTypeObject EllipseType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        "goopylib.Circle",
-        sizeof(CircleObject),
+        "goopylib.Ellipse",
+        sizeof(EllipseObject),
         0,
-        (destructor) circle::dealloc,
+        (destructor) ellipse::dealloc,
         0,
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) circle::repr,
+        (reprfunc) ellipse::repr,
         nullptr,
         nullptr,
         nullptr,
@@ -26,15 +31,15 @@ PyTypeObject CircleType = {
         nullptr,
         nullptr,
         nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
         "",
-        (traverseproc) circle::traverse,
-        (inquiry) circle::clear,
+        (traverseproc) ellipse::traverse,
+        (inquiry) ellipse::clear,
         nullptr,
         0,
         nullptr,
         nullptr,
-        circle::methods,
+        ellipse::methods,
         nullptr,
         nullptr,
         nullptr,
@@ -42,9 +47,9 @@ PyTypeObject CircleType = {
         nullptr,
         nullptr,
         0,
-        (initproc) circle::init,
+        (initproc) ellipse::init,
         nullptr,
-        circle::new_,
+        ellipse::new_,
         nullptr,
         nullptr,
         nullptr,

@@ -1,22 +1,28 @@
-#include "circle.h"
+#include "quad.h"
+#include "methods.h"
 
-namespace circle {
+namespace quad {
     static PyMethodDef methods[] = {
+            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
+                    "Sets the color of the object"},
+            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
+                    "Sets the transparency of the object"},
+
             {nullptr}
     };
 }
 
-PyTypeObject CircleType = {
+PyTypeObject QuadType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        "goopylib.Circle",
-        sizeof(CircleObject),
+        "goopylib.Quad",
+        sizeof(QuadObject),
         0,
-        (destructor) circle::dealloc,
+        (destructor) quad::dealloc,
         0,
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) circle::repr,
+        (reprfunc) quad::repr,
         nullptr,
         nullptr,
         nullptr,
@@ -26,15 +32,15 @@ PyTypeObject CircleType = {
         nullptr,
         nullptr,
         nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
         "",
-        (traverseproc) circle::traverse,
-        (inquiry) circle::clear,
+        (traverseproc) quad::traverse,
+        (inquiry) quad::clear,
         nullptr,
         0,
         nullptr,
         nullptr,
-        circle::methods,
+        (PyMethodDef *) quad::methods,
         nullptr,
         nullptr,
         nullptr,
@@ -42,9 +48,9 @@ PyTypeObject CircleType = {
         nullptr,
         nullptr,
         0,
-        (initproc) circle::init,
+        (initproc) quad::init,
         nullptr,
-        circle::new_,
+        quad::new_,
         nullptr,
         nullptr,
         nullptr,

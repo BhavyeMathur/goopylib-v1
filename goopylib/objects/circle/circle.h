@@ -3,8 +3,8 @@
 #include "goopylib/header.h"
 #include "object.h"
 
-static void **PyEllipse_API;
-static PyTypeObject *EllipseType;
+extern void **PyEllipse_API;
+extern PyTypeObject *EllipseType;
 
 
 namespace circle {

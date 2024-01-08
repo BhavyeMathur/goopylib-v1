@@ -2,32 +2,23 @@
 
 #include "goopylib/debug.h"
 
-#include "line.h"
-#include "quad_module.h"
-#include "quad_object.h"
-
+#include "../quad/methods.h"
 #include "goopylib/color/color_object.h"
-#include "goopylib/color/color_module.h"
 
+#include "line.h"
 #include "src/goopylib/objects/Line.h"
-
-
-struct LineObject {
-    QuadObject base;
-    Ref<gp::Line> line;
-};
 
 
 // Line Core
 namespace line {
-    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+    PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         LineObject *self;
         self = (LineObject *) type->tp_alloc(type, 0);
 
         return (PyObject *) self;
     }
 
-    static int init(LineObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+    int init(LineObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.line.Line()");
 
         float x1, x2;
@@ -43,21 +34,21 @@ namespace line {
         return 0;
     }
 
-    static PyObject *repr(LineObject *Py_UNUSED(self)) {
+    PyObject *repr(LineObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.line.Line.__repr__()");
         return PyUnicode_FromString("Line()");
     }
 
-    static int traverse(LineObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
+    int traverse(LineObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(LineObject *Py_UNUSED(self)) {
+    int clear(LineObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.line.Line.clear()");
         return 0;
     }
 
-    static void dealloc(LineObject *self) {
+    void dealloc(LineObject *self) {
         GP_PY_DEBUG("gp.line.Line.__dealloc__()");
 
         self->line.reset();
@@ -70,7 +61,7 @@ namespace line {
 
 // Line methods
 namespace line {
-    static PyObject *set_color(LineObject *self, PyObject *args) {
+    PyObject *set_color(LineObject *self, PyObject *args) {
         GP_PY_DEBUG("gp.line.Line.set_color({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
         PyObject * arg1, *arg2;
@@ -117,7 +108,7 @@ namespace line {
         return quad::set_color(reinterpret_cast<QuadObject *>(self), args);
     }
 
-    static PyObject *set_transparency(LineObject *self, PyObject *args) {
+    PyObject *set_transparency(LineObject *self, PyObject *args) {
         GP_PY_DEBUG("gp.line.Line.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
         float v1, v2;
@@ -140,118 +131,4 @@ namespace line {
 
         return quad::set_transparency(reinterpret_cast<QuadObject *>(self), args);
     }
-}
-
-
-// Line Type
-namespace line {
-    static PyMethodDef methods[] = {
-            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
-                    "Sets the color of the object"},
-            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
-                    "Sets the transparency of the object"},
-
-            {nullptr}
-    };
-}
-
-static PyTypeObject LineType = {
-        PyVarObject_HEAD_INIT(nullptr, 0)
-        "goopylib.Line",
-        sizeof(LineObject),
-        0,
-        (destructor) line::dealloc,
-        0,
-        nullptr,
-        nullptr,
-        nullptr,
-        (reprfunc) line::repr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-        "",
-        (traverseproc) line::traverse,
-        (inquiry) line::clear,
-        nullptr,
-        0,
-        nullptr,
-        nullptr,
-        line::methods,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        0,
-        (initproc) line::init,
-        nullptr,
-        line::new_,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        0,
-        nullptr,
-        nullptr
-};
-
-static struct PyModuleDef LineModule = {
-        PyModuleDef_HEAD_INIT,
-        "line",
-        "",
-        -1,
-        nullptr,
-};
-
-PyMODINIT_FUNC PyInit_line(void) {
-    #if GP_LOGGING_LEVEL >= 5
-    std::cout << "[--:--:--] PYTHON: PyInit_line()" << std::endl;
-    #endif
-
-    PyObject * m = PyModule_Create(&LineModule);
-    if (m == nullptr) {
-        return nullptr;
-    }
-
-    // Importing Color
-
-    #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_quad() - import_color()" << std::endl;
-    #endif
-    PyColor_API = (void **) PyCapsule_Import("goopylib.ext.color._C_API", 0);
-    if (PyColor_API == nullptr) {
-        return nullptr;
-    }
-
-    ColorType = Color_pytype();
-
-    // Importing Quad
-
-    #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_line() - import_quad()" << std::endl;
-    #endif
-    PyQuad_API = (void **) PyCapsule_Import("goopylib.ext.quad._C_API", 0);
-    if (PyQuad_API == nullptr) {
-        return nullptr;
-    }
-
-    QuadType = *Quad_pytype();
-
-    LineType.tp_base = &QuadType;
-
-    EXPOSE_PYOBJECT_CLASS(LineType, "Line");
-
-    return m;
 }

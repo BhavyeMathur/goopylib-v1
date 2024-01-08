@@ -1,7 +1,10 @@
 #pragma once
 
-#include "renderable_object.h"
-#include "src/goopylib/objects/Ellipse.h"
+#include "../renderable/object.h"
+
+namespace gp {
+    class Ellipse;
+}
 
 struct EllipseObject {
     RenderableObject base;

@@ -82,15 +82,23 @@ else:
     library_dirs = []
     data_files = []
 
+ext_kwargs = {"include_dirs":         [".", "goopylib", "src", "vendor", "vendor/glad", "vendor/glm",
+                                       "vendor/spdlog/include", "vendor/GLFW/include"],
+              "library_dirs":         library_dirs,
+              "runtime_library_dirs": RUNTIME_LIBRARY_DIRS,
+              "libraries":            ["goopylib"],
+              "extra_compile_args":   compile_args}
+
+
+def get_object_extension(obj: str):
+    return Extension(name=f"goopylib.ext.{obj}",
+                     sources=[f"goopylib/objects/{obj}/module.cpp",
+                              f"goopylib/objects/{obj}/{obj}.cpp",
+                              f"goopylib/objects/{obj}/type.cpp"],
+                     **ext_kwargs)
+
 
 def find_extensions():
-    ext_kwargs = {"include_dirs":         [".", "goopylib", "src", "vendor", "vendor/glad", "vendor/glm",
-                                           "vendor/spdlog/include", "vendor/GLFW/include"],
-                  "library_dirs":         library_dirs,
-                  "runtime_library_dirs": RUNTIME_LIBRARY_DIRS,
-                  "libraries":            ["goopylib"],
-                  "extra_compile_args":   compile_args}
-
     return [
         Extension(name="goopylib.ext.easing",
                   sources=["goopylib/maths/easing.cpp"],
@@ -112,39 +120,18 @@ def find_extensions():
                   sources=["goopylib/core/window.cpp"],
                   **ext_kwargs),
 
-        Extension(name="goopylib.ext.renderable",
-                  sources=["goopylib/objects/renderable.cpp"],
-                  **ext_kwargs),
+        get_object_extension("renderable"),
 
-        Extension(name="goopylib.ext.triangle",
-                  sources=["goopylib/objects/triangle.cpp"],
-                  **ext_kwargs),
+        get_object_extension("triangle"),
 
-        Extension(name="goopylib.ext.quad",
-                  sources=["goopylib/objects/quad.cpp"],
-                  **ext_kwargs),
+        get_object_extension("quad"),
+        get_object_extension("rectangle"),
+        get_object_extension("line"),
 
-        Extension(name="goopylib.ext.rectangle",
-                  sources=["goopylib/objects/rectangle.cpp"],
-                  **ext_kwargs),
+        get_object_extension("ellipse"),
+        get_object_extension("circle"),
 
-        Extension(name="goopylib.ext.line",
-                  sources=["goopylib/objects/line.cpp"],
-                  **ext_kwargs),
-
-        Extension(name="goopylib.ext.ellipse",
-                  sources=["goopylib/objects/ellipse.cpp"],
-                  **ext_kwargs),
-
-        Extension(name="goopylib.ext.circle",
-                  sources=["goopylib/objects/circle/module.cpp",
-                           "goopylib/objects/circle/circle.cpp",
-                           "goopylib/objects/circle/type.cpp"],
-                  **ext_kwargs),
-
-        Extension(name="goopylib.ext.image",
-                  sources=["goopylib/objects/image.cpp"],
-                  **ext_kwargs),
+        get_object_extension("image"),
 
         Extension(name="goopylib.ext.camera",
                   sources=["goopylib/scene/camera.cpp"],

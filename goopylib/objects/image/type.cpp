@@ -1,22 +1,27 @@
-#include "circle.h"
+#include "image.h"
 
-namespace circle {
+namespace image {
     static PyMethodDef methods[] = {
+            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
+                    "Sets the transparency of the object"},
+            {"get_path",         (PyCFunction) get_path,         METH_NOARGS,
+                    "Returns the filepath the image is using"},
+
             {nullptr}
     };
 }
 
-PyTypeObject CircleType = {
+PyTypeObject ImageType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        "goopylib.Circle",
-        sizeof(CircleObject),
+        "goopylib.Image",
+        sizeof(ImageObject),
         0,
-        (destructor) circle::dealloc,
+        (destructor) image::dealloc,
         0,
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) circle::repr,
+        (reprfunc) image::repr,
         nullptr,
         nullptr,
         nullptr,
@@ -28,13 +33,13 @@ PyTypeObject CircleType = {
         nullptr,
         Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
         "",
-        (traverseproc) circle::traverse,
-        (inquiry) circle::clear,
+        (traverseproc) image::traverse,
+        (inquiry) image::clear,
         nullptr,
         0,
         nullptr,
         nullptr,
-        circle::methods,
+        image::methods,
         nullptr,
         nullptr,
         nullptr,
@@ -42,9 +47,9 @@ PyTypeObject CircleType = {
         nullptr,
         nullptr,
         0,
-        (initproc) circle::init,
+        (initproc) image::init,
         nullptr,
-        circle::new_,
+        image::new_,
         nullptr,
         nullptr,
         nullptr,

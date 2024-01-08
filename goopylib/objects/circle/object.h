@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ellipse_object.h"
+#include "../ellipse/object.h"
 
 namespace gp {
     class Circle;

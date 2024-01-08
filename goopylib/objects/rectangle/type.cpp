@@ -1,22 +1,16 @@
-#include "circle.h"
+#include "rectangle.h"
 
-namespace circle {
-    static PyMethodDef methods[] = {
-            {nullptr}
-    };
-}
-
-PyTypeObject CircleType = {
+PyTypeObject RectangleType = {
         PyVarObject_HEAD_INIT(nullptr, 0)
-        "goopylib.Circle",
-        sizeof(CircleObject),
+        "goopylib.Rectangle",
+        sizeof(RectangleObject),
         0,
-        (destructor) circle::dealloc,
+        (destructor) rectangle::dealloc,
         0,
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) circle::repr,
+        (reprfunc) rectangle::repr,
         nullptr,
         nullptr,
         nullptr,
@@ -28,13 +22,13 @@ PyTypeObject CircleType = {
         nullptr,
         Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
         "",
-        (traverseproc) circle::traverse,
-        (inquiry) circle::clear,
+        (traverseproc) rectangle::traverse,
+        (inquiry) rectangle::clear,
         nullptr,
         0,
         nullptr,
         nullptr,
-        circle::methods,
+        nullptr,
         nullptr,
         nullptr,
         nullptr,
@@ -42,9 +36,9 @@ PyTypeObject CircleType = {
         nullptr,
         nullptr,
         0,
-        (initproc) circle::init,
+        (initproc) rectangle::init,
         nullptr,
-        circle::new_,
+        rectangle::new_,
         nullptr,
         nullptr,
         nullptr,

@@ -1,5 +1,8 @@
 #include "circle.h"
-#include "../ellipse_module.h"
+#include "../ellipse/module.h"
+
+void **PyEllipse_API;
+PyTypeObject *EllipseType;
 
 static struct PyModuleDef CircleModule = {
         PyModuleDef_HEAD_INIT,

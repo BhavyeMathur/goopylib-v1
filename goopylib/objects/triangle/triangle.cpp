@@ -1,25 +1,16 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "goopylib/debug.h"
 
-#include "triangle.h"
-#include "renderable_module.h"
-#include "renderable_object.h"
-
 #include "goopylib/color/color_object.h"
-#include "goopylib/color/color_module.h"
 
+#include "triangle.h"
 #include "src/goopylib/objects/Triangle.h"
-
-
-struct TriangleObject {
-    RenderableObject base;
-    Ref<gp::Triangle> triangle;
-};
 
 
 // Triangle Core
 namespace triangle {
-    static PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
+    PyObject *new_(PyTypeObject *type, PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         TriangleObject *self;
         self = (TriangleObject *) type->tp_alloc(type, 0);
 
@@ -29,7 +20,7 @@ namespace triangle {
         return (PyObject *) self;
     }
 
-    static int init(TriangleObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
+    int init(TriangleObject *self, PyObject *args, PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.triangle.Triangle()");
 
         float x1, x2, x3;
@@ -44,21 +35,21 @@ namespace triangle {
         return 0;
     }
 
-    static PyObject *repr(TriangleObject *Py_UNUSED(self)) {
+    PyObject *repr(TriangleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.triangle.Triangle.__repr__()");
         return PyUnicode_FromString("Triangle()");
     }
 
-    static int traverse(TriangleObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
+    int traverse(TriangleObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }
 
-    static int clear(TriangleObject *Py_UNUSED(self)) {
+    int clear(TriangleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.triangle.Triangle.clear()");
         return 0;
     }
 
-    static void dealloc(TriangleObject *self) {
+    void dealloc(TriangleObject *self) {
         GP_PY_DEBUG("gp.triangle.Triangle.__dealloc__()");
 
         self->triangle.reset();
@@ -71,14 +62,14 @@ namespace triangle {
 
 // Triangle methods
 namespace triangle {
-    static PyObject *set_color(TriangleObject *self, PyObject *args) {
+    PyObject *set_color(TriangleObject *self, PyObject *args) {
         GP_PY_DEBUG("gp.triangle.Triangle.set_color({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
-        PyObject *arg1, *arg2, *arg3;
-        PyObject *color1;
+        PyObject * arg1, *arg2, *arg3;
+        PyObject * color1;
         if (PyArg_ParseTuple(args, "OOO", &arg1, &arg2, &arg3)) {
 
-            PyObject *color2, *color3;
+            PyObject * color2, *color3;
 
             if (!isinstance(arg1, ColorType)) {
                 color1 = PyObject_CallObject((PyObject *) ColorType, PyTuple_Pack(1, arg1));
@@ -127,7 +118,7 @@ namespace triangle {
         Py_RETURN_NONE;
     }
 
-    static PyObject *set_transparency(TriangleObject *self, PyObject *args) {
+    PyObject *set_transparency(TriangleObject *self, PyObject *args) {
         GP_PY_DEBUG("gp.triangle.Triangle.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
         float v1, v2, v3;
@@ -150,114 +141,4 @@ namespace triangle {
         self->triangle->setTransparency(v1);
         Py_RETURN_NONE;
     }
-}
-
-
-// Triangle Type
-namespace triangle {
-    static PyMethodDef methods[] = {
-            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
-                    "Sets the color of the object"},
-            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
-                    "Sets the transparency of the object"},
-
-            {nullptr}
-    };
-}
-
-static PyTypeObject TriangleType = {
-        PyVarObject_HEAD_INIT(nullptr, 0)
-        "goopylib.Triangle",
-        sizeof(TriangleObject),
-        0,
-        (destructor) triangle::dealloc,
-        0,
-        nullptr,
-        nullptr,
-        nullptr,
-        (reprfunc) triangle::repr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-        "",
-        (traverseproc) triangle::traverse,
-        (inquiry) triangle::clear,
-        nullptr,
-        0,
-        nullptr,
-        nullptr,
-        triangle::methods,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        0,
-        (initproc) triangle::init,
-        nullptr,
-        triangle::new_,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        0,
-        nullptr,
-        nullptr
-};
-
-static struct PyModuleDef TriangleModule = {
-        PyModuleDef_HEAD_INIT,
-        "triangle",
-        "",
-        -1,
-        nullptr,
-};
-
-PyMODINIT_FUNC PyInit_triangle(void) {
-    #if GP_LOGGING_LEVEL >= 5
-    std::cout << "[--:--:--] PYTHON: PyInit_triangle()" << std::endl;
-    #endif
-
-    PyObject *m = PyModule_Create(&TriangleModule);
-    if (m == nullptr) {
-        return nullptr;
-    }
-
-    #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_triangle() - import_renderable()" << std::endl;
-    #endif
-    PyRenderable_API = (void **) PyCapsule_Import("goopylib.ext.renderable._C_API", 0);
-    if (PyRenderable_API == nullptr) {
-        return nullptr;
-    }
-
-    RenderableType = Renderable_pytype();
-
-    #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_triangle() - import_color()" << std::endl;
-    #endif
-    PyColor_API = (void **) PyCapsule_Import("goopylib.ext.color._C_API", 0);
-    if (PyColor_API == nullptr) {
-        return nullptr;
-    }
-
-    ColorType = Color_pytype();
-
-    TriangleType.tp_base = RenderableType;
-
-    EXPOSE_PYOBJECT_CLASS(TriangleType, "Triangle");
-
-    return m;
 }

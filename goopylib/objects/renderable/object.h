@@ -1,7 +1,11 @@
 #pragma once
 
+#include "gp.h"
 #include "goopylib/header.h"
-#include "src/goopylib/objects/Renderable.h"
+
+namespace gp {
+    class Renderable;
+}
 
 struct RenderableObject {
     PyObject_HEAD
