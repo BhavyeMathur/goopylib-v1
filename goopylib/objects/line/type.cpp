@@ -9,6 +9,11 @@ namespace line {
 
             {nullptr}
     };
+
+    static PyGetSetDef getsetters[] = {
+            GETTER_SETTER(thickness),
+            {nullptr}
+    };
 }
 
 PyTypeObject LineType = {
@@ -41,7 +46,7 @@ PyTypeObject LineType = {
         nullptr,
         line::methods,
         nullptr,
-        nullptr,
+        (PyGetSetDef *) line::getsetters,
         nullptr,
         nullptr,
         nullptr,

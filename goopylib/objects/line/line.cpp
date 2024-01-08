@@ -132,3 +132,21 @@ namespace line {
         return quad::set_transparency(reinterpret_cast<QuadObject *>(self), args);
     }
 }
+
+// Line Getters & Setters
+namespace line {
+    PyObject *get_thickness(LineObject *self, void *closure) {
+        return PyFloat_FromDouble(self->line->getThickness());
+    }
+
+    int set_thickness(LineObject *self, PyObject *value, void *closure) {
+        #if GP_TYPE_CHECKING
+        if (!PyNumber_Check(value)) {
+            RAISE_TYPE_ERROR(-1, "number", value);
+        }
+        #endif
+
+        self->line->setThickness((float) PyFloat_AsDouble(value));
+        return 0;
+    }
+}

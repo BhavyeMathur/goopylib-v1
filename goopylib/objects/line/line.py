@@ -36,3 +36,17 @@ class Line(Quad):
             TypeError: p1 and p2 must be (x, y) tuples of numbers
         """
         self._renderable: Line = _line.Line(p1, p2, thickness)
+
+    @property
+    def thickness(self) -> float:
+        """
+        The thickness of the line in world coordinates
+
+        Raises:
+            TypeError: value must be a number
+        """
+        return self._renderable.thickness
+
+    @thickness.setter
+    def thickness(self, value: float) -> None:
+        self._renderable.thickness = value

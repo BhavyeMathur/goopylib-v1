@@ -30,4 +30,11 @@ namespace line {
     PyObject *set_transparency(LineObject *self, PyObject *args);
 }
 
+namespace line {
+    // Thickness
+    PyObject *get_thickness(LineObject *self, void *closure);
+
+    int set_thickness(LineObject *self, PyObject *value, void *closure);
+}
+
 extern PyTypeObject LineType;
