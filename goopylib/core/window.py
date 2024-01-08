@@ -731,7 +731,7 @@ class Window:
     def get_mouse_position(self) -> tuple[float, float]:
         """
         Returns:
-            a tuple (xpos, ypos) with the position of the mouse cursor
+            a tuple (xpos, ypos) with the position of the mouse cursor in world coordinates
 
         Raises:
             RuntimeError: window has been destroyed

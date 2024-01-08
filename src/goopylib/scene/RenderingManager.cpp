@@ -112,7 +112,7 @@ namespace gp {
         return m_Camera;
     }
 
-    Point RenderingManager::toWorld(Point p) {
+    Point RenderingManager::toWorld(Point p) const {
         GP_CORE_TRACE_ALL("gp::RenderingManager::toWorld({1}, {2}) - '{0}'", m_Title, p.x, p.y);
 
         p.x /= (float) (m_Width >> 1);
@@ -126,7 +126,7 @@ namespace gp {
         return {pos.x, pos.y};
     }
 
-    Point RenderingManager::toScreen(Point p) {
+    Point RenderingManager::toScreen(Point p) const {
         GP_CORE_TRACE_ALL("gp::RenderingManager::toScreen({1}, {2}) - '{0}'", m_Title, p.x, p.y);
 
         auto pos = m_Camera.m_ProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);

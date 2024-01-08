@@ -542,7 +542,7 @@ namespace gp {
         /**
          * Gets the current position of the mouse
          *
-         * @return a struct with the (x, y) position of the cursor
+         * @return a struct with the (x, y) position of the cursor in world coordinates
          *
          * @throws std::runtime_error window has been destroyed
          */
@@ -991,7 +991,6 @@ namespace gp {
 
         // Callback Functions
 
-        // TODO all goopylib private functions need to follow a consistent naming scheme (_ or no?)
         GPAPI void _onResize(int width, int height);
 
         GPAPI void _onClose();

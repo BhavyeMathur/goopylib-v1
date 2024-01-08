@@ -233,7 +233,7 @@ namespace gp {
 
         double xPos, yPos;
         glfwGetCursorPos(m_Window, &xPos, &yPos);
-        return {(float) xPos, (float) yPos};
+        return toWorld({(float) xPos, (float) yPos});
     }
 
     void Window::setCursorMode(CursorMode mode) const {

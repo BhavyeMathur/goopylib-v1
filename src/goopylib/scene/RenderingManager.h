@@ -80,7 +80,7 @@ namespace gp {
          * @param p a struct with (x, y) in screen coordinates
          * @return a struct with (x, y) in world coordinates
          */
-        [[nodiscard]] GPAPI Point toWorld(Point p);
+        [[nodiscard]] GPAPI Point toWorld(Point p) const;
 
         /**
          * Converts coordinates in world space to screen space.
@@ -90,7 +90,7 @@ namespace gp {
          * @param p a struct with (x, y) in world coordinates
          * @return a struct with (x, y) in screen coordinates
          */
-        [[nodiscard]] GPAPI Point toScreen(Point p);
+        [[nodiscard]] GPAPI Point toScreen(Point p) const;
 
     protected:
         int m_Width;
