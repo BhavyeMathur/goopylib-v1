@@ -331,9 +331,9 @@ namespace gp {
 
         GPAPI void _move(float x, float y);
 
-    private:
         GPAPI void _calculateAttributes();
 
+    private:
         [[nodiscard]] GPAPI virtual bool _contains(float x, float y) const;
 
         GPAPI virtual void _onScale(float xfactor, float yfactor) {

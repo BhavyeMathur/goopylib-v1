@@ -92,6 +92,8 @@ namespace gp {
 namespace gp {
     void Quad::setP1(Point point) {
         m_Points[0] = point;
+
+        _calculateAttributes();
         update();
     }
 
@@ -101,6 +103,8 @@ namespace gp {
 
     void Quad::setP2(Point point) {
         m_Points[1] = point;
+
+        _calculateAttributes();
         update();
     }
 
@@ -110,6 +114,8 @@ namespace gp {
 
     void Quad::setP3(Point point) {
         m_Points[2] = point;
+
+        _calculateAttributes();
         update();
     }
 
@@ -119,6 +125,8 @@ namespace gp {
 
     void Quad::setP4(Point point) {
         m_Points[3] = point;
+
+        _calculateAttributes();
         update();
     }
 

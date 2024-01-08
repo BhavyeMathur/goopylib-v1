@@ -93,6 +93,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/objects/Line.cpp
             src/goopylib/objects/Triangle.cpp
             src/goopylib/objects/Quad.cpp
+            src/goopylib/objects/Rectangle.cpp
             src/goopylib/objects/TexturedQuad.cpp
             src/goopylib/objects/Ellipse.cpp
             src/goopylib/objects/Circle.cpp
