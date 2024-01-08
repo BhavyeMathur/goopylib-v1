@@ -113,7 +113,6 @@ namespace gp {
         SolidVertexAttrib m_V4 = {{0.0f, 0.55f, 0.9f}};
 
     private:
-
         [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
 
         [[nodiscard]] GPAPI RenderableSubclass _getRenderableSubclass() override;

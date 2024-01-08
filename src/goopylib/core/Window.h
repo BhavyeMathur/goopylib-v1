@@ -9,7 +9,6 @@
 #endif
 
 // TODO implement window icons
-// TODO window autoflush
 
 struct GLFWwindow;
 

@@ -91,7 +91,6 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
 
             src/goopylib/objects/Renderable.cpp
             src/goopylib/objects/Line.cpp
-            src/platform/OpenGL/Line.cpp
             src/goopylib/objects/Triangle.cpp
             src/goopylib/objects/Quad.cpp
             src/goopylib/objects/TexturedQuad.cpp

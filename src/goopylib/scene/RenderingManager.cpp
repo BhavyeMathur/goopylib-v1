@@ -25,7 +25,6 @@ namespace gp {
     }
 
     void RenderingManager::init() {
-        Line::init();
         Texture2D::init();
         TextureAtlas::init();
 

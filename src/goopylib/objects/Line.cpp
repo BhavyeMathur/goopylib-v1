@@ -1,105 +1,51 @@
 #define GP_LOGGING_LEVEL 3
 #include "Line.h"
 
+namespace {
+    gp::Quad getLineQuad(Point p1, Point p2, float thickness) {
+        float theta = atan((p2.y - p1.y) / (p2.x - p1.x));
+        float cos_theta = cos(theta);
+        float sin_theta = sin(theta);
+
+        thickness /= 2;
+        float dx = sin_theta * thickness;
+        float dy = cos_theta * thickness;
+
+        return {{p1.x - dx, p1.y + dy},
+                {p2.x - dx, p2.y + dy},
+                {p2.x + dx, p2.y - dy},
+                {p1.x + dx, p1.y - dy}};
+    }
+}
+
 // Core Methods
 namespace gp {
-    Line::Line(Point p1, Point p2)
-            : Renderable({p1, p2}) {
+    Line::Line(Point p1, Point p2, float thickness)
+            : Quad(getLineQuad(p1, p2, thickness)),
+            m_Thickness(thickness) {
 
-    }
-
-    RenderableSubclass Line::_getRenderableSubclass() {
-        return RenderableSubclass::Line;
     }
 }
 
 // Getter & Setter methods
 namespace gp {
-    void Line::setColor(const Color &color) {
-        m_V1.color = color.getRGBAf();
-        m_V2.color = color.getRGBAf();
-
-        update();
-    }
-
     void Line::setColor(const Color &color1, const Color &color2) {
-        m_V1.color = color1.getRGBAf();
-        m_V2.color = color2.getRGBAf();
-
-        update();
-    }
-
-    void Line::setColor(const char *hexstring, float alpha) {
-        m_V1.color = Color(hexstring, alpha).getRGBAf();
-        m_V2.color = m_V1.color;
-
-        update();
+        setColor(color1, color1, color2, color2);
     }
 
     void Line::setColor(const char *hex1, const char *hex2) {
-        m_V1.color = Color(hex1).getRGBAf();
-        m_V2.color = Color(hex2).getRGBAf();
-
-        update();
-    }
-
-    void Line::setColor(int red, int green, int blue, float alpha) {
-        m_V1.color = Color(red, green, blue, alpha).getRGBAf();
-        m_V2.color = m_V1.color;
-
-        update();
-    }
-
-    void Line::setTransparency(float value) {
-        m_V1.color.alpha = value;
-        m_V2.color.alpha = value;
-
-        update();
+        setColor(hex1, hex1, hex2, hex2);
     }
 
     void Line::setTransparency(float value1, float value2) {
-        GP_CHECK_INCLUSIVE_RANGE(value1, 0, 1, "transparency must be between 0 and 1");
-        GP_CHECK_INCLUSIVE_RANGE(value2, 0, 1, "transparency must be between 0 and 1");
-
-        m_V1.color.alpha = value1;
-        m_V2.color.alpha = value2;
-
-        update();
+        setTransparency(value1, value1, value2, value2);
     }
-
-    Float2 Line::getTransparency() {
-        return {m_V1.color.alpha, m_V2.color.alpha};
-    }
-
-    bool Line::isOpaque() const {
-        return (m_V1.color.alpha == 1) && (m_V2.color.alpha == 1);
-    }
-}
-
-// Static Methods
-namespace gp {
-    float Line::s_Width = 1;
-
-    float Line::s_MinWidth = 0;
-    float Line::s_MaxWidth = FLT_MAX;
 
     void Line::setThickness(float value) {
-        #if GP_ERROR_CHECKING
-        if (value > s_MaxWidth or value < s_MinWidth) {
-            GP_CORE_WARN("Line width {0} not supported, must be between {1} and {2}", value, s_MinWidth, s_MaxWidth);
-        }
-        #endif
-
-        #if GP_USING_OPENGL
-        glLineWidth(value);
-        #else
-        GP_CORE_ERROR("Line width not supported on platform");
-        #endif
-
-        s_Width = value;
+        m_Thickness = value;
     }
 
-    float Line::getThickness() {
-        return s_Width;
+    float Line::getThickness() const {
+        return m_Thickness;
     }
 }
