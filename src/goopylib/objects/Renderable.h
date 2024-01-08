@@ -340,5 +340,11 @@ namespace gp {
         };
 
         GPAPI virtual RenderableSubclass _getRenderableSubclass() = 0;
+
+        /**
+         *
+         * @return whether the object is fully opaque and visible or not
+         */
+        [[nodiscard]] GPAPI bool isVisibleAndOpaque() const;
     };
 }

@@ -152,7 +152,7 @@ namespace gp {
         const uint32_t ID = m_NextObjectID;
         m_NextObjectID++;
 
-        Renderer& renderer = (object->isOpaque() ? m_Renderer : m_AlphaRenderer);
+        Renderer& renderer = (object->isVisibleAndOpaque() ? m_Renderer : m_AlphaRenderer);
 
         switch (object->_getRenderableSubclass()) {
             case RenderableSubclass::Line:
@@ -172,7 +172,7 @@ namespace gp {
                 break;
         }
 
-        m_ObjectToIsOpaque[ID] = object->isOpaque();
+        m_ObjectToIsOpaque[ID] = object->isVisibleAndOpaque();
         return ID;
     }
 
@@ -209,13 +209,13 @@ namespace gp {
 
         Renderer& renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
 
-        if (m_ObjectToIsOpaque[ID] != object->isOpaque()) {
+        if (m_ObjectToIsOpaque[ID] != object->isVisibleAndOpaque()) {
             _undrawRenderable(object);
 
             ID = _drawRenderable(object);
             object->m_RendererID = ID;
 
-            m_ObjectToIsOpaque[ID] = object->isOpaque();
+            m_ObjectToIsOpaque[ID] = object->isVisibleAndOpaque();
             return;
         }
 

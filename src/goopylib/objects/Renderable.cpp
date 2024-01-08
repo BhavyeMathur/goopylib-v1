@@ -353,6 +353,10 @@ namespace gp {
         return m_Hidden;
     }
 
+    bool Renderable::isVisibleAndOpaque() const {
+        return isOpaque() && !isHidden();
+    }
+
     void Renderable::setZPosition(float value) {
         m_ZPosition = value;
         update();
