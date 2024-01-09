@@ -3,6 +3,7 @@ Module defining a line object
 """
 
 from __future__ import annotations
+from typing import NoReturn
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.line as _line
@@ -50,3 +51,25 @@ class Line(Quad):
     @thickness.setter
     def thickness(self, value: float) -> None:
         self._renderable.thickness = value
+
+    @property
+    def p3(self) -> NoReturn:
+        """
+        Unimplemented for lines
+        """
+        raise NotImplementedError("p3 property is not implemented for lines")
+
+    @p3.setter
+    def p3(self, value: tuple[float, float]) -> NoReturn:
+        raise NotImplementedError("p3 property is not implemented for lines")
+
+    @property
+    def p4(self) -> NoReturn:
+        """
+        Unimplemented for lines
+        """
+        raise NotImplementedError("p4 property is not implemented for lines")
+
+    @p4.setter
+    def p4(self, value: tuple[float, float]) -> NoReturn:
+        raise NotImplementedError("p4 property is not implemented for lines")
