@@ -41,6 +41,11 @@ namespace quad {
     PyObject *get_p4(QuadObject *self, void *closure);
 
     int set_p4(QuadObject *self, PyObject *value, void *closure);
+
+    // Transparency
+    PyObject *get_transparency(QuadObject *self, void *closure);
+
+    int set_transparency(QuadObject *self, PyObject *value, void *closure);
 }
 
 

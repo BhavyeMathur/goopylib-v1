@@ -14,6 +14,7 @@ namespace triangle {
             GETTER_SETTER(p1),
             GETTER_SETTER(p2),
             GETTER_SETTER(p3),
+            GETTER_SETTER(transparency),
 
             {nullptr}
     };

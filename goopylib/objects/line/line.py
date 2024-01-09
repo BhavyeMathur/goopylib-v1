@@ -73,3 +73,18 @@ class Line(Quad):
     @p4.setter
     def p4(self, value: tuple[float, float]) -> NoReturn:
         raise NotImplementedError("p4 property is not implemented for lines")
+
+    @property
+    def transparency(self) -> float | tuple[float, float] | tuple[float, float, float, float]:
+        """
+        The transparency of the object at each vertex between 0 (transpareny) and 1 (opaque)
+
+        Raises:
+            TypeError: transparency must be a float or tuple of floats
+            ValueError: transparency must be between 0 and 1
+        """
+        return self._renderable.transparency
+
+    @transparency.setter
+    def transparency(self, value: float | tuple[float, float] | tuple[float, float, float, float]) -> None:
+        self._renderable.transparency = value

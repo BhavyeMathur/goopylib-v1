@@ -2,8 +2,6 @@
 
 namespace image {
     static PyMethodDef methods[] = {
-            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
-                    "Sets the transparency of the object"},
             {"get_path",         (PyCFunction) get_path,         METH_NOARGS,
                     "Returns the filepath the image is using"},
 

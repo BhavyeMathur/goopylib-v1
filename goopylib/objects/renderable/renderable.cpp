@@ -55,7 +55,7 @@ namespace renderable {
 // Renderable methods
 namespace renderable {
     PyObject *draw(RenderableObject *self, PyObject *arg) {
-        GP_PY_DEBUG((size_t)WindowType);
+        GP_PY_DEBUG("gp.objects.renderable.Renderable.draw({0})", PyUnicode_AsUTF8(PyObject_Repr(arg)));
 
         #if GP_TYPE_CHECKING
         if (!isinstance(arg, WindowType)) {

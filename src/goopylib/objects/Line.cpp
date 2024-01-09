@@ -45,15 +45,15 @@ namespace gp {
 // Getter & Setter methods
 namespace gp {
     void Line::setColor(const Color &color1, const Color &color2) {
-        setColor(color1, color1, color2, color2);
+        setColor(color1, color2, color2, color1);
     }
 
     void Line::setColor(const char *hex1, const char *hex2) {
-        setColor(hex1, hex1, hex2, hex2);
+        setColor(hex1, hex2, hex2, hex1);
     }
 
     void Line::setTransparency(float value1, float value2) {
-        setTransparency(value1, value1, value2, value2);
+        setTransparency(value1, value2, value2, value1);
     }
 
     void Line::setThickness(float value) {

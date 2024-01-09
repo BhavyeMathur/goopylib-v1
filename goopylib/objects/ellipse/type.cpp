@@ -4,8 +4,12 @@ namespace ellipse {
     static PyMethodDef methods[] = {
             {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
                     "Sets the color of the object"},
-            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
-                    "Sets the transparency of the object"},
+
+            {nullptr}
+    };
+
+    static PyGetSetDef getsetters[] = {
+            GETTER_SETTER(transparency),
 
             {nullptr}
     };
@@ -41,7 +45,7 @@ PyTypeObject EllipseType = {
         nullptr,
         ellipse::methods,
         nullptr,
-        nullptr,
+        (PyGetSetDef *) ellipse::getsetters,
         nullptr,
         nullptr,
         nullptr,

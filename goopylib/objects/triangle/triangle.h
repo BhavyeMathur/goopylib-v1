@@ -26,8 +26,6 @@ namespace triangle {
 
 namespace triangle {
     PyObject *set_color(TriangleObject *self, PyObject *args);
-
-    PyObject *set_transparency(TriangleObject *self, PyObject *args);
 }
 
 namespace triangle {
@@ -43,6 +41,11 @@ namespace triangle {
     PyObject *get_p3(TriangleObject *self, void *closure);
 
     int set_p3(TriangleObject *self, PyObject *value, void *closure);
+
+    // Transparency
+    PyObject *get_transparency(TriangleObject *self, void *closure);
+
+    int set_transparency(TriangleObject *self, PyObject *value, void *closure);
 }
 
 extern PyTypeObject TriangleType;

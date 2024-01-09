@@ -25,8 +25,6 @@ namespace image {
 }
 
 namespace image {
-    PyObject *set_transparency(ImageObject *self, PyObject *args);
-
     PyObject *get_path(ImageObject *self, PyObject *args);
 
     PyObject *draw(ImageObject *self, PyObject *arg);

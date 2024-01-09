@@ -75,15 +75,17 @@ class Ellipse(Renderable):
         """
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
-    def set_transparency(self, *args: float) -> None:
+    @property
+    def transparency(self) -> float | tuple[float, float, float, float]:
         """
-        Sets the transparency of the object
-
-        Args:
-            *args: a float or 4 floats corresponding to bottom-left, bottom-right, top-right, and top-left
+        The transparency of the object at each vertex between 0 (transpareny) and 1 (opaque)
 
         Raises:
-            TypeError: arguments must be floats
+            TypeError: transparency must be a float or tuple of floats
             ValueError: transparency must be between 0 and 1
         """
-        self._renderable.set_transparency(*args)
+        return self._renderable.transparency
+
+    @transparency.setter
+    def transparency(self, value: float | tuple[float, float, float, float]) -> None:
+        self._renderable.transparency = value

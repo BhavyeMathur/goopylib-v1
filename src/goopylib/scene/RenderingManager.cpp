@@ -151,8 +151,11 @@ namespace gp {
         const uint32_t ID = m_NextObjectID;
         m_NextObjectID++;
 
+        GP_CORE_TRACE("gp::RenderingManager::_drawRenderable() - 0");
+
         Renderer& renderer = (object->isVisibleAndOpaque() ? m_Renderer : m_AlphaRenderer);
 
+        GP_CORE_TRACE("gp::RenderingManager::_drawRenderable() - 1");
         switch (object->_getRenderableSubclass()) {
             case RenderableSubclass::Line:
                 renderer.drawLine(ID, dynamic_cast<const Line *>(object));
@@ -161,12 +164,14 @@ namespace gp {
                 renderer.drawTriangle(ID, dynamic_cast<const Triangle *>(object));
                 break;
             case RenderableSubclass::Quad:
+                GP_CORE_TRACE("gp::RenderingManager::_drawRenderable() - 2");
                 renderer.drawQuad(ID, dynamic_cast<const Quad *>(object));
                 break;
             case RenderableSubclass::Ellipse:
                 renderer.drawEllipse(ID, dynamic_cast<const Ellipse *>(object));
                 break;
             case RenderableSubclass::TexturedQuad:
+                GP_CORE_TRACE("gp::RenderingManager::_drawRenderable() - 3");
                 renderer.drawTexturedQuad(ID, dynamic_cast<TexturedQuad *>(object));
                 break;
         }

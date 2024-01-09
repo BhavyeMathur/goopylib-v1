@@ -66,7 +66,7 @@ namespace ellipse {
     }
 }
 
-// Ellipse methods
+// Ellipse Methods
 namespace ellipse {
     PyObject *set_color(EllipseObject *self, PyObject *args) {
         GP_PY_DEBUG("gp.ellipse.Ellipse.set_color({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
@@ -132,29 +132,38 @@ namespace ellipse {
         self->ellipse->setColor(*((ColorObject *) color1)->color);
         Py_RETURN_NONE;
     }
+}
 
-    PyObject *set_transparency(EllipseObject *self, PyObject *args) {
+// Ellipse Getters & Setters
+namespace ellipse {
+    PyObject *get_transparency(EllipseObject *self, void *Py_UNUSED(closure)) {
+        auto transparency = self->ellipse->getTransparency();
+        return PyTuple_Pack(4, PyFloat_FromDouble(transparency.a1), PyFloat_FromDouble(transparency.a2),
+                            PyFloat_FromDouble(transparency.a3), PyFloat_FromDouble(transparency.a4));
+    }
+
+    int set_transparency(EllipseObject *self, PyObject *value, void *Py_UNUSED(closure)) {
         GP_PY_DEBUG("gp.ellipse.Ellipse.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
         float v1, v2, v3, v4;
-        if (PyArg_ParseTuple(args, "ffff", &v1, &v2, &v3, &v4)) {
-            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v4, 0, 1, nullptr, "transparency must be between 0 and 1")
+        if (PyArg_ParseTuple(value, "ffff", &v1, &v2, &v3, &v4)) {
+            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -1, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, -1, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, -1, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v4, 0, 1, -1, "transparency must be between 0 and 1")
 
             self->ellipse->setTransparency(v1, v2, v3, v4);
-            Py_RETURN_NONE;
+            return 0;
         }
         PyErr_Clear();
 
-        if (!PyArg_ParseTuple(args, "f", &v1)) {
-            return nullptr;
+        if (!PyNumber_Check(value)) {
+            RAISE_VALUE_ERROR(-1, "transparency must be a number");
         }
 
-        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
+        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -2, "transparency must be between 0 and 1")
 
         self->ellipse->setTransparency(v1);
-        Py_RETURN_NONE;
+        return 0;
     }
 }

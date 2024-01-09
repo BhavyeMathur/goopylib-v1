@@ -24,8 +24,14 @@ namespace ellipse {
     void dealloc(EllipseObject *self);
 
     PyObject *set_color(EllipseObject *self, PyObject *args);
+}
 
-    PyObject *set_transparency(EllipseObject *self, PyObject *args);
+namespace ellipse {
+    // Transparency
+    PyObject *get_transparency(EllipseObject *self, void *closure);
+
+    int set_transparency(EllipseObject *self, PyObject *value, void *closure);
+
 }
 
 extern PyTypeObject EllipseType;

@@ -73,7 +73,7 @@ namespace gp {
     }
 
     void Renderable::draw(Window &window) {
-        GP_CORE_DEBUG("gp::Renderable::_drawRenderable({0})", window->getTitle());
+        GP_CORE_DEBUG("gp::Renderable::_drawRenderable({0})", window.getTitle());
 
         #if GP_ERROR_CHECKING
         if (window.isDestroyed()) {
@@ -355,6 +355,7 @@ namespace gp {
     }
 
     bool Renderable::isVisibleAndOpaque() const {
+        GP_CORE_TRACE("gp::Renderable::isVisibleAndOpaque()");
         return isOpaque() && !isHidden();
     }
 

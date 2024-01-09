@@ -29,7 +29,7 @@ namespace gp {
          */
         GPAPI Ellipse(Point p1, Point p2);
 
-        GPAPI ~Ellipse() = default;
+        GPAPI virtual ~Ellipse() = default;
 
         /**
          * Sets the fill color of the object
@@ -105,7 +105,6 @@ namespace gp {
          */
         GPAPI void setTransparency(float v1, float v2, float v3, float v4);
 
-        // TODO python API for get transparency methods
         /**
          *
          * @return the transparency at each vertex of the object

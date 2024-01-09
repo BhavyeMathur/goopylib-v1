@@ -21,7 +21,7 @@ namespace gp {
          */
         GPAPI Triangle(Point p1, Point p2, Point p3);
 
-        GPAPI ~Triangle() = default;
+        GPAPI virtual ~Triangle() = default;
 
         /**
          * Sets the fill color of the triangle

@@ -80,19 +80,6 @@ class Image(Rectangle):
             path = f"{dirname(__main__.__file__)}/{path}"
         self._renderable: Image = _image.Image(path, p1, *args)
 
-    def set_transparency(self, *args: float) -> None:
-        """
-        Sets the transparency of the object
-
-        Args:
-            *args: a float or 4 floats corresponding to bottom-left, bottom-right, top-right, and top-left
-
-        Raises:
-            TypeError: arguments must be floats
-            ValueError: transparency must be between 0 and 1
-        """
-        self._renderable.set_transparency(*args)
-
     def get_path(self) -> str:
         """
         Returns: the filepath used by the image

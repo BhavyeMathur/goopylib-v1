@@ -51,19 +51,6 @@ class Triangle(Renderable):
         """
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
-    def set_transparency(self, *args: float) -> None:
-        """
-        Sets the transparency of the object
-
-        Args:
-            *args: a float or 3 floats corresponding to each vertex
-
-        Raises:
-            TypeError: arguments must be floats
-            ValueError: transparency must be between 0 and 1
-        """
-        self._renderable.set_transparency(*args)
-
     @property
     def p1(self) -> tuple[float, float]:
         """
@@ -114,3 +101,18 @@ class Triangle(Renderable):
     @p3.setter
     def p3(self, value: tuple[float, float]) -> None:
         self._renderable.p3 = value
+
+    @property
+    def transparency(self) -> float | tuple[float, float, float]:
+        """
+        The transparency of the object at each vertex between 0 (transpareny) and 1 (opaque)
+
+        Raises:
+            TypeError: transparency must be a float or tuple of floats
+            ValueError: transparency must be between 0 and 1
+        """
+        return self._renderable.transparency
+
+    @transparency.setter
+    def transparency(self, value: float | tuple[float, float, float]) -> None:
+        self._renderable.transparency = value

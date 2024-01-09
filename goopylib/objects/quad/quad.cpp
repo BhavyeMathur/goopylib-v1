@@ -12,9 +12,6 @@ namespace quad {
         QuadObject *self;
         self = (QuadObject *) type->tp_alloc(type, 0);
 
-        if (self != nullptr) {
-
-        }
         return (PyObject *) self;
     }
 
@@ -56,6 +53,11 @@ namespace quad {
         clear(self);
         Py_TYPE(self)->tp_free((PyObject *) self);
     }
+}
+
+// Quad Methods
+namespace quad {
+
 }
 
 // Quad Getters & Setters
@@ -117,6 +119,37 @@ namespace quad {
         }
 
         self->quad->setP4({x, y});
+        return 0;
+    }
+
+    PyObject *get_transparency(QuadObject *self, void *Py_UNUSED(closure)) {
+        auto transparency = self->quad->getTransparency();
+        return PyTuple_Pack(4, PyFloat_FromDouble(transparency.a1), PyFloat_FromDouble(transparency.a2),
+                            PyFloat_FromDouble(transparency.a3), PyFloat_FromDouble(transparency.a4));
+    }
+
+    int set_transparency(QuadObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.quad.Quad.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
+        float v1, v2, v3, v4;
+        if (PyArg_ParseTuple(value, "ffff", &v1, &v2, &v3, &v4)) {
+            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -1, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, -1, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, -1, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v4, 0, 1, -1, "transparency must be between 0 and 1")
+
+            self->quad->setTransparency(v1, v2, v3, v4);
+            return 0;
+        }
+        PyErr_Clear();
+
+        if (!PyNumber_Check(value)) {
+            RAISE_VALUE_ERROR(-1, "transparency must be a number");
+        }
+
+        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -2, "transparency must be between 0 and 1")
+
+        self->quad->setTransparency(v1);
         return 0;
     }
 }

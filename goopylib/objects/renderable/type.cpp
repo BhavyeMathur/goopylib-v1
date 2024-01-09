@@ -76,7 +76,7 @@ PyTypeObject RenderableType = {
         nullptr,
         nullptr,
         nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
         "",
         (traverseproc) renderable::traverse,
         (inquiry) renderable::clear,

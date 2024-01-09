@@ -41,6 +41,7 @@ namespace rectangle {
 
     PyObject *repr(RectangleObject *Py_UNUSED(self)) {
         GP_PY_TRACE("gp.rectangle.Rectangle.__repr__()");
+        // TODO object toString methods
         return PyUnicode_FromString("Rectangle()");
     }
 

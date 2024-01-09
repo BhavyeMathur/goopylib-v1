@@ -5,7 +5,7 @@
 namespace gp {
     Quad::Quad(Point p1, Point p2, Point p3, Point p4)
             : Renderable({p1, p2, p3, p4}) {
-        GP_CORE_DEBUG("gp::Quad::Quad({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
+        GP_CORE_DEBUG("gp::Quad::Quad(({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7}))",
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
     }
 
@@ -84,6 +84,7 @@ namespace gp {
     }
 
     bool Quad::isOpaque() const {
+        GP_CORE_TRACE("gp::Quad::isOpaque()");
         return (m_V1.color.alpha == 1) && (m_V2.color.alpha == 1) && (m_V3.color.alpha == 1) && (m_V4.color.alpha == 1);
     }
 }

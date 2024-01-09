@@ -72,29 +72,4 @@ namespace quad {
         self->quad->setColor(*((ColorObject *) color1)->color);
         Py_RETURN_NONE;
     }
-
-    PyObject *set_transparency(QuadObject *self, PyObject *args) {
-        GP_PY_DEBUG("gp.quad.Quad.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
-
-        float v1, v2, v3, v4;
-        if (PyArg_ParseTuple(args, "ffff", &v1, &v2, &v3, &v4)) {
-            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v4, 0, 1, nullptr, "transparency must be between 0 and 1")
-
-            self->quad->setTransparency(v1, v2, v3, v4);
-            Py_RETURN_NONE;
-        }
-        PyErr_Clear();
-
-        if (!PyArg_ParseTuple(args, "f", &v1)) {
-            return nullptr;
-        }
-
-        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
-
-        self->quad->setTransparency(v1);
-        Py_RETURN_NONE;
-    }
 }

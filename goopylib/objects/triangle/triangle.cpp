@@ -189,4 +189,34 @@ namespace triangle {
         self->triangle->setP3({x, y});
         return 0;
     }
+
+    PyObject *get_transparency(TriangleObject *self, void *Py_UNUSED(closure)) {
+        auto transparency = self->triangle->getTransparency();
+        return PyTuple_Pack(3, PyFloat_FromDouble(transparency.a1), PyFloat_FromDouble(transparency.a2),
+                            PyFloat_FromDouble(transparency.a3));
+    }
+
+    int set_transparency(TriangleObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        GP_PY_DEBUG("gp.quad.Quad.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
+
+        float v1, v2, v3;
+        if (PyArg_ParseTuple(value, "fff", &v1, &v2, &v3)) {
+            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -1, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, -1, "transparency must be between 0 and 1")
+            GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, -1, "transparency must be between 0 and 1")
+
+            self->triangle->setTransparency(v1, v2, v3);
+            return 0;
+        }
+        PyErr_Clear();
+
+        if (!PyNumber_Check(value)) {
+            RAISE_VALUE_ERROR(-1, "transparency must be a number");
+        }
+
+        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -2, "transparency must be between 0 and 1")
+
+        self->triangle->setTransparency(v1);
+        return 0;
+    }
 }
