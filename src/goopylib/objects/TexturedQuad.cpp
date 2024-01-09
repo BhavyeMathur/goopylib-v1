@@ -42,6 +42,19 @@ namespace gp {
         m_Bitmap = bitmap;
     }
 
+    RenderableSubclass TexturedQuad::_getRenderableSubclass() {
+        return RenderableSubclass::TexturedQuad;
+    }
+
+    std::ostream &operator<<(std::ostream &out, const TexturedQuad &obj) {
+        out << strformat("TexturedQuad(%s, (%g, %g), (%g, %g), (%g, %g), (%g, %g))", obj.m_Texture.c_str(),
+                         obj.getP1().x, obj.getP1().y, obj.getP2().x, obj.getP2().y,
+                         obj.getP3().x, obj.getP3().y, obj.getP4().x, obj.getP4().y);
+        return out;
+    }
+}
+
+namespace gp {
     std::string TexturedQuad::getTextureName() const {
         return m_Texture;
     }
@@ -52,9 +65,5 @@ namespace gp {
 
     Ref<Bitmap> TexturedQuad::getBitmap() const {
         return m_Bitmap;
-    }
-
-    RenderableSubclass TexturedQuad::_getRenderableSubclass() {
-        return RenderableSubclass::TexturedQuad;
     }
 }

@@ -34,7 +34,7 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        GPAPI Image(std::string  path, Point position, float width, float height);
+        GPAPI Image(std::string path, Point position, float width, float height);
 
         /**
          * An object representing a textured rectangle - an image
@@ -46,7 +46,9 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        GPAPI Image(std::string  path, Point p1, Point p2);
+        GPAPI Image(std::string path, Point p1, Point p2);
+
+        GPAPI friend std::ostream &operator<<(std::ostream &out, const Image &obj);
 
         /**
          *

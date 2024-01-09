@@ -5,8 +5,9 @@
 
 namespace gp {
     Circle::Circle(Point position, float radius)
-    : Ellipse(position, radius, radius),
-    m_RadiusSquared(radius * radius) {}
+            : Ellipse(position, radius, radius),
+              m_RadiusSquared(radius * radius) {
+    }
 
     bool Circle::_contains(float x, float y) const {
         x -= m_Position.x;
@@ -19,5 +20,10 @@ namespace gp {
         p.y /= m_yScale;
 
         return p.x * p.x + p.y * p.y < m_RadiusSquared;
+    }
+
+    std::ostream &operator<<(std::ostream &out, const Circle &obj) {
+        out << strformat("Circle((%g, %g), radius=%g)", obj.m_Position.x, obj.m_Position.y, obj.m_Radius1);
+        return out;
     }
 }

@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "Ellipse.h"
 
 // Core Methods
@@ -8,16 +9,19 @@ namespace gp {
                                     {position.x + xRadius, position.y - yRadius},
                                     {position.x + xRadius, position.y + yRadius},
                                     {position.x - xRadius, position.y + yRadius}}),
-            m_Radius1(xRadius),
-            m_Radius2(yRadius) {
+              m_Radius1(xRadius),
+              m_Radius2(yRadius) {
         GP_CORE_DEBUG("Initializing Ellipse at ({0}, {1}), xRadius={3}, yRadius={4}",
                       position.x, position.y, xRadius, yRadius);
     }
 
     Ellipse::Ellipse(Point p1, Point p2)
-            : Renderable({{p1.x, p1.y}, {p2.x, p1.y}, {p2.x, p2.y}, {p1.x, p2.y}}),
-            m_Radius1(abs(p2.x - p1.x) / 2),
-            m_Radius2(abs(p2.y - p1.y) / 2){
+            : Renderable({{p1.x, p1.y},
+                          {p2.x, p1.y},
+                          {p2.x, p2.y},
+                          {p1.x, p2.y}}),
+              m_Radius1(abs(p2.x - p1.x) / 2),
+              m_Radius2(abs(p2.y - p1.y) / 2) {
         GP_CORE_DEBUG("Initializing Ellipse ({0}, {1}), ({2}, {3})", p1.x, p1.y, p2.x, p2.y);
     }
 
@@ -41,6 +45,12 @@ namespace gp {
 
     RenderableSubclass Ellipse::_getRenderableSubclass() {
         return RenderableSubclass::Ellipse;
+    }
+
+    std::ostream &operator<<(std::ostream &out, const Ellipse &obj) {
+        out << strformat("Ellipse((%g, %g), radii=(%g, %g))",
+                         obj.m_Position.x, obj.m_Position.y, obj.m_Radius1, obj.m_Radius2);
+        return out;
     }
 }
 

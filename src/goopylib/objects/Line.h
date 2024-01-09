@@ -24,6 +24,8 @@ namespace gp {
 
         GPAPI ~Line() override = default;
 
+        GPAPI friend std::ostream &operator<<(std::ostream &out, const Line &obj);
+
         /**
          * Sets the outline color of the line
          *
@@ -73,7 +75,7 @@ namespace gp {
 
         GPAPI void setP2(Point point) override;
 
-        [[nodiscard]] GPAPI Point getP2() const  override;
+        [[nodiscard]] GPAPI Point getP2() const override;
 
         GPAPI void setP3(Point point) override;
 
@@ -81,7 +83,7 @@ namespace gp {
 
         GPAPI void setP4(Point point) override;
 
-        [[nodiscard]] GPAPI Point getP4() const  override;
+        [[nodiscard]] GPAPI Point getP4() const override;
 
     private:
         float m_Thickness;

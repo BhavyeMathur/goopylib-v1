@@ -8,7 +8,8 @@ namespace {
 
     TwoPoints getUpdatedRectangleVertices(float sin, float cos, Point p1, Point p2) {
         if (sin == 0) {
-            return {{p2.x, p1.y}, {p1.x, p2.y}};
+            return {{p2.x, p1.y},
+                    {p1.x, p2.y}};
         }
 
         float tan = sin / cos;
@@ -17,7 +18,16 @@ namespace {
         float x = (p2.y + p1.x * tan + p2.x * cot - p1.y) / (tan + cot);
         float y = tan * (x - p1.x) + p1.y;
 
-        return {{x, y}, {p1.x - (x - p2.x), p1.y - (y - p2.y)}};
+        return {{x,                 y},
+                {p1.x - (x - p2.x), p1.y - (y - p2.y)}};
+    }
+}
+
+namespace gp {
+    std::ostream &operator<<(std::ostream &out, const Rectangle &obj) {
+        out << strformat("Rectangle((%g, %g), (%g, %g))",
+                         obj.getP1().x, obj.getP1().y, obj.getP3().x, obj.getP3().y);
+        return out;
     }
 }
 

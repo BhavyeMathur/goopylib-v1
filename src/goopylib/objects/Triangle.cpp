@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "Triangle.h"
 
 // Core Methods
@@ -14,6 +15,12 @@ namespace gp {
 
     RenderableSubclass Triangle::_getRenderableSubclass() {
         return RenderableSubclass::Triangle;
+    }
+
+    std::ostream &operator<<(std::ostream &out, const Triangle &obj) {
+        out << strformat("Triangle((%g, %g), (%g, %g), (%g, %g))",
+                         obj.getP1().x, obj.getP1().y, obj.getP2().x, obj.getP2().y, obj.getP3().x, obj.getP3().y);
+        return out;
     }
 }
 

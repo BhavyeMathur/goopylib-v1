@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "Quad.h"
 
 // Core Methods
@@ -15,6 +16,13 @@ namespace gp {
 
     RenderableSubclass Quad::_getRenderableSubclass() {
         return RenderableSubclass::Quad;
+    }
+
+    std::ostream &operator<<(std::ostream &out, const Quad &obj) {
+        out << strformat("Quad((%g, %g), (%g, %g), (%g, %g), (%g, %g))",
+                         obj.getP1().x, obj.getP1().y, obj.getP2().x, obj.getP2().y,
+                         obj.getP3().x, obj.getP3().y, obj.getP4().x, obj.getP4().y);
+        return out;
     }
 }
 

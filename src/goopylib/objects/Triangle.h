@@ -23,11 +23,13 @@ namespace gp {
 
         GPAPI virtual ~Triangle() = default;
 
+        GPAPI friend std::ostream &operator<<(std::ostream &out, const Triangle &obj);
+
         /**
          * Sets the fill color of the triangle
          * @param color the color of the triangle
          */
-        GPAPI void setColor(const Color& color);
+        GPAPI void setColor(const Color &color);
 
         /**
          * Sets the fill color of the triangle
@@ -36,7 +38,7 @@ namespace gp {
          * @param color2 the color of the 2nd vertex
          * @param color3 the color of the 3rd vertex
          */
-        GPAPI void setColor(const Color& color1, const Color& color2, const Color& color3);
+        GPAPI void setColor(const Color &color1, const Color &color2, const Color &color3);
 
         /**
          * Sets the fill color of the object

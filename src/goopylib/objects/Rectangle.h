@@ -35,6 +35,8 @@ namespace gp {
 
         GPAPI ~Rectangle() override = default;
 
+        GPAPI friend std::ostream &operator<<(std::ostream &out, const Rectangle &obj);
+
         GPAPI void setP1(Point point) override;
 
         [[nodiscard]] GPAPI Point getP1() const override;

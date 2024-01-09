@@ -90,13 +90,16 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/color/W3CX11.cpp
 
             src/goopylib/objects/Renderable.cpp
-            src/goopylib/objects/Line.cpp
             src/goopylib/objects/Triangle.cpp
-            src/goopylib/objects/Quad.cpp
-            src/goopylib/objects/Rectangle.cpp
-            src/goopylib/objects/TexturedQuad.cpp
             src/goopylib/objects/Ellipse.cpp
             src/goopylib/objects/Circle.cpp
+
+            src/goopylib/objects/Quad.cpp
+            src/goopylib/objects/Rectangle.cpp
+            src/goopylib/objects/Line.cpp
+
+            src/goopylib/objects/TexturedQuad.cpp
+            src/goopylib/objects/TexturedRectangle.cpp
             src/goopylib/objects/Image.cpp
 
             src/goopylib/scene/RenderingManager.cpp

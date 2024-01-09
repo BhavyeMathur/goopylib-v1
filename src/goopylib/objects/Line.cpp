@@ -40,6 +40,12 @@ namespace gp {
         }
         #endif
     }
+
+    std::ostream &operator<<(std::ostream &out, const Line &obj) {
+        out << strformat("Line((%g, %g), (%g, %g))",
+                         obj.getP1().x, obj.getP1().y, obj.getP2().x, obj.getP2().y);
+        return out;
+    }
 }
 
 // Getter & Setter methods

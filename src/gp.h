@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <iostream>
 
 #define GP_BUILD_DLL
 

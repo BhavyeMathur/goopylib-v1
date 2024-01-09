@@ -31,12 +31,14 @@ namespace gp {
 
         GPAPI virtual ~Ellipse() = default;
 
+        GPAPI friend std::ostream &operator<<(std::ostream &out, const Ellipse &obj);
+
         /**
          * Sets the fill color of the object
          *
          * @param color the color of the object
          */
-        GPAPI void setColor(const Color& color);
+        GPAPI void setColor(const Color &color);
 
         /**
          * Sets the fill color of the object
@@ -69,7 +71,7 @@ namespace gp {
          * @param color3 the top-right color
          * @param color4 the top-left color
          */
-        GPAPI void setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
+        GPAPI void setColor(const Color &color1, const Color &color2, const Color &color3, const Color &color4);
 
         /**
          * Sets the fill color of the object
@@ -114,14 +116,19 @@ namespace gp {
 
         [[nodiscard]] GPAPI bool isOpaque() const override;
 
-    private:
-        EllipseVertexAttrib m_V1 = {{-1, -1},  {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V2 = {{1, -1},  {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V3 = {{1, 1},  {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V4 = {{-1, 1},  {0.0f, 0.55f, 0.9f}};
-
+    protected:
         float m_Radius1;
         float m_Radius2;
+
+    private:
+        EllipseVertexAttrib m_V1 = {{-1,   -1},
+                                    {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V2 = {{1,    -1},
+                                    {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V3 = {{1,    1},
+                                    {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_V4 = {{-1,   1},
+                                    {0.0f, 0.55f, 0.9f}};
 
         [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
 

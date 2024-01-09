@@ -32,11 +32,13 @@ namespace gp {
          * @param p3 3rd coordinate (x, y) in world space
          * @param p4 4th coordinate (x, y) in world space
          */
-        GPAPI TexturedQuad(std::string texture, const Ref<Bitmap>& bitmap, Point p1, Point p2, Point p3, Point p4);
+        GPAPI TexturedQuad(std::string texture, const Ref<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4);
+
+        GPAPI friend std::ostream &operator<<(std::ostream &out, const TexturedQuad &obj);
 
         [[nodiscard]] GPAPI std::string getTextureName() const;
 
-        GPAPI void setBitmap(const Ref<Bitmap>& bitmap);
+        GPAPI void setBitmap(const Ref<Bitmap> &bitmap);
 
         [[nodiscard]] GPAPI virtual Ref<Bitmap> getBitmap() const;
 
@@ -46,14 +48,15 @@ namespace gp {
         TextureVertexAttrib m_T3 = {{1, 0}};
         TextureVertexAttrib m_T4 = {{0, 0}};
 
+        std::string m_Texture;
+
         GPAPI TexturedQuad() = default;
 
         GPAPI TexturedQuad(std::string texture);
 
-        GPAPI TexturedQuad(std::string texture, const Ref<Bitmap>& bitmap);
+        GPAPI TexturedQuad(std::string texture, const Ref<Bitmap> &bitmap);
 
     private:
-        std::string m_Texture;
         Ref<Bitmap> m_Bitmap = nullptr;
 
         [[nodiscard]] GPAPI RenderableSubclass _getRenderableSubclass() override;

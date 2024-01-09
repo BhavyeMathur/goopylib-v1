@@ -28,6 +28,8 @@ namespace gp {
         friend class RenderingManager;
 
     public:
+        GPAPI friend std::ostream &operator<<(std::ostream &out, const Renderable &obj);
+
         /**
          * Draws the object to a window
          *
@@ -35,7 +37,7 @@ namespace gp {
          *
          * @throws std::runtime_error the window has been destroyed
          */
-        void draw(Window &window);
+        GPAPI void draw(Window &window);
 
         /**
          * Destroys and undraws the object
@@ -295,7 +297,7 @@ namespace gp {
         [[nodiscard]] GPAPI virtual bool isOpaque() const = 0;
 
     protected:
-        Window* m_Window = nullptr;
+        Window *m_Window = nullptr;
         uint32_t m_RendererID = 0;
 
         Point *m_Points = nullptr;
