@@ -30,7 +30,7 @@ PyTypeObject TriangleType = {
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) triangle::repr,
+        nullptr,
         nullptr,
         nullptr,
         nullptr,

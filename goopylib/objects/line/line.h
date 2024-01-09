@@ -15,8 +15,6 @@ namespace line {
 
     int init(LineObject *self, PyObject *args, PyObject *kwds);
 
-    PyObject *repr(LineObject *self);
-
     int traverse(LineObject *self, visitproc visit, void *arg);
 
     int clear(LineObject *self);

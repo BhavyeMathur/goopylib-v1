@@ -15,8 +15,6 @@ namespace quad {
 
     int init(QuadObject *self, PyObject *args, PyObject *kwds);
 
-    PyObject *repr(QuadObject *self);
-
     int traverse(QuadObject *self, visitproc visit, void *arg);
 
     int clear(QuadObject *self);

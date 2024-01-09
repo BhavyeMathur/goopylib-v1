@@ -39,12 +39,6 @@ namespace rectangle {
         return 0;
     }
 
-    PyObject *repr(RectangleObject *Py_UNUSED(self)) {
-        GP_PY_TRACE("gp.rectangle.Rectangle.__repr__()");
-        // TODO object toString methods
-        return PyUnicode_FromString("Rectangle()");
-    }
-
     int traverse(RectangleObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }

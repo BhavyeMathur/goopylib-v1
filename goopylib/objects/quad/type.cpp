@@ -30,7 +30,7 @@ PyTypeObject QuadType = {
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) quad::repr,
+        nullptr,
         nullptr,
         nullptr,
         nullptr,

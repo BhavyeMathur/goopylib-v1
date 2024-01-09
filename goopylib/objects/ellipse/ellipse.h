@@ -15,8 +15,6 @@ namespace ellipse {
 
     int init(EllipseObject *self, PyObject *args, PyObject *kwds);
 
-    PyObject *repr(EllipseObject *self);
-
     int traverse(EllipseObject *self, visitproc visit, void *arg);
 
     int clear(EllipseObject *self);

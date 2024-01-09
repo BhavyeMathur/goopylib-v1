@@ -25,7 +25,7 @@ PyTypeObject EllipseType = {
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) ellipse::repr,
+        nullptr,
         nullptr,
         nullptr,
         nullptr,

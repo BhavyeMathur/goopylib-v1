@@ -26,7 +26,7 @@ PyTypeObject LineType = {
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) line::repr,
+        nullptr,
         nullptr,
         nullptr,
         nullptr,

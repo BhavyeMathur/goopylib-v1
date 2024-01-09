@@ -22,7 +22,7 @@ PyTypeObject ImageType = {
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) image::repr,
+        nullptr,
         nullptr,
         nullptr,
         nullptr,

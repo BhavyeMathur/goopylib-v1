@@ -12,8 +12,6 @@ namespace rectangle {
 
     int init(RectangleObject *self, PyObject *args, PyObject *kwds);
 
-    PyObject *repr(RectangleObject *self);
-
     int traverse(RectangleObject *self, visitproc visit, void *arg);
 
     int clear(RectangleObject *self);

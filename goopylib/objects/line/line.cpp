@@ -40,11 +40,6 @@ namespace line {
         return 0;
     }
 
-    PyObject *repr(LineObject *Py_UNUSED(self)) {
-        GP_PY_TRACE("gp.line.Line.__repr__()");
-        return PyUnicode_FromString("Line()");
-    }
-
     int traverse(LineObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }

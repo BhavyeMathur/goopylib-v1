@@ -30,11 +30,6 @@ namespace quad {
         return 0;
     }
 
-    PyObject *repr(QuadObject *Py_UNUSED(self)) {
-        GP_PY_TRACE("gp.quad.Quad.__repr__()");
-        return PyUnicode_FromString("Quad()");
-    }
-
     int traverse(QuadObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }

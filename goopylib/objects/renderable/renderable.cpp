@@ -23,13 +23,12 @@ namespace renderable {
 
     int init(RenderableObject *Py_UNUSED(self), PyObject *Py_UNUSED(args), PyObject *Py_UNUSED(kwds)) {
         GP_PY_INFO("gp.renderable.Renderable()");
-
         return 0;
     }
 
-    PyObject *repr(RenderableObject *Py_UNUSED(self)) {
+    PyObject *repr(RenderableObject *self) {
         GP_PY_TRACE("gp.renderable.Renderable.__repr__()");
-        return PyUnicode_FromString("Renderable()");
+        return PyUnicode_FromString(self->renderable->toString().c_str());
     }
 
     int traverse(RenderableObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {

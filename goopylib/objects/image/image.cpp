@@ -64,11 +64,6 @@ namespace image {
         return 0;
     }
 
-    PyObject *repr(ImageObject *Py_UNUSED(self)) {
-        GP_PY_TRACE("gp.image.Image.__repr__()");
-        return PyUnicode_FromString("Image()");
-    }
-
     int traverse(ImageObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }

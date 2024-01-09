@@ -15,8 +15,6 @@ namespace triangle {
 
     int init(TriangleObject *self, PyObject *args, PyObject *kwds);
 
-    PyObject *repr(TriangleObject *self);
-
     int traverse(TriangleObject *self, visitproc visit, void *arg);
 
     int clear(TriangleObject *self);
