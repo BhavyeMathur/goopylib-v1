@@ -64,7 +64,21 @@ namespace gp {
         #endif
 
         m_Thickness = value;
-        // TODO update quad
+
+        Point p1 = getP1();
+        Point p2 = getP2();
+
+        Point delta = getLineQuadDeltas(p1, p2, m_Thickness);
+        float dx = delta.x;
+        float dy = delta.y;
+
+        m_Points[0] = {p1.x - dx, p1.y + dy};
+        m_Points[1] = {p2.x - dx, p2.y + dy};
+        m_Points[2] = {p2.x + dx, p2.y - dy};
+        m_Points[3] = {p1.x + dx, p1.y - dy};
+
+        _calculateAttributes();
+        update();
     }
 
     float Line::getThickness() const {
@@ -77,8 +91,6 @@ namespace gp {
         Point delta = getLineQuadDeltas(point, p2, m_Thickness);
         float dx = delta.x;
         float dy = delta.y;
-
-        // GP_CORE_WARN("{0}, {1}", dx, dy);
 
         m_Points[0] = {point.x - dx, point.y + dy};
         m_Points[1] = {p2.x - dx, p2.y + dy};
