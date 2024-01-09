@@ -22,6 +22,8 @@ namespace gp {
          */
         GPAPI Line(Point p1, Point p2, float thickness = 3);
 
+        GPAPI ~Line() = default;
+
         /**
          * Sets the outline color of the line
          *

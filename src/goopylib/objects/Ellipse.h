@@ -29,6 +29,8 @@ namespace gp {
          */
         GPAPI Ellipse(Point p1, Point p2);
 
+        GPAPI ~Ellipse() = default;
+
         /**
          * Sets the fill color of the object
          *

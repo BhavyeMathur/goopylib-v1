@@ -4,11 +4,14 @@
 #include "src/goopylib/texture/Bitmap.h"
 #include <stb/stb_image.h>
 
+#include <utility>
+
 
 // Core Methods
 namespace gp {
     Image::Image(std::string path, Point position)
-            : TexturedRectangle(path, {-0.5, -0.5}, {0.5,  0.5}),
+            : Quad({-0.5, -0.5}, {0.5, -0.5}, {0.5, 0.5}, {-0.5, 0.5}),
+              TexturedRectangle(path),
               m_Path(path) {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}))", path, position.x, position.y);
 
@@ -28,9 +31,10 @@ namespace gp {
         move(position.x, position.y);
     }
 
-    Image::Image(const std::string& path, Point position, float width, float height)
-            : TexturedRectangle(path, {-0.5, -0.5}, {0.5,  0.5}),
-              m_Path(path) {
+    Image::Image(std::string path, Point position, float width, float height)
+            : Quad({-0.5, -0.5}, {0.5, -0.5}, {0.5, 0.5}, {-0.5, 0.5}),
+              TexturedRectangle(path),
+              m_Path(std::move(path)) {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}), {3}, {4})", path, position.x, position.y, width, height);
 
         scale(width, height);
@@ -40,9 +44,10 @@ namespace gp {
         move(position.x, position.y);
     }
 
-    Image::Image(const std::string& path, Point p1, Point p2)
-            : TexturedRectangle(path, p1, p2),
-              m_Path(path) {
+    Image::Image(std::string path, Point p1, Point p2)
+            : Quad(p1, {p2.x, p1.y}, p2, {p1.x, p2.y}),
+              TexturedRectangle(path),
+              m_Path(std::move(path)) {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}), ({3}, {4}))", path, p1.x, p1.y, p2.x, p2.y);
     }
 }

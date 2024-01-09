@@ -22,11 +22,13 @@ namespace gp {
          */
         GPAPI Quad(Point p1, Point p2, Point p3, Point p4);
 
+        GPAPI ~Quad() = default;
+
         /**
          * Sets the fill color of the object
          * @param color the color of the object
          */
-        GPAPI void setColor(const Color& color);
+        GPAPI void setColor(const Color &color);
 
         /**
          * Sets the fill color of the object
@@ -36,7 +38,7 @@ namespace gp {
          * @param color3 the color of the 3rd vertex
          * @param color4 the color of the 4th vertex
          */
-        GPAPI void setColor(const Color& color1, const Color& color2, const Color& color3, const Color& color4);
+        GPAPI void setColor(const Color &color1, const Color &color2, const Color &color3, const Color &color4);
 
         /**
          * Sets the fill color of the object
@@ -169,6 +171,8 @@ namespace gp {
         SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V4 = {{0.0f, 0.55f, 0.9f}};
+
+        GPAPI Quad() = default;
 
     private:
         [[nodiscard]] GPAPI bool _contains(float x, float y) const override;

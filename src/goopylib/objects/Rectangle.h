@@ -6,7 +6,7 @@ namespace gp {
     /**
      * An object representing a rectangle
      */
-    class Rectangle : public Quad {
+    class Rectangle : virtual public Quad {
 
     public:
         /**
@@ -30,11 +30,10 @@ namespace gp {
          * @param p2 the 2nd coordinate (x, y) of the rectangle
          */
         GPAPI Rectangle(Point p1, Point p2)
-                : Quad({p1.x, p1.y},
-                       {p2.x, p1.y},
-                       {p2.x, p2.y},
-                       {p1.x, p2.y}) {
+                : Quad(p1, {p2.x, p1.y}, p2, {p1.x, p2.y}) {
         };
+
+        GPAPI ~Rectangle() = default;
 
         GPAPI void setP1(Point point) override;
 
@@ -42,7 +41,7 @@ namespace gp {
 
         GPAPI void setP2(Point point) override;
 
-        [[nodiscard]] GPAPI Point getP2() const  override;
+        [[nodiscard]] GPAPI Point getP2() const override;
 
         GPAPI void setP3(Point point) override;
 
@@ -50,6 +49,9 @@ namespace gp {
 
         GPAPI void setP4(Point point) override;
 
-        [[nodiscard]] GPAPI Point getP4() const  override;
+        [[nodiscard]] GPAPI Point getP4() const override;
+
+    protected:
+        GPAPI Rectangle() = default;
     };
 }

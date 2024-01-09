@@ -35,7 +35,7 @@ namespace gp {
          *
          * @throws std::runtime_error the window has been destroyed
          */
-        GPAPI void draw(Window &window);
+        void draw(Window &window);
 
         /**
          * Destroys and undraws the object
@@ -326,6 +326,8 @@ namespace gp {
         GPAPI Renderable(Point position, std::initializer_list<Point> points);
 
         GPAPI Renderable(std::initializer_list<Point> points);
+
+        GPAPI Renderable() = default;
 
         GPAPI void update();
 

@@ -9,7 +9,7 @@ namespace gp {
     /**
      * An object representing a textured quad with 4 vertices.
      */
-    class TexturedQuad : public Quad {
+    class TexturedQuad : virtual public Quad {
 
         friend class Renderer;
 
@@ -45,6 +45,12 @@ namespace gp {
         TextureVertexAttrib m_T2 = {{1, 1}};
         TextureVertexAttrib m_T3 = {{1, 0}};
         TextureVertexAttrib m_T4 = {{0, 0}};
+
+        GPAPI TexturedQuad() = default;
+
+        GPAPI TexturedQuad(std::string texture);
+
+        GPAPI TexturedQuad(std::string texture, const Ref<Bitmap>& bitmap);
 
     private:
         std::string m_Texture;
