@@ -22,7 +22,7 @@ namespace gp {
          */
         GPAPI Line(Point p1, Point p2, float thickness = 3);
 
-        GPAPI virtual ~Line() = default;
+        GPAPI ~Line() override = default;
 
         /**
          * Sets the outline color of the line

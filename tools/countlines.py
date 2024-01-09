@@ -7,7 +7,7 @@ def countlines(start,
                         ".dockerfile", ".bat", ".cmd", ".in", ".toml", ".cfg", ".sh"),
                included_files=("CMakeLists.txt",),
                included_folders=("src", "tests", "examples"),
-               excluded_folders=("vendor",),
+               excluded_folders=(),
                excluded_files=(),
                _header=True,
                _included=False):
@@ -49,5 +49,4 @@ def countlines(start,
 
 
 countlines(start="..",
-           included_folders=("src", "goopylib", "tests", "tools", "examples"),
-           excluded_folders=("vendor",))
+           included_folders=("src", "goopylib", "tests", "tools"))

@@ -17,7 +17,7 @@ namespace gp {
          */
         GPAPI Circle(Point position, float radius);
 
-        GPAPI virtual ~Circle() = default;
+        GPAPI ~Circle() override = default;
 
     private:
         float m_RadiusSquared;

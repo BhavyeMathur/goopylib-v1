@@ -57,13 +57,13 @@ namespace gp {
 
         GPAPI static void _setUniform(int32_t location, float v1, float v2, float v3, float v4) ;
 
-        GPAPI void _setUniform(int32_t location, double value) const;
+        static GPAPI void _setUniform(int32_t location, double value) ;
 
-        GPAPI void _setUniform(int32_t location, double v1, double v2) const;
+        static GPAPI void _setUniform(int32_t location, double v1, double v2) ;
 
-        GPAPI void _setUniform(int32_t location, double v1, double v2, double v3) const;
+        static GPAPI void _setUniform(int32_t location, double v1, double v2, double v3) ;
 
-        GPAPI void _setUniform(int32_t location, double v1, double v2, double v3, double v4) const;
+        static GPAPI void _setUniform(int32_t location, double v1, double v2, double v3, double v4) ;
 
         GPAPI static void _setUniform(int32_t location, int32_t value) ;
 
@@ -101,7 +101,7 @@ namespace gp {
 
         GPAPI static void _setUniform(int32_t location, int32_t count, float *value) ;
 
-        GPAPI void _setUniform(int32_t location, int32_t count, double *value) const;
+        static GPAPI void _setUniform(int32_t location, int32_t count, double *value) ;
 
         GPAPI static void _setUniform(int32_t location, int32_t count, uint32_t *value) ;
 

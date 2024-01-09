@@ -299,11 +299,11 @@ namespace gp {
         uint32_t m_RendererID = 0;
 
         Point *m_Points = nullptr;
-        uint32_t m_Vertices;
+        uint32_t m_Vertices = 0;
 
         Point m_Position = {0, 0};
-        float m_Width;
-        float m_Height;
+        float m_Width = 0;
+        float m_Height = 0;
 
         float m_AngleDegrees = 0;
         float m_AngleRadians = 0;

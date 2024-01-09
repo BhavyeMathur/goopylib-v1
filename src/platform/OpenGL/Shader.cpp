@@ -113,19 +113,19 @@ namespace gp {
         glUniform4f(location, v1, v2, v3, v4);
     }
 
-    void Shader::_setUniform(int32_t location, double value) const {
+    void Shader::_setUniform(int32_t location, double value) {
         _setUniform(location, (float) value);
     }
 
-    void Shader::_setUniform(int32_t location, double v1, double v2) const {
+    void Shader::_setUniform(int32_t location, double v1, double v2) {
         _setUniform(location, (float) v1, (float) v2);
     }
 
-    void Shader::_setUniform(int32_t location, double v1, double v2, double v3) const {
+    void Shader::_setUniform(int32_t location, double v1, double v2, double v3) {
         _setUniform(location, (float) v1, (float) v2, (float) v3);
     }
 
-    void Shader::_setUniform(int32_t location, double v1, double v2, double v3, double v4) const {
+    void Shader::_setUniform(int32_t location, double v1, double v2, double v3, double v4) {
         _setUniform(location, (float) v1, (float) v2, (float) v3, (float) v4);
     }
 
@@ -221,7 +221,7 @@ namespace gp {
         glUniform1fv(location, count, value);
     }
 
-    void Shader::_setUniform(int32_t location, int32_t count, double *value) const {
+    void Shader::_setUniform(int32_t location, int32_t count, double *value) {
         _setUniform(location, count, (float *) value);
     }
 

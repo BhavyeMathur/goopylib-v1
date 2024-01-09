@@ -74,9 +74,4 @@ namespace gp {
         float a2;
         float a3;
     };
-
-    struct Float2 {
-        float a1;
-        float a2;
-    };
 }
