@@ -7,6 +7,9 @@ namespace image {
             {"get_path",         (PyCFunction) get_path,         METH_NOARGS,
                     "Returns the filepath the image is using"},
 
+            {"draw",             (PyCFunction) draw,             METH_O,
+                    "Draws the object to a window"},
+
             {nullptr}
     };
 }

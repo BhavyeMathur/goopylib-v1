@@ -82,18 +82,14 @@ public:
 };
 
 
-void setupWindow(gp::Window& window, char *argv[]) {
+void setupWindow(gp::Window& window) {
     window.setBackground(gp::Color(25, 25, 25));
     window.setResizable(true);
 
     window.setMinSize(600, 400);
     window.setAspectRatio(900, 600);
 
-    std::string argv_str(argv[0]);
-    std::string base = argv_str.substr(0, argv_str.find_last_of('/'));
-    std::string path = base + "/vignette.png";
-
-    auto vignette = gp::Image(path.c_str(), {0, 0}, 900, 600);
+    auto vignette = gp::Image("vignette.png", {0, 0}, 900, 600);
     vignette.draw(window);
     vignette.setTransparency(0.3, 0.3, 0.8, 0.8);
 }
@@ -224,7 +220,7 @@ int main(int argc, char *argv[]) {
     gp::init();
 
     gp::Window window = {900, 600, "Brick Breaker using goopylib!"};
-    setupWindow(window, argv);
+    setupWindow(window);
     
     auto controller = Controller();
     auto ball = Ball();

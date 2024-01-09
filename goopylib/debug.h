@@ -92,6 +92,10 @@ do { if (!gp::hasActiveContext()) { \
 PyErr_Format(PyExc_TypeError, #type " argument expected, got %S", PyObject_Type(value)); \
 return val
 
+#define RAISE_FILENOTFOUND_ERROR(val, file) \
+PyErr_Format(PyExc_FileNotFoundError, file); \
+return val
+
 #define RAISE_VALUE_ERROR(val, err) PyErr_SetString(PyExc_ValueError, err); return val
 
 #else

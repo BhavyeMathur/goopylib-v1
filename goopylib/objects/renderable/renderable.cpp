@@ -63,9 +63,7 @@ namespace renderable {
         }
         #endif
 
-        GP_PY_DEBUG(0);
         self->renderable->draw(*((WindowObject *) arg)->window);
-        GP_PY_DEBUG(1);
         RETURN_PYOBJECT((PyObject *) self);
     }
 

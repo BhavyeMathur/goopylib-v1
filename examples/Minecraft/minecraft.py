@@ -1,8 +1,5 @@
 import goopylib as gp
 import random
-import os
-
-PATH = os.path.dirname(os.path.realpath(__file__))
 
 xN = 16
 yN = 16
@@ -27,24 +24,23 @@ def main():
     width = window.width / xN
     height = window.height / yN
 
-    # TODO add relative paths
-    paths = [f"{PATH}/assets/cobblestone.png",
-             f"{PATH}/assets/andesite.png",
-             f"{PATH}/assets/cracked_stone_bricks.png",
-             f"{PATH}/assets/stone.png",
-             f"{PATH}/assets/gravel.png",
-             f"{PATH}/assets/grass_block_top.png",
-             f"{PATH}/assets/coal_ore.png",
-             f"{PATH}/assets/iron_ore.png",
-             f"{PATH}/assets/copper_ore.png",
-             f"{PATH}/assets/diamond_ore.png",
-             f"{PATH}/assets/gold_ore.png",
-             f"{PATH}/assets/dead_tube_coral_block.png",
-             f"{PATH}/assets/dead_horn_coral_block.png",
-             f"{PATH}/assets/dead_bubble_coral_block.png",
-             f"{PATH}/assets/dead_brain_coral_block.png",
-             f"{PATH}/assets/stone_bricks.png",
-             f"{PATH}/assets/light_gray_concrete_powder.png"]
+    paths = ["assets/cobblestone.png",
+             "assets/andesite.png",
+             "assets/cracked_stone_bricks.png",
+             "assets/stone.png",
+             "assets/gravel.png",
+             "assets/grass_block_top.png",
+             "assets/coal_ore.png",
+             "assets/iron_ore.png",
+             "assets/copper_ore.png",
+             "assets/diamond_ore.png",
+             "assets/gold_ore.png",
+             "assets/dead_tube_coral_block.png",
+             "assets/dead_horn_coral_block.png",
+             "assets/dead_bubble_coral_block.png",
+             "assets/dead_brain_coral_block.png",
+             "assets/stone_bricks.png",
+             "assets/light_gray_concrete_powder.png"]
 
     for i in range(xN):
         x = width * i + width / 2 - 406
@@ -60,7 +56,6 @@ def main():
             img.set_transparency(0.1)
 
         x, y = window.get_mouse_position()
-        x, y = window.to_world(x, y)
         x = int((x + 406) / width)
         y = int((y + 406) / height)
 

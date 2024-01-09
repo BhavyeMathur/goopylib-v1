@@ -3,8 +3,10 @@ Module defining an image object
 """
 
 from __future__ import annotations
+import __main__
 
 from typing import Union
+from os.path import isabs, dirname
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.image as _image
@@ -74,6 +76,8 @@ class Image(Rectangle):
 
                 >>> Image("filepath.jgp", (0, 0), (120, 20))
         """
+        if not isabs(path):
+            path = f"{dirname(__main__.__file__)}/{path}"
         self._renderable: Image = _image.Image(path, p1, *args)
 
     def set_transparency(self, *args: float) -> None:

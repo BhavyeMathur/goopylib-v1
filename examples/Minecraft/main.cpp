@@ -19,28 +19,25 @@ int main(int argc, char *argv[]) {
     float width = 812.0f / (float) xN;
     float height = 812.0f / (float) yN;
 
+    std::string paths[] = {"assets/cobblestone.png",
+                           "assets/andesite.png",
+                           "assets/cracked_stone_bricks.png",
+                           "assets/stone.png",
+                           "assets/gravel.png",
+                           "assets/grass_block_top.png",
+                           "assets/coal_ore.png",
+                           "assets/iron_ore.png",
+                           "assets/copper_ore.png",
+                           "assets/diamond_ore.png",
+                           "assets/gold_ore.png",
+                           "assets/dead_tube_coral_block.png",
+                           "assets/dead_horn_coral_block.png",
+                           "assets/dead_bubble_coral_block.png",
+                           "assets/dead_brain_coral_block.png",
+                           "assets/stone_bricks.png",
+                           "assets/light_gray_concrete_powder.png"};
+
     std::vector<gp::Image> images;
-
-    std::string argv_str(argv[0]);
-    std::string path = argv_str.substr(0, argv_str.find_last_of('/'));
-
-    std::string paths[] = {path + "/assets/cobblestone.png",
-                           path + "/assets/andesite.png",
-                           path + "/assets/cracked_stone_bricks.png",
-                           path + "/assets/stone.png",
-                           path + "/assets/gravel.png",
-                           path + "/assets/grass_block_top.png",
-                           path + "/assets/coal_ore.png",
-                           path + "/assets/iron_ore.png",
-                           path + "/assets/copper_ore.png",
-                           path + "/assets/diamond_ore.png",
-                           path + "/assets/gold_ore.png",
-                           path + "/assets/dead_tube_coral_block.png",
-                           path + "/assets/dead_horn_coral_block.png",
-                           path + "/assets/dead_bubble_coral_block.png",
-                           path + "/assets/dead_brain_coral_block.png",
-                           path + "/assets/stone_bricks.png",
-                           path + "/assets/light_gray_concrete_powder.png"};
 
     for (int i = 0; i < xN; i++) {
         float x = width * (float) i + width / 2 - 406;
@@ -48,7 +45,7 @@ int main(int argc, char *argv[]) {
         for (int j = 0; j < yN; j++) {
             float y = height * (float) j + height / 2 - 406;
 
-            images.push_back({paths[rand() % 17].c_str(), {x, y}, width, height});
+            images.push_back({paths[rand() % 17], {x, y}, width, height});
             images.back().setAnchor(0, 0);
             images.back().draw(window);
         }

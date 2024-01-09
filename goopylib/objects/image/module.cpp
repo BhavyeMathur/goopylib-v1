@@ -3,6 +3,8 @@
 #include "image.h"
 #include "../rectangle/module.h"
 
+#include "goopylib/core/window_module.h"
+
 
 void **PyRectangle_API;
 PyTypeObject *RectangleType;
@@ -34,6 +36,18 @@ PyMODINIT_FUNC PyInit_image(void) {
     if (PyRectangle_API == nullptr) {
         return nullptr;
     }
+
+    // Importing Window
+
+    #if GP_LOGGING_LEVEL >= 6
+    std::cout << "[--:--:--] PYTHON: PyInit_renderable() - import_window()" << std::endl;
+    #endif
+    PyWindow_API = (void **) PyCapsule_Import("goopylib.ext.window._C_API", 0);
+    if (PyWindow_API == nullptr) {
+        return nullptr;
+    }
+
+    WindowType = Window_pytype();
 
     RectangleType = Rectangle_pytype();
 

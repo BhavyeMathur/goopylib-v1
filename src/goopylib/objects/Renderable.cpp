@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "Renderable.h"
 
 namespace gp {

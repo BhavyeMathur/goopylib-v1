@@ -6,6 +6,9 @@
 extern void **PyRectangle_API;
 extern PyTypeObject *RectangleType;
 
+extern void **PyWindow_API;
+extern PyTypeObject *WindowType;
+
 
 namespace image {
     PyObject *new_(PyTypeObject *type, PyObject *args, PyObject *kwds);
@@ -25,6 +28,8 @@ namespace image {
     PyObject *set_transparency(ImageObject *self, PyObject *args);
 
     PyObject *get_path(ImageObject *self, PyObject *args);
+
+    PyObject *draw(ImageObject *self, PyObject *arg);
 }
 
 extern PyTypeObject ImageType;

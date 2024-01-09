@@ -2,6 +2,8 @@
 
 #include "goopylib/debug.h"
 
+#include "goopylib/core/window_object.h"
+
 #include "image.h"
 #include "src/goopylib/objects/Image.h"
 
@@ -89,6 +91,24 @@ namespace image {
 
 // Image methods
 namespace image {
+    PyObject *draw(ImageObject *self, PyObject *arg) {
+        GP_PY_DEBUG((size_t) WindowType);
+
+        #if GP_TYPE_CHECKING
+        if (!isinstance(arg, WindowType)) {
+            RAISE_TYPE_ERROR(nullptr, "Window", arg);
+        }
+        #endif
+
+        try {
+            self->image->draw(*((WindowObject *) arg)->window);
+        }
+        catch (std::runtime_error &e) {
+            RAISE_FILENOTFOUND_ERROR(nullptr, self->image->getPath().c_str());
+        }
+        RETURN_PYOBJECT((PyObject *) self);
+    }
+
     PyObject *set_transparency(ImageObject *self, PyObject *args) {
         GP_PY_DEBUG("gp.image.Image.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
 
