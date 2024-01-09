@@ -4,11 +4,16 @@
 
 namespace {
     Point getLineQuadDeltas(Point p1, Point p2, float thickness) {
+        thickness /= 2;
         float theta = atan((p2.y - p1.y) / (p2.x - p1.x));
+
+        if (isnan(theta)) {
+            return {thickness, thickness};
+        }
+
         float cos_theta = cos(theta);
         float sin_theta = sin(theta);
 
-        thickness /= 2;
         return {sin_theta * thickness, cos_theta * thickness};
     }
 
@@ -72,6 +77,8 @@ namespace gp {
         Point delta = getLineQuadDeltas(point, p2, m_Thickness);
         float dx = delta.x;
         float dy = delta.y;
+
+        // GP_CORE_WARN("{0}, {1}", dx, dy);
 
         m_Points[0] = {point.x - dx, point.y + dy};
         m_Points[1] = {p2.x - dx, p2.y + dy};
