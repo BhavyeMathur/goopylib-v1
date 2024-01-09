@@ -25,6 +25,9 @@ class Renderable:
         self._renderable = None
         self.window: Window = None
 
+    def __repr__(self) -> str:
+        return self._renderable.__repr__()
+
     def draw(self, window: Window) -> Renderable:
         """
         Draws the object to a window

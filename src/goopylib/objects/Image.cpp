@@ -52,7 +52,7 @@ namespace gp {
     }
 
     std::string Image::toString() const {
-        return strformat("Image(%s, (%g, %g))", m_Path.c_str(), m_Position.x, m_Position.y);
+        return strformat("Image('%s', (%g, %g))", m_Path.c_str(), m_Position.x, m_Position.y);
     }
 }
 

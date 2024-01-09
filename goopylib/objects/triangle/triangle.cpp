@@ -35,11 +35,6 @@ namespace triangle {
         return 0;
     }
 
-    PyObject *repr(TriangleObject *Py_UNUSED(self)) {
-        GP_PY_TRACE("gp.triangle.Triangle.__repr__()");
-        return PyUnicode_FromString("Triangle()");
-    }
-
     int traverse(TriangleObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }

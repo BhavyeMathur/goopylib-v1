@@ -12,8 +12,6 @@ namespace circle {
 
     int init(CircleObject *self, PyObject *args, PyObject *kwds);
 
-    PyObject *repr(CircleObject *self);
-
     int traverse(CircleObject *self, visitproc visit, void *arg);
 
     int clear(CircleObject *self);

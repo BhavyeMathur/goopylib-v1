@@ -41,11 +41,6 @@ namespace ellipse {
         return 0;
     }
 
-    PyObject *repr(EllipseObject *Py_UNUSED(self)) {
-        GP_PY_TRACE("gp.ellipse.Ellipse.__repr__()");
-        return PyUnicode_FromString("Ellipse()");
-    }
-
     int traverse(EllipseObject *Py_UNUSED(self), visitproc Py_UNUSED(visit), void *Py_UNUSED(arg)) {
         return 0;
     }

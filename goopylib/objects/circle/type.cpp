@@ -16,7 +16,7 @@ PyTypeObject CircleType = {
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) circle::repr,
+        nullptr,
         nullptr,
         nullptr,
         nullptr,

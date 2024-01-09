@@ -15,8 +15,6 @@ namespace image {
 
     int init(ImageObject *self, PyObject *args, PyObject *kwds);
 
-    PyObject *repr(ImageObject *self);
-
     int traverse(ImageObject *self, visitproc visit, void *arg);
 
     int clear(ImageObject *self);

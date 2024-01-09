@@ -10,7 +10,7 @@ PyTypeObject RectangleType = {
         nullptr,
         nullptr,
         nullptr,
-        (reprfunc) rectangle::repr,
+        nullptr,
         nullptr,
         nullptr,
         nullptr,
