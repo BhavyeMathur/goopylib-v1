@@ -22,7 +22,7 @@ namespace gp {
          */
         GPAPI Line(Point p1, Point p2, float thickness = 3);
 
-        GPAPI ~Line() = default;
+        GPAPI virtual ~Line() = default;
 
         /**
          * Sets the outline color of the line
@@ -52,11 +52,12 @@ namespace gp {
          */
         GPAPI void setTransparency(float value1, float value2);
 
-        // TODO raise error for negative value in C++ and Python APIs
         /**
          * Sets the thickness of the line
          *
          * @param value thickness in world coordinates
+         *
+         * @throws std::invalid_argument if value is negative
          */
         GPAPI void setThickness(float value);
 

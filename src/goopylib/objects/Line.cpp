@@ -29,7 +29,11 @@ namespace gp {
     Line::Line(Point p1, Point p2, float thickness)
             : Quad(getLineQuad(p1, p2, thickness)),
               m_Thickness(thickness) {
-
+        #if GP_ERROR_CHECKING
+        if (thickness < 0) {
+            GP_VALUE_ERROR("line thickness must be greater than or equal to 0");
+        }
+        #endif
     }
 }
 
@@ -48,6 +52,12 @@ namespace gp {
     }
 
     void Line::setThickness(float value) {
+        #if GP_ERROR_CHECKING
+        if (value < 0) {
+            GP_VALUE_ERROR("line thickness must be greater than or equal to 0");
+        }
+        #endif
+
         m_Thickness = value;
         // TODO update quad
     }

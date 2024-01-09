@@ -28,6 +28,12 @@ namespace line {
             return -1;
         }
 
+        #if GP_TYPE_CHECKING
+        if (thickness < 0) {
+            RAISE_VALUE_ERROR(-1, "line thickness must be greater than or equal to 0");
+        }
+        #endif
+
         self->line = Ref<gp::Line>(new gp::Line({x1, y1}, {x2, y2}, thickness));
         self->base.quad = self->line;
         self->base.base.renderable = self->line;
@@ -143,6 +149,10 @@ namespace line {
         #if GP_TYPE_CHECKING
         if (!PyNumber_Check(value)) {
             RAISE_TYPE_ERROR(-1, "number", value);
+        }
+
+        if (PyFloat_AsDouble(value) < 0) {
+            RAISE_VALUE_ERROR(-1, "line thickness must be greater than or equal to 0");
         }
         #endif
 
