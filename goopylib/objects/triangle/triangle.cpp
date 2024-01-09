@@ -142,3 +142,51 @@ namespace triangle {
         Py_RETURN_NONE;
     }
 }
+
+// Triangle Getters & Setters
+namespace triangle {
+    PyObject *get_p1(TriangleObject *self, void *Py_UNUSED(closure)) {
+        Point point = self->triangle->getP1();
+        return Py_BuildValue("ff", point.x, point.y);
+    }
+
+    int set_p1(TriangleObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        float x, y;
+        if (!PyArg_ParseTuple(value, "ff", &x, &y)) {
+            return -1;
+        }
+
+        self->triangle->setP1({x, y});
+        return 0;
+    }
+
+    PyObject *get_p2(TriangleObject *self, void *Py_UNUSED(closure)) {
+        Point point = self->triangle->getP2();
+        return Py_BuildValue("ff", point.x, point.y);
+    }
+
+    int set_p2(TriangleObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        float x, y;
+        if (!PyArg_ParseTuple(value, "ff", &x, &y)) {
+            return -1;
+        }
+
+        self->triangle->setP2({x, y});
+        return 0;
+    }
+
+    PyObject *get_p3(TriangleObject *self, void *Py_UNUSED(closure)) {
+        Point point = self->triangle->getP3();
+        return Py_BuildValue("ff", point.x, point.y);
+    }
+
+    int set_p3(TriangleObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        float x, y;
+        if (!PyArg_ParseTuple(value, "ff", &x, &y)) {
+            return -1;
+        }
+
+        self->triangle->setP3({x, y});
+        return 0;
+    }
+}

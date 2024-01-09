@@ -63,3 +63,54 @@ class Triangle(Renderable):
             ValueError: transparency must be between 0 and 1
         """
         self._renderable.set_transparency(*args)
+
+    @property
+    def p1(self) -> tuple[float, float]:
+        """
+        The position of the object's 1st vertex in world coordinates
+
+        Returns:
+            a tuple (x, y) with the position
+
+        Raises:
+            TypeError: value must be a tuple of x, y numbers
+        """
+        return self._renderable.p1
+
+    @p1.setter
+    def p1(self, value: tuple[float, float]) -> None:
+        self._renderable.p1 = value
+
+    @property
+    def p2(self) -> tuple[float, float]:
+        """
+        The position of the object's 2nd vertex in world coordinates
+
+        Returns:
+            a tuple (x, y) with the position
+
+        Raises:
+            TypeError: value must be a tuple of x, y numbers
+        """
+        return self._renderable.p2
+
+    @p2.setter
+    def p2(self, value: tuple[float, float]) -> None:
+        self._renderable.p2 = value
+
+    @property
+    def p3(self) -> tuple[float, float]:
+        """
+        The position of the object's 3rd vertex in world coordinates
+
+        Returns:
+            a tuple (x, y) with the position
+
+        Raises:
+            TypeError: value must be a tuple of x, y numbers
+        """
+        return self._renderable.p3
+
+    @p3.setter
+    def p3(self, value: tuple[float, float]) -> None:
+        self._renderable.p3 = value

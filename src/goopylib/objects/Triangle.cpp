@@ -75,3 +75,39 @@ namespace gp {
         return (m_V1.color.alpha == 1) && (m_V2.color.alpha == 1) && (m_V3.color.alpha == 1);
     }
 }
+
+// Triangle Getter & Setters
+namespace gp {
+    void Triangle::setP1(Point point) {
+        m_Points[0] = point;
+
+        _calculateAttributes();
+        update();
+    }
+
+    Point Triangle::getP1() const {
+        return m_Points[0];
+    }
+
+    void Triangle::setP2(Point point) {
+        m_Points[1] = point;
+
+        _calculateAttributes();
+        update();
+    }
+
+    Point Triangle::getP2() const {
+        return m_Points[1];
+    }
+
+    void Triangle::setP3(Point point) {
+        m_Points[2] = point;
+
+        _calculateAttributes();
+        update();
+    }
+
+    Point Triangle::getP3() const {
+        return m_Points[2];
+    }
+}

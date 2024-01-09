@@ -30,4 +30,19 @@ namespace triangle {
     PyObject *set_transparency(TriangleObject *self, PyObject *args);
 }
 
+namespace triangle {
+    // Vertex Positions
+    PyObject *get_p1(TriangleObject *self, void *closure);
+
+    int set_p1(TriangleObject *self, PyObject *value, void *closure);
+
+    PyObject *get_p2(TriangleObject *self, void *closure);
+
+    int set_p2(TriangleObject *self, PyObject *value, void *closure);
+
+    PyObject *get_p3(TriangleObject *self, void *closure);
+
+    int set_p3(TriangleObject *self, PyObject *value, void *closure);
+}
+
 extern PyTypeObject TriangleType;

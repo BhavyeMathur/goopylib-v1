@@ -9,6 +9,14 @@ namespace triangle {
 
             {nullptr}
     };
+
+    static PyGetSetDef getsetters[] = {
+            GETTER_SETTER(p1),
+            GETTER_SETTER(p2),
+            GETTER_SETTER(p3),
+
+            {nullptr}
+    };
 }
 
 PyTypeObject TriangleType = {
@@ -41,7 +49,7 @@ PyTypeObject TriangleType = {
         nullptr,
         triangle::methods,
         nullptr,
-        nullptr,
+        (PyGetSetDef *) triangle::getsetters,
         nullptr,
         nullptr,
         nullptr,
