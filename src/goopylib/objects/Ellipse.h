@@ -29,9 +29,6 @@ namespace gp {
          */
         GPAPI Ellipse(Point p1, Point p2);
 
-        // TODO remove these default destructors?
-        GPAPI virtual ~Ellipse() = default;
-
         /**
          * Sets the fill color of the object
          *

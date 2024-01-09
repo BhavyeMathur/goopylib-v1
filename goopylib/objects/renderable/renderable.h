@@ -46,6 +46,8 @@ namespace renderable {
 
     PyObject *is_hidden(RenderableObject *self, PyObject *args);
 
+    PyObject *is_opaque(RenderableObject *self, PyObject *args);
+
     PyObject *box_contains(RenderableObject *self, PyObject *args);
 
     PyObject *contains(RenderableObject *self, PyObject *args);

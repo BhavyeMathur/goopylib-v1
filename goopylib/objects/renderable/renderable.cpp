@@ -167,6 +167,13 @@ namespace renderable {
         Py_RETURN_FALSE;
     }
 
+    PyObject *is_opaque(RenderableObject *self, PyObject *Py_UNUSED(args)) {
+        if (self->renderable->isOpaque()) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+
     PyObject *box_contains(RenderableObject *self, PyObject *args) {
         float x, y;
         if (!PyArg_ParseTuple(args, "ff", &x, &y)) {

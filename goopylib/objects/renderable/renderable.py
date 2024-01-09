@@ -279,6 +279,13 @@ class Renderable:
         """
         return self._renderable.is_hidden()
 
+    def is_opaque(self) -> bool:
+        """
+        Returns:
+            whether the object is completely opaque
+        """
+        return self._renderable.is_opaque()
+
     def box_contains(self, x: float, y: float) -> None:
         """
         Checks if the object's rectangular bounding box contains a point

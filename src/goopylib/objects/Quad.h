@@ -22,8 +22,6 @@ namespace gp {
          */
         GPAPI Quad(Point p1, Point p2, Point p3, Point p4);
 
-        GPAPI virtual ~Quad() = default;
-
         /**
          * Sets the fill color of the object
          * @param color the color of the object
