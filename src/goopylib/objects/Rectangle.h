@@ -33,7 +33,7 @@ namespace gp {
                 : Quad(p1, {p2.x, p1.y}, p2, {p1.x, p2.y}) {
         };
 
-        GPAPI ~Rectangle() = default;
+        GPAPI virtual ~Rectangle() = default;
 
         GPAPI void setP1(Point point) override;
 

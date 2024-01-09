@@ -61,7 +61,7 @@ class Controller(gp.Rectangle):
         self.velx = 0
 
     def update(self):
-        mousex, _ = self.window.to_world(*self.window.get_mouse_position())
+        mousex, _ = self.window.get_mouse_position()
 
         tmp = self.x
         self.x = max(-self.maxx, min(self.maxx, mousex))

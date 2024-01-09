@@ -62,7 +62,6 @@ int main(int argc, char *argv[]) {
         }
 
         auto pos = window.getMousePosition();
-        pos = window.toWorld(pos);
         int x = (int) ((pos.x + 406) / width);
         int y = (int) ((pos.y + 406) / height);
 

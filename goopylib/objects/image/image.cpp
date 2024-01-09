@@ -25,7 +25,9 @@ namespace image {
         const char *path;
         if (PyArg_ParseTuple(args, "s(ff)ff", &path, &x1, &y1, &width, &height)) {
             self->image = Ref<gp::Image>(new gp::Image(path, {x1, y1}, width, height));
-            self->base.renderable = self->image;
+            self->base.rectangle = self->image;
+            self->base.base.quad = self->image;
+            self->base.base.base.renderable = self->image;
             return 0;
         }
         PyErr_Clear();
@@ -40,7 +42,9 @@ namespace image {
                 return -1;
             }
 
-            self->base.renderable = self->image;
+            self->base.rectangle = self->image;
+            self->base.base.quad = self->image;
+            self->base.base.base.renderable = self->image;
             return 0;
         }
         PyErr_Clear();
@@ -51,7 +55,9 @@ namespace image {
         }
 
         self->image = Ref<gp::Image>(new gp::Image(path, {x1, y1}, {x2, y2}));
-        self->base.renderable = self->image;
+        self->base.rectangle = self->image;
+        self->base.base.quad = self->image;
+        self->base.base.base.renderable = self->image;
 
         return 0;
     }

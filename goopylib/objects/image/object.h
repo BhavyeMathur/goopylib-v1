@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../renderable/object.h"
+#include "../rectangle/object.h"
 
 namespace gp {
     class Image;
 }
 
 struct ImageObject {
-    RenderableObject base;
+    RectangleObject base;
     Ref<gp::Image> image;
 };

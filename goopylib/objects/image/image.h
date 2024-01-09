@@ -3,8 +3,8 @@
 #include "goopylib/header.h"
 #include "object.h"
 
-extern void **PyRenderable_API;
-extern PyTypeObject *RenderableType;
+extern void **PyRectangle_API;
+extern PyTypeObject *RectangleType;
 
 
 namespace image {

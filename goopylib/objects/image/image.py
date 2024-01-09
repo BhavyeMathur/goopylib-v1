@@ -9,10 +9,10 @@ from typing import Union
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.image as _image
 
-from goopylib.objects.renderable import Renderable
+from goopylib.objects.rectangle import Rectangle
 
 
-class Image(Renderable):
+class Image(Rectangle):
     """
     An object representing a textured rectangle - an image
 

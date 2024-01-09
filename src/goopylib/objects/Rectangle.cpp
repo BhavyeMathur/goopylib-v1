@@ -7,13 +7,17 @@ namespace {
     };
 
     TwoPoints getUpdatedRectangleVertices(float sin, float cos, Point p1, Point p2) {
+        if (sin == 0) {
+            return {{p2.x, p1.y}, {p1.x, p2.y}};
+        }
+
         float tan = sin / cos;
         float cot = 1 / tan;
 
         float x = (p2.y + p1.x * tan + p2.x * cot - p1.y) / (tan + cot);
         float y = tan * (x - p1.x) + p1.y;
 
-        return {{p1.x - (x - p2.x), p1.y - (y - p2.y)}, {x, y}};
+        return {{x, y}, {p1.x - (x - p2.x), p1.y - (y - p2.y)}};
     }
 }
 

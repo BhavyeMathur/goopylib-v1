@@ -1,8 +1,11 @@
-#include "image.h"
-#include "../renderable/module.h"
+#define IMAGE_MODULE
 
-void **PyRenderable_API;
-PyTypeObject *RenderableType;
+#include "image.h"
+#include "../rectangle/module.h"
+
+
+void **PyRectangle_API;
+PyTypeObject *RectangleType;
 
 static struct PyModuleDef ImageModule = {
         PyModuleDef_HEAD_INIT,
@@ -22,21 +25,21 @@ PyMODINIT_FUNC PyInit_image(void) {
         return nullptr;
     }
 
-    // Importing Renderable
+    // Importing Rectangle
 
     #if GP_LOGGING_LEVEL >= 6
-    std::cout << "[--:--:--] PYTHON: PyInit_image() - import_renderable()" << std::endl;
+    std::cout << "[--:--:--] PYTHON: PyInit_image() - import_rectangle()" << std::endl;
     #endif
-    PyRenderable_API = (void **) PyCapsule_Import("goopylib.ext.renderable._C_API", 0);
-    if (PyRenderable_API == nullptr) {
+    PyRectangle_API = (void **) PyCapsule_Import("goopylib.ext.rectangle._C_API", 0);
+    if (PyRectangle_API == nullptr) {
         return nullptr;
     }
 
-    RenderableType = Renderable_pytype();
+    RectangleType = Rectangle_pytype();
 
     // Exposing Class
 
-    ImageType.tp_base = RenderableType;
+    ImageType.tp_base = RectangleType;
 
     EXPOSE_PYOBJECT_CLASS(ImageType, "Image");
 

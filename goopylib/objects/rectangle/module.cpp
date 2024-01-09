@@ -3,6 +3,10 @@
 #include "rectangle.h"
 #include "../quad/module.h"
 
+#include "module.h"
+#include "capsule.h"
+
+
 void **PyQuad_API;
 PyTypeObject *QuadType;
 
@@ -24,6 +28,8 @@ PyMODINIT_FUNC PyInit_rectangle(void) {
         return nullptr;
     }
 
+    // Importing Quad
+
     #if GP_LOGGING_LEVEL >= 6
     std::cout << "[--:--:--] PYTHON: PyInit_rectangle() - import_quad()" << std::endl;
     #endif
@@ -34,9 +40,25 @@ PyMODINIT_FUNC PyInit_rectangle(void) {
 
     QuadType = Quad_pytype();
 
+    // Exposing Rectangle
+
     RectangleType.tp_base = QuadType;
 
     EXPOSE_PYOBJECT_CLASS(RectangleType, "Rectangle");
+
+    // Exposing Capsule
+
+    static void *PyRectangle_API[PyRectangle_API_pointers];
+    PyObject * c_api_object;
+
+    PyRectangle_API[Rectangle_pytype_NUM] = (void *) Rectangle_pytype;
+    c_api_object = PyCapsule_New((void *) PyRectangle_API, "goopylib.ext.rectangle._C_API", nullptr);
+
+    if (PyModule_AddObject(m, "_C_API", c_api_object) < 0) {
+        Py_XDECREF(c_api_object);
+        Py_DECREF(m);
+        return nullptr;
+    }
 
     return m;
 }
