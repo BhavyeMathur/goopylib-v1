@@ -22,8 +22,7 @@ namespace gp {
         return p.x * p.x + p.y * p.y < m_RadiusSquared;
     }
 
-    std::ostream &operator<<(std::ostream &out, const Circle &obj) {
-        out << strformat("Circle((%g, %g), radius=%g)", obj.m_Position.x, obj.m_Position.y, obj.m_Radius1);
-        return out;
+    std::string Circle::toString() const {
+        return strformat("Circle((%g, %g), radius=%g)", m_Position.x, m_Position.y, m_Radius1);
     }
 }

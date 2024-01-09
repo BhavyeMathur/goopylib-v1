@@ -47,10 +47,8 @@ namespace gp {
         return RenderableSubclass::Ellipse;
     }
 
-    std::ostream &operator<<(std::ostream &out, const Ellipse &obj) {
-        out << strformat("Ellipse((%g, %g), radii=(%g, %g))",
-                         obj.m_Position.x, obj.m_Position.y, obj.m_Radius1, obj.m_Radius2);
-        return out;
+    std::string Ellipse::toString() const {
+        return strformat("Ellipse((%g, %g), radii=(%g, %g))", m_Position.x, m_Position.y, m_Radius1, m_Radius2);
     }
 }
 

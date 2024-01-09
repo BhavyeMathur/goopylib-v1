@@ -24,7 +24,7 @@ namespace gp {
 
         GPAPI virtual ~Quad() = default;
 
-        GPAPI friend std::ostream &operator<<(std::ostream &out, const Quad &obj);
+        GPAPI std::string toString() const override;
 
         /**
          * Sets the fill color of the object

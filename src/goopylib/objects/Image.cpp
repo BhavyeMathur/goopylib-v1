@@ -51,9 +51,8 @@ namespace gp {
         GP_CORE_INFO("gp::Image::Image('{0}', ({1}, {2}), ({3}, {4}))", path, p1.x, p1.y, p2.x, p2.y);
     }
 
-    std::ostream &operator<<(std::ostream &out, const Image &obj) {
-        out << strformat("Image(%s, (%g, %g))", obj.m_Path.c_str(), obj.m_Position.x, obj.m_Position.y);
-        return out;
+    std::string Image::toString() const {
+        return strformat("Image(%s, (%g, %g))", m_Path.c_str(), m_Position.x, m_Position.y);
     }
 }
 

@@ -61,9 +61,8 @@ namespace gp {
               Rectangle() {
     };
 
-    std::ostream &operator<<(std::ostream &out, const TexturedRectangle &obj) {
-        out << strformat("TexturedQuad(%s, (%g, %g), (%g, %g))", obj.m_Texture.c_str(),
-                         obj.getP1().x, obj.getP1().y, obj.getP3().x, obj.getP3().y);
-        return out;
+    std::string TexturedRectangle::toString() const {
+        return strformat("TexturedQuad(%s, (%g, %g), (%g, %g))", m_Texture.c_str(),
+                         getP1().x, getP1().y, getP3().x, getP3().y);
     }
 }

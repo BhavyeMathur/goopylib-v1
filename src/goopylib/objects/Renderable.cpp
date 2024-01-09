@@ -72,6 +72,15 @@ namespace gp {
         m_Height = m_MaxY - m_MinY;
     }
 
+    std::ostream &operator<<(std::ostream &out, const Renderable &obj) {
+        out << obj.toString();
+        return out;
+    }
+
+    std::string Renderable::toString() const {
+        return "Renderable()";
+    }
+
     void Renderable::draw(Window &window) {
         GP_CORE_DEBUG("gp::Renderable::_drawRenderable({0})", window.getTitle());
 

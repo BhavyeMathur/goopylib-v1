@@ -17,10 +17,9 @@ namespace gp {
         return RenderableSubclass::Triangle;
     }
 
-    std::ostream &operator<<(std::ostream &out, const Triangle &obj) {
-        out << strformat("Triangle((%g, %g), (%g, %g), (%g, %g))",
-                         obj.getP1().x, obj.getP1().y, obj.getP2().x, obj.getP2().y, obj.getP3().x, obj.getP3().y);
-        return out;
+    std::string Triangle::toString() const {
+        return strformat("Triangle((%g, %g), (%g, %g), (%g, %g))",
+                         getP1().x, getP1().y, getP2().x, getP2().y, getP3().x, getP3().y);
     }
 }
 

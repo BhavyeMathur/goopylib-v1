@@ -23,7 +23,7 @@ namespace gp {
 
         GPAPI virtual ~Triangle() = default;
 
-        GPAPI friend std::ostream &operator<<(std::ostream &out, const Triangle &obj);
+        GPAPI std::string toString() const override;
 
         /**
          * Sets the fill color of the triangle

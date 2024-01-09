@@ -55,7 +55,7 @@ namespace gp {
          */
         GPAPI TexturedRectangle(std::string texture, const Ref<Bitmap> &bitmap, Point p1, Point p2);
 
-        GPAPI friend std::ostream &operator<<(std::ostream &out, const TexturedRectangle &obj);
+        GPAPI std::string toString() const override;
 
     protected:
         /**

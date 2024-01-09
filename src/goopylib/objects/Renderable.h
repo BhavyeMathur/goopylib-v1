@@ -31,6 +31,12 @@ namespace gp {
         GPAPI friend std::ostream &operator<<(std::ostream &out, const Renderable &obj);
 
         /**
+         *
+         * @return a string representation of the object
+         */
+        GPAPI virtual std::string toString() const;
+
+        /**
          * Draws the object to a window
          *
          * @param window the Window to _drawRenderable to

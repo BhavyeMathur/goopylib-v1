@@ -48,7 +48,7 @@ namespace gp {
          */
         GPAPI Image(std::string path, Point p1, Point p2);
 
-        GPAPI friend std::ostream &operator<<(std::ostream &out, const Image &obj);
+        GPAPI std::string toString() const override;
 
         /**
          *

@@ -19,7 +19,7 @@ namespace gp {
 
         GPAPI ~Circle() override = default;
 
-        GPAPI friend std::ostream &operator<<(std::ostream &out, const Circle &obj);
+        GPAPI std::string toString() const override;
 
     private:
         float m_RadiusSquared;

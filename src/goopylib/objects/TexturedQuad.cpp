@@ -46,11 +46,9 @@ namespace gp {
         return RenderableSubclass::TexturedQuad;
     }
 
-    std::ostream &operator<<(std::ostream &out, const TexturedQuad &obj) {
-        out << strformat("TexturedQuad(%s, (%g, %g), (%g, %g), (%g, %g), (%g, %g))", obj.m_Texture.c_str(),
-                         obj.getP1().x, obj.getP1().y, obj.getP2().x, obj.getP2().y,
-                         obj.getP3().x, obj.getP3().y, obj.getP4().x, obj.getP4().y);
-        return out;
+    std::string TexturedQuad::toString() const {
+        return strformat("TexturedQuad(%s, (%g, %g), (%g, %g), (%g, %g), (%g, %g))", m_Texture.c_str(),
+                         getP1().x, getP1().y, getP2().x, getP2().y, getP3().x, getP3().y, getP4().x, getP4().y);
     }
 }
 

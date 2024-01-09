@@ -30,15 +30,13 @@ namespace gp {
                    {position.x + width / 2.0f, position.y + height / 2.0f},
                    {position.x - width / 2.0f, position.y + height / 2.0f}) {
     };
-    
+
     Rectangle::Rectangle(Point p1, Point p2)
             : Quad(p1, {p2.x, p1.y}, p2, {p1.x, p2.y}) {
     };
 
-    std::ostream &operator<<(std::ostream &out, const Rectangle &obj) {
-        out << strformat("Rectangle((%g, %g), (%g, %g))",
-                         obj.getP1().x, obj.getP1().y, obj.getP3().x, obj.getP3().y);
-        return out;
+    std::string Rectangle::toString() const {
+        return strformat("Rectangle((%g, %g), (%g, %g))", getP1().x, getP1().y, getP3().x, getP3().y);
     }
 }
 

@@ -24,7 +24,7 @@ namespace gp {
 
         GPAPI ~Line() override = default;
 
-        GPAPI friend std::ostream &operator<<(std::ostream &out, const Line &obj);
+        GPAPI std::string toString() const override;
 
         /**
          * Sets the outline color of the line

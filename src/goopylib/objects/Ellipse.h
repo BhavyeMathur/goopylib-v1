@@ -31,7 +31,7 @@ namespace gp {
 
         GPAPI virtual ~Ellipse() = default;
 
-        GPAPI friend std::ostream &operator<<(std::ostream &out, const Ellipse &obj);
+        GPAPI std::string toString() const override;
 
         /**
          * Sets the fill color of the object
