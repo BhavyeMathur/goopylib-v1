@@ -5,7 +5,7 @@
 #include "src/goopylib/maths/gpmath.h"
 
 namespace gp {
-    // TODO pack 3x32-bit float color data into 1x32-bit unsigned int
+    // TODO pack 3x32-bit float color data into 1x32-bit unsigned int (not for v2.0)
 
     struct SolidVertexAttrib {
         RGBAf color;

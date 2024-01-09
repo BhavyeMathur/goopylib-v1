@@ -44,7 +44,7 @@ class Quad(Renderable):
         """
         self._renderable: Quad = _quad.Quad(p1, p2, p3, p4)
 
-    # TODO - color should be a @property
+    # TODO color should be a @property
     def set_color(self, *args) -> None:
         """
         Sets the fill color of the object
@@ -57,7 +57,7 @@ class Quad(Renderable):
         """
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
-    # TODO - Transparency should be a @property
+    # TODO transparency should be a @property
     def set_transparency(self, *args: float) -> None:
         """
         Sets the transparency of the object
@@ -70,3 +70,71 @@ class Quad(Renderable):
             ValueError: transparency must be between 0 and 1
         """
         self._renderable.set_transparency(*args)
+
+    @property
+    def p1(self) -> tuple[float, float]:
+        """
+        The position of the object's 1st vertex in world coordinates
+
+        Returns:
+            a tuple (x, y) with the position
+
+        Raises:
+            TypeError: value must be a tuple of x, y numbers
+        """
+        return self._renderable.p1
+
+    @p1.setter
+    def p1(self, value: tuple[float, float]) -> None:
+        self._renderable.p1 = value
+
+    @property
+    def p2(self) -> tuple[float, float]:
+        """
+        The position of the object's 2nd vertex in world coordinates
+
+        Returns:
+            a tuple (x, y) with the position
+
+        Raises:
+            TypeError: value must be a tuple of x, y numbers
+        """
+        return self._renderable.p2
+
+    @p2.setter
+    def p2(self, value: tuple[float, float]) -> None:
+        self._renderable.p2 = value
+
+    @property
+    def p3(self) -> tuple[float, float]:
+        """
+        The position of the object's 3rd vertex in world coordinates
+
+        Returns:
+            a tuple (x, y) with the position
+
+        Raises:
+            TypeError: value must be a tuple of x, y numbers
+        """
+        return self._renderable.p3
+
+    @p3.setter
+    def p3(self, value: tuple[float, float]) -> None:
+        self._renderable.p3 = value
+
+    @property
+    def p4(self) -> tuple[float, float]:
+        """
+        The position of the object's 4th vertex in world coordinates
+
+        Returns:
+            a tuple (x, y) with the position
+
+        Raises:
+            TypeError: value must be a tuple of x, y numbers
+        """
+        return self._renderable.p4
+
+    @p4.setter
+    def p4(self, value: tuple[float, float]) -> None:
+        self._renderable.p4 = value

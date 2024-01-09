@@ -57,3 +57,66 @@ namespace quad {
         Py_TYPE(self)->tp_free((PyObject *) self);
     }
 }
+
+// Quad Getters & Setters
+namespace quad {
+    PyObject *get_p1(QuadObject *self, void *Py_UNUSED(closure)) {
+        Point point = self->quad->getP1();
+        return Py_BuildValue("ff", point.x, point.y);
+    }
+
+    int set_p1(QuadObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        float x, y;
+        if (!PyArg_ParseTuple(value, "ff", &x, &y)) {
+            return -1;
+        }
+
+        self->quad->setP1({x, y});
+        return 0;
+    }
+
+    PyObject *get_p2(QuadObject *self, void *Py_UNUSED(closure)) {
+        Point point = self->quad->getP2();
+        return Py_BuildValue("ff", point.x, point.y);
+    }
+
+    int set_p2(QuadObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        float x, y;
+        if (!PyArg_ParseTuple(value, "ff", &x, &y)) {
+            return -1;
+        }
+
+        self->quad->setP2({x, y});
+        return 0;
+    }
+
+    PyObject *get_p3(QuadObject *self, void *Py_UNUSED(closure)) {
+        Point point = self->quad->getP3();
+        return Py_BuildValue("ff", point.x, point.y);
+    }
+
+    int set_p3(QuadObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        float x, y;
+        if (!PyArg_ParseTuple(value, "ff", &x, &y)) {
+            return -1;
+        }
+
+        self->quad->setP3({x, y});
+        return 0;
+    }
+
+    PyObject *get_p4(QuadObject *self, void *Py_UNUSED(closure)) {
+        Point point = self->quad->getP4();
+        return Py_BuildValue("ff", point.x, point.y);
+    }
+
+    int set_p4(QuadObject *self, PyObject *value, void *Py_UNUSED(closure)) {
+        float x, y;
+        if (!PyArg_ParseTuple(value, "ff", &x, &y)) {
+            return -1;
+        }
+
+        self->quad->setP4({x, y});
+        return 0;
+    }
+}

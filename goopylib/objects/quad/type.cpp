@@ -10,6 +10,15 @@ namespace quad {
 
             {nullptr}
     };
+
+    static PyGetSetDef getsetters[] = {
+            GETTER_SETTER(p1),
+            GETTER_SETTER(p2),
+            GETTER_SETTER(p3),
+            GETTER_SETTER(p4),
+
+            {nullptr}
+    };
 }
 
 PyTypeObject QuadType = {
@@ -42,7 +51,7 @@ PyTypeObject QuadType = {
         nullptr,
         (PyMethodDef *) quad::methods,
         nullptr,
-        nullptr,
+        (PyGetSetDef *) quad::getsetters,
         nullptr,
         nullptr,
         nullptr,

@@ -24,5 +24,24 @@ namespace quad {
     void dealloc(QuadObject *self);
 }
 
+namespace quad {
+    // Vertex Positions
+    PyObject *get_p1(QuadObject *self, void *closure);
+
+    int set_p1(QuadObject *self, PyObject *value, void *closure);
+
+    PyObject *get_p2(QuadObject *self, void *closure);
+
+    int set_p2(QuadObject *self, PyObject *value, void *closure);
+
+    PyObject *get_p3(QuadObject *self, void *closure);
+
+    int set_p3(QuadObject *self, PyObject *value, void *closure);
+
+    PyObject *get_p4(QuadObject *self, void *closure);
+
+    int set_p4(QuadObject *self, PyObject *value, void *closure);
+}
+
 
 extern PyTypeObject QuadType;
