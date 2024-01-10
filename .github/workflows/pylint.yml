@@ -6,10 +6,12 @@ on:
   push:
     paths:
       - "**.py"
+      - .pylintrc
 
   pull_request:
     paths:
       - "**.py"
+      - .pylintrc
 
 jobs:
   build:

@@ -58,12 +58,13 @@ classifiers = [
 include-package-data = false
 
 [tool.cibuildwheel]
-build-frontend = "build"
 before-all = "git submodule update --init --recursive"
+build-frontend = "build"
+build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
 
 [tool.cibuildwheel.macos]
-repair-wheel-command = "DYLD_LIBRARY_PATH=src/vendor/GLFW/macos:binaries/lib-macos delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
+repair-wheel-command = "DYLD_LIBRARY_PATH=binaries/lib-macos delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
 archs = ["arm64", "x86_64"]

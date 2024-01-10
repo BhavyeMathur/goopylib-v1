@@ -1,6 +1,7 @@
 # This workflow builds a shared library for goopylib using CMake
 
-name: "Build with CMake"
+name: "Build Binary & Wheels"
+run-name: ${{ github.actor }} building goopylib
 
 on:
   workflow_dispatch:
@@ -9,44 +10,73 @@ on:
     branches: [ "master" ]
     paths:
       - src/**
+      - goopylib/**
       - CMakeLists.txt
+      - setup.py
+      - tools/setup_extensions.py
+      - pyproject.toml
+      - MANIFEST.in
 
   pull_request:
     branches: [ "master" ]
     paths:
       - src/**
+      - goopylib/**
       - CMakeLists.txt
+      - setup.py
+      - tools/setup_extensions.py
+      - pyproject.toml
+      - MANIFEST.in
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
 
 jobs:
-  build:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on:  ${{ matrix.os }}
+  build-cmake:
+    name: Build with CMake on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [ windows-latest, macos-latest ]
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
 
       - name: Configure submodules
         run: git submodule update --init --recursive
 
       - name: Configure CMake
-        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-      - name: Build
-        # Build your program with the given configuration
+      - name: Build goopylib
         run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        # Execute tests defined by the CMake configuration.
-        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C ${{env.BUILD_TYPE}}
+
+      - name: Upload Binaries
+        uses: test-room-7/action-update-file@v1
+        with:
+          file-path: binaries/*
+          commit-msg: Uploaded auto-built binaries
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      #  build-wheels:
+      #    name: Build Python wheels on ${{ matrix.os }}
+      #    runs-on:  ${{ matrix.os }}
+      #    needs: build-cmake
+      #
+      #    strategy:
+      #      fail-fast: false
+      #      matrix:
+      #        os: [ windows-latest, macos-latest ]
+      #
+      #    steps:
+      - name: Build Python wheels
+        uses: pypa/cibuildwheel@v2.11.4
+        with:
+          path: ./wheelhouse/*.whl
