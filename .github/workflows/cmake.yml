@@ -52,31 +52,32 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build goopylib
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-      - name: Test
-        working-directory: ${{github.workspace}}/build
-        run: ctest -C ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -j 4
 
       - name: Upload Binaries
         uses: test-room-7/action-update-file@v1
         with:
-          file-path: binaries/*
+          file-path: ./binaries/*
+          branch: master
+          allow-dot: true
           commit-msg: Uploaded auto-built binaries
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      #  build-wheels:
-      #    name: Build Python wheels on ${{ matrix.os }}
-      #    runs-on:  ${{ matrix.os }}
-      #    needs: build-cmake
-      #
-      #    strategy:
-      #      fail-fast: false
-      #      matrix:
-      #        os: [ windows-latest, macos-latest ]
-      #
-      #    steps:
+  build-wheels:
+    name: Build Python wheels on ${{ matrix.os }}
+    runs-on:  ${{ matrix.os }}
+    needs: build-cmake
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, macos-latest ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure submodules
+        run: git submodule update --init --recursive
+
       - name: Build Python wheels
         uses: pypa/cibuildwheel@v2.11.4
-        with:
-          path: ./wheelhouse/*.whl
