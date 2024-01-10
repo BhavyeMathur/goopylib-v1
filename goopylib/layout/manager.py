@@ -10,6 +10,11 @@ from ._internal import _Dimension
 from .flex import Flex
 
 
+_row_directions = {"row", "row-reverse"}
+_column_directions = {"column", "column-reverse"}
+_reverse_directions = {"row-reverse", "column-reverse"}
+
+
 # TODO - Add responsive layouts at different screen sizes
 
 
@@ -24,7 +29,7 @@ def process(div: Div, x: int = 0, y: int = 0, _only_direct: bool = False) -> Non
 
         _only_direct: internal use only
     """
-    if div.parent is not None and div.parent.flex.direction in {"column", "column-reverse"}:
+    if div.parent is not None and div.parent.flex.direction in _column_directions:
         x, y = y, x
 
     div.margin_box.x1 = x
@@ -76,7 +81,7 @@ def _process_flex_items(div: Div, flex: Flex) -> None:
         max_child_size = 0
         wrap_queue = []
 
-    if div.flex.direction.startswith("row"):
+    if div.flex.direction in _row_directions:
         main_pos = div.content_box.x1
         cross_pos = div.content_box.y1
         main_gap = flex.column_gap
@@ -88,7 +93,7 @@ def _process_flex_items(div: Div, flex: Flex) -> None:
         main_content_end = div.content_box.x2
         cross_content_end = div.content_box.y2
 
-    elif div.flex.direction.startswith("column"):
+    elif div.flex.direction in _column_directions:
         main_pos = div.content_box.y1
         cross_pos = div.content_box.x1
         main_gap = flex.row_gap
@@ -103,7 +108,7 @@ def _process_flex_items(div: Div, flex: Flex) -> None:
     else:
         raise ValueError(div.flex.direction)
 
-    if div.flex.direction.endswith("reverse"):
+    if div.flex.direction in _reverse_directions:
         main_pos, main_content_end = main_content_end, main_pos
         direction = -1
 
@@ -161,7 +166,7 @@ def _main_align_row(flex: Flex, direction: int, whitespace: int, items: list[Div
 
     offset = align_offset_funcs._get_offset(flex.align, whitespace, len(items))
 
-    if flex.direction == "row" or flex.direction == "row-reverse":
+    if flex.direction in _row_directions:
         shift = lambda c, distance: c.translate(direction * distance, 0)
     else:
         shift = lambda c, distance: c.translate(0, direction * distance)
@@ -176,7 +181,7 @@ def _process_flex_grow(flex: Flex, whitespace: int, items: list[Div]) -> int:
 
     grow_sum = sum(child.flex.grow for child in items)
 
-    if flex.direction == "row" or flex.direction == "row-reverse":
+    if flex.direction in _row_directions:
         shift_start = lambda c, distance: c.translate_x1(distance)
         shift_end = lambda c, distance: c.translate_x2(distance)
     else:
@@ -204,7 +209,7 @@ def _cross_align(flex: Flex, whitespace: int, items: list[list[Div]]) -> None:
 
     offset = align_offset_funcs._get_offset(flex.cross_align, whitespace, len(items))
 
-    if flex.direction == "row" or flex.direction == "row-reverse":
+    if flex.direction in _row_directions:
         shift = lambda c, distance: c.translate(0, distance)
     else:
         shift = lambda c, distance: c.translate(distance, 0)
@@ -218,7 +223,7 @@ def _cross_align_items_line(flex: Flex, line_size: int, items: list[Div]) -> Non
     if flex.item_align == "start":
         return
 
-    if flex.direction == "row" or flex.direction == "row-reverse":
+    if flex.direction in _row_directions:
         shift = lambda c, func: c.translate(0, func(c.margin_box.height))
     else:
         shift = lambda c, func: c.translate(func(c.margin_box.width), 0)
