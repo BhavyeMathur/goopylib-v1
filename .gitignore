@@ -13,7 +13,6 @@
 build/
 out/
 cmake-*/
-goopylib-build/
 docs/_build/
 dist/
 *.egg-info/
@@ -23,17 +22,10 @@ dist/
 __pycache__/
 *~
 
-*.ilk
-*.pdb
-
-venv/
-venv*/
-.vs/
-.idea/
-
 wheelhouse/
 main.py
 /main.cpp
-main.css
-empty.cpp
 *.log
+
+*/libglfw.a
+*/glfw3.lib
