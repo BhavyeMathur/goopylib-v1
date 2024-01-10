@@ -247,13 +247,13 @@ def _get_auto_width(div: Div, attr: None | str) -> int:
     if len(div.children) == 0:
         return div.padding.x
 
-    if div.flex.direction == "column" or div.flex.direction == "column-reverse":
+    if div.flex.direction in _column_directions:
         if div.flex.wrap != "nowrap" and div.height.unit != "auto":
             return div.padding.x + _get_auto_wrap_size(div)
 
     children_sizes = (child.margin.x + _get_rendered_width(child) for child in div.children)
 
-    if div.flex.direction == "column" or div.flex.direction == "column-reverse":
+    if div.flex.direction in _column_directions:
         return div.padding.x + max(children_sizes)
 
     return div.padding.x + sum(children_sizes) + div.flex.column_gap * (len(div.children) - 1)
@@ -265,13 +265,13 @@ def _get_auto_height(div: Div, attr: None | str) -> int:
     if len(div.children) == 0:
         return div.padding.y
 
-    if div.flex.direction == "row" or div.flex.direction == "row-reverse":
+    if div.flex.direction in _row_directions:
         if div.flex.wrap != "nowrap" and div.width.unit != "auto":
             return div.padding.y + _get_auto_wrap_size(div)
 
     children_sizes = (child.margin.y + _get_rendered_height(child) for child in div.children)
 
-    if div.flex.direction == "row" or div.flex.direction == "row-reverse":
+    if div.flex.direction in _row_directions:
         return div.padding.y + max(children_sizes)
 
     return div.padding.y + sum(children_sizes) + div.flex.row_gap * (len(div.children) - 1)
@@ -281,7 +281,7 @@ def _get_auto_wrap_size(div: Div) -> int:
     size = 0
     max_line_size = 0
 
-    if div.flex.direction == "row" or div.flex.direction == "row-reverse":
+    if div.flex.direction in _row_directions:
         main_size = _get_rendered_width(div)
         cross_gap = div.flex.row_gap
         cross_size = lambda c: c.margin.y + _get_rendered_height(c)
