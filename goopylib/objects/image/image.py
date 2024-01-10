@@ -3,10 +3,11 @@ Module defining an image object
 """
 
 from __future__ import annotations
-import __main__
 
 from typing import Union
 from os.path import isabs, dirname
+
+import __main__
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.image as _image

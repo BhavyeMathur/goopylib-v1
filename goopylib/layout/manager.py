@@ -1,6 +1,10 @@
+"""
+Module with functions to manage goopylib's layout engine
+"""
+
 from __future__ import annotations
 
-import goopylib.layout.align_offset_funcs as align_offset_funcs
+from goopylib.layout import align_offset_funcs
 from .div import Div
 from ._internal import _Dimension
 from .flex import Flex
@@ -9,7 +13,17 @@ from .flex import Flex
 # TODO - Add responsive layouts at different screen sizes
 
 
-def process(div: Div, x: int = 0, y: int = 0, _only_direct: bool = False):
+def process(div: Div, x: int = 0, y: int = 0, _only_direct: bool = False) -> None:
+    """
+    Recursively processes a goopylib layout
+
+    Args:
+        div: the parent container
+        x: the start x-position
+        y: the start y-position
+
+        _only_direct: internal use only
+    """
     if div.parent is not None and div.parent.flex.direction in {"column", "column-reverse"}:
         x, y = y, x
 
@@ -39,7 +53,7 @@ def process(div: Div, x: int = 0, y: int = 0, _only_direct: bool = False):
         _process_flex_items(div, div.flex)
 
 
-def _process_flex_items(div: Div, flex: Flex):
+def _process_flex_items(div: Div, flex: Flex) -> None:
     wrap = flex.wrap != "nowrap"
 
     if div.classes == "test":

@@ -13,7 +13,11 @@ disable=
     too-many-arguments,
     too-many-instance-attributes,
     no-else-return,
-    c-extension-no-member
+    c-extension-no-member,
+    unnecessary-lambda-assignment,
+    too-many-locals,
+    too-many-statements,
+    global-statement
 
 [BASIC]
 good-names=i,
@@ -33,4 +37,3 @@ good-names=i,
            p1,
            p2,
            _,
-           _LRTB_SETTER_TYPE

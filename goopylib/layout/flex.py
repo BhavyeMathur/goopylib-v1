@@ -6,10 +6,14 @@ from __future__ import annotations
 from typing import Literal
 
 
+# pylint: disable=invalid-name
+
 _FLEX_WRAP_TYPE = Literal["nowrap", "wrap", "reverse"]
 _FLEX_ALIGN_TYPE = Literal["start", "centre", "end", "space-around", "space-between", "space-evenly"]
 _FLEX_ITEM_ALIGN_TYPE = Literal["start", "centre", "end"]
 _FLEX_DIRECTION_TYPE = Literal["row", "row-reverse", "column", "column-reverse"]
+
+# pylint: enable=invalid-name
 
 
 class Flex:
@@ -29,7 +33,7 @@ class Flex:
                  order: int = 0,
                  grow: float = 0,
                  cross_align_self: None | _FLEX_ALIGN_TYPE = None) -> None:
-        f"""
+        """
         A class storing a container's flex properties
         
         Args:

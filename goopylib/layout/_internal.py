@@ -5,9 +5,12 @@ Internal classes used for processing goopylib layouts
 from __future__ import annotations
 from typing import Union, Literal, get_args
 
+# pylint: disable=invalid-name
 
 _UNITS = Literal["px", "%", "auto"]
 _LRTB_SETTER_TYPE = Union[int, tuple[int], tuple[int, int], tuple[int, int, int], tuple[int, int, int, int]]
+
+# pylint: enable=invalid-name
 
 
 class _LRTB:
