@@ -29,7 +29,7 @@ class Flex:
                  row_gap: int = 0,
                  column_gap: int = 0,
                  direction: _FLEX_DIRECTION_TYPE = "row",
-                 
+
                  order: int = 0,
                  grow: float = 0,
                  cross_align_self: None | _FLEX_ALIGN_TYPE = None) -> None:

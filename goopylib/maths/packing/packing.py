@@ -40,7 +40,7 @@ class Item:
         self._id = Item.items
         Item.items += 1
 
-    def _rotate(self) -> None:
+    def rotate(self) -> None:
         """
         Swaps the Item's width and height, ie rotates by 90 degrees.
         """

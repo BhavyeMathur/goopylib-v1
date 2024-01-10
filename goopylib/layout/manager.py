@@ -324,10 +324,10 @@ def _get_rendered_width(div: Div, attr: None | str = None) -> int:
         return_val = div.padding.x + _get_auto_width(div, attr)
     else:
         raise ValueError()
-    
+
     if attr is None:
         return_val = _get_clamped_width(div, return_val)
-        
+
     _rendered_width_cache[attr][div] = return_val
     return return_val
 

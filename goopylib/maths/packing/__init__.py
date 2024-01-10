@@ -6,4 +6,4 @@ goopylib module initialization
 # TODO C++ extension for packing and shelf
 
 from .packing import *
-import goopylib.maths.packing.shelf as shelf
+from . import shelf

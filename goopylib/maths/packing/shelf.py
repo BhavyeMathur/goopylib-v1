@@ -50,7 +50,7 @@ class Shelf:
     def __repr__(self) -> str:
         return f"Shelf(offset={self.vertical_offset}, packed={self.packed_width}) with {len(self.items)} items"
 
-    def _fits(self, item: Item) -> bool:
+    def fits(self, item: Item) -> bool:
         """
         Returns:
             if an item fits inside this shelf.
@@ -60,7 +60,7 @@ class Shelf:
         else:
             return item.width <= self.available_width and item.height <= self.height
 
-    def _fits_above(self, item: Item) -> bool:
+    def fits_above(self, item: Item) -> bool:
         """
         Returns:
             if an item will fit on a level above this shelf.
@@ -71,8 +71,8 @@ class Shelf:
         """
         Adds an item to this shelf.
         """
-        item._x = self.packed_width
-        item._y = self.vertical_offset
+        item.x = self.packed_width
+        item.y = self.vertical_offset
         self.bin._add(item)
         self.items.append(item)
 
@@ -82,7 +82,7 @@ class Shelf:
         self.packed_width += item.width
         self.available_width -= item.width
 
-    def _close(self) -> None:
+    def close(self) -> None:
         """
         Closes this shelf and locks its height.
         """
@@ -132,7 +132,7 @@ class ShelvedBin(Bin):
         Returns:
             the newly added shelf.
         """
-        self.open_shelf._close()
+        self.open_shelf.close()
         self.open_shelf = Shelf(vertical_offset=self.open_shelf.vertical_offset + self.open_shelf.height, bin=self)
         self.shelves.append(self.open_shelf)
 
@@ -170,6 +170,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
         super().__init__(bin_width, bin_height)
         self._bins: list[ShelvedBin] = [ShelvedBin(width=bin_width, height=bin_height)]
 
+    # pylint: disable-next=arguments-differ
     def pack(self, item: Item, allow_rotation: bool = True) -> None:
         """
         Packs a rectangular item using a shelf-based algorithm.
@@ -180,6 +181,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
         """
         raise NotImplementedError()
 
+    # pylint: disable-next=arguments-differ
     def pack_all(self,
                  items: list[Item],
                  sorting: Optional[SortingFunction] = sort_by_short_side(True),
@@ -205,7 +207,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
             orient_vertically: whether to orient the item vertically
         """
         if item.is_horizontal() == orient_vertically:
-            item._rotate()
+            item.rotate()
         self.pack(item, allow_rotation=False)
 
     def pack_all_oriented(self,
@@ -257,20 +259,20 @@ class NextFit(ShelfPackingAlgorithm):
             allow_rotation: whether to allow rotating the item
         """
         if allow_rotation and (item.is_vertical() != (item.long_side <= self._shelf.height)):
-            item._rotate()
+            item.rotate()
 
-        if self._shelf._fits(item):
+        if self._shelf.fits(item):
             self._shelf._add(item)
             return
 
-        if self._shelf._fits_above(item):
+        if self._shelf.fits_above(item):
             self._shelf = self._bins[-1]._add_shelf()
         else:
             self._bins.append(ShelvedBin(width=self._bin_width, height=self._bin_height))
             self._shelf = self._bins[-1].open_shelf
 
         if allow_rotation and item.is_vertical():
-            item._rotate()
+            item.rotate()
         self._shelf._add(item)
 
 
@@ -307,15 +309,16 @@ class FirstFit(ShelfPackingAlgorithm):
         def _add_to_bin() -> bool:
             for shelf in bin:
                 if allow_rotation and (item.is_vertical() != (item.long_side <= shelf.height)):
-                    item._rotate()
+                    item.rotate()
 
-                if shelf._fits(item):
+                if shelf.fits(item):
                     shelf._add(item)
                     return True
 
-            if shelf._fits_above(item):  # noqa W0631, each bin has at least 1 shelf
+            # pylint: disable-next=undefined-loop-variable
+            if shelf.fits_above(item):  # noqa W0631, each bin has at least 1 shelf
                 if allow_rotation and item.is_vertical():
-                    item._rotate()
+                    item.rotate()
                 bin._add_shelf()._add(item)
                 return True
 
@@ -328,7 +331,7 @@ class FirstFit(ShelfPackingAlgorithm):
             self._bins.append(ShelvedBin(width=self._bin_width, height=self._bin_height))
 
             if allow_rotation and item.is_vertical():
-                item._rotate()
+                item.rotate()
             self._bins[-1].open_shelf._add(item)
 
 
@@ -375,17 +378,17 @@ class ScoredFit(ShelfPackingAlgorithm):
         def _add_to_bin() -> None:
             for shelf in bin:
                 if allow_rotation and (item.is_vertical() != (item.long_side <= shelf.height)):
-                    item._rotate()
+                    item.rotate()
 
-                if shelf._fits(item):
+                if shelf.fits(item):
                     _score(shelf, item)
 
             # pylint: disable-next=undefined-loop-variable
-            if best_shelf is None and shelf._fits_above(item):  # noqa W0631, each bin has at least 1 shelf
+            if best_shelf is None and shelf.fits_above(item):  # noqa W0631, each bin has at least 1 shelf
                 shelf = bin._add_shelf()
 
                 if allow_rotation and item.is_vertical():
-                    item._rotate()
+                    item.rotate()
 
                 _score(shelf, item)
 
@@ -400,13 +403,13 @@ class ScoredFit(ShelfPackingAlgorithm):
             self._bins.append(ShelvedBin(width=self._bin_width, height=self._bin_height))
 
             if allow_rotation and item.is_vertical():
-                item._rotate()
+                item.rotate()
 
             best_shelf = self._bins[-1].open_shelf
             best_orientation = item.is_rotated()
 
         if item.is_rotated() != best_orientation:
-            item._rotate()
+            item.rotate()
 
         best_shelf._add(item)
 

@@ -3,37 +3,24 @@ max-line-length=120
 
 [MESSAGES CONTROL]
 disable=
-    trailing-whitespace,
     pointless-string-statement,
     protected-access,
+
     too-many-lines,
     too-many-public-methods,
     too-few-public-methods,
     too-many-branches,
     too-many-arguments,
     too-many-instance-attributes,
+    too-many-locals,
+    too-many-statements,
+
     no-else-return,
     c-extension-no-member,
     unnecessary-lambda-assignment,
-    too-many-locals,
-    too-many-statements,
-    global-statement
+    global-statement,
+    duplicate-code,
+    fixme
 
 [BASIC]
-good-names=i,
-           j,
-           k,
-           x,
-           y,
-           dx,
-           dy,
-           t,
-           up,
-           down,
-           left,
-           right,
-           ID,
-           id,
-           p1,
-           p2,
-           _,
+good-names=
