@@ -68,12 +68,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_P
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
 
-if (MSVC)
-    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
-    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
-    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
-endif (MSVC)
-
 add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/Core.cpp
             src/goopylib/core/BufferLayout.cpp
@@ -133,6 +127,12 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             vendor/stb/stb_image.cpp
             vendor/stb/stb_image_write.cpp
             )
+
+if (MSVC)
+    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
+    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
+    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
+endif (MSVC)
 
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
