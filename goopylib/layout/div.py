@@ -1,3 +1,7 @@
+"""
+Module defining the container class for goopylib's layout engine
+"""
+
 from __future__ import annotations
 
 from .flex import Flex
@@ -5,6 +9,10 @@ from ._internal import _Box, _LRTB, _Dimension, _LRTB_SETTER_TYPE
 
 
 class Div:
+    """
+    The container class
+    """
+
     _context_tree: list[Div] = []
     _instances: list[Div] = []  # could consider making a dictionary
 
@@ -19,6 +27,21 @@ class Div:
                  max_width: int | str = "100%",
                  max_height: int | str = "100%",
                  classes: str | list[str] = "") -> None:
+        """
+        The container class
+
+        Args:
+            width: container width
+            height: container height
+            margin: tuple (left, right, top bottom) representing margin
+            padding: tuple (left, right, top bottom) representing padding
+            flex: flex properties with wrap type, align, and cross-align
+            min_width: minimum container width
+            min_height: minimum container height
+            max_width: maximum container width
+            max_height: maximum container height
+            classes: list of styling classes for the container
+        """
 
         self._width = _Dimension(width)
         self._height = _Dimension(height)
@@ -65,18 +88,30 @@ class Div:
 
     @property
     def margin_box(self) -> _Box:
+        """
+        The container's margin box
+        """
         return self._margin_box
 
     @property
     def padding_box(self) -> _Box:
+        """
+        The container's padding box
+        """
         return self._padding_box
 
     @property
     def content_box(self) -> _Box:
+        """
+        The container's content box
+        """
         return self._content_box
 
     @property
     def margin(self) -> _LRTB:
+        """
+        The container margin
+        """
         return self._margin
 
     @margin.setter
@@ -85,6 +120,9 @@ class Div:
 
     @property
     def padding(self) -> _LRTB:
+        """
+        The container padding
+        """
         return self._padding
 
     @padding.setter
@@ -93,6 +131,9 @@ class Div:
 
     @property
     def width(self) -> _Dimension:
+        """
+        The container width
+        """
         return self._width
 
     @width.setter
@@ -101,6 +142,9 @@ class Div:
 
     @property
     def height(self) -> _Dimension:
+        """
+        The container height
+        """
         return self._height
 
     @height.setter
@@ -109,6 +153,9 @@ class Div:
 
     @property
     def min_width(self) -> _Dimension:
+        """
+        The minimum container width
+        """
         return self._min_width
 
     @min_width.setter
@@ -117,6 +164,9 @@ class Div:
 
     @property
     def min_height(self) -> _Dimension:
+        """
+        The minimum container height
+        """
         return self._min_height
 
     @min_height.setter
@@ -125,6 +175,9 @@ class Div:
 
     @property
     def max_width(self) -> _Dimension:
+        """
+        The maximum container width
+        """
         return self._max_width
 
     @max_width.setter
@@ -133,6 +186,9 @@ class Div:
 
     @property
     def max_height(self) -> _Dimension:
+        """
+        The maximum container height
+        """
         return self._max_height
 
     @max_height.setter
@@ -141,22 +197,37 @@ class Div:
 
     @property
     def classes(self) -> list[str]:
+        """
+        The list of styling classes assigned to the container
+        """
         return self._classes
 
     @property
     def layer(self) -> int:
+        """
+        The index of the position of the container in the layout tree
+        """
         return self._layer
 
     @property
     def children(self) -> tuple[Div, ...]:
+        """
+        A tuple of all children containers
+        """
         return tuple(self._children)
 
     @property
     def parent(self) -> Div | None:
+        """
+        The parent container (or None)
+        """
         return self._parent
 
     @property
     def flex(self) -> Flex:
+        """
+        The flex properties of the container
+        """
         return self._flex
 
     @flex.setter
@@ -164,30 +235,64 @@ class Div:
         self._flex = value
 
     def translate(self, dx: int, dy: int) -> None:
+        """
+        Move the container by (dx, dy)
+
+        Args:
+            dx: amount to move the x-position
+            dy: amount to move the y-position
+        """
         self.margin_box.translate(dx, dy)
         self.padding_box.translate(dx, dy)
         self.content_box.translate(dx, dy)
 
     def translate_x1(self, dx: int) -> None:
+        """
+        Move the container's start x-position
+
+        Args:
+            dx: amount to move the x-position
+        """
         self.margin_box.x1 += dx
         self.padding_box.x1 += dx
         self.content_box.x1 += dx
 
     def translate_x2(self, dx: int) -> None:
+        """
+        Move the container's end x-position
+
+        Args:
+            dx: amount to move the x-position
+        """
         self.margin_box.x2 += dx
         self.padding_box.x2 += dx
         self.content_box.x2 += dx
 
     def translate_y1(self, dy: int) -> None:
+        """
+        Move the container's start y-position
+
+        Args:
+            dy: amount to move the y-position
+        """
         self.margin_box.y1 += dy
         self.padding_box.y1 += dy
         self.content_box.y1 += dy
 
     def translate_y2(self, dy: int) -> None:
+        """
+        Move the container's end y-position
+
+        Args:
+            dy: amount to move the y-position
+        """
         self.margin_box.y2 += dy
         self.padding_box.y2 += dy
         self.content_box.y2 += dy
 
     @staticmethod
     def get_instances() -> tuple[Div, ...]:
+        """
+        A tuple of all container instances
+        """
         return tuple(Div._instances)

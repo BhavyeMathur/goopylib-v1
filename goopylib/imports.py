@@ -2,6 +2,7 @@
 
 # pylint: disable=wildcard-import
 # pylint: disable=unused-wildcard-import
+# pylint: disable=unused-import
 
 from .color.color import *
 from .color.conversions import *
@@ -31,3 +32,4 @@ from .scene.camera_controller import *
 
 # pylint: enable=wildcard-import
 # pylint: enable=unused-wildcard-import
+# pylint: enable=unused-import

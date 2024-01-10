@@ -1,3 +1,7 @@
+"""
+Internal classes used for processing goopylib layouts
+"""
+
 from __future__ import annotations
 from typing import Union, Literal, get_args
 
@@ -18,24 +22,33 @@ class _LRTB:
 
     @property
     def left(self) -> int:
+        """
+        The leftward size of the frame
+        """
         return self._left
 
     @left.setter
     def left(self, value: int):
         self._left = value
-        self._x = self.left + self._right
+        self._x = self._left + self._right
 
     @property
     def right(self) -> int:
+        """
+        The rightward size of the frame
+        """
         return self._right
 
     @right.setter
     def right(self, value: int):
         self._right = value
-        self._x = self.left + self._right
+        self._x = self._left + self._right
 
     @property
     def top(self) -> int:
+        """
+        The upward size of the frame
+        """
         return self._top
 
     @top.setter
@@ -45,6 +58,9 @@ class _LRTB:
 
     @property
     def bottom(self) -> int:
+        """
+        The downward size of the frame
+        """
         return self._bottom
 
     @bottom.setter
@@ -54,13 +70,25 @@ class _LRTB:
 
     @property
     def x(self) -> int:
+        """
+        The width of the frame
+        """
         return self._x
 
     @property
     def y(self) -> int:
+        """
+        The height of the frame
+        """
         return self._y
 
     def set_values(self, value: _LRTB_SETTER_TYPE) -> None:
+        """
+        Sets the left, right, top, and bottom sizes of the frame
+
+        Args:
+            value: a tuple of values
+        """
         if isinstance(value, int):
             self.left = value
             self.right = value
@@ -101,6 +129,9 @@ class _Box:
 
     @property
     def x1(self) -> int:
+        """
+        The start x-position of the box
+        """
         return self._x1
 
     @x1.setter
@@ -110,6 +141,9 @@ class _Box:
 
     @property
     def y1(self) -> int:
+        """
+        The start y-position of the box
+        """
         return self._y1
 
     @y1.setter
@@ -119,6 +153,9 @@ class _Box:
 
     @property
     def x2(self) -> int:
+        """
+        The end x-position of the box
+        """
         return self._x2
 
     @x2.setter
@@ -128,6 +165,9 @@ class _Box:
 
     @property
     def y2(self) -> int:
+        """
+        The end y-position of the box
+        """
         return self._y2
 
     @y2.setter
@@ -137,6 +177,9 @@ class _Box:
 
     @property
     def width(self) -> int:
+        """
+        The width of the box
+        """
         return self._width
 
     @width.setter
@@ -146,6 +189,9 @@ class _Box:
 
     @property
     def height(self) -> int:
+        """
+        The height of the box
+        """
         return self._height
 
     @height.setter
@@ -155,13 +201,26 @@ class _Box:
 
     @property
     def start(self) -> tuple[int, int]:
+        """
+        The start coordinates (x, y) of the box
+        """
         return self._x1, self._y1
 
     @property
     def end(self) -> tuple[int, int]:
+        """
+        The end coordinates (x, y) of the box
+        """
         return self._x2, self._y2
 
     def translate(self, dx: int, dy: int) -> None:
+        """
+        Moves the box by (dx, dy)
+
+        Args:
+            dx: the x amount to move
+            dy: the y amount to move
+        """
         self._x1 += dx
         self._x2 += dx
         self._y1 += dy
@@ -179,6 +238,9 @@ class _Dimension(int):
 
     @property
     def unit(self) -> _UNITS:
+        """
+        The unit of the dimension (%, px, etc.)
+        """
         return self._unit
 
     @staticmethod

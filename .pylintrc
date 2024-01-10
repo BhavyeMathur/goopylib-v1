@@ -13,6 +13,7 @@ disable=
     too-many-arguments,
     too-many-instance-attributes,
     no-else-return,
+    c-extension-no-member
 
 [BASIC]
 good-names=i,
@@ -31,4 +32,5 @@ good-names=i,
            id,
            p1,
            p2,
-           _
+           _,
+           _LRTB_SETTER_TYPE

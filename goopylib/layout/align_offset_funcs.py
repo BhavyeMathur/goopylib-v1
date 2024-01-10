@@ -1,8 +1,15 @@
+"""
+Flex align helper functions
+"""
+
 from typing import Callable
 
 
 def _get_offset(align: str, whitespace: int, n: int) -> Callable[[int], int]:
     return _align_to_offset_func[align](whitespace, n)
+
+
+# pylint: disable=unused-argument
 
 
 def _align_centre_offset(whitespace: int, n: int) -> Callable[[int], int]:
@@ -11,6 +18,8 @@ def _align_centre_offset(whitespace: int, n: int) -> Callable[[int], int]:
 
 def _align_end_offset(whitespace: int, n: int) -> Callable[[int], int]:
     return lambda i: whitespace
+
+# pylint: enable=unused-argument
 
 
 def _align_space_around_offset(whitespace: int, n: int) -> Callable[[int], int]:

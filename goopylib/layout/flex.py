@@ -1,3 +1,7 @@
+"""
+Flex propreties object for the layout engine
+"""
+
 from __future__ import annotations
 from typing import Literal
 
@@ -9,6 +13,10 @@ _FLEX_DIRECTION_TYPE = Literal["row", "row-reverse", "column", "column-reverse"]
 
 
 class Flex:
+    """
+    A class storing a container's flex properties
+    """
+
     def __init__(self,
                  wrap: _FLEX_WRAP_TYPE = "nowrap",
                  align: _FLEX_ALIGN_TYPE = "start",
@@ -21,6 +29,22 @@ class Flex:
                  order: int = 0,
                  grow: float = 0,
                  cross_align_self: None | _FLEX_ALIGN_TYPE = None) -> None:
+        f"""
+        A class storing a container's flex properties
+        
+        Args:
+            wrap: type of flex-wrap ("nowrap", "wrap", or "reverse")
+            align: alignment along primary axis
+            cross_align: alignment along secondary axis
+            item_align: alignment of children container along secondary axis ("start", "centre", or "end")
+            row_gap: gap between each row
+            column_gap: gap between each column
+            direction: direction of flex ("row", "column" or "*-reverse")
+            
+            order: the order of this container in parent's flexbox
+            grow: the amount this container grows to occupy space in the parent's flexbox
+            cross_align_self: alignment of this container to override parent's "item_align" property
+        """
         self._wrap = wrap
         self._align = align
         self._cross_align = cross_align
@@ -35,6 +59,9 @@ class Flex:
 
     @property
     def wrap(self) -> _FLEX_WRAP_TYPE:
+        """
+        Type of flex-wrap ("nowrap", "wrap", or "reverse")
+        """
         return self._wrap
 
     @wrap.setter
@@ -43,6 +70,9 @@ class Flex:
 
     @property
     def align(self) -> _FLEX_ALIGN_TYPE:
+        """
+        Alignment along primary axis
+        """
         return self._align
 
     @align.setter
@@ -51,6 +81,9 @@ class Flex:
 
     @property
     def cross_align(self) -> _FLEX_ALIGN_TYPE:
+        """
+        Alignment along secdonary axis
+        """
         return self._cross_align
 
     @cross_align.setter
@@ -59,6 +92,9 @@ class Flex:
 
     @property
     def item_align(self) -> _FLEX_ALIGN_TYPE:
+        """
+        Alignment of children container along secondary axis ("start", "centre", or "end")
+        """
         return self._item_align
 
     @item_align.setter
@@ -67,6 +103,9 @@ class Flex:
 
     @property
     def row_gap(self) -> int:
+        """
+        The gap between each row
+        """
         return self._row_gap
 
     @row_gap.setter
@@ -75,6 +114,9 @@ class Flex:
 
     @property
     def column_gap(self) -> int:
+        """
+        The gap between each column
+        """
         return self._column_gap
 
     @column_gap.setter
@@ -83,6 +125,9 @@ class Flex:
 
     @property
     def direction(self) -> _FLEX_DIRECTION_TYPE:
+        """
+        Direction of flex ("row", "column" or "*-reverse")
+        """
         return self._direction
 
     @direction.setter
@@ -91,6 +136,9 @@ class Flex:
 
     @property
     def order(self) -> int:
+        """
+        The order of this container in parent's flexbox
+        """
         return self._order
 
     @order.setter
@@ -99,6 +147,9 @@ class Flex:
 
     @property
     def grow(self) -> float:
+        """
+        The amount this container grows to occupy space in the parent's flexbox
+        """
         return self._grow
 
     @grow.setter
@@ -107,6 +158,9 @@ class Flex:
 
     @property
     def cross_align_self(self) -> None | _FLEX_ALIGN_TYPE:
+        """
+        Alignment of this container along the secondary axis to override parent's "item_align" property
+        """
         return self._cross_align_self
 
     @cross_align_self.setter
