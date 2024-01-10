@@ -40,6 +40,7 @@ def _align_space_evenly_offset(whitespace: int, n: int) -> Callable[[int], int]:
     return lambda i: int((i + 1) * offset)
 
 
+# pylint: disable-next=unsubscriptable-object
 _align_to_offset_func: dict[str, Callable[[int, int], Callable[[int], int]]] = \
     {"centre":        _align_centre_offset,
      "space-around":  _align_space_around_offset,
@@ -60,6 +61,7 @@ def _item_align_end_offset(row_height: int) -> Callable[[int], int]:
     return lambda height: row_height - height
 
 
+# pylint: disable-next=unsubscriptable-object
 _item_align_to_offset_func: dict[str, Callable[[int], Callable[[int], int]]] = \
     {"centre": _item_align_centre_offset,
      "end": _item_align_end_offset}

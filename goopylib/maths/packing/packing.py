@@ -13,6 +13,7 @@ from typing import Callable, NoReturn, Optional
 # Bin shadows the Python built-in 'bin', but until I can think
 # of a better name to call it, I'm going to stick with bin.
 # pylint: disable=redefined-builtin
+# pylint: disable=unsubscriptable-object
 
 
 class Item:
@@ -389,3 +390,4 @@ def sort_by_short_side(descending: bool = False) -> SortingFunction:
 
 
 # pylint: enable=redefined-builtin
+# pylint: enable=unsubscriptable-object

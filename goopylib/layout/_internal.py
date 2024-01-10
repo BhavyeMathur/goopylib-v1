@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import Union, Literal, get_args
 
 # pylint: disable=invalid-name
+# pylint: disable-next=unsubscriptable-object
 
 _UNITS = Literal["px", "%", "auto"]
 _LRTB_SETTER_TYPE = Union[int, tuple[int], tuple[int, int], tuple[int, int, int], tuple[int, int, int, int]]
@@ -202,6 +203,7 @@ class _Box:
         self._y2 = self._y1 + value
         self._height = value
 
+    # pylint: disable-next=unsubscriptable-object
     @property
     def start(self) -> tuple[int, int]:
         """
@@ -209,6 +211,7 @@ class _Box:
         """
         return self._x1, self._y1
 
+    # pylint: disable-next=unsubscriptable-object
     @property
     def end(self) -> tuple[int, int]:
         """
@@ -246,6 +249,7 @@ class _Dimension(int):
         """
         return self._unit
 
+    # pylint: disable-next=unsubscriptable-object
     @staticmethod
     def _parse_dimension(dim: str | int) -> tuple[int, _UNITS]:
         if dim == "auto":
