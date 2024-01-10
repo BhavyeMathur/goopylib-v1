@@ -41,7 +41,7 @@ include_directories(${CMAKE_SOURCE_DIR}/vendor/GLFW/include)
 if (WIN32)
     set(WINDOWS_SOURCES vendor/glad/glad.c)
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    if (MSVC)
         set(CMAKE_CXX_FLAGS "-wd4068 /EHsc")
 
         if (MSVC_TOOLSET_VERSION EQUAL 110)
@@ -132,7 +132,11 @@ if (MSVC)
     set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
     set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
     set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
-endif (MSVC)
+
+    set_target_properties(goopylib PROPERTIES DEBUG_POSTFIX “”)
+    set_target_properties(goopylib PROPERTIES RELWITHDEBINFO_POSTFIX “”)
+    set_target_properties(goopylib PROPERTIES RELEASE_POSTFIX “”)
+endif ()
 
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
