@@ -59,6 +59,7 @@ include-package-data = false
 
 [tool.cibuildwheel]
 build-frontend = "build"
+before-all = "git submodule update --init --recursive"
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
