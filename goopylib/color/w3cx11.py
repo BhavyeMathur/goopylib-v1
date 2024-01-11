@@ -4,10 +4,12 @@ Module defining colors listed by the W3CX11 specification
 
 from __future__ import annotations
 
+from typing import Dict
+
 from goopylib.color.color import ColorHex
 
 
-colors: dict[str, ColorHex] = {
+colors: Dict[str, ColorHex] = {
     "aliceblue":            ColorHex("f0f8ff"),
     "antiquewhite":         ColorHex("faebd7"),
     "aqua":                 ColorHex("00ffff"),

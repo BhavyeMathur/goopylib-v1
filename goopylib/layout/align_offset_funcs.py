@@ -2,7 +2,7 @@
 Flex align helper functions
 """
 
-from typing import Callable
+from typing import Callable, Dict
 
 
 def _get_offset(align: str, whitespace: int, n: int) -> Callable[[int], int]:
@@ -41,7 +41,7 @@ def _align_space_evenly_offset(whitespace: int, n: int) -> Callable[[int], int]:
 
 
 # pylint: disable-next=unsubscriptable-object
-_align_to_offset_func: dict[str, Callable[[int, int], Callable[[int], int]]] = \
+_align_to_offset_func: Dict[str, Callable[[int, int], Callable[[int], int]]] = \
     {"centre":        _align_centre_offset,
      "space-around":  _align_space_around_offset,
      "space-between": _align_space_between_offset,
@@ -62,6 +62,6 @@ def _item_align_end_offset(row_height: int) -> Callable[[int], int]:
 
 
 # pylint: disable-next=unsubscriptable-object
-_item_align_to_offset_func: dict[str, Callable[[int], Callable[[int], int]]] = \
+_item_align_to_offset_func: Dict[str, Callable[[int], Callable[[int], int]]] = \
     {"centre": _item_align_centre_offset,
      "end": _item_align_end_offset}

@@ -4,6 +4,8 @@ Module defining a triangle object
 
 from __future__ import annotations
 
+from typing import Union, Tuple
+
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.triangle as _triangle
 
@@ -25,7 +27,7 @@ class Triangle(Renderable):
     """
 
     # pylint: disable-next=super-init-not-called
-    def __init__(self, p1: tuple[float, float], p2: tuple[float, float], p3: tuple[float, float]) -> None:
+    def __init__(self, p1: Tuple[float, float], p2: Tuple[float, float], p3: Tuple[float, float]) -> None:
         """
         An object representing a triangle with 3 vertices.
 
@@ -52,7 +54,7 @@ class Triangle(Renderable):
         self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
     @property
-    def p1(self) -> tuple[float, float]:
+    def p1(self) -> Tuple[float, float]:
         """
         The position of the object's 1st vertex in world coordinates
 
@@ -65,11 +67,11 @@ class Triangle(Renderable):
         return self._renderable.p1
 
     @p1.setter
-    def p1(self, value: tuple[float, float]) -> None:
+    def p1(self, value: Tuple[float, float]) -> None:
         self._renderable.p1 = value
 
     @property
-    def p2(self) -> tuple[float, float]:
+    def p2(self) -> Tuple[float, float]:
         """
         The position of the object's 2nd vertex in world coordinates
 
@@ -82,11 +84,11 @@ class Triangle(Renderable):
         return self._renderable.p2
 
     @p2.setter
-    def p2(self, value: tuple[float, float]) -> None:
+    def p2(self, value: Tuple[float, float]) -> None:
         self._renderable.p2 = value
 
     @property
-    def p3(self) -> tuple[float, float]:
+    def p3(self) -> Tuple[float, float]:
         """
         The position of the object's 3rd vertex in world coordinates
 
@@ -99,11 +101,11 @@ class Triangle(Renderable):
         return self._renderable.p3
 
     @p3.setter
-    def p3(self, value: tuple[float, float]) -> None:
+    def p3(self, value: Tuple[float, float]) -> None:
         self._renderable.p3 = value
 
     @property
-    def transparency(self) -> float | tuple[float, float, float]:
+    def transparency(self) -> Union[float, Tuple[float, float, float]]:
         """
         The transparency of the object at each vertex between 0 (transpareny) and 1 (opaque)
 
@@ -114,5 +116,5 @@ class Triangle(Renderable):
         return self._renderable.transparency
 
     @transparency.setter
-    def transparency(self, value: float | tuple[float, float, float]) -> None:
+    def transparency(self, value: Union[float, Tuple[float, float, float]]) -> None:
         self._renderable.transparency = value

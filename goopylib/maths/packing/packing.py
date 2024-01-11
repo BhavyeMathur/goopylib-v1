@@ -7,7 +7,7 @@ See https://pds25.egloos.com/pds/201504/21/98/RectangleBinPack.pdf
 
 from __future__ import annotations
 
-from typing import Callable, NoReturn, Optional
+from typing import Callable, NoReturn, Optional, Tuple, List
 
 
 # Bin shadows the Python built-in 'bin', but until I can think
@@ -76,14 +76,14 @@ class Item:
         """
         return self._width * self._height
 
-    def p1(self) -> tuple[float, float]:
+    def p1(self) -> Tuple[float, float]:
         """
         Returns:
             the bottom-left coordinate of the item
         """
         return self._x, self._y
 
-    def p2(self) -> tuple[float, float]:
+    def p2(self) -> Tuple[float, float]:
         """
         Returns:
             the top-right coordinate of the item
@@ -174,7 +174,7 @@ class Bin:
         self._width: float = width
         self._height: float = height
 
-        self._items: list[Item] = []
+        self._items: List[Item] = []
 
         self._id = Bin.bins
         Bin.bins += 1
@@ -192,7 +192,7 @@ class Bin:
         """
         return sum(map(Item.area, self._items)) / (self._width * self._height)
 
-    def items(self) -> list[Item]:
+    def items(self) -> List[Item]:
         """
         Returns:
             the items part of the bin
@@ -243,7 +243,7 @@ class PackingAlgorithm:
         """
         self._bin_width = bin_width
         self._bin_height = bin_height
-        self._bins: list[Bin] = []
+        self._bins: List[Bin] = []
 
     def pack(self, item: Item, **kwargs) -> None:
         """
@@ -255,7 +255,7 @@ class PackingAlgorithm:
         """
         raise NotImplementedError()
 
-    def pack_all(self, items: list[Item], sorting: Optional[SortingFunction], **kwargs) -> None:
+    def pack_all(self, items: List[Item], sorting: Optional[SortingFunction], **kwargs) -> None:
         """
         Packs a list of rectangular items into bins.
 
@@ -270,7 +270,7 @@ class PackingAlgorithm:
         for item in items:
             self.pack(item, **kwargs)
 
-    def bins(self) -> tuple[Bin]:
+    def bins(self) -> Tuple[Bin]:
         """
         Returns:
             a list of bins with packed items.
@@ -281,7 +281,7 @@ class PackingAlgorithm:
 # Sorting Algorithms
 
 
-SortingFunction = Callable[[list[Item]], list[Item]]
+SortingFunction = Callable[[List[Item]], List[Item]]
 
 
 def sort_by_width(descending: bool = False) -> SortingFunction:
@@ -293,7 +293,7 @@ def sort_by_width(descending: bool = False) -> SortingFunction:
         a function to sort list of items by their width
     """
 
-    def _sort(items: list[Item]):
+    def _sort(items: List[Item]):
         return sorted(items, reverse=descending, key=lambda item: item.width)
 
     return _sort
@@ -308,7 +308,7 @@ def sort_by_height(descending: bool = False) -> SortingFunction:
         a function to sort list of items by their height
     """
 
-    def _sort(items: list[Item]):
+    def _sort(items: List[Item]):
         return sorted(items, reverse=descending, key=lambda item: item.height)
 
     return _sort
@@ -323,7 +323,7 @@ def sort_by_perimeter(descending: bool = False) -> SortingFunction:
         a function to sort list of items by their perimeter
     """
 
-    def _sort(items: list[Item]):
+    def _sort(items: List[Item]):
         return sorted(items, reverse=descending, key=lambda item: item.width + item.height)
 
     return _sort
@@ -338,7 +338,7 @@ def sort_by_area(descending: bool = False) -> SortingFunction:
         a function to sort list of items by their area
     """
 
-    def _sort(items: list[Item]):
+    def _sort(items: List[Item]):
         return sorted(items, reverse=descending, key=lambda item: item.width * item.height)
 
     return _sort
@@ -353,7 +353,7 @@ def sort_by_side_ratio(descending: bool = False) -> SortingFunction:
         a function to sort list of items by their side ratio
     """
 
-    def _sort(items: list[Item]):
+    def _sort(items: List[Item]):
         return sorted(items, reverse=descending, key=lambda item: item.width / item.height)
 
     return _sort
@@ -368,7 +368,7 @@ def sort_by_long_side(descending: bool = False) -> SortingFunction:
         a function to sort list of items by their long side
     """
 
-    def _sort(items: list[Item]):
+    def _sort(items: List[Item]):
         return sorted(items, reverse=descending, key=lambda item: item.long_side)
 
     return _sort
@@ -383,7 +383,7 @@ def sort_by_short_side(descending: bool = False) -> SortingFunction:
         a function to sort list of items by their short side
     """
 
-    def _sort(items: list[Item]):
+    def _sort(items: List[Item]):
         return sorted(items, reverse=descending, key=lambda item: item.short_side)
 
     return _sort

@@ -45,7 +45,7 @@ class Shelf:
 
         self.is_open = True
         self.bin: Bin = bin
-        self.items: list[Item] = []
+        self.items: List[Item] = []
 
     def __repr__(self) -> str:
         return f"Shelf(offset={self.vertical_offset}, packed={self.packed_width}) with {len(self.items)} items"
@@ -120,7 +120,7 @@ class ShelvedBin(Bin):
         super().__init__(width, height)
 
         self.open_shelf: Shelf = Shelf(vertical_offset=0, bin=self)
-        self.shelves: list[Shelf] = [self.open_shelf]
+        self.shelves: List[Shelf] = [self.open_shelf]
 
     def __iter__(self) -> Iterator[Shelf]:
         return self.shelves.__iter__()
@@ -168,7 +168,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
             bin_height: the maximum height of the packed bin
         """
         super().__init__(bin_width, bin_height)
-        self._bins: list[ShelvedBin] = [ShelvedBin(width=bin_width, height=bin_height)]
+        self._bins: List[ShelvedBin] = [ShelvedBin(width=bin_width, height=bin_height)]
 
     # pylint: disable-next=arguments-differ
     def pack(self, item: Item, allow_rotation: bool = True) -> None:
@@ -183,7 +183,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
 
     # pylint: disable-next=arguments-differ
     def pack_all(self,
-                 items: list[Item],
+                 items: List[Item],
                  sorting: Optional[SortingFunction] = sort_by_short_side(True),
                  allow_rotation: bool = True) -> None:
         """
@@ -211,7 +211,7 @@ class ShelfPackingAlgorithm(PackingAlgorithm):
         self.pack(item, allow_rotation=False)
 
     def pack_all_oriented(self,
-                          items: list[Item],
+                          items: List[Item],
                           sorting: Optional[SortingFunction] = sort_by_long_side(descending=True),
                           orient_vertically: bool = True) -> None:
         """

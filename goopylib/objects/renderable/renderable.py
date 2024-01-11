@@ -157,7 +157,7 @@ class Renderable:
         self._renderable.y = value
 
     @property
-    def position(self) -> tuple[float, float]:
+    def position(self) -> Tuple[float, float]:
         """
         The position of the object's anchor in world coordinates
 
@@ -170,7 +170,7 @@ class Renderable:
         return self._renderable.position
 
     @position.setter
-    def position(self, value: tuple[float, float]) -> None:
+    def position(self, value: Tuple[float, float]) -> None:
         self._renderable.position = value
 
     @property

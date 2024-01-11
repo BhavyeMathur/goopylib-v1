@@ -3,7 +3,8 @@ Module defining a line object
 """
 
 from __future__ import annotations
-from typing import NoReturn
+
+from typing import NoReturn, Tuple, Union
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.line as _line
@@ -24,7 +25,7 @@ class Line(Quad):
     """
 
     # pylint: disable-next=super-init-not-called
-    def __init__(self, p1: tuple[float, float], p2: tuple[float, float], thickness: float = 5) -> None:
+    def __init__(self, p1: Tuple[float, float], p2: Tuple[float, float], thickness: float = 5) -> None:
         """
         An object representing a line connecting 2 points together.
 
@@ -60,7 +61,7 @@ class Line(Quad):
         raise NotImplementedError("p3 property is not implemented for lines")
 
     @p3.setter
-    def p3(self, value: tuple[float, float]) -> NoReturn:
+    def p3(self, value: Tuple[float, float]) -> NoReturn:
         raise NotImplementedError("p3 property is not implemented for lines")
 
     @property
@@ -71,11 +72,11 @@ class Line(Quad):
         raise NotImplementedError("p4 property is not implemented for lines")
 
     @p4.setter
-    def p4(self, value: tuple[float, float]) -> NoReturn:
+    def p4(self, value: Tuple[float, float]) -> NoReturn:
         raise NotImplementedError("p4 property is not implemented for lines")
 
     @property
-    def transparency(self) -> float | tuple[float, float] | tuple[float, float, float, float]:
+    def transparency(self) -> Union[float, Tuple[float, float], Tuple[float, float, float, float]]:
         """
         The transparency of the object at each vertex between 0 (transpareny) and 1 (opaque)
 
@@ -86,5 +87,5 @@ class Line(Quad):
         return self._renderable.transparency
 
     @transparency.setter
-    def transparency(self, value: float | tuple[float, float] | tuple[float, float, float, float]) -> None:
+    def transparency(self, value: Union[float, Tuple[float, float], Tuple[float, float, float, float]]) -> None:
         self._renderable.transparency = value

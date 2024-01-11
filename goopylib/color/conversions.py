@@ -28,7 +28,7 @@ def rgb_to_hex(red: int, green: int, blue: int) -> str:
     return _conversions.rgb_to_hex(red, green, blue)
 
 
-def rgb_to_cmyk(red: int, green: int, blue: int) -> tuple[float, float, float, float]:
+def rgb_to_cmyk(red: int, green: int, blue: int) -> Tuple[float, float, float, float]:
     """
     Converts a color from RGB to CMYK
 
@@ -46,7 +46,7 @@ def rgb_to_cmyk(red: int, green: int, blue: int) -> tuple[float, float, float, f
     return _conversions.rgb_to_cmyk(red, green, blue)
 
 
-def rgb_to_hsl(red: int, green: int, blue: int) -> tuple[int, float, float]:
+def rgb_to_hsl(red: int, green: int, blue: int) -> Tuple[int, float, float]:
     """
     Converts a color from RGB to HSL
 
@@ -64,7 +64,7 @@ def rgb_to_hsl(red: int, green: int, blue: int) -> tuple[int, float, float]:
     return _conversions.rgb_to_hsl(red, green, blue)
 
 
-def rgb_to_hsv(red: int, green: int, blue: int) -> tuple[int, float, float]:
+def rgb_to_hsv(red: int, green: int, blue: int) -> Tuple[int, float, float]:
     """
     Converts a color from RGB to HSV
 
@@ -84,7 +84,7 @@ def rgb_to_hsv(red: int, green: int, blue: int) -> tuple[int, float, float]:
 
 # Hex to other format
 
-def hex_to_rgb(hexstring: str) -> tuple[int, int, int]:
+def hex_to_rgb(hexstring: str) -> Tuple[int, int, int]:
     """
     Converts a color hexstring to RGB
 
@@ -100,7 +100,7 @@ def hex_to_rgb(hexstring: str) -> tuple[int, int, int]:
     return _conversions.hex_to_rgb(hexstring)
 
 
-def hex_to_cmyk(hexstring: str) -> tuple[float, float, float, float]:
+def hex_to_cmyk(hexstring: str) -> Tuple[float, float, float, float]:
     """
     Converts a color hexstring to CMYK
 
@@ -116,7 +116,7 @@ def hex_to_cmyk(hexstring: str) -> tuple[float, float, float, float]:
     return _conversions.hex_to_cmyk(hexstring)
 
 
-def hex_to_hsv(hexstring: str) -> tuple[int, float, float]:
+def hex_to_hsv(hexstring: str) -> Tuple[int, float, float]:
     """
     Converts a color hexstring to HSV
 
@@ -132,7 +132,7 @@ def hex_to_hsv(hexstring: str) -> tuple[int, float, float]:
     return _conversions.hex_to_hsv(hexstring)
 
 
-def hex_to_hsl(hexstring: str) -> tuple[int, float, float]:
+def hex_to_hsl(hexstring: str) -> Tuple[int, float, float]:
     """
     Converts a color hexstring to HSL
 
@@ -150,7 +150,7 @@ def hex_to_hsl(hexstring: str) -> tuple[int, float, float]:
 
 # CMYK to other format
 
-def cmyk_to_rgb(cyan: float, magenta: float, yellow: float, key: float) -> tuple[int, int, int]:
+def cmyk_to_rgb(cyan: float, magenta: float, yellow: float, key: float) -> Tuple[int, int, int]:
     """
     Converts a color from CMYK to RGB
 
@@ -188,7 +188,7 @@ def cmyk_to_hex(cyan: float, magenta: float, yellow: float, key: float) -> str:
     return _conversions.cmyk_to_hex(cyan, magenta, yellow, key)
 
 
-def cmyk_to_hsv(cyan: float, magenta: float, yellow: float, key: float) -> tuple[int, float, float]:
+def cmyk_to_hsv(cyan: float, magenta: float, yellow: float, key: float) -> Tuple[int, float, float]:
     """
     Converts a color from CMYK to HSV
 
@@ -207,7 +207,7 @@ def cmyk_to_hsv(cyan: float, magenta: float, yellow: float, key: float) -> tuple
     return _conversions.cmyk_to_hsv(cyan, magenta, yellow, key)
 
 
-def cmyk_to_hsl(cyan: float, magenta: float, yellow: float, key: float) -> tuple[int, float, float]:
+def cmyk_to_hsl(cyan: float, magenta: float, yellow: float, key: float) -> Tuple[int, float, float]:
     """
     Converts a color from CMYK to HSL
 
@@ -229,7 +229,7 @@ def cmyk_to_hsl(cyan: float, magenta: float, yellow: float, key: float) -> tuple
 # HSV to other format
 
 
-def hsv_to_rgb(hue: int, saturation: float, value: float) -> tuple[int, int, int]:
+def hsv_to_rgb(hue: int, saturation: float, value: float) -> Tuple[int, int, int]:
     """
     Converts a color from HSV to RGB
 
@@ -265,7 +265,7 @@ def hsv_to_hex(hue: int, saturation: float, value: float) -> str:
     return _conversions.hsv_to_hex(hue, saturation, value)
 
 
-def hsv_to_cmyk(hue: int, saturation: float, value: float) -> tuple[float, float, float, float]:
+def hsv_to_cmyk(hue: int, saturation: float, value: float) -> Tuple[float, float, float, float]:
     """
     Converts a color from HSV to CMYK
 
@@ -283,7 +283,7 @@ def hsv_to_cmyk(hue: int, saturation: float, value: float) -> tuple[float, float
     return _conversions.hsv_to_cmyk(hue, saturation, value)
 
 
-def hsv_to_hsl(hue: int, saturation: float, value: float) -> tuple[int, float, float]:
+def hsv_to_hsl(hue: int, saturation: float, value: float) -> Tuple[int, float, float]:
     """
     Converts a color from HSV to HSL
 
@@ -304,7 +304,7 @@ def hsv_to_hsl(hue: int, saturation: float, value: float) -> tuple[int, float, f
 # HSV to other format
 
 
-def hsl_to_rgb(hue: int, saturation: float, luminance: float) -> tuple[int, int, int]:
+def hsl_to_rgb(hue: int, saturation: float, luminance: float) -> Tuple[int, int, int]:
     """
     Converts a color from HSL to RGB
 
@@ -340,7 +340,7 @@ def hsl_to_hex(hue: int, saturation: float, luminance: float) -> str:
     return _conversions.hsl_to_hex(hue, saturation, luminance)
 
 
-def hsl_to_cmyk(hue: int, saturation: float, luminance: float) -> tuple[float, float, float, float]:
+def hsl_to_cmyk(hue: int, saturation: float, luminance: float) -> Tuple[float, float, float, float]:
     """
     Converts a color from HSL to CMYK
 
@@ -358,7 +358,7 @@ def hsl_to_cmyk(hue: int, saturation: float, luminance: float) -> tuple[float, f
     return _conversions.hsl_to_cmyk(hue, saturation, luminance)
 
 
-def hsl_to_hsv(hue: int, saturation: float, luminance: float) -> tuple[int, float, float]:
+def hsl_to_hsv(hue: int, saturation: float, luminance: float) -> Tuple[int, float, float]:
     """
     Converts a color from HSL to HSV
 

@@ -3,6 +3,7 @@ Module with functions to manage goopylib's layout engine
 """
 
 from __future__ import annotations
+from typing import List, Optional
 
 from goopylib.layout import align_offset_funcs
 from .div import Div
@@ -148,7 +149,7 @@ def _process_flex_items(div: Div, flex: Flex) -> None:
         _process_flex_items(child, child.flex)
 
 
-def _get_order_sorted_children(div: Div) -> list[Div]:
+def _get_order_sorted_children(div: Div) -> List[Div]:
     children = sorted(div.children, key=lambda child: child.flex.order)
 
     if div.flex.wrap == "reverse":
@@ -156,7 +157,7 @@ def _get_order_sorted_children(div: Div) -> list[Div]:
     return children
 
 
-def _main_align_row(flex: Flex, direction: int, whitespace: int, items: list[Div]) -> None:
+def _main_align_row(flex: Flex, direction: int, whitespace: int, items: List[Div]) -> None:
     whitespace = _process_flex_grow(flex, whitespace, items)
     if whitespace < 1:
         return
@@ -175,7 +176,7 @@ def _main_align_row(flex: Flex, direction: int, whitespace: int, items: list[Div
         shift(child, offset(i))
 
 
-def _process_flex_grow(flex: Flex, whitespace: int, items: list[Div]) -> int:
+def _process_flex_grow(flex: Flex, whitespace: int, items: List[Div]) -> int:
     if whitespace < 1:
         return whitespace
 
@@ -201,7 +202,7 @@ def _process_flex_grow(flex: Flex, whitespace: int, items: list[Div]) -> int:
     return whitespace
 
 
-def _cross_align(flex: Flex, whitespace: int, items: list[list[Div]]) -> None:
+def _cross_align(flex: Flex, whitespace: int, items: List[List[Div]]) -> None:
     if whitespace < 1:
         return
     if flex.cross_align == "start":
@@ -219,7 +220,7 @@ def _cross_align(flex: Flex, whitespace: int, items: list[list[Div]]) -> None:
             shift(child, offset(i))
 
 
-def _cross_align_items_line(flex: Flex, line_size: int, items: list[Div]) -> None:
+def _cross_align_items_line(flex: Flex, line_size: int, items: List[Div]) -> None:
     if flex.item_align == "start":
         return
 
@@ -241,7 +242,7 @@ def _cross_align_items_line(flex: Flex, line_size: int, items: list[Div]) -> Non
         shift(child, offset)
 
 
-def _get_auto_width(div: Div, attr: None | str) -> int:
+def _get_auto_width(div: Div, attr: Optional[str]) -> int:
     if attr == "min_width":
         return -1
     if len(div.children) == 0:
@@ -259,7 +260,7 @@ def _get_auto_width(div: Div, attr: None | str) -> int:
     return div.padding.x + sum(children_sizes) + div.flex.column_gap * (len(div.children) - 1)
 
 
-def _get_auto_height(div: Div, attr: None | str) -> int:
+def _get_auto_height(div: Div, attr: Optional[str]) -> int:
     if attr == "min_height":
         return -1
     if len(div.children) == 0:
@@ -309,7 +310,7 @@ _rendered_width_cache = {None: {}, "min_width": {}, "max_width": {}}
 _rendered_height_cache = {None: {}, "min_height": {}, "max_height": {}}
 
 
-def _get_rendered_width(div: Div, attr: None | str = None) -> int:
+def _get_rendered_width(div: Div, attr: Optional[str] = None) -> int:
     cached = _rendered_width_cache[attr].get(div)
     if cached is not None:
         return cached
@@ -344,7 +345,7 @@ def _get_clamped_width(div: Div, width: int) -> int:
     return width
 
 
-def _width_percentage_to_pixels(div: Div, attr: None | str, width: _Dimension) -> int:
+def _width_percentage_to_pixels(div: Div, attr: Optional[str], width: _Dimension) -> int:
     if attr == "max_width" and (div.parent is None or div.parent.width.unit == "auto"):
         return 2147483647
     if div.parent is None:
@@ -356,7 +357,7 @@ def _width_percentage_to_pixels(div: Div, attr: None | str, width: _Dimension) -
     return min((width * parent_content_width) // 100, parent_content_width - div.margin.x)
 
 
-def _get_rendered_height(div: Div, attr: None | str = None) -> int:
+def _get_rendered_height(div: Div, attr: Optional[str] = None) -> int:
     cached = _rendered_height_cache[attr].get(div)
     if cached:
         return cached
@@ -391,7 +392,7 @@ def _get_clamped_height(div: Div, height: int) -> int:
     return height
 
 
-def _height_percentage_to_pixels(div: Div, attr: None | str, height: _Dimension) -> int:
+def _height_percentage_to_pixels(div: Div, attr: Optional[str], height: _Dimension) -> int:
     if attr == "max_height" and (div.parent is None or div.parent.height.unit == "auto"):
         return 2147483647
     if div.parent is None:

@@ -37,7 +37,7 @@ class Rectangle(Quad):
     """
 
     # pylint: disable-next=super-init-not-called
-    def __init__(self, p1: tuple[float, float], *args: Union[tuple[float, float], float]) -> None:
+    def __init__(self, p1: Tuple[float, float], *args: Union[Tuple[float, float], float]) -> None:
         """
         An object representing a rectangle
 

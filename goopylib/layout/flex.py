@@ -3,7 +3,7 @@ Flex propreties object for the layout engine
 """
 
 from __future__ import annotations
-from typing import Literal
+from typing import Literal, Optional
 
 
 # pylint: disable=invalid-name
@@ -32,7 +32,7 @@ class Flex:
 
                  order: int = 0,
                  grow: float = 0,
-                 cross_align_self: None | _FLEX_ALIGN_TYPE = None) -> None:
+                 cross_align_self: Optional[_FLEX_ALIGN_TYPE] = None) -> None:
         """
         A class storing a container's flex properties
         
@@ -161,12 +161,12 @@ class Flex:
         self._grow = value
 
     @property
-    def cross_align_self(self) -> None | _FLEX_ALIGN_TYPE:
+    def cross_align_self(self) -> Optional[_FLEX_ALIGN_TYPE]:
         """
         Alignment of this container along the secondary axis to override parent's "item_align" property
         """
         return self._cross_align_self
 
     @cross_align_self.setter
-    def cross_align_self(self, value: None | _FLEX_ALIGN_TYPE):
+    def cross_align_self(self, value: Optional[_FLEX_ALIGN_TYPE]):
         self._cross_align_self = value

@@ -3,6 +3,7 @@ Module defining the container class for goopylib's layout engine
 """
 
 from __future__ import annotations
+from typing import List, Tuple, Union, Optional
 
 from .flex import Flex
 from ._internal import _Box, _LRTB, _Dimension, _LRTB_SETTER_TYPE
@@ -13,20 +14,20 @@ class Div:
     The container class
     """
 
-    _context_tree: list[Div] = []
-    _instances: list[Div] = []  # could consider making a dictionary
+    _context_tree: List[Div] = []
+    _instances: List[Div] = []  # could consider making a dictionary
 
     def __init__(self,
-                 width: int | str,
-                 height: int | str,
+                 width: Union[int, str],
+                 height: Union[int, str],
                  margin: _LRTB_SETTER_TYPE = (0, 0, 0, 0),
                  padding: _LRTB_SETTER_TYPE = (0, 0, 0, 0),
                  flex: Flex = Flex("nowrap", "start", "start"),
-                 min_width: int | str = "auto",
-                 min_height: int | str = "auto",
-                 max_width: int | str = "100%",
-                 max_height: int | str = "100%",
-                 classes: str | list[str] = "") -> None:
+                 min_width: Union[int, str] = "auto",
+                 min_height: Union[int, str] = "auto",
+                 max_width: Union[int, str] = "100%",
+                 max_height: Union[int, str] = "100%",
+                 classes: Union[str, List[str]] = "") -> None:
         """
         The container class
 
@@ -59,13 +60,13 @@ class Div:
 
         self._flex = flex
 
-        self._children: list[Div] = []
-        self._parent: None | Div = Div._context_tree[-1] if len(Div._context_tree) > 0 else None
+        self._children: List[Div] = []
+        self._parent: Optional[Div] = Div._context_tree[-1] if len(Div._context_tree) > 0 else None
         if self._parent:
             self._parent._add_child(self)
 
         Div._instances.append(self)
-        self._classes: list[str] = classes.copy() if isinstance(classes, list) else classes.split()
+        self._classes: List[str] = classes.copy() if isinstance(classes, list) else classes.split()
         self._layer: int = self._parent.layer + 1 if self._parent else 0
 
         # rendered attributes
@@ -137,7 +138,7 @@ class Div:
         return self._width
 
     @width.setter
-    def width(self, value: int | str) -> None:
+    def width(self, value: Union[int, str]) -> None:
         self._width = _Dimension(value)
 
     @property
@@ -148,7 +149,7 @@ class Div:
         return self._height
 
     @height.setter
-    def height(self, value: int | str) -> None:
+    def height(self, value: Union[int, str]) -> None:
         self._height = _Dimension(value)
 
     @property
@@ -159,7 +160,7 @@ class Div:
         return self._min_width
 
     @min_width.setter
-    def min_width(self, value: int | str) -> None:
+    def min_width(self, value: Union[int, str]) -> None:
         self._min_width = _Dimension(value)
 
     @property
@@ -170,7 +171,7 @@ class Div:
         return self._min_height
 
     @min_height.setter
-    def min_height(self, value: int | str) -> None:
+    def min_height(self, value: Union[int, str]) -> None:
         self._min_height = _Dimension(value)
 
     @property
@@ -181,7 +182,7 @@ class Div:
         return self._max_width
 
     @max_width.setter
-    def max_width(self, value: int | str) -> None:
+    def max_width(self, value: Union[int, str]) -> None:
         self._max_width = _Dimension(value)
 
     @property
@@ -192,11 +193,11 @@ class Div:
         return self._max_height
 
     @max_height.setter
-    def max_height(self, value: int | str) -> None:
+    def max_height(self, value: Union[int, str]) -> None:
         self._max_height = _Dimension(value)
 
     @property
-    def classes(self) -> list[str]:
+    def classes(self) -> List[str]:
         """
         The list of styling classes assigned to the container
         """
@@ -210,14 +211,14 @@ class Div:
         return self._layer
 
     @property
-    def children(self) -> tuple[Div, ...]:
+    def children(self) -> Tuple[Div, ...]:
         """
         A tuple of all children containers
         """
         return tuple(self._children)
 
     @property
-    def parent(self) -> Div | None:
+    def parent(self) -> Union[Div, None]:
         """
         The parent container (or None)
         """
@@ -291,7 +292,7 @@ class Div:
         self.content_box.y2 += dy
 
     @staticmethod
-    def get_instances() -> tuple[Div, ...]:
+    def get_instances() -> Tuple[Div, ...]:
         """
         A tuple of all container instances
         """

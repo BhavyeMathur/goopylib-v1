@@ -4,7 +4,7 @@ Module that defines the Window class.
 
 from __future__ import annotations
 
-from typing import Union
+from typing import Union, Tuple
 
 # pylint: disable=import-error
 # pylint: disable=no-name-in-module
@@ -189,7 +189,7 @@ class Window:
         self._window.ypos = value
 
     @property
-    def position(self) -> tuple[int, int]:
+    def position(self) -> Tuple[int, int]:
         """
         An (x, y) tuple representing the position of the top-left of the window on the screen.
 
@@ -203,7 +203,7 @@ class Window:
         return self._window.position
 
     @position.setter
-    def position(self, value: tuple[int, int]) -> None:
+    def position(self, value: Tuple[int, int]) -> None:
         self._window.position = value
 
     # Background Color
@@ -408,7 +408,7 @@ class Window:
         """
         self._window.set_aspect_ratio(numerator, denominator)
 
-    def get_aspect_ratio(self) -> tuple[int, int]:
+    def get_aspect_ratio(self) -> Tuple[int, int]:
         """
         Gets the current aspect ratio of the window.
 
@@ -420,7 +420,7 @@ class Window:
         """
         return self._window.get_aspect_ratio()
 
-    def get_frame_size(self) -> tuple[int, int, int, int]:
+    def get_frame_size(self) -> Tuple[int, int, int, int]:
         """
         Gets the size, in screen coordinates, of the window frame.
 
@@ -439,7 +439,7 @@ class Window:
         """
         return self._window.get_frame_size()
 
-    def get_content_scale(self) -> tuple[float, float]:
+    def get_content_scale(self) -> Tuple[float, float]:
         """
         Gets the scale of the content on the window.
 
@@ -455,7 +455,7 @@ class Window:
         """
         return self._window.get_content_scale()
 
-    def get_framebuffer_size(self) -> tuple[int, int]:
+    def get_framebuffer_size(self) -> Tuple[int, int]:
         """
         The size of the framebuffer for the window.
         
@@ -728,7 +728,7 @@ class Window:
         """
         return self._window.is_mouse_hovering()
 
-    def get_mouse_position(self) -> tuple[float, float]:
+    def get_mouse_position(self) -> Tuple[float, float]:
         """
         Returns:
             a tuple (xpos, ypos) with the position of the mouse cursor in world coordinates
@@ -1338,7 +1338,7 @@ class Window:
         """
         return self._camera
 
-    def to_world(self, x: float, y: float) -> tuple[float, float]:
+    def to_world(self, x: float, y: float) -> Tuple[float, float]:
         """
         Converts coordinates in screen space to world space.
 
@@ -1356,7 +1356,7 @@ class Window:
         """
         return self._window.to_world(x, y)
 
-    def to_screen(self, x: float, y: float) -> tuple[float, float]:
+    def to_screen(self, x: float, y: float) -> Tuple[float, float]:
         """
         Converts coordinates in world space to screen space.
 

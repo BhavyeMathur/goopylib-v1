@@ -3,13 +3,13 @@ Internal classes used for processing goopylib layouts
 """
 
 from __future__ import annotations
-from typing import Union, Literal, get_args
+from typing import Union, Literal, Tuple, get_args
 
 # pylint: disable=invalid-name
 # pylint: disable=unsubscriptable-object
 
 _UNITS = Literal["px", "%", "auto"]
-_LRTB_SETTER_TYPE = Union[int, tuple[int], tuple[int, int], tuple[int, int, int], tuple[int, int, int, int]]
+_LRTB_SETTER_TYPE = Union[int, Tuple[int], Tuple[int, int], Tuple[int, int, int], Tuple[int, int, int, int]]
 
 # pylint: enable=invalid-name
 
@@ -204,14 +204,14 @@ class _Box:
         self._height = value
 
     @property
-    def start(self) -> tuple[int, int]:
+    def start(self) -> Tuple[int, int]:
         """
         The start coordinates (x, y) of the box
         """
         return self._x1, self._y1
 
     @property
-    def end(self) -> tuple[int, int]:
+    def end(self) -> Tuple[int, int]:
         """
         The end coordinates (x, y) of the box
         """
@@ -232,11 +232,11 @@ class _Box:
 
 
 class _Dimension(int):
-    def __new__(cls, value: int | str) -> int:
+    def __new__(cls, value: Union[int, str]) -> int:
         x = int.__new__(cls, _Dimension._parse_dimension(value)[0])
         return x
 
-    def __init__(self, value: int | str):
+    def __init__(self, value: Union[int, str]):
         self._dimension, self._unit = _Dimension._parse_dimension(value)
         super().__init__()
 
@@ -248,7 +248,7 @@ class _Dimension(int):
         return self._unit
 
     @staticmethod
-    def _parse_dimension(dim: str | int) -> tuple[int, _UNITS]:
+    def _parse_dimension(dim: Union[int, str]) -> Tuple[int, _UNITS]:
         if dim == "auto":
             return 0, "auto"
 

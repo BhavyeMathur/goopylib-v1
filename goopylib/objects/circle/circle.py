@@ -23,7 +23,7 @@ class Circle(Ellipse):
     """
 
     # pylint: disable-next=super-init-not-called
-    def __init__(self, position: tuple[float, float], radius: float) -> None:
+    def __init__(self, position: Tuple[float, float], radius: float) -> None:
         """
         An object representing a circle
 

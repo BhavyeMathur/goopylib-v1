@@ -47,7 +47,7 @@ class Image(Rectangle):
     """
 
     # pylint: disable-next=super-init-not-called
-    def __init__(self, path: str, p1: tuple[float, float], *args: Union[tuple[float, float], float]) -> None:
+    def __init__(self, path: str, p1: Tuple[float, float], *args: Union[Tuple[float, float], float]) -> None:
         """
         An object representing a textured rectangle - an image
 
