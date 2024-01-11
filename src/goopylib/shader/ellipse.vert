@@ -14,7 +14,9 @@ out vec4 Color;
 out vec2 LocalCoord;
 
 void main() {
-    gl_Position = ProjectionViewMatrix * vec4(point.x, point.y, z, 1.0f);
+    vec4 position = ProjectionViewMatrix * vec4(point, 0.0f, 1.0f);
+    gl_Position = vec4(position.xy, z, 1.0f);
+
     Color = color;
     LocalCoord = localCoord;
 }

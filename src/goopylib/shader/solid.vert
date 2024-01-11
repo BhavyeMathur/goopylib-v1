@@ -12,7 +12,9 @@ layout (std140) uniform Projection {
 out vec4 Color;
 
 void main() {
-    gl_Position = ProjectionViewMatrix * vec4(point, z, 1.0f);
+    vec4 position = ProjectionViewMatrix * vec4(point, 0.0f, 1.0f);
+    gl_Position = vec4(position.xy, z, 1.0f);
+
     Color = color;
 }
 )"";
