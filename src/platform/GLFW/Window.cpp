@@ -46,7 +46,10 @@ namespace gp {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
+        glDepthFunc(GL_GEQUAL);
+
+        glClearDepth(0);
+        glDepth
 
         s_Instances.push_back(this);
     }
