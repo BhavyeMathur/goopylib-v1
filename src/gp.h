@@ -6,8 +6,6 @@
 #include <functional>
 #include <iostream>
 
-#define GP_BUILD_DLL
-
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 
 #define __WINDOWS__ true
@@ -22,9 +20,14 @@
 
 #endif
 
-#if defined(_WIN32) && defined(GP_BUILD_DLL)
+#if defined(_WIN32)
 /* We are building goopylib as a Win32 DLL */
+#if defined(GP_BUILD_DLL)
 #define GPAPI __declspec(dllexport)
+#else
+#define GPAPI __declspec(dllimport)
+#endif
+
 #elif defined(_WIN32) && defined(GP_DLL)
 /* We are calling a goopylib Win32 DLL */
 #define GPAPI __declspec(dllimport)

@@ -5,7 +5,7 @@ import setuptools
 
 from setup import find_extensions, check_version, RUNTIME_LIBRARY_DIRS
 
-if os.getcwd().endswith("goopylib/tools"):
+if os.getcwd().endswith("tools"):
     os.chdir("..")
 
 check_version()

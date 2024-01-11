@@ -1,4 +1,6 @@
 #include "ColorRGB.h"
+#include "ColorConversions.h"
+
 
 namespace gp::rgb {
     const char *toHex(int red, int green, int blue) {
