@@ -28,7 +28,7 @@ namespace gp {
 
         GPAPI ~Rectangle() override = default;
 
-        GPAPI std::string toString() const override;
+        [[nodiscard]] GPAPI std::string toString() const override;
 
         GPAPI void setP1(Point point) override;
 

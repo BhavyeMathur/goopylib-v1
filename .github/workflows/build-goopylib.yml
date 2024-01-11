@@ -64,7 +64,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   build-source-distribution:
-    name: Build ${{ matrix.os }} Python wheels
+    name: Build source distribution
     runs-on: ubuntu-latest
 
     steps:

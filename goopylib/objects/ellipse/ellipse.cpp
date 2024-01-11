@@ -158,7 +158,7 @@ namespace ellipse {
 
         GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -1, "transparency must be between 0 and 1")
 
-        self->ellipse->setTransparency(PyFloat_AsDouble(value));
+        self->ellipse->setTransparency((float) PyFloat_AsDouble(value));
         return 0;
     }
 }

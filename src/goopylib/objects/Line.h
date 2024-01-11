@@ -24,7 +24,7 @@ namespace gp {
 
         GPAPI ~Line() override = default;
 
-        GPAPI std::string toString() const override;
+        [[nodiscard]] GPAPI std::string toString() const override;
 
         /**
          * Sets the outline color of the line

@@ -34,7 +34,7 @@ namespace gp {
          */
         GPAPI TexturedQuad(std::string texture, const Ref<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4);
 
-        GPAPI std::string toString() const override;
+        [[nodiscard]] GPAPI std::string toString() const override;
 
         [[nodiscard]] GPAPI std::string getTextureName() const;
 

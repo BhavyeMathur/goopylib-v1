@@ -187,7 +187,7 @@ namespace triangle {
 
         GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -2, "transparency must be between 0 and 1")
 
-        self->triangle->setTransparency(PyFloat_AsDouble(value));
+        self->triangle->setTransparency((float) PyFloat_AsDouble(value));
         return 0;
     }
 }

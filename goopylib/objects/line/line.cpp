@@ -167,7 +167,7 @@ namespace line {
 
         GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -2, "transparency must be between 0 and 1")
 
-        self->line->setTransparency(PyFloat_AsDouble(value));
+        self->line->setTransparency((float) PyFloat_AsDouble(value));
         return 0;
     }
 }

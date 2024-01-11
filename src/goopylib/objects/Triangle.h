@@ -23,7 +23,7 @@ namespace gp {
 
         GPAPI virtual ~Triangle() = default;
 
-        GPAPI std::string toString() const override;
+        [[nodiscard]] GPAPI std::string toString() const override;
 
         /**
          * Sets the fill color of the triangle

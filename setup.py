@@ -67,14 +67,14 @@ def check_version():
 
 
 if sys.platform == "darwin":
-    compile_args = ["-std=c++17", "-Wno-macro-redefined", "-Wno-unused-function", "-Wno-unknown-pragmas", "-O0"]
+    compile_args = ["-std=c++17", "-Wno-macro-redefined", "-Wno-unused-function", "-Wno-unknown-pragmas"]
     compile_args += ["-Wno-deprecated-volatile"]  # suppress warnings caused by glm
 
     library_dirs = ["binaries/lib-macos"]
     data_files = []
 
 elif sys.platform == "win32":
-    compile_args = ["/wd4005"]  # suppress macro-redefinition warning
+    compile_args = ["/wd4005", "/wd4068"]  # suppress macro-redefinition & unknown pragma warnings
     library_dirs = ["binaries/lib-vc2022/Release/"]  # TODO figure out how to remove Release folder
     data_files = [("goopylib", ["binaries/lib-vc2022/Release/goopylib.dll"])]
 
