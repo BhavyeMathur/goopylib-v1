@@ -18,7 +18,7 @@ namespace gp {
             m_Height(height),
             m_Title(title),
             m_Background(Color(255, 255, 255)),
-            m_Camera(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f),
+            m_Camera((float) -width / 2.0f, (float) width / 2.0f, (float) -height / 2.0f, (float) height / 2.0f),
             m_Renderer(window),
             m_AlphaRenderer(window) {
 
@@ -69,7 +69,7 @@ namespace gp {
     void RenderingManager::setWidth(int value) {
         GP_CORE_DEBUG("gp::RenderingManager::setWidth({1}) - '{0}'", m_Title, value);
 
-        GP_CHECK_GT(value, 0, "Window width must be greater than 0");
+        GP_CHECK_GT(value, 0, "Window width must be greater than 0")
 
         m_Width = value;
         _updateSize();
@@ -84,7 +84,7 @@ namespace gp {
     void RenderingManager::setHeight(int value) {
         GP_CORE_DEBUG("gp::RenderingManager::setHeight({1}) - '{0}'", m_Title, value);
 
-        GP_CHECK_GT(value, 0, "Window height must be greater than 0");
+        GP_CHECK_GT(value, 0, "Window height must be greater than 0")
 
         m_Height = value;
         _updateSize();

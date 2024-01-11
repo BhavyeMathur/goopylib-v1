@@ -6,7 +6,7 @@ import sys
 
 if sys.platform == "win32":
     import os
-    os.add_dll_directory(f"{sys.prefix}/goopylib")
+    # os.add_dll_directory(f"{sys.prefix}/goopylib")
 
 # pylint: disable=wrong-import-position
 
