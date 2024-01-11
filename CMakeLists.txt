@@ -129,11 +129,10 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             )
 
 if (MSVC)
-    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
-    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
-    set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
-
-    set_target_properties(goopylib PROPERTIES PREFIX ../)
+    set_target_properties(goopylib PROPERTIES
+                          RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME}/$<0:>
+                          LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME}/$<0:>
+                          ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME}/$<0:>)
 endif ()
 
 if (APPLE)
