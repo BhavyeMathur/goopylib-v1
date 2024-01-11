@@ -30,7 +30,8 @@ namespace gp {
     }
 
     CameraFrame Camera::getVisibleFrame() const {
-        return {m_Left / m_Zoom, m_Right / m_Zoom, m_Bottom / m_Zoom, m_Top / m_Zoom};
+        return {(m_Left + m_Position.x) / m_Zoom, (m_Right + m_Position.x) / m_Zoom,
+                (m_Bottom + m_Position.y) / m_Zoom, (m_Top + m_Position.y) / m_Zoom};
     }
 
     CameraFrame Camera::getProjectionFrame() const {
