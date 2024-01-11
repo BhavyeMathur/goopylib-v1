@@ -112,30 +112,6 @@ namespace triangle {
         self->triangle->setColor(*((ColorObject *) color1)->color);
         Py_RETURN_NONE;
     }
-
-    PyObject *set_transparency(TriangleObject *self, PyObject *args) {
-        GP_PY_DEBUG("gp.triangle.Triangle.set_transparency({0})", PyUnicode_AsUTF8(PyObject_Repr(args)));
-
-        float v1, v2, v3;
-        if (PyArg_ParseTuple(args, "fff", &v1, &v2, &v3)) {
-            GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, nullptr, "transparency must be between 0 and 1")
-            GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, nullptr, "transparency must be between 0 and 1")
-
-            self->triangle->setTransparency(v1, v2, v3);
-            Py_RETURN_NONE;
-        }
-        PyErr_Clear();
-
-        if (!PyArg_ParseTuple(args, "f", &v1)) {
-            return nullptr;
-        }
-
-        GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, nullptr, "transparency must be between 0 and 1")
-
-        self->triangle->setTransparency(v1);
-        Py_RETURN_NONE;
-    }
 }
 
 // Triangle Getters & Setters
@@ -211,7 +187,7 @@ namespace triangle {
 
         GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -2, "transparency must be between 0 and 1")
 
-        self->triangle->setTransparency(v1);
+        self->triangle->setTransparency(PyFloat_AsDouble(value));
         return 0;
     }
 }

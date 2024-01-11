@@ -18,7 +18,7 @@ class Brick(gp.Rectangle):
 
     def hit(self):
         self.hits += 1
-        self.set_transparency(1 - 0.25 * self.hits)
+        self.transparency = 1 - 0.25 * self.hits
 
 
 class Ball(gp.Circle):
@@ -76,7 +76,7 @@ def setup_window():
     window.set_min_size(600, 400)
     window.set_aspect_ratio(900, 600)
 
-    gp.Image(f"{PATH}/vignette.png", (0, 0), 900, 600).draw(window).set_transparency(0.3, 0.3, 0.8, 0.8)
+    gp.Image(f"{PATH}/vignette.png", (0, 0), 900, 600).draw(window).transparency = (0.3, 0.3, 0.8, 0.8)
 
     return window
 
@@ -148,12 +148,12 @@ def main():
         while window.is_open() and not window.check_left_click():
             if transparency < 1:
                 transparency += 0.02
-                ball.set_transparency(transparency)
+                ball.transparency = transparency
 
             controller.update()
             gp.update()
 
-        ball.set_transparency(1)
+        ball.transparency = 1
 
     def gameover_animation():
         ball.destroy()

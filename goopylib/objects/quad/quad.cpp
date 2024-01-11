@@ -144,7 +144,7 @@ namespace quad {
 
         GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, -2, "transparency must be between 0 and 1")
 
-        self->quad->setTransparency(v1);
+        self->quad->setTransparency(PyFloat_AsDouble(value));
         return 0;
     }
 }

@@ -2,10 +2,8 @@
 
 namespace triangle {
     static PyMethodDef methods[] = {
-            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
+            {"set_color", (PyCFunction) set_color, METH_VARARGS,
                     "Sets the color of the object"},
-            {"set_transparency", (PyCFunction) set_transparency, METH_VARARGS,
-                    "Sets the transparency of the object"},
 
             {nullptr}
     };

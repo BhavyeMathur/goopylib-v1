@@ -2,7 +2,7 @@
 
 namespace line {
     static PyMethodDef methods[] = {
-            {"set_color",        (PyCFunction) set_color,        METH_VARARGS,
+            {"set_color", (PyCFunction) set_color, METH_VARARGS,
                     "Sets the color of the object"},
 
             {nullptr}
