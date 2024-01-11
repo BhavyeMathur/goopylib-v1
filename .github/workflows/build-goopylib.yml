@@ -1,4 +1,4 @@
-# This workflow builds a shared library for goopylib using CMake
+# This workflow builds a shared library for goopylib using CMake & Python wheels
 
 name: "Build Binary & Wheels"
 run-name: ${{ github.actor }} building goopylib

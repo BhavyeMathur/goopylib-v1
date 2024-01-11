@@ -1,5 +1,6 @@
 # install dependencies
 python -m pip install build
+python -m pip install twine
 python -m pip install cibuildwheel
 
 # move into goopylib folder

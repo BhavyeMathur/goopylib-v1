@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./branding/logo/goopylib_primary_logo.svg" width="500" height="250">
+  <img src="https://github.com/BhavyeMathur/goopylib/blob/master/branding/logo/goopylib_primary_logo.svg?raw=true" width="500" height="250">
 </div>
 
 [![Downloads](https://static.pepy.tech/badge/goopylib)](https://pepy.tech/project/goopylib)
