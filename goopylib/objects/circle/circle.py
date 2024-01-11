@@ -4,6 +4,8 @@ Module defining a circle object
 
 from __future__ import annotations
 
+from typing import Tuple
+
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.circle as _circle
 

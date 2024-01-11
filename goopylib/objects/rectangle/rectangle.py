@@ -4,7 +4,7 @@ Module defining a rectangle object
 
 from __future__ import annotations
 
-from typing import Union
+from typing import Union, Tuple
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.rectangle as _rectangle

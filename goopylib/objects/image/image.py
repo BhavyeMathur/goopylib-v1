@@ -4,7 +4,7 @@ Module defining an image object
 
 from __future__ import annotations
 
-from typing import Union
+from typing import Union, Tuple
 from os.path import isabs, dirname
 
 import __main__

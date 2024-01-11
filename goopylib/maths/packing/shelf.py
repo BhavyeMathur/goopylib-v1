@@ -7,7 +7,7 @@ See https://pds25.egloos.com/pds/201504/21/98/RectangleBinPack.pdf
 
 from __future__ import annotations
 
-from typing import Optional, Callable, Iterator
+from typing import Optional, Callable, Iterator, List
 
 from .packing import PackingAlgorithm, SortingFunction, Item, Bin, sort_by_long_side, sort_by_short_side
 
