@@ -16,16 +16,18 @@ cmake-*/
 docs/_build/
 dist/
 *.egg-info/
-*.egg
-*.so
 *.py[cod]
 __pycache__/
 *~
 
+*.pdb
+*.log
+*.egg
+*.so
+
 wheelhouse/
 main.py
 /main.cpp
-*.log
 
 */libglfw.a
 */glfw3.lib
