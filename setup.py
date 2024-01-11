@@ -74,8 +74,8 @@ if sys.platform == "darwin":
 
 elif sys.platform == "win32":
     compile_args = ["/wd4005"]  # suppress macro-redefinition warning
-    library_dirs = ["binaries/lib-vc2022"]
-    data_files = [("goopylib", ["binaries/lib-vc2022/goopylib.dll"])]
+    library_dirs = ["binaries/lib-vc2022/Release/"]  # TODO figure out how to remove Release folder
+    data_files = [("goopylib", ["binaries/lib-vc2022/Release/goopylib.dll"])]
 
 else:
     compile_args = []
