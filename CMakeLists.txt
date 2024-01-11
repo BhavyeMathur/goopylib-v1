@@ -128,12 +128,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             vendor/stb/stb_image_write.cpp
             )
 
-if (MSVC)
-    set_target_properties(goopylib PROPERTIES
-                          RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME}/$<0:>
-                          LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME}/$<0:>
-                          ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME}/$<0:>)
-endif ()
+target_compile_definitions(goopylib PRIVATE GP_BUILD_DLL)
 
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework OpenGL")

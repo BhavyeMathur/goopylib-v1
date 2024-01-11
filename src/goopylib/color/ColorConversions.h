@@ -19,7 +19,7 @@ namespace gp {
          *
          * @return a hexstring in the format "#rrggbb"
          */
-        [[nodiscard]] const char GPAPI *toHex(int red, int green, int blue);
+        [[nodiscard]] GPAPI const char *toHex(int red, int green, int blue);
 
         /**
          * Converts a color from RGB to CMYK
@@ -138,7 +138,7 @@ namespace gp {
          *
          * @return a hexstring in the format "#rrggbb"
          */
-        [[nodiscard]] const char GPAPI *toHex(float cyan, float magenta, float yellow, float key);
+        [[nodiscard]] GPAPI const char *toHex(float cyan, float magenta, float yellow, float key);
 
         /**
          * Converts a color from CMYK to HSL

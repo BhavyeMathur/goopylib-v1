@@ -9,6 +9,9 @@
 void **PyRectangle_API;
 PyTypeObject *RectangleType;
 
+void **PyWindow_API;
+PyTypeObject *WindowType;
+
 static struct PyModuleDef ImageModule = {
         PyModuleDef_HEAD_INIT,
         "image",

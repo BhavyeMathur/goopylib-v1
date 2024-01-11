@@ -14,11 +14,11 @@ namespace gp {
         friend class Renderer;
 
     public:
-        GPAPI Shader() = delete;
+        Shader() = delete;
 
-        GPAPI Shader(const Shader &) = delete;
+        Shader(const Shader &) = delete;
 
-        GPAPI Shader(Shader &&other) = delete;
+        Shader(Shader &&other) = delete;
 
         GPAPI Shader(const char *vertexShaderSource, const char *fragmentShaderSource);
 
@@ -27,7 +27,7 @@ namespace gp {
         GPAPI void setUniformBlock(const UniformBuffer &uniform, const char *name, uint32_t binding) const;
 
         template<typename... T>
-            GPAPI void set(const char *name, T &&... args) {
+            void set(const char *name, T &&... args) {
                 bind();
                 _setUniform(_getLocation(name), std::forward<T>(args)...);
             }
