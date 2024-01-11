@@ -4,7 +4,7 @@ Module defining an Orthographic camera
 
 from __future__ import annotations
 
-from typing import TypedDict, NoReturn
+from typing import TypedDict, NoReturn, Tuple
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.camera as _camera
@@ -212,7 +212,7 @@ class Camera:
         self._camera.y = value
 
     @property
-    def position(self) -> float:
+    def position(self) -> Tuple[float, float]:
         """
         The position of the camera as an (x, y) tuple
 
@@ -222,7 +222,7 @@ class Camera:
         return self._camera.position
 
     @position.setter
-    def position(self, value: float) -> None:
+    def position(self, value: Tuple[float, float]) -> None:
         self._camera.position = value
 
     @property
