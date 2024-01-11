@@ -10,24 +10,24 @@
 ### Above combination will ignore all files without extension ###
 
 # General things to ignore
-build/
-out/
-cmake-*/
-docs/_build/
-dist/
-*.egg-info/
 *.py[cod]
 __pycache__/
-*~
 
 *.pdb
 *.log
 *.egg
 *.so
 
-wheelhouse/
-main.py
-/main.cpp
+cmake-*/
+Release/
+**/libglfw3.a
+**/glfw3.a
 
-*/libglfw.a
-*/glfw3.lib
+wheelhouse/
+build/
+dist/
+*.egg-info/
+docs/_build/
+
+main.py
+main.cpp
