@@ -133,9 +133,7 @@ if (MSVC)
     set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
     set_target_properties(goopylib PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
 
-    set_target_properties(goopylib PROPERTIES DEBUG_POSTFIX “”)
-    set_target_properties(goopylib PROPERTIES RELWITHDEBINFO_POSTFIX “”)
-    set_target_properties(goopylib PROPERTIES RELEASE_POSTFIX “”)
+    set_target_properties(goopylib PROPERTIES PREFIX ../)
 endif ()
 
 if (APPLE)
