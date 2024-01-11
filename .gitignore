@@ -25,6 +25,7 @@ Release/
 
 build/
 dist/
+wheelhouse/
 *.egg-info/
 docs/_build/
 
