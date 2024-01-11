@@ -5,7 +5,7 @@ import warnings
 from setuptools import setup, Extension
 import setuptools
 
-FULLVERSION = "2.0.0.dev5"
+FULLVERSION = "2.0.0.alpha1"
 PYTHON_REQUIRES = (3, 8)
 
 RUNTIME_LIBRARY_DIRS = []
