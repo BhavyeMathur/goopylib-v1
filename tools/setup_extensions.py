@@ -27,7 +27,9 @@ if len(sys.argv) == 1:
     elif option != 1:
         raise ValueError("Unknown option")
 
-    os.system("python tools/setup_extensions.py build")
+    command = f"python tools/setup_extensions.py build --parallel {os.cpu_count()}"
+    print(command)
+    os.system(command)
 else:
     setuptools.setup(ext_modules=find_extensions(),
                      include_dirs=["vendor"],

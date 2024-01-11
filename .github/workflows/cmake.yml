@@ -64,7 +64,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   build-wheels:
-    name: Build ${{ matrix.python }} Python wheels on ${{ matrix.os }}
+    name: Build ${{ matrix.os }} ${{ matrix.python_version }} Python wheels
     runs-on:  ${{ matrix.os }}
     needs: build-cmake
 
@@ -72,7 +72,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ windows-latest, macos-latest ]
-        python_version: [ cp38-*, cp39-*, cp310-*, cp311-*, cp312-* ]
+        python_version: [ cp38-*, cp39-*, cp310-*, cp311-* ]
 
     steps:
       - uses: actions/checkout@v3
