@@ -16,7 +16,7 @@ _column_directions = {"column", "column-reverse"}
 _reverse_directions = {"row-reverse", "column-reverse"}
 
 
-# TODO - Add responsive layouts at different screen sizes
+# TODO - Add responsive layouts at different screen sizes (not for v2.0)
 
 
 def process(div: Div, x: int = 0, y: int = 0, _only_direct: bool = False) -> None:
@@ -351,7 +351,7 @@ def _width_percentage_to_pixels(div: Div, attr: Optional[str], width: _Dimension
     if div.parent is None:
         return 0
     if div.parent.width.unit == "auto":
-        return 0  # TODO ? go through all non-auto sister elements, then figure out %
+        return 0  # TODO ? go through all non-auto sister elements, then figure out % (not for v2.0)
 
     parent_content_width = _get_rendered_width(div.parent) - div.parent.padding.x
     return min((width * parent_content_width) // 100, parent_content_width - div.margin.x)

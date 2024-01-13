@@ -52,7 +52,7 @@ class Div:
         self._max_width = _Dimension(max_width)
         self._max_height = _Dimension(max_height)
 
-        self._margin = _LRTB(0, 0, 0, 0)  # TODO % margin & padding
+        self._margin = _LRTB(0, 0, 0, 0)  # TODO % margin & padding (not for v2.0)
         self._padding = _LRTB(0, 0, 0, 0)
 
         self._margin.set_values(margin)

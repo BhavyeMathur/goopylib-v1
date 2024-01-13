@@ -110,7 +110,7 @@ namespace gp {
 
         Scope<Shader> m_SolidShader;
         Scope<Shader> m_EllipseShader;
-        Scope<Shader> m_TextureShader;  // TODO can we make these non-heap allocated?
+        Scope<Shader> m_TextureShader;  // TODO can we make these non-heap allocated? (v2.0.x)
 
         Scope<UniformBuffer> m_ShaderUniform;
 

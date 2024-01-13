@@ -4,7 +4,7 @@
 
 #include "src/platform/events/MouseCodes.h"
 
-// TODO check_key should return an int. 0 is released, 1 is pressed, 2 is repeat.
+// TODO check_key should return an int. 0 is released, 1 is pressed, 2 is repeat. (v2.0.x)
 // This would involve maintaining an unordered map of key codes to the key state
 // Inside GLFW's key callback, this map would be updated
 

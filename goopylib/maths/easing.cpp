@@ -4,7 +4,7 @@
 #include "easing.h"
 #include "src/goopylib/maths/Easing.h"
 
-// TODO Easing base class
+// TODO Easing base class (not for v2.0)
 
 namespace easing {
     struct EasingObject {

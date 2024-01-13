@@ -49,7 +49,6 @@ namespace gp {
         glDepthFunc(GL_GEQUAL);
 
         glClearDepth(0);
-        glDepth
 
         s_Instances.push_back(this);
     }

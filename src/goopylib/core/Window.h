@@ -8,7 +8,7 @@
 #undef APIENTRY
 #endif
 
-// TODO implement window icons
+// TODO implement window icons (v2.0.x)
 
 struct GLFWwindow;
 

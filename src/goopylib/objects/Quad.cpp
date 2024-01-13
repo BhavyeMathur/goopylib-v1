@@ -26,7 +26,6 @@ namespace gp {
 
 // Quad Methods
 namespace gp {
-    // TODO - get color methods
     void Quad::setColor(const Color &color) {
         setColor(color, color, color, color);
     }

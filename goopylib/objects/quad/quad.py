@@ -46,7 +46,7 @@ class Quad(Renderable):
         """
         self._renderable: Quad = _quad.Quad(p1, p2, p3, p4)
 
-    # TODO color should be a @property
+    # TODO color should be a @property & color get methods (v2.0.x)
     def set_color(self, *args) -> None:
         """
         Sets the fill color of the object
