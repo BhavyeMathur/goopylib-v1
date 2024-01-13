@@ -11,6 +11,7 @@ while window.is_open():
 
     if window.check_key(gp.KEY_ESCAPE):
         window.destroy()
+        break
 
     if window.check_key(gp.KEY_W):
         triangle.y += 3

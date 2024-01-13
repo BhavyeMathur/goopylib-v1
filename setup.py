@@ -1,4 +1,3 @@
-import shutil
 import sys
 import re
 import warnings
@@ -6,7 +5,7 @@ import warnings
 from setuptools import setup, Extension
 import setuptools
 
-FULLVERSION = "2.0.0.alpha0"
+FULLVERSION = "2.0.0.alpha4"
 PYTHON_REQUIRES = (3, 8)
 
 RUNTIME_LIBRARY_DIRS = []

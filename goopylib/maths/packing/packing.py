@@ -100,7 +100,7 @@ class Item:
 
     @x.setter
     def x(self, value: float) -> NoReturn:
-        raise TypeError("Cannot change item!")
+        self._x = value
 
     @property
     def y(self) -> float:
@@ -112,7 +112,7 @@ class Item:
 
     @y.setter
     def y(self, value: float) -> NoReturn:
-        raise TypeError("Cannot change item!")
+        self._y = value
 
     @property
     def width(self) -> float:

@@ -2,14 +2,14 @@ import goopylib as gp
 
 
 window = gp.Window(500, 500, "Merry Christmas!")
-window.background = "#1a1d24"
+# window.background = "#1a1d24"  # TODO fix bug
 
 # Tree Leaves
 for i in range(4):
     triangle = gp.Triangle((-100, -50), (100, -50), (0, 50)).draw(window)
     triangle.fill = "#AEDD70"
     triangle.y += 45 * i * (0.95 ** i)
-    triangle.zoom(0.8 ** i)
+    triangle.scale(0.8 ** i)
 
 
 # Tree Trunk

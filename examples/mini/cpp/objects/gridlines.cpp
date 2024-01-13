@@ -13,15 +13,15 @@ int main() {
     for (int i = 0; i < N; i++) {
         float pos = distance * (float) i - 406;
 
-        lines.push_back({{pos, -406},
-                         {pos, 406}});
+        lines.push_back({{pos, -406.0f},
+                         {pos, 406.0f}, 3.0f});
 
-        lines.push_back({{-406, pos},
-                         {406,  pos}});
+        lines.push_back({{-406.0f, pos},
+                         {406.0f,  pos}, 3.0f});
     }
 
     for (auto line: lines) {
-        line.draw(&window);
+        line.draw(window);
     }
 
     while (window.isOpen()) {

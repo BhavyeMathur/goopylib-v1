@@ -56,15 +56,15 @@ def main():
     window.minimize_callback = minimize_callback
     window.focus_callback = focused_callback
 
-    # window.set_key_callback(gp.KEY_SPACE, space_key_callback)
+    window.set_key_callback(gp.KEY_SPACE, space_key_callback)
 
     window.mouse_motion_callback = mouse_motion_callback
     window.mouse_enter_callback = mouse_enter_callback
     window.scroll_callback = scroll_callback
 
     window.left_click_callback = left_click_callback
-    # window.middle_click_callback = middle_click_callback
-    # window.right_click_callback = right_click_callback
+    window.middle_click_callback = middle_click_callback
+    window.right_click_callback = right_click_callback
 
     while window.is_open():
         gp.update()

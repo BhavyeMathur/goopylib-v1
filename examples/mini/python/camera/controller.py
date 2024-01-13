@@ -9,7 +9,7 @@ gp.Rectangle((0, 0), 200, 150).draw(window)
 
 while window.is_open():
     gp.update()
-    controller.update()
+    controller.update()  # TODO option to have mouse scroll effect camera zoom
 
 
 gp.terminate()

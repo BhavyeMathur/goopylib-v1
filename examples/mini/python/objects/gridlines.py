@@ -10,8 +10,8 @@ lines = []
 for i in range(N):
     pos = distance * i - 406
 
-    lines.append(gp.Line((pos, -406), (pos, 406)))
-    lines.append(gp.Line((-406, pos), (406, pos)))
+    lines.append(gp.Line((pos, -406), (pos, 406), 2))
+    lines.append(gp.Line((-406, pos), (406, pos), 2))
 
 for line in lines:
     line.draw(window)

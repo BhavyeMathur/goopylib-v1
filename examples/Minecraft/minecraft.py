@@ -9,12 +9,12 @@ images = []
 
 def set_transparency(i, j, val):
     if (0 <= i < xN) and (0 <= j < yN):
-        images[xN * i + j].set_transparency(val)
+        images[xN * i + j].transparency = val
 
 
 def set_transparency4(i, j, v1, v2, v3, v4):
     if (0 <= i < xN) and (0 <= j < yN):
-        images[xN * i + j].set_transparency(v1, v2, v3, v4)
+        images[xN * i + j].transparency = (v1, v2, v3, v4)
 
 
 def main():
@@ -53,7 +53,7 @@ def main():
 
     while window.is_open():
         for img in images:
-            img.set_transparency(0.1)
+            img.transparency = 0.1
 
         x, y = window.get_mouse_position()
         x = int((x + 406) / width)
