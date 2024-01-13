@@ -8,6 +8,9 @@ if sys.platform == "win32":
     import os
     os.add_dll_directory(f"{sys.prefix}/goopylib")
 
+
+__version__ = "2.0.0.beta0"
+
 # pylint: disable=wrong-import-position
 
 from .core import *

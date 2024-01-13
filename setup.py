@@ -5,7 +5,7 @@ import warnings
 from setuptools import setup, Extension
 import setuptools
 
-FULLVERSION = "2.0.0.alpha4"
+FULLVERSION = "2.0.0.beta0"
 PYTHON_REQUIRES = (3, 8)
 
 RUNTIME_LIBRARY_DIRS = []
@@ -62,6 +62,17 @@ def check_version():
                      f"python_requires = >={PYTHON_REQUIRES[0]}.{PYTHON_REQUIRES[1]}", content)
 
     with open("setup.cfg", "w") as f:
+        f.write(content)
+
+    # Update the __init__.py file with these version details
+
+    with open("goopylib/__init__.py", "r") as f:
+        content = f.read()
+
+    content = re.sub("__version__ = \".*\"",
+                     f"__version__ = \"{FULLVERSION}\"", content)
+
+    with open("goopylib/__init__.py", "w") as f:
         f.write(content)
 
 
