@@ -227,9 +227,10 @@ class Window:
             self._window.background = background._color
             self._background = background
         else:
-            self._window.background = background
+            self._background = Color(background)
+            self._window.background = self._background._color
 
-    # Minimum Width
+            # Minimum Width
     @property
     def min_width(self) -> int:
         """
