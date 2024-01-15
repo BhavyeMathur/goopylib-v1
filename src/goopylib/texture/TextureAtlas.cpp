@@ -18,6 +18,7 @@ namespace gp {
     }
 
     TextureAtlas::~TextureAtlas() {
+        // TODO replace with unique ptr
         delete m_PackingAlgorithm;
     }
 
@@ -54,36 +55,5 @@ namespace gp {
         }
 
         return texCoords;
-    }
-
-    std::vector<Ref<Texture2D>> TextureAtlas::createTextureAtlas() const {
-        std::vector<Ref<Texture2D>> textures;
-        textures.reserve(m_PackingAlgorithm->bins().size());
-
-        for (const auto &bin: m_PackingAlgorithm->bins()) {
-            uint32_t width = 0;
-            uint32_t height = 0;
-
-            for (const auto &shelf: *bin) {
-                if ((int32_t) shelf->getWidth() > width) {
-                    width = (int32_t) shelf->getWidth();
-                }
-                height += (int32_t) shelf->getHeight();
-            }
-
-            const Ref<Texture2D> texture = Ref<Texture2D>(new Texture2D(width, height, 1));
-
-            for (const auto &item: bin->items()) {
-                texture->setData((uint32_t) item->getX(),
-                                 (uint32_t) item->getY(),
-                                 (uint32_t) item->getWidth(),
-                                 (uint32_t) item->getHeight(),
-                                 nullptr);
-            }
-
-            textures.push_back(texture);
-        }
-
-        return textures;
     }
 }

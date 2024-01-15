@@ -69,6 +69,7 @@ namespace gp {
 
         GP_CORE_DEBUG("Initializing Index Buffer {0}, count={1}", m_RendererID, indices.size());
 
+        // TODO replace with std::array or unique ptr?
         #ifdef _MSC_VER
         auto *bufferData = new uint32_t[indices.size()];
         #else

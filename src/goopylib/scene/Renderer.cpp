@@ -518,6 +518,7 @@ namespace gp {
             GP_CORE_TRACE_ALL("gp::Renderer::_updateRenderingObjectEBO(indices={0}, vertices={1})",
                               object.indices, object.vertices);
 
+            // TODO replace with std::array? don't manually call delete[] at the end
             auto *indices = new uint32_t[object.indices];
 
             for (uint32_t i = 0; i < object.vertices / 4; i++) {

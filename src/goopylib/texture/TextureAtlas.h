@@ -35,8 +35,6 @@ namespace gp {
                                              bool allowRotation = true,
                                              const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 
-        [[nodiscard]] GPAPI std::vector<Ref<Texture2D>> createTextureAtlas() const;
-
         GPAPI static void init();
 
         [[nodiscard]] GPAPI static int32_t getWidth();
