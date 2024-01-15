@@ -34,7 +34,7 @@ namespace line {
         }
         #endif
 
-        self->line = Ref<gp::Line>(new gp::Line({x1, y1}, {x2, y2}, thickness));
+        self->line = shared_ptr<gp::Line>(new gp::Line({x1, y1}, {x2, y2}, thickness));
         self->base.quad = self->line;
         self->base.base.renderable = self->line;
         return 0;

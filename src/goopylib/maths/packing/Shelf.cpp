@@ -53,7 +53,7 @@ namespace gp::packing::shelf {
         return m_IsOpen;
     }
 
-    bool Shelf::fits(const Ref<Item> &item) const {
+    bool Shelf::fits(const shared_ptr<Item> &item) const {
         if (m_IsOpen) {
             return item->getWidth() <= m_AvailableWidth and
                    m_VerticalOffset + item->getHeight() <= m_Bin.getHeight();
@@ -63,11 +63,11 @@ namespace gp::packing::shelf {
         }
     }
 
-    bool Shelf::fitsAbove(const Ref<Item> &item) const {
+    bool Shelf::fitsAbove(const shared_ptr<Item> &item) const {
         return m_VerticalOffset + m_Height + item->getHeight() <= m_Bin.getHeight();
     }
 
-    void Shelf::add(const Ref<Item> &item) {
+    void Shelf::add(const shared_ptr<Item> &item) {
         item->m_X = m_PackedWidth;
         item->m_Y = m_VerticalOffset;
         m_Bin.add(item);
@@ -95,13 +95,13 @@ namespace gp::packing::shelf {
 namespace gp::packing {
     ShelvedBin::ShelvedBin(float width, float height)
             : Bin(width, height),
-              m_OpenShelf(Ref<shelf::Shelf>(new shelf::Shelf(0, *this))) {
+              m_OpenShelf(shared_ptr<shelf::Shelf>(new shelf::Shelf(0, *this))) {
         m_Shelves.push_back(m_OpenShelf);
     }
 
-    Ref<shelf::Shelf> ShelvedBin::addShelf() {
+    shared_ptr<shelf::Shelf> ShelvedBin::addShelf() {
         m_OpenShelf->close();
-        m_OpenShelf = Ref<shelf::Shelf>(new shelf::Shelf(m_OpenShelf->m_VerticalOffset + m_OpenShelf->m_Height, *this));
+        m_OpenShelf = shared_ptr<shelf::Shelf>(new shelf::Shelf(m_OpenShelf->m_VerticalOffset + m_OpenShelf->m_Height, *this));
         m_Shelves.push_back(m_OpenShelf);
 
         return m_OpenShelf;
@@ -123,20 +123,20 @@ namespace gp::packing {
         return Bin::packingRatio();
     }
 
-    Ref<shelf::Shelf> ShelvedBin::getOpenShelf() {
+    shared_ptr<shelf::Shelf> ShelvedBin::getOpenShelf() {
         return m_OpenShelf;
     }
 
-    std::vector<Ref<shelf::Shelf>> ShelvedBin::getShelves() {
-        std::vector<Ref<shelf::Shelf>> copy = m_Shelves;
+    std::vector<shared_ptr<shelf::Shelf>> ShelvedBin::getShelves() {
+        std::vector<shared_ptr<shelf::Shelf>> copy = m_Shelves;
         return copy;
     }
 
-    std::vector<Ref<shelf::Shelf>>::const_iterator ShelvedBin::begin() const {
+    std::vector<shared_ptr<shelf::Shelf>>::const_iterator ShelvedBin::begin() const {
         return m_Shelves.begin();
     }
 
-    std::vector<Ref<shelf::Shelf>>::const_iterator ShelvedBin::end() const {
+    std::vector<shared_ptr<shelf::Shelf>>::const_iterator ShelvedBin::end() const {
         return m_Shelves.end();
     }
 }
@@ -145,18 +145,18 @@ namespace gp::packing {
 namespace gp::packing::shelf {
     ShelfPackingAlgorithm::ShelfPackingAlgorithm(float binWidth, float binHeight)
             : PackingAlgorithm(binWidth, binHeight) {
-        m_Bins.push_back(Ref<ShelvedBin>(new ShelvedBin(binWidth, binHeight)));
+        m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(binWidth, binHeight)));
     }
 
     ShelfPackingAlgorithm::ShelfPackingAlgorithm()
             : PackingAlgorithm(0, 0) {
     }
 
-    void ShelfPackingAlgorithm::pack(const Ref<Item> &item, bool allowRotation) {
+    void ShelfPackingAlgorithm::pack(const shared_ptr<Item> &item, bool allowRotation) {
         GP_RUNTIME_ERROR("ShelfPackingAlgorithm::pack() unimplemented");
     }
 
-    void ShelfPackingAlgorithm::packAll(std::vector<Ref<Item>> items,
+    void ShelfPackingAlgorithm::packAll(std::vector<shared_ptr<Item>> items,
                                         bool allowRotation,
                                         const SortingFunction &sortingFunction) {
         if (sortingFunction) {
@@ -167,14 +167,14 @@ namespace gp::packing::shelf {
         }
     }
 
-    void ShelfPackingAlgorithm::packOriented(const Ref<Item> &item, bool orientVertically) {
+    void ShelfPackingAlgorithm::packOriented(const shared_ptr<Item> &item, bool orientVertically) {
         if (item->isHorizontal() == orientVertically) {
             item->rotate();
         }
         pack(item, false);
     }
 
-    void ShelfPackingAlgorithm::packAllOriented(std::vector<Ref<Item>> items,
+    void ShelfPackingAlgorithm::packAllOriented(std::vector<shared_ptr<Item>> items,
                                                 bool orientVertically,
                                                 const SortingFunction &sortingFunction) {
         if (sortingFunction) {
@@ -185,8 +185,8 @@ namespace gp::packing::shelf {
         }
     }
 
-    std::vector<Ref<ShelvedBin>> ShelfPackingAlgorithm::bins() const {
-        std::vector<Ref<ShelvedBin>> copy = m_Bins;
+    std::vector<shared_ptr<ShelvedBin>> ShelfPackingAlgorithm::bins() const {
+        std::vector<shared_ptr<ShelvedBin>> copy = m_Bins;
         return copy;
     }
 
@@ -195,7 +195,7 @@ namespace gp::packing::shelf {
               m_Shelf(m_Bins.back()->m_OpenShelf) {
     }
 
-    void NextFit::pack(const Ref<Item> &item, bool allowRotation) {
+    void NextFit::pack(const shared_ptr<Item> &item, bool allowRotation) {
         if (allowRotation and (item->isVertical() != (item->getLongSide() <= m_Shelf->getHeight()))) {
             item->rotate();
         }
@@ -209,7 +209,7 @@ namespace gp::packing::shelf {
             m_Shelf = m_Bins.back()->addShelf();
         }
         else {
-            m_Bins.push_back(Ref<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
+            m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
             m_Shelf = m_Bins.back()->m_OpenShelf;
         }
 
@@ -223,7 +223,7 @@ namespace gp::packing::shelf {
             : ShelfPackingAlgorithm(binWidth, binHeight) {
     }
 
-    void FirstFit::pack(const Ref<Item> &item, bool allowRotation) {
+    void FirstFit::pack(const shared_ptr<Item> &item, bool allowRotation) {
         for (const auto &bin: m_Bins) {
             for (const auto &shelf: *bin) {
                 if (allowRotation and (item->isVertical() != (item->getLongSide() <= shelf->getHeight()))) {
@@ -245,7 +245,7 @@ namespace gp::packing::shelf {
             }
         }
         // code only reaches here if item has not been added to a shelf
-        m_Bins.push_back(Ref<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
+        m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
 
         if (allowRotation and item->isVertical()) {
             item->rotate();
@@ -260,8 +260,8 @@ namespace gp::packing::shelf {
               m_ScoringFunction(std::move(scoringFunction)) {
     }
 
-    void ScoredFit::pack(const Ref<Item> &item, bool allowRotation) {
-        Ref<Shelf> bestShelf = nullptr;
+    void ScoredFit::pack(const shared_ptr<Item> &item, bool allowRotation) {
+        shared_ptr<Shelf> bestShelf = nullptr;
         float bestScore = -FLT_MAX;
         bool bestOrientation = false;  // un-rotated
 
@@ -294,7 +294,7 @@ namespace gp::packing::shelf {
         }
 
         if (bestShelf == nullptr) {
-            m_Bins.push_back(Ref<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
+            m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
 
             if (allowRotation and item->isVertical()) {
                 item->rotate();
@@ -312,35 +312,35 @@ namespace gp::packing::shelf {
 
     BestWidthFit::BestWidthFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                        [](const shared_ptr<Shelf> &shelf, const shared_ptr<Item> &obj) {
                             return obj->getWidth() - shelf->getAvailableWidth();
                         }) {
     }
 
     WorstWidthFit::WorstWidthFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                        [](const shared_ptr<Shelf> &shelf, const shared_ptr<Item> &obj) {
                             return shelf->getAvailableWidth() - obj->getWidth();
                         }) {
     }
 
     BestHeightFit::BestHeightFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                        [](const shared_ptr<Shelf> &shelf, const shared_ptr<Item> &obj) {
                             return obj->getHeight() - shelf->getHeight();
                         }) {
     }
 
     WorstHeightFit::WorstHeightFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                        [](const shared_ptr<Shelf> &shelf, const shared_ptr<Item> &obj) {
                             return shelf->getHeight() - obj->getHeight();
                         }) {
     }
 
     BestAreaFit::BestAreaFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                        [](const shared_ptr<Shelf> &shelf, const shared_ptr<Item> &obj) {
                             return (shelf->getPackedWidth() + obj->getWidth()) *
                                    max(obj->getHeight(), shelf->getHeight());
                         }) {
@@ -348,7 +348,7 @@ namespace gp::packing::shelf {
 
     WorstAreaFit::WorstAreaFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const Ref<Shelf> &shelf, const Ref<Item> &obj) {
+                        [](const shared_ptr<Shelf> &shelf, const shared_ptr<Item> &obj) {
                             return -(shelf->getPackedWidth() + obj->getWidth()) *
                                    max(obj->getHeight(), shelf->getHeight());
                         }) {

@@ -8,5 +8,5 @@ namespace gp {
 
 struct EllipseObject {
     RenderableObject base;
-    Ref<gp::Ellipse> ellipse;
+    shared_ptr<gp::Ellipse> ellipse;
 };

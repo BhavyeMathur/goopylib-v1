@@ -5,5 +5,5 @@
 
 struct CameraObject {
     PyObject_HEAD
-    Ref<gp::Camera> camera;
+    shared_ptr<gp::Camera> camera;
 };

@@ -8,5 +8,5 @@ namespace gp {
 
 struct TriangleObject {
     RenderableObject base;
-    Ref<gp::Triangle> triangle;
+    shared_ptr<gp::Triangle> triangle;
 };

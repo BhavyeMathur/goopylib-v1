@@ -26,20 +26,20 @@ namespace gp {
 
         GPAPI void draw(int32_t count = 0, int32_t mode = GP_DRAW_MODE_TRIANGLES) const;
 
-        GPAPI void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer);
+        GPAPI void setVertexBuffer(const shared_ptr<VertexBuffer> &vertexBuffer);
 
-        [[nodiscard]] GPAPI const Ref<const VertexBuffer> getVertexBuffer() const;
+        [[nodiscard]] GPAPI const shared_ptr<const VertexBuffer> getVertexBuffer() const;
 
         GPAPI void setIndexBuffer(std::initializer_list<uint32_t> indices);
 
         GPAPI void setIndexBuffer(uint32_t count, uint32_t *indices);
 
-        [[nodiscard]] GPAPI const Scope<IndexBuffer> &getIndexBuffer() const;
+        [[nodiscard]] GPAPI const unique_ptr<IndexBuffer> &getIndexBuffer() const;
 
     private:
         uint32_t m_RendererID = 0;
 
-        Ref<VertexBuffer> m_VertexBuffer;
-        Scope<IndexBuffer> m_IndexBuffer;
+        shared_ptr<VertexBuffer> m_VertexBuffer;
+        unique_ptr<IndexBuffer> m_IndexBuffer;
     };
 }

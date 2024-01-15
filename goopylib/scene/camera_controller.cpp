@@ -10,7 +10,7 @@
 
 struct CameraControllerObject {
     PyObject_HEAD
-    Ref<gp::CameraController> controller;
+    shared_ptr<gp::CameraController> controller;
 };
 
 // Camera Controller Core

@@ -56,7 +56,7 @@ namespace gp {
          */
         [[nodiscard]] GPAPI std::string getPath() const;
 
-        [[nodiscard]] GPAPI Ref<Bitmap> getBitmap() const override;
+        [[nodiscard]] GPAPI shared_ptr<Bitmap> getBitmap() const override;
 
     private:
         const std::string m_Path;

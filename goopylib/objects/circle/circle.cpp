@@ -26,7 +26,7 @@ namespace circle {
             return -1;
         }
 
-        self->circle = Ref<gp::Circle>(new gp::Circle({x1, y1}, radius));
+        self->circle = shared_ptr<gp::Circle>(new gp::Circle({x1, y1}, radius));
         self->base.ellipse = self->circle;
         self->base.base.renderable = self->circle;
         return 0;

@@ -8,5 +8,5 @@ namespace gp {
 
 struct LineObject {
     QuadObject base;
-    Ref<gp::Line> line;
+    shared_ptr<gp::Line> line;
 };

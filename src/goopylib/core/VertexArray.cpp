@@ -8,22 +8,22 @@ namespace gp {
         GP_CORE_TRACE("VertexArray::setIndexBuffer()");
 
         bind();
-        m_IndexBuffer = CreateScope<IndexBuffer>(indices);
+        m_IndexBuffer = make_unique<IndexBuffer>(indices);
     }
 
     void VertexArray::setIndexBuffer(uint32_t count, uint32_t *indices) {
         GP_CORE_TRACE("VertexArray::setIndexBuffer({0})", count);
 
         bind();
-        m_IndexBuffer = CreateScope<IndexBuffer>(count, indices);
+        m_IndexBuffer = make_unique<IndexBuffer>(count, indices);
     }
 
-    const Ref<const VertexBuffer> VertexArray::getVertexBuffer() const {
+    const shared_ptr<const VertexBuffer> VertexArray::getVertexBuffer() const {
         GP_CORE_TRACE_ALL("VertexArray::getVertexBuffer()");
         return m_VertexBuffer;
     }
 
-    const Scope<IndexBuffer> &VertexArray::getIndexBuffer() const {
+    const unique_ptr<IndexBuffer> &VertexArray::getIndexBuffer() const {
         GP_CORE_TRACE_ALL("VertexArray::getIndexBuffer()");
         return m_IndexBuffer;
     }

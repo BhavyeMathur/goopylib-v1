@@ -41,14 +41,7 @@
 #define GL_SILENCE_DEPRECATION
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 
-template <typename obj>
-    using Ref = std::shared_ptr<obj>;
-
-template <typename obj>
-    using Scope = std::unique_ptr<obj>;
-
-#define CreateRef std::make_shared
-#define CreateScope std::make_unique
+using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 
 #include "src/config.h"
 

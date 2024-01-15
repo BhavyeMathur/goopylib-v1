@@ -32,9 +32,9 @@ namespace gp {
                 _setUniform(_getLocation(name), std::forward<T>(args)...);
             }
 
-        [[nodiscard]] GPAPI static Ref<Shader> load(const char *vertexShaderPath, const char *fragmentShaderPath) {
-            return Ref<Shader>(new Shader(readFile(vertexShaderPath).c_str(),
-                                          readFile(fragmentShaderPath).c_str()));
+        [[nodiscard]] GPAPI static shared_ptr<Shader> load(const char *vertexShaderPath, const char *fragmentShaderPath) {
+            return shared_ptr<Shader>(new Shader(readFile(vertexShaderPath).c_str(),
+                                                 readFile(fragmentShaderPath).c_str()));
         }
 
     private:

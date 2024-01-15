@@ -24,7 +24,7 @@ namespace quad {
             return -1;
         }
 
-        self->quad = Ref<gp::Quad>(new gp::Quad({x1, y1}, {x2, y2}, {x3, y3}, {x4, y4}));
+        self->quad = shared_ptr<gp::Quad>(new gp::Quad({x1, y1}, {x2, y2}, {x3, y3}, {x4, y4}));
         self->base.renderable = self->quad;
 
         return 0;

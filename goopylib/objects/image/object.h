@@ -8,5 +8,5 @@ namespace gp {
 
 struct ImageObject {
     RectangleObject base;
-    Ref<gp::Image> image;
+    shared_ptr<gp::Image> image;
 };

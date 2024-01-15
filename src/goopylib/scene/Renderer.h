@@ -39,12 +39,12 @@ namespace gp {
 
 
     struct TextureData {
-        Ref<Texture2D> texture;
+        shared_ptr<Texture2D> texture;
         uint32_t index;
     };
 
     struct RenderingBatch {
-        Ref<VertexArray> VAO;
+        shared_ptr<VertexArray> VAO;
 
         int32_t indices = 0;
         int32_t vertices = 0;
@@ -54,7 +54,7 @@ namespace gp {
 
         int32_t mode;
 
-        RenderingBatch(const Ref<VertexArray> &VAO = nullptr,
+        RenderingBatch(const shared_ptr<VertexArray> &VAO = nullptr,
                        void *bufferData = nullptr,
                        int32_t mode = GP_DRAW_MODE_TRIANGLES)
                 : VAO(VAO),
@@ -132,7 +132,7 @@ namespace gp {
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t>> m_TexturedQuadToIndex;
 
-        std::vector<Ref<Texture2D>> m_Textures;
+        std::vector<shared_ptr<Texture2D>> m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 
         const Window &m_Window;

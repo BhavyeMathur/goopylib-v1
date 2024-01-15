@@ -108,11 +108,11 @@ namespace gp {
         Renderer m_Renderer;
         Renderer m_AlphaRenderer;
 
-        Scope<Shader> m_SolidShader;
-        Scope<Shader> m_EllipseShader;
-        Scope<Shader> m_TextureShader;  // TODO can we make these non-heap allocated? (v2.0.x)
+        unique_ptr<Shader> m_SolidShader;
+        unique_ptr<Shader> m_EllipseShader;
+        unique_ptr<Shader> m_TextureShader;  // TODO can we make these non-heap allocated? (v2.0.x)
 
-        Scope<UniformBuffer> m_ShaderUniform;
+        unique_ptr<UniformBuffer> m_ShaderUniform;
 
         uint32_t m_NextObjectID = 0;
         std::unordered_map<uint32_t, bool> m_ObjectToIsOpaque;

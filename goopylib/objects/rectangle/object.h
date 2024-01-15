@@ -8,5 +8,5 @@ namespace gp {
 
 struct RectangleObject {
     QuadObject base;
-    Ref<gp::Rectangle> rectangle;
+    shared_ptr<gp::Rectangle> rectangle;
 };

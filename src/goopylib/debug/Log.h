@@ -13,16 +13,16 @@ namespace gp {
     public:
         static void init();
 
-        static Ref<spdlog::logger> getCoreLogger();
+        static shared_ptr<spdlog::logger> getCoreLogger();
 
-        GPAPI static Ref<spdlog::logger> getClientLogger();
+        GPAPI static shared_ptr<spdlog::logger> getClientLogger();
 
-        GPAPI static Ref<spdlog::logger> getPythonLogger();
+        GPAPI static shared_ptr<spdlog::logger> getPythonLogger();
 
     private:
-        static Ref<spdlog::logger> s_CoreLogger;
-        static Ref<spdlog::logger> s_PythonLogger;
-        static Ref<spdlog::logger> s_ClientLogger;
+        static shared_ptr<spdlog::logger> s_CoreLogger;
+        static shared_ptr<spdlog::logger> s_PythonLogger;
+        static shared_ptr<spdlog::logger> s_ClientLogger;
     };
 }
 
@@ -34,7 +34,7 @@ namespace gp {
                 throw std::runtime_error("Error during string formatting");
             }
             auto size = static_cast<size_t>( size_s );
-            const Scope<char[]> buf(new char[size]);
+            const unique_ptr<char[]> buf(new char[size]);
             if (std::snprintf(buf.get(), size, format.c_str(), args ...) < 0) {
                 throw std::runtime_error("Error during string formatting");
             }

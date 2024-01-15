@@ -83,7 +83,7 @@ namespace gp::packing {
         Bin::s_Bins++;
     }
 
-    void Bin::add(const Ref<Item> &item) {
+    void Bin::add(const shared_ptr<Item> &item) {
         m_Items.push_back(item);
     }
 
@@ -96,8 +96,8 @@ namespace gp::packing {
         return sum / (m_Width * m_Height);
     }
 
-    std::vector<Ref<Item>> Bin::items() const {
-        std::vector<Ref<Item>> copy = m_Items;
+    std::vector<shared_ptr<Item>> Bin::items() const {
+        std::vector<shared_ptr<Item>> copy = m_Items;
         return copy;
     }
 
@@ -110,20 +110,20 @@ namespace gp::packing {
     }
 }
 
-#define RETURN_SORTING_FUNC return [compare](std::vector<Ref<Item>> items) {std::sort(items.begin(), items.end(), compare); return items;}
+#define RETURN_SORTING_FUNC return [compare](std::vector<shared_ptr<Item>> items) {std::sort(items.begin(), items.end(), compare); return items;}
 
 // Sorting Algorithms
 namespace gp::packing {
     SortingFunction sortByWidth(bool descending) {
 
-        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
+        std::function<bool(const shared_ptr<Item>, const shared_ptr<Item>)> compare;
 
         if (descending)
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return item1->getWidth() > item2->getWidth();
             };
         else
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return item1->getWidth() < item2->getWidth();
             };
 
@@ -131,14 +131,14 @@ namespace gp::packing {
     }
 
     SortingFunction sortByHeight(bool descending) {
-        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
+        std::function<bool(const shared_ptr<Item>, const shared_ptr<Item>)> compare;
 
         if (descending)
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return item1->getHeight() > item2->getHeight();
             };
         else
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return item1->getHeight() < item2->getHeight();
             };
 
@@ -146,15 +146,15 @@ namespace gp::packing {
     }
 
     SortingFunction sortByPerimeter(bool descending) {
-        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
+        std::function<bool(const shared_ptr<Item>, const shared_ptr<Item>)> compare;
 
         if (descending)
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return (item1->getWidth() + item1->getHeight()) >
                        (item2->getWidth() + item2->getHeight());
             };
         else
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return (item1->getWidth() + item1->getHeight()) <
                        (item2->getWidth() + item2->getHeight());
             };
@@ -163,15 +163,15 @@ namespace gp::packing {
     }
 
     SortingFunction sortByArea(bool descending) {
-        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
+        std::function<bool(const shared_ptr<Item>, const shared_ptr<Item>)> compare;
 
         if (descending)
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return (item1->getWidth() * item1->getHeight()) >
                        (item2->getWidth() * item2->getHeight());
             };
         else
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return (item1->getWidth() * item1->getHeight()) <
                        (item2->getWidth() * item2->getHeight());
             };
@@ -180,15 +180,15 @@ namespace gp::packing {
     }
 
     SortingFunction sortBySideRatio(bool descending) {
-        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
+        std::function<bool(const shared_ptr<Item>, const shared_ptr<Item>)> compare;
 
         if (descending)
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return (item1->getWidth() / item1->getHeight()) >
                        (item2->getWidth() / item2->getHeight());
             };
         else
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return (item1->getWidth() / item1->getHeight()) <
                        (item2->getWidth() / item2->getHeight());
             };
@@ -197,14 +197,14 @@ namespace gp::packing {
     }
 
     SortingFunction sortByLongSide(bool descending) {
-        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
+        std::function<bool(const shared_ptr<Item>, const shared_ptr<Item>)> compare;
 
         if (descending)
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return item1->getLongSide() > item2->getLongSide();
             };
         else
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return item1->getLongSide() < item2->getLongSide();
             };
 
@@ -212,14 +212,14 @@ namespace gp::packing {
     }
 
     SortingFunction sortByShortSide(bool descending) {
-        std::function<bool(const Ref<Item>, const Ref<Item>)> compare;
+        std::function<bool(const shared_ptr<Item>, const shared_ptr<Item>)> compare;
 
         if (descending)
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return item1->getShortSide() > item2->getShortSide();
             };
         else
-            compare = [](const Ref<Item> &item1, const Ref<Item> &item2) {
+            compare = [](const shared_ptr<Item> &item1, const shared_ptr<Item> &item2) {
                 return item1->getShortSide() < item2->getShortSide();
             };
 

@@ -32,19 +32,19 @@ namespace gp {
         m_AlphaRenderer.init();
 
         GP_CORE_TRACE("RenderingManager::init() initializing Solid Shader");
-        m_SolidShader = CreateScope<Shader>(solidVertexShader, solidFragmentShader);
+        m_SolidShader = make_unique<Shader>(solidVertexShader, solidFragmentShader);
 
         GP_CORE_TRACE("RenderingManager::init() initializing Ellipse Shader");
-        m_EllipseShader = CreateScope<Shader>(ellipseVertexShader, ellipseFragmentShader);
+        m_EllipseShader = make_unique<Shader>(ellipseVertexShader, ellipseFragmentShader);
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
 
         GP_CORE_TRACE("RenderingManager::init() initializing texture Shader");
-        m_TextureShader = CreateScope<Shader>(textureVertexShader, textureFragmentShader);
+        m_TextureShader = make_unique<Shader>(textureVertexShader, textureFragmentShader);
         m_TextureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
 
-        m_ShaderUniform = Scope<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
+        m_ShaderUniform = unique_ptr<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1);
 
         m_SolidShader->setUniformBlock(*m_ShaderUniform, "Projection", 0);

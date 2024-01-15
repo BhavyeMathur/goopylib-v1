@@ -58,7 +58,7 @@ gp::packing::shelf::ShelfPackingAlgorithm *getPackingAlgorithm(int choice) {
     }
 }
 
-void createRandomItems(int n, std::vector<Ref<gp::packing::Item>>& items) {
+void createRandomItems(int n, std::vector<shared_ptr<gp::packing::Item>>& items) {
     items.reserve(n);
     for (int i = 0; i < n; i++) {
         items.emplace_back(new gp::packing::Item(5 + (float) (rand() % 6500) / 100,
@@ -66,7 +66,7 @@ void createRandomItems(int n, std::vector<Ref<gp::packing::Item>>& items) {
     }
 }
 
-void printPackingRatio(std::vector<Ref<gp::packing::ShelvedBin>> &bins) {
+void printPackingRatio(std::vector<shared_ptr<gp::packing::ShelvedBin>> &bins) {
     float packingRatio = 0;
 
     for (int i = 0; i < bins.size(); i++) {
@@ -85,7 +85,7 @@ void showPage(int page, std::vector<std::vector<gp::Rectangle>> &objects) {
     }
 }
 
-void plotItemBins(std::vector<Ref<gp::packing::ShelvedBin>> &bins) {
+void plotItemBins(std::vector<shared_ptr<gp::packing::ShelvedBin>> &bins) {
     gp::Window window = {800, 800};
     window.getCamera().setProjection(0, window.getWidth(), 0, window.getHeight());
 
@@ -133,7 +133,7 @@ int main() {
     int choice = getPackingAlgorithmChoice();
     auto algorithm = getPackingAlgorithm(choice);
 
-    std::vector<Ref<gp::packing::Item>> items;
+    std::vector<shared_ptr<gp::packing::Item>> items;
     createRandomItems(500, items);
 
     algorithm->packAll(items);

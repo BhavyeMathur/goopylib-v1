@@ -29,7 +29,7 @@ namespace triangle {
             return -1;
         }
 
-        self->triangle = Ref<gp::Triangle>(new gp::Triangle({x1, y1}, {x2, y2}, {x3, y3}));
+        self->triangle = shared_ptr<gp::Triangle>(new gp::Triangle({x1, y1}, {x2, y2}, {x3, y3}));
         self->base.renderable = self->triangle;
 
         return 0;

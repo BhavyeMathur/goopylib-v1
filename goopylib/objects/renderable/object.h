@@ -9,5 +9,5 @@ namespace gp {
 
 struct RenderableObject {
     PyObject_HEAD
-    Ref<gp::Renderable> renderable;
+    shared_ptr<gp::Renderable> renderable;
 };

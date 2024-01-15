@@ -89,7 +89,7 @@ namespace gp::packing {
 
         [[nodiscard]] GPAPI virtual float packingRatio() const;
 
-        [[nodiscard]] GPAPI std::vector<Ref<Item>> items() const;
+        [[nodiscard]] GPAPI std::vector<shared_ptr<Item>> items() const;
 
         [[nodiscard]] GPAPI float getWidth() const;
 
@@ -101,19 +101,19 @@ namespace gp::packing {
 
         const uint32_t m_ID;
 
-        std::vector<Ref<Item>> m_Items;
+        std::vector<shared_ptr<Item>> m_Items;
 
         static uint32_t s_Bins;
 
         Bin(float width, float height);
 
-        void add(const Ref<Item>& item);
+        void add(const shared_ptr<Item>& item);
     };
 }
 
 // Sorting Algorithms
 namespace gp::packing {
-    using SortingFunction = std::function<std::vector<Ref<Item>>(std::vector<Ref<Item>>)>;
+    using SortingFunction = std::function<std::vector<shared_ptr<Item>>(std::vector<shared_ptr<Item>>)>;
 
     GPAPI SortingFunction sortByWidth(bool descending = false);
 

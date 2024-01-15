@@ -31,8 +31,8 @@ namespace gp {
     void Renderer::_createLineBuffer() {
         GP_CORE_TRACE("Renderer::_createLineBuffer()");
 
-        auto lineVAO = Ref<VertexArray>(new VertexArray());
-        auto lineVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto lineVAO = shared_ptr<VertexArray>(new VertexArray());
+        auto lineVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         lineVBO->setLayout({{ShaderDataType::Float2, "position"},
                             {ShaderDataType::Float, "z"},
@@ -45,8 +45,8 @@ namespace gp {
     void Renderer::_createTriangleBuffer() {
         GP_CORE_TRACE("Renderer::_createTriangleBuffer()");
 
-        auto triangleVAO = Ref<VertexArray>(new VertexArray());
-        auto triangleVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto triangleVAO = shared_ptr<VertexArray>(new VertexArray());
+        auto triangleVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         triangleVBO->setLayout({{ShaderDataType::Float2, "position"},
                                 {ShaderDataType::Float, "z"},
@@ -59,8 +59,8 @@ namespace gp {
     void Renderer::_createQuadBuffer() {
         GP_CORE_TRACE("Renderer::_createQuadBuffer()");
 
-        auto quadVAO = Ref<VertexArray>(new VertexArray());
-        auto quadVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto quadVAO = shared_ptr<VertexArray>(new VertexArray());
+        auto quadVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         quadVBO->setLayout({{ShaderDataType::Float2, "position"},
                             {ShaderDataType::Float, "z"},
@@ -73,8 +73,8 @@ namespace gp {
     void Renderer::_createEllipseBuffer() {
         GP_CORE_TRACE("Renderer::_createEllipseBuffer()");
 
-        auto ellipseVAO = Ref<VertexArray>(new VertexArray());
-        auto ellipseVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto ellipseVAO = shared_ptr<VertexArray>(new VertexArray());
+        auto ellipseVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         ellipseVBO->setLayout({{ShaderDataType::Float2, "position"},
                                {ShaderDataType::Float, "z"},
@@ -88,8 +88,8 @@ namespace gp {
     void Renderer::_createTexturedBuffer() {
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating TexturedQuad buffer");
 
-        auto imageVAO = Ref<VertexArray>(new VertexArray());
-        auto imageVBO = Ref<VertexBuffer>(new VertexBuffer());
+        auto imageVAO = shared_ptr<VertexArray>(new VertexArray());
+        auto imageVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         imageVBO->setLayout({{ShaderDataType::Float2, "position"},
                              {ShaderDataType::Float, "z"},
@@ -483,7 +483,7 @@ namespace gp {
     uint32_t Renderer::_cacheTexture(const std::string& name, const Bitmap& bitmap) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
-        auto texture = Ref<Texture2D>(new Texture2D(bitmap));
+        auto texture = shared_ptr<Texture2D>(new Texture2D(bitmap));
         const uint32_t texIndex = m_Textures.size();
 
         m_TexturesCache.insert({name, {texture, texIndex}});

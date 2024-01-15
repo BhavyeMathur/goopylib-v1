@@ -29,9 +29,9 @@ namespace gp {
 
         GPAPI ~TextureAtlas();
 
-        GPAPI TextureCoords add(const Ref<Bitmap> &bitmap, bool allowRotation = true);
+        GPAPI TextureCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
 
-        GPAPI std::vector<TextureCoords> add(const std::vector<Ref<Bitmap>> &bitmaps,
+        GPAPI std::vector<TextureCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
                                              bool allowRotation = true,
                                              const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 

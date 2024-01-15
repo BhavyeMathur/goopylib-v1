@@ -8,5 +8,5 @@ namespace gp {
 
 struct CircleObject {
     EllipseObject base;
-    Ref<gp::Circle> circle;
+    shared_ptr<gp::Circle> circle;
 };

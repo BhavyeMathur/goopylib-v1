@@ -55,7 +55,7 @@ namespace gp {
         }
     }
 
-    void VertexArray::setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
+    void VertexArray::setVertexBuffer(const shared_ptr<VertexBuffer> &vertexBuffer) {
         bind();
         vertexBuffer->bind();
 

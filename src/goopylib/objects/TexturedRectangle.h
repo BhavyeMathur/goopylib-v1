@@ -27,7 +27,7 @@ namespace gp {
          *
          * @param position center (x, y) of the rectangle in world space
          */
-        GPAPI TexturedRectangle(const std::string &texture, const Ref<Bitmap> &bitmap, Point position);
+        GPAPI TexturedRectangle(const std::string &texture, const shared_ptr<Bitmap> &bitmap, Point position);
 
         /**
          * An object representing a textured rectangle
@@ -36,7 +36,7 @@ namespace gp {
          * @param width in world space
          * @param height in world space
          */
-        GPAPI TexturedRectangle(std::string texture, const Ref<Bitmap> &bitmap, Point position, float width,
+        GPAPI TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap, Point position, float width,
                                 float height);
 
         /**
@@ -53,7 +53,7 @@ namespace gp {
          * @param p1 the 1st coordinate (x, y) of the rectangle
          * @param p2 the 2nd coordinate (x, y) of the rectangle
          */
-        GPAPI TexturedRectangle(std::string texture, const Ref<Bitmap> &bitmap, Point p1, Point p2);
+        GPAPI TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2);
 
         [[nodiscard]] GPAPI std::string toString() const override;
 
@@ -72,6 +72,6 @@ namespace gp {
          * @param p1 the 1st coordinate (x, y) of the rectangle
          * @param p2 the 2nd coordinate (x, y) of the rectangle
          */
-        GPAPI TexturedRectangle(std::string texture, const Ref<Bitmap> &bitmap);
+        GPAPI TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap);
     };
 }

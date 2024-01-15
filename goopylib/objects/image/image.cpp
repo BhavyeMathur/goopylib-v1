@@ -26,7 +26,7 @@ namespace image {
         float width, height;
         const char *path;
         if (PyArg_ParseTuple(args, "s(ff)ff", &path, &x1, &y1, &width, &height)) {
-            self->image = Ref<gp::Image>(new gp::Image(path, {x1, y1}, width, height));
+            self->image = shared_ptr<gp::Image>(new gp::Image(path, {x1, y1}, width, height));
             self->base.rectangle = self->image;
             self->base.base.quad = self->image;
             self->base.base.base.renderable = self->image;
@@ -37,7 +37,7 @@ namespace image {
         if (PyArg_ParseTuple(args, "s(ff)", &path, &x1, &y1)) {
 
             try {
-                self->image = Ref<gp::Image>(new gp::Image(path, {x1, y1}));
+                self->image = shared_ptr<gp::Image>(new gp::Image(path, {x1, y1}));
             }
             catch (const std::runtime_error &e) {
                 PyErr_SetString(PyExc_FileNotFoundError, path);
@@ -56,7 +56,7 @@ namespace image {
             return -1;
         }
 
-        self->image = Ref<gp::Image>(new gp::Image(path, {x1, y1}, {x2, y2}));
+        self->image = shared_ptr<gp::Image>(new gp::Image(path, {x1, y1}, {x2, y2}));
         self->base.rectangle = self->image;
         self->base.base.quad = self->image;
         self->base.base.base.renderable = self->image;

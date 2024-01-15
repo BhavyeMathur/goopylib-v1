@@ -31,16 +31,16 @@ namespace gp {
         return s_Height;
     }
 
-    TextureCoords TextureAtlas::add(const Ref<Bitmap> &bitmap, bool allowRotation) {
-        auto item = Ref<packing::Item>(new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight()));
+    TextureCoords TextureAtlas::add(const shared_ptr<Bitmap> &bitmap, bool allowRotation) {
+        auto item = shared_ptr<packing::Item>(new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight()));
         m_PackingAlgorithm->pack(item, allowRotation);
         return {item->p1(), item->p2()};
     }
 
-    std::vector<TextureCoords> TextureAtlas::add(const std::vector<Ref<Bitmap>> &bitmaps,
+    std::vector<TextureCoords> TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
                                                  bool allowRotation,
                                                  const packing::SortingFunction &sorting) {
-        std::vector<Ref<packing::Item>> items;
+        std::vector<shared_ptr<packing::Item>> items;
         std::vector<TextureCoords> texCoords;
         items.reserve(bitmaps.size());
         texCoords.reserve(bitmaps.size());

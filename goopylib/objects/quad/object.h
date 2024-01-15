@@ -11,5 +11,5 @@ namespace gp {
 
 struct QuadObject {
     RenderableObject base;
-    Ref<gp::Quad> quad;
+    shared_ptr<gp::Quad> quad;
 };

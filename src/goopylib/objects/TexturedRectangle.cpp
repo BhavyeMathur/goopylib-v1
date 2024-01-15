@@ -10,7 +10,7 @@ namespace gp {
               Rectangle() {
     };
 
-    TexturedRectangle::TexturedRectangle(const std::string &texture, const Ref<Bitmap> &bitmap, Point position)
+    TexturedRectangle::TexturedRectangle(const std::string &texture, const shared_ptr<Bitmap> &bitmap, Point position)
             : Quad({position.x - (float) bitmap->getWidth() / 2.0f,
                     position.y - (float) bitmap->getHeight() / 2.0f},
 
@@ -27,7 +27,7 @@ namespace gp {
               Rectangle() {
     };
 
-    TexturedRectangle::TexturedRectangle(std::string texture, const Ref<Bitmap> &bitmap, Point position,
+    TexturedRectangle::TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap, Point position,
                                          float width, float height)
             : Quad({position.x - width / 2.0f, position.y - height / 2.0f},
                    {position.x + width / 2.0f, position.y - height / 2.0f},
@@ -43,7 +43,7 @@ namespace gp {
               Rectangle() {
     };
 
-    TexturedRectangle::TexturedRectangle(std::string texture, const Ref<Bitmap> &bitmap, Point p1, Point p2)
+    TexturedRectangle::TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2)
             : Quad(p1, {p2.x, p1.y}, p2, {p1.x, p2.y}),
               TexturedQuad(std::move(texture), bitmap),
               Rectangle() {
@@ -55,7 +55,7 @@ namespace gp {
               Rectangle() {
     };
 
-    TexturedRectangle::TexturedRectangle(std::string texture, const Ref<Bitmap> &bitmap)
+    TexturedRectangle::TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap)
             : Quad(),
               TexturedQuad(std::move(texture), bitmap),
               Rectangle() {

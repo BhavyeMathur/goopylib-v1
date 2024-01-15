@@ -19,7 +19,7 @@ namespace gp {
         m_V4.color = m_V1.color;
     }
 
-    TexturedQuad::TexturedQuad(std::string texture, const Ref<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4)
+    TexturedQuad::TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4)
             : TexturedQuad(std::move(texture), p1, p2, p3, p4) {
         GP_CORE_DEBUG("gp::TexturedQuad::TexturedQuad({8}, ({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y, texture);
@@ -36,7 +36,7 @@ namespace gp {
         m_V4.color = m_V1.color;
     }
 
-    TexturedQuad::TexturedQuad(std::string texture, const Ref<Bitmap> &bitmap)
+    TexturedQuad::TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap)
             : TexturedQuad(std::move(texture)) {
 
         m_Bitmap = bitmap;
@@ -57,11 +57,11 @@ namespace gp {
         return m_Texture;
     }
 
-    void TexturedQuad::setBitmap(const Ref<Bitmap> &bitmap) {
+    void TexturedQuad::setBitmap(const shared_ptr<Bitmap> &bitmap) {
         m_Bitmap = bitmap;
     }
 
-    Ref<Bitmap> TexturedQuad::getBitmap() const {
+    shared_ptr<Bitmap> TexturedQuad::getBitmap() const {
         return m_Bitmap;
     }
 }
