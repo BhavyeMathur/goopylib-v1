@@ -7,7 +7,8 @@ namespace gp {
     int32_t TextureAtlas::s_Width = 0;
     int32_t TextureAtlas::s_Height = 0;
     std::vector<TextureAtlas *> TextureAtlas::s_Atlases;
-
+    
+    // TODO use TextureAtlas to optimise textures in the GPU
     TextureAtlas::TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm)
             : m_PackingAlgorithm(packingAlgorithm) {
         s_Atlases.push_back(this);

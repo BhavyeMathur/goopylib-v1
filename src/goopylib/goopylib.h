@@ -27,6 +27,6 @@
 
 #include "src/goopylib/texture/Bitmap.h"
 #include "src/goopylib/texture/Texture2D.h"
-#include "src/goopylib/texture/TextureAtlas.h"
+// #include "src/goopylib/texture/TextureAtlas.h"
 
 #include "src/goopylib/scene/CameraController.h"

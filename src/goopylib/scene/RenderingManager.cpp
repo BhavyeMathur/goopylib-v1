@@ -3,7 +3,7 @@
 #include "RenderingManager.h"
 
 #include "src/goopylib/core/Buffer.h"
-#include "src/goopylib/texture/TextureAtlas.h"
+#include "src/goopylib/texture/Texture2D.h"
 #include "src/goopylib/shader/ShaderFiles.h"
 
 #include "src/goopylib/objects/Triangle.h"
@@ -26,7 +26,7 @@ namespace gp {
 
     void RenderingManager::init() {
         Texture2D::init();
-        TextureAtlas::init();
+//        TextureAtlas::init();
 
         m_Renderer.init();
         m_AlphaRenderer.init();

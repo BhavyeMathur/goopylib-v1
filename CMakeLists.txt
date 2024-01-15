@@ -114,8 +114,8 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/platform/OpenGL/Shader.cpp
 
             src/platform/OpenGL/Texture2D.cpp
-            src/platform/OpenGL/TextureAtlas.cpp
-            src/goopylib/texture/TextureAtlas.cpp
+#            src/platform/OpenGL/TextureAtlas.cpp
+#            src/goopylib/texture/TextureAtlas.cpp
             src/goopylib/texture/Bitmap.cpp
             src/goopylib/texture/Texture2D.cpp
 
