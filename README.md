@@ -38,13 +38,13 @@ It allows you to unlock the potential of OpenGL and low-level graphics with a hi
 ## Examples
 
 #### Solar System Simulator:
-![https://github.com/BhavyeMathur/goopylib-solar-system-simulation](https://github.com/BhavyeMathur/goopylib-solar-system-simulation/blob/c996a328501aef6e60d205bcf70d956958173d8c/assets/solar-system.gif?raw=true)
+[![https://github.com/BhavyeMathur/goopylib-solar-system-simulation](https://github.com/BhavyeMathur/goopylib-solar-system-simulation/blob/c996a328501aef6e60d205bcf70d956958173d8c/assets/solar-system.gif?raw=true)](https://github.com/BhavyeMathur/goopylib-solar-system-simulation)
 
 #### Brick Breaker:
-![https://github.com/BhavyeMathur/goopylib-brick-breaker](https://github.com/BhavyeMathur/goopylib-brick-breaker/blob/main/assets/img.png?raw=true)
+[![https://github.com/BhavyeMathur/goopylib-brick-breaker](https://github.com/BhavyeMathur/goopylib-brick-breaker/blob/main/assets/img.png?raw=true)](https://github.com/BhavyeMathur/goopylib-brick-breaker)
 
 #### Conway's Game of Life:
-![https://github.com/BhavyeMathur/goopylib-conways-game-of-life](https://github.com/BhavyeMathur/goopylib-conways-game-of-life/blob/main/assets/gif.gif?raw=true)
+[![https://github.com/BhavyeMathur/goopylib-conways-game-of-life](https://github.com/BhavyeMathur/goopylib-conways-game-of-life/blob/main/assets/gif.gif?raw=true)](https://github.com/BhavyeMathur/goopylib-conways-game-of-life)
 
 ## Installation
 
