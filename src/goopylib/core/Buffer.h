@@ -7,9 +7,9 @@
 namespace gp {
     class Buffer {
     public:
-//        GPAPI Buffer(const Buffer &) = delete;
-//
-//        GPAPI Buffer(Buffer &&other) = delete;
+        GPAPI Buffer(const Buffer &) = delete;
+
+        GPAPI Buffer(Buffer &&other) = delete;
 
         GPAPI virtual ~Buffer() = default;
 
@@ -32,15 +32,13 @@ namespace gp {
         friend class Renderer;
 
     public:
-        GPAPI VertexBuffer(const BufferLayout &layout);
+        GPAPI VertexBuffer(const VertexBuffer &) = delete;
 
-//        GPAPI VertexBuffer(const VertexBuffer &) = delete;
-//
-//        GPAPI VertexBuffer(VertexBuffer &&other) = delete;
+        GPAPI VertexBuffer(VertexBuffer &&other) = delete;
+
+        GPAPI VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
 
         GPAPI ~VertexBuffer() override;
-
-        GPAPI void init();
 
         GPAPI void bind() const;
 
@@ -51,6 +49,8 @@ namespace gp {
         GPAPI void setData(const void *data, uint32_t count, uint32_t offset) const;
 
         [[nodiscard]] GPAPI const BufferLayout &getLayout() const;
+
+        GPAPI void setLayout(const BufferLayout &layout);
 
     private:
         BufferLayout m_Layout{};

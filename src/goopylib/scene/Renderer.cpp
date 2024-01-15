@@ -30,41 +30,67 @@ namespace gp {
     void Renderer::_createLineBuffer() {
         GP_CORE_TRACE("Renderer::_createLineBuffer()");
 
+        auto lineVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
+
+        lineVBO->setLayout({{ShaderDataType::Float2, "position"},
+                            {ShaderDataType::Float,  "z"},
+                            {ShaderDataType::Float4, "color"}});
+
         m_LineBatch.VAO.init();
-        m_LineBatch.VAO._setVBOAttribs();
+        m_LineBatch.VAO.setVertexBuffer(lineVBO);
     }
 
     void Renderer::_createTriangleBuffer() {
         GP_CORE_TRACE("Renderer::_createTriangleBuffer()");
 
+        auto triangleVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
+
+        triangleVBO->setLayout({{ShaderDataType::Float2, "position"},
+                                {ShaderDataType::Float,  "z"},
+                                {ShaderDataType::Float4, "color"}});
         m_TriangleBatch.VAO.init();
-        m_TriangleBatch.VAO._setVBOAttribs();
+        m_TriangleBatch.VAO.setVertexBuffer(triangleVBO);
     }
 
     void Renderer::_createQuadBuffer() {
         GP_CORE_TRACE("Renderer::_createQuadBuffer()");
 
+        auto quadVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
+
+        quadVBO->setLayout({{ShaderDataType::Float2, "position"},
+                            {ShaderDataType::Float,  "z"},
+                            {ShaderDataType::Float4, "color"}});
         m_QuadBatch.VAO.init();
-        m_QuadBatch.VAO._setVBOAttribs();
+        m_QuadBatch.VAO.setVertexBuffer(quadVBO);
     }
 
     void Renderer::_createEllipseBuffer() {
         GP_CORE_TRACE("Renderer::_createEllipseBuffer()");
 
+        auto ellipseVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
+
+        ellipseVBO->setLayout({{ShaderDataType::Float2, "position"},
+                               {ShaderDataType::Float,  "z"},
+                               {ShaderDataType::Float2, "localCoord"},
+                               {ShaderDataType::Float4, "color"}});
         m_EllipseBatch.VAO.init();
-        m_EllipseBatch.VAO._setVBOAttribs();
+        m_EllipseBatch.VAO.setVertexBuffer(ellipseVBO);
     }
 
     void Renderer::_createTexturedBuffer() {
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating TexturedQuad buffer");
 
-        m_TexturedQuadBatches.emplace_back(make_unique<RenderingBatch>(BufferLayout({{ShaderDataType::Float2, "position"},
-                                                         {ShaderDataType::Float,  "z"},
-                                                         {ShaderDataType::Float4, "color"},
-                                                         {ShaderDataType::Float2, "texCoord"},
-                                                         {ShaderDataType::Int,    "texSlot"},})));
-        m_TexturedQuadBatches.back()->VAO.init();
-        m_TexturedQuadBatches.back()->VAO._setVBOAttribs();
+        auto imageVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
+
+        imageVBO->setLayout({{ShaderDataType::Float2, "position"},
+                             {ShaderDataType::Float,  "z"},
+                             {ShaderDataType::Float4, "color"},
+                             {ShaderDataType::Float2, "texCoord"},
+                             {ShaderDataType::Int,    "texSlot"},});
+
+        m_TexturedQuadBatches.emplace_back();
+        m_TexturedQuadBatches.back().VAO.init();
+        m_TexturedQuadBatches.back().VAO.setVertexBuffer(imageVBO);
 
         m_TexturedQuadVertices.emplace_back();
         m_TexturedQuadToIndex.emplace_back();
@@ -310,6 +336,7 @@ namespace gp {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->getTextureName());
 
             auto bitmap = object->getBitmap();
+            GP_CORE_TRACE("hi");
             texIndex = _cacheTexture(object->getTextureName(), *bitmap);
             texSlot = texIndex % 16;
 
@@ -352,10 +379,10 @@ namespace gp {
             m_TexturedQuadVertices[batch][index + 3].attrib.color.alpha = 0;
         }
 
-        m_TexturedQuadBatches[batch]->indices += 6;
-        m_TexturedQuadBatches[batch]->vertices += 4;
-        m_TexturedQuadBatches[batch]->bufferData = &m_TexturedQuadVertices[batch][0];
-        m_TexturedQuadBatches[batch]->reallocateBufferData = true;
+        m_TexturedQuadBatches[batch].indices += 6;
+        m_TexturedQuadBatches[batch].vertices += 4;
+        m_TexturedQuadBatches[batch].bufferData = &m_TexturedQuadVertices[batch][0];
+        m_TexturedQuadBatches[batch].reallocateBufferData = true;
     }
 
     void Renderer::destroyTexturedQuad(uint32_t ID) {
@@ -373,11 +400,11 @@ namespace gp {
             }
         }
 
-        m_TexturedQuadBatches[batch]->indices -= 6;
-        m_TexturedQuadBatches[batch]->vertices -= 4;
-        m_TexturedQuadBatches[batch]->bufferData = m_TexturedQuadVertices[batch].empty() ? nullptr
+        m_TexturedQuadBatches[batch].indices -= 6;
+        m_TexturedQuadBatches[batch].vertices -= 4;
+        m_TexturedQuadBatches[batch].bufferData = m_TexturedQuadVertices[batch].empty() ? nullptr
                                                                                         : &m_TexturedQuadVertices[batch][0];
-        m_TexturedQuadBatches[batch]->reallocateBufferData = true;
+        m_TexturedQuadBatches[batch].reallocateBufferData = true;
     }
 
     void Renderer::updateTexturedQuad(uint32_t ID, const TexturedQuad *object) {
@@ -400,7 +427,7 @@ namespace gp {
             m_TexturedQuadVertices[batch][index + 3].attrib.color.alpha = 0;
         }
 
-        m_TexturedQuadBatches[batch]->updateBufferData = true;
+        m_TexturedQuadBatches[batch].updateBufferData = true;
     }
 
     void Renderer::flush() {
@@ -443,13 +470,13 @@ namespace gp {
             _bindTextureBatch(textureSlotOffset);
             textureSlotOffset += Texture2D::getTextureSlots();
 
-            if (batch->indices) {
+            if (batch.indices) {
                 m_Window.m_TextureShader->bind();
 
-                _updateRenderingObjectEBO(*batch);
-                _updateRenderingObjectVBO(*batch);
+                _updateRenderingObjectEBO(batch);
+                _updateRenderingObjectVBO(batch);
 
-                batch->VAO.draw(batch->indices, batch->mode);
+                batch.VAO.draw(batch.indices, batch.mode);
             }
         }
     }
@@ -477,12 +504,12 @@ namespace gp {
     void Renderer::_updateRenderingObjectVBO(RenderingBatch &object) {
         GP_CORE_TRACE_ALL("gp::Renderer::_updateRenderingObjectVBO()");
         if (object.reallocateBufferData) {
-            object.VAO.m_VertexBuffer.setData(object.bufferData, object.vertices);
+            object.VAO.m_VertexBuffer->setData(object.bufferData, object.vertices);
             object.reallocateBufferData = false;
             object.updateBufferData = false;
         }
         else if (object.updateBufferData) {
-            object.VAO.m_VertexBuffer.setData(object.bufferData, object.vertices, 0);
+            object.VAO.m_VertexBuffer->setData(object.bufferData, object.vertices, 0);
             object.updateBufferData = false;
         }
     }
