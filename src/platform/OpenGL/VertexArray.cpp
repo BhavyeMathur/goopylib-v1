@@ -22,12 +22,13 @@
 #include <GLFW/glfw3.h>
 
 namespace gp {
-    VertexArray::VertexArray() {
+    VertexArray::VertexArray(const BufferLayout &layout)
+            : m_VertexBuffer(layout) {
         GP_CORE_DEBUG("gp::VertexArray::VertexArray()");
 
         // TODO replace with gp::core function, move out of platform
         if (glfwGetCurrentContext()) {
-           init();
+            init();
         }
     }
 
@@ -40,6 +41,9 @@ namespace gp {
         GP_CORE_DEBUG("gp::VertexArray::init()");
         if (m_RendererID == 0) {
             glGenVertexArrays(1, &m_RendererID);
+            m_VertexBuffer.init();
+
+            // _setVBOAttribs();
         }
     }
 
@@ -55,6 +59,8 @@ namespace gp {
 
     void VertexArray::draw(int32_t count, int32_t mode) const {
         bind();
+        GP_CORE_WARN(m_IndexBuffer->count());
+
         if (m_IndexBuffer) {
             glDrawElements(mode,
                            count and count <= m_IndexBuffer->count() ? count : (int32_t) m_IndexBuffer->count(),
@@ -63,18 +69,17 @@ namespace gp {
         }
         else {
             glDrawArrays(mode, 0,
-                         count and count <= m_VertexBuffer->count() ? count : (int32_t) m_VertexBuffer->count());
+                         count and count <= m_VertexBuffer.count() ? count : (int32_t) m_VertexBuffer.count());
         }
     }
 
-    void VertexArray::setVertexBuffer(const shared_ptr<VertexBuffer> &vertexBuffer) {
+    void VertexArray::_setVBOAttribs() {
         bind();
-        vertexBuffer->bind();
+        m_VertexBuffer.bind();
 
-        m_VertexBuffer = vertexBuffer;
         uint32_t attrIndex = 0;
 
-        const BufferLayout layout = vertexBuffer->getLayout();
+        const BufferLayout layout = m_VertexBuffer.getLayout();
 
         for (const BufferElement element: layout) {
             ShaderDataType type = element.getDataType();

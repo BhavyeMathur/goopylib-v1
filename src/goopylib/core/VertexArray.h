@@ -16,7 +16,7 @@ namespace gp {
 //
 //        GPAPI VertexArray(VertexArray &&other) = delete;
 
-        GPAPI VertexArray();
+        GPAPI VertexArray(const BufferLayout &layout);
 
         GPAPI ~VertexArray();
 
@@ -28,9 +28,9 @@ namespace gp {
 
         GPAPI void draw(int32_t count = 0, int32_t mode = GP_DRAW_MODE_TRIANGLES) const;
 
-        GPAPI void setVertexBuffer(const shared_ptr<VertexBuffer> &vertexBuffer);
+        GPAPI void _setVBOAttribs();
 
-        [[nodiscard]] GPAPI const shared_ptr<const VertexBuffer> getVertexBuffer() const;
+        [[nodiscard]] GPAPI const VertexBuffer& getVertexBuffer();
 
         GPAPI void setIndexBuffer(std::initializer_list<uint32_t> indices);
 
@@ -41,7 +41,7 @@ namespace gp {
     private:
         uint32_t m_RendererID = 0;
 
-        shared_ptr<VertexBuffer> m_VertexBuffer = nullptr;
+        VertexBuffer m_VertexBuffer;
         shared_ptr<IndexBuffer> m_IndexBuffer = nullptr;
     };
 }

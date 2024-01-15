@@ -1,27 +1,38 @@
 #define GP_LOGGING_LEVEL 5
+
 #include "src/goopylib/core/Buffer.h"
 
 #if __APPLE__
+
 #include <OpenGL/gl3.h>
+
 #endif
+
+#include <GLFW/glfw3.h>
 
 
 // Vertex Buffer
 namespace gp {
-    VertexBuffer::VertexBuffer(uint32_t count, void *vertices)
-            : Buffer(count) {
-        GP_CORE_DEBUG("gp::VertexBuffer::VertexBuffer()");
-        glGenBuffers(1, &m_RendererID);
-
-        GP_CORE_DEBUG("Initializing Vertex Buffer {0}, count={1}", m_RendererID, count);
-
-        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), vertices, GL_STATIC_DRAW);
+    VertexBuffer::VertexBuffer(const gp::BufferLayout &layout)
+            : m_Layout(layout) {
+        GP_CORE_DEBUG("gp::VertexBuffer::VertexBuffer(layout)");
+        if (glfwGetCurrentContext()) {
+            init();
+        }
     }
 
     VertexBuffer::~VertexBuffer() {
         GP_CORE_DEBUG("Deallocating Vertex Buffer {0}", m_RendererID);
         glDeleteBuffers(1, &m_RendererID);
+    }
+
+    void VertexBuffer::init() {
+        if (m_RendererID == 0) {
+            glGenBuffers(1, &m_RendererID);
+
+            GP_CORE_DEBUG("Initializing Vertex Buffer {0}, count={1}", m_RendererID, m_Count);
+            glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+        }
     }
 
     void VertexBuffer::bind() const {

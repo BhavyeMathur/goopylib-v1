@@ -18,11 +18,6 @@ namespace gp {
     const BufferLayout &VertexBuffer::getLayout() const {
         return m_Layout;
     }
-
-    void VertexBuffer::setLayout(const BufferLayout &layout) {
-        GP_CORE_DEBUG("Setting Vertex Buffer layout");
-        m_Layout = layout;
-    }
 }
 
 

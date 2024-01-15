@@ -18,7 +18,7 @@ namespace gp {
         m_IndexBuffer = make_unique<IndexBuffer>(count, indices);
     }
 
-    const shared_ptr<const VertexBuffer> VertexArray::getVertexBuffer() const {
+    const VertexBuffer &VertexArray::getVertexBuffer() {
         GP_CORE_TRACE_ALL("VertexArray::getVertexBuffer()");
         return m_VertexBuffer;
     }
