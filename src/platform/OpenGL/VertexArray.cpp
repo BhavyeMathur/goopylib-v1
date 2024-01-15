@@ -1,11 +1,14 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 5
+
 #include "src/goopylib/core/VertexArray.h"
 
 #if GP_USING_OPENGL
 
 #if __APPLE__
+
 #include <OpenGL/gl.h>
 #include <OpenGL/gl3.h>
+
 #endif
 
 #if GP_USING_GLAD
@@ -16,19 +19,28 @@
 
 #endif
 
+#include <GLFW/glfw3.h>
 
 namespace gp {
     VertexArray::VertexArray() {
-        glGenVertexArrays(1, &m_RendererID);
+        GP_CORE_DEBUG("gp::VertexArray::VertexArray()");
 
-        GP_CORE_DEBUG("Initialising Vertex Array {0}", m_RendererID);
-
-        glBindVertexArray(m_RendererID);
+        // TODO replace with gp::core function, move out of platform
+        if (glfwGetCurrentContext()) {
+           init();
+        }
     }
 
     VertexArray::~VertexArray() {
         GP_CORE_DEBUG("Deallocating Vertex Array {0}", m_RendererID);
         glDeleteVertexArrays(1, &m_RendererID);
+    }
+
+    void VertexArray::init() {
+        GP_CORE_DEBUG("gp::VertexArray::init()");
+        if (m_RendererID == 0) {
+            glGenVertexArrays(1, &m_RendererID);
+        }
     }
 
     void VertexArray::bind() const {

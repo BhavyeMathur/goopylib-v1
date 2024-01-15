@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 6
 
 #include "Renderer.h"
 
@@ -12,9 +12,8 @@
 #include "src/goopylib/objects/TexturedQuad.h"
 
 namespace gp {
-    Renderer::Renderer(const Window& window)
+    Renderer::Renderer(const Window &window)
             : m_Window(window) {
-
     }
 
     Renderer::~Renderer() = default;
@@ -31,79 +30,73 @@ namespace gp {
     void Renderer::_createLineBuffer() {
         GP_CORE_TRACE("Renderer::_createLineBuffer()");
 
-        auto lineVAO = shared_ptr<VertexArray>(new VertexArray());
         auto lineVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         lineVBO->setLayout({{ShaderDataType::Float2, "position"},
-                            {ShaderDataType::Float, "z"},
+                            {ShaderDataType::Float,  "z"},
                             {ShaderDataType::Float4, "color"}});
-        lineVAO->setVertexBuffer(lineVBO);
 
-        m_LineBatch = {lineVAO, nullptr, GP_DRAW_MODE_LINES};
+        m_LineBatch.VAO.init();
+        m_LineBatch.VAO.setVertexBuffer(lineVBO);
     }
 
     void Renderer::_createTriangleBuffer() {
         GP_CORE_TRACE("Renderer::_createTriangleBuffer()");
 
-        auto triangleVAO = shared_ptr<VertexArray>(new VertexArray());
         auto triangleVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         triangleVBO->setLayout({{ShaderDataType::Float2, "position"},
-                                {ShaderDataType::Float, "z"},
+                                {ShaderDataType::Float,  "z"},
                                 {ShaderDataType::Float4, "color"}});
-        triangleVAO->setVertexBuffer(triangleVBO);
-
-        m_TriangleBatch = {triangleVAO, nullptr};
+        m_TriangleBatch.VAO.init();
+        m_TriangleBatch.VAO.setVertexBuffer(triangleVBO);
     }
 
     void Renderer::_createQuadBuffer() {
         GP_CORE_TRACE("Renderer::_createQuadBuffer()");
 
-        auto quadVAO = shared_ptr<VertexArray>(new VertexArray());
         auto quadVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         quadVBO->setLayout({{ShaderDataType::Float2, "position"},
-                            {ShaderDataType::Float, "z"},
+                            {ShaderDataType::Float,  "z"},
                             {ShaderDataType::Float4, "color"}});
-        quadVAO->setVertexBuffer(quadVBO);
-
-        m_QuadBatch = {quadVAO, nullptr};
+        m_QuadBatch.VAO.init();
+        m_QuadBatch.VAO.setVertexBuffer(quadVBO);
     }
 
     void Renderer::_createEllipseBuffer() {
         GP_CORE_TRACE("Renderer::_createEllipseBuffer()");
 
-        auto ellipseVAO = shared_ptr<VertexArray>(new VertexArray());
         auto ellipseVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         ellipseVBO->setLayout({{ShaderDataType::Float2, "position"},
-                               {ShaderDataType::Float, "z"},
+                               {ShaderDataType::Float,  "z"},
                                {ShaderDataType::Float2, "localCoord"},
                                {ShaderDataType::Float4, "color"}});
-        ellipseVAO->setVertexBuffer(ellipseVBO);
-
-        m_EllipseBatch = {ellipseVAO, nullptr};
+        m_EllipseBatch.VAO.init();
+        m_EllipseBatch.VAO.setVertexBuffer(ellipseVBO);
     }
 
     void Renderer::_createTexturedBuffer() {
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating TexturedQuad buffer");
 
-        auto imageVAO = shared_ptr<VertexArray>(new VertexArray());
         auto imageVBO = shared_ptr<VertexBuffer>(new VertexBuffer());
 
         imageVBO->setLayout({{ShaderDataType::Float2, "position"},
-                             {ShaderDataType::Float, "z"},
+                             {ShaderDataType::Float,  "z"},
                              {ShaderDataType::Float4, "color"},
                              {ShaderDataType::Float2, "texCoord"},
                              {ShaderDataType::Int,    "texSlot"},});
-        imageVAO->setVertexBuffer(imageVBO);
 
-        m_TexturedQuadBatches.emplace_back(imageVAO, nullptr);
+        m_TexturedQuadBatches.emplace_back();
+        m_TexturedQuadBatches.back().VAO.init();
+        m_TexturedQuadBatches.back().VAO.setVertexBuffer(imageVBO);
+
         m_TexturedQuadVertices.emplace_back();
         m_TexturedQuadToIndex.emplace_back();
     }
 
-    void Renderer::drawLine(uint32_t ID,  const Line *object) {
+    void Renderer::drawLine(uint32_t ID, const Line *object) {
         GP_CORE_DEBUG("gp::Renderer::drawLine({0})", ID);
 
         const uint32_t index = m_LineVertices.size();
@@ -156,7 +149,7 @@ namespace gp {
         m_LineBatch.updateBufferData = true;
     }
 
-    void Renderer::drawTriangle(uint32_t ID,  const Triangle *object) {
+    void Renderer::drawTriangle(uint32_t ID, const Triangle *object) {
         GP_CORE_DEBUG("gp::Renderer::drawTriangle({0})", ID);
 
         const uint32_t index = m_TriangleVertices.size();
@@ -213,7 +206,7 @@ namespace gp {
         m_TriangleBatch.updateBufferData = true;
     }
 
-    void Renderer::drawQuad(uint32_t ID,  const Quad *object) {
+    void Renderer::drawQuad(uint32_t ID, const Quad *object) {
         GP_CORE_DEBUG("gp::Renderer::drawQuad({0})", ID);
 
         const uint32_t index = m_QuadVertices.size();
@@ -274,7 +267,7 @@ namespace gp {
         m_QuadBatch.updateBufferData = true;
     }
 
-    void Renderer::drawEllipse(uint32_t ID,  const Ellipse *object) {
+    void Renderer::drawEllipse(uint32_t ID, const Ellipse *object) {
         GP_CORE_DEBUG("gp::Renderer::drawEllipse({0})", ID);
 
         const uint32_t index = m_EllipseVertices.size();
@@ -335,7 +328,7 @@ namespace gp {
         m_EllipseBatch.updateBufferData = true;
     }
 
-    void Renderer::drawTexturedQuad(uint32_t ID,  TexturedQuad *object) {
+    void Renderer::drawTexturedQuad(uint32_t ID, TexturedQuad *object) {
         GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
         uint32_t texIndex, texSlot;
@@ -370,10 +363,14 @@ namespace gp {
         m_TexturedQuadToBatch.insert({ID, batch});
         m_TexturedQuadToIndex[batch].insert({ID, index});
 
-        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1, object->m_T1);
-        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2, object->m_T2);
-        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3, object->m_T3);
-        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[3], object->m_ZPosition, object->m_V4, object->m_T4);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1,
+                                                   object->m_T1);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2,
+                                                   object->m_T2);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3,
+                                                   object->m_T3);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[3], object->m_ZPosition, object->m_V4,
+                                                   object->m_T4);
 
         if (object->isHidden()) {
             m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;
@@ -414,10 +411,14 @@ namespace gp {
         const uint32_t batch = m_TexturedQuadToBatch[ID];
         const uint32_t index = m_TexturedQuadToIndex[batch][ID];
 
-        m_TexturedQuadVertices[batch][index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1, object->m_T1};
-        m_TexturedQuadVertices[batch][index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2, object->m_T2};
-        m_TexturedQuadVertices[batch][index + 2] = {object->m_Points[2], object->m_ZPosition, object->m_V3, object->m_T3};
-        m_TexturedQuadVertices[batch][index + 3] = {object->m_Points[3], object->m_ZPosition, object->m_V4, object->m_T4};
+        m_TexturedQuadVertices[batch][index +
+                                      0] = {object->m_Points[0], object->m_ZPosition, object->m_V1, object->m_T1};
+        m_TexturedQuadVertices[batch][index +
+                                      1] = {object->m_Points[1], object->m_ZPosition, object->m_V2, object->m_T2};
+        m_TexturedQuadVertices[batch][index +
+                                      2] = {object->m_Points[2], object->m_ZPosition, object->m_V3, object->m_T3};
+        m_TexturedQuadVertices[batch][index +
+                                      3] = {object->m_Points[3], object->m_ZPosition, object->m_V4, object->m_T4};
 
         if (object->isHidden()) {
             m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;
@@ -439,20 +440,20 @@ namespace gp {
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing lines");
         if (m_LineBatch.indices) {
             _updateRenderingObjectVBO(m_LineBatch);
-            m_LineBatch.VAO->draw(m_LineBatch.indices, m_LineBatch.mode);
+            m_LineBatch.VAO.draw(m_LineBatch.indices, m_LineBatch.mode);
         }
 
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing triangles");
         if (m_TriangleBatch.indices) {
             _updateRenderingObjectVBO(m_TriangleBatch);
-            m_TriangleBatch.VAO->draw(m_TriangleBatch.indices, m_TriangleBatch.mode);
+            m_TriangleBatch.VAO.draw(m_TriangleBatch.indices, m_TriangleBatch.mode);
         }
 
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing quads");
         if (m_QuadBatch.indices) {
             _updateRenderingObjectEBO(m_QuadBatch);
             _updateRenderingObjectVBO(m_QuadBatch);
-            m_QuadBatch.VAO->draw(m_QuadBatch.indices, m_QuadBatch.mode);
+            m_QuadBatch.VAO.draw(m_QuadBatch.indices, m_QuadBatch.mode);
         }
 
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing ellipses");
@@ -461,7 +462,7 @@ namespace gp {
             _updateRenderingObjectVBO(m_EllipseBatch);
 
             m_Window.m_EllipseShader->bind();
-            m_EllipseBatch.VAO->draw(m_EllipseBatch.indices, m_EllipseBatch.mode);
+            m_EllipseBatch.VAO.draw(m_EllipseBatch.indices, m_EllipseBatch.mode);
         }
 
         uint32_t textureSlotOffset = 0;
@@ -475,12 +476,12 @@ namespace gp {
                 _updateRenderingObjectEBO(batch);
                 _updateRenderingObjectVBO(batch);
 
-                batch.VAO->draw(batch.indices, batch.mode);
+                batch.VAO.draw(batch.indices, batch.mode);
             }
         }
     }
 
-    uint32_t Renderer::_cacheTexture(const std::string& name, const Bitmap& bitmap) {
+    uint32_t Renderer::_cacheTexture(const std::string &name, const Bitmap &bitmap) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
         auto texture = shared_ptr<Texture2D>(new Texture2D(bitmap));
@@ -503,12 +504,12 @@ namespace gp {
     void Renderer::_updateRenderingObjectVBO(RenderingBatch &object) {
         GP_CORE_TRACE_ALL("gp::Renderer::_updateRenderingObjectVBO()");
         if (object.reallocateBufferData) {
-            object.VAO->m_VertexBuffer->setData(object.bufferData, object.vertices);
+            object.VAO.m_VertexBuffer->setData(object.bufferData, object.vertices);
             object.reallocateBufferData = false;
             object.updateBufferData = false;
         }
         else if (object.updateBufferData) {
-            object.VAO->m_VertexBuffer->setData(object.bufferData, object.vertices, 0);
+            object.VAO.m_VertexBuffer->setData(object.bufferData, object.vertices, 0);
             object.updateBufferData = false;
         }
     }
@@ -533,7 +534,7 @@ namespace gp {
                 indices[indicesIndex + 4] = vertexIndex + 2;
                 indices[indicesIndex + 5] = vertexIndex + 3;
             }
-            object.VAO->setIndexBuffer(object.indices, indices);
+            object.VAO.setIndexBuffer(object.indices, indices);
 
             delete[] indices;
         }

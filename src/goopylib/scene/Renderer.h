@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "src/goopylib/objects/Vertex.h"
+#include "src/goopylib/core/VertexArray.h"
 
 #if __APPLE__
 
@@ -44,22 +45,18 @@ namespace gp {
     };
 
     struct RenderingBatch {
-        shared_ptr<VertexArray> VAO;
+        VertexArray VAO{};
 
         int32_t indices = 0;
         int32_t vertices = 0;
-        void *bufferData;
+        void *bufferData = nullptr;
         bool reallocateBufferData = false;
         bool updateBufferData = false;
 
         int32_t mode;
 
-        RenderingBatch(const shared_ptr<VertexArray> &VAO = nullptr,
-                       void *bufferData = nullptr,
-                       int32_t mode = GP_DRAW_MODE_TRIANGLES)
-                : VAO(VAO),
-                  bufferData(bufferData),
-                  mode(mode) {
+        RenderingBatch(int32_t mode = GP_DRAW_MODE_TRIANGLES)
+                : mode(mode) {
         }
     };
 
@@ -111,7 +108,7 @@ namespace gp {
         GPAPI void flush();
 
     private:
-        RenderingBatch m_LineBatch;
+        RenderingBatch m_LineBatch{GP_DRAW_MODE_LINES};
         std::vector<SolidVertex> m_LineVertices;
         std::unordered_map<uint32_t, uint32_t> m_LineToIndex;
 

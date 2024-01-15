@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 6
 
 #include "src/goopylib/core/VertexArray.h"
 
@@ -23,7 +23,7 @@ namespace gp {
         return m_VertexBuffer;
     }
 
-    const unique_ptr<IndexBuffer> &VertexArray::getIndexBuffer() const {
+    const shared_ptr<IndexBuffer> &VertexArray::getIndexBuffer() const {
         GP_CORE_TRACE_ALL("VertexArray::getIndexBuffer()");
         return m_IndexBuffer;
     }

@@ -12,13 +12,15 @@ namespace gp {
         friend class Renderer;
 
     public:
-        GPAPI VertexArray(const VertexArray &) = delete;
-
-        GPAPI VertexArray(VertexArray &&other) = delete;
+//        GPAPI VertexArray(const VertexArray &) = delete;
+//
+//        GPAPI VertexArray(VertexArray &&other) = delete;
 
         GPAPI VertexArray();
 
         GPAPI ~VertexArray();
+
+        GPAPI void init();
 
         GPAPI void bind() const;
 
@@ -34,12 +36,12 @@ namespace gp {
 
         GPAPI void setIndexBuffer(uint32_t count, uint32_t *indices);
 
-        [[nodiscard]] GPAPI const unique_ptr<IndexBuffer> &getIndexBuffer() const;
+        [[nodiscard]] GPAPI const shared_ptr<IndexBuffer> &getIndexBuffer() const;
 
     private:
         uint32_t m_RendererID = 0;
 
-        shared_ptr<VertexBuffer> m_VertexBuffer;
-        unique_ptr<IndexBuffer> m_IndexBuffer;
+        shared_ptr<VertexBuffer> m_VertexBuffer = nullptr;
+        shared_ptr<IndexBuffer> m_IndexBuffer = nullptr;
     };
 }

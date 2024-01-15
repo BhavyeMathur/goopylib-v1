@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 3
+#define GP_LOGGING_LEVEL 5
 #include "src/goopylib/core/Buffer.h"
 
 #if __APPLE__
@@ -10,6 +10,7 @@
 namespace gp {
     VertexBuffer::VertexBuffer(uint32_t count, void *vertices)
             : Buffer(count) {
+        GP_CORE_DEBUG("gp::VertexBuffer::VertexBuffer()");
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Vertex Buffer {0}, count={1}", m_RendererID, count);
@@ -55,6 +56,8 @@ namespace gp {
 namespace gp {
     IndexBuffer::IndexBuffer(uint32_t count, uint32_t *indices)
             : Buffer(count) {
+        GP_CORE_DEBUG("gp::IndexBuffer::IndexBuffer()");
+
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Index Buffer {0}, count={1}", m_RendererID, count);
@@ -65,6 +68,7 @@ namespace gp {
 
     IndexBuffer::IndexBuffer(std::initializer_list<uint32_t> indices)
             : Buffer(indices.size()) {
+        GP_CORE_DEBUG("gp::IndexBuffer::IndexBuffer()");
         glGenBuffers(1, &m_RendererID);
 
         GP_CORE_DEBUG("Initializing Index Buffer {0}, count={1}", m_RendererID, indices.size());
