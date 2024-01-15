@@ -13,3 +13,6 @@
 [submodule "examples/BrickBreaker"]
 	path = examples/BrickBreaker
 	url = https://github.com/BhavyeMathur/goopylib-brick-breaker
+[submodule "examples/ConwaysGameOfLife"]
+	path = examples/ConwaysGameOfLife
+	url = https://github.com/BhavyeMathur/goopylib-conways-game-of-life
