@@ -13,8 +13,8 @@ namespace gp {
 
     public:
 //        GPAPI VertexArray(const VertexArray &) = delete;
-//
-//        GPAPI VertexArray(VertexArray &&other) = delete;
+
+        GPAPI VertexArray(VertexArray &&other) noexcept;
 
         GPAPI VertexArray();
 

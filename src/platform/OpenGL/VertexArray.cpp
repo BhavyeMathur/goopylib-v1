@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 5
+#define GP_LOGGING_LEVEL 3
 
 #include "src/goopylib/core/VertexArray.h"
 
@@ -27,12 +27,23 @@ namespace gp {
 
         // TODO replace with gp::core function, move out of platform
         if (glfwGetCurrentContext()) {
-           init();
+            init();
         }
     }
 
+    VertexArray::VertexArray(gp::VertexArray &&other) noexcept:
+            m_RendererID(std::exchange(other.m_RendererID, 0)),
+            m_VertexBuffer(std::exchange(other.m_VertexBuffer, nullptr)),
+            m_IndexBuffer(std::exchange(other.m_IndexBuffer, nullptr)) {
+        GP_CORE_DEBUG("gp::VertexArray::VertexArray(gp::VertexArray &&other)");
+    }
+
     VertexArray::~VertexArray() {
-        GP_CORE_DEBUG("Deallocating Vertex Array {0}", m_RendererID);
+        GP_CORE_DEBUG("gp::VertexArray::~VertexArray()", m_RendererID);
+        if (m_RendererID == 0) {
+            return;
+        }
+
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
@@ -44,16 +55,17 @@ namespace gp {
     }
 
     void VertexArray::bind() const {
-        GP_CORE_TRACE("Binding Vertex Array {0}", m_RendererID);
+        GP_CORE_TRACE("gp::VertexArray::bind({0})", m_RendererID);
         glBindVertexArray(m_RendererID);
     }
 
     void VertexArray::unbind() {
-        GP_CORE_WARN("Unbinding Vertex Arrays");
+        GP_CORE_WARN("gp::VertexArray::unbind()");
         glBindVertexArray(0);
     }
 
     void VertexArray::draw(int32_t count, int32_t mode) const {
+        GP_CORE_TRACE("gp::VertexArray::draw({0}, count={1})", m_RendererID, count);
         bind();
         if (m_IndexBuffer) {
             glDrawElements(mode,
