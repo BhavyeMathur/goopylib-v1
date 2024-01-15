@@ -45,7 +45,7 @@ namespace gp {
     };
 
     struct RenderingBatch {
-        VertexArray VAO{};
+        VertexArray VAO;
 
         int32_t indices = 0;
         int32_t vertices = 0;
@@ -55,8 +55,9 @@ namespace gp {
 
         int32_t mode;
 
-        RenderingBatch(int32_t mode = GP_DRAW_MODE_TRIANGLES)
-                : mode(mode) {
+        RenderingBatch(const BufferLayout &layout, int32_t mode = GP_DRAW_MODE_TRIANGLES)
+                : VAO(layout),
+                  mode(mode) {
         }
     };
 
@@ -108,19 +109,28 @@ namespace gp {
         GPAPI void flush();
 
     private:
-        RenderingBatch m_LineBatch{GP_DRAW_MODE_LINES};
+        RenderingBatch m_LineBatch{{{ShaderDataType::Float2, "position"},
+                                    {ShaderDataType::Float, "z"},
+                                    {ShaderDataType::Float4, "color"}}, GP_DRAW_MODE_LINES};
         std::vector<SolidVertex> m_LineVertices;
         std::unordered_map<uint32_t, uint32_t> m_LineToIndex;
 
-        RenderingBatch m_TriangleBatch;
+        RenderingBatch m_TriangleBatch{{{ShaderDataType::Float2, "position"},
+                                        {ShaderDataType::Float, "z"},
+                                        {ShaderDataType::Float4, "color"}}};
         std::vector<SolidVertex> m_TriangleVertices;
         std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
 
-        RenderingBatch m_QuadBatch;
+        RenderingBatch m_QuadBatch{{{ShaderDataType::Float2, "position"},
+                                    {ShaderDataType::Float, "z"},
+                                    {ShaderDataType::Float4, "color"}}};
         std::vector<SolidVertex> m_QuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
 
-        RenderingBatch m_EllipseBatch;
+        RenderingBatch m_EllipseBatch{{{ShaderDataType::Float2, "position"},
+                                       {ShaderDataType::Float, "z"},
+                                       {ShaderDataType::Float2, "localCoord"},
+                                       {ShaderDataType::Float4, "color"}}};
         std::vector<EllipseVertex> m_EllipseVertices;
         std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;
 

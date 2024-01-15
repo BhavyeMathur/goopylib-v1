@@ -8,23 +8,24 @@
 
 #endif
 
+#include <GLFW/glfw3.h>
+
 
 // Vertex Buffer
 namespace gp {
-    VertexBuffer::VertexBuffer(uint32_t count, void *vertices)
-            : Buffer(count) {
-        GP_CORE_DEBUG("gp::VertexBuffer::VertexBuffer()");
-        glGenBuffers(1, &m_RendererID);
+    VertexBuffer::VertexBuffer(const gp::BufferLayout &layout) :
+            m_Layout(layout) {
+        GP_CORE_DEBUG("gp::VertexBuffer::VertexBuffer(layout)");
 
-        GP_CORE_DEBUG("Initializing Vertex Buffer {0}, count={1}", m_RendererID, count);
-
-        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), vertices, GL_STATIC_DRAW);
+        if (glfwGetCurrentContext()) {
+            init();
+        }
     }
 
     VertexBuffer::VertexBuffer(gp::VertexBuffer &&other) noexcept
-            : m_Layout(std::move(other.m_Layout)) {
-
+            : Buffer(std::move(other)),
+              m_Layout(std::move(other.m_Layout)) {
+        GP_CORE_DEBUG("gp::VertexBuffer::VertexBuffer() — move constructor");
     }
 
     VertexBuffer::~VertexBuffer() {
@@ -34,6 +35,13 @@ namespace gp {
         }
 
         glDeleteBuffers(1, &m_RendererID);
+    }
+
+    void VertexBuffer::init() {
+        if (m_RendererID == 0) {
+            glGenBuffers(1, &m_RendererID);
+            GP_CORE_DEBUG("gp::VertexBuffer::init({0})", m_RendererID);
+        }
     }
 
     void VertexBuffer::bind() const {
@@ -102,6 +110,11 @@ namespace gp {
         #endif
     }
 
+    IndexBuffer::IndexBuffer(gp::IndexBuffer &&other) noexcept
+            : Buffer(std::move(other)) {
+
+    }
+
     IndexBuffer::~IndexBuffer() {
         GP_CORE_DEBUG("gp::IndexBuffer::~IndexBuffer({0})", m_RendererID);
         if (m_RendererID == 0) {
@@ -128,14 +141,13 @@ namespace gp {
             : m_Layout(layout) {
         glGenBuffers(1, &m_RendererID);
 
-        GP_CORE_DEBUG("Initializing Uniform Buffer");
-
-        bind();
+        GP_CORE_DEBUG("gp::UniformBuffer::UniformBuffer({0})", m_RendererID);
     }
 
     UniformBuffer::UniformBuffer(gp::UniformBuffer &&other) noexcept
-            : m_Layout(std::move(other.m_Layout)) {
-
+            : Buffer(std::move(other)),
+              m_Layout(std::move(other.m_Layout)) {
+        GP_CORE_DEBUG("gp::UniformBuffer::UniformBuffer() — move constructor");
     }
 
     UniformBuffer::~UniformBuffer() {

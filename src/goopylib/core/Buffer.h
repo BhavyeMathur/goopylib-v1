@@ -29,16 +29,16 @@ namespace gp {
 namespace gp {
     class VertexBuffer : public Buffer {
 
-        friend class Renderer;
+        friend class VertexArray;
 
     public:
         GPAPI VertexBuffer(const VertexBuffer &) = delete;
 
         GPAPI VertexBuffer(VertexBuffer &&other) noexcept;
 
-        GPAPI VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
-
         GPAPI ~VertexBuffer() override;
+
+        GPAPI void init();
 
         GPAPI void bind() const;
 
@@ -54,6 +54,8 @@ namespace gp {
 
     private:
         BufferLayout m_Layout{};
+
+        GPAPI VertexBuffer(const BufferLayout &layout);
     };
 }
 
@@ -61,16 +63,14 @@ namespace gp {
 namespace gp {
     class IndexBuffer final : public Buffer {
 
-        friend class VertexArray;
-
     public:
-        GPAPI IndexBuffer(const IndexBuffer &) = delete;
-
-        GPAPI IndexBuffer(IndexBuffer &&other) noexcept = default;
-
         GPAPI IndexBuffer(uint32_t count, uint32_t *indices);
 
         GPAPI IndexBuffer(std::initializer_list<uint32_t> indices);
+
+        GPAPI IndexBuffer(const IndexBuffer &) = delete;
+
+        GPAPI IndexBuffer(IndexBuffer &&other) noexcept;
 
         GPAPI ~IndexBuffer() override;
 

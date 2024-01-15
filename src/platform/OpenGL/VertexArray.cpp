@@ -22,7 +22,8 @@
 #include <GLFW/glfw3.h>
 
 namespace gp {
-    VertexArray::VertexArray() {
+    VertexArray::VertexArray(const BufferLayout &layout)
+            : m_VertexBuffer(layout) {
         GP_CORE_DEBUG("gp::VertexArray::VertexArray()");
 
         // TODO replace with gp::core function, move out of platform
@@ -33,7 +34,7 @@ namespace gp {
 
     VertexArray::VertexArray(gp::VertexArray &&other) noexcept:
             m_RendererID(std::exchange(other.m_RendererID, 0)),
-            m_VertexBuffer(std::exchange(other.m_VertexBuffer, nullptr)),
+            m_VertexBuffer(std::move(other.m_VertexBuffer)),
             m_IndexBuffer(std::exchange(other.m_IndexBuffer, nullptr)) {
         GP_CORE_DEBUG("gp::VertexArray::VertexArray(gp::VertexArray &&other)");
     }
@@ -51,6 +52,8 @@ namespace gp {
         GP_CORE_DEBUG("gp::VertexArray::init()");
         if (m_RendererID == 0) {
             glGenVertexArrays(1, &m_RendererID);
+            m_VertexBuffer.init();
+            _setVertexAttribs();
         }
     }
 
@@ -75,18 +78,17 @@ namespace gp {
         }
         else {
             glDrawArrays(mode, 0,
-                         count and count <= m_VertexBuffer->count() ? count : (int32_t) m_VertexBuffer->count());
+                         count and count <= m_VertexBuffer.count() ? count : (int32_t) m_VertexBuffer.count());
         }
     }
 
-    void VertexArray::setVertexBuffer(const shared_ptr<VertexBuffer> &vertexBuffer) {
+    void VertexArray::_setVertexAttribs() {
         bind();
-        vertexBuffer->bind();
+        m_VertexBuffer.bind();
 
-        m_VertexBuffer = vertexBuffer;
         uint32_t attrIndex = 0;
 
-        const BufferLayout layout = vertexBuffer->getLayout();
+        const BufferLayout layout = m_VertexBuffer.getLayout();
 
         for (const BufferElement element: layout) {
             ShaderDataType type = element.getDataType();

@@ -12,7 +12,7 @@ namespace gp {
     Buffer::Buffer(gp::Buffer &&other) noexcept
             : m_Count(std::exchange(other.m_Count, 0)),
               m_RendererID(std::exchange(other.m_RendererID, 0)) {
-
+        GP_CORE_DEBUG("gp::Buffer::Buffer() — move constructor");
     }
 
     uint32_t Buffer::count() const {
