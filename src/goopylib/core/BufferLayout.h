@@ -71,9 +71,7 @@ namespace gp {
 
         friend class VertexArray;
 
-        friend class VertexBuffer;
-
-        friend class UniformBuffer;
+        friend class Buffer;
 
     public:
         GPAPI BufferLayout(BufferElement *elements, int32_t count);

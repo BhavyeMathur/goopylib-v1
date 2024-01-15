@@ -11,25 +11,29 @@
 #include <GLFW/glfw3.h>
 
 
-// Vertex Buffer
+// Buffer
 namespace gp {
-    VertexBuffer::VertexBuffer(const gp::BufferLayout &layout) :
-            m_Layout(layout) {
-        GP_CORE_DEBUG("gp::VertexBuffer::VertexBuffer(layout)");
-
+    Buffer::Buffer(uint32_t count, const gp::BufferLayout &layout)
+            : m_Count(count),
+              m_Layout(layout) {
+        GP_CORE_DEBUG("gp::Buffer::Buffer(layout)");
         if (glfwGetCurrentContext()) {
             init();
         }
     }
 
-    VertexBuffer::VertexBuffer(gp::VertexBuffer &&other) noexcept
-            : Buffer(std::move(other)),
-              m_Layout(std::move(other.m_Layout)) {
-        GP_CORE_DEBUG("gp::VertexBuffer::VertexBuffer() — move constructor");
+    void Buffer::init() {
+        if (m_RendererID == 0) {
+            glGenBuffers(1, &m_RendererID);
+            GP_CORE_DEBUG("gp::Buffer::init({0})", m_RendererID);
+        }
     }
 
-    VertexBuffer::~VertexBuffer() {
-        GP_CORE_DEBUG("gp::VertexBuffer::~VertexBuffer({0})", m_RendererID);
+    void Buffer::bind() const {
+        glBindBuffer(_getBufferTarget(), m_RendererID);
+    }
+
+    Buffer::~Buffer() noexcept {
         if (m_RendererID == 0) {
             return;
         }
@@ -37,16 +41,29 @@ namespace gp {
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    void VertexBuffer::init() {
-        if (m_RendererID == 0) {
-            glGenBuffers(1, &m_RendererID);
-            GP_CORE_DEBUG("gp::VertexBuffer::init({0})", m_RendererID);
-        }
+    void Buffer::setData(const void *data, uint32_t count) {
+        GP_CORE_TRACE("Setting Vertex Buffer {0} Data, count={1}", m_RendererID, count);
+
+        bind();
+        glBufferData(_getBufferTarget(), count * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
+
+        m_Count = count;
     }
 
-    void VertexBuffer::bind() const {
-        GP_CORE_TRACE_ALL("gp::VertexBuffer::bind({0})", m_RendererID);
-        glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+    void Buffer::setData(const void *data, uint32_t count, uint32_t offset) const {
+        GP_CORE_TRACE("Setting Vertex Buffer {0} Data", m_RendererID);
+
+        bind();
+        glBufferSubData(_getBufferTarget(), offset * m_Layout.m_Stride,
+                        count * m_Layout.m_Stride, data);
+    }
+}
+
+
+// Vertex Buffer
+namespace gp {
+    VertexBuffer::VertexBuffer(const gp::BufferLayout &layout)
+            : Buffer(0, layout) {
     }
 
     void VertexBuffer::unbind() {
@@ -54,21 +71,8 @@ namespace gp {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    void VertexBuffer::setData(const void *data, uint32_t count) {
-        GP_CORE_TRACE("Setting Vertex Buffer {0} Data, count={1}", m_RendererID, count);
-
-        bind();
-        glBufferData(GL_ARRAY_BUFFER, count * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
-
-        m_Count = count;
-    }
-
-    void VertexBuffer::setData(const void *data, uint32_t count, uint32_t offset) const {
-        GP_CORE_TRACE("Setting Vertex Buffer {0} Data", m_RendererID);
-
-        bind();
-        glBufferSubData(GL_ARRAY_BUFFER, offset * m_Layout.m_Stride,
-                        count * m_Layout.m_Stride, data);
+    uint32_t VertexBuffer::_getBufferTarget() const {
+        return GL_ARRAY_BUFFER;
     }
 }
 
@@ -88,10 +92,7 @@ namespace gp {
 
     IndexBuffer::IndexBuffer(std::initializer_list<uint32_t> indices)
             : Buffer(indices.size()) {
-        GP_CORE_DEBUG("gp::IndexBuffer::IndexBuffer()");
-        glGenBuffers(1, &m_RendererID);
-
-        GP_CORE_DEBUG("Initializing Index Buffer {0}, count={1}", m_RendererID, indices.size());
+        GP_CORE_DEBUG("gp::IndexBuffer::IndexBuffer({0}, count={1})", m_RendererID, indices.size());
 
         // TODO replace with std::array or unique ptr?
         #ifdef _MSC_VER
@@ -110,81 +111,29 @@ namespace gp {
         #endif
     }
 
-    IndexBuffer::IndexBuffer(gp::IndexBuffer &&other) noexcept
-            : Buffer(std::move(other)) {
-
-    }
-
-    IndexBuffer::~IndexBuffer() {
-        GP_CORE_DEBUG("gp::IndexBuffer::~IndexBuffer({0})", m_RendererID);
-        if (m_RendererID == 0) {
-            return;
-        }
-
-        glDeleteBuffers(1, &m_RendererID);
-    }
-
-    void IndexBuffer::bind() const {
-        GP_CORE_TRACE_ALL("gp::IndexBuffer::bind({0})", m_RendererID);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-    }
-
     void IndexBuffer::unbind() {
         GP_CORE_WARN("gp::IndexBuffer::unbind()");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    uint32_t IndexBuffer::_getBufferTarget() const {
+        return GL_ELEMENT_ARRAY_BUFFER;
     }
 }
 
 // Uniform Buffer
 namespace gp {
-    UniformBuffer::UniformBuffer(BufferLayout &&layout)
-            : m_Layout(layout) {
-        glGenBuffers(1, &m_RendererID);
-
-        GP_CORE_DEBUG("gp::UniformBuffer::UniformBuffer({0})", m_RendererID);
-    }
-
-    UniformBuffer::UniformBuffer(gp::UniformBuffer &&other) noexcept
-            : Buffer(std::move(other)),
-              m_Layout(std::move(other.m_Layout)) {
-        GP_CORE_DEBUG("gp::UniformBuffer::UniformBuffer() — move constructor");
-    }
-
-    UniformBuffer::~UniformBuffer() {
-        if (m_RendererID == 0) {
-            return;
-        }
-
-        glDeleteBuffers(1, &m_RendererID);
-    }
-
-    void UniformBuffer::bind() const {
-        glBindBuffer(GL_UNIFORM_BUFFER, m_RendererID);
-    }
-
     void UniformBuffer::unbind() {
-        glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    }
-
-    void UniformBuffer::setData(const void *data, uint32_t count) {
-        GP_CORE_TRACE("Setting Uniform Buffer {0} Data, count={1}", m_RendererID, count);
-
-        bind();
-        glBufferData(GL_UNIFORM_BUFFER, count * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
-
-        m_Count = count;
-    }
-
-    void UniformBuffer::setData(const void *data, uint32_t count, uint32_t offset) const {
-        GP_CORE_TRACE("Setting Uniform Buffer {0} Data", m_RendererID);
-
-        bind();
-        glBufferSubData(GL_UNIFORM_BUFFER, offset * m_Layout.m_Stride,
-                        count * m_Layout.m_Stride, data);
+        GP_CORE_WARN("gp::UniformBuffer::unbind()");
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
     void UniformBuffer::setBinding(uint32_t binding) const {
         bind();
         glBindBufferBase(GL_UNIFORM_BUFFER, binding, m_RendererID);
+    }
+
+    uint32_t UniformBuffer::_getBufferTarget() const {
+        return GL_UNIFORM_BUFFER;
     }
 }
