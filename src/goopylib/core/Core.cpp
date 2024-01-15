@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 6
+#define GP_LOGGING_LEVEL 3
 
 #include "Core.h"
 #include "src/goopylib/core/Window.h"

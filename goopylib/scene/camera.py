@@ -60,6 +60,8 @@ class Camera:
         TypeError: arguments must be numbers
     """
 
+    __slots__ = ["_camera"]
+
     def __init__(self, left: float, right: float, bottom: float, top: float) -> None:
         """
         An orthographic camera associated with a Window.

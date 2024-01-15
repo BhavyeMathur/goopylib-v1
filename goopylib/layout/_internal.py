@@ -15,6 +15,9 @@ _LRTB_SETTER_TYPE = Union[int, Tuple[int], Tuple[int, int], Tuple[int, int, int]
 
 
 class _LRTB:
+
+    __slots__ = ["_left", "_right", "_top", "_bottom", "_x", "_y"]
+
     def __init__(self, left: int, right: int, top: int, bottom: int):
         self._left = left
         self._right = right
@@ -232,6 +235,9 @@ class _Box:
 
 
 class _Dimension(int):
+
+    __slots__ = ["_dimension", "_unit"]
+
     def __new__(cls, value: Union[int, str]) -> int:
         x = int.__new__(cls, _Dimension._parse_dimension(value)[0])
         return x

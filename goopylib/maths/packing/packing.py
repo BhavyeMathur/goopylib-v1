@@ -21,6 +21,8 @@ class Item:
     Class representing a rectangular object to be packed.
     """
 
+    __slots__ = ["_width", "_height", "_long_side", "_short_side", "_x", "_y", "_rotated", "_id"]
+
     items: int = 0
 
     def __init__(self, width: float, height: float) -> None:
@@ -168,6 +170,8 @@ class Bin:
     Class representing the maximum area in which to pack Items
     """
 
+    __slots__ = ["_width", "_height", "_items", "_id"]
+
     bins: int = 0
 
     def __init__(self, width: float, height: float) -> None:
@@ -232,6 +236,8 @@ class PackingAlgorithm:
         bin_width: the maximum width of the packed bin
         bin_height: the maximum height of the packed bin
     """
+
+    __slots__ = ["_bin_width", "_bin_height", "_bins"]
 
     def __init__(self, bin_width: float, bin_height: float):
         """

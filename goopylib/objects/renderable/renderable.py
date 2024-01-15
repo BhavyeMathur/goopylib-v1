@@ -4,7 +4,7 @@ Module defining a generic Renderable object
 
 from __future__ import annotations
 
-from typing import Tuple
+from typing import Tuple, Union
 
 from goopylib.core.window import Window
 
@@ -14,6 +14,8 @@ class Renderable:
     This is the base class from which all goopylib objects are derived.
     The methods provided can be called by any other goopylib objects.
     """
+
+    __slots__ = ["_renderable", "_window"]
 
     # pylint: disable-next=super-init-not-called
     def __init__(self) -> None:
@@ -25,7 +27,7 @@ class Renderable:
             NotImplementedError: cannot directly initialize a Renderable
         """
         self._renderable = None
-        self.window: Window = None
+        self._window: Union[Window, None] = None
 
     def __repr__(self) -> str:
         return self._renderable.__repr__()
@@ -43,7 +45,7 @@ class Renderable:
         """
         if isinstance(window, Window):
             self._renderable.draw(window._window)
-            self.window = window
+            self._window = window
         else:
             self._renderable.draw(window)
         return self
@@ -129,6 +131,13 @@ class Renderable:
             TypeError: width and height must be numbers
         """
         return self._renderable.set_size(width, height)
+
+    @property
+    def window(self) -> Union[Window, None]:
+        """
+        The window the object is drawn to (or None)
+        """
+        return self._window
 
     @property
     def x(self) -> float:

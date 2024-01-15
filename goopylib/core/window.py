@@ -31,6 +31,8 @@ class Window:
         title: displayed in the title bar
     """
 
+    __slots__ = ["_window", "_background", "_camera"]
+
     def __init__(self, width: int, height: int, title: str = "goopylib Window") -> None:
         """
         Creates a window that can be used to draw graphics and widgets.

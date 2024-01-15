@@ -26,6 +26,8 @@ class Shelf:
         bin: the bin associated with the shelf
     """
 
+    __slots__ = ["width", "height", "packed_width", "available_width", "vertical_offset", "is_open", "bin", "items"]
+
     def __init__(self, vertical_offset: float, bin: ShelvedBin) -> None:
         """
         Class representing a single shelf (row) for shelf-based packing algorithms
@@ -107,6 +109,8 @@ class ShelvedBin(Bin):
         width: of the bin
         height: of the bin
     """
+
+    __slots__ = ["open_shelf", "shelves"]
 
     def __init__(self, width: float, height: float) -> None:
         """
@@ -238,6 +242,8 @@ class NextFit(ShelfPackingAlgorithm):
         bin_height: the maximum height of the packed bin
     """
 
+    __slots__ = ["_shelf"]
+
     def __init__(self, bin_width: float, bin_height: float):
         """
         A class representing a shelf-based, next-fit packing algorithm.
@@ -284,6 +290,8 @@ class FirstFit(ShelfPackingAlgorithm):
         bin_width: the maximum width of the packed bin
         bin_height: the maximum height of the packed bin
     """
+
+    __slots__ = ["_shelf"]
 
     def __init__(self, bin_width: float, bin_height: float):
         """
@@ -343,6 +351,8 @@ class ScoredFit(ShelfPackingAlgorithm):
         bin_width: the maximum width of the packed bin
         bin_height: the maximum height of the packed bin
     """
+
+    __slots__ = ["_shelf", "_scoring_func"]
 
     def __init__(self, bin_width: float, bin_height: float, scoring_function: Callable[[Shelf, Item], float]):
         """

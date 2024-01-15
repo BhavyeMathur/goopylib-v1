@@ -21,6 +21,8 @@ class CameraController:
         TypeError: window must be a goopylib Window
     """
 
+    __slots__ = ["_window", "_controller"]
+
     def __init__(self, window: Window) -> None:
         """
         Controller class that automatically manages camera movement, rotation, and zoom.

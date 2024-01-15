@@ -4,7 +4,7 @@ Module defining colors
 
 from __future__ import annotations
 
-from typing import Union
+from typing import Union, NoReturn
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.color as _color
@@ -35,6 +35,8 @@ class Color:
         >>> Color(60, 180, 90, 0.5)
         Color(60, 180, 90)
     """
+
+    __slots__ = ["_color"]
 
     def __init__(self, *args) -> None:
         """

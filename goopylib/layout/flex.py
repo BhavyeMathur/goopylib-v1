@@ -21,6 +21,9 @@ class Flex:
     A class storing a container's flex properties
     """
 
+    __slots__ = ["_wrap", "_align", "_cross_align", "_item_align", "_row_gap", "_column_gap", "_direction", "_order",
+                 "_grow", "_cross_align_self"]
+
     def __init__(self,
                  wrap: _FLEX_WRAP_TYPE = "nowrap",
                  align: _FLEX_ALIGN_TYPE = "start",

@@ -13,6 +13,8 @@ import goopylib.ext.easing as _easing
 class EasingType:
     """Generic Easing Type"""
 
+    __slots__ = []
+
     def __call__(self, t: float) -> float:
         """
         Raises:
