@@ -4,7 +4,8 @@
 #include "src/goopylib/scene/Renderer.h"
 #include "src/goopylib/scene/Camera.h"
 #include "src/goopylib/color/Color.h"
-#include "src/goopylib/shader/Shader.h"
+
+#include "src/goopylib/shader/ShaderFiles.h"
 
 namespace gp {
 
@@ -108,9 +109,9 @@ namespace gp {
         Renderer m_Renderer;
         Renderer m_AlphaRenderer;
 
-        unique_ptr<Shader> m_SolidShader;
-        unique_ptr<Shader> m_EllipseShader;
-        unique_ptr<Shader> m_TextureShader;  // TODO can we make these non-heap allocated? (v2.0.x)
+        Shader m_SolidShader{solidVertexShader, solidFragmentShader};
+        Shader m_EllipseShader{ellipseVertexShader, ellipseFragmentShader};
+        Shader m_TextureShader{textureVertexShader, textureFragmentShader};
 
         unique_ptr<UniformBuffer> m_ShaderUniform;
 

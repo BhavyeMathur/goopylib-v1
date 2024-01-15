@@ -2,26 +2,26 @@
 
 #include "src/goopylib/shader/Shader.h"
 
-const char *solidVertexShader =
+static const char *solidVertexShader =
 
         #include "src/goopylib/shader/solid.vert"
 
-const char *solidFragmentShader =
+static const char *solidFragmentShader =
 
         #include "src/goopylib/shader/solid.frag"
 
-const char *ellipseVertexShader =
+static const char *ellipseVertexShader =
 
         #include "src/goopylib/shader/ellipse.vert"
 
-const char *ellipseFragmentShader =
+static const char *ellipseFragmentShader =
 
         #include "src/goopylib/shader/ellipse.frag"
 
-const char *textureVertexShader =
+static const char *textureVertexShader =
 
         #include "src/goopylib/shader/texture.vert"
 
-const char *textureFragmentShader =
+static const char *textureFragmentShader =
 
         #include "src/goopylib/shader/texture.frag"

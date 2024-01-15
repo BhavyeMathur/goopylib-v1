@@ -434,7 +434,7 @@ namespace gp {
         GP_CORE_TRACE_ALL("gp::Renderer::flush()");
 
         if (m_LineBatch.indices or m_TriangleBatch.indices or m_QuadBatch.indices) {
-            m_Window.m_SolidShader->bind();
+            m_Window.m_SolidShader.bind();
         }
 
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing lines");
@@ -461,7 +461,7 @@ namespace gp {
             _updateRenderingObjectEBO(m_EllipseBatch);
             _updateRenderingObjectVBO(m_EllipseBatch);
 
-            m_Window.m_EllipseShader->bind();
+            m_Window.m_EllipseShader.bind();
             m_EllipseBatch.VAO.draw(m_EllipseBatch.indices, m_EllipseBatch.mode);
         }
 
@@ -471,7 +471,7 @@ namespace gp {
             textureSlotOffset += Texture2D::getTextureSlots();
 
             if (batch.indices) {
-                m_Window.m_TextureShader->bind();
+                m_Window.m_TextureShader.bind();
 
                 _updateRenderingObjectEBO(batch);
                 _updateRenderingObjectVBO(batch);
