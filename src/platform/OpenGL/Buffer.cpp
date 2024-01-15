@@ -1,8 +1,11 @@
-#define GP_LOGGING_LEVEL 5
+#define GP_LOGGING_LEVEL 3
+
 #include "src/goopylib/core/Buffer.h"
 
 #if __APPLE__
+
 #include <OpenGL/gl3.h>
+
 #endif
 
 
@@ -19,18 +22,27 @@ namespace gp {
         glBufferData(GL_ARRAY_BUFFER, (long) (count * sizeof(float)), vertices, GL_STATIC_DRAW);
     }
 
+    VertexBuffer::VertexBuffer(gp::VertexBuffer &&other) noexcept
+            : m_Layout(std::move(other.m_Layout)) {
+
+    }
+
     VertexBuffer::~VertexBuffer() {
-        GP_CORE_DEBUG("Deallocating Vertex Buffer {0}", m_RendererID);
+        GP_CORE_DEBUG("gp::VertexBuffer::~VertexBuffer({0})", m_RendererID);
+        if (m_RendererID == 0) {
+            return;
+        }
+
         glDeleteBuffers(1, &m_RendererID);
     }
 
     void VertexBuffer::bind() const {
-        GP_CORE_TRACE_ALL("Binding Vertex Buffer {0}", m_RendererID);
+        GP_CORE_TRACE_ALL("gp::VertexBuffer::bind({0})", m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     }
 
     void VertexBuffer::unbind() {
-        GP_CORE_WARN("Unbinding Array Buffers");
+        GP_CORE_WARN("gp::VertexBuffer::unbind()");
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -91,17 +103,21 @@ namespace gp {
     }
 
     IndexBuffer::~IndexBuffer() {
-        GP_CORE_DEBUG("Deallocating Index Buffer {0}", m_RendererID);
+        GP_CORE_DEBUG("gp::IndexBuffer::~IndexBuffer({0})", m_RendererID);
+        if (m_RendererID == 0) {
+            return;
+        }
+
         glDeleteBuffers(1, &m_RendererID);
     }
 
     void IndexBuffer::bind() const {
-        GP_CORE_TRACE_ALL("Binding Index Buffer {0}", m_RendererID);
+        GP_CORE_TRACE_ALL("gp::IndexBuffer::bind({0})", m_RendererID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
     }
 
     void IndexBuffer::unbind() {
-        GP_CORE_WARN("Unbinding Element Array Buffers");
+        GP_CORE_WARN("gp::IndexBuffer::unbind()");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 }
@@ -117,7 +133,16 @@ namespace gp {
         bind();
     }
 
+    UniformBuffer::UniformBuffer(gp::UniformBuffer &&other) noexcept
+            : m_Layout(std::move(other.m_Layout)) {
+
+    }
+
     UniformBuffer::~UniformBuffer() {
+        if (m_RendererID == 0) {
+            return;
+        }
+
         glDeleteBuffers(1, &m_RendererID);
     }
 

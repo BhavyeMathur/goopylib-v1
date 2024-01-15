@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "src/goopylib/core/Buffer.h"
 
 
@@ -8,9 +9,16 @@ namespace gp {
             : m_Count(count) {
     }
 
+    Buffer::Buffer(gp::Buffer &&other) noexcept
+            : m_Count(std::exchange(other.m_Count, 0)),
+              m_RendererID(std::exchange(other.m_RendererID, 0)) {
+
+    }
+
     uint32_t Buffer::count() const {
         return m_Count;
     }
+
 }
 
 // Vertex Buffer

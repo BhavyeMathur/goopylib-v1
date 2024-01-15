@@ -9,7 +9,7 @@ namespace gp {
     public:
         GPAPI Buffer(const Buffer &) = delete;
 
-        GPAPI Buffer(Buffer &&other) = delete;
+        GPAPI Buffer(Buffer &&other) noexcept;
 
         GPAPI virtual ~Buffer() = default;
 
@@ -34,7 +34,7 @@ namespace gp {
     public:
         GPAPI VertexBuffer(const VertexBuffer &) = delete;
 
-        GPAPI VertexBuffer(VertexBuffer &&other) = delete;
+        GPAPI VertexBuffer(VertexBuffer &&other) noexcept;
 
         GPAPI VertexBuffer(uint32_t count = 0, void *vertices = nullptr);
 
@@ -66,7 +66,7 @@ namespace gp {
     public:
         GPAPI IndexBuffer(const IndexBuffer &) = delete;
 
-        GPAPI IndexBuffer(IndexBuffer &&other) = delete;
+        GPAPI IndexBuffer(IndexBuffer &&other) noexcept = default;
 
         GPAPI IndexBuffer(uint32_t count, uint32_t *indices);
 
@@ -85,11 +85,11 @@ namespace gp {
     class UniformBuffer final : public Buffer {
 
     public:
-        GPAPI UniformBuffer(const UniformBuffer &) = delete;
-
-        GPAPI UniformBuffer(UniformBuffer &&other) = delete;
-
         GPAPI UniformBuffer(BufferLayout &&layout);
+
+        GPAPI UniformBuffer(UniformBuffer &&other) noexcept;
+
+        GPAPI UniformBuffer(const UniformBuffer &) = delete;
 
         GPAPI ~UniformBuffer() override;
 
