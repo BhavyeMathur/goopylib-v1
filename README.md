@@ -35,6 +35,17 @@ It allows you to unlock the potential of OpenGL and low-level graphics with a hi
  - Profiling Tools
  - Build & Distribution Tools
 
+## Examples
+
+#### Solar System Simulator:
+![https://github.com/BhavyeMathur/goopylib-solar-system-simulation](https://github.com/BhavyeMathur/goopylib-solar-system-simulation/blob/c996a328501aef6e60d205bcf70d956958173d8c/assets/solar-system.gif?raw=true)
+
+#### Brick Breaker:
+![https://github.com/BhavyeMathur/goopylib-brick-breaker](https://github.com/BhavyeMathur/goopylib-brick-breaker/blob/main/assets/img.png?raw=true)
+
+#### Conway's Game of Life:
+![https://github.com/BhavyeMathur/goopylib-conways-game-of-life](https://github.com/BhavyeMathur/goopylib-conways-game-of-life/blob/main/assets/gif.gif?raw=true)
+
 ## Installation
 
 **Requires Python ≥ 3.8.** To install goopylib on Windows or MacOS, use the
@@ -61,7 +72,7 @@ while window.is_open():
     gp.update()
 ```
 
-Inside the loop, you can check for events:
+Inside the loop, you can check for events (or define [callbacks](https://goopylib.readthedocs.io/en/latest/api_reference/core/window.html#callback-functions) instead):
 
 ```python
 while window.is_open():
@@ -70,7 +81,7 @@ while window.is_open():
     elif window.check_key(gp.KEY_S):
         rect.show()
     
-    mousex, mousey = window.to_world(*window.get_mouse_position())
+    mousex, mousey = window.get_mouse_position()
     
     if rect.contains(mousex, mousey):
         print("Hovering over the rectangle!")
@@ -81,7 +92,7 @@ while window.is_open():
 Draw other shapes or more complex objects:
 
 ```python
-img = gp.Image("filepath", (0, 0)).draw(window)
+img = gp.Image("filepath.png", (0, 0)).draw(window)
 ```
 
 Install a simple camera controller that automatically moves, rotates, and zooms in & out!
@@ -102,7 +113,7 @@ Please submit an issue or email bhavyemathur@gmail.com for any questions!
 ## Contributing & Usage
 
 Contributions to goopylib are absolutely welcome! Please reach out to me if you have an idea or feature request or
-submit a pull request yourself. I'd love to hear if you've used goopylib for a project - maybe we could even add some 
+submit a pull request yourself. I'd love to hear if you've used goopylib for a project—maybe we could even add some 
 screenshots to a gallery. 
 
 goopylib is licensed under the [Mozilla Public License Version 2.0](./LICENSE.md) which essentially enables you use 
