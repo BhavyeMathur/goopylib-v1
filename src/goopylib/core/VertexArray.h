@@ -28,18 +28,18 @@ namespace gp {
 
         GPAPI void setVertexBuffer(const Ref<VertexBuffer> &vertexBuffer);
 
-        [[nodiscard]] GPAPI const Ref<VertexBuffer> &getVertexBuffer() const;
+        [[nodiscard]] GPAPI const Ref<const VertexBuffer> getVertexBuffer() const;
 
         GPAPI void setIndexBuffer(std::initializer_list<uint32_t> indices);
 
         GPAPI void setIndexBuffer(uint32_t count, uint32_t *indices);
 
-        [[nodiscard]] GPAPI const Ref<IndexBuffer> &getIndexBuffer() const;
+        [[nodiscard]] GPAPI const Scope<IndexBuffer> &getIndexBuffer() const;
 
     private:
         uint32_t m_RendererID = 0;
 
         Ref<VertexBuffer> m_VertexBuffer;
-        Ref<IndexBuffer> m_IndexBuffer;
+        Scope<IndexBuffer> m_IndexBuffer;
     };
 }
