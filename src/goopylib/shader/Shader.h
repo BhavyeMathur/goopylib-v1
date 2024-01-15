@@ -24,6 +24,8 @@ namespace gp {
 
         GPAPI ~Shader();
 
+        GPAPI void compile();
+
         GPAPI void setUniformBlock(const UniformBuffer &uniform, const char *name, uint32_t binding) const;
 
         template<typename... T>
@@ -46,6 +48,9 @@ namespace gp {
         uint32_t m_RendererID = 0;
 
         std::unordered_map<std::string, int32_t> m_Uniforms;
+
+        const char *m_VertexShaderSource;
+        const char *m_FragmentShaderSource;
 
         [[nodiscard]] GPAPI int32_t _getLocation(const char *name);
 

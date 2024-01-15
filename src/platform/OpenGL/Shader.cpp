@@ -10,43 +10,61 @@
 #if GP_USING_OPENGL
 
 #if __APPLE__
+
 #include <OpenGL/gl3.h>
+
 #endif
 
 #endif
 
 
 namespace gp {
-    Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource) {
+    Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource) :
+            m_VertexShaderSource(vertexShaderSource),
+            m_FragmentShaderSource(fragmentShaderSource) {
+        GP_CORE_DEBUG("gp::Shader::Shader()");
+    }
+
+    Shader::~Shader() {
+        GP_CORE_DEBUG("Deallocating Shader {0}", m_RendererID);
+        glDeleteProgram(m_RendererID);
+    }
+
+    void Shader::compile() {
+        if (m_RendererID) {
+            GP_CORE_DEBUG("gp::Shader::compile() - already compiled");
+            return;
+        }
+        
         int32_t success;
         char infoLog[512];
 
-        GP_CORE_DEBUG("gp::Shader::Shader() - Compiling Vertex Shader");
+        GP_CORE_DEBUG("gp::Shader::compile() - Compiling Vertex Shader");
         GP_CORE_TRACE("\n{0}", vertexShaderSource);
 
         uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+        glShaderSource(vertexShader, 1, &m_VertexShaderSource, nullptr);
         glCompileShader(vertexShader);
 
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
         if (success == GL_FALSE) {
             glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-            GP_CORE_ERROR("gp::Shader::Shader() - Vertex Shader Compilation Failed {0}", infoLog);
+            GP_CORE_ERROR("gp::Shader::compile() - Vertex Shader Compilation Failed {0}", infoLog);
 
             glDeleteShader(vertexShader);
         }
 
-        GP_CORE_DEBUG("gp::Shader::Shader() - Compiling Fragment Shader");
+        GP_CORE_DEBUG("gp::Shader::compile() - Compiling Fragment Shader");
         GP_CORE_TRACE("\n{0}", fragmentShaderSource);
 
         uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+        glShaderSource(fragmentShader, 1, &m_FragmentShaderSource, nullptr);
         glCompileShader(fragmentShader);
 
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
         if (success == GL_FALSE) {
             glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-            GP_CORE_ERROR("gp::Shader::Shader() - Fragment Shader Compilation Failed {0}", infoLog);
+            GP_CORE_ERROR("gp::Shader::compile() - Fragment Shader Compilation Failed {0}", infoLog);
 
             glDeleteShader(vertexShader);
             glDeleteShader(fragmentShader);
@@ -54,7 +72,7 @@ namespace gp {
 
         m_RendererID = glCreateProgram();
 
-        GP_CORE_DEBUG("gp::Shader::Shader() - Linking Shader {0}", m_RendererID);
+        GP_CORE_DEBUG("gp::Shader::compile() - Linking Shader {0}", m_RendererID);
 
         glAttachShader(m_RendererID, vertexShader);
         glAttachShader(m_RendererID, fragmentShader);
@@ -66,13 +84,8 @@ namespace gp {
         glGetProgramiv(m_RendererID, GL_LINK_STATUS, &success);
         if (success == GL_FALSE) {
             glGetProgramInfoLog(m_RendererID, 512, nullptr, infoLog);
-            GP_CORE_ERROR("gp::Shader::Shader() - Shader Linking Failed {0}", infoLog);
+            GP_CORE_ERROR("gp::Shader::compile() - Shader Linking Failed {0}", infoLog);
         }
-    }
-
-    Shader::~Shader() {
-        GP_CORE_DEBUG("Deallocating Shader {0}", m_RendererID);
-        glDeleteProgram(m_RendererID);
     }
 
     void Shader::bind() const {

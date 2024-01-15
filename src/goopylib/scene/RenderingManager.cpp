@@ -33,15 +33,18 @@ namespace gp {
 
         GP_CORE_TRACE("RenderingManager::init() initializing Solid Shader");
         m_SolidShader = make_unique<Shader>(solidVertexShader, solidFragmentShader);
+        m_SolidShader->compile();
 
         GP_CORE_TRACE("RenderingManager::init() initializing Ellipse Shader");
         m_EllipseShader = make_unique<Shader>(ellipseVertexShader, ellipseFragmentShader);
+        m_EllipseShader->compile();
 
         int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
                                 9, 10, 11, 12, 13, 14, 15};
 
         GP_CORE_TRACE("RenderingManager::init() initializing texture Shader");
         m_TextureShader = make_unique<Shader>(textureVertexShader, textureFragmentShader);
+        m_TextureShader->compile();
         m_TextureShader->set("Texture", Texture2D::getTextureSlots(), samplers);
 
         m_ShaderUniform = unique_ptr<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
