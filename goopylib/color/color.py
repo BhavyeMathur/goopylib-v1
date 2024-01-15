@@ -4,7 +4,7 @@ Module defining colors
 
 from __future__ import annotations
 
-from typing import Union, NoReturn
+from typing import Union
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.color as _color
