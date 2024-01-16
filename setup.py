@@ -84,7 +84,7 @@ if sys.platform == "darwin":
     data_files = []
 
 elif sys.platform == "win32":
-    compile_args = ["/wd4005", "/wd4068"]  # suppress macro-redefinition & unknown pragma warnings
+    compile_args = ["/std:c++17", "/wd4005", "/wd4068"]  # suppress macro-redefinition & unknown pragma warnings
     library_dirs = ["binaries/lib-vc2022/Release/"]  # TODO figure out how to remove Release folder
     data_files = [("goopylib", ["binaries/lib-vc2022/Release/goopylib.dll"])]
 
