@@ -17,6 +17,7 @@ on:
       - tools/setup_extensions.py
       - pyproject.toml
       - MANIFEST.in
+      - .github/workflows/build-goopylib.yml
 
   pull_request:
     branches: [ "master" ]
@@ -29,6 +30,7 @@ on:
       - tools/setup_extensions.py
       - pyproject.toml
       - MANIFEST.in
+      - .github/workflows/build-goopylib.yml
 
 env:
   BUILD_TYPE: Release

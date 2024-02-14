@@ -7,11 +7,13 @@ on:
     paths:
       - "**.py"
       - .pylintrc
+      - .github/workflows/pylint.yml
 
   pull_request:
     paths:
       - "**.py"
       - .pylintrc
+      - .github/workflows/pylint.yml
 
 jobs:
   build:
