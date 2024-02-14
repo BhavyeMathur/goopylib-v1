@@ -14,7 +14,7 @@ if (APPLE)
     set(CMAKE_CXX_FLAGS "-Wall -Wno-unknown-pragmas")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_DEBUG /Od)
-    set(CMAKE_CXX_FLAGS_RELEASE /O3)
+    set(CMAKE_CXX_FLAGS_RELEASE /O2)
 endif ()
 
 set(CMAKE_CXX_STANDARD 17)
