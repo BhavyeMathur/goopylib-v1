@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
 
       - name: Configure submodules
         run: git submodule update --init --recursive
@@ -95,6 +95,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ windows-latest, macos-latest ]
+        python: [ cp38-*, cp39-*, cp310-*, cp311-* ]
 
     steps:
       - uses: actions/checkout@v3
@@ -103,9 +104,11 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Build Python wheels
+        env:
+          CIBW_BUILD: ${{ matrix.build }}
         uses: pypa/cibuildwheel@v2.11.4
 
       - uses: actions/upload-artifact@v4
         with:
-          name: goopylib-${{ matrix.os }}-wheels
+          name: goopylib-${{ matrix.python }}-${{ matrix.os }}-wheels
           path: wheelhouse/
