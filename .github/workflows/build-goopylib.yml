@@ -105,7 +105,7 @@ jobs:
 
       - name: Build Python wheels
         env:
-          CIBW_BUILD: ${{ matrix.build }}
+          CIBW_BUILD: ${{ matrix.python }}
         uses: pypa/cibuildwheel@v2.16.5
 
       - uses: actions/upload-artifact@v4
