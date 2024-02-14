@@ -112,5 +112,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: goopylib-${{ matrix.python }}-${{ matrix.os }}-wheels
+          name: goopylib-${{ matrix.python }}${{ matrix.os }}-wheels
           path: wheelhouse/
