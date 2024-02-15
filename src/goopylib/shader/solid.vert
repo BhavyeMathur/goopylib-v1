@@ -1,7 +1,7 @@
 R""(
 #version 410 core
 
-layout (location = 0) in vec2 point;
+layout (location = 0) in vec2 point;  // TODO combine z and point?
 layout (location = 1) in float z;
 layout (location = 2) in vec4 color;
 

@@ -49,6 +49,6 @@ namespace gp {
     }
 
     void Bitmap::saveBitmap(const std::string &filepath) const {
-        stbi_write_bmp(filepath.c_str(), (int32_t) m_Width, (int32_t) m_Height, 1, m_Data);
+        stbi_write_bmp(filepath.c_str(), (int32_t) m_Width, (int32_t) m_Height, m_Channels, m_Data);
     }
 }

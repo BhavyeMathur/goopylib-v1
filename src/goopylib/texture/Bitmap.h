@@ -9,6 +9,10 @@ namespace gp {
         friend class Image;
 
     public:
+        GPAPI Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
+
+        GPAPI Bitmap(const char *filepath);
+
         GPAPI Bitmap(const Bitmap &) = delete;
 
         GPAPI Bitmap(Bitmap &&other) = delete;
@@ -34,9 +38,5 @@ namespace gp {
         uint8_t *m_Data = nullptr;
 
         GPAPI Bitmap() = default;
-
-        GPAPI Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
-
-        GPAPI Bitmap(const char *filepath);
     };
 }
