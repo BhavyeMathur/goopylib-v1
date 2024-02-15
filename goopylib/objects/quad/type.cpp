@@ -40,7 +40,7 @@ PyTypeObject QuadType = {
         nullptr,
         nullptr,
         nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HEAPTYPE,
         "",
         (traverseproc) quad::traverse,
         (inquiry) quad::clear,

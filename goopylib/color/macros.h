@@ -79,7 +79,7 @@ static PyTypeObject name##Type = { \
     nullptr, \
     nullptr, \
     nullptr, \
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC, \
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HEAPTYPE, \
     "", \
     (traverseproc) color::traverse, \
     (inquiry) color::clear, \

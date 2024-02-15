@@ -299,7 +299,7 @@ static PyTypeObject CameraControllerType = {
         nullptr,
         nullptr,
         nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HEAPTYPE,
         "",
         (traverseproc) controller::traverse,
         (inquiry) controller::clear,

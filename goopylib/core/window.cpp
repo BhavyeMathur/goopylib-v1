@@ -1744,7 +1744,7 @@ PyTypeObject WindowType = {
         nullptr,
         nullptr,
         nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HEAPTYPE,
         "",
         (traverseproc) window::traverse,
         (inquiry) window::clear,
