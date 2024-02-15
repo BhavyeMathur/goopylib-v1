@@ -128,7 +128,6 @@ namespace core {
     static PyObject *opengl_version(PyObject * ) {
         GP_PY_TRACE("core.opengl_version()");
 
-        CHECK_ACTIVE_CONTEXT(nullptr);
         return PyUnicode_FromString(gp::openglVersion().c_str());
     }
 

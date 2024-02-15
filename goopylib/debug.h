@@ -72,21 +72,6 @@
 #endif
 
 #if GP_ERROR_CHECKING
-#define CHECK_GP_INITIALIZED(val) \
-do {                                \
-if (!gp::isInitialized()) { \
-    PyErr_SetString(PyExc_RuntimeError, "goopylib has not been initialised! Use gp.init() first."); \
-        return val; \
-    } \
-} while (0)
-
-#define CHECK_ACTIVE_CONTEXT(val) \
-CHECK_GP_INITIALIZED(val); \
-do { if (!gp::hasActiveContext()) { \
-        PyErr_SetString(PyExc_RuntimeError, "goopylib Window must be created"); \
-        return val; \
-    } \
-} while (0)
 
 #define RAISE_TYPE_ERROR(val, type, value) \
 PyErr_Format(PyExc_TypeError, "'" #type "' argument expected, got %S", PyObject_Type(value)); \

@@ -61,7 +61,7 @@ def update() -> None:
                 gp.update()
 
     Raises:
-        Runtime: goopylib must be initialised first
+        RuntimeError: goopylib must be initialised first
     """
     assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
 
@@ -73,7 +73,7 @@ def update_on_event() -> None:
     These can be key presses, cursor movement, window resizing, or others.
 
     Raises:
-        Runtime: goopylib must be initialised first
+        RuntimeError: goopylib must be initialised first
     """
     assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
 
@@ -89,7 +89,7 @@ def update_timeout(timeout: float = 0, /) -> None:
     Raises:
         TypeError: timeout must be a float/int
         ValueError: timeout must be greater than or equal to 0
-        Runtime: goopylib must be initialised first
+        RuntimeError: goopylib must be initialised first
     """
     assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
     assert isinstance(timeout, (float, int)), _raise_type_error(timeout, "float")
@@ -107,9 +107,10 @@ def set_buffer_swap_interval(interval: int, /) -> None:
     Raises:
         TypeError: interval must be an integer
         ValueError: interval must be greater than or equal to 0
-        Runtime: goopylib must be initialised first
+        RuntimeError: goopylib must be initialised first and have an active context (window)
     """
     assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+    assert _core.has_active_context(), _raise(RuntimeError, "goopylib must have an active window first.")
     assert isinstance(interval, int), _raise_type_error(interval, "int")
     assert interval >= 0, _raise(ValueError, f"interval must be greater than or equal to 0, not {interval}")
 
@@ -123,7 +124,7 @@ def get_refresh_rate() -> int:
         the refresh rate in Hertz
 
     Raises:
-        Runtime: goopylib must be initialised first
+        RuntimeError: goopylib must be initialised first
     """
     assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
 
@@ -137,7 +138,7 @@ def get_screen_width() -> int:
         the screen width in screen coordinates
 
     Raises:
-        Runtime: goopylib must be initialised first
+        RuntimeError: goopylib must be initialised first
     """
     assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
 
@@ -151,7 +152,7 @@ def get_screen_height() -> int:
         the screen height in screen coordinates
 
     Raises:
-        Runtime: goopylib must be initialised first
+        RuntimeError: goopylib must be initialised first
     """
     assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
 
@@ -162,7 +163,7 @@ def number_of_monitors() -> int:
     """Returns the number of monitors connected.
 
     Raises:
-        Runtime: goopylib must be initialised first
+        RuntimeError: goopylib must be initialised first
     """
     assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
 
@@ -183,7 +184,12 @@ def glfw_current_version() -> str:
 
 def opengl_version() -> str:
     """Returns the version of OpenGL being used.
+    
+    Raises:
+        RuntimeError: goopylib must have an active context (window)
     """
+    assert _core.has_active_context(), _raise(RuntimeError, "goopylib must have an active window first.")
+    
     return _core.opengl_version()
 
 
