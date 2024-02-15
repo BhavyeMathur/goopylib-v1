@@ -38,4 +38,4 @@ def raise_type_error(obj, expected: str) -> NoReturn:
         obj: the object received
         expected: the type expected
     """
-    raise TypeError(f"'{expected}' argument expected, got '{type(expected)}'")
+    raise TypeError(f"'{expected}' argument expected, got '{type(obj)}'")

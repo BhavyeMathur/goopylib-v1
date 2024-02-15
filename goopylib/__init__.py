@@ -20,3 +20,6 @@ from .events import *
 from .scene import *
 
 # pylint: enable=wrong-import-position
+
+# TODO make goopylib compatible with -O and -OO flags
+# TODO move Python API asserts into Python from C++
