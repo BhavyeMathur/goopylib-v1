@@ -55,7 +55,7 @@ def update_on_event() -> None:
     _core.update_on_event()
 
 
-def update_timeout(timeout: float = 0) -> None:
+def update_timeout(timeout: float = 0, /) -> None:
     """Updates goopylib after a duration has passed.
 
     Args:
@@ -67,7 +67,7 @@ def update_timeout(timeout: float = 0) -> None:
     _core.update_timeout(timeout)
 
 
-def set_buffer_swap_interval(interval: int) -> None:
+def set_buffer_swap_interval(interval: int, /) -> None:
     """Sets the rate of swapping window buffers.
 
     Args:

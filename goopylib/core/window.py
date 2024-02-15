@@ -52,7 +52,7 @@ class Window:
     def __repr__(self) -> str:
         return self._window.__repr__()
 
-    def is_closed(self: Window) -> bool:
+    def is_closed(self) -> bool:
         """
         Returns:
              whether the window is closed.
