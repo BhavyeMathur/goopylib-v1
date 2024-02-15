@@ -1,4 +1,5 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "goopylib/debug.h"
 
 #include "src/goopylib/core/Core.h"
@@ -6,7 +7,7 @@
 
 
 namespace core {
-    static PyObject *init(PyObject *Py_UNUSED(self)) {
+    PyObject *init(PyObject * ) {
         #if GP_LOGGING_LEVEL >= 6
         std::cout << "[--:--:--] PYTHON: core.init()" << std::endl;
         #endif
@@ -22,7 +23,7 @@ namespace core {
         Py_RETURN_NONE;
     }
 
-    static PyObject *terminate(PyObject *Py_UNUSED(self)) {
+    static PyObject *terminate(PyObject * ) {
         GP_PY_TRACE("core.terminate()");
 
         gp::terminate();
@@ -30,7 +31,7 @@ namespace core {
         Py_RETURN_NONE;
     }
 
-    static PyObject *is_initialised(PyObject *Py_UNUSED(self)) {
+    static PyObject *is_initialised(PyObject * ) {
         GP_PY_TRACE("core.is_initialised()");
 
         if (gp::isInitialized()) {
@@ -39,7 +40,7 @@ namespace core {
         Py_RETURN_FALSE;
     }
 
-    static PyObject *update(PyObject *Py_UNUSED(self)) {
+    static PyObject *update(PyObject * ) {
         GP_PY_TRACE("core.update()");
 
         gp::update();
@@ -49,7 +50,16 @@ namespace core {
 
     #if GP_USING_GLFW
 
-    static PyObject *update_on_event(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
+    static PyObject *has_active_context(PyObject * ) {
+        GP_PY_TRACE("core.has_active_context()");
+
+        if (gp::hasActiveContext()) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+
+    static PyObject *update_on_event(PyObject * , PyObject * ) {
         GP_PY_TRACE("core.update_on_event()");
 
         gp::updateOnEvent();
@@ -57,7 +67,7 @@ namespace core {
         Py_RETURN_NONE;
     }
 
-    static PyObject *update_timeout(PyObject *Py_UNUSED(self), PyObject *arg) {
+    static PyObject *update_timeout(PyObject * , PyObject * arg) {
         GP_PY_TRACE("core.update_on_timeout()");
 
         double timeout = PyFloat_AsDouble(arg);
@@ -66,43 +76,43 @@ namespace core {
         Py_RETURN_NONE;
     }
 
-    static PyObject *glfw_compiled_version(PyObject *Py_UNUSED(self)) {
+    static PyObject *glfw_compiled_version(PyObject * ) {
         GP_PY_TRACE("core.glfw_compiled_version()");
 
         return PyUnicode_FromString(gp::glfwCompiledVersion().c_str());
     }
 
-    static PyObject *glfw_current_version(PyObject *Py_UNUSED(self)) {
+    static PyObject *glfw_current_version(PyObject * ) {
         GP_PY_TRACE("core.glfw_current_version()");
 
         return PyUnicode_FromString(gp::glfwCurrentVersion().c_str());
     }
 
-    static PyObject *get_refresh_rate(PyObject *Py_UNUSED(self)) {
+    static PyObject *get_refresh_rate(PyObject * ) {
         GP_PY_TRACE("core.get_refresh_rate()");
 
         return PyLong_FromLong(gp::getRefreshRate());
     }
 
-    static PyObject *get_screen_width(PyObject *Py_UNUSED(self)) {
+    static PyObject *get_screen_width(PyObject * ) {
         GP_PY_TRACE("core.get_screen_width()");
 
         return PyLong_FromLong(gp::getScreenWidth());
     }
 
-    static PyObject *get_screen_height(PyObject *Py_UNUSED(self)) {
+    static PyObject *get_screen_height(PyObject * ) {
         GP_PY_TRACE("core.get_screen_height()");
 
         return PyLong_FromLong(gp::getScreenHeight());
     }
 
-    static PyObject *number_of_monitors(PyObject *Py_UNUSED(self)) {
+    static PyObject *number_of_monitors(PyObject * ) {
         GP_PY_TRACE("core.number_of_monitors()");
 
         return PyLong_FromLong(gp::getNumberOfMonitors());
     }
 
-    static PyObject *set_buffer_swap_interval(PyObject *Py_UNUSED(self), PyObject *arg) {
+    static PyObject *set_buffer_swap_interval(PyObject * , PyObject * arg) {
         GP_PY_TRACE("core.set_buffer_swap_interval()");
 
         auto interval = (int32_t) PyLong_AsLong(arg);
@@ -115,7 +125,7 @@ namespace core {
 
     #if GP_USING_OPENGL
 
-    static PyObject *opengl_version(PyObject *Py_UNUSED(self)) {
+    static PyObject *opengl_version(PyObject * ) {
         GP_PY_TRACE("core.opengl_version()");
 
         CHECK_ACTIVE_CONTEXT(nullptr);
@@ -133,6 +143,8 @@ static PyMethodDef CoreMethods[] = {
         {"update", (PyCFunction) core::update, METH_NOARGS, ""},
 
         #if GP_USING_GLFW
+
+        {"has_active_context", (PyCFunction) core::has_active_context, METH_NOARGS, ""},
 
         {"update_on_event", (PyCFunction) core::update_on_event, METH_NOARGS, ""},
         {"update_timeout", (PyCFunction) core::update_timeout, METH_O, ""},
@@ -173,7 +185,7 @@ PyMODINIT_FUNC PyInit_core(void) {
     std::cout << "[--:--:--] PYTHON: PyInit_core()" << std::endl;
     #endif
 
-    PyObject *m = PyModule_Create(&CoreModule);
+    PyObject * m = PyModule_Create(&CoreModule);
     if (m == nullptr) {
         return nullptr;
     }

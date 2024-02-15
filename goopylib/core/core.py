@@ -41,6 +41,12 @@ def is_initialised() -> bool:
     return _core.is_initialised()
 
 
+def has_active_context() -> bool:
+    """Checks if goopylib has an active context (window)
+    """
+    return _core.has_active_context()
+
+
 def update() -> None:
     """Updates goopylib and its windows.
 
