@@ -376,3 +376,8 @@ def hsl_to_hsv(hue: int, saturation: float, luminance: float) -> Tuple[int, floa
         ValueError: if the inputs are outside their bounds
     """
     return _conversions.hsl_to_hsv(hue, saturation, luminance)
+
+
+if not __debug__:
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.color_conversions import *

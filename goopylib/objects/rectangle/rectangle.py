@@ -61,3 +61,8 @@ class Rectangle(Quad):
                 >>> Rectangle((0, 0), 50, 100)
         """
         self._renderable: Rectangle = _rectangle.Rectangle(p1, *args)
+
+
+if not __debug__:
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.rectangle import *

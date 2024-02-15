@@ -325,3 +325,8 @@ class Renderable:
             TypeError: x and y must be numbers
         """
         return self._renderable.contains(x, y)
+
+
+if not __debug__:
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.renderable import *

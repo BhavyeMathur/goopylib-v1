@@ -232,3 +232,7 @@ class CameraController:
 
 # pylint: disable-next=wrong-import-position
 from goopylib.core.window import Window
+
+if not __debug__:
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.camera_controller import *

@@ -118,3 +118,8 @@ class Triangle(Renderable):
     @transparency.setter
     def transparency(self, value: Union[float, Tuple[float, float, float]]) -> None:
         self._renderable.transparency = value
+
+
+if not __debug__:
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.triangle import *

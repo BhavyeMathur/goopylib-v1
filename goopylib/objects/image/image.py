@@ -86,3 +86,8 @@ class Image(Rectangle):
         Returns: the filepath used by the image
         """
         return self._renderable.get_path()
+
+
+if not __debug__:
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.image import *

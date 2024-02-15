@@ -315,7 +315,7 @@ PyTypeObject CameraType = {
         nullptr,
         nullptr,
         nullptr,
-        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+        Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_BASETYPE,
         "",
         (traverseproc) camera::traverse,
         (inquiry) camera::clear,

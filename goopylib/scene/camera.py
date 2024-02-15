@@ -254,3 +254,12 @@ class Camera:
     @zoom.setter
     def zoom(self, value: float) -> None:
         self._camera.zoom = value
+
+
+if not __debug__:
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.camera import *
+
+    print(Camera.position)
+    Camera.position = property(Camera.position.__get__, Camera.position.__set__, Camera.position.__delete__,
+                               Camera.position.__doc__)

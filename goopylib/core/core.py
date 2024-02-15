@@ -143,4 +143,11 @@ def opengl_version() -> str:
     return _core.opengl_version()
 
 
+if not __debug__:
+    # Override module functions & classes with direct access to C API
+    # This also means that docstrings are no longer present
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.core import *
+
+
 init()

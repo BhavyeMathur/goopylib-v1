@@ -544,3 +544,8 @@ def combine_easing(easing1: EasingType, easing2: EasingType) -> Callable[[float]
         return closure
 
     raise TypeError(f"Easing functions expected, got {type(easing1)} and {type(easing2)}")
+
+
+if not __debug__:
+    # pylint: disable-next=no-name-in-module, import-error
+    from goopylib.ext.easing import *
