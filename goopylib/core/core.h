@@ -10,6 +10,8 @@ namespace core {
 
     static PyObject *update(PyObject *self);
 
+    static PyObject *is_initialised(PyObject *self);
+
     #if GP_USING_GLFW
 
     static PyObject *update_on_event(PyObject *self, PyObject *args);

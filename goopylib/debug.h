@@ -89,7 +89,7 @@ do { if (!gp::hasActiveContext()) { \
 } while (0)
 
 #define RAISE_TYPE_ERROR(val, type, value) \
-PyErr_Format(PyExc_TypeError, #type " argument expected, got %S", PyObject_Type(value)); \
+PyErr_Format(PyExc_TypeError, "'" #type "' argument expected, got %S", PyObject_Type(value)); \
 return val
 
 #define RAISE_FILENOTFOUND_ERROR(val, file) \

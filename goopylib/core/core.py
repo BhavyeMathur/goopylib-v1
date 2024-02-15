@@ -11,6 +11,9 @@ from __future__ import annotations
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.core as _core
 
+from goopylib._internal import raise_ as _raise
+from goopylib._internal import raise_type_error as _raise_type_error
+
 
 def init() -> None:
     """Initializes goopylib internally.
@@ -50,14 +53,24 @@ def update() -> None:
 
             while window.is_open():
                 gp.update()
+
+    Raises:
+        Runtime: goopylib must be initialised first
     """
+    assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+
     _core.update()
 
 
 def update_on_event() -> None:
     """Updates goopylib every time an event occurs.
     These can be key presses, cursor movement, window resizing, or others.
+
+    Raises:
+        Runtime: goopylib must be initialised first
     """
+    assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+
     _core.update_on_event()
 
 
@@ -68,8 +81,14 @@ def update_timeout(timeout: float = 0, /) -> None:
         timeout: the duration (seconds) to wait between updates.
 
     Raises:
-        ValueError: if timeout is less than 0
+        TypeError: timeout must be a float/int
+        ValueError: timeout must be greater than or equal to 0
+        Runtime: goopylib must be initialised first
     """
+    assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+    assert isinstance(timeout, (float, int)), _raise_type_error(timeout, "float")
+    assert timeout >= 0, _raise(ValueError, f"timeout must be greater than or equal to 0, not {timeout}")
+
     _core.update_timeout(timeout)
 
 
@@ -80,9 +99,14 @@ def set_buffer_swap_interval(interval: int, /) -> None:
         interval: the number of refreshes to wait before swapping buffers.
 
     Raises:
-        TypeError: if a non-integer value is passed.
-        ValueError: if interval is less than 0
+        TypeError: interval must be an integer
+        ValueError: interval must be greater than or equal to 0
+        Runtime: goopylib must be initialised first
     """
+    assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+    assert isinstance(interval, int), _raise_type_error(interval, "int")
+    assert interval >= 0, _raise(ValueError, f"interval must be greater than or equal to 0, not {interval}")
+
     return _core.set_buffer_swap_interval(interval)
 
 
@@ -93,8 +117,10 @@ def get_refresh_rate() -> int:
         the refresh rate in Hertz
 
     Raises:
-        RuntimeError: if goopylib has not been initialized
+        Runtime: goopylib must be initialised first
     """
+    assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+
     return _core.get_refresh_rate()
 
 
@@ -105,8 +131,10 @@ def get_screen_width() -> int:
         the screen width in screen coordinates
 
     Raises:
-        RuntimeError: if goopylib has not been initialized
+        Runtime: goopylib must be initialised first
     """
+    assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+
     return _core.get_screen_width()
 
 
@@ -117,8 +145,10 @@ def get_screen_height() -> int:
         the screen height in screen coordinates
 
     Raises:
-        RuntimeError: if goopylib has not been initialized
+        Runtime: goopylib must be initialised first
     """
+    assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+
     return _core.get_screen_height()
 
 
@@ -126,8 +156,10 @@ def number_of_monitors() -> int:
     """Returns the number of monitors connected.
 
     Raises:
-        RuntimeError: if goopylib has not been initialized
+        Runtime: goopylib must be initialised first
     """
+    assert _core.is_initialised(), _raise(RuntimeError, "goopylib has not been initialised! Use gp.init() first.")
+
     return _core.number_of_monitors()
 
 
@@ -154,6 +186,5 @@ if not __debug__:
     # This also means that docstrings are no longer present
     # pylint: disable-next=no-name-in-module, import-error
     from goopylib.ext.core import *
-
 
 init()

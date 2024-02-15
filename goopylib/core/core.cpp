@@ -60,16 +60,7 @@ namespace core {
     static PyObject *update_timeout(PyObject *Py_UNUSED(self), PyObject *arg) {
         GP_PY_TRACE("core.update_on_timeout()");
 
-        #if GP_TYPE_CHECKING
-        if (!PyNumber_Check(arg)) {
-            RAISE_TYPE_ERROR(nullptr, "number", arg);
-        }
-        #endif
-
         double timeout = PyFloat_AsDouble(arg);
-
-        GP_CHECK_GE(timeout, 0, nullptr, "timeout must be greater than or equal to 0")
-
         gp::updateTimeout(timeout);
 
         Py_RETURN_NONE;
@@ -90,45 +81,33 @@ namespace core {
     static PyObject *get_refresh_rate(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.get_refresh_rate()");
 
-        CHECK_GP_INITIALIZED(nullptr);
         return PyLong_FromLong(gp::getRefreshRate());
     }
 
     static PyObject *get_screen_width(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.get_screen_width()");
 
-        CHECK_GP_INITIALIZED(nullptr);
         return PyLong_FromLong(gp::getScreenWidth());
     }
 
     static PyObject *get_screen_height(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.get_screen_height()");
 
-        CHECK_GP_INITIALIZED(nullptr);
         return PyLong_FromLong(gp::getScreenHeight());
     }
 
     static PyObject *number_of_monitors(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.number_of_monitors()");
 
-        CHECK_GP_INITIALIZED(nullptr);
         return PyLong_FromLong(gp::getNumberOfMonitors());
     }
 
     static PyObject *set_buffer_swap_interval(PyObject *Py_UNUSED(self), PyObject *arg) {
         GP_PY_TRACE("core.set_buffer_swap_interval()");
 
-        #if GP_TYPE_CHECKING
-        if (!PyLong_Check(arg)) {
-            RAISE_TYPE_ERROR(nullptr, "integer", arg);
-        }
-        #endif
-
         auto interval = (int32_t) PyLong_AsLong(arg);
-
-        GP_CHECK_GE(interval, 0, nullptr, "interval must be greater than or equal to 0")
-
         gp::setBufferSwapInterval(interval);
+
         Py_RETURN_NONE;
     }
 
