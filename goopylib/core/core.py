@@ -32,6 +32,12 @@ def terminate() -> None:
     _core.terminate()
 
 
+def is_initialised() -> bool:
+    """Checks if goopylib has been initialised
+    """
+    return _core.is_initialised()
+
+
 def update() -> None:
     """Updates goopylib and its windows.
 

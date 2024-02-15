@@ -30,6 +30,15 @@ namespace core {
         Py_RETURN_NONE;
     }
 
+    static PyObject *is_initialised(PyObject *Py_UNUSED(self)) {
+        GP_PY_TRACE("core.is_initialised()");
+
+        if (gp::isInitialized()) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+
     static PyObject *update(PyObject *Py_UNUSED(self)) {
         GP_PY_TRACE("core.update()");
 
@@ -140,6 +149,7 @@ namespace core {
 static PyMethodDef CoreMethods[] = {
         {"init", (PyCFunction) core::init, METH_NOARGS, ""},
         {"terminate", (PyCFunction) core::terminate, METH_NOARGS, ""},
+        {"is_initialised", (PyCFunction) core::is_initialised, METH_NOARGS, ""},
 
         {"update", (PyCFunction) core::update, METH_NOARGS, ""},
 
