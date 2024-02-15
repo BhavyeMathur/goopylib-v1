@@ -330,3 +330,6 @@ class Renderable:
 if not __debug__:
     # pylint: disable-next=no-name-in-module, import-error
     from goopylib.ext.renderable import *
+    from _internal import convert_getset_descriptor_to_properties as _convert_getset_descriptor_to_properties
+
+    _convert_getset_descriptor_to_properties(Renderable)

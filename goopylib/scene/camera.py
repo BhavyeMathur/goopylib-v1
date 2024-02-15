@@ -259,7 +259,6 @@ class Camera:
 if not __debug__:
     # pylint: disable-next=no-name-in-module, import-error
     from goopylib.ext.camera import *
+    from _internal import convert_getset_descriptor_to_properties as _convert_getset_descriptor_to_properties
 
-    print(Camera.position)
-    Camera.position = property(Camera.position.__get__, Camera.position.__set__, Camera.position.__delete__,
-                               Camera.position.__doc__)
+    _convert_getset_descriptor_to_properties(Camera)
