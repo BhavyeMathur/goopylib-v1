@@ -125,6 +125,9 @@ TEST(CoreColorTests, ColorAttributes) {
 
     color.setAlpha(0.5);
     EXPECT_EQ(color.getAlpha(), 0.5);
+
+    EXPECT_EQ(color.getRGBAf(), gp::RGBAf(0.6, 0.4, 0.2, 0.5));
+    EXPECT_EQ(color.toString(), "Color(153, 102, 51, 0.50)");
 }
 
 TEST(CoreColorTests, ColorAttributesError) {
@@ -141,4 +144,51 @@ TEST(CoreColorTests, ColorAttributesError) {
 
     EXPECT_THROW(color.setAlpha(2), std::invalid_argument);
     EXPECT_THROW(color.setAlpha(-0.5), std::invalid_argument);
+}
+
+TEST(CoreColorTests, ColorArithmetic) {
+    gp::Color color1{100, 100, 100};
+    gp::Color color2{5, 10, 15};
+
+    EXPECT_EQ((color1 + 50).toString(), "Color(150, 150, 150, 1.00)");
+    EXPECT_EQ((color1 - 50).toString(), "Color(50, 50, 50, 1.00)");
+
+    EXPECT_EQ((color1 + color2).toString(), "Color(105, 110, 115, 1.00)");
+    EXPECT_EQ((color1 - color2).toString(), "Color(95, 90, 85, 1.00)");
+
+    color1 += 50;
+    EXPECT_EQ(color1.toString(), "Color(150, 150, 150, 1.00)");
+
+    color1 -= 70;
+    EXPECT_EQ(color1.toString(), "Color(80, 80, 80, 1.00)");
+
+    color1 += color2;
+    EXPECT_EQ(color1.toString(), "Color(85, 90, 95, 1.00)");
+
+    color1 -= color2;
+    EXPECT_EQ(color1.toString(), "Color(80, 80, 80, 1.00)");
+}
+
+TEST(CoreColorTests, ColorArithmeticOverflow) {
+    gp::Color color1{250, 250, 250};
+    gp::Color color2{5, 10, 15};
+
+    EXPECT_EQ((color1 + 50).toString(), "Color(255, 255, 255, 1.00)");
+    EXPECT_EQ((color1 + color2).toString(), "Color(255, 255, 255, 1.00)");
+
+    color1 += 50;
+    EXPECT_EQ(color1.toString(), "Color(255, 255, 255, 1.00)");
+    EXPECT_EQ(color1.getRGBAf(), gp::RGBAf(1, 1, 1, 1));
+}
+
+TEST(CoreColorTests, ColorArithmeticUnderflow) {
+    gp::Color color1{5, 5, 5};
+    gp::Color color2{5, 10, 15};
+
+    EXPECT_EQ((color1 - 50).toString(), "Color(0, 0, 0, 1.00)");
+    EXPECT_EQ((color1 - color2).toString(), "Color(0, 0, 0, 1.00)");
+
+    color1 -= 50;
+    EXPECT_EQ(color1.toString(), "Color(0, 0, 0, 1.00)");
+    EXPECT_EQ(color1.getRGBAf(), gp::RGBAf(0, 0, 0, 1));
 }

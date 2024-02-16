@@ -149,19 +149,51 @@ namespace gp {
 // Color Operator Overloading
 namespace gp {
     Color Color::operator+(int value) const {
-        return {m_Red + value, m_Green + value, m_Blue + value, m_Alpha};
+        int red = m_Red + value;
+        int green = m_Green + value;
+        int blue = m_Blue + value;
+        
+        red = red > 255 ? 255 : (red < 0 ? 0 : red);
+        green = green > 255 ? 255 : (green < 0 ? 0 : green);
+        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+        
+        return {red, green, blue, m_Alpha};
     }
 
     Color Color::operator+(const Color& value) const {
-        return {m_Red + value.m_Red, m_Green + value.m_Green, m_Blue + value.m_Blue, m_Alpha};
+        int red = m_Red + value.m_Red;
+        int green = m_Green + value.m_Green;
+        int blue = m_Blue + value.m_Blue;
+
+        red = red > 255 ? 255 : (red < 0 ? 0 : red);
+        green = green > 255 ? 255 : (green < 0 ? 0 : green);
+        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+
+        return {red, green, blue, m_Alpha};
     }
 
     Color Color::operator-(int value) const {
-        return {m_Red - value, m_Green - value, m_Blue - value, m_Alpha};
+        int red = m_Red - value;
+        int green = m_Green - value;
+        int blue = m_Blue - value;
+
+        red = red > 255 ? 255 : (red < 0 ? 0 : red);
+        green = green > 255 ? 255 : (green < 0 ? 0 : green);
+        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+
+        return {red, green, blue, m_Alpha};
     }
 
     Color Color::operator-(const Color& value) const {
-        return {m_Red - value.m_Red, m_Green - value.m_Green, m_Blue - value.m_Blue, m_Alpha};
+        int red = m_Red - value.m_Red;
+        int green = m_Green - value.m_Green;
+        int blue = m_Blue - value.m_Blue;
+
+        red = red > 255 ? 255 : (red < 0 ? 0 : red);
+        green = green > 255 ? 255 : (green < 0 ? 0 : green);
+        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+
+        return {red, green, blue, m_Alpha};
     }
 
     Color &Color::operator+=(int value) {
