@@ -16,3 +16,6 @@
 [submodule "examples/ConwaysGameOfLife"]
 	path = examples/ConwaysGameOfLife
 	url = https://github.com/BhavyeMathur/goopylib-conways-game-of-life
+[submodule "vendor/googletest"]
+	path = vendor/googletest
+	url = https://github.com/google/googletest
