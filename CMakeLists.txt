@@ -17,7 +17,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_RELEASE /O2)
 endif ()
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 find_package(OpenGL REQUIRED)
 
@@ -154,3 +154,5 @@ endif ()
 add_subdirectory(examples/BrickBreaker)
 add_subdirectory(examples/Minecraft)
 add_subdirectory(examples/algorithms/packing)
+
+add_subdirectory(tests/color)
