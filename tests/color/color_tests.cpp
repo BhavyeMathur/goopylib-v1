@@ -107,3 +107,38 @@ TEST(CoreColorTests, ColorToString) {
     gp::Color color{0, 10, 20};
     EXPECT_EQ(color.toString(), "Color(0, 10, 20, 1.00)");
 }
+
+TEST(CoreColorTests, ColorAttributes) {
+    gp::Color color{0, 0, 0};
+
+    color.setRed(153);
+    EXPECT_EQ(color.getRed(), 153);
+    EXPECT_EQ(color.getRedf(), 0.6f);
+
+    color.setGreen(102);
+    EXPECT_EQ(color.getGreen(), 102);
+    EXPECT_EQ(color.getGreenf(), 0.4f);
+
+    color.setBlue(51);
+    EXPECT_EQ(color.getBlue(), 51);
+    EXPECT_EQ(color.getBluef(), 0.2f);
+
+    color.setAlpha(0.5);
+    EXPECT_EQ(color.getAlpha(), 0.5);
+}
+
+TEST(CoreColorTests, ColorAttributesError) {
+    gp::Color color{0, 0, 0};
+
+    EXPECT_THROW(color.setRed(300), std::invalid_argument);
+    EXPECT_THROW(color.setRed(-30), std::invalid_argument);
+
+    EXPECT_THROW(color.setGreen(300), std::invalid_argument);
+    EXPECT_THROW(color.setGreen(-30), std::invalid_argument);
+
+    EXPECT_THROW(color.setBlue(300), std::invalid_argument);
+    EXPECT_THROW(color.setBlue(-30), std::invalid_argument);
+
+    EXPECT_THROW(color.setAlpha(2), std::invalid_argument);
+    EXPECT_THROW(color.setAlpha(-0.5), std::invalid_argument);
+}
