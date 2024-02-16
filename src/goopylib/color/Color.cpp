@@ -72,9 +72,9 @@ namespace gp {
 
         m_Alpha = m_Alpha > 1.0f ? 1.0f : (m_Alpha < 0.0f ? 0.0f : m_Alpha);
 
-        m_Redf = (float) m_Red / 255.0f;
-        m_Greenf = (float) m_Green / 255.0f;
-        m_Bluef = (float) m_Blue / 255.0f;
+        m_Redf = static_cast<float>(m_Red) / 255.0f;
+        m_Greenf = static_cast<float>(m_Green) / 255.0f;
+        m_Bluef = static_cast<float>(m_Blue) / 255.0f;
 
         _update();
     }
