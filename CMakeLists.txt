@@ -151,6 +151,8 @@ if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
     target_link_libraries(main goopylib)
 endif ()
 
+add_subdirectory(vendor/googletest)
+
 add_subdirectory(examples/BrickBreaker)
 add_subdirectory(examples/Minecraft)
 add_subdirectory(examples/algorithms/packing)

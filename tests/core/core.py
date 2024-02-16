@@ -18,7 +18,4 @@ gp.update()
 # gp.update_on_event()
 # gp.update_timeout(60)
 
-# edit the default update rate to update at 30 FPS
-gp.set_buffer_swap_interval(30)  # TODO set Python error/warning not C++
-
 gp.terminate()

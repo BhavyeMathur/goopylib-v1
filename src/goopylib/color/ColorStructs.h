@@ -38,5 +38,7 @@ namespace gp {
                   blue(blue),
                   alpha(alpha) {
         }
+
+        bool operator==(RGBAf const &) const = default;
     };
 }
