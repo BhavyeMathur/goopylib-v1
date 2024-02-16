@@ -20,6 +20,7 @@ disable=
     unnecessary-lambda-assignment,
     global-statement,
     duplicate-code,
+    wildcard-import,
     fixme
 
 [BASIC]

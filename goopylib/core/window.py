@@ -6,17 +6,13 @@ from __future__ import annotations
 
 from typing import Union, Tuple
 
-# pylint: disable=import-error
-# pylint: disable=no-name-in-module
-# pylint: disable=wildcard-import
+# pylint: disable=import-error, no-name-in-module
 
 from goopylib.ext.color import *
 from goopylib.ext.camera import *
 import goopylib.ext.window as _window
 
-# pylint: enable=import-error
-# pylint: enable=no-name-in-module
-# pylint: enable=wildcard-import
+# pylint: enable=import-error, no-name-in-module
 
 from goopylib.color.color import Color
 

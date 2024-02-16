@@ -1,8 +1,6 @@
 """Helper module to import all goopylib functionality"""
 
-# pylint: disable=wildcard-import
-# pylint: disable=unused-wildcard-import
-# pylint: disable=unused-import
+# pylint: disable=unused-wildcard-import, unused-import
 
 from .color.color import *
 from .color.conversions import *
@@ -30,6 +28,4 @@ from .objects.triangle import *
 from .scene.camera import *
 from .scene.camera_controller import *
 
-# pylint: enable=wildcard-import
-# pylint: enable=unused-wildcard-import
-# pylint: enable=unused-import
+# pylint: enable=unused-wildcard-import, unused-import

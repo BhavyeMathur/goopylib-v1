@@ -189,7 +189,7 @@ def opengl_version() -> str:
         RuntimeError: goopylib must have an active context (window)
     """
     assert _core.has_active_context(), _raise(RuntimeError, "goopylib must have an active window first.")
-    
+
     return _core.opengl_version()
 
 
