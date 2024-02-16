@@ -52,10 +52,6 @@ namespace gp {
         GP_CORE_INFO("gp::Color::Color({0}, alpha={3})", hexstring, alpha);
     }
 
-    Color::~Color() {
-        GP_CORE_DEBUG("gp::Color::~Color()");
-    }
-
     void Color::fromRGB(const RGB &color, float alpha) {
         GP_CORE_TRACE("gp::Color::fromRGB(RGB({0}, {1}, {2}), alpha={3})", color.red, color.green, color.blue, alpha);
 

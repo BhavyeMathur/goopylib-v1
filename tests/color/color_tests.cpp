@@ -33,3 +33,27 @@ TEST(CoreColorTests, ColorFromColorSubclass) {
     color5 = colorHSV;  // copy assignment operator
     EXPECT_EQ(color5.getRGBAf(), colorHSV.getRGBAf());
 }
+
+TEST(CoreColorTests, ColorFromRGBA) {
+    gp::Color color{0, 10, 20};
+    EXPECT_EQ(color.getRed(), 0);
+    EXPECT_EQ(color.getGreen(), 10);
+    EXPECT_EQ(color.getBlue(), 20);
+    EXPECT_EQ(color.getAlpha(), 1);
+
+    gp::Color color2{0, 10, 20, 0.5};
+    EXPECT_EQ(color2.getAlpha(), 0.5);
+}
+
+TEST(CoreColorTests, ColorFromRGBAErrors) {
+    EXPECT_THROW(auto color = gp::Color(300, 0, 0), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::Color(0, 300, 0), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::Color(0, 0, 300), std::invalid_argument);
+
+    EXPECT_THROW(auto color = gp::Color(-30, 0, 0), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::Color(0, -30, 0), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::Color(0, 0, -30), std::invalid_argument);
+
+    EXPECT_THROW(auto color = gp::Color(0, 0, 0, 2), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::Color(0, 0, 0, -0.5), std::invalid_argument);
+}

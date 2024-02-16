@@ -20,7 +20,7 @@ namespace gp {
         /**
          * Create a color object from another color object.
          */
-        GPAPI Color(Color const *color);
+        GPAPI explicit Color(Color const *color);
 
         /**
          * Create colors by passing RGB arguments or a hexstring.
@@ -47,8 +47,6 @@ namespace gp {
          * @throws std::invalid_argument alpha must be between 0-1
          */
         GPAPI Color(const char *hexstring, float alpha = 1);
-
-        GPAPI virtual ~Color();
 
         /**
          * @return a string representation of the color

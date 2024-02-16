@@ -1,9 +1,9 @@
-project(ColorTests)
+project(color_tests)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/vendor/googletest/googletest/include)
 
-add_executable(ColorTests color.cpp)
-target_link_libraries(ColorTests goopylib)
-target_link_libraries(ColorTests gtest gtest_main)
+add_executable(color_tests color_tests.cpp)
+target_link_libraries(color_tests goopylib)
+target_link_libraries(color_tests gtest gtest_main)

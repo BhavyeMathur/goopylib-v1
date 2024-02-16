@@ -3,6 +3,8 @@
 #include "Log.h"
 
 namespace gp {
+    bool isInitialized();
+
     enum class ErrorType {
         RuntimeError,
         ValueError,
@@ -11,7 +13,9 @@ namespace gp {
 
     template<typename... Args>
         void setError(ErrorType type, const char *message, Args &&... args) {
-            GP_CORE_CRITICAL(message, std::forward<Args>(args)...);
+            if (isInitialized()) {
+                GP_CORE_CRITICAL(message, std::forward<Args>(args)...);
+            }
 
             switch (type) {
                 case ErrorType::ValueError:
