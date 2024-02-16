@@ -77,11 +77,15 @@ namespace gp::hex {
             case 3:
                 return Hex3toRGB(hexstring);
             case 4:
-                return Hex4toRGB(hexstring);
+                if (strncmp(hexstring, "#", 1) == 0) {
+                    return Hex4toRGB(hexstring);
+                }
             case 6:
                 return Hex6toRGB(hexstring);
             case 7:
-                return Hex7toRGB(hexstring);
+                if (strncmp(hexstring, "#", 1) == 0) {
+                    return Hex7toRGB(hexstring);
+                }
             default:
                 GP_VALUE_ERROR("gp::hex::toRGB() invalid hexstring '{0}'", hexstring);
                 return {-1, -1, -1};

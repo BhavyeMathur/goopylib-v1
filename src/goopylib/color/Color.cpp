@@ -80,7 +80,7 @@ namespace gp {
     }
 
     std::string Color::toString() const {
-        return strformat("Color(%i, %i, %i)", m_Red, m_Green, m_Blue);
+        return strformat("Color(%i, %i, %i, %.2f)", m_Red, m_Green, m_Blue, m_Alpha);
     }
 
     int Color::getRed() const {
