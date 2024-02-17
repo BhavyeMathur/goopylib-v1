@@ -91,7 +91,7 @@ namespace gp {
         : Color{toRGB(hexstring, alpha)} {
         GP_CORE_INFO("gp::ColorHex::ColorHex({0}, alpha={1})", hexstring, alpha);
 
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
+        // Alpha value is checked in gp::Color constructor
     }
 
     std::string ColorHex::toString() const {
@@ -99,7 +99,7 @@ namespace gp {
     }
 
     ColorRGB ColorHex::toRGB() const {
-        GP_CORE_DEBUG("gp::ColorHex::toRGB({0})", this.toString());
+        GP_CORE_DEBUG("gp::ColorHex::toRGB({0})", this->toString());
         return {m_Red, m_Green, m_Blue, m_Alpha};
     }
 

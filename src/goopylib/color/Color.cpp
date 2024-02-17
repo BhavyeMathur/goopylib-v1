@@ -142,17 +142,17 @@ namespace gp {
 // Color Conversion Methods
 namespace gp {
     ColorRGB Color::toRGB() const {
-        GP_CORE_DEBUG("gp::Color::toRGB({0})", this.toString());
+        GP_CORE_DEBUG("gp::Color::toRGB({0})", this->toString());
         return ColorRGB{*this}; // copy constructor of ColorRGB
     }
 
     ColorHex Color::toHex() const {
-        GP_CORE_DEBUG("gp::Color::toHex({0})", this.toString());
+        GP_CORE_DEBUG("gp::Color::toHex({0})", this->toString());
         return strformat("#%02x%02x%02x", m_Red, m_Green, m_Blue);
     }
 
     ColorCMYK Color::toCMYK() const {
-        GP_CORE_INFO("gp::Color::toCMYK({0})", this.toString());
+        GP_CORE_INFO("gp::Color::toCMYK({0})", this->toString());
 
         const float maximum = std::max({m_Redf, m_Greenf, m_Bluef});
 
@@ -174,7 +174,7 @@ namespace gp {
     }
 
     ColorHSL Color::toHSL() const {
-        GP_CORE_INFO("gp::Color::toHSL({0})", this.toString());
+        GP_CORE_INFO("gp::Color::toHSL({0})", this->toString());
 
         const auto [cmin, cmax] = std::minmax({m_Redf, m_Greenf, m_Bluef});
 
@@ -207,7 +207,7 @@ namespace gp {
     }
 
     ColorHSV Color::toHSV() const {
-        GP_CORE_INFO("gp::Color::toHSV({0})", this.toString());
+        GP_CORE_INFO("gp::Color::toHSV({0})", this->toString());
 
         const auto [cmin, cmax] = std::minmax({m_Redf, m_Greenf, m_Bluef});
 

@@ -7,9 +7,9 @@
 std::random_device rand_dev;
 std::mt19937 generator(rand_dev());
 
-std::uniform_int_distribution<int> rgb_distribution(0, 255);
-std::uniform_int_distribution<int> angle_distribution(0, 360);
-std::uniform_real_distribution<float> normalized_distribution(0.0f, 1.0f);
+std::uniform_int_distribution rgb_distribution(0, 255);
+std::uniform_int_distribution angle_distribution(0, 360);
+std::uniform_real_distribution normalized_distribution(0.0f, 1.0f);
 
 namespace gp {
     ColorRGB randomRGB() {

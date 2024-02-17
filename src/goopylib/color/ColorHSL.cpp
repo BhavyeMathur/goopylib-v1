@@ -11,26 +11,26 @@ namespace gp {
         GP_CORE_INFO("gp::ColorHSL::ColorHSL({0})", color->toString());
     }
 
-    ColorHSL::ColorHSL(int hue, float saturation, float luminance, float alpha)
+    ColorHSL::ColorHSL(const int hue, const float saturation, const float luminance, const float alpha)
         : Color{toRGB(hue, saturation, luminance, alpha)},
           m_Hue(hue),
           m_Saturation(saturation),
           m_Luminance(luminance) {
         GP_CORE_INFO("gp::ColorHSL::ColorHSL({0}, {1}, {2}, alpha={3})", hue, saturation, luminance, alpha);
 
+        // Alpha value is checked in gp::Color constructor
         GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
         GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
         GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
-
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
     ColorRGB ColorHSL::toRGB() const {
+        GP_CORE_TRACE("gp::ColorHSL::toRGB({0})", this->toString());
         return toRGB(m_Hue, m_Saturation, m_Luminance, m_Alpha);
     }
 
-    ColorRGB ColorHSL::toRGB(int hue, float saturation, float luminance, float alpha) {
-        GP_CORE_INFO("gp::hsl::toRGB(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
+    ColorRGB ColorHSL::toRGB(const int hue, const float saturation, const float luminance, const float alpha) {
+        GP_CORE_DEBUG("gp::ColorHSL::toRGB({0}, {1}, {2}, alpha={3})", hue, saturation, luminance, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
         GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
@@ -84,6 +84,7 @@ namespace gp {
     }
 
     ColorHSV ColorHSL::toHSV() const {
+        GP_CORE_DEBUG("gp::ColorHSL::toHSV({0})", this->toString());
         const float value = m_Luminance + m_Saturation * (m_Luminance < 0.5 ? m_Luminance : 1 - m_Luminance);
         const float saturation = value == 0 ? 0 : 2 * (1 - m_Luminance / value);
 
@@ -96,34 +97,41 @@ namespace gp {
     }
 
     int ColorHSL::getHue() const {
+        GP_CORE_TRACE("gp::ColorHSL::getHue()");
         return m_Hue;
     }
 
-    void ColorHSL::setHue(int value) {
+    void ColorHSL::setHue(const int value) {
+        GP_CORE_DEBUG("gp::ColorHSL::setHue({0})", value);
         m_Hue = value;
         updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
     float ColorHSL::getSaturation() const {
+        GP_CORE_TRACE("gp::ColorHSL::getSaturation()");
         return m_Saturation;
     }
 
-    void ColorHSL::setSaturation(float value) {
+    void ColorHSL::setSaturation(const float value) {
+        GP_CORE_DEBUG("gp::ColorHSL::setSaturation({0})", value);
         m_Saturation = value;
         updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
     float ColorHSL::getLuminance() const {
+        GP_CORE_TRACE("gp::ColorHSL::getLuminance()");
         return m_Luminance;
     }
 
-    void ColorHSL::setLuminance(float value) {
+    void ColorHSL::setLuminance(const float value) {
+        GP_CORE_DEBUG("gp::ColorHSL::setLuminance({0})", value);
         m_Luminance = value;
         updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
     void ColorHSL::_update() {
-        auto hsl = toHSL();
+        GP_CORE_DEBUG("gp::ColorHSL::_update({0})", this->toString());
+        const auto hsl = toHSL();
 
         m_Hue = hsl.m_Hue;
         m_Saturation = hsl.m_Saturation;
