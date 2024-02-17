@@ -1,194 +1,111 @@
 #include "gtest/gtest.h"
 #include <goopylib/goopylib.h>
 
-TEST(CoreColorTests, ColorFromColorSubclass) {
-    gp::ColorRGB colorRGB{10, 15, 20, 0.1};
+TEST(ColorRGBTests, ColorFromColorSubclass) {
+    gp::Color color{10, 15, 20, 0.1};
     gp::ColorHex colorHex{"#f05", 0.2};
     gp::ColorCMYK colorCMYK{0.5, 0.6, 0.7, 0.3};
     gp::ColorHSL colorHSL{10, 0.2, 0.3, 0.4};
     gp::ColorHSV colorHSV{20, 0.3, 0.4, 0.5};
 
-    gp::Color color{colorRGB};  // constructor from subclass
+    gp::ColorRGB colorRGB{color}; // constructor from color
     EXPECT_EQ(color.getRGBAf(), colorRGB.getRGBAf());
-    color = colorRGB;  // copy assignment operator
+    color = colorRGB; // copy assignment operator
     EXPECT_EQ(color.getRGBAf(), colorRGB.getRGBAf());
 
-    gp::Color color2{colorHex};  // constructor from subclass
+    gp::ColorRGB color2{colorHex}; // constructor from color
     EXPECT_EQ(color2.getRGBAf(), colorHex.getRGBAf());
-    color2 = colorHex;  // copy assignment operator
+    color2 = colorHex; // copy assignment operator
     EXPECT_EQ(color2.getRGBAf(), colorHex.getRGBAf());
 
-    gp::Color color3{colorCMYK};  // constructor from subclass
+    gp::ColorRGB color3{colorCMYK}; // constructor from color
     EXPECT_EQ(color3.getRGBAf(), colorCMYK.getRGBAf());
-    color3 = colorCMYK;  // copy assignment operator
+    color3 = colorCMYK; // copy assignment operator
     EXPECT_EQ(color3.getRGBAf(), colorCMYK.getRGBAf());
 
-    gp::Color color4{colorHSL};  // constructor from subclass
+    gp::ColorRGB color4{colorHSL}; // constructor from color
     EXPECT_EQ(color4.getRGBAf(), colorHSL.getRGBAf());
-    color4 = colorHSL;  // copy assignment operator
+    color4 = colorHSL; // copy assignment operator
     EXPECT_EQ(color4.getRGBAf(), colorHSL.getRGBAf());
 
-    gp::Color color5{colorHSV};  // constructor from subclass
+    gp::ColorRGB color5{colorHSV}; // constructor from color
     EXPECT_EQ(color5.getRGBAf(), colorHSV.getRGBAf());
-    color5 = colorHSV;  // copy assignment operator
+    color5 = colorHSV; // copy assignment operator
     EXPECT_EQ(color5.getRGBAf(), colorHSV.getRGBAf());
 }
 
-TEST(CoreColorTests, ColorFromRGB) {
-    gp::Color color{0, 10, 20};
+TEST(ColorRGBTests, ColorFromRGB) {
+    gp::ColorRGB color{0, 10, 20};
     EXPECT_EQ(color.getRed(), 0);
     EXPECT_EQ(color.getGreen(), 10);
     EXPECT_EQ(color.getBlue(), 20);
     EXPECT_EQ(color.getAlpha(), 1);
 
-    gp::Color color2{0, 10, 20, 0.5};
+    gp::ColorRGB color2{0, 10, 20, 0.5};
     EXPECT_EQ(color2.getAlpha(), 0.5);
 }
 
-TEST(CoreColorTests, ColorFromRGBErrors) {
-    EXPECT_THROW(auto color = gp::Color(300, 0, 0), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color(0, 300, 0), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color(0, 0, 300), std::invalid_argument);
+TEST(ColorRGBTests, ColorFromRGBErrors) {
+    EXPECT_THROW(auto color = gp::ColorRGB(300, 0, 0), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::ColorRGB(0, 300, 0), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::ColorRGB(0, 0, 300), std::invalid_argument);
 
-    EXPECT_THROW(auto color = gp::Color(-30, 0, 0), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color(0, -30, 0), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color(0, 0, -30), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::ColorRGB(-30, 0, 0), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::ColorRGB(0, -30, 0), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::ColorRGB(0, 0, -30), std::invalid_argument);
 
-    EXPECT_THROW(auto color = gp::Color(0, 0, 0, 2), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color(0, 0, 0, -0.5), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::ColorRGB(0, 0, 0, 2), std::invalid_argument);
+    EXPECT_THROW(auto color = gp::ColorRGB(0, 0, 0, -0.5), std::invalid_argument);
 }
 
-TEST(CoreColorTests, ColorFromHex) {
-    gp::Color color{"#f01"};
-    EXPECT_EQ(color.getRed(), 255);
-    EXPECT_EQ(color.getGreen(), 0);
-    EXPECT_EQ(color.getBlue(), 17);
-    EXPECT_EQ(color.getAlpha(), 1);
+TEST(ColorRGBTests, RGBtoHex) {
+    EXPECT_EQ(gp::rgb::toHex(0, 0, 0), "#000000");
+    EXPECT_EQ(gp::rgb::toHex(255, 255, 255), "#ffffff");
+    EXPECT_EQ(gp::rgb::toHex(125, 125, 125), "#7d7d7d");
 
-    gp::Color color1{"f01"};
-    EXPECT_EQ(color1.getRed(), 255);
-    EXPECT_EQ(color1.getGreen(), 0);
-    EXPECT_EQ(color1.getBlue(), 17);
-    EXPECT_EQ(color1.getAlpha(), 1);
+    EXPECT_EQ(gp::rgb::toHex(255, 0, 0), "#ff0000");
+    EXPECT_EQ(gp::rgb::toHex(0, 255, 0), "#00ff00");
+    EXPECT_EQ(gp::rgb::toHex(0, 0, 255), "#0000ff");
 
-    gp::Color color2{"#f01001"};
-    EXPECT_EQ(color2.getRed(), 240);
-    EXPECT_EQ(color2.getGreen(), 16);
-    EXPECT_EQ(color2.getBlue(), 1);
-    EXPECT_EQ(color2.getAlpha(), 1);
-
-    gp::Color color3{"f01001"};
-    EXPECT_EQ(color3.getRed(), 240);
-    EXPECT_EQ(color3.getGreen(), 16);
-    EXPECT_EQ(color3.getBlue(), 1);
-    EXPECT_EQ(color3.getAlpha(), 1);
-
-    gp::Color color4{"#f01", 0.5};
-    EXPECT_EQ(color4.getRed(), 255);
-    EXPECT_EQ(color4.getGreen(), 0);
-    EXPECT_EQ(color4.getBlue(), 17);
-    EXPECT_EQ(color4.getAlpha(), 0.5);
+    EXPECT_EQ(gp::rgb::toHex(80, 0, 140), "#50008c");
+    EXPECT_EQ(gp::rgb::toHex(0, 50, 60), "#00323c");
 }
 
-TEST(CoreColorTests, ColorFromHexErrors) {
-    EXPECT_THROW(auto color = gp::Color("#0000"), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color("0000"), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color("#00000"), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color("#0000000"), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color("0000000"), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color("#g00"), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color("gf0011"), std::invalid_argument);
+TEST(ColorRGBTests, RGBtoCMYK) {
+    EXPECT_EQ(gp::rgb::toCMYK(0, 0, 0), gp::CMYK(0, 0, 0, 1));
+    EXPECT_EQ(gp::rgb::toCMYK(255, 255, 255), gp::CMYK(0, 0, 0, 0));
+    EXPECT_EQ(gp::rgb::toCMYK(125, 125, 125), gp::CMYK(0, 0, 0, 0.51));
 
-    EXPECT_THROW(auto color = gp::Color("#000", 2), std::invalid_argument);
-    EXPECT_THROW(auto color = gp::Color("#000", -0.5), std::invalid_argument);
+    EXPECT_EQ(gp::rgb::toCMYK(255, 0, 0), gp::CMYK(0, 1, 1, 0));
+    EXPECT_EQ(gp::rgb::toCMYK(0, 255, 0), gp::CMYK(1, 0, 1, 0));
+    EXPECT_EQ(gp::rgb::toCMYK(0, 0, 255), gp::CMYK(1, 1, 0, 0));
+
+    EXPECT_EQ(gp::rgb::toCMYK(80, 0, 140), gp::CMYK(0.43, 1.0, 0.0, 0.45));
+    EXPECT_EQ(gp::rgb::toCMYK(0, 50, 60), gp::CMYK(1.0, 0.17, 0.0, 0.76));
 }
 
-TEST(CoreColorTests, ColorToString) {
-    gp::Color color{0, 10, 20};
-    EXPECT_EQ(color.toString(), "Color(0, 10, 20, 1.00)");
+TEST(ColorRGBTests, RGBtoHSV) {
+    EXPECT_EQ(gp::rgb::toHSV(0, 0, 0), gp::HSV(0, 0, 0));
+    EXPECT_EQ(gp::rgb::toHSV(255, 255, 255), gp::HSV(0, 0, 1));
+    EXPECT_EQ(gp::rgb::toHSV(125, 125, 125), gp::HSV(0, 0, 0.49));
+
+    EXPECT_EQ(gp::rgb::toHSV(255, 0, 0), gp::HSV(0, 1, 1));
+    EXPECT_EQ(gp::rgb::toHSV(0, 255, 0), gp::HSV(120, 1, 1));
+    EXPECT_EQ(gp::rgb::toHSV(0, 0, 255), gp::HSV(240, 1, 1));
+
+    EXPECT_EQ(gp::rgb::toHSV(80, 0, 140), gp::HSV(274, 1, 0.55));
+    EXPECT_EQ(gp::rgb::toHSV(0, 50, 60), gp::HSV(190, 1, 0.24));
 }
 
-TEST(CoreColorTests, ColorAttributes) {
-    gp::Color color{0, 0, 0};
+TEST(ColorRGBTests, RGBtoHSL) {
+    EXPECT_EQ(gp::rgb::toHSL(0, 0, 0), gp::HSL(0, 0, 0));
+    EXPECT_EQ(gp::rgb::toHSL(255, 255, 255), gp::HSL(0, 0, 1));
+    EXPECT_EQ(gp::rgb::toHSL(125, 125, 125), gp::HSL(0, 0, 0.49));
 
-    color.setRed(153);
-    EXPECT_EQ(color.getRed(), 153);
-    EXPECT_EQ(color.getRedf(), 0.6f);
+    EXPECT_EQ(gp::rgb::toHSL(255, 0, 0), gp::HSL(0, 1, 0.5));
+    EXPECT_EQ(gp::rgb::toHSL(0, 255, 0), gp::HSL(120, 1, 0.5));
+    EXPECT_EQ(gp::rgb::toHSL(0, 0, 255), gp::HSL(240, 1, 0.5));
 
-    color.setGreen(102);
-    EXPECT_EQ(color.getGreen(), 102);
-    EXPECT_EQ(color.getGreenf(), 0.4f);
-
-    color.setBlue(51);
-    EXPECT_EQ(color.getBlue(), 51);
-    EXPECT_EQ(color.getBluef(), 0.2f);
-
-    color.setAlpha(0.5);
-    EXPECT_EQ(color.getAlpha(), 0.5);
-
-    EXPECT_EQ(color.getRGBAf(), gp::RGBAf(0.6, 0.4, 0.2, 0.5));
-    EXPECT_EQ(color.toString(), "Color(153, 102, 51, 0.50)");
-}
-
-TEST(CoreColorTests, ColorAttributesError) {
-    gp::Color color{0, 0, 0};
-
-    EXPECT_THROW(color.setRed(300), std::invalid_argument);
-    EXPECT_THROW(color.setRed(-30), std::invalid_argument);
-
-    EXPECT_THROW(color.setGreen(300), std::invalid_argument);
-    EXPECT_THROW(color.setGreen(-30), std::invalid_argument);
-
-    EXPECT_THROW(color.setBlue(300), std::invalid_argument);
-    EXPECT_THROW(color.setBlue(-30), std::invalid_argument);
-
-    EXPECT_THROW(color.setAlpha(2), std::invalid_argument);
-    EXPECT_THROW(color.setAlpha(-0.5), std::invalid_argument);
-}
-
-TEST(CoreColorTests, ColorArithmetic) {
-    gp::Color color1{100, 100, 100};
-    gp::Color color2{5, 10, 15};
-
-    EXPECT_EQ((color1 + 50).toString(), "Color(150, 150, 150, 1.00)");
-    EXPECT_EQ((color1 - 50).toString(), "Color(50, 50, 50, 1.00)");
-
-    EXPECT_EQ((color1 + color2).toString(), "Color(105, 110, 115, 1.00)");
-    EXPECT_EQ((color1 - color2).toString(), "Color(95, 90, 85, 1.00)");
-
-    color1 += 50;
-    EXPECT_EQ(color1.toString(), "Color(150, 150, 150, 1.00)");
-
-    color1 -= 70;
-    EXPECT_EQ(color1.toString(), "Color(80, 80, 80, 1.00)");
-
-    color1 += color2;
-    EXPECT_EQ(color1.toString(), "Color(85, 90, 95, 1.00)");
-
-    color1 -= color2;
-    EXPECT_EQ(color1.toString(), "Color(80, 80, 80, 1.00)");
-}
-
-TEST(CoreColorTests, ColorArithmeticOverflow) {
-    gp::Color color1{250, 250, 250};
-    gp::Color color2{5, 10, 15};
-
-    EXPECT_EQ((color1 + 50).toString(), "Color(255, 255, 255, 1.00)");
-    EXPECT_EQ((color1 + color2).toString(), "Color(255, 255, 255, 1.00)");
-
-    color1 += 50;
-    EXPECT_EQ(color1.toString(), "Color(255, 255, 255, 1.00)");
-    EXPECT_EQ(color1.getRGBAf(), gp::RGBAf(1, 1, 1, 1));
-}
-
-TEST(CoreColorTests, ColorArithmeticUnderflow) {
-    gp::Color color1{5, 5, 5};
-    gp::Color color2{5, 10, 15};
-
-    EXPECT_EQ((color1 - 50).toString(), "Color(0, 0, 0, 1.00)");
-    EXPECT_EQ((color1 - color2).toString(), "Color(0, 0, 0, 1.00)");
-
-    color1 -= 50;
-    EXPECT_EQ(color1.toString(), "Color(0, 0, 0, 1.00)");
-    EXPECT_EQ(color1.getRGBAf(), gp::RGBAf(0, 0, 0, 1));
+    EXPECT_EQ(gp::rgb::toHSL(80, 0, 140), gp::HSL(274, 1, 0.27));
+    EXPECT_EQ(gp::rgb::toHSL(0, 50, 60).toString(), gp::HSL(190, 1, 0.12));
 }
