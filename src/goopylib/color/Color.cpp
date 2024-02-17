@@ -7,53 +7,56 @@
 // Color Base Class
 namespace gp {
     Color::Color(const RGB &color, float alpha) :
-            m_Red(color.red),
-            m_Green(color.green),
-            m_Blue(color.blue),
-
-            m_Alpha(alpha) {
-        GP_CORE_INFO("gp::Color::Color(RGB({0}, {1}, {2}), alpha={1})", color.red, color.green, color.blue, alpha);
+            m_Red{color.red},
+            m_Green{color.green},
+            m_Blue{color.blue},
+            m_Alpha{alpha},
+            m_Redf{static_cast<float>(m_Red) / 255.0f},
+            m_Greenf{static_cast<float>(m_Green) / 255.0f},
+            m_Bluef{static_cast<float>(m_Blue) / 255.0f} {
+        GP_CORE_INFO("gp::Color::Color(RGB({0}, {1}, {2}), alpha={3})", color.red, color.green, color.blue, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(color.red, 0, 255, "Color red value must be between 0 and 255")
         GP_CHECK_INCLUSIVE_RANGE(color.green, 0, 255, "Color green value must be between 0 and 255")
         GP_CHECK_INCLUSIVE_RANGE(color.blue, 0, 255, "Color blue value must be between 0 and 255")
         GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
-
-        update();
     }
 
     Color::Color(const Color *color) :
-            m_Red(color->m_Red),
-            m_Green(color->m_Green),
-            m_Blue(color->m_Blue),
-
-            m_Alpha(color->m_Alpha) {
+            m_Red{color->m_Red},
+            m_Green{color->m_Green},
+            m_Blue{color->m_Blue},
+            m_Alpha{color->m_Alpha},
+            m_Redf{static_cast<float>(m_Red) / 255.0f},
+            m_Greenf{static_cast<float>(m_Green) / 255.0f},
+            m_Bluef{static_cast<float>(m_Blue) / 255.0f} {
         GP_CORE_INFO("gp::Color::Color({0})", color->toString());
     }
 
     Color::Color(int red, int green, int blue, float alpha) :
-            m_Red(red),
-            m_Green(green),
-            m_Blue(blue),
-
-            m_Alpha(alpha) {
+            m_Red{red},
+            m_Green{green},
+            m_Blue{blue},
+            m_Alpha{alpha},
+            m_Redf{static_cast<float>(m_Red) / 255.0f},
+            m_Greenf{static_cast<float>(m_Green) / 255.0f},
+            m_Bluef{static_cast<float>(m_Blue) / 255.0f} {
         GP_CORE_INFO("gp::Color::Color({0}, {1}, {2}, alpha={3})", red, green, blue, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
         GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
         GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
         GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
-
-        update();
     }
 
     Color::Color(const char *hexstring, float alpha)
-    : Color(hex::toRGB(hexstring), alpha) {
+            : Color{hex::toRGB(hexstring), alpha} {
         GP_CORE_INFO("gp::Color::Color({0}, alpha={3})", hexstring, alpha);
     }
 
-    void Color::fromRGB(const RGB &color, float alpha) {
-        GP_CORE_TRACE("gp::Color::fromRGB(RGB({0}, {1}, {2}), alpha={3})", color.red, color.green, color.blue, alpha);
+    void Color::updateRGBA(const RGB &color, float alpha) {
+        GP_CORE_TRACE("gp::Color::updateRGBA(RGB({0}, {1}, {2}), alpha={3})", color.red, color.green, color.blue,
+                      alpha);
 
         m_Red = color.red;
         m_Green = color.green;
@@ -91,7 +94,7 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color red value must be between 0 and 255")
 
         m_Red = value;
-        m_Redf = (float) value / 255.0f;
+        m_Redf = static_cast<float>(value) / 255.0f;
         _update();
     }
 
@@ -103,7 +106,7 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color green value must be between 0 and 255")
 
         m_Green = value;
-        m_Greenf = (float) value / 255.0f;
+        m_Greenf = static_cast<float>(value) / 255.0f;
         _update();
     }
 
@@ -115,7 +118,7 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color blue value must be between 0 and 255")
 
         m_Blue = value;
-        m_Bluef = (float) value / 255.0f;
+        m_Bluef = static_cast<float>(value) / 255.0f;
         _update();
     }
 
@@ -152,15 +155,15 @@ namespace gp {
         int red = m_Red + value;
         int green = m_Green + value;
         int blue = m_Blue + value;
-        
+
         red = red > 255 ? 255 : (red < 0 ? 0 : red);
         green = green > 255 ? 255 : (green < 0 ? 0 : green);
         blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
-        
+
         return {red, green, blue, m_Alpha};
     }
 
-    Color Color::operator+(const Color& value) const {
+    Color Color::operator+(const Color &value) const {
         int red = m_Red + value.m_Red;
         int green = m_Green + value.m_Green;
         int blue = m_Blue + value.m_Blue;
@@ -184,7 +187,7 @@ namespace gp {
         return {red, green, blue, m_Alpha};
     }
 
-    Color Color::operator-(const Color& value) const {
+    Color Color::operator-(const Color &value) const {
         int red = m_Red - value.m_Red;
         int green = m_Green - value.m_Green;
         int blue = m_Blue - value.m_Blue;
@@ -206,7 +209,7 @@ namespace gp {
         return *this;
     }
 
-    Color &Color::operator+=(const Color& value) {
+    Color &Color::operator+=(const Color &value) {
         m_Red += value.m_Red;
         m_Green += value.m_Green;
         m_Blue += value.m_Blue;
@@ -226,7 +229,7 @@ namespace gp {
         return *this;
     }
 
-    Color &Color::operator-=(const Color& value) {
+    Color &Color::operator-=(const Color &value) {
         m_Red -= value.m_Red;
         m_Green -= value.m_Green;
         m_Blue -= value.m_Blue;
@@ -236,7 +239,7 @@ namespace gp {
         return *this;
     }
 
-    std::ostream& operator<<(std::ostream& os, const Color& color) {
+    std::ostream &operator<<(std::ostream &os, const Color &color) {
         return os << color.toString();
     }
 }

@@ -147,7 +147,7 @@ namespace gp {
 
         GPAPI Color(const RGB &color, float alpha);
 
-        GPAPI void fromRGB(const RGB &color, float alpha);
+        GPAPI void updateRGBA(const RGB &color, float alpha);
 
         GPAPI void update();
 

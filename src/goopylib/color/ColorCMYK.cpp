@@ -81,7 +81,7 @@ namespace gp {
     void ColorCMYK::setCyan(float value) {
         m_Cyan = value;
         const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     float ColorCMYK::getMagenta() const {
@@ -91,7 +91,7 @@ namespace gp {
     void ColorCMYK::setMagenta(float value) {
         m_Magenta = value;
         const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     float ColorCMYK::getYellow() const {
@@ -101,7 +101,7 @@ namespace gp {
     void ColorCMYK::setYellow(float value) {
         m_Yellow = value;
         const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     float ColorCMYK::getKey() const {
@@ -111,7 +111,7 @@ namespace gp {
     void ColorCMYK::setKey(float value) {
         m_Key = value;
         const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     void ColorCMYK::_update() {

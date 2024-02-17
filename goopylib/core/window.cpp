@@ -1644,7 +1644,7 @@ namespace window {
             {"check_alt_key",             (PyCFunction) check_alt_key,             METH_NOARGS,
                     "Returns whether the alt key is being pressed"},
             {"check_super_key",           (PyCFunction) check_super_key,           METH_NOARGS,
-                    "Returns whether the fromRGB key is being pressed"},
+                    "Returns whether the super key is being pressed"},
 
             {"check_key",                 (PyCFunction) check_key,                 METH_O,
                     "Returns whether the key specified is being pressed"},

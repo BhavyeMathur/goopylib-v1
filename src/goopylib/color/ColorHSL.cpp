@@ -113,7 +113,7 @@ namespace gp {
     void ColorHSL::setHue(int value) {
         m_Hue = value;
         const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     float ColorHSL::getSaturation() const {
@@ -123,7 +123,7 @@ namespace gp {
     void ColorHSL::setSaturation(float value) {
         m_Saturation = value;
         const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     float ColorHSL::getLuminance() const {
@@ -133,7 +133,7 @@ namespace gp {
     void ColorHSL::setLuminance(float value) {
         m_Luminance = value;
         const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     void ColorHSL::_update() {

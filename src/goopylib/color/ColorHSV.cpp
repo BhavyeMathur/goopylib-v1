@@ -119,7 +119,7 @@ namespace gp {
     void ColorHSV::setHue(int value) {
         m_Hue = value;
         const RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     float ColorHSV::getSaturation() const {
@@ -129,7 +129,7 @@ namespace gp {
     void ColorHSV::setSaturation(float value) {
         m_Saturation = value;
         const RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     float ColorHSV::getValue() const {
@@ -139,7 +139,7 @@ namespace gp {
     void ColorHSV::setValue(float value) {
         m_Value = value;
         const RGB data = hsv::toRGB(m_Hue, m_Saturation, m_Value);
-        fromRGB(data, m_Alpha);
+        updateRGBA(data, m_Alpha);
     }
 
     void ColorHSV::_update() {
