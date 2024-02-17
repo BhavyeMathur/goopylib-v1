@@ -46,11 +46,11 @@ namespace gp {
     void Color::update() {
         GP_CORE_TRACE("gp::Color::update()");
 
-        m_Red = m_Red > 255 ? 255 : (m_Red < 0 ? 0 : m_Red);
-        m_Green = m_Green > 255 ? 255 : (m_Green < 0 ? 0 : m_Green);
-        m_Blue = m_Blue > 255 ? 255 : (m_Blue < 0 ? 0 : m_Blue);
+        m_Red = m_Red > 255 ? 255 : m_Red < 0 ? 0 : m_Red;
+        m_Green = m_Green > 255 ? 255 : m_Green < 0 ? 0 : m_Green;
+        m_Blue = m_Blue > 255 ? 255 : m_Blue < 0 ? 0 : m_Blue;
 
-        m_Alpha = m_Alpha > 1.0f ? 1.0f : (m_Alpha < 0.0f ? 0.0f : m_Alpha);
+        m_Alpha = m_Alpha > 1.0f ? 1.0f : m_Alpha < 0.0f ? 0.0f : m_Alpha;
 
         m_Redf = static_cast<float>(m_Red) / 255.0f;
         m_Greenf = static_cast<float>(m_Green) / 255.0f;
@@ -313,7 +313,7 @@ namespace gp {
         return *this;
     }
 
-    bool Color::operator==(const std::string& other) const {
+    bool Color::operator==(const std::string &other) const {
         return *this == ColorHex(other);
     }
 

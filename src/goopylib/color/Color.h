@@ -28,6 +28,18 @@ namespace gp {
     class Color {
     public:
         /**
+            * Create colors by passing RGB arguments or a hexstring.
+            * Specify an alpha value by passing a float as the last parameter.
+            *
+            * @param hexstring color hexadecimal string. '#' is optional.
+            * @param alpha alpha component of the color between 0-1
+            *
+            * @throws std::invalid_argument invalid hexstring
+            * @throws std::invalid_argument alpha must be between 0-1
+            */
+        explicit Color(const std::string &hexstring, float alpha = 1);
+
+        /**
          * Create colors by passing RGB arguments or a hexstring.
          * Specify an alpha value by passing a float as the last parameter.
          *
@@ -41,17 +53,9 @@ namespace gp {
          */
         Color(int red, int green, int blue, float alpha = 1);
 
-        /**
-         * Create colors by passing RGB arguments or a hexstring.
-         * Specify an alpha value by passing a float as the last parameter.
-         *
-         * @param hexstring color hexadecimal string. '#' is optional.
-         * @param alpha alpha component of the color between 0-1
-         *
-         * @throws std::invalid_argument invalid hexstring
-         * @throws std::invalid_argument alpha must be between 0-1
-         */
-        Color(const std::string &hexstring, float alpha = 1);
+        Color(const Color &other) = default;
+
+        Color(const Color &&other) = default;
 
         GPAPI virtual ~Color() = default;
 
@@ -173,6 +177,10 @@ namespace gp {
 
         GPAPI bool operator==(const std::string &other) const;
 
+        Color &operator=(const Color &) const = default;
+
+        Color &operator=(const Color &&) const = default;
+
     protected:
         int m_Red;
         int m_Green;
@@ -187,9 +195,9 @@ namespace gp {
         }
 
     private:
-        float m_Redf = 0;
-        float m_Greenf = 0;
-        float m_Bluef = 0;
+        float m_Redf;
+        float m_Greenf;
+        float m_Bluef;
     };
 }
 

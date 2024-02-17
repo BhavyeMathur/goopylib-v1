@@ -7,7 +7,7 @@ namespace gp {
         float blue = 0;
         float alpha = 1;
 
-        RGBAf(float red, float green, float blue, float alpha = 1)
+        RGBAf(const float red, const float green, const float blue, const float alpha = 1)
             : red(red),
               green(green),
               blue(blue),
@@ -22,7 +22,7 @@ namespace gp {
         float green = 0;
         float blue = 0;
 
-        RGBf(float red, float green, float blue)
+        RGBf(const float red, const float green, const float blue)
             : red(red),
               green(green),
               blue(blue) {
