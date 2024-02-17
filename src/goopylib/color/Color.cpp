@@ -148,7 +148,7 @@ namespace gp {
 
     ColorHex Color::toHex() const {
         GP_CORE_DEBUG("gp::Color::toHex({0})", this->toString());
-        return strformat("#%02x%02x%02x", m_Red, m_Green, m_Blue);
+        return {strformat("#%02x%02x%02x", m_Red, m_Green, m_Blue), m_Alpha};
     }
 
     ColorCMYK Color::toCMYK() const {
@@ -170,6 +170,7 @@ namespace gp {
             std::clamp(magenta, 0.0f, 1.0f),
             std::clamp(yellow, 0.0f, 1.0f),
             std::clamp(key, 0.0f, 1.0f),
+            m_Alpha,
         };
     }
 
@@ -202,7 +203,8 @@ namespace gp {
         return {
             std::clamp(static_cast<int>(round(60 * hue)), 0, 360),
             std::clamp(saturation, 0.0f, 1.0f),
-            std::clamp(luminance, 0.0f, 1.0f)
+            std::clamp(luminance, 0.0f, 1.0f),
+            m_Alpha,
         };
     }
 
@@ -232,7 +234,8 @@ namespace gp {
         return {
             static_cast<int>(round(60 * hue)),
             std::clamp(saturation, 0.0f, 1.0f),
-            cmax
+            cmax,
+            m_Alpha,
         };
     }
 }
