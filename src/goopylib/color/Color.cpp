@@ -27,7 +27,7 @@ namespace gp {
     }
 
     Color::Color(const std::string &hexstring, const float alpha)
-        : Color{ColorHex{hexstring, alpha}} { // NOLINT(*-slicing)
+        : Color{ColorHex{hexstring, alpha}} {  // NOLINT(*-slicing)
         GP_CORE_INFO("gp::Color::Color({0}, alpha={1})", hexstring, alpha);
     }
 
@@ -38,19 +38,22 @@ namespace gp {
         m_Red = color.m_Red;
         m_Green = color.m_Green;
         m_Blue = color.m_Blue;
+
         m_Alpha = color.m_Alpha;
 
-        update();
+        m_Redf = color.m_Redf;
+        m_Greenf = color.m_Redf;
+        m_Bluef = color.m_Bluef;
     }
 
     void Color::update() {
         GP_CORE_DEBUG("gp::Color::update()");
 
-        m_Red = m_Red > 255 ? 255 : m_Red < 0 ? 0 : m_Red;
-        m_Green = m_Green > 255 ? 255 : m_Green < 0 ? 0 : m_Green;
-        m_Blue = m_Blue > 255 ? 255 : m_Blue < 0 ? 0 : m_Blue;
+        m_Red = std::clamp(m_Red, 0, 255);
+        m_Green = std::clamp(m_Green, 0, 255);
+        m_Blue = std::clamp(m_Blue, 0, 255);
 
-        m_Alpha = m_Alpha > 1.0f ? 1.0f : m_Alpha < 0.0f ? 0.0f : m_Alpha;
+        m_Alpha = std::clamp(m_Alpha, 0.0f, 1.0f);
 
         m_Redf = static_cast<float>(m_Red) / 255.0f;
         m_Greenf = static_cast<float>(m_Green) / 255.0f;
@@ -60,8 +63,10 @@ namespace gp {
     }
 
     std::string Color::toString() const {
-        GP_CORE_TRACE("gp::Color::toString()");
-        return strformat("Color(%i, %i, %i, %.2f)", m_Red, m_Green, m_Blue, m_Alpha);
+        if (m_Alpha == 1) {
+            return strformat("Color(%i, %i, %i)", m_Red, m_Green, m_Blue);
+        }
+        return strformat("Color(%i, %i, %i, alpha=%.2f)", m_Red, m_Green, m_Blue, m_Alpha);
     }
 
     int Color::getRed() const {
@@ -247,9 +252,9 @@ namespace gp {
         int green = m_Green + value;
         int blue = m_Blue + value;
 
-        red = red > 255 ? 255 : red < 0 ? 0 : red;
-        green = green > 255 ? 255 : green < 0 ? 0 : green;
-        blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
+        red = std::clamp(red, 0, 255);
+        green = std::clamp(green, 0, 255);
+        blue = std::clamp(blue, 0, 255);
 
         return {red, green, blue, m_Alpha};
     }
@@ -259,9 +264,9 @@ namespace gp {
         int green = m_Green + value.m_Green;
         int blue = m_Blue + value.m_Blue;
 
-        red = red > 255 ? 255 : red < 0 ? 0 : red;
-        green = green > 255 ? 255 : green < 0 ? 0 : green;
-        blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
+        red = std::clamp(red, 0, 255);
+        green = std::clamp(green, 0, 255);
+        blue = std::clamp(blue, 0, 255);
 
         return {red, green, blue, m_Alpha};
     }
@@ -271,9 +276,9 @@ namespace gp {
         int green = m_Green - value;
         int blue = m_Blue - value;
 
-        red = red > 255 ? 255 : red < 0 ? 0 : red;
-        green = green > 255 ? 255 : green < 0 ? 0 : green;
-        blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
+        red = std::clamp(red, 0, 255);
+        green = std::clamp(green, 0, 255);
+        blue = std::clamp(blue, 0, 255);
 
         return {red, green, blue, m_Alpha};
     }
@@ -283,9 +288,9 @@ namespace gp {
         int green = m_Green - value.m_Green;
         int blue = m_Blue - value.m_Blue;
 
-        red = red > 255 ? 255 : red < 0 ? 0 : red;
-        green = green > 255 ? 255 : green < 0 ? 0 : green;
-        blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
+        red = std::clamp(red, 0, 255);
+        green = std::clamp(green, 0, 255);
+        blue = std::clamp(blue, 0, 255);
 
         return {red, green, blue, m_Alpha};
     }

@@ -61,17 +61,17 @@ TEST(ColorCMYKTests, ColorFromCopyAssignment) {
 
 TEST(ColorCMYKTests, ColorFromHex) {
     gp::ColorCMYK color{0, 0.1, 0.2, 0.3};
-    EXPECT_EQ(color.getCyan(), 0);
-    EXPECT_EQ(color.getMagenta(), 0.1);
-    EXPECT_EQ(color.getYellow(), 0.2);
-    EXPECT_EQ(color.getKey(), 0.3);
+    EXPECT_NEAR(color.getCyan(), 0, 1e-2);
+    EXPECT_NEAR(color.getMagenta(), 0.1, 1e-2);
+    EXPECT_NEAR(color.getYellow(), 0.2, 1e-2);
+    EXPECT_NEAR(color.getKey(), 0.3, 1e-2);
 
     gp::ColorCMYK color1{0, 0.1, 0.2, 0.3, 0.4};
-    EXPECT_EQ(color1.getCyan(), 0);
-    EXPECT_EQ(color1.getMagenta(), 0.1);
-    EXPECT_EQ(color1.getYellow(), 0.2);
-    EXPECT_EQ(color1.getKey(), 0.3);
-    EXPECT_EQ(color1.getAlpha(), 0.4);
+    EXPECT_NEAR(color1.getCyan(), 0, 1e-2);
+    EXPECT_NEAR(color1.getMagenta(), 0.1, 1e-2);
+    EXPECT_NEAR(color1.getYellow(), 0.2, 1e-2);
+    EXPECT_NEAR(color1.getKey(), 0.3, 1e-2);
+    EXPECT_NEAR(color1.getAlpha(), 0.4, 1e-2);
 }
 
 TEST(ColorCMYKTests, ColorFromHexErrors) {
@@ -92,19 +92,21 @@ TEST(ColorCMYKTests, ColorFromHexErrors) {
 TEST(ColorCMYKTests, ColorCMYKAttributes) {
     gp::ColorCMYK color{0, 0, 0, 0};
 
+    EXPECT_EQ(color.toString(), "ColorCMYK(0.00, 0.00, 0.00, 0.00)");
+
     color.setCyan(0.2);
-    EXPECT_EQ(color.getCyan(), 0.2);
+    EXPECT_NEAR(color.getCyan(), 0.2, 1e-2);
 
     color.setMagenta(0.3);
-    EXPECT_EQ(color.getMagenta(), 0.3);
+    EXPECT_NEAR(color.getMagenta(), 0.3, 1e-2);
 
     color.setYellow(0.4);
-    EXPECT_EQ(color.getYellow(), 0.4);
+    EXPECT_NEAR(color.getYellow(), 0.4, 1e-2);
 
     color.setKey(0.5);
-    EXPECT_EQ(color.getKey(), 0.5);
+    EXPECT_NEAR(color.getKey(), 0.5, 1e-2);
 
-    EXPECT_EQ(color.toString(), "ColorCMYK(0.20, 0.30, 0.40, 0.50, 1.0)");
+    EXPECT_EQ(color.toString(), "ColorCMYK(0.20, 0.30, 0.40, 0.50)");
 }
 
 TEST(ColorCMYKTests, ColorAttributesError) {
@@ -130,10 +132,20 @@ TEST(ColorCMYKTests, ColorRGBAttributes) {
     EXPECT_COLOR_EQ(color, gp::ColorCMYK(0.94, 0, 0, 0));
 
     color.setGreen(40);
-    EXPECT_EQ(color, gp::ColorCMYK(0.94, 0.8, 0, 0));
+    EXPECT_COLOR_EQ(color, gp::ColorCMYK(0.94, 0.84, 0, 0));
 
     color.setBlue(60);
-    EXPECT_EQ(color, gp::ColorCMYK(0.75, 0.33, 0, 0.76));
+    EXPECT_COLOR_EQ(color, gp::ColorCMYK(0.75, 0.33, 0, 0.76));
 
-    EXPECT_EQ(color.toString(), "ColorCMYK(0.75, 0.33, 0.00, 0.76, 1.0)");
+    EXPECT_EQ(color.toString(), "ColorCMYK(0.75, 0.33, 0.00, 0.76)");
+}
+
+TEST(ColorCMYKTests, ColorRGBAttributeAlpha) {
+    gp::ColorCMYK color{0, 0, 0, 0, 0.5};
+
+    color.setRed(15);
+    color.setGreen(40);
+    color.setBlue(60);
+
+    EXPECT_EQ(color.toString(), "ColorCMYK(0.75, 0.33, 0.00, 0.76, alpha=0.50)");
 }

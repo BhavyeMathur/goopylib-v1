@@ -95,7 +95,10 @@ namespace gp {
     }
 
     std::string ColorHex::toString() const {
-        return strformat("#%02x%02x%02x", m_Red, m_Green, m_Blue);
+        if (m_Alpha == 1) {
+            return strformat("#%02x%02x%02x", m_Red, m_Green, m_Blue);
+        }
+        return strformat("ColorHex('#%02x%02x%02x', alpha=%.2f)", m_Red, m_Green, m_Blue, m_Alpha);
     }
 
     ColorRGB ColorHex::toRGB() const {

@@ -101,7 +101,10 @@ namespace gp {
     }
 
     std::string ColorHSV::toString() const {
-        return strformat("ColorHSV(%i, %.2f, %.2f)", m_Hue, m_Saturation, m_Value);
+        if (m_Alpha == 1) {
+            return strformat("ColorHSV(%i, %.2f, %.2f)", m_Hue, m_Saturation, m_Value);
+        }
+        return strformat("ColorHSV(%i, %.2f, %.2f, alpha=%.2f)", m_Hue, m_Saturation, m_Value, m_Alpha);
     }
 
     int ColorHSV::getHue() const {

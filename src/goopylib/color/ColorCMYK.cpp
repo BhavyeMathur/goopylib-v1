@@ -44,7 +44,10 @@ namespace gp {
 
 
     std::string ColorCMYK::toString() const {
-        return strformat("ColorCMYK(%.2f, %.2f, %.2f, %.2f)", m_Cyan, m_Magenta, m_Yellow, m_Key);
+        if (m_Alpha == 1) {
+            return strformat("ColorCMYK(%.2f, %.2f, %.2f, %.2f)", m_Cyan, m_Magenta, m_Yellow, m_Key);
+        }
+        return strformat("ColorCMYK(%.2f, %.2f, %.2f, %.2f, alpha=%.2f)", m_Cyan, m_Magenta, m_Yellow, m_Key, m_Alpha);
     }
 
     float ColorCMYK::getCyan() const {
