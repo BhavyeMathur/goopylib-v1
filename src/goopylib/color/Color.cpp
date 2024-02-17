@@ -146,11 +146,16 @@ namespace gp {
             return {0, 0, 0, 1};
         }
 
+        const float cyan = (maximum - m_Redf) / maximum;
+        const float magenta = (maximum - m_Greenf) / maximum;
+        const float yellow = (maximum - m_Bluef) / maximum;
+        const float key = 1 - maximum;
+
         return {
-            (maximum - m_Redf) / maximum,
-            (maximum - m_Greenf) / maximum,
-            (maximum - m_Bluef) / maximum,
-            1 - maximum
+            std::clamp(cyan, 0.0f, 1.0f),
+            std::clamp(magenta, 0.0f, 1.0f),
+            std::clamp(yellow, 0.0f, 1.0f),
+            std::clamp(key, 0.0f, 1.0f),
         };
     }
 
@@ -163,19 +168,28 @@ namespace gp {
         const float luminance = (cmax + cmin) / 2;
 
         if (delta == 0) {
-            return {0, 0, luminance};
+            return {0, 0, std::clamp(luminance, 0.0f, 1.0f)};
         }
 
         const float saturation = delta / (1 - abs(2 * luminance - 1));
 
+        float hue;
+
         if (cmax == m_Redf) {
-            return {static_cast<int>(round(60 * fmodf((m_Greenf - m_Bluef) / delta, 6))), saturation, luminance};
+            hue = fmodf((m_Greenf - m_Bluef) / delta, 6);
         }
-        if (cmax == m_Greenf) {
-            return {static_cast<int>(round(60 * ((m_Bluef - m_Redf) / delta + 2))), saturation, luminance};
+        else if (cmax == m_Greenf) {
+            hue = (m_Bluef - m_Redf) / delta + 2;
         }
-        // cmax == m_Bluef
-        return {static_cast<int>(round(60 * ((m_Redf - m_Greenf) / delta + 4))), saturation, luminance};
+        else {
+            hue = (m_Redf - m_Greenf) / delta + 4;
+        }
+
+        return {
+            std::clamp(static_cast<int>(round(60 * hue)), 0, 360),
+            std::clamp(saturation, 0.0f, 1.0f),
+            std::clamp(luminance, 0.0f, 1.0f)
+        };
     }
 
     ColorHSV Color::toHSV() const {
@@ -186,17 +200,26 @@ namespace gp {
         const float delta = cmax - cmin;
         const float saturation = cmax == 0 ? 0 : delta / cmax;
 
+        float hue;
+
         if (delta == 0) {
-            return {0, saturation, cmax};
+            hue = 0;
         }
-        if (cmax == m_Redf) {
-            return {static_cast<int>(round(60 * fmodf((m_Greenf - m_Bluef) / delta, 6))), saturation, cmax};
+        else if (cmax == m_Redf) {
+            hue = fmodf((m_Greenf - m_Bluef) / delta, 6);
         }
-        if (cmax == m_Greenf) {
-            return {static_cast<int>(round(60 * ((m_Bluef - m_Redf) / delta + 2))), saturation, cmax};
+        else if (cmax == m_Greenf) {
+            hue = (m_Bluef - m_Redf) / delta + 2;
         }
-        // cmax == m_Bluef
-        return {static_cast<int>(round(60 * ((m_Redf - m_Greenf) / delta + 4))), saturation, cmax};
+        else {
+            hue = (m_Redf - m_Greenf) / delta + 4;
+        }
+
+        return {
+            static_cast<int>(round(60 * hue)),
+            std::clamp(saturation, 0.0f, 1.0f),
+            cmax
+        };
     }
 }
 
@@ -207,9 +230,9 @@ namespace gp {
         int green = m_Green + value;
         int blue = m_Blue + value;
 
-        red = red > 255 ? 255 : (red < 0 ? 0 : red);
-        green = green > 255 ? 255 : (green < 0 ? 0 : green);
-        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+        red = red > 255 ? 255 : red < 0 ? 0 : red;
+        green = green > 255 ? 255 : green < 0 ? 0 : green;
+        blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
 
         return {red, green, blue, m_Alpha};
     }
@@ -219,9 +242,9 @@ namespace gp {
         int green = m_Green + value.m_Green;
         int blue = m_Blue + value.m_Blue;
 
-        red = red > 255 ? 255 : (red < 0 ? 0 : red);
-        green = green > 255 ? 255 : (green < 0 ? 0 : green);
-        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+        red = red > 255 ? 255 : red < 0 ? 0 : red;
+        green = green > 255 ? 255 : green < 0 ? 0 : green;
+        blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
 
         return {red, green, blue, m_Alpha};
     }
@@ -231,9 +254,9 @@ namespace gp {
         int green = m_Green - value;
         int blue = m_Blue - value;
 
-        red = red > 255 ? 255 : (red < 0 ? 0 : red);
-        green = green > 255 ? 255 : (green < 0 ? 0 : green);
-        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+        red = red > 255 ? 255 : red < 0 ? 0 : red;
+        green = green > 255 ? 255 : green < 0 ? 0 : green;
+        blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
 
         return {red, green, blue, m_Alpha};
     }
@@ -243,9 +266,9 @@ namespace gp {
         int green = m_Green - value.m_Green;
         int blue = m_Blue - value.m_Blue;
 
-        red = red > 255 ? 255 : (red < 0 ? 0 : red);
-        green = green > 255 ? 255 : (green < 0 ? 0 : green);
-        blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+        red = red > 255 ? 255 : red < 0 ? 0 : red;
+        green = green > 255 ? 255 : green < 0 ? 0 : green;
+        blue = blue > 255 ? 255 : blue < 0 ? 0 : blue;
 
         return {red, green, blue, m_Alpha};
     }
@@ -290,7 +313,7 @@ namespace gp {
         return *this;
     }
 
-    bool Color::operator==(std::string other) const {
+    bool Color::operator==(const std::string& other) const {
         return *this == ColorHex(other);
     }
 

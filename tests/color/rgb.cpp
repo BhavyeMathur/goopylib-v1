@@ -1,6 +1,12 @@
 #include "gtest/gtest.h"
 #include <goopylib/goopylib.h>
 
+#define EXPECT_COLOR_EQ(arg1, arg2) EXPECT_TRUE(colorNearEquality((arg1), (arg2)))
+
+bool colorNearEquality(const gp::Color &color1, const gp::Color &color2) {
+    return color1.toString() == color2.toString();
+}
+
 TEST(ColorRGBTests, ColorFromColorSubclass) {
     gp::Color color{10, 15, 20, 0.1};
     gp::ColorHex colorHex{"#f05", 0.2};
@@ -59,53 +65,53 @@ TEST(ColorRGBTests, ColorFromRGBErrors) {
 }
 
 TEST(ColorRGBTests, RGBtoHex) {
-    EXPECT_EQ(gp::rgb::toHex(0, 0, 0), "#000000");
-    EXPECT_EQ(gp::rgb::toHex(255, 255, 255), "#ffffff");
-    EXPECT_EQ(gp::rgb::toHex(125, 125, 125), "#7d7d7d");
+    EXPECT_EQ(gp::ColorRGB(0, 0, 0).toHex(), "#000000");
+    EXPECT_EQ(gp::ColorRGB(255, 255, 255).toHex(), "#ffffff");
+    EXPECT_EQ(gp::ColorRGB(125, 125, 125).toHex(), "#7d7d7d");
 
-    EXPECT_EQ(gp::rgb::toHex(255, 0, 0), "#ff0000");
-    EXPECT_EQ(gp::rgb::toHex(0, 255, 0), "#00ff00");
-    EXPECT_EQ(gp::rgb::toHex(0, 0, 255), "#0000ff");
+    EXPECT_EQ(gp::ColorRGB(255, 0, 0).toHex(), "#ff0000");
+    EXPECT_EQ(gp::ColorRGB(0, 255, 0).toHex(), "#00ff00");
+    EXPECT_EQ(gp::ColorRGB(0, 0, 255).toHex(), "#0000ff");
 
-    EXPECT_EQ(gp::rgb::toHex(80, 0, 140), "#50008c");
-    EXPECT_EQ(gp::rgb::toHex(0, 50, 60), "#00323c");
+    EXPECT_EQ(gp::ColorRGB(80, 0, 140).toHex(), "#50008c");
+    EXPECT_EQ(gp::ColorRGB(0, 50, 60).toHex(), "#00323c");
 }
 
 TEST(ColorRGBTests, RGBtoCMYK) {
-    EXPECT_EQ(gp::rgb::toCMYK(0, 0, 0), gp::CMYK(0, 0, 0, 1));
-    EXPECT_EQ(gp::rgb::toCMYK(255, 255, 255), gp::CMYK(0, 0, 0, 0));
-    EXPECT_EQ(gp::rgb::toCMYK(125, 125, 125), gp::CMYK(0, 0, 0, 0.51));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 0, 0).toCMYK(), gp::ColorCMYK(0, 0, 0, 1));
+    EXPECT_COLOR_EQ(gp::ColorRGB(255, 255, 255).toCMYK(), gp::ColorCMYK(0, 0, 0, 0));
+    EXPECT_COLOR_EQ(gp::ColorRGB(125, 125, 125).toCMYK(), gp::ColorCMYK(0, 0, 0, 0.51));
 
-    EXPECT_EQ(gp::rgb::toCMYK(255, 0, 0), gp::CMYK(0, 1, 1, 0));
-    EXPECT_EQ(gp::rgb::toCMYK(0, 255, 0), gp::CMYK(1, 0, 1, 0));
-    EXPECT_EQ(gp::rgb::toCMYK(0, 0, 255), gp::CMYK(1, 1, 0, 0));
+    EXPECT_COLOR_EQ(gp::ColorRGB(255, 0, 0).toCMYK(), gp::ColorCMYK(0, 1, 1, 0));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 255, 0).toCMYK(), gp::ColorCMYK(1, 0, 1, 0));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 0, 255).toCMYK(), gp::ColorCMYK(1, 1, 0, 0));
 
-    EXPECT_EQ(gp::rgb::toCMYK(80, 0, 140), gp::CMYK(0.43, 1.0, 0.0, 0.45));
-    EXPECT_EQ(gp::rgb::toCMYK(0, 50, 60), gp::CMYK(1.0, 0.17, 0.0, 0.76));
+    EXPECT_COLOR_EQ(gp::ColorRGB(80, 0, 140).toCMYK(), gp::ColorCMYK(0.43, 1.0, 0.0, 0.45));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 50, 60).toCMYK(), gp::ColorCMYK(1.0, 0.17, 0.0, 0.76));
 }
 
 TEST(ColorRGBTests, RGBtoHSV) {
-    EXPECT_EQ(gp::rgb::toHSV(0, 0, 0), gp::HSV(0, 0, 0));
-    EXPECT_EQ(gp::rgb::toHSV(255, 255, 255), gp::HSV(0, 0, 1));
-    EXPECT_EQ(gp::rgb::toHSV(125, 125, 125), gp::HSV(0, 0, 0.49));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 0, 0).toHSV(), gp::ColorHSV(0, 0, 0));
+    EXPECT_COLOR_EQ(gp::ColorRGB(255, 255, 255).toHSV(), gp::ColorHSV(0, 0, 1));
+    EXPECT_COLOR_EQ(gp::ColorRGB(125, 125, 125).toHSV(), gp::ColorHSV(0, 0, 0.49));
 
-    EXPECT_EQ(gp::rgb::toHSV(255, 0, 0), gp::HSV(0, 1, 1));
-    EXPECT_EQ(gp::rgb::toHSV(0, 255, 0), gp::HSV(120, 1, 1));
-    EXPECT_EQ(gp::rgb::toHSV(0, 0, 255), gp::HSV(240, 1, 1));
+    EXPECT_COLOR_EQ(gp::ColorRGB(255, 0, 0).toHSV(), gp::ColorHSV(0, 1, 1));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 255, 0).toHSV(), gp::ColorHSV(120, 1, 1));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 0, 255).toHSV(), gp::ColorHSV(240, 1, 1));
 
-    EXPECT_EQ(gp::rgb::toHSV(80, 0, 140), gp::HSV(274, 1, 0.55));
-    EXPECT_EQ(gp::rgb::toHSV(0, 50, 60), gp::HSV(190, 1, 0.24));
+    EXPECT_COLOR_EQ(gp::ColorRGB(80, 0, 140).toHSV(), gp::ColorHSV(274, 1, 0.55));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 50, 60).toHSV(), gp::ColorHSV(190, 1, 0.24));
 }
 
 TEST(ColorRGBTests, RGBtoHSL) {
-    EXPECT_EQ(gp::rgb::toHSL(0, 0, 0), gp::HSL(0, 0, 0));
-    EXPECT_EQ(gp::rgb::toHSL(255, 255, 255), gp::HSL(0, 0, 1));
-    EXPECT_EQ(gp::rgb::toHSL(125, 125, 125), gp::HSL(0, 0, 0.49));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 0, 0).toHSL(), gp::ColorHSL(0, 0, 0));
+    EXPECT_COLOR_EQ(gp::ColorRGB(255, 255, 255).toHSL(), gp::ColorHSL(0, 0, 1));
+    EXPECT_COLOR_EQ(gp::ColorRGB(125, 125, 125).toHSL(), gp::ColorHSL(0, 0, 0.49));
 
-    EXPECT_EQ(gp::rgb::toHSL(255, 0, 0), gp::HSL(0, 1, 0.5));
-    EXPECT_EQ(gp::rgb::toHSL(0, 255, 0), gp::HSL(120, 1, 0.5));
-    EXPECT_EQ(gp::rgb::toHSL(0, 0, 255), gp::HSL(240, 1, 0.5));
+    EXPECT_COLOR_EQ(gp::ColorRGB(255, 0, 0).toHSL(), gp::ColorHSL(0, 1, 0.5));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 255, 0).toHSL(), gp::ColorHSL(120, 1, 0.5));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 0, 255).toHSL(), gp::ColorHSL(240, 1, 0.5));
 
-    EXPECT_EQ(gp::rgb::toHSL(80, 0, 140), gp::HSL(274, 1, 0.27));
-    EXPECT_EQ(gp::rgb::toHSL(0, 50, 60).toString(), gp::HSL(190, 1, 0.12));
+    EXPECT_COLOR_EQ(gp::ColorRGB(80, 0, 140).toHSL(), gp::ColorHSL(274, 1, 0.27));
+    EXPECT_COLOR_EQ(gp::ColorRGB(0, 50, 60).toHSL(), gp::ColorHSL(190, 1, 0.12));
 }

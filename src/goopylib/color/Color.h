@@ -171,7 +171,7 @@ namespace gp {
 
         GPAPI bool operator==(const Color &) const = default;
 
-        GPAPI bool operator==(std::string other) const;
+        GPAPI bool operator==(const std::string &other) const;
 
     protected:
         int m_Red;
