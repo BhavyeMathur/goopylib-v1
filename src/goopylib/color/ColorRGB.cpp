@@ -1,9 +1,22 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "ColorRGB.h"
 #include "ColorConversions.h"
 
-
 namespace gp::rgb {
-    const char *toHex(int red, int green, int blue) {
+    RGBf toRGBf(int red, int green, int blue) {
+        GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
+        GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
+
+        return {
+            static_cast<float>(red) / 255.0f,
+            static_cast<float>(green) / 255.0f,
+            static_cast<float>(blue) / 255.0f
+        };
+    }
+
+    std::string toHex(int red, int green, int blue) {
         GP_CORE_INFO("gp::rgb::toHex(red={0}, green={1}, blue={2})", red, green, blue);
 
         GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
@@ -16,137 +29,80 @@ namespace gp::rgb {
     CMYK toCMYK(int red, int green, int blue) {
         GP_CORE_INFO("gp::rgb::toCMYK(red={0}, green={1}, blue={2})", red, green, blue);
 
-        GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
-
-        const float redf = (float) red / 255.0f;
-        const float greenf = (float) green / 255.0f;
-        const float bluef = (float) blue / 255.0f;
-
-        float maximum = redf > greenf ? redf : greenf;
-        if (bluef > maximum) {
-            maximum = bluef;
-        }
-
-        const float k = 1 - maximum;
+        // also checks for invalid RGB values outside [0, 255] range
+        const auto [redf, greenf, bluef] = toRGBf(red, green, blue);
+        const float maximum = std::max({redf, greenf, bluef});
 
         if (maximum == 0) {
             return CMYK{0, 0, 0, 1};
         }
 
-        return CMYK{(maximum - redf) / maximum,
-                    (maximum - greenf) / maximum,
-                    (maximum - bluef) / maximum,
-                    k};
+        return CMYK{
+            (maximum - redf) / maximum,
+            (maximum - greenf) / maximum,
+            (maximum - bluef) / maximum,
+            1 - maximum
+        };
     }
 
     HSL toHSL(int red, int green, int blue) {
         GP_CORE_INFO("gp::rgb::toHSL(red={0}, green={1}, blue={2})", red, green, blue);
 
-        GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
-
-        const float redf = (float) red / 255.0f;
-        const float greenf = (float) green / 255.0f;
-        const float bluef = (float) blue / 255.0f;
-
-        float cmax, cmin;
-
-        if (redf > greenf) {
-            cmax = redf;
-            cmin = greenf;
-        }
-        else {
-            cmax = greenf;
-            cmin = redf;
-        }
-
-        if (bluef > cmax) {
-            cmax = bluef;
-        }
-        else if (bluef < cmin) {
-            cmin = bluef;
-        }
+        // also checks for invalid RGB values outside [0, 255] range
+        const auto [redf, greenf, bluef] = toRGBf(red, green, blue);
+        const auto [cmin, cmax] = std::minmax({redf, greenf, bluef});
 
         const float delta = cmax - cmin;
-        const float L = (cmax + cmin) / 2;
+        const float luminance = (cmax + cmin) / 2;
 
         if (delta == 0) {
-            return HSL{0, 0, L};
+            return HSL{0, 0, luminance};
         }
 
-        const float s = delta / (1 - abs(2 * L - 1));
+        const float saturation = delta / (1 - abs(2 * luminance - 1));
 
         if (cmax == redf) {
-            return HSL{(int) round(60 * fmodf((greenf - bluef) / delta, 6)), s, L};
+            return HSL{static_cast<int>(round(60 * fmodf((greenf - bluef) / delta, 6))), saturation, luminance};
         }
-        else if (cmax == greenf) {
-            return HSL{(int) round(60 * (((bluef - redf) / delta) + 2)), s, L};
+        if (cmax == greenf) {
+            return HSL{static_cast<int>(round(60 * ((bluef - redf) / delta + 2))), saturation, luminance};
         }
-        else {
-            return HSL{(int) round(60 * (((redf - greenf) / delta) + 4)), s, L};
-        }
+        // cmax == bluef
+        return HSL{static_cast<int>(round(60 * ((redf - greenf) / delta + 4))), saturation, luminance};
     }
 
     HSV toHSV(int red, int green, int blue) {
         GP_CORE_INFO("gp::rgb::toHSV(red={0}, green={1}, blue={2})", red, green, blue);
 
-        GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
-
-        const float redf = (float) red / 255.0f;
-        const float greenf = (float) green / 255.0f;
-        const float bluef = (float) blue / 255.0f;
-
-        float cmax, cmin;
-
-        if (redf > greenf) {
-            cmax = redf;
-            cmin = greenf;
-        }
-        else {
-            cmax = greenf;
-            cmin = redf;
-        }
-
-        if (bluef > cmax) {
-            cmax = bluef;
-        }
-        else if (bluef < cmin) {
-            cmin = bluef;
-        }
+        // also checks for invalid RGB values outside [0, 255] range
+        const auto [redf, greenf, bluef] = toRGBf(red, green, blue);
+        const auto [cmin, cmax] = std::minmax({redf, greenf, bluef});
 
         const float delta = cmax - cmin;
-        int h;
+        const float saturation = cmax == 0 ? 0 : delta / cmax;
 
         if (delta == 0) {
-            h = 0;
+            return HSV{0, saturation, cmax};
         }
-        else if (cmax == redf) {
-            h = (int) round(60 * fmodf((greenf - bluef) / delta, 6));
+        if (cmax == redf) {
+            return HSV{static_cast<int>(round(60 * fmodf((greenf - bluef) / delta, 6))), saturation, cmax};
         }
-        else if (cmax == greenf) {
-            h = (int) round(60 * (((bluef - redf) / delta) + 2));
+        if (cmax == greenf) {
+            return HSV{static_cast<int>(round(60 * ((bluef - redf) / delta + 2))), saturation, cmax};
         }
-        else {
-            h = (int) round(60 * (((redf - greenf) / delta) + 4));
-        }
-
-        return HSV{h, cmax == 0 ? 0 : delta / cmax, cmax};
+        // cmax == bluef
+        return HSV{static_cast<int>(round(60 * ((redf - greenf) / delta + 4))), saturation, cmax};
     }
 }
 
 namespace gp {
-    ColorRGB::ColorRGB(const Color *color)
-            : Color(*color) {
+    ColorRGB::ColorRGB(const Color &color)
+        : Color{color} {
         GP_CORE_INFO("gp::ColorRGB::ColorRGB({0})", color->toString());
     }
 
     ColorRGB::ColorRGB(int red, int green, int blue, float alpha)
-            : Color(red, green, blue, alpha) {
+        : Color(red, green, blue, alpha) {
         GP_CORE_INFO("gp::ColorRGB::ColorRGB({0}, {1}, {2}, alpha={3})", red, green, blue, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
