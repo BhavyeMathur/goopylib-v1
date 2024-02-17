@@ -49,7 +49,7 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
-    Color::Color(const char *hexstring, float alpha)
+    Color::Color(std::string hexstring, float alpha)
             : Color{hex::toRGB(hexstring), alpha} {
         GP_CORE_INFO("gp::Color::Color({0}, alpha={3})", hexstring, alpha);
     }

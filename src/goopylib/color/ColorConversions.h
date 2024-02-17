@@ -4,7 +4,6 @@
 #include "ColorStructs.h"
 
 namespace gp {
-    
     // RGB to other format
 
     namespace rgb {
@@ -19,7 +18,7 @@ namespace gp {
          *
          * @return a hexstring in the format "#rrggbb"
          */
-        [[nodiscard]] GPAPI const char *toHex(int red, int green, int blue);
+        [[nodiscard]] GPAPI std::string toHex(int red, int green, int blue);
 
         /**
          * Converts a color from RGB to CMYK
@@ -73,7 +72,7 @@ namespace gp {
          *
          * @return a struct of RGB values between 0 and 255
          */
-        [[nodiscard]] RGB GPAPI toRGB(const char *hexstring);
+        [[nodiscard]] RGB GPAPI toRGB(std::string hexstring);
 
         /**
          * Converts a color hexstring to CMYK
@@ -84,7 +83,7 @@ namespace gp {
          *
          * @return a struct of CMYK values between 0 and 1
          */
-        [[nodiscard]] CMYK GPAPI toCMYK(const char *hexstring);
+        [[nodiscard]] CMYK GPAPI toCMYK(std::string hexstring);
 
         /**
          * Converts a color hexstring to HSL
@@ -95,7 +94,7 @@ namespace gp {
          *
          * @return a struct of HSL values
          */
-        [[nodiscard]] HSL GPAPI toHSL(const char *hexstring);
+        [[nodiscard]] HSL GPAPI toHSL(std::string hexstring);
 
         /**
          * Converts a color hexstring to HSV
@@ -106,7 +105,7 @@ namespace gp {
          *
          * @return a struct of HSV values
          */
-        [[nodiscard]] HSV GPAPI toHSV(const char *hexstring);
+        [[nodiscard]] HSV GPAPI toHSV(std::string hexstring);
     }
 
     // CMYK to other format
@@ -138,7 +137,7 @@ namespace gp {
          *
          * @return a hexstring in the format "#rrggbb"
          */
-        [[nodiscard]] GPAPI const char *toHex(float cyan, float magenta, float yellow, float key);
+        [[nodiscard]] GPAPI std::string toHex(float cyan, float magenta, float yellow, float key);
 
         /**
          * Converts a color from CMYK to HSL
@@ -183,7 +182,7 @@ namespace gp {
          *
          * @return a struct of RGB values between 0 and 255
          */
-        [[nodiscard]] RGB GPAPI toRGB(int hue, float saturation, float value);
+        [[nodiscard]] GPAPI RGB toRGB(int hue, float saturation, float value);
 
         /**
          * Converts a color from HSV to a Hexadecimal string
@@ -196,7 +195,7 @@ namespace gp {
          *
          * @return a hexstring in the format "#rrggbb"
          */
-        [[nodiscard]] const char GPAPI *toHex(int hue, float saturation, float value);
+        [[nodiscard]] GPAPI std::string toHex(int hue, float saturation, float value);
 
         /**
          * Converts a color from HSV to CMYK
@@ -209,7 +208,7 @@ namespace gp {
          *
          * @return a struct of CMYK values between 0 and 1
          */
-        [[nodiscard]] CMYK GPAPI toCMYK(int hue, float saturation, float value);
+        [[nodiscard]] GPAPI CMYK toCMYK(int hue, float saturation, float value);
 
         /**
          * Converts a color from HSV to HSL
@@ -222,7 +221,7 @@ namespace gp {
          *
          * @return a struct of HSL values
          */
-        [[nodiscard]] HSL GPAPI toHSL(int hue, float saturation, float value);
+        [[nodiscard]] GPAPI HSL toHSL(int hue, float saturation, float value);
     }
 
     // HSL to other format
@@ -252,7 +251,7 @@ namespace gp {
         *
         * @return a hexstring in the format "#rrggbb"
         */
-        [[nodiscard]] const char GPAPI *toHex(int hue, float saturation, float luminance);
+        [[nodiscard]] GPAPI std::string toHex(int hue, float saturation, float luminance);
 
         /**
          * Converts a color from HSL to CMYK

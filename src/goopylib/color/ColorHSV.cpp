@@ -46,7 +46,7 @@ namespace gp::hsv {
         }
     }
 
-    const char *toHex(int hue, float saturation, float value) {
+    std::string toHex(int hue, float saturation, float value) {
         GP_CORE_INFO("gp::hsv::toHex(hue={0}, saturation={1}, value={2})", hue, saturation, value);
 
         const RGB color_rgb = toRGB(hue, saturation, value);

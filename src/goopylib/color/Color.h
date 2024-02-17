@@ -18,11 +18,6 @@ namespace gp {
     class Color {
     public:
         /**
-         * Create a color object from another color object.
-         */
-        GPAPI explicit Color(Color const *color);
-
-        /**
          * Create colors by passing RGB arguments or a hexstring.
          * Specify an alpha value by passing a float as the last parameter.
          *
@@ -46,7 +41,7 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI Color(const char *hexstring, float alpha = 1);
+        GPAPI Color(std::string hexstring, float alpha = 1);
 
         virtual ~Color() = default;
 
@@ -151,7 +146,7 @@ namespace gp {
 
         GPAPI void update();
 
-        GPAPI virtual void _update() {};
+        GPAPI virtual void _update() {}
 
     private:
         float m_Redf = 0;

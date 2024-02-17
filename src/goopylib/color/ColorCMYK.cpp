@@ -17,7 +17,7 @@ namespace gp::cmyk {
                    (int) round(255 * (1 - yellow) * key)};
     }
 
-    const char *toHex(float cyan, float magenta, float yellow, float key) {
+    std::string toHex(float cyan, float magenta, float yellow, float key) {
         GP_CORE_INFO("gp::cmyk::toHex(cyan={0}, magenta={1}, yellow={2}, key={3})", cyan, magenta, yellow, key);
 
         const RGB color_rgb = toRGB(cyan, magenta, yellow, key);

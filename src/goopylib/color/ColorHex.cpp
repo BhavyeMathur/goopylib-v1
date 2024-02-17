@@ -34,56 +34,64 @@ namespace {
         }
     }
 
-    gp::RGB Hex3toRGB(const char *hexstring) {
+    gp::RGB Hex3toRGB(std::string hexstring) {
         GP_CORE_DEBUG("Hex3toRGB(hexstring={0})", hexstring);
 
-        return gp::RGB{17 * digitToInt(hexstring[0]),
-                       17 * digitToInt(hexstring[1]),
-                       17 * digitToInt(hexstring[2])};
+        return gp::RGB{
+            17 * digitToInt(hexstring[0]),
+            17 * digitToInt(hexstring[1]),
+            17 * digitToInt(hexstring[2])
+        };
     }
 
-    gp::RGB Hex4toRGB(const char *hexstring) {
+    gp::RGB Hex4toRGB(std::string hexstring) {
         GP_CORE_DEBUG("Hex4toRGB(hexstring={0})", hexstring);
 
-        return gp::RGB{17 * digitToInt(hexstring[1]),
-                       17 * digitToInt(hexstring[2]),
-                       17 * digitToInt(hexstring[3])};
+        return gp::RGB{
+            17 * digitToInt(hexstring[1]),
+            17 * digitToInt(hexstring[2]),
+            17 * digitToInt(hexstring[3])
+        };
     }
 
-    gp::RGB Hex6toRGB(const char *hexstring) {
+    gp::RGB Hex6toRGB(std::string hexstring) {
         GP_CORE_DEBUG("Hex6toRGB(hexstring={0})", hexstring);
 
-        return gp::RGB{16 * digitToInt(hexstring[0]) + digitToInt(hexstring[1]),
-                       16 * digitToInt(hexstring[2]) + digitToInt(hexstring[3]),
-                       16 * digitToInt(hexstring[4]) + digitToInt(hexstring[5])};
+        return gp::RGB{
+            16 * digitToInt(hexstring[0]) + digitToInt(hexstring[1]),
+            16 * digitToInt(hexstring[2]) + digitToInt(hexstring[3]),
+            16 * digitToInt(hexstring[4]) + digitToInt(hexstring[5])
+        };
     }
 
-    gp::RGB Hex7toRGB(const char *hexstring) {
+    gp::RGB Hex7toRGB(std::string hexstring) {
         GP_CORE_DEBUG("Hex7toRGB(hexstring={0})", hexstring);
 
-        return gp::RGB{16 * digitToInt(hexstring[1]) + digitToInt(hexstring[2]),
-                       16 * digitToInt(hexstring[3]) + digitToInt(hexstring[4]),
-                       16 * digitToInt(hexstring[5]) + digitToInt(hexstring[6])};
+        return gp::RGB{
+            16 * digitToInt(hexstring[1]) + digitToInt(hexstring[2]),
+            16 * digitToInt(hexstring[3]) + digitToInt(hexstring[4]),
+            16 * digitToInt(hexstring[5]) + digitToInt(hexstring[6])
+        };
     }
 }
 
 namespace gp::hex {
     // Hex to other format
 
-    RGB toRGB(const char *hexstring) {
+    RGB toRGB(std::string hexstring) {
         GP_CORE_INFO("gp::hex::toRGB(hexstring={0})", hexstring);
 
-        switch (strlen(hexstring)) {
+        switch (hexstring.length()) {
             case 3:
                 return Hex3toRGB(hexstring);
             case 4:
-                if (strncmp(hexstring, "#", 1) == 0) {
+                if (hexstring.starts_with("#")) {
                     return Hex4toRGB(hexstring);
                 }
             case 6:
                 return Hex6toRGB(hexstring);
             case 7:
-                if (strncmp(hexstring, "#", 1) == 0) {
+                if (hexstring.starts_with("#")) {
                     return Hex7toRGB(hexstring);
                 }
             default:
@@ -92,21 +100,21 @@ namespace gp::hex {
         }
     }
 
-    CMYK toCMYK(const char *hexstring) {
+    CMYK toCMYK(std::string hexstring) {
         GP_CORE_INFO("gp::hex::toCMYK(hexstring={0})", hexstring);
 
         const RGB color_rgb = toRGB(hexstring);
         return rgb::toCMYK(color_rgb.red, color_rgb.green, color_rgb.blue);
     }
 
-    HSL toHSL(const char *hexstring) {
+    HSL toHSL(std::string hexstring) {
         GP_CORE_INFO("gp::hex::toHSL(hexstring={0})", hexstring);
 
         const RGB color_rgb = toRGB(hexstring);
         return rgb::toHSL(color_rgb.red, color_rgb.green, color_rgb.blue);
     }
 
-    HSV toHSV(const char *hexstring) {
+    HSV toHSV(std::string hexstring) {
         GP_CORE_INFO("gp::hex::toHSV(hexstring={0})", hexstring);
 
         const RGB color_rgb = toRGB(hexstring);
@@ -116,12 +124,12 @@ namespace gp::hex {
 
 namespace gp {
     ColorHex::ColorHex(const Color *color)
-            : Color(*color) {
+        : Color(*color) {
         GP_CORE_INFO("gp::ColorHex::ColorHex{0})", color->toString());
     }
 
-    ColorHex::ColorHex(const char *hexstring, float alpha)
-            : Color(hex::toRGB(hexstring), alpha) {
+    ColorHex::ColorHex(std::string hexstring, float alpha)
+        : Color(hex::toRGB(hexstring), alpha) {
         GP_CORE_INFO("gp::ColorHex::ColorHex({0}, alpha={1})", hexstring, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")

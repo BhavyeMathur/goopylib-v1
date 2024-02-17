@@ -10,13 +10,7 @@ namespace gp::rgb {
         GP_CHECK_INCLUSIVE_RANGE(green, 0, 255, "Color green value must be between 0 and 255")
         GP_CHECK_INCLUSIVE_RANGE(blue, 0, 255, "Color blue value must be between 0 and 255")
 
-        // TODO figure out a better way of doing this that doesn't construct a static string (v2.0.x)
-        static char *hex_string[8];
-
-        if (snprintf((char *) (hex_string), 8, "#%02x%02x%02x", red, green, blue) < 0) {
-            GP_CORE_ERROR("gp::rgb::toHex(red={0}, green={1}, blue={2}) Error formatting string", red, green, blue);
-        }
-        return (char *) (hex_string);
+        return strformat("#%02x%02x%02x", red, green, blue);
     }
 
     CMYK toCMYK(int red, int green, int blue) {

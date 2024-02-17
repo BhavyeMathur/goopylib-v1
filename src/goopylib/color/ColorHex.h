@@ -32,7 +32,7 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI ColorHex(const char *hexstring, float alpha = 1.0f);
+        GPAPI ColorHex(std::string hexstring, float alpha = 1.0f);
 
         [[nodiscard]] GPAPI std::string toString() const override;
     };

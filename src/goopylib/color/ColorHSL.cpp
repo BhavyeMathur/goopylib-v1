@@ -46,7 +46,7 @@ namespace gp::hsl {
         }
     }
 
-    const char *toHex(int hue, float saturation, float luminance) {
+    std::string oHex(int hue, float saturation, float luminance) {
         GP_CORE_INFO("gp::hsl::toHex(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
 
         const RGB color_rgb = toRGB(hue, saturation, luminance);
