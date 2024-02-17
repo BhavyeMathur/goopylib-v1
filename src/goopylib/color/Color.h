@@ -37,7 +37,7 @@ namespace gp {
             * @throws std::invalid_argument invalid hexstring
             * @throws std::invalid_argument alpha must be between 0-1
             */
-        explicit Color(const std::string &hexstring, float alpha = 1);
+        Color(const std::string &hexstring, float alpha = 1); // NOLINT(*-explicit-conversions)
 
         /**
          * Create colors by passing RGB arguments or a hexstring.
@@ -55,7 +55,7 @@ namespace gp {
 
         Color(const Color &other) = default;
 
-        Color(const Color &&other) = default;
+        Color(Color &&other) = default;
 
         GPAPI virtual ~Color() = default;
 
@@ -177,9 +177,23 @@ namespace gp {
 
         GPAPI bool operator==(const std::string &other) const;
 
-        Color &operator=(const Color &) const = default;
+        Color &operator=(const Color &other) = default;
 
-        Color &operator=(const Color &&) const = default;
+        Color &operator=(Color &&other) noexcept = default;
+
+#define GP_COLOR_MOVE_COPY_ASSIGNMENT_OPERATORS(T) Color &operator=(T &);Color &operator=(T &&) noexcept;
+
+        GP_COLOR_MOVE_COPY_ASSIGNMENT_OPERATORS(ColorRGB)
+
+        GP_COLOR_MOVE_COPY_ASSIGNMENT_OPERATORS(ColorHex)
+
+        GP_COLOR_MOVE_COPY_ASSIGNMENT_OPERATORS(ColorCMYK)
+
+        GP_COLOR_MOVE_COPY_ASSIGNMENT_OPERATORS(ColorHSV)
+
+        GP_COLOR_MOVE_COPY_ASSIGNMENT_OPERATORS(ColorHSL)
+
+#undef GP_COLOR_MOVE_COPY_ASSIGNMENT_OPERATORS
 
     protected:
         int m_Red;

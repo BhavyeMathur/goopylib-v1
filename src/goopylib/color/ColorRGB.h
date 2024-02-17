@@ -19,7 +19,7 @@ namespace gp {
         /**
          * Create a ColorRGB from another color object.
          */
-        GPAPI ColorRGB(Color const &color);
+        GPAPI ColorRGB(const Color &color); // NOLINT(*-explicit-conversions)
 
         /**
          * Create an RGB color by passing RGB arguments with an optional alpha parameter.

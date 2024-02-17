@@ -27,12 +27,12 @@ namespace gp {
     }
 
     Color::Color(const std::string &hexstring, const float alpha)
-        : Color{ColorHex{hexstring, alpha}} {
-        GP_CORE_INFO("gp::Color::Color({0}, alpha={3})", hexstring, alpha);
+        : Color{ColorHex{hexstring, alpha}} { // NOLINT(*-slicing)
+        GP_CORE_INFO("gp::Color::Color({0}, alpha={1})", hexstring, alpha);
     }
 
     void Color::updateRGBA(const ColorRGB &color) {
-        GP_CORE_TRACE("gp::Color::updateRGBA(RGB({0}, {1}, {2}), alpha={3})",
+        GP_CORE_DEBUG("gp::Color::updateRGBA(RGB({0}, {1}, {2}), alpha={3})",
                       color.m_Red, color.m_Green, color.m_Blue, color.m_Alpha);
 
         m_Red = color.m_Red;
@@ -44,7 +44,7 @@ namespace gp {
     }
 
     void Color::update() {
-        GP_CORE_TRACE("gp::Color::update()");
+        GP_CORE_DEBUG("gp::Color::update()");
 
         m_Red = m_Red > 255 ? 255 : m_Red < 0 ? 0 : m_Red;
         m_Green = m_Green > 255 ? 255 : m_Green < 0 ? 0 : m_Green;
@@ -60,14 +60,17 @@ namespace gp {
     }
 
     std::string Color::toString() const {
+        GP_CORE_TRACE("gp::Color::toString()");
         return strformat("Color(%i, %i, %i, %.2f)", m_Red, m_Green, m_Blue, m_Alpha);
     }
 
     int Color::getRed() const {
+        GP_CORE_TRACE("gp::Color::getRed()");
         return m_Red;
     }
 
     void Color::setRed(const int value) {
+        GP_CORE_DEBUG("gp::Color::setRed({0})", value);
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color red value must be between 0 and 255")
 
         m_Red = value;
@@ -76,10 +79,12 @@ namespace gp {
     }
 
     int Color::getGreen() const {
+        GP_CORE_TRACE("gp::Color::getGreen()");
         return m_Green;
     }
 
     void Color::setGreen(const int value) {
+        GP_CORE_DEBUG("gp::Color::setGreen({0)", value);
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color green value must be between 0 and 255")
 
         m_Green = value;
@@ -88,10 +93,12 @@ namespace gp {
     }
 
     int Color::getBlue() const {
+        GP_CORE_TRACE("gp::Color::getBlue()");
         return m_Blue;
     }
 
     void Color::setBlue(const int value) {
+        GP_CORE_DEBUG("gp::Color::setBlue({0})", value);
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color blue value must be between 0 and 255")
 
         m_Blue = value;
@@ -100,28 +107,34 @@ namespace gp {
     }
 
     float Color::getAlpha() const {
+        GP_CORE_TRACE("gp::Color::getAlpha()");
         return m_Alpha;
     }
 
     void Color::setAlpha(const float value) {
+        GP_CORE_DEBUG("gp::Color::setAlpha({0})", value);
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color alpha value must be between 0 and 1")
 
         m_Alpha = value;
     }
 
     float Color::getRedf() const {
+        GP_CORE_TRACE("gp::Color::getRedf()");
         return m_Redf;
     }
 
     float Color::getGreenf() const {
+        GP_CORE_TRACE("gp::Color::getGreenf()");
         return m_Greenf;
     }
 
     float Color::getBluef() const {
+        GP_CORE_TRACE("gp::Color::getBluef()");
         return m_Bluef;
     }
 
     RGBAf Color::getRGBAf() const {
+        GP_CORE_TRACE_ALL("gp::Color::getRGBAf()");
         return {m_Redf, m_Greenf, m_Bluef, m_Alpha};
     }
 }
@@ -129,11 +142,12 @@ namespace gp {
 // Color Conversion Methods
 namespace gp {
     ColorRGB Color::toRGB() const {
-        return *this; // copy constructor of ColorRGB
+        GP_CORE_DEBUG("gp::Color::toRGB({0})", this.toString());
+        return ColorRGB{*this}; // copy constructor of ColorRGB
     }
 
     ColorHex Color::toHex() const {
-        GP_CORE_INFO("gp::Color::toHex({0})", this.toString());
+        GP_CORE_DEBUG("gp::Color::toHex({0})", this.toString());
         return strformat("#%02x%02x%02x", m_Red, m_Green, m_Blue);
     }
 
@@ -321,3 +335,36 @@ namespace gp {
         return os << color.toString();
     }
 }
+
+#define GP_COLOR_SWAP(arg) std::swap(arg, other.arg)
+#define GP_COLOR_SWAP_RGBA GP_COLOR_SWAP(m_Red); GP_COLOR_SWAP(m_Green); GP_COLOR_SWAP(m_Blue); GP_COLOR_SWAP(m_Alpha)
+#define GP_COLOR_COPY_ASSIGNMENT GP_COLOR_SWAP_RGBA; return *this
+#define GP_COLOR_COPY_ASSIGNMENT_OPERATOR(T) Color &Color::operator=(T &other) { GP_COLOR_COPY_ASSIGNMENT; }
+
+#define GP_COLOR_MOVE(arg) arg = std::move(other.arg)
+#define GP_COLOR_MOVE_RGBA GP_COLOR_MOVE(m_Red); GP_COLOR_MOVE(m_Green); GP_COLOR_MOVE(m_Blue); GP_COLOR_MOVE(m_Alpha)
+#define GP_COLOR_MOVE_ASSIGNMENT GP_COLOR_MOVE_RGBA; return *this;
+#define GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(T) Color &Color::operator=(T &&other) noexcept { GP_COLOR_MOVE_ASSIGNMENT }
+
+// Move & Copy
+namespace gp {
+    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorRGB)
+    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorRGB)
+
+    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorHex)
+    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorHex)
+
+    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorCMYK)
+    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorCMYK)
+
+    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorHSL)
+    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorHSL)
+
+    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorHSV)
+    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorHSV)
+}
+
+#undef GP_COLOR_SWAP
+#undef GP_COLOR_SWAP_RGBA
+#undef GP_COLOR_COPY_ASSIGNMENT
+#undef GP_COLOR_COPY_ASSIGNMENT_OPERATOR
