@@ -13,7 +13,7 @@
 
 namespace gp {
     Renderer::Renderer(const Window &window)
-            : m_Window(window) {
+        : m_Window(window) {
     }
 
     Renderer::~Renderer() = default;
@@ -50,11 +50,13 @@ namespace gp {
     void Renderer::_createTexturedBuffer() {
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating TexturedQuad buffer");
 
-        m_TexturedQuadBatches.emplace_back(BufferLayout({{ShaderDataType::Float2, "position"},
-                                                         {ShaderDataType::Float,  "z"},
-                                                         {ShaderDataType::Float4, "color"},
-                                                         {ShaderDataType::Float2, "texCoord"},
-                                                         {ShaderDataType::Int,    "texSlot"},}));
+        m_TexturedQuadBatches.emplace_back(BufferLayout({
+            {ShaderDataType::Float2, "position"},
+            {ShaderDataType::Float, "z"},
+            {ShaderDataType::Float4, "color"},
+            {ShaderDataType::Float2, "texCoord"},
+            {ShaderDataType::Int, "texSlot"},
+        }));
         m_TexturedQuadBatches.back().VAO.init();
 
         m_TexturedQuadVertices.emplace_back();
@@ -297,7 +299,13 @@ namespace gp {
         GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
         uint32_t texIndex, texSlot;
-        if (m_TexturesCache.find(object->getTextureName()) == m_TexturesCache.end()) {
+
+        if (m_TexturesCache.contains(object->getTextureName())) {
+            GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - using cached texture '{0}'", object->getTextureName());
+            texIndex = m_TexturesCache[object->getTextureName()].index;
+            texSlot = texIndex % 16;
+        }
+        else {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->getTextureName());
 
             auto bitmap = object->getBitmap();
@@ -308,11 +316,6 @@ namespace gp {
             if (texSlot == 0) {
                 _createTexturedBuffer();
             }
-        }
-        else {
-            GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - using cached texture '{0}'", object->getTextureName());
-            texIndex = m_TexturesCache[object->getTextureName()].index;
-            texSlot = texIndex % 16;
         }
 
         GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - texIndex={0}, texSlot={1}", texIndex, texSlot);
@@ -367,8 +370,9 @@ namespace gp {
 
         m_TexturedQuadBatches[batch].indices -= 6;
         m_TexturedQuadBatches[batch].vertices -= 4;
-        m_TexturedQuadBatches[batch].bufferData = m_TexturedQuadVertices[batch].empty() ? nullptr
-                                                                                        : &m_TexturedQuadVertices[batch][0];
+        m_TexturedQuadBatches[batch].bufferData = m_TexturedQuadVertices[batch].empty()
+                                                      ? nullptr
+                                                      : &m_TexturedQuadVertices[batch][0];
         m_TexturedQuadBatches[batch].reallocateBufferData = true;
     }
 

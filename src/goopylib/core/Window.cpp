@@ -388,8 +388,8 @@ namespace gp {
         GP_CORE_TRACE_ALL("gp::Window::_onKeyPress({1}, {2}, {3}, {4}) - '{0}'", m_Title, key, scancode, action, mods);
 
         m_KeyModifiers = mods;
-        if (m_KeyCallbacks.find(key) != m_KeyCallbacks.end()) {
-            m_KeyCallbacks[key]((Window *) this, action);
+        if (m_KeyCallbacks.contains(key)) {
+            m_KeyCallbacks[key](this, action);
         }
     }
 
@@ -399,7 +399,7 @@ namespace gp {
         if (callback) {
             m_KeyCallbacks[key] = std::move(callback);
         }
-        else if (m_KeyCallbacks.find(key) != m_KeyCallbacks.end()) {
+        else if (m_KeyCallbacks.contains(key)) {
             m_KeyCallbacks.erase(key);
         }
         // _setKeyCallback(); // Not required as it is already set in super()
@@ -410,7 +410,7 @@ namespace gp {
         GP_CORE_TRACE_ALL("gp::Window::_onMousePress({1}, {2}, {3}) - '{0}'", m_Title, button, action, mods);
 
         m_KeyModifiers = mods;
-        if (m_MouseCallbacks.find(button) != m_MouseCallbacks.end()) {
+        if (m_MouseCallbacks.contains(button)) {
             m_MouseCallbacks[button]((Window *) this, (bool) action);
         }
     }
@@ -421,7 +421,7 @@ namespace gp {
         if (callback) {
             m_MouseCallbacks[button] = std::move(callback);
         }
-        else if (m_MouseCallbacks.find(button) != m_MouseCallbacks.end()) {
+        else if (m_MouseCallbacks.contains(button)) {
             m_MouseCallbacks.erase(button);
         }
         // _setMouseButtonCallback(); // Not required as it is already set in super()
