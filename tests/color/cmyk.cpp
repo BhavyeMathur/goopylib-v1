@@ -59,7 +59,7 @@ TEST(ColorCMYKTests, ColorFromCopyAssignment) {
     EXPECT_EQ(colorCMYK, colorHSV.toCMYK());
 }
 
-TEST(ColorCMYKTests, ColorFromHex) {
+TEST(ColorCMYKTests, ColorFromCMYK) {
     gp::ColorCMYK color{0, 0.1, 0.2, 0.3};
     EXPECT_NEAR(color.getCyan(), 0, 1e-2);
     EXPECT_NEAR(color.getMagenta(), 0.1, 1e-2);
@@ -74,7 +74,7 @@ TEST(ColorCMYKTests, ColorFromHex) {
     EXPECT_NEAR(color1.getAlpha(), 0.4, 1e-2);
 }
 
-TEST(ColorCMYKTests, ColorFromHexErrors) {
+TEST(ColorCMYKTests, ColorFromCMYKErrors) {
     EXPECT_THROW(auto color = gp::ColorCMYK(2, 0, 0, 0), std::invalid_argument);
     EXPECT_THROW(auto color = gp::ColorCMYK(0, 2, 0, 0), std::invalid_argument);
     EXPECT_THROW(auto color = gp::ColorCMYK(0, 0, 2, 0), std::invalid_argument);
@@ -140,7 +140,7 @@ TEST(ColorCMYKTests, ColorRGBAttributes) {
     EXPECT_EQ(color.toString(), "ColorCMYK(0.75, 0.33, 0.00, 0.76)");
 }
 
-TEST(ColorCMYKTests, ColorRGBAttributeAlpha) {
+TEST(ColorCMYKTests, ColorRGBAttributesAlpha) {
     gp::ColorCMYK color{0, 0, 0, 0, 0.5};
 
     color.setRed(15);

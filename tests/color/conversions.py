@@ -85,8 +85,8 @@ class ColorConversionMethods(unittest.TestCase):
         self.assertEqual(gp.hsv_to_rgb(292, 0.75, 0.26), (60, 17, 66))
 
     def test_hsl_to_rgb(self):
-        self.assertEqual(gp.hsv_to_rgb(0, 0, 0), (0, 0, 0))
-        self.assertEqual(gp.hsv_to_rgb(180, 1, 1), (0, 255, 255))
+        self.assertEqual(gp.hsl_to_rgb(0, 0, 0), (0, 0, 0))
+        self.assertEqual(gp.hsl_to_rgb(180, 1, 1), (255, 255, 255))
 
         self.assertEqual(gp.hsl_to_rgb(191, 0.19, 0.49), (101, 140, 149))
         self.assertEqual(gp.hsl_to_rgb(29, 0.97, 0.63), (252, 158, 69))
