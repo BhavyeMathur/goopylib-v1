@@ -133,3 +133,16 @@ TEST(ColorHexTests, HextoRGB) {
     EXPECT_EQ(gp::ColorHex("#50008c").toRGB(), gp::ColorRGB(80, 0, 140));
     EXPECT_EQ(gp::ColorHex("#00323c").toRGB(), gp::ColorRGB(0, 50, 60));
 }
+
+TEST(ColorHexTests, HextoRGBwithSetters) {
+    gp::ColorHex color{"#FF0000"};
+
+    color.setRed(17);
+    EXPECT_EQ(color.toRGB(), gp::ColorRGB(17, 0, 0));
+
+    color.setBlue(34);
+    EXPECT_EQ(color.toRGB(), gp::ColorRGB(17, 0, 34));
+
+    color.setGreen(51);
+    EXPECT_EQ(color.toRGB(), gp::ColorRGB(17, 51, 34));
+}

@@ -1,3 +1,5 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "ColorCMYK.h"
 #include "ColorRGB.h"
 

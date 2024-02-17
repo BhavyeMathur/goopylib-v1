@@ -1,9 +1,11 @@
+#define GP_LOGGING_LEVEL 3
+
 #include "ColorHex.h"
 #include "ColorRGB.h"
 
 namespace gp {
     int ColorHex::_digitToInt(char digit) {
-        GP_CORE_TRACE("gp::_digitToInt(digit={0})", digit);
+        GP_CORE_TRACE_ALL("gp::ColorHex::_digitToInt({0})", digit);
 
         if (isdigit(digit)) {
             return digit - '0';
@@ -29,13 +31,13 @@ namespace gp {
             case 'F':
                 return 15;
             default:
-                GP_VALUE_ERROR("_digitToInt() invalid hexstring character '{0}'", digit);
+                GP_VALUE_ERROR("gp::ColorHex::_digitToInt() invalid hexstring character '{0}'", digit);
                 return 0;
         }
     }
 
     ColorRGB ColorHex::_3toRGB(const std::string &hexstring, const float alpha) {
-        GP_CORE_DEBUG("Hex3toRGB(hexstring={0})", hexstring);
+        GP_CORE_TRACE("gp::ColorHex::_3toRGB({0}, {1})", hexstring, alpha);
 
         return {
             17 * _digitToInt(hexstring[0]),
@@ -46,7 +48,7 @@ namespace gp {
     }
 
     ColorRGB ColorHex::_4toRGB(const std::string &hexstring, const float alpha) {
-        GP_CORE_DEBUG("Hex4toRGB(hexstring={0})", hexstring);
+        GP_CORE_TRACE("gp::ColorHex::_4toRGB({0}, {1})", hexstring, alpha);
 
         return {
             17 * _digitToInt(hexstring[1]),
@@ -57,7 +59,7 @@ namespace gp {
     }
 
     ColorRGB ColorHex::_6toRGB(const std::string &hexstring, const float alpha) {
-        GP_CORE_DEBUG("Hex6toRGB(hexstring={0})", hexstring);
+        GP_CORE_TRACE("gp::ColorHex::_6toRGB({0}, {1})", hexstring, alpha);
 
         return {
             16 * _digitToInt(hexstring[0]) + _digitToInt(hexstring[1]),
@@ -68,7 +70,7 @@ namespace gp {
     }
 
     ColorRGB ColorHex::_7toRGB(const std::string &hexstring, const float alpha) {
-        GP_CORE_DEBUG("Hex7toRGB(hexstring={0})", hexstring);
+        GP_CORE_TRACE("gp::ColorHex::_7toRGB({0}, {1})", hexstring, alpha);
 
         return {
             16 * _digitToInt(hexstring[1]) + _digitToInt(hexstring[2]),
@@ -97,11 +99,12 @@ namespace gp {
     }
 
     ColorRGB ColorHex::toRGB() const {
+        GP_CORE_DEBUG("gp::ColorHex::toRGB({0})", this.toString());
         return {m_Red, m_Green, m_Blue, m_Alpha};
     }
 
     ColorRGB ColorHex::toRGB(const std::string &hexstring, const float alpha) {
-        GP_CORE_INFO("gp::hex::toRGB(hexstring={0})", hexstring);
+        GP_CORE_DEBUG("gp::ColorHex::toRGB({0}, {1})", hexstring, alpha);
 
         switch (hexstring.length()) {
             case 3:
