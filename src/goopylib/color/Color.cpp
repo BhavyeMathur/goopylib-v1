@@ -22,17 +22,6 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
-    Color::Color(const Color *color) :
-            m_Red{color->m_Red},
-            m_Green{color->m_Green},
-            m_Blue{color->m_Blue},
-            m_Alpha{color->m_Alpha},
-            m_Redf{static_cast<float>(m_Red) / 255.0f},
-            m_Greenf{static_cast<float>(m_Green) / 255.0f},
-            m_Bluef{static_cast<float>(m_Blue) / 255.0f} {
-        GP_CORE_INFO("gp::Color::Color({0})", color->toString());
-    }
-
     Color::Color(int red, int green, int blue, float alpha) :
             m_Red{red},
             m_Green{green},
