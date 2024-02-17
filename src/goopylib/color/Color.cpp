@@ -31,7 +31,7 @@ namespace gp {
         GP_CORE_INFO("gp::Color::Color({0}, alpha={1})", hexstring, alpha);
     }
 
-    void Color::updateRGBA(const ColorRGB &color) {
+    void Color::_updateOnlyRGB(const ColorRGB &color) {
         GP_CORE_DEBUG("gp::Color::updateRGBA(RGB({0}, {1}, {2}), alpha={3})",
                       color.m_Red, color.m_Green, color.m_Blue, color.m_Alpha);
 
@@ -39,14 +39,12 @@ namespace gp {
         m_Green = color.m_Green;
         m_Blue = color.m_Blue;
 
-        m_Alpha = color.m_Alpha;
-
         m_Redf = color.m_Redf;
         m_Greenf = color.m_Redf;
         m_Bluef = color.m_Bluef;
     }
 
-    void Color::update() {
+    void Color::_clampValues() {
         GP_CORE_DEBUG("gp::Color::update()");
 
         m_Red = std::clamp(m_Red, 0, 255);
@@ -59,7 +57,7 @@ namespace gp {
         m_Greenf = static_cast<float>(m_Green) / 255.0f;
         m_Bluef = static_cast<float>(m_Blue) / 255.0f;
 
-        _update();
+        _updateDerivedClass();
     }
 
     std::string Color::toString() const {
@@ -80,7 +78,7 @@ namespace gp {
 
         m_Red = value;
         m_Redf = static_cast<float>(value) / 255.0f;
-        _update();
+        _updateDerivedClass();
     }
 
     int Color::getGreen() const {
@@ -94,7 +92,7 @@ namespace gp {
 
         m_Green = value;
         m_Greenf = static_cast<float>(value) / 255.0f;
-        _update();
+        _updateDerivedClass();
     }
 
     int Color::getBlue() const {
@@ -108,7 +106,7 @@ namespace gp {
 
         m_Blue = value;
         m_Bluef = static_cast<float>(value) / 255.0f;
-        _update();
+        _updateDerivedClass();
     }
 
     float Color::getAlpha() const {
@@ -300,7 +298,7 @@ namespace gp {
         m_Green += value;
         m_Blue += value;
 
-        update();
+        _clampValues();
 
         return *this;
     }
@@ -310,7 +308,7 @@ namespace gp {
         m_Green += value.m_Green;
         m_Blue += value.m_Blue;
 
-        update();
+        _clampValues();
 
         return *this;
     }
@@ -320,7 +318,7 @@ namespace gp {
         m_Green -= value;
         m_Blue -= value;
 
-        update();
+        _clampValues();
 
         return *this;
     }
@@ -330,7 +328,7 @@ namespace gp {
         m_Green -= value.m_Green;
         m_Blue -= value.m_Blue;
 
-        update();
+        _clampValues();
 
         return *this;
     }

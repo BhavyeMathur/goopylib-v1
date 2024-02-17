@@ -201,12 +201,12 @@ namespace gp {
         int m_Blue;
         float m_Alpha;
 
-        GPAPI void updateRGBA(const ColorRGB &color);
+        GPAPI void _updateOnlyRGB(const ColorRGB &color);
 
-        GPAPI void update();
-
-        GPAPI virtual void _update() {
+        GPAPI virtual void _updateDerivedClass() {
         }
+
+        GPAPI void _clampValues();
 
     private:
         float m_Redf;

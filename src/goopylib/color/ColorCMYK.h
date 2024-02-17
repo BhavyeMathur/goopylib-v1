@@ -88,7 +88,7 @@ namespace gp {
         [[nodiscard]] GPAPI static ColorRGB toRGB(float cyan, float magenta, float yellow, float key, float alpha = 1);
 
     protected:
-        GPAPI void _update() override;
+        GPAPI void _updateDerivedClass() override;
 
     private:
         float m_Cyan;

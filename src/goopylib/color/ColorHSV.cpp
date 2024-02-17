@@ -115,7 +115,7 @@ namespace gp {
     void ColorHSV::setHue(const int value) {
         GP_CORE_DEBUG("gp::ColorHSV::setHue({0})", value);
         m_Hue = value;
-        updateRGBA(toRGB(m_Hue, m_Saturation, m_Value));
+        _updateOnlyRGB(toRGB(m_Hue, m_Saturation, m_Value));
     }
 
     float ColorHSV::getSaturation() const {
@@ -126,7 +126,7 @@ namespace gp {
     void ColorHSV::setSaturation(const float value) {
         GP_CORE_DEBUG("gp::ColorHSV::setSaturation({0})", value);
         m_Saturation = value;
-        updateRGBA(toRGB(m_Hue, m_Saturation, m_Value));
+        _updateOnlyRGB(toRGB(m_Hue, m_Saturation, m_Value));
     }
 
     float ColorHSV::getValue() const {
@@ -137,10 +137,10 @@ namespace gp {
     void ColorHSV::setValue(const float value) {
         GP_CORE_DEBUG("gp::ColorHSV::setValue({0})", value);
         m_Value = value;
-        updateRGBA(toRGB(m_Hue, m_Saturation, m_Value));
+        _updateOnlyRGB(toRGB(m_Hue, m_Saturation, m_Value));
     }
 
-    void ColorHSV::_update() {
+    void ColorHSV::_updateDerivedClass() {
         GP_CORE_DEBUG("gp::ColorHSV::_update({0})", this->toString());
         const auto hsv = toHSV();
 

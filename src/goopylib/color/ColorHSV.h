@@ -79,7 +79,7 @@ namespace gp {
         [[nodiscard]] GPAPI static ColorRGB toRGB(int hue, float saturation, float value, float alpha = 1);
 
     protected:
-        GPAPI void _update() override;
+        GPAPI void _updateDerivedClass() override;
 
     private:
         int m_Hue;

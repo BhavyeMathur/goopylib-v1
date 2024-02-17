@@ -107,7 +107,7 @@ namespace gp {
     void ColorHSL::setHue(const int value) {
         GP_CORE_DEBUG("gp::ColorHSL::setHue({0})", value);
         m_Hue = value;
-        updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
+        _updateOnlyRGB(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
     float ColorHSL::getSaturation() const {
@@ -118,7 +118,7 @@ namespace gp {
     void ColorHSL::setSaturation(const float value) {
         GP_CORE_DEBUG("gp::ColorHSL::setSaturation({0})", value);
         m_Saturation = value;
-        updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
+        _updateOnlyRGB(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
     float ColorHSL::getLuminance() const {
@@ -129,10 +129,10 @@ namespace gp {
     void ColorHSL::setLuminance(const float value) {
         GP_CORE_DEBUG("gp::ColorHSL::setLuminance({0})", value);
         m_Luminance = value;
-        updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
+        _updateOnlyRGB(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
-    void ColorHSL::_update() {
+    void ColorHSL::_updateDerivedClass() {
         GP_CORE_DEBUG("gp::ColorHSL::_update({0})", this->toString());
         const auto hsl = toHSL();
 

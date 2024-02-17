@@ -58,7 +58,7 @@ namespace gp {
     void ColorCMYK::setCyan(const float value) {
         GP_CORE_DEBUG("gp::ColorCMYK::setCyan({0})", value);
         m_Cyan = value;
-        updateRGBA(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
+        _updateOnlyRGB(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
     }
 
     float ColorCMYK::getMagenta() const {
@@ -69,7 +69,7 @@ namespace gp {
     void ColorCMYK::setMagenta(const float value) {
         GP_CORE_DEBUG("gp::ColorCMYK::setMagenta({0})", value);
         m_Magenta = value;
-        updateRGBA(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
+        _updateOnlyRGB(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
     }
 
     float ColorCMYK::getYellow() const {
@@ -80,7 +80,7 @@ namespace gp {
     void ColorCMYK::setYellow(const float value) {
         GP_CORE_DEBUG("gp::ColorCMYK::setYellow({0})", value);
         m_Yellow = value;
-        updateRGBA(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
+        _updateOnlyRGB(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
     }
 
     float ColorCMYK::getKey() const {
@@ -91,10 +91,10 @@ namespace gp {
     void ColorCMYK::setKey(const float value) {
         GP_CORE_DEBUG("gp::ColorCMYK::setKey({0})", value);
         m_Key = value;
-        updateRGBA(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
+        _updateOnlyRGB(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
     }
 
-    void ColorCMYK::_update() {
+    void ColorCMYK::_updateDerivedClass() {
         GP_CORE_DEBUG("gp::ColorCMYK::_update({0})", this->toString());
         const auto cmyk = toCMYK();
 
