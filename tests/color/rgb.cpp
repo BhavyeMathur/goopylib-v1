@@ -14,30 +14,45 @@ TEST(ColorRGBTests, ColorFromColorSubclass) {
     gp::ColorHSL colorHSL{10, 0.2, 0.3, 0.4};
     gp::ColorHSV colorHSV{20, 0.3, 0.4, 0.5};
 
-    gp::ColorRGB colorRGB{color}; // constructor from color
-    EXPECT_EQ(color.getRGBAf(), colorRGB.getRGBAf());
-    color = colorRGB; // copy assignment operator
-    EXPECT_EQ(color.getRGBAf(), colorRGB.getRGBAf());
+    gp::ColorRGB color1{color}; // constructor from color
+    EXPECT_EQ(color1.getRGBAf(), color.getRGBAf());
 
     gp::ColorRGB color2{colorHex}; // constructor from color
-    EXPECT_EQ(color2.getRGBAf(), colorHex.getRGBAf());
-    color2 = colorHex; // copy assignment operator
     EXPECT_EQ(color2.getRGBAf(), colorHex.getRGBAf());
 
     gp::ColorRGB color3{colorCMYK}; // constructor from color
     EXPECT_EQ(color3.getRGBAf(), colorCMYK.getRGBAf());
-    color3 = colorCMYK; // copy assignment operator
-    EXPECT_EQ(color3.getRGBAf(), colorCMYK.getRGBAf());
 
     gp::ColorRGB color4{colorHSL}; // constructor from color
-    EXPECT_EQ(color4.getRGBAf(), colorHSL.getRGBAf());
-    color4 = colorHSL; // copy assignment operator
     EXPECT_EQ(color4.getRGBAf(), colorHSL.getRGBAf());
 
     gp::ColorRGB color5{colorHSV}; // constructor from color
     EXPECT_EQ(color5.getRGBAf(), colorHSV.getRGBAf());
-    color5 = colorHSV; // copy assignment operator
-    EXPECT_EQ(color5.getRGBAf(), colorHSV.getRGBAf());
+}
+
+TEST(ColorRGBTests, ColorFromCopyAssignment) {
+    gp::Color color{10, 15, 20, 0.1};
+    gp::ColorHex colorHex{"#f05", 0.2};
+    gp::ColorCMYK colorCMYK{0.5, 0.6, 0.7, 0.3};
+    gp::ColorHSL colorHSL{10, 0.2, 0.3, 0.4};
+    gp::ColorHSV colorHSV{20, 0.3, 0.4, 0.5};
+
+    gp::ColorRGB colorRGB{0, 0, 0};
+
+    colorRGB = color;
+    EXPECT_EQ(colorRGB.getRGBAf(), color.getRGBAf());
+
+    colorRGB = colorHex;
+    EXPECT_EQ(colorRGB.getRGBAf(), colorHex.getRGBAf());
+
+    colorRGB = colorCMYK;
+    EXPECT_EQ(colorRGB.getRGBAf(), colorCMYK.getRGBAf());
+
+    colorRGB = colorHSL;
+    EXPECT_EQ(colorRGB.getRGBAf(), colorHSL.getRGBAf());
+
+    colorRGB = colorHSV;
+    EXPECT_EQ(colorRGB.getRGBAf(), colorHSV.getRGBAf());
 }
 
 TEST(ColorRGBTests, ColorFromRGB) {

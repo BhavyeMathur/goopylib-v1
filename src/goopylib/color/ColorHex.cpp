@@ -34,7 +34,7 @@ namespace gp {
         }
     }
 
-    ColorRGB ColorHex::_3toRGB(std::string hexstring, const float alpha) {
+    ColorRGB ColorHex::_3toRGB(const std::string &hexstring, const float alpha) {
         GP_CORE_DEBUG("Hex3toRGB(hexstring={0})", hexstring);
 
         return {
@@ -45,7 +45,7 @@ namespace gp {
         };
     }
 
-    ColorRGB ColorHex::_4toRGB(std::string hexstring, const float alpha) {
+    ColorRGB ColorHex::_4toRGB(const std::string &hexstring, const float alpha) {
         GP_CORE_DEBUG("Hex4toRGB(hexstring={0})", hexstring);
 
         return {
@@ -56,7 +56,7 @@ namespace gp {
         };
     }
 
-    ColorRGB ColorHex::_6toRGB(std::string hexstring, const float alpha) {
+    ColorRGB ColorHex::_6toRGB(const std::string &hexstring, const float alpha) {
         GP_CORE_DEBUG("Hex6toRGB(hexstring={0})", hexstring);
 
         return {
@@ -67,7 +67,7 @@ namespace gp {
         };
     }
 
-    ColorRGB ColorHex::_7toRGB(std::string hexstring, const float alpha) {
+    ColorRGB ColorHex::_7toRGB(const std::string &hexstring, const float alpha) {
         GP_CORE_DEBUG("Hex7toRGB(hexstring={0})", hexstring);
 
         return {
@@ -85,7 +85,7 @@ namespace gp {
         GP_CORE_INFO("gp::ColorHex::ColorHex{0})", color->toString());
     }
 
-    ColorHex::ColorHex(const std::string &hexstring, float alpha)
+    ColorHex::ColorHex(const std::string &hexstring, const float alpha)
         : Color{toRGB(hexstring, alpha)} {
         GP_CORE_INFO("gp::ColorHex::ColorHex({0}, alpha={1})", hexstring, alpha);
 
