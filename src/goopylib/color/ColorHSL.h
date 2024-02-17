@@ -20,7 +20,7 @@ namespace gp {
         /**
          * Create a ColorHSL from another color object.
          */
-        GPAPI ColorHSL(Color const *color);
+        ColorHSL(const Color &color);
 
         /**
          * Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)
@@ -35,7 +35,7 @@ namespace gp {
          * @throws std::invalid_argument saturation & luminance must be between 0-1
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI ColorHSL(int hue, float saturation, float luminance, float alpha = 1.0f);
+        ColorHSL(int hue, float saturation, float luminance, float alpha = 1.0f);
 
         [[nodiscard]] GPAPI std::string toString() const override;
 
@@ -71,6 +71,12 @@ namespace gp {
          * @throws std::invalid_argument value must be in the range specified
          */
         GPAPI void setLuminance(float value);
+
+        [[nodiscard]] GPAPI ColorRGB toRGB() const override;
+
+        [[nodiscard]] GPAPI ColorHSV toHSV() const override;
+
+        [[nodiscard]] GPAPI static ColorRGB toRGB(int hue, float saturation, float luminance, float alpha = 1);
 
     protected:
         GPAPI void _update() override;

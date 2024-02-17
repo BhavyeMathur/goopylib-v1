@@ -1,35 +1,23 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "Color.h"
-#include "ColorConversions.h"
+#include "ColorRGB.h"
+#include "ColorHex.h"
+#include "ColorCMYK.h"
+#include "ColorHSL.h"
+#include "ColorHSV.h"
 
 
 // Color Base Class
 namespace gp {
-    Color::Color(const RGB &color, float alpha) :
-            m_Red{color.red},
-            m_Green{color.green},
-            m_Blue{color.blue},
-            m_Alpha{alpha},
-            m_Redf{static_cast<float>(m_Red) / 255.0f},
-            m_Greenf{static_cast<float>(m_Green) / 255.0f},
-            m_Bluef{static_cast<float>(m_Blue) / 255.0f} {
-        GP_CORE_INFO("gp::Color::Color(RGB({0}, {1}, {2}), alpha={3})", color.red, color.green, color.blue, alpha);
-
-        GP_CHECK_INCLUSIVE_RANGE(color.red, 0, 255, "Color red value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(color.green, 0, 255, "Color green value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(color.blue, 0, 255, "Color blue value must be between 0 and 255")
-        GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
-    }
-
-    Color::Color(int red, int green, int blue, float alpha) :
-            m_Red{red},
-            m_Green{green},
-            m_Blue{blue},
-            m_Alpha{alpha},
-            m_Redf{static_cast<float>(m_Red) / 255.0f},
-            m_Greenf{static_cast<float>(m_Green) / 255.0f},
-            m_Bluef{static_cast<float>(m_Blue) / 255.0f} {
+    Color::Color(const int red, const int green, const int blue, const float alpha)
+        : m_Red{red},
+          m_Green{green},
+          m_Blue{blue},
+          m_Alpha{alpha},
+          m_Redf{static_cast<float>(m_Red) / 255.0f},
+          m_Greenf{static_cast<float>(m_Green) / 255.0f},
+          m_Bluef{static_cast<float>(m_Blue) / 255.0f} {
         GP_CORE_INFO("gp::Color::Color({0}, {1}, {2}, alpha={3})", red, green, blue, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
@@ -38,19 +26,19 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
-    Color::Color(std::string hexstring, float alpha)
-            : Color{hex::toRGB(hexstring), alpha} {
+    Color::Color(const std::string &hexstring, const float alpha)
+        : Color{ColorHex{hexstring, alpha}} {
         GP_CORE_INFO("gp::Color::Color({0}, alpha={3})", hexstring, alpha);
     }
 
-    void Color::updateRGBA(const RGB &color, float alpha) {
-        GP_CORE_TRACE("gp::Color::updateRGBA(RGB({0}, {1}, {2}), alpha={3})", color.red, color.green, color.blue,
-                      alpha);
+    void Color::updateRGBA(const ColorRGB &color) {
+        GP_CORE_TRACE("gp::Color::updateRGBA(RGB({0}, {1}, {2}), alpha={3})",
+                      color.m_Red, color.m_Green, color.m_Blue, color.m_Alpha);
 
-        m_Red = color.red;
-        m_Green = color.green;
-        m_Blue = color.blue;
-        m_Alpha = alpha;
+        m_Red = color.m_Red;
+        m_Green = color.m_Green;
+        m_Blue = color.m_Blue;
+        m_Alpha = color.m_Alpha;
 
         update();
     }
@@ -79,7 +67,7 @@ namespace gp {
         return m_Red;
     }
 
-    void Color::setRed(int value) {
+    void Color::setRed(const int value) {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color red value must be between 0 and 255")
 
         m_Red = value;
@@ -91,7 +79,7 @@ namespace gp {
         return m_Green;
     }
 
-    void Color::setGreen(int value) {
+    void Color::setGreen(const int value) {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color green value must be between 0 and 255")
 
         m_Green = value;
@@ -103,7 +91,7 @@ namespace gp {
         return m_Blue;
     }
 
-    void Color::setBlue(int value) {
+    void Color::setBlue(const int value) {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color blue value must be between 0 and 255")
 
         m_Blue = value;
@@ -115,7 +103,7 @@ namespace gp {
         return m_Alpha;
     }
 
-    void Color::setAlpha(float value) {
+    void Color::setAlpha(const float value) {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 1, "Color alpha value must be between 0 and 1")
 
         m_Alpha = value;
@@ -138,9 +126,83 @@ namespace gp {
     }
 }
 
+// Color Conversion Methods
+namespace gp {
+    ColorRGB Color::toRGB() const {
+        return *this; // copy constructor of ColorRGB
+    }
+
+    ColorHex Color::toHex() const {
+        GP_CORE_INFO("gp::Color::toHex({0})", this.toString());
+        return strformat("#%02x%02x%02x", m_Red, m_Green, m_Blue);
+    }
+
+    ColorCMYK Color::toCMYK() const {
+        GP_CORE_INFO("gp::Color::toCMYK({0})", this.toString());
+
+        const float maximum = std::max({m_Redf, m_Greenf, m_Bluef});
+
+        if (maximum == 0) {
+            return {0, 0, 0, 1};
+        }
+
+        return {
+            (maximum - m_Redf) / maximum,
+            (maximum - m_Greenf) / maximum,
+            (maximum - m_Bluef) / maximum,
+            1 - maximum
+        };
+    }
+
+    ColorHSL Color::toHSL() const {
+        GP_CORE_INFO("gp::Color::toHSL({0})", this.toString());
+
+        const auto [cmin, cmax] = std::minmax({m_Redf, m_Greenf, m_Bluef});
+
+        const float delta = cmax - cmin;
+        const float luminance = (cmax + cmin) / 2;
+
+        if (delta == 0) {
+            return {0, 0, luminance};
+        }
+
+        const float saturation = delta / (1 - abs(2 * luminance - 1));
+
+        if (cmax == m_Redf) {
+            return {static_cast<int>(round(60 * fmodf((m_Greenf - m_Bluef) / delta, 6))), saturation, luminance};
+        }
+        if (cmax == m_Greenf) {
+            return {static_cast<int>(round(60 * ((m_Bluef - m_Redf) / delta + 2))), saturation, luminance};
+        }
+        // cmax == m_Bluef
+        return {static_cast<int>(round(60 * ((m_Redf - m_Greenf) / delta + 4))), saturation, luminance};
+    }
+
+    ColorHSV Color::toHSV() const {
+        GP_CORE_INFO("gp::Color::toHSV({0})", this.toString());
+
+        const auto [cmin, cmax] = std::minmax({m_Redf, m_Greenf, m_Bluef});
+
+        const float delta = cmax - cmin;
+        const float saturation = cmax == 0 ? 0 : delta / cmax;
+
+        if (delta == 0) {
+            return {0, saturation, cmax};
+        }
+        if (cmax == m_Redf) {
+            return {static_cast<int>(round(60 * fmodf((m_Greenf - m_Bluef) / delta, 6))), saturation, cmax};
+        }
+        if (cmax == m_Greenf) {
+            return {static_cast<int>(round(60 * ((m_Bluef - m_Redf) / delta + 2))), saturation, cmax};
+        }
+        // cmax == m_Bluef
+        return {static_cast<int>(round(60 * ((m_Redf - m_Greenf) / delta + 4))), saturation, cmax};
+    }
+}
+
 // Color Operator Overloading
 namespace gp {
-    Color Color::operator+(int value) const {
+    Color Color::operator+(const int value) const {
         int red = m_Red + value;
         int green = m_Green + value;
         int blue = m_Blue + value;
@@ -164,7 +226,7 @@ namespace gp {
         return {red, green, blue, m_Alpha};
     }
 
-    Color Color::operator-(int value) const {
+    Color Color::operator-(const int value) const {
         int red = m_Red - value;
         int green = m_Green - value;
         int blue = m_Blue - value;
@@ -188,7 +250,7 @@ namespace gp {
         return {red, green, blue, m_Alpha};
     }
 
-    Color &Color::operator+=(int value) {
+    Color &Color::operator+=(const int value) {
         m_Red += value;
         m_Green += value;
         m_Blue += value;
@@ -208,7 +270,7 @@ namespace gp {
         return *this;
     }
 
-    Color &Color::operator-=(int value) {
+    Color &Color::operator-=(const int value) {
         m_Red -= value;
         m_Green -= value;
         m_Blue -= value;
@@ -226,6 +288,10 @@ namespace gp {
         update();
 
         return *this;
+    }
+
+    bool Color::operator==(std::string other) const {
+        return *this == ColorHex(other);
     }
 
     std::ostream &operator<<(std::ostream &os, const Color &color) {

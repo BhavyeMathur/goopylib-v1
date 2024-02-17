@@ -1,7 +1,6 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "Util.h"
-#include "ColorConversions.h"
 
 #include <random>
 
@@ -24,9 +23,7 @@ namespace gp {
     ColorHex randomHex() {
         GP_CORE_INFO("gp::randomHex()");
 
-        return {rgb::toHex(rgb_distribution(generator),
-                           rgb_distribution(generator),
-                           rgb_distribution(generator))};
+        return randomRGB();
     }
 
     ColorCMYK randomCMYK() {

@@ -1,65 +1,19 @@
 #include "ColorCMYK.h"
-#include "ColorConversions.h"
-
-
-namespace gp::cmyk {
-    RGB toRGB(float cyan, float magenta, float yellow, float key) {
-        GP_CORE_INFO("gp::cmyk::toRGB(cyan={0}, magenta={1}, yellow={2}, key={3})", cyan, magenta, yellow, key);
-
-        GP_CHECK_INCLUSIVE_RANGE(cyan, 0, 1, "Color cyan value must be between 0 and 1")
-        GP_CHECK_INCLUSIVE_RANGE(magenta, 0, 1, "Color magenta value must be between 0 and 1")
-        GP_CHECK_INCLUSIVE_RANGE(yellow, 0, 1, "Color yellow value must be between 0 and 1")
-        GP_CHECK_INCLUSIVE_RANGE(key, 0, 1, "Color key value must be between 0 and 1")
-
-        key = 1 - key;
-        return RGB{(int) round(255 * (1 - cyan) * key),
-                   (int) round(255 * (1 - magenta) * key),
-                   (int) round(255 * (1 - yellow) * key)};
-    }
-
-    std::string toHex(float cyan, float magenta, float yellow, float key) {
-        GP_CORE_INFO("gp::cmyk::toHex(cyan={0}, magenta={1}, yellow={2}, key={3})", cyan, magenta, yellow, key);
-
-        const RGB color_rgb = toRGB(cyan, magenta, yellow, key);
-        return rgb::toHex(color_rgb.red, color_rgb.green, color_rgb.blue);
-    }
-
-    HSL toHSL(float cyan, float magenta, float yellow, float key) {
-        GP_CORE_INFO("gp::cmyk::toHSL(cyan={0}, magenta={1}, yellow={2}, key={3})", cyan, magenta, yellow, key);
-
-        const RGB color_rgb = toRGB(cyan, magenta, yellow, key);
-        return rgb::toHSL(color_rgb.red, color_rgb.green, color_rgb.blue);
-    }
-
-    HSV toHSV(float cyan, float magenta, float yellow, float key) {
-        GP_CORE_INFO("gp::cmyk::toHSV(cyan={0}, magenta={1}, yellow={2}, key={3})", cyan, magenta, yellow, key);
-
-        const RGB color_rgb = toRGB(cyan, magenta, yellow, key);
-        return rgb::toHSV(color_rgb.red, color_rgb.green, color_rgb.blue);
-    }
-}
+#include "ColorRGB.h"
 
 
 // Color CMYK Class
 namespace gp {
-    ColorCMYK::ColorCMYK(const Color *color)
-            : Color(*color) {
-        GP_CORE_INFO("gp::ColorCMYK::ColorCMYK({0})", color->toString());
-
-        const CMYK data = rgb::toCMYK(m_Red, m_Green, m_Blue);
-
-        m_Cyan = data.cyan;
-        m_Magenta = data.magenta;
-        m_Yellow = data.yellow;
-        m_Key = data.key;
+    ColorCMYK::ColorCMYK(const Color &color)
+        : ColorCMYK{color.toCMYK()} {
     }
 
     ColorCMYK::ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha)
-            : Color(cmyk::toRGB(cyan, magenta, yellow, key), alpha),
-              m_Cyan(cyan),
-              m_Magenta(magenta),
-              m_Yellow(yellow),
-              m_Key(key) {
+        : Color{toRGB(cyan, magenta, yellow, key, alpha)},
+          m_Cyan(cyan),
+          m_Magenta(magenta),
+          m_Yellow(yellow),
+          m_Key(key) {
         GP_CORE_INFO("gp::ColorCMYK::ColorCMYK({0}, {1}, {2}, {3}, alpha={4})", cyan, magenta, yellow, key, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(cyan, 0, 1, "Color cyan value must be between 0 and 1")
@@ -70,8 +24,23 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
+    ColorRGB ColorCMYK::toRGB() const {
+        return toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key, m_Alpha);
+    }
+
+    ColorRGB ColorCMYK::toRGB(float cyan, float magenta, float yellow, float key, float alpha) {
+        key = 1 - key;
+        return {
+            static_cast<int>(round(255 * (1 - cyan) * key)),
+            static_cast<int>(round(255 * (1 - magenta) * key)),
+            static_cast<int>(round(255 * (1 - yellow) * key)),
+            alpha
+        };
+    }
+
+
     std::string ColorCMYK::toString() const {
-        return strformat("ColorCMYK(%g, %g, %g, %g)", m_Cyan, m_Magenta, m_Yellow, m_Key);
+        return strformat("ColorCMYK(%.2f, %.2f, %.2f, %.2f)", m_Cyan, m_Magenta, m_Yellow, m_Key);
     }
 
     float ColorCMYK::getCyan() const {
@@ -80,8 +49,7 @@ namespace gp {
 
     void ColorCMYK::setCyan(float value) {
         m_Cyan = value;
-        const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
-        updateRGBA(data, m_Alpha);
+        updateRGBA(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
     }
 
     float ColorCMYK::getMagenta() const {
@@ -90,8 +58,7 @@ namespace gp {
 
     void ColorCMYK::setMagenta(float value) {
         m_Magenta = value;
-        const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
-        updateRGBA(data, m_Alpha);
+        updateRGBA(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
     }
 
     float ColorCMYK::getYellow() const {
@@ -100,8 +67,7 @@ namespace gp {
 
     void ColorCMYK::setYellow(float value) {
         m_Yellow = value;
-        const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
-        updateRGBA(data, m_Alpha);
+        updateRGBA(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
     }
 
     float ColorCMYK::getKey() const {
@@ -110,16 +76,15 @@ namespace gp {
 
     void ColorCMYK::setKey(float value) {
         m_Key = value;
-        const RGB data = cmyk::toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key);
-        updateRGBA(data, m_Alpha);
+        updateRGBA(toRGB(m_Cyan, m_Magenta, m_Yellow, m_Key));
     }
 
     void ColorCMYK::_update() {
-        auto cmyk = rgb::toCMYK(m_Red, m_Green, m_Blue);
+        auto cmyk = toCMYK();
 
-        m_Cyan = cmyk.cyan;
-        m_Magenta = cmyk.magenta;
-        m_Yellow = cmyk.yellow;
-        m_Key = cmyk.key;
+        m_Cyan = cmyk.m_Cyan;
+        m_Magenta = cmyk.m_Magenta;
+        m_Yellow = cmyk.m_Yellow;
+        m_Key = cmyk.m_Key;
     }
 }

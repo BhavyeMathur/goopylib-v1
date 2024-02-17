@@ -1,98 +1,19 @@
 #include "ColorHSL.h"
-#include "ColorConversions.h"
-
-
-namespace gp::hsl {
-    RGB toRGB(int hue, float saturation, float luminance) {
-        GP_CORE_INFO("gp::hsl::toRGB(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
-
-        GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
-        GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
-        GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
-
-        const float c = (1 - fabsf(2 * luminance - 1)) * saturation;
-        const float x = c * (1 - fabsf(fmodf((float) hue / 60, 2) - 1));
-        const float m = luminance - c / 2;
-
-        if (hue < 60) {
-            return RGB{(int) round(255 * (c + m)),
-                       (int) round(255 * (x + m)),
-                       (int) round(255 * m)};
-        }
-        else if (hue < 120) {
-            return RGB{(int) round(255 * (x + m)),
-                       (int) round(255 * (c + m)),
-                       (int) round(255 * m)};
-        }
-        else if (hue < 180) {
-            return RGB{(int) round(255 * m),
-                       (int) round(255 * (c + m)),
-                       (int) round(255 * (x + m))};
-        }
-        else if (hue < 240) {
-            return RGB{(int) round(255 * m),
-                       (int) round(255 * (x + m)),
-                       (int) round(255 * (c + m))};
-        }
-        else if (hue < 300) {
-            return RGB{(int) round(255 * (x + m)),
-                       (int) round(255 * m),
-                       (int) round(255 * (c + m))};
-        }
-        else {
-            return RGB{(int) round(255 * (c + m)),
-                       (int) round(255 * m),
-                       (int) round(255 * (x + m))};
-        }
-    }
-
-    std::string oHex(int hue, float saturation, float luminance) {
-        GP_CORE_INFO("gp::hsl::toHex(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
-
-        const RGB color_rgb = toRGB(hue, saturation, luminance);
-        return rgb::toHex(color_rgb.red, color_rgb.green, color_rgb.blue);
-    }
-
-    CMYK toCMYK(int hue, float saturation, float luminance) {
-        GP_CORE_INFO("gp::hsl::toCMYK(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
-
-        const RGB color_rgb = toRGB(hue, saturation, luminance);
-        return rgb::toCMYK(color_rgb.red, color_rgb.green, color_rgb.blue);
-    }
-
-    HSV toHSV(int hue, float saturation, float luminance) {
-        GP_CORE_INFO("gp::hsl::toHSV(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
-
-        GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
-        GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
-        GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
-
-        const float v = luminance + saturation * (luminance < 0.5 ? luminance : 1 - luminance);
-
-        saturation = v == 0 ? 0 : 2 * (1 - luminance / v);
-
-        return HSV{hue, saturation, v};
-    }
-}
+#include "ColorHSV.h"
+#include "ColorRGB.h"
 
 
 namespace gp {
-    ColorHSL::ColorHSL(const Color *color)
-            : Color(*color) {
+    ColorHSL::ColorHSL(const Color &color)
+        : ColorHSL{color.toHSL()} {
         GP_CORE_INFO("gp::ColorHSL::ColorHSL({0})", color->toString());
-
-        const HSL data = rgb::toHSL(m_Red, m_Green, m_Blue);
-
-        m_Hue = data.hue;
-        m_Saturation = data.saturation;
-        m_Luminance = data.luminance;
     }
 
     ColorHSL::ColorHSL(int hue, float saturation, float luminance, float alpha)
-            : Color(hsl::toRGB(hue, saturation, luminance), alpha),
-              m_Hue(hue),
-              m_Saturation(saturation),
-              m_Luminance(luminance) {
+        : Color{toRGB(hue, saturation, luminance, alpha)},
+          m_Hue(hue),
+          m_Saturation(saturation),
+          m_Luminance(luminance) {
         GP_CORE_INFO("gp::ColorHSL::ColorHSL({0}, {1}, {2}, alpha={3})", hue, saturation, luminance, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
@@ -102,8 +23,74 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(alpha, 0, 1, "Color alpha value must be between 0 and 1")
     }
 
+    ColorRGB ColorHSL::toRGB() const {
+        return toRGB(m_Hue, m_Saturation, m_Luminance, m_Alpha);
+    }
+
+    ColorRGB ColorHSL::toRGB(int hue, float saturation, float luminance, float alpha) {
+        GP_CORE_INFO("gp::hsl::toRGB(hue={0}, saturation={1}, luminance={2})", hue, saturation, luminance);
+
+        GP_CHECK_INCLUSIVE_RANGE(hue, 0, 360, "Color hue value must be between 0 and 360")
+        GP_CHECK_INCLUSIVE_RANGE(saturation, 0, 1, "Color saturation value must be between 0 and 1")
+        GP_CHECK_INCLUSIVE_RANGE(luminance, 0, 1, "Color luminance value must be between 0 and 1")
+
+        const float c = (1 - fabsf(2 * luminance - 1)) * saturation;
+        const float x = c * (1 - fabsf(fmodf(static_cast<float>(hue) / 60, 2) - 1));
+        const float m = luminance - c / 2;
+
+        float red;
+        float green;
+        float blue;
+
+        if (hue < 60) {
+            red = c + m;
+            green = x + m;
+            blue = m;
+        }
+        else if (hue < 120) {
+            red = x + m;
+            green = c + m;
+            blue = m;
+        }
+        else if (hue < 180) {
+            red = m;
+            green = c + m;
+            blue = x + m;
+        }
+        else if (hue < 240) {
+            red = m;
+            green = x + m;
+            blue = c + m;
+        }
+        else if (hue < 300) {
+            red = x + m;
+            green = m;
+            blue = c + m;
+        }
+        else {
+            red = c + m;
+            green = m;
+            blue = x + m;
+        }
+
+        return {
+            static_cast<int>(round(255 * red)),
+            static_cast<int>(round(255 * green)),
+            static_cast<int>(round(255 * blue)),
+            alpha
+        };
+    }
+
+    ColorHSV ColorHSL::toHSV() const {
+        const float value = m_Luminance + m_Saturation * (m_Luminance < 0.5 ? m_Luminance : 1 - m_Luminance);
+        const float saturation = value == 0 ? 0 : 2 * (1 - m_Luminance / value);
+
+        return {m_Hue, saturation, value, m_Alpha};
+    }
+
+
     std::string ColorHSL::toString() const {
-        return strformat("ColorHSL(%i, %g, %g)", m_Hue, m_Saturation, m_Luminance);
+        return strformat("ColorHSL(%i, %.2f, %.2f)", m_Hue, m_Saturation, m_Luminance);
     }
 
     int ColorHSL::getHue() const {
@@ -112,8 +99,7 @@ namespace gp {
 
     void ColorHSL::setHue(int value) {
         m_Hue = value;
-        const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
-        updateRGBA(data, m_Alpha);
+        updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
     float ColorHSL::getSaturation() const {
@@ -122,8 +108,7 @@ namespace gp {
 
     void ColorHSL::setSaturation(float value) {
         m_Saturation = value;
-        const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
-        updateRGBA(data, m_Alpha);
+        updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
     float ColorHSL::getLuminance() const {
@@ -132,15 +117,14 @@ namespace gp {
 
     void ColorHSL::setLuminance(float value) {
         m_Luminance = value;
-        const RGB data = hsl::toRGB(m_Hue, m_Saturation, m_Luminance);
-        updateRGBA(data, m_Alpha);
+        updateRGBA(toRGB(m_Hue, m_Saturation, m_Luminance));
     }
 
     void ColorHSL::_update() {
-        auto hsl = rgb::toHSL(m_Red, m_Green, m_Blue);
+        auto hsl = toHSL();
 
-        m_Hue = hsl.hue;
-        m_Saturation = hsl.saturation;
-        m_Luminance = hsl.luminance;
+        m_Hue = hsl.m_Hue;
+        m_Saturation = hsl.m_Saturation;
+        m_Luminance = hsl.m_Luminance;
     }
 }

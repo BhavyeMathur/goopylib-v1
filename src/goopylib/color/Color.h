@@ -4,6 +4,16 @@
 #include "ColorStructs.h"
 
 namespace gp {
+    class ColorRGB;
+
+    class ColorHex;
+
+    class ColorCMYK;
+
+    class ColorHSV;
+
+    class ColorHSL;
+
     /**
      * Create colors by passing RGB arguments or a hexstring.
      * Specify an alpha value by passing a float as the last parameter.
@@ -29,7 +39,7 @@ namespace gp {
          * @throws std::invalid_argument RGB must be between 0-255
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI Color(int red, int green, int blue, float alpha = 1);
+        Color(int red, int green, int blue, float alpha = 1);
 
         /**
          * Create colors by passing RGB arguments or a hexstring.
@@ -41,9 +51,9 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI Color(std::string hexstring, float alpha = 1);
+        Color(const std::string &hexstring, float alpha = 1);
 
-        virtual ~Color() = default;
+        GPAPI virtual ~Color() = default;
 
         /**
          * @return a string representation of the color
@@ -116,6 +126,31 @@ namespace gp {
          */
         [[nodiscard]] RGBAf getRGBAf() const;
 
+        /**
+         * Converts the Color to the RGB format
+         */
+        [[nodiscard]] GPAPI virtual ColorRGB toRGB() const;
+
+        /**
+        * Converts the Color to the Hexadecimal format
+        */
+        [[nodiscard]] GPAPI ColorHex toHex() const;
+
+        /**
+         * Converts the Color to the CMYK format
+         */
+        [[nodiscard]] GPAPI ColorCMYK toCMYK() const;
+
+        /**
+         * Converts the Color to the HSV format
+         */
+        [[nodiscard]] GPAPI virtual ColorHSV toHSV() const;
+
+        /**
+         * Converts the Color to the HSL format
+         */
+        [[nodiscard]] GPAPI virtual ColorHSL toHSL() const;
+
         // Operator Overloads
 
         GPAPI Color operator+(int value) const;
@@ -134,19 +169,22 @@ namespace gp {
 
         GPAPI Color &operator-=(const Color &value);
 
+        GPAPI bool operator==(const Color &) const = default;
+
+        GPAPI bool operator==(std::string other) const;
+
     protected:
         int m_Red;
         int m_Green;
         int m_Blue;
         float m_Alpha;
 
-        GPAPI Color(const RGB &color, float alpha);
-
-        GPAPI void updateRGBA(const RGB &color, float alpha);
+        GPAPI void updateRGBA(const ColorRGB &color);
 
         GPAPI void update();
 
-        GPAPI virtual void _update() {}
+        GPAPI virtual void _update() {
+        }
 
     private:
         float m_Redf = 0;

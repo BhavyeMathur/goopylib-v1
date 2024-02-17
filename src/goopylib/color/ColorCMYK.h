@@ -20,7 +20,7 @@ namespace gp {
         /**
          * Create a ColorCMYK from another color object.
          */
-        GPAPI ColorCMYK(Color const *color);
+        ColorCMYK(const Color &color);
 
         /**
          * Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha.
@@ -35,7 +35,7 @@ namespace gp {
          * @throws std::invalid_argument CMYK must be between 0-1
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha = 1.0f);
+        ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha = 1.0f);
 
         [[nodiscard]] GPAPI std::string toString() const override;
 
@@ -82,6 +82,10 @@ namespace gp {
          * @throws std::invalid_argument value must be in the range specified
          */
         GPAPI void setKey(float value);
+
+        [[nodiscard]] GPAPI ColorRGB toRGB() const override;
+
+        [[nodiscard]] GPAPI static ColorRGB toRGB(float cyan, float magenta, float yellow, float key, float alpha = 1);
 
     protected:
         GPAPI void _update() override;

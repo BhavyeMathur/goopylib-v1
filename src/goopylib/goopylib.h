@@ -11,7 +11,6 @@
 #include "src/goopylib/maths/packing/Shelf.h"
 
 #include "src/goopylib/color/Color.h"
-#include "src/goopylib/color/ColorConversions.h"
 #include "src/goopylib/color/Util.h"
 #include "src/goopylib/color/W3CX11.h"
 
