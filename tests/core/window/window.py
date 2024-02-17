@@ -1,6 +1,7 @@
 import unittest
-import goopylib as gp
 import math
+
+import goopylib as gp
 
 
 class WindowMethods(unittest.TestCase):
@@ -552,7 +553,7 @@ class WindowMethods(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.window.set_size_limits(50, 50, 1000, "Test")
 
-        self.assertEqual((self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height), 
+        self.assertEqual((self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height),
                          initial_value)
 
     def test_set_size_limits_value_errors1(self):
@@ -567,7 +568,7 @@ class WindowMethods(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.window.set_size_limits(50, 50, 1000, -1)
 
-        self.assertEqual((self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height), 
+        self.assertEqual((self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height),
                          initial_value)
 
     def test_set_size_limits_value_errors2(self):
@@ -578,7 +579,7 @@ class WindowMethods(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.window.set_size_limits(50, 100, 1000, 50)
 
-        self.assertEqual((self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height), 
+        self.assertEqual((self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height),
                          initial_value)
 
     def test_set_size_limits_keywords(self):

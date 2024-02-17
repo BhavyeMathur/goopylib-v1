@@ -334,6 +334,22 @@ namespace gp {
     std::ostream &operator<<(std::ostream &os, const Color &color) {
         return os << color.toString();
     }
+
+    std::string RGBAf::toString() const {
+        return strformat("RGBAf(%i, %i, %i, %.2f)", red, green, blue, alpha);
+    }
+
+    std::string RGBf::toString() const {
+        return strformat("RGBAf(%i, %i, %i)", red, green, blue);
+    }
+
+    std::ostream &operator<<(std::ostream &os, const RGBAf &color) {
+        return os << color.toString();
+    }
+
+    std::ostream &operator<<(std::ostream &os, const RGBf &color) {
+        return os << color.toString();
+    }
 }
 
 #define GP_COLOR_SWAP(arg) std::swap(arg, other.arg)
