@@ -149,3 +149,17 @@ TEST(ColorCMYKTests, ColorRGBAttributeAlpha) {
 
     EXPECT_EQ(color.toString(), "ColorCMYK(0.75, 0.33, 0.00, 0.76, alpha=0.50)");
 }
+
+TEST(ColorCMYKTests, CMYKtoRGB) {
+    EXPECT_COLOR_EQ(gp::ColorCMYK(1, 1, 1, 1).toRGB(), gp::ColorRGB(0, 0, 0));
+    EXPECT_COLOR_EQ(gp::ColorCMYK(0, 0, 0, 0).toRGB(), gp::ColorRGB(255, 255, 255));
+
+    EXPECT_COLOR_EQ(gp::ColorCMYK(1, 0, 0, 0).toRGB(), gp::ColorRGB(0, 255, 255));
+    EXPECT_COLOR_EQ(gp::ColorCMYK(0, 1, 0, 0).toRGB(), gp::ColorRGB(255, 0, 255));
+    EXPECT_COLOR_EQ(gp::ColorCMYK(0, 0, 1, 0).toRGB(), gp::ColorRGB(255, 255, 0));
+    EXPECT_COLOR_EQ(gp::ColorCMYK(0, 0, 0, 1).toRGB(), gp::ColorRGB(0, 0, 0));
+
+    EXPECT_COLOR_EQ(gp::ColorCMYK(0.2, 0.3, 0.1, 0.5).toRGB(), gp::ColorRGB(102, 89, 115));
+    EXPECT_COLOR_EQ(gp::ColorCMYK(0.8, 0.5, 0, 0.1).toRGB(), gp::ColorRGB(46, 115, 230));
+    EXPECT_COLOR_EQ(gp::ColorCMYK(0.4, 0.6, 0.3, 0.7).toRGB(), gp::ColorRGB(46, 31, 54));
+}
