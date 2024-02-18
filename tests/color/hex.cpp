@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include <goopylib/goopylib.h>
+#include <../../src/goopylib.h>
 
 TEST(ColorHexTests, ColorFromColorSubclass) {
     gp::Color color{"#f05", 0.2};

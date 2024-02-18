@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gtest/gtest.h"
-#include <goopylib/goopylib.h>
+#include <../../src/goopylib.h>
 
 #define EXPECT_COLOR_EQ(arg1, arg2) EXPECT_TRUE(colorNearEquality((arg1), (arg2)))
 

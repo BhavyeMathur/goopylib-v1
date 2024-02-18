@@ -44,7 +44,7 @@ namespace gp {
 }
 
 #include "src/config.h"
-#include "src/goopylib/debug/Log.h"
+#include "debug/Log.h"
 
 #define GP_DRAW_MODE_TRIANGLES 0x0004
 #define GP_DRAW_MODE_LINES 0x0001

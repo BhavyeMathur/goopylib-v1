@@ -1,4 +1,4 @@
-#include "goopylib/goopylib.h"
+#include "../../src/goopylib.h"
 #include <iostream>
 
 #define SET_TRANSPARENCY(x, y, val) if ((x) < xN and (x) >= 0 and (y) < yN and (y) >= 0) { images[xN * (x) + (y)].setTransparency(val); }

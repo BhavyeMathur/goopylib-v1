@@ -1,4 +1,4 @@
-#include <goopylib/goopylib.h>
+#include <../../../src/goopylib.h>
 #include <iostream>
 
 int getPackingAlgorithmChoice() {

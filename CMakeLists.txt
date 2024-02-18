@@ -69,53 +69,53 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_P
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
 
 add_library(goopylib SHARED ${WINDOWS_SOURCES}
-            src/goopylib/core/Core.cpp
-            src/goopylib/core/Buffer.cpp
-            src/goopylib/core/VertexBuffer.cpp
-            src/goopylib/core/IndexBuffer.cpp
-            src/goopylib/core/UniformBuffer.cpp
-            src/goopylib/core/BufferLayout.cpp
-            src/goopylib/core/VertexArray.cpp
+            src/core/Core.cpp
+            src/core/Buffer.cpp
+            src/core/VertexBuffer.cpp
+            src/core/IndexBuffer.cpp
+            src/core/UniformBuffer.cpp
+            src/core/BufferLayout.cpp
+            src/core/VertexArray.cpp
 
-            src/goopylib/debug/Log.cpp
-            src/goopylib/debug/Error.cpp
+            src/debug/Log.cpp
+            src/debug/Error.cpp
 
-            src/goopylib/maths/gpmath.cpp
-            src/goopylib/maths/Easing.cpp
-            src/goopylib/maths/packing/Packing.cpp
-            src/goopylib/maths/packing/Shelf.cpp
+            src/maths/gpmath.cpp
+            src/maths/Easing.cpp
+            src/maths/packing/Packing.cpp
+            src/maths/packing/Shelf.cpp
 
-            src/goopylib/color/Color.cpp
-            src/goopylib/color/ColorRGB.cpp
-            src/goopylib/color/ColorHex.cpp
-            src/goopylib/color/ColorCMYK.cpp
-            src/goopylib/color/ColorHSL.cpp
-            src/goopylib/color/ColorHSV.cpp
-            src/goopylib/color/Util.cpp
-            src/goopylib/color/W3CX11.cpp
+            src/color/Color.cpp
+            src/color/ColorRGB.cpp
+            src/color/ColorHex.cpp
+            src/color/ColorCMYK.cpp
+            src/color/ColorHSL.cpp
+            src/color/ColorHSV.cpp
+            src/color/Util.cpp
+            src/color/W3CX11.cpp
 
-            src/goopylib/objects/Renderable.cpp
-            src/goopylib/objects/Triangle.cpp
-            src/goopylib/objects/Ellipse.cpp
-            src/goopylib/objects/Circle.cpp
-            src/goopylib/objects/Quad.cpp
-            src/goopylib/objects/Rectangle.cpp
-            src/goopylib/objects/Line.cpp
-            src/goopylib/objects/TexturedQuad.cpp
-            src/goopylib/objects/TexturedRectangle.cpp
-            src/goopylib/objects/Image.cpp
+            src/objects/Renderable.cpp
+            src/objects/Triangle.cpp
+            src/objects/Ellipse.cpp
+            src/objects/Circle.cpp
+            src/objects/Quad.cpp
+            src/objects/Rectangle.cpp
+            src/objects/Line.cpp
+            src/objects/TexturedQuad.cpp
+            src/objects/TexturedRectangle.cpp
+            src/objects/Image.cpp
 
-            src/goopylib/scene/RenderingManager.cpp
-            src/goopylib/scene/Renderer.cpp
-            src/goopylib/scene/Camera.cpp
-            src/goopylib/scene/CameraController.cpp
+            src/scene/RenderingManager.cpp
+            src/scene/Renderer.cpp
+            src/scene/Camera.cpp
+            src/scene/CameraController.cpp
 
-            src/goopylib/texture/Bitmap.cpp
-            src/goopylib/texture/Texture2D.cpp
+            src/texture/Bitmap.cpp
+            src/texture/Texture2D.cpp
 
-            src/goopylib/window/Window.cpp
+            src/window/Window.cpp
 
-            src/goopylib/shader/Shader.cpp
+            src/shader/Shader.cpp
 
             vendor/stb/stb_image.cpp
             vendor/stb/stb_image_write.cpp
