@@ -100,8 +100,8 @@ namespace gp {
         Window::destroyAll();
 
         GP_CORE_DEBUG("gp::terminate() terminating GLFW");
-
         glfwTerminate();
+
         is_initialized = false;
     }
 
@@ -128,7 +128,6 @@ namespace gp {
     void updateTimeout(double timeout) {
         GP_CORE_TRACE_ALL("gp::updateTimeout(timeout={0})", timeout);
         GP_CHECK_INITIALISED("gp::updateTimeout()");
-
         GP_CHECK_GE(timeout, 0, "gp::updateTimeout() timeout must be greater than or equal to 0");
 
         glfwWaitEventsTimeout(timeout);
@@ -137,34 +136,33 @@ namespace gp {
 
     void setBufferSwapInterval(int32_t interval) {
         GP_CORE_TRACE("gp::setBufferSwapInterval(interval={0})", interval);
-
-        GP_CHECK_INITIALISED("gp::setBufferSwapInterval()");
         GP_CHECK_GE(interval, 0, "gp::setBufferSwapInterval() interval must be greater than or equal to 0");
+        GP_CHECK_ACTIVE_CONTEXT("gp::setBufferSwapInterval()");
 
         glfwSwapInterval(interval);
     }
 
     int getRefreshRate() {
         GP_CORE_TRACE("gp::getRefreshRate()");
-        GP_CHECK_ACTIVE_CONTEXT("gp::getRefreshRate()");
+        GP_CHECK_INITIALISED("gp::getRefreshRate()");
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->refreshRate;
     }
 
     int getScreenWidth() {
         GP_CORE_TRACE("gp::getScreenWidth()");
-        GP_CHECK_ACTIVE_CONTEXT("gp::getScreenWidth()");
+        GP_CHECK_INITIALISED("gp::getScreenWidth()");
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
     }
 
     int getScreenHeight() {
         GP_CORE_TRACE("gp::getScreenHeight()");
-        GP_CHECK_ACTIVE_CONTEXT("gp::getScreenHeight()");
+        GP_CHECK_INITIALISED("gp::getScreenHeight()");
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
     }
 
     int getNumberOfMonitors() {
         GP_CORE_TRACE("gp::getNumberOfMonitors()");
-        GP_CHECK_ACTIVE_CONTEXT("gp::getNumberOfMonitors()");
+        GP_CHECK_INITIALISED("gp::getNumberOfMonitors()");
         int count;
         glfwGetMonitors(&count);
         return count;
@@ -175,12 +173,11 @@ namespace gp {
     }
 
     bool hasActiveContext() {
-        return glfwGetCurrentContext();
+        return is_initialized and glfwGetCurrentContext();
     }
 
     std::string glfwCompiledVersion() {
         GP_CORE_TRACE("gp::glfwCompiledVersion()");
-
         return {glfwGetVersionString()};
     }
 
@@ -197,7 +194,6 @@ namespace gp {
 
     std::string openglVersion() {
         GP_CORE_TRACE("gp::openglVersion()");
-
         return {reinterpret_cast<const char *>(glGetString(GL_VERSION))};
     }
 }
