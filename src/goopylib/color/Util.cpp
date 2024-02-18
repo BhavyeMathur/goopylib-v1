@@ -4,21 +4,31 @@
 
 #include <random>
 
-// TODO Move initialisation into a function or wrapper of some kind
-std::random_device rand_dev;
-std::mt19937 generator(rand_dev());
+unique_ptr<std::random_device> rand_dev;
+unique_ptr<std::mt19937> generator;
 
-std::uniform_int_distribution rgb_distribution(0, 255);
-std::uniform_int_distribution angle_distribution(0, 360);
-std::uniform_real_distribution normalized_distribution(0.0f, 1.0f);
+unique_ptr<std::uniform_int_distribution<> > rgb_distribution;
+unique_ptr<std::uniform_int_distribution<> > angle_distribution;
+unique_ptr<std::uniform_real_distribution<float> > normalized_distribution;
 
 namespace gp {
+    void initRNG() {
+        rand_dev = make_unique<std::random_device>();
+        generator = make_unique<std::mt19937>((*rand_dev)());
+
+        rgb_distribution = make_unique<std::uniform_int_distribution<> >(0, 255);
+        angle_distribution = make_unique<std::uniform_int_distribution<> >(0, 360);
+        normalized_distribution = make_unique<std::uniform_real_distribution<float> >(0.0f, 1.0f);
+    }
+
     ColorRGB randomRGB() {
         GP_CORE_INFO("gp::randomRGB()");
 
-        return {rgb_distribution(generator),
-                rgb_distribution(generator),
-                rgb_distribution(generator)};
+        return {
+            (*rgb_distribution)(*generator),
+            (*rgb_distribution)(*generator),
+            (*rgb_distribution)(*generator)
+        };
     }
 
     ColorHex randomHex() {
@@ -30,25 +40,31 @@ namespace gp {
     ColorCMYK randomCMYK() {
         GP_CORE_INFO("gp::randomCMYK()");
 
-        return {normalized_distribution(generator),
-                normalized_distribution(generator),
-                normalized_distribution(generator),
-                normalized_distribution(generator)};
+        return {
+            (*normalized_distribution)(*generator),
+            (*normalized_distribution)(*generator),
+            (*normalized_distribution)(*generator),
+            (*normalized_distribution)(*generator)
+        };
     }
 
     ColorHSV randomHSV() {
         GP_CORE_INFO("gp::randomHSV()");
 
-        return {angle_distribution(generator),
-                normalized_distribution(generator),
-                normalized_distribution(generator)};
+        return {
+            (*angle_distribution)(*generator),
+            (*normalized_distribution)(*generator),
+            (*normalized_distribution)(*generator)
+        };
     }
 
     ColorHSL randomHSL() {
         GP_CORE_INFO("gp::randomHSL()");
 
-        return {angle_distribution(generator),
-                normalized_distribution(generator),
-                normalized_distribution(generator)};
+        return {
+            (*angle_distribution)(*generator),
+            (*normalized_distribution)(*generator),
+            (*normalized_distribution)(*generator)
+        };
     }
 }

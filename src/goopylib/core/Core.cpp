@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "Core.h"
+#include "src/goopylib/color/Util.h"
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/debug/Error.h"
 
@@ -97,6 +98,7 @@ namespace {
 namespace gp {
     void init() {
         Log::init();
+        initRNG();
 
         GP_CORE_INFO("gp::init()");
 

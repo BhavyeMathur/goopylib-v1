@@ -92,7 +92,6 @@ namespace gp {
         return {m_Hue, saturation, value, m_Alpha};
     }
 
-
     std::string ColorHSL::toString() const {
         if (m_Alpha == 1) {
             return strformat("ColorHSL(%i, %.2f, %.2f)", m_Hue, m_Saturation, m_Luminance);
