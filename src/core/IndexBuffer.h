@@ -3,7 +3,7 @@
 #include "Buffer.h"
 
 namespace gp {
-    class IndexBuffer final : public Buffer {
+    class GPAPI IndexBuffer final : public Buffer {
 
     public:
         IndexBuffer(const uint32_t *indices, int32_t length);
@@ -15,8 +15,6 @@ namespace gp {
         IndexBuffer(IndexBuffer &&other) noexcept = default;
 
         void setData(const void *data, int32_t length) override;
-
-        static void unbind();
 
     protected:
         uint32_t _getBufferTarget() const override;

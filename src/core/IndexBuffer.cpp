@@ -26,11 +26,6 @@ namespace gp {
         }
     }
 
-    void IndexBuffer::unbind() {
-        GP_CORE_WARN("gp::IndexBuffer::unbind()");
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    }
-
     void IndexBuffer::setData(const void *data, const int32_t length) {
         GP_CORE_DEBUG("gp::IndexBuffer::setData({0}, length={1})", m_RendererID, length);
 

@@ -12,8 +12,6 @@ namespace gp {
 
         VertexBuffer(VertexBuffer &&other) noexcept = default;
 
-        static void unbind();
-
     protected:
         uint32_t _getBufferTarget() const override;
 

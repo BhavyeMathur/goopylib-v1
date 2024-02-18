@@ -12,8 +12,6 @@ namespace gp {
 
         UniformBuffer(const UniformBuffer &) = delete;
 
-        static void unbind();
-
         void setBinding(uint32_t binding) const;
 
     protected:

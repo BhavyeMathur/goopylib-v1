@@ -19,6 +19,8 @@ namespace gp {
 
         void bind() const;
 
+        void unbind() const;
+
         [[nodiscard]] int32_t length() const;
 
         virtual void setData(const void *data, int32_t length);

@@ -36,6 +36,11 @@ namespace gp {
         glBindBuffer(_getBufferTarget(), m_RendererID);
     }
 
+    void Buffer::unbind() const {
+        GP_CORE_WARN("gp::Buffer::unbind({0})", m_RendererID);
+        glBindBuffer(_getBufferTarget(), 0);
+    }
+
     Buffer::~Buffer() noexcept {
         GP_CORE_DEBUG("gp::Buffer::~Buffer({0})", m_RendererID);
         if (m_RendererID == 0) {
