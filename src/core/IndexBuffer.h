@@ -6,7 +6,7 @@ namespace gp {
     class IndexBuffer final : public Buffer {
 
     public:
-        GPAPI IndexBuffer(uint32_t count, uint32_t *indices);
+        GPAPI IndexBuffer(int32_t count, uint32_t *indices);
 
         GPAPI IndexBuffer(std::initializer_list<uint32_t> indices);
 

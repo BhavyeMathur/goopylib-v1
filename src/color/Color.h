@@ -37,7 +37,7 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-         Color(const std::string &hexstring, float alpha = 1); // NOLINT(*-explicit-conversions)
+        Color(const std::string &hexstring, float alpha = 1); // NOLINT(*-explicit-conversions)
 
         /**
          * Create colors by passing RGB arguments or a hexstring.

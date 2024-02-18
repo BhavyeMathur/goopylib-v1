@@ -1,9 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <string>
-#include <vector>
-#include <functional>
 #include <iostream>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)

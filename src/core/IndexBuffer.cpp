@@ -3,7 +3,7 @@
 #include "opengl.h"
 
 namespace gp {
-    IndexBuffer::IndexBuffer(uint32_t count, uint32_t *indices)
+    IndexBuffer::IndexBuffer(int32_t count, uint32_t *indices)
         : Buffer(count) {
         GP_CORE_DEBUG("gp::IndexBuffer::IndexBuffer()");
 

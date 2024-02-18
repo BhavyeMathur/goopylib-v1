@@ -59,13 +59,13 @@ namespace gp {
         bind();
         if (m_IndexBuffer) {
             glDrawElements(mode,
-                           count and count <= m_IndexBuffer->count() ? count : (int32_t) m_IndexBuffer->count(),
+                           count and count <= m_IndexBuffer->length() ? count : m_IndexBuffer->length(),
                            GL_UNSIGNED_INT,
                            nullptr);
         }
         else {
             glDrawArrays(mode, 0,
-                         count and count <= m_VertexBuffer.count() ? count : (int32_t) m_VertexBuffer.count());
+                         count and count <= m_VertexBuffer.length() ? count : m_VertexBuffer.length());
         }
     }
 }

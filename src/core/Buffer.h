@@ -3,36 +3,36 @@
 #include "gp.h"
 #include "BufferLayout.h"
 
-// Generic Buffer
+
 namespace gp {
-    class Buffer {
+    class GPAPI Buffer {
     public:
-        GPAPI Buffer(uint32_t count, const BufferLayout &layout = {});
+        Buffer(int32_t length, const BufferLayout &layout = {});
 
-        GPAPI Buffer(const Buffer &) = delete;
+        Buffer(const Buffer &) = delete;
 
-        GPAPI Buffer(Buffer &&other) noexcept;
+        Buffer(Buffer &&other) noexcept;
 
-        GPAPI ~Buffer() noexcept;
+        virtual ~Buffer() noexcept;
 
-        GPAPI void init();
+        void init();
 
-        GPAPI void bind() const;
+        void bind() const;
 
-        [[nodiscard]] GPAPI uint32_t count() const;
+        [[nodiscard]] int32_t length() const;
 
-        GPAPI void setData(const void *data, uint32_t count);
+        void setData(const void *data, int32_t length);
 
-        GPAPI void setData(const void *data, uint32_t count, uint32_t offset) const;
+        void setData(const void *data, int32_t length, int32_t offset) const;
 
-        [[nodiscard]] GPAPI const BufferLayout &getLayout() const;
+        [[nodiscard]] const BufferLayout &getLayout() const;
 
     protected:
-        uint32_t m_Count = 0;
+        int32_t m_Length = 0;
         uint32_t m_RendererID = 0;
 
         BufferLayout m_Layout;
 
-        GPAPI virtual uint32_t _getBufferTarget() const = 0;
+        [[nodiscard]] virtual uint32_t _getBufferTarget() const = 0;
     };
 }

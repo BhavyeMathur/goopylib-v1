@@ -4,65 +4,69 @@
 #include <opengl.h>
 #include <GLFW/glfw3.h>
 
+#include <utility>
+
 
 namespace gp {
-    Buffer::Buffer(uint32_t count, const BufferLayout &layout)
-        : m_Count(count),
-          m_Layout(layout) {
-        GP_CORE_DEBUG("gp::Buffer::Buffer(layout)");
+    Buffer::Buffer(const int32_t length, const BufferLayout &layout)
+        : m_Length{length},
+          m_Layout{layout} {
+        GP_CORE_INFO("gp::Buffer::Buffer(layout)");
         if (glfwGetCurrentContext()) {
             init();
         }
     }
 
     Buffer::Buffer(Buffer &&other) noexcept
-        : m_Count(std::exchange(other.m_Count, 0)),
-          m_RendererID(std::exchange(other.m_RendererID, 0)),
-          m_Layout(std::move(other.m_Layout)) {
-        GP_CORE_DEBUG("gp::Buffer::Buffer() — move constructor");
+        : m_Length{other.m_Length},
+          m_RendererID{std::exchange(other.m_RendererID, 0)},
+          m_Layout{std::move(other.m_Layout)} {
+        GP_CORE_INFO("gp::Buffer::Buffer() — move constructor");
     }
 
     void Buffer::init() {
+        GP_CORE_INFO("gp::Buffer::init({0})", m_RendererID);
         if (m_RendererID == 0) {
             glGenBuffers(1, &m_RendererID);
-            GP_CORE_DEBUG("gp::Buffer::init({0})", m_RendererID);
         }
     }
 
     void Buffer::bind() const {
+        GP_CORE_TRACE("gp::Buffer::bind({0})", m_RendererID);
         glBindBuffer(_getBufferTarget(), m_RendererID);
     }
 
     Buffer::~Buffer() noexcept {
+        GP_CORE_DEBUG("gp::Buffer::~Buffer({0})", m_RendererID);
         if (m_RendererID == 0) {
             return;
         }
-
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    void Buffer::setData(const void *data, uint32_t count) {
-        GP_CORE_TRACE("Setting Vertex Buffer {0} Data, count={1}", m_RendererID, count);
-
-        bind();
-        glBufferData(_getBufferTarget(), count * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
-
-        m_Count = count;
+    int32_t Buffer::length() const {
+        GP_CORE_TRACE("gp::Buffer::length{0})", m_RendererID);
+        return m_Length;
     }
 
-    void Buffer::setData(const void *data, uint32_t count, uint32_t offset) const {
-        GP_CORE_TRACE("Setting Vertex Buffer {0} Data", m_RendererID);
+    void Buffer::setData(const void *data, const int32_t length) {
+        GP_CORE_DEBUG("gp::Buffer::setData({0}, length={1})", m_RendererID, length);
 
         bind();
-        glBufferSubData(_getBufferTarget(), offset * m_Layout.m_Stride,
-                        count * m_Layout.m_Stride, data);
+        glBufferData(_getBufferTarget(), length * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
+
+        m_Length = length;
     }
 
-    uint32_t Buffer::count() const {
-        return m_Count;
+    void Buffer::setData(const void *data, const int32_t length, const int32_t offset) const {
+        GP_CORE_DEBUG("gp::Buffer::setData({0}, length={1}, offset={2})", m_RendererID, length, offset);
+
+        bind();
+        glBufferSubData(_getBufferTarget(), offset * m_Layout.m_Stride, length * m_Layout.m_Stride, data);
     }
 
     const BufferLayout &Buffer::getLayout() const {
+        GP_CORE_TRACE("gp::Buffer::getLayout({0})", m_RendererID);
         return m_Layout;
     }
 }
