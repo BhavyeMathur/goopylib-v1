@@ -98,9 +98,9 @@ namespace {
 namespace gp {
     void init() {
         Log::init();
-        initRNG();
-
         GP_CORE_INFO("gp::init()");
+
+        initColorRNG();
 
         #if GP_USING_GLFW
         initGLFW();

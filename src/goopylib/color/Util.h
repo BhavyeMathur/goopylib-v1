@@ -8,7 +8,7 @@
 #include "ColorHSV.h"
 
 namespace gp {
-    void initRNG();
+    void initColorRNG();
 
     /**
      * @return a random RGB color

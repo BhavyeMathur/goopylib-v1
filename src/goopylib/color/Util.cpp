@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "Util.h"
+#include "src/goopylib/debug/Error.h"
 
 #include <random>
 
@@ -12,17 +13,24 @@ unique_ptr<std::uniform_int_distribution<> > angle_distribution;
 unique_ptr<std::uniform_real_distribution<float> > normalized_distribution;
 
 namespace gp {
-    void initRNG() {
-        rand_dev = make_unique<std::random_device>();
-        generator = make_unique<std::mt19937>((*rand_dev)());
+    void initColorRNG() {
+        GP_CORE_INFO("gp::initRNG()");
 
-        rgb_distribution = make_unique<std::uniform_int_distribution<> >(0, 255);
-        angle_distribution = make_unique<std::uniform_int_distribution<> >(0, 360);
-        normalized_distribution = make_unique<std::uniform_real_distribution<float> >(0.0f, 1.0f);
+        try {
+            rand_dev = make_unique<std::random_device>();
+            generator = make_unique<std::mt19937>((*rand_dev)());
+
+            rgb_distribution = make_unique<std::uniform_int_distribution<> >(0, 255);
+            angle_distribution = make_unique<std::uniform_int_distribution<> >(0, 360);
+            normalized_distribution = make_unique<std::uniform_real_distribution<float> >(0.0f, 1.0f);
+        }
+        catch (...) {
+            GP_RUNTIME_ERROR("gp::initRNG() failed to initialize random color generator");
+        }
     }
 
-    ColorRGB randomRGB() {
-        GP_CORE_INFO("gp::randomRGB()");
+    ColorRGB randomColor() {
+        GP_CORE_INFO("gp::randomColor()");
 
         return {
             (*rgb_distribution)(*generator),
@@ -31,9 +39,13 @@ namespace gp {
         };
     }
 
+    ColorRGB randomRGB() {
+        GP_CORE_INFO("gp::randomRGB()");
+        return randomColor();
+    }
+
     ColorHex randomHex() {
         GP_CORE_INFO("gp::randomHex()");
-
         return randomRGB();
     }
 
