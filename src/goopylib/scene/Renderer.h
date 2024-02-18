@@ -6,9 +6,6 @@
 #include "src/goopylib/objects/Vertex.h"
 #include "src/goopylib/core/VertexArray.h"
 
-#include "opengl.h"
-
-
 namespace gp {
     class Line;
 

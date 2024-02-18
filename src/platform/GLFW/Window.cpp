@@ -3,6 +3,8 @@
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/debug/Error.h"
 
+#include <opengl.h>
+
 namespace gp {
     Window::Window(int width, int height, const char *title)
             : RenderingManager(*this, width, height, title),

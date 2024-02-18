@@ -6,7 +6,7 @@
 #include "src/goopylib/shader/Shader.h"
 #include <glm/gtc/type_ptr.hpp>
 
-#include "opengl.h"
+#include <opengl.h>
 
 
 namespace gp {

@@ -41,3 +41,5 @@ namespace gp {
         return {buf.get(), buf.get() + size - 1}; // We don't want the '\0' inside
     }
 }
+
+#include "LogMacros.h"

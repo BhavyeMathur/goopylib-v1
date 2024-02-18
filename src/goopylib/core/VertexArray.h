@@ -3,8 +3,6 @@
 #include "gp.h"
 #include "Buffer.h"
 
-#define GP_TRIANGLES 0x0004
-
 namespace gp {
     class Window;
 
@@ -27,7 +25,7 @@ namespace gp {
 
         GPAPI static void unbind();
 
-        GPAPI void draw(int32_t count = 0, int32_t mode = GP_TRIANGLES) const;
+        GPAPI void draw(int32_t count = 0, int32_t mode = GP_DRAW_MODE_TRIANGLES) const;
 
         [[nodiscard]] GPAPI const VertexBuffer &getVertexBuffer() const;
 

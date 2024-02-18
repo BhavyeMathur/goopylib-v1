@@ -1,5 +1,7 @@
 #include "src/goopylib/scene/RenderingManager.h"
 
+#include <opengl.h>
+
 namespace gp {
     void RenderingManager::_updateBackground() {
         glClearColor(m_Background.getRedf(),

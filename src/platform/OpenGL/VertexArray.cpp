@@ -3,11 +3,8 @@
 #include "src/goopylib/core/VertexArray.h"
 
 #include <GLFW/glfw3.h>
-#include "opengl.h"
+#include <opengl.h>
 
-#if GP_TRIANGLES != GL_TRIANGLES
-static_assert(false, "GP_TRIANGLES != GL_TRIANGLES")
-#endif
 
 namespace gp {
     GLenum shaderOpenGLType(ShaderDataType type);

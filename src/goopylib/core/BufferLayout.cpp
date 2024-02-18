@@ -3,7 +3,7 @@
 #include "BufferLayout.h"
 #include "src/goopylib/debug/Error.h"
 
-#include "opengl.h"
+#include <opengl.h>
 
 namespace gp {
     GLenum shaderOpenGLType(ShaderDataType type) {

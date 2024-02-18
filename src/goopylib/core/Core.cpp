@@ -5,14 +5,10 @@
 #include "src/goopylib/core/Window.h"
 #include "src/goopylib/debug/Error.h"
 
-#if GP_USING_GLAD
-#include <glad/glad.h>
-#endif
+#include <opengl.h>
 
 #include <GLFW/glfw3.h>
-#ifdef APIENTRY
 #undef APIENTRY
-#endif
 
 
 namespace {

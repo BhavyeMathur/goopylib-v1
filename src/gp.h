@@ -8,14 +8,12 @@
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 
-#define __WINDOWS__ true
 #define GP_USING_GLAD true
 #define or ||
 #define and &&
 
 #else
 
-#define __WINDOWS__ false
 #define GP_USING_GLAD false
 
 #endif
@@ -46,4 +44,7 @@ namespace gp {
 }
 
 #include "src/config.h"
-#include "src/goopylib/debug/LogMacros.h"
+#include "src/goopylib/debug/Log.h"
+
+#define GP_DRAW_MODE_TRIANGLES 0x0004
+#define GP_DRAW_MODE_LINES 0x0001
