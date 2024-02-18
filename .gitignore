@@ -29,5 +29,8 @@ wheelhouse/
 *.egg-info/
 docs/_build/
 
+vs/*
+.idea/*
+
 main.py
 main.cpp
