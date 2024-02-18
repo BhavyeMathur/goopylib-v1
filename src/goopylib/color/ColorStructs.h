@@ -35,7 +35,7 @@ namespace gp {
         bool operator==(const RGBf &) const = default;
     };
 
-    std::ostream &operator<<(std::ostream &os, const RGBAf &color);
+    GPAPI std::ostream &operator<<(std::ostream &os, const RGBAf &color);
 
-    std::ostream &operator<<(std::ostream &os, const RGBf &color);
+    GPAPI std::ostream &operator<<(std::ostream &os, const RGBf &color);
 }

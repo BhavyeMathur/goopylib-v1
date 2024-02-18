@@ -5,12 +5,12 @@
 
 #include <random>
 
-unique_ptr<std::random_device> rand_dev;
-unique_ptr<std::mt19937> generator;
+std::unique_ptr<std::random_device> rand_dev;
+std::unique_ptr<std::mt19937> generator;
 
-unique_ptr<std::uniform_int_distribution<> > rgb_distribution;
-unique_ptr<std::uniform_int_distribution<> > angle_distribution;
-unique_ptr<std::uniform_real_distribution<float> > normalized_distribution;
+std::unique_ptr<std::uniform_int_distribution<> > rgb_distribution;
+std::unique_ptr<std::uniform_int_distribution<> > angle_distribution;
+std::unique_ptr<std::uniform_real_distribution<float> > normalized_distribution;
 
 namespace {
     bool is_initialized = false;

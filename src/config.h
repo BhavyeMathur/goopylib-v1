@@ -1,6 +1,6 @@
+#pragma once
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "cppcoreguidelines-macro-usage"
-#pragma once
 
 #define GP_ERROR_CHECKING true
 #define GP_TYPE_CHECKING true
