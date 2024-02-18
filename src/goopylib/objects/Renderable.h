@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vertex.h"
-#include "src/goopylib/core/Window.h"
+#include "../window/Window.h"
 
 #include <cfloat>
 

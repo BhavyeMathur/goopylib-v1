@@ -1,7 +1,8 @@
 #pragma once
 
 #include "gp.h"
-#include "Buffer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 namespace gp {
     class Window;

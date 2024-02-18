@@ -16,7 +16,7 @@
 #include "goopylib/scene/camera_object.h"
 #include "goopylib/scene/camera_module.h"
 
-#include "src/goopylib/core/Window.h"
+#include "../../src/goopylib/window/Window.h"
 #include "src/platform/events/MouseCodes.h"
 
 #if GP_ERROR_CHECKING

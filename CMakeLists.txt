@@ -70,7 +70,12 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_P
 
 add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/Core.cpp
+            src/goopylib/core/Buffer.cpp
+            src/goopylib/core/VertexBuffer.cpp
+            src/goopylib/core/IndexBuffer.cpp
+            src/goopylib/core/UniformBuffer.cpp
             src/goopylib/core/BufferLayout.cpp
+            src/goopylib/core/VertexArray.cpp
 
             src/goopylib/debug/Log.cpp
             src/goopylib/debug/Error.cpp
@@ -86,7 +91,6 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/color/ColorCMYK.cpp
             src/goopylib/color/ColorHSL.cpp
             src/goopylib/color/ColorHSV.cpp
-
             src/goopylib/color/Util.cpp
             src/goopylib/color/W3CX11.cpp
 
@@ -94,35 +98,23 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/objects/Triangle.cpp
             src/goopylib/objects/Ellipse.cpp
             src/goopylib/objects/Circle.cpp
-
             src/goopylib/objects/Quad.cpp
             src/goopylib/objects/Rectangle.cpp
             src/goopylib/objects/Line.cpp
-
             src/goopylib/objects/TexturedQuad.cpp
             src/goopylib/objects/TexturedRectangle.cpp
             src/goopylib/objects/Image.cpp
 
             src/goopylib/scene/RenderingManager.cpp
-            src/platform/OpenGL/RenderingManager.cpp
             src/goopylib/scene/Renderer.cpp
             src/goopylib/scene/Camera.cpp
             src/goopylib/scene/CameraController.cpp
 
-            src/platform/GLFW/Window.cpp
-            src/platform/OpenGL/Buffer.cpp
-            src/platform/OpenGL/VertexArray.cpp
-            src/platform/OpenGL/Shader.cpp
-
-            src/platform/OpenGL/Texture2D.cpp
-#            src/platform/OpenGL/TextureAtlas.cpp
-#            src/goopylib/texture/TextureAtlas.cpp
             src/goopylib/texture/Bitmap.cpp
             src/goopylib/texture/Texture2D.cpp
 
-            src/goopylib/core/Window.cpp
-            src/goopylib/core/Buffer.cpp
-            src/goopylib/core/VertexArray.cpp
+            src/goopylib/window/Window.cpp
+
             src/goopylib/shader/Shader.cpp
 
             vendor/stb/stb_image.cpp

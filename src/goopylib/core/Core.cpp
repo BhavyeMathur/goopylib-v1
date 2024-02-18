@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "src/goopylib/color/Util.h"
-#include "src/goopylib/core/Window.h"
+#include "../window/Window.h"
 #include "src/goopylib/debug/Error.h"
 
 #include <opengl.h>

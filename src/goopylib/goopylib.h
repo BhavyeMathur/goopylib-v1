@@ -1,7 +1,7 @@
 #pragma once
 
 #include "src/goopylib/core/Core.h"
-#include "src/goopylib/core/Window.h"
+#include "window/Window.h"
 #include "src/goopylib/core/Buffer.h"
 #include "src/goopylib/core/VertexArray.h"
 #include "src/goopylib/shader/Shader.h"

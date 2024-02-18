@@ -2,13 +2,11 @@
 
 #include "gp.h"
 
-#include "src/goopylib/core/Buffer.h"
+#include "src/goopylib/core/UniformBuffer.h"
 #include <glm/fwd.hpp>
 #include <unordered_map>
 
 namespace gp {
-    GPAPI std::string readFile(const char *filePath);
-
     class Shader final {
 
         friend class Renderer;
@@ -34,15 +32,7 @@ namespace gp {
                 _setUniform(_getLocation(name), std::forward<T>(args)...);
             }
 
-        [[nodiscard]] GPAPI static shared_ptr<Shader> load(const char *vertexShaderPath, const char *fragmentShaderPath) {
-            return shared_ptr<Shader>(new Shader(readFile(vertexShaderPath).c_str(),
-                                                 readFile(fragmentShaderPath).c_str()));
-        }
-
-    private:
-        GPAPI void bind() const;
-
-        GPAPI static void unbind();
+        [[nodiscard]] GPAPI static shared_ptr<Shader> load(const char *vertShaderPath, const char *fragShaderPath);
 
     private:
         uint32_t m_RendererID = 0;
@@ -51,6 +41,10 @@ namespace gp {
 
         const char *m_VertexShaderSource;
         const char *m_FragmentShaderSource;
+
+        GPAPI void bind() const;
+
+        GPAPI static void unbind();
 
         [[nodiscard]] GPAPI int32_t _getLocation(const char *name);
 

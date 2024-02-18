@@ -1,7 +1,7 @@
 #pragma once
 
-#include "src/goopylib/core/Window.h"
-#include "src/platform/events/KeyboardCodes.h"
+#include "src/goopylib/window/Window.h"
+#include "src/goopylib/window/KeyboardCodes.h"
 
 
 namespace gp {

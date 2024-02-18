@@ -6,23 +6,22 @@
 #include "src/goopylib/texture/Texture2D.h"
 
 #include "src/goopylib/objects/Triangle.h"
-#include "src/goopylib/objects/Rectangle.h"
 #include "src/goopylib/objects/Circle.h"
 #include "src/goopylib/objects/Line.h"
 #include "src/goopylib/objects/Image.h"
 
 #include "src/goopylib/debug/Error.h"
 
-namespace gp {
-    RenderingManager::RenderingManager(const Window &window, int width, int height, const char *title) :
-            m_Width(width),
-            m_Height(height),
-            m_Title(title),
-            m_Background(Color(255, 255, 255)),
-            m_Camera((float) -width / 2.0f, (float) width / 2.0f, (float) -height / 2.0f, (float) height / 2.0f),
-            m_Renderer(window),
-            m_AlphaRenderer(window) {
+#include <opengl.h>
 
+namespace gp {
+    RenderingManager::RenderingManager(const Window &window, int width, int height, const char *title) : m_Width(width),
+        m_Height(height),
+        m_Title(title),
+        m_Background(Color(255, 255, 255)),
+        m_Camera((float) -width / 2.0f, (float) width / 2.0f, (float) -height / 2.0f, (float) height / 2.0f),
+        m_Renderer(window),
+        m_AlphaRenderer(window) {
     }
 
     void RenderingManager::init() {
@@ -35,8 +34,10 @@ namespace gp {
         m_SolidShader.compile();
         m_EllipseShader.compile();
 
-        int32_t samplers[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8,
-                                9, 10, 11, 12, 13, 14, 15};
+        int32_t samplers[16] = {
+            0, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15
+        };
 
         m_TextureShader.compile();
         m_TextureShader.set("Texture", Texture2D::getTextureSlots(), samplers);
@@ -150,7 +151,7 @@ namespace gp {
 
         GP_CORE_TRACE("gp::RenderingManager::_drawRenderable() - 0");
 
-        Renderer& renderer = (object->isVisibleAndOpaque() ? m_Renderer : m_AlphaRenderer);
+        Renderer &renderer = (object->isVisibleAndOpaque() ? m_Renderer : m_AlphaRenderer);
 
         GP_CORE_TRACE("gp::RenderingManager::_drawRenderable() - 1");
         switch (object->_getRenderableSubclass()) {
@@ -181,7 +182,7 @@ namespace gp {
         uint32_t ID = object->m_RendererID;
         GP_CORE_TRACE("gp::RenderingManager::destroy({0})", ID);
 
-        Renderer& renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
+        Renderer &renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
 
         switch (object->_getRenderableSubclass()) {
             case RenderableSubclass::Line:
@@ -200,7 +201,7 @@ namespace gp {
                 renderer.destroyTexturedQuad(ID);
                 break;
         }
-        
+
         m_ObjectToIsOpaque.erase(ID);
     }
 
@@ -208,7 +209,7 @@ namespace gp {
         uint32_t ID = object->m_RendererID;
         GP_CORE_TRACE("gp::RenderingManager::_updateRenderable({0})", ID);
 
-        Renderer& renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
+        Renderer &renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
 
         if (m_ObjectToIsOpaque[ID] != object->isVisibleAndOpaque()) {
             _undrawRenderable(object);
@@ -237,5 +238,20 @@ namespace gp {
                 renderer.updateTexturedQuad(ID, dynamic_cast<TexturedQuad *>(object));
                 return;
         }
+    }
+
+    void RenderingManager::_updateBackground() {
+        glClearColor(m_Background.getRedf(),
+                     m_Background.getGreenf(),
+                     m_Background.getBluef(), 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void RenderingManager::_enableDepthWriting() {
+        glDepthMask(true);
+    }
+
+    void RenderingManager::_disableDepthWriting() {
+        glDepthMask(false);
     }
 }
