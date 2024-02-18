@@ -1,9 +1,8 @@
 #pragma once
 
+#include "gp.h"
+
 #include <spdlog/spdlog.h>
-#include <spdlog/fmt/ostr.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
-#include <spdlog/sinks/basic_file_sink.h>
 
 namespace gp {
     class Log {
@@ -24,6 +23,10 @@ namespace gp {
 }
 
 namespace gp {
+    inline std::string strformat(const std::string &format) {
+        return format;
+    }
+
     template<typename... Args>
     std::string strformat(const std::string &format, Args... args) {
         int size_s = std::snprintf(nullptr, 0, format.c_str(), args...) + 1;

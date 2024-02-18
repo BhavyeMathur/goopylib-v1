@@ -1,5 +1,6 @@
 #define GP_LOGGING_LEVEL 3
 #include "src/goopylib/shader/Shader.h"
+#include <fstream>
 
 
 namespace gp {

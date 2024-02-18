@@ -1,7 +1,6 @@
 #pragma once
 
 #include "gp.h"
-#include "Log.h"
 
 namespace gp {
     enum class ErrorType {
@@ -13,9 +12,9 @@ namespace gp {
     GPAPI void setError(ErrorType type, const std::string& message);
 }
 
-#define GP_RUNTIME_ERROR(msg, ...) gp::setError(gp::ErrorType::RuntimeError, gp::strformat(msg, __VA_ARGS__))
-#define GP_VALUE_ERROR(msg, ...) gp::setError(gp::ErrorType::ValueError, gp::strformat(msg, __VA_ARGS__))
-#define GP_FILENOTFOUND_ERROR(msg, ...) gp::setError(gp::ErrorType::FileNotFoundError, strformat(msg, __VA_ARGS__))
+#define GP_RUNTIME_ERROR(...) gp::setError(gp::ErrorType::RuntimeError, gp::strformat(__VA_ARGS__))
+#define GP_VALUE_ERROR(...) gp::setError(gp::ErrorType::ValueError, gp::strformat(__VA_ARGS__))
+#define GP_FILENOTFOUND_ERROR(...) gp::setError(gp::ErrorType::FileNotFoundError, strformat(__VA_ARGS__))
 
 #if GP_VALUE_CHECKING
 #define GP_CHECK_EQUALS(variable, val, error) if ((variable) != (val)) { GP_VALUE_ERROR(error); }

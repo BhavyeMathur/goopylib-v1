@@ -124,7 +124,7 @@ namespace gp {
                     return _7toRGB(hexstring, alpha);
                 }
             default:
-                GP_VALUE_ERROR("gp::hex::toRGB() invalid hexstring '{0}'", hexstring);
+                GP_VALUE_ERROR("gp::hex::toRGB() invalid hexstring '{0}'", hexstring.c_str());
                 return {-1, -1, -1};
         }
     }

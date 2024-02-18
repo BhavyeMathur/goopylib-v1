@@ -1,6 +1,10 @@
 #include "Log.h"
 #include "LogMacros.h"
 
+#include <spdlog/fmt/ostr.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/basic_file_sink.h>
+
 namespace gp {
     shared_ptr<spdlog::logger> Log::s_CoreLogger;
     shared_ptr<spdlog::logger> Log::s_PythonLogger;

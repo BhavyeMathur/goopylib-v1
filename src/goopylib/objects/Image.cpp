@@ -21,7 +21,7 @@ namespace gp {
 
         #if GP_ERROR_CHECKING
         if (width == 0 and height == 0) {
-            GP_FILENOTFOUND_ERROR("Image::Image() file '{0}' not found", path);
+            GP_FILENOTFOUND_ERROR("Image::Image() file '{0}' not found", path.c_str());
         }
         #endif
 
