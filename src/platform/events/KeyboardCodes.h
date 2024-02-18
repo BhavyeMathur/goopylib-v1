@@ -1,7 +1,5 @@
 #pragma once
 
-#if GP_USING_GLFW
-
 constexpr int32_t GP_KEY_UNKNOWN (-1);
 
 constexpr int32_t GP_KEY_SPACE = 32;
@@ -139,5 +137,3 @@ constexpr int32_t GP_KEY_RIGHT_ALT = 346;
 constexpr int32_t GP_KEY_RIGHT_SUPER = 347;
 
 constexpr int32_t GP_KEY_MENU = 348;
-
-#endif

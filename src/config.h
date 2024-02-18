@@ -2,9 +2,6 @@
 #pragma ide diagnostic ignored "cppcoreguidelines-macro-usage"
 #pragma once
 
-#define GP_USING_GLFW true
-#define GP_USING_OPENGL true
-
 #define GP_ERROR_CHECKING true
 #define GP_TYPE_CHECKING true
 #define GP_VALUE_CHECKING true

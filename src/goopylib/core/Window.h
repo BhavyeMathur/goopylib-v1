@@ -77,16 +77,12 @@ namespace gp {
 
         GPAPI std::string toString();
 
-        #if GP_USING_GLFW
-
         /**
          * @return a pointer to the underlying GLFW context.
          *
          * @throws std::runtime_error window has been destroyed
          */
         GPAPI GLFWwindow *getWindowGLFW();
-
-        #endif
 
         /**
          * @return whether the window is closed.
@@ -979,11 +975,7 @@ namespace gp {
         std::unordered_map<int, std::function<void(Window *window, int action)>> m_KeyCallbacks;
         std::unordered_map<int, std::function<void(Window *window, bool pressed)>> m_MouseCallbacks;
 
-        #if GP_USING_GLFW
-
         GLFWwindow *m_Window = nullptr;
-
-        #endif
 
         static std::vector<Window *> s_Instances;
 

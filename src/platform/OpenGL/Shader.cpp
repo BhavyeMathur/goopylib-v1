@@ -1,21 +1,12 @@
 #define GP_LOGGING_LEVEL 3
-
-#include "src/goopylib/shader/Shader.h"
-#include <glm/gtc/type_ptr.hpp>
-
 #if GP_LOGGING_LEVEL >= 6
 #include <glm/gtx/string_cast.hpp>
 #endif
 
-#if GP_USING_OPENGL
+#include "src/goopylib/shader/Shader.h"
+#include <glm/gtc/type_ptr.hpp>
 
-#if __APPLE__
-
-#include <OpenGL/gl3.h>
-
-#endif
-
-#endif
+#include "opengl.h"
 
 
 namespace gp {

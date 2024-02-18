@@ -45,12 +45,7 @@ using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 
 #include "src/config.h"
 
-#if GP_USING_OPENGL
 #define GP_DRAW_MODE_TRIANGLES GL_TRIANGLES
 #define GP_DRAW_MODE_LINES GL_LINES
-#else
-#define GP_DRAW_MODE_TRIANGLES
-#define GP_DRAW_MODE_LINES
-#endif
 
 #include "src/goopylib/debug/LogMacros.h"

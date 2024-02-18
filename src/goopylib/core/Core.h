@@ -39,8 +39,6 @@ namespace gp {
      */
     GPAPI void update();
 
-    #if GP_USING_GLFW
-
     /**
      * Updates goopylib every time an event occurs.
      */
@@ -112,15 +110,9 @@ namespace gp {
      */
     [[nodiscard]] GPAPI std::string glfwCurrentVersion();
 
-    #endif
-
-    #if GP_USING_OPENGL
-
     /**
      *
      * @return the version of OpenGL being used.
      */
     [[nodiscard]] GPAPI std::string openglVersion();
-
-    #endif
 }

@@ -5,19 +5,7 @@
 
 #include "src/goopylib/debug/Error.h"
 
-#if GP_USING_OPENGL
-
-#if __APPLE__
-
-#include <OpenGL/gl.h>
-
-#endif
-
-#if GP_USING_GLAD
-
-#include <glad/glad.h>
-
-#endif
+#include "opengl.h"
 
 
 namespace gp {
@@ -141,5 +129,3 @@ namespace gp {
         return 0;
     }
 }
-
-#endif

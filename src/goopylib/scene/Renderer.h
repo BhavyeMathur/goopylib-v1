@@ -6,15 +6,7 @@
 #include "src/goopylib/objects/Vertex.h"
 #include "src/goopylib/core/VertexArray.h"
 
-#if __APPLE__
-
-#include <OpenGL/gl.h>
-
-#endif
-
-#if GP_USING_GLAD
-#include <glad/glad.h>
-#endif
+#include "opengl.h"
 
 
 namespace gp {

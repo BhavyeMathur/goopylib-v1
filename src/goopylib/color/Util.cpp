@@ -3,8 +3,6 @@
 #include "Util.h"
 #include "src/goopylib/debug/Error.h"
 
-#include "src/goopylib/core/Core.h"
-
 #include <random>
 
 unique_ptr<std::random_device> rand_dev;

@@ -4,22 +4,6 @@
 #include <vector>
 #include <memory>
 
-#if GP_USING_OPENGL
-
-#if __APPLE__
-
-#include <OpenGL/gl.h>
-
-#endif
-
-#if GP_USING_GLAD
-
-#include <glad/glad.h>
-
-#endif
-
-#endif
-
 
 // Buffer Layout Data Types
 namespace gp {
@@ -27,19 +11,12 @@ namespace gp {
         None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
     };
 
-    #if GP_USING_OPENGL
-
-    [[nodiscard]] GLenum shaderOpenGLType(ShaderDataType type);
-
-    #endif
-
     [[nodiscard]] int32_t shaderTypeSize(ShaderDataType type);
 }
 
 // Buffer Layout Element
 namespace gp {
     class BufferElement {
-
         friend class BufferLayout;
 
     public:
@@ -68,7 +45,6 @@ namespace gp {
 // Buffer Layout
 namespace gp {
     class BufferLayout {
-
         friend class VertexArray;
 
         friend class Buffer;

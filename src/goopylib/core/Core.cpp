@@ -9,13 +9,9 @@
 #include <glad/glad.h>
 #endif
 
-#if GP_USING_GLFW
-
 #include <GLFW/glfw3.h>
 #ifdef APIENTRY
 #undef APIENTRY
-#endif
-
 #endif
 
 
@@ -28,7 +24,7 @@ namespace {
         GP_CORE_TRACE_ALL("gp::onUpdate()");
         gp::Window::updateAll();
 
-#if (GP_ERROR_CHECKING and GP_USING_OPENGL)
+#if GP_ERROR_CHECKING
         if (glfwGetCurrentContext()) {
             GLenum error;
             while ((error = glGetError()) != GL_NO_ERROR) {
@@ -75,7 +71,6 @@ namespace {
     void initGLFW() {
         GP_CORE_DEBUG("gp::init() initialising GLFW");
 
-#if GP_USING_GLFW
         glfwSetErrorCallback([](int error, const char *description) {
             GP_CORE_WARN("GLFW Error Code {0}: {1}", error, description);
         });
@@ -91,7 +86,6 @@ namespace {
 #if __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-#endif
     }
 }
 
@@ -101,10 +95,7 @@ namespace gp {
         GP_CORE_INFO("gp::init()");
 
         initColorRNG();
-
-#if GP_USING_GLFW
         initGLFW();
-#endif
     }
 
     void terminate() {
@@ -112,12 +103,10 @@ namespace gp {
 
         Window::destroyAll();
 
-#if GP_USING_GLFW
         GP_CORE_DEBUG("gp::terminate() terminating GLFW");
 
         glfwTerminate();
         is_initialized = false;
-#endif
     }
 
     bool isInitialized() {
@@ -129,12 +118,8 @@ namespace gp {
         GP_CHECK_INITIALISED("gp::update()");
 
         onUpdate();
-#if GP_USING_GLFW
         glfwPollEvents();
-#endif
     }
-
-#if GP_USING_GLFW
 
     void updateOnEvent() {
         GP_CORE_TRACE_ALL("gp::updateOnEvent()");
@@ -214,15 +199,9 @@ namespace gp {
         return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(revision);
     }
 
-#endif
-
-#if GP_USING_OPENGL
-
     std::string openglVersion() {
         GP_CORE_TRACE("gp::openglVersion()");
 
         return {reinterpret_cast<const char *>(glGetString(GL_VERSION))};
     }
-
-#endif
 }

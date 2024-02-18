@@ -2,28 +2,18 @@
 
 #include "src/goopylib/core/VertexArray.h"
 
-#if GP_USING_OPENGL
-
-#if __APPLE__
-
-#include <OpenGL/gl.h>
-#include <OpenGL/gl3.h>
-
-#endif
-
-#if GP_USING_GLAD
-
-#include <glad/glad.h>
-
-#endif
-
-#endif
-
 #include <GLFW/glfw3.h>
+#include "opengl.h"
+
+#if GP_TRIANGLES != GL_TRIANGLES
+static_assert(false, "GP_TRIANGLES != GL_TRIANGLES")
+#endif
 
 namespace gp {
+    GLenum shaderOpenGLType(ShaderDataType type);
+
     VertexArray::VertexArray(const BufferLayout &layout)
-            : m_VertexBuffer(layout) {
+        : m_VertexBuffer(layout) {
         GP_CORE_DEBUG("gp::VertexArray::VertexArray()");
 
         // TODO replace with gp::core function, move out of platform
@@ -32,10 +22,9 @@ namespace gp {
         }
     }
 
-    VertexArray::VertexArray(gp::VertexArray &&other) noexcept:
-            m_RendererID(std::exchange(other.m_RendererID, 0)),
-            m_VertexBuffer(std::move(other.m_VertexBuffer)),
-            m_IndexBuffer(std::exchange(other.m_IndexBuffer, nullptr)) {
+    VertexArray::VertexArray(VertexArray &&other) noexcept: m_RendererID(std::exchange(other.m_RendererID, 0)),
+                                                            m_VertexBuffer(std::move(other.m_VertexBuffer)),
+                                                            m_IndexBuffer(std::exchange(other.m_IndexBuffer, nullptr)) {
         GP_CORE_DEBUG("gp::VertexArray::VertexArray(gp::VertexArray &&other)");
     }
 
@@ -98,11 +87,10 @@ namespace gp {
                 case ShaderDataType::Float2:
                 case ShaderDataType::Float3:
                 case ShaderDataType::Float4: {
-
                     GP_CORE_DEBUG(
-                            "Vertex Array Attribute index={0}, size={1}, type=GL_FLOAT, normalized={2}, stride={3}, offset={4}",
-                            attrIndex, element.getCount(), element.isNormalised(), layout.m_Stride,
-                            (const void *) element.getOffset());
+                        "Vertex Array Attribute index={0}, size={1}, type=GL_FLOAT, normalized={2}, stride={3}, offset={4}",
+                        attrIndex, element.getCount(), element.isNormalised(), layout.m_Stride,
+                        (const void *) element.getOffset());
 
                     glEnableVertexAttribArray(attrIndex);
                     glVertexAttribPointer(attrIndex,
@@ -119,7 +107,6 @@ namespace gp {
                 case ShaderDataType::Int3:
                 case ShaderDataType::Int4:
                 case ShaderDataType::Bool: {
-
                     GP_CORE_DEBUG("Vertex Array Attribute index={0}, size={1}, type={2}, stride={3}, offset={4}",
                                   attrIndex, element.getCount(), shaderOpenGLType(type), layout.m_Stride,
                                   (const void *) element.getOffset());
@@ -135,18 +122,16 @@ namespace gp {
                 }
                 case ShaderDataType::Mat3:
                 case ShaderDataType::Mat4: {
-
                     GLenum glType = shaderOpenGLType(type);
                     bool normalized = element.isNormalised() ? GL_TRUE : GL_FALSE;
                     int32_t count = element.getCount();
                     int32_t stride = layout.m_Stride;
 
                     for (int32_t i = 0; i < count; i++) {
-
                         GP_CORE_DEBUG(
-                                "Vertex Array Attribute index={0}, size={1}, type={2}, isNormalized={3}, strideSize={4}, offset={5}",
-                                attrIndex, count, glType, normalized, stride,
-                                (const void *) (element.getOffset() + sizeof(float) * count * i));
+                            "Vertex Array Attribute index={0}, size={1}, type={2}, isNormalized={3}, strideSize={4}, offset={5}",
+                            attrIndex, count, glType, normalized, stride,
+                            (const void *) (element.getOffset() + sizeof(float) * count * i));
 
                         glEnableVertexAttribArray(attrIndex);
                         glVertexAttribPointer(attrIndex,
