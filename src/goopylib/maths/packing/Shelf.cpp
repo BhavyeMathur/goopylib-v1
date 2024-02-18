@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEl 3
 
 #include "Shelf.h"
+#include "src/goopylib/debug/Error.h"
 
 #include <cfloat>
 #include <utility>

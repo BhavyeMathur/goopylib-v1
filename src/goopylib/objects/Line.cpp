@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "Line.h"
+#include "src/goopylib/debug/Error.h"
 
 namespace {
     Point getLineQuadDeltas(Point p1, Point p2, float thickness) {

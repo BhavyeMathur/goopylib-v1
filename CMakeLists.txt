@@ -73,6 +73,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/goopylib/core/BufferLayout.cpp
 
             src/goopylib/debug/Log.cpp
+            src/goopylib/debug/Error.cpp
 
             src/goopylib/maths/gpmath.cpp
             src/goopylib/maths/Easing.cpp

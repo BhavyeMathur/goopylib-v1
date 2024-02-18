@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "src/goopylib/core/Window.h"
+#include "src/goopylib/debug/Error.h"
 
 namespace gp {
     Window::Window(int width, int height, const char *title)

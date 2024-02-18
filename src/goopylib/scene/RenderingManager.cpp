@@ -11,6 +11,8 @@
 #include "src/goopylib/objects/Line.h"
 #include "src/goopylib/objects/Image.h"
 
+#include "src/goopylib/debug/Error.h"
+
 namespace gp {
     RenderingManager::RenderingManager(const Window &window, int width, int height, const char *title) :
             m_Width(width),

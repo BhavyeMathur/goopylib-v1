@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "src/goopylib/core/Window.h"
+#include "src/goopylib/debug/Error.h"
 
 #if GP_USING_GLAD
 #include <glad/glad.h>

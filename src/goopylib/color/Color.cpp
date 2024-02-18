@@ -6,6 +6,7 @@
 #include "ColorCMYK.h"
 #include "ColorHSL.h"
 #include "ColorHSV.h"
+#include "src/goopylib/debug/Error.h"
 
 
 // Color Base Class

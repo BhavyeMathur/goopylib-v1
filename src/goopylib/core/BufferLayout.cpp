@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "BufferLayout.h"
+#include "src/goopylib/debug/Error.h"
 
 
 namespace gp {

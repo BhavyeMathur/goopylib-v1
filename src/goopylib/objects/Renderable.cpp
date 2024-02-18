@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "Renderable.h"
+#include "src/goopylib/debug/Error.h"
 
 namespace gp {
     Renderable::Renderable(Point position, std::initializer_list<Point> points)

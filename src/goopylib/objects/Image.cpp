@@ -2,9 +2,10 @@
 
 #include "Image.h"
 #include "src/goopylib/texture/Bitmap.h"
-#include <stb/stb_image.h>
 
-#include <utility>
+#include "src/goopylib/debug/Error.h"
+
+#include <stb/stb_image.h>
 
 
 // Core Methods

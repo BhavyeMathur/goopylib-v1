@@ -2,6 +2,7 @@
 
 #include "ColorHex.h"
 #include "ColorRGB.h"
+#include "src/goopylib/debug/Error.h"
 
 namespace gp {
     int ColorHex::_digitToInt(char digit) {

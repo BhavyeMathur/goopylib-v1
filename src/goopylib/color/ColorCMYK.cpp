@@ -2,6 +2,7 @@
 
 #include "ColorCMYK.h"
 #include "ColorRGB.h"
+#include "src/goopylib/debug/Error.h"
 
 
 // Color CMYK Class

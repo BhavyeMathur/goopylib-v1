@@ -1,8 +1,9 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "src/goopylib/core/Window.h"
-
 #include "src/platform/events/MouseCodes.h"
+
+#include "src/goopylib/debug/Error.h"
 
 // TODO check_key should return an int. 0 is released, 1 is pressed, 2 is repeat. (v2.0.x)
 // This would involve maintaining an unordered map of key codes to the key state

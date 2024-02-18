@@ -3,6 +3,7 @@
 #include "ColorHSV.h"
 #include "ColorHSL.h"
 #include "ColorRGB.h"
+#include "src/goopylib/debug/Error.h"
 
 
 namespace gp {

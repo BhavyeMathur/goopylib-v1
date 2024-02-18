@@ -1,5 +1,6 @@
 #define GP_LOGGING_LEVEL 3
 #include "Easing.h"
+#include "src/goopylib/debug/Error.h"
 
 #define EASE_IN(func, ...) func(t, ##__VA_ARGS__)
 #define EASE_OUT(func, ...) (1 - func(1 - t, ##__VA_ARGS__))

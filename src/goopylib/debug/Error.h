@@ -1,37 +1,21 @@
 #pragma once
 
+#include "gp.h"
 #include "Log.h"
 
 namespace gp {
-    bool isInitialized();
-
     enum class ErrorType {
         RuntimeError,
         ValueError,
         FileNotFoundError,
     };
 
-    template<typename... Args>
-        void setError(ErrorType type, const char *message, Args &&... args) {
-            if (isInitialized()) {
-                GP_CORE_CRITICAL(message, std::forward<Args>(args)...);
-            }
-
-            switch (type) {
-                case ErrorType::ValueError:
-                    throw std::invalid_argument(message);
-                case ErrorType::RuntimeError:
-                    throw std::runtime_error(message);
-                case ErrorType::FileNotFoundError:
-                    // Because C++98 (needed for the Python extension) does not have std::filestyle::filestyle_error
-                    throw std::runtime_error(message);
-            }
-        }
+    GPAPI void setError(ErrorType type, const std::string& message);
 }
 
-#define GP_RUNTIME_ERROR(...) gp::setError(gp::ErrorType::RuntimeError, __VA_ARGS__)
-#define GP_VALUE_ERROR(...) gp::setError(gp::ErrorType::ValueError, __VA_ARGS__)
-#define GP_FILENOTFOUND_ERROR(...) gp::setError(gp::ErrorType::FileNotFoundError, __VA_ARGS__)
+#define GP_RUNTIME_ERROR(msg, ...) gp::setError(gp::ErrorType::RuntimeError, gp::strformat(msg, __VA_ARGS__))
+#define GP_VALUE_ERROR(msg, ...) gp::setError(gp::ErrorType::ValueError, gp::strformat(msg, __VA_ARGS__))
+#define GP_FILENOTFOUND_ERROR(msg, ...) gp::setError(gp::ErrorType::FileNotFoundError, strformat(msg, __VA_ARGS__))
 
 #if GP_VALUE_CHECKING
 #define GP_CHECK_EQUALS(variable, val, error) if ((variable) != (val)) { GP_VALUE_ERROR(error); }

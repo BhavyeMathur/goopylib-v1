@@ -1,6 +1,8 @@
 #define GP_LOGGING_LEVEL 3
 #include "Bitmap.h"
 
+#include "src/goopylib/debug/Error.h"
+
 #include <stb/stb_image.h>
 #include <stb/stb_image_write.h>
 

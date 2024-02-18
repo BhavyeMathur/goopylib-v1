@@ -1,9 +1,11 @@
 #define GP_LOGGING_LEVEL 3
+
 #include "src/goopylib/texture/Texture2D.h"
+#include "src/goopylib/texture/Bitmap.h"
+
+#include "src/goopylib/debug/Error.h"
 
 #if GP_USING_OPENGL
-
-#include "src/goopylib/texture/Bitmap.h"
 
 #if __APPLE__
 
