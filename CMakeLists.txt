@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 project(goopylib)
 
+set(CMAKE_CXX_STANDARD 20)
+
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(__DEBUG__)
 endif ()
@@ -17,21 +19,17 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_RELEASE /O2)
 endif ()
 
-set(CMAKE_CXX_STANDARD 20)
-
-find_package(OpenGL REQUIRED)
-
 if (POLICY CMP0148)
     cmake_policy(SET CMP0148 OLD)
 endif ()
+
+find_package(OpenGL REQUIRED)
 find_package(PythonInterp REQUIRED)
 find_package(PythonLibs REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
-
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/src)
-
 include_directories(${CMAKE_SOURCE_DIR}/vendor)
 include_directories(${CMAKE_SOURCE_DIR}/vendor/glad)
 include_directories(${CMAKE_SOURCE_DIR}/vendor/glm)
@@ -118,8 +116,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/shader/Shader.cpp
 
             vendor/stb/stb_image.cpp
-            vendor/stb/stb_image_write.cpp
-            )
+            vendor/stb/stb_image_write.cpp)
 
 target_compile_definitions(goopylib PRIVATE GP_BUILD_DLL)
 
@@ -129,12 +126,11 @@ if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework IOKit")
 endif ()
 
-set(GLFW_DIR vendor/GLFW)
 set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
 set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "Build the GLFW test programs")
 set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "Build the GLFW documentation")
 set(GLFW_INSTALL OFF CACHE INTERNAL "Generate installation target")
-add_subdirectory(${GLFW_DIR})
+add_subdirectory(vendor/GLFW)
 target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${GLFW_DIR}/include)
 target_compile_definitions(${PROJECT_NAME} PRIVATE GLFW_INCLUDE_NONE)
@@ -147,14 +143,12 @@ endif ()
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/examples/BrickBreaker/CMakeLists.txt")
     add_subdirectory(examples/BrickBreaker)
 endif()
-if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/examples/Minecraft/CMakeLists.txt")
-    add_subdirectory(examples/Minecraft)
-endif()
-if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/examples/algorithms/packing/CMakeLists.txt")
-    add_subdirectory(examples/algorithms/packing)
-endif()
+
+add_subdirectory(examples/Minecraft)
+add_subdirectory(examples/algorithms/packing)
 
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest/CMakeLists.txt")
     add_subdirectory(vendor/googletest)
 endif()
 add_subdirectory(tests/color)
+add_subdirectory(tests/core)

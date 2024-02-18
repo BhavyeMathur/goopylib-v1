@@ -1,27 +1,86 @@
-#include "goopylib/goopylib.h"
-#include <iostream>
+#include "gtest/gtest.h"
+#include <src/goopylib.h>
 
-int main() {
+
+TEST(CoreTests, InitAndTermination) {
     gp::init();
+    EXPECT_TRUE(gp::isInitialized());
+    gp::init(); // test twice
+    EXPECT_TRUE(gp::isInitialized());
 
-    std::cout << "Refresh Rate: " << gp::getRefreshRate() << std::endl;
-    std::cout << "Screen Width: " << gp::getScreenWidth() << std::endl;
-    std::cout << "Screen Height: " << gp::getScreenHeight() << std::endl;
-    std::cout << "# of Monitors: " << gp::getNumberOfMonitors() << std::endl;
-    std::cout << std::endl;
-
-    std::cout << "GLFW Compiled Version: " << gp::glfwCompiledVersion() << std::endl;
-    std::cout << "GLFW Current Version: " << gp::glfwCurrentVersion() << std::endl;
-
-    // goopylib provides 3 update functions
-    gp::update();
-
-    // These have been commented out because without an active window, they will simply pause the program
-    // gp::updateOnEvent();
-    // gp::updateTimeout(60);
-
-    // edit the default update rate to update at 30 FPS
-    gp::setBufferSwapInterval(30);
+    EXPECT_FALSE(gp::hasActiveContext());
 
     gp::terminate();
+    EXPECT_FALSE(gp::isInitialized());
+    gp::terminate(); // test twice
+    EXPECT_FALSE(gp::isInitialized());
+
+    EXPECT_FALSE(gp::hasActiveContext());
+}
+
+TEST(CoreTests, ScreenParams) {
+    gp::init();
+
+    EXPECT_GT(gp::getRefreshRate(), 0);
+    EXPECT_GT(gp::getScreenWidth(), 0);
+    EXPECT_GT(gp::getScreenHeight(), 0);
+    EXPECT_GT(gp::getNumberOfMonitors(), 0);
+}
+
+TEST(CoreTests, ScreenParamsError) {
+    gp::terminate();
+
+    EXPECT_THROW(gp::getRefreshRate(), std::runtime_error);
+    EXPECT_THROW(gp::getScreenWidth(), std::runtime_error);
+    EXPECT_THROW(gp::getScreenHeight(), std::runtime_error);
+    EXPECT_THROW(gp::getNumberOfMonitors(), std::runtime_error);
+}
+
+TEST(CoreTests, Unintialised) {
+    gp::terminate();
+
+    EXPECT_THROW(gp::openglVersion(), std::runtime_error);
+    EXPECT_THROW(gp::getTime(), std::runtime_error);
+
+    EXPECT_THROW(gp::update(), std::runtime_error);
+    EXPECT_THROW(gp::updateTimeout(0), std::runtime_error);
+    EXPECT_THROW(gp::updateOnEvent(), std::runtime_error);
+}
+
+TEST(CoreTests, NoContext) {
+    gp::init();
+
+    EXPECT_THROW(gp::openglVersion(), std::runtime_error);
+    EXPECT_NO_THROW(gp::getTime());
+
+    EXPECT_NO_THROW(gp::update());
+    EXPECT_NO_THROW(gp::updateTimeout(0));
+    EXPECT_THROW(gp::updateOnEvent(), std::runtime_error);
+}
+
+TEST(CoreTests, InvalidValueError) {
+    gp::init();
+
+    EXPECT_THROW(gp::updateTimeout(-1), std::invalid_argument);
+    EXPECT_THROW(gp::setBufferSwapInterval(-1), std::invalid_argument);
+}
+
+TEST(CoreTests, VersionParams) {
+    gp::init();
+
+    auto glfwCompiledVersion = gp::glfwCompiledVersion();
+    auto glfwCurrentVersion = gp::glfwCurrentVersion();
+
+    EXPECT_GT(gp::glfwCompiledVersion().length(), 0);
+    EXPECT_GT(gp::glfwCurrentVersion().length(), 0);
+
+    gp::terminate();
+
+    EXPECT_STREQ(gp::glfwCompiledVersion().c_str(), glfwCompiledVersion.c_str());
+    EXPECT_STREQ(gp::glfwCurrentVersion().c_str(), glfwCurrentVersion.c_str());
+}
+
+TEST(CoreTests, Time) {
+    gp::init();
+    EXPECT_GT(gp::getTime(), 0);
 }

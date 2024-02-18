@@ -1,5 +1,5 @@
-#include "gtest/gtest.h"
-#include <../../src/goopylib.h>
+#include "color.h"
+
 
 TEST(CoreColorTests, ColorFromColorSubclass) {
     gp::ColorRGB colorRGB{10, 15, 20, 0.1};

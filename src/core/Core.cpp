@@ -119,7 +119,7 @@ namespace gp {
 
     void updateOnEvent() {
         GP_CORE_TRACE_ALL("gp::updateOnEvent()");
-        GP_CHECK_INITIALISED("gp::updateOnEvent()");
+        GP_CHECK_ACTIVE_CONTEXT("gp::updateOnEvent()");
 
         glfwWaitEvents();
         onUpdate();
@@ -169,6 +169,7 @@ namespace gp {
     }
 
     double getTime() {
+        GP_CHECK_INITIALISED("gp::getTime()");
         return glfwGetTime();
     }
 
@@ -194,6 +195,7 @@ namespace gp {
 
     std::string openglVersion() {
         GP_CORE_TRACE("gp::openglVersion()");
+        GP_CHECK_ACTIVE_CONTEXT("gp::openglVersion()");
         return {reinterpret_cast<const char *>(glGetString(GL_VERSION))};
     }
 }
