@@ -7,34 +7,34 @@
 namespace gp {
     class Window;
 
-    class VertexArray final {
+    class GPAPI VertexArray final {
 
         friend class Renderer;
 
     public:
-        GPAPI VertexArray(const BufferLayout &layout);
+        VertexArray(const BufferLayout &layout);
 
-        GPAPI VertexArray(const VertexArray &) = delete;
+        VertexArray(const VertexArray &) = delete;
 
-        GPAPI VertexArray(VertexArray &&other) noexcept;
+        VertexArray(VertexArray &&other) noexcept;
 
-        GPAPI ~VertexArray();
+        ~VertexArray();
 
-        GPAPI void init();
+        void init();
 
-        GPAPI void bind() const;
+        void bind() const;
 
-        GPAPI static void unbind();
+        static void unbind();
 
-        GPAPI void draw(int32_t count = 0, int32_t mode = GP_DRAW_MODE_TRIANGLES) const;
+        void draw(int32_t count = 0, int32_t mode = GP_DRAW_MODE_TRIANGLES) const;
 
-        [[nodiscard]] GPAPI const VertexBuffer &getVertexBuffer() const;
+        [[nodiscard]] const VertexBuffer &getVertexBuffer() const;
 
-        GPAPI void setIndexBuffer(std::initializer_list<uint32_t> indices);
+        void setIndexBuffer(std::initializer_list<uint32_t> indices);
 
-        GPAPI void setIndexBuffer(uint32_t count, uint32_t *indices);
+        void setIndexBuffer(uint32_t *indices, uint32_t count);
 
-        [[nodiscard]] GPAPI const shared_ptr<IndexBuffer> &getIndexBuffer() const;
+        [[nodiscard]] const shared_ptr<IndexBuffer> &getIndexBuffer() const;
 
     private:
         uint32_t m_RendererID = 0;
@@ -42,6 +42,6 @@ namespace gp {
         VertexBuffer m_VertexBuffer;
         shared_ptr<IndexBuffer> m_IndexBuffer = nullptr;
 
-        GPAPI void _setVertexAttribs();
+        void _setVertexAttribs();
     };
 }

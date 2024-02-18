@@ -2,7 +2,7 @@
 #include <opengl.h>
 
 namespace gp {
-    VertexBuffer::VertexBuffer(const gp::BufferLayout &layout)
+    VertexBuffer::VertexBuffer(const BufferLayout &layout)
             : Buffer(0, layout) {
     }
 

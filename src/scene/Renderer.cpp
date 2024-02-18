@@ -503,7 +503,7 @@ namespace gp {
                 indices[indicesIndex + 4] = vertexIndex + 2;
                 indices[indicesIndex + 5] = vertexIndex + 3;
             }
-            object.VAO.setIndexBuffer(object.indices, indices);
+            object.VAO.setIndexBuffer(indices, object.indices);
 
             delete[] indices;
         }

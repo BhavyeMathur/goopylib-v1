@@ -78,11 +78,11 @@ namespace gp {
         m_IndexBuffer = make_unique<IndexBuffer>(indices);
     }
 
-    void VertexArray::setIndexBuffer(uint32_t count, uint32_t *indices) {
+    void VertexArray::setIndexBuffer(uint32_t *indices, uint32_t count) {
         GP_CORE_TRACE("VertexArray::setIndexBuffer({0})", count);
 
         bind();
-        m_IndexBuffer = make_unique<IndexBuffer>(count, indices);
+        m_IndexBuffer = make_unique<IndexBuffer>(indices, count);
     }
 
     const VertexBuffer &VertexArray::getVertexBuffer() const {

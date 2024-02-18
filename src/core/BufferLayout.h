@@ -7,30 +7,30 @@
 
 // Buffer Layout Data Types
 namespace gp {
-    enum class ShaderDataType {
+    enum class GPAPI ShaderDataType {
         None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
     };
 
-    [[nodiscard]] int32_t shaderTypeSize(ShaderDataType type);
+    [[nodiscard]] GPAPI int32_t shaderTypeSize(ShaderDataType type);
 }
 
 // Buffer Layout Element
 namespace gp {
-    class BufferElement {
+    class GPAPI BufferElement {
         friend class BufferLayout;
 
     public:
-        GPAPI BufferElement(ShaderDataType type, const char *name, bool normalized = false);
+        BufferElement(ShaderDataType type, const char *name, bool normalized = false);
 
-        [[nodiscard]] GPAPI int32_t getCount() const;
+        [[nodiscard]] int32_t getCount() const;
 
-        [[nodiscard]] GPAPI ShaderDataType getDataType() const;
+        [[nodiscard]] ShaderDataType getDataType() const;
 
-        [[nodiscard]] GPAPI bool isNormalised() const;
+        [[nodiscard]] bool isNormalised() const;
 
-        [[nodiscard]] GPAPI size_t getOffset() const;
+        [[nodiscard]] size_t getOffset() const;
 
-        [[nodiscard]] GPAPI const char *getName() const;
+        [[nodiscard]] const char *getName() const;
 
     private:
         const char *m_Name;
@@ -44,25 +44,25 @@ namespace gp {
 
 // Buffer Layout
 namespace gp {
-    class BufferLayout {
+    class GPAPI BufferLayout {
         friend class VertexArray;
 
         friend class Buffer;
 
     public:
-        GPAPI BufferLayout(BufferElement *elements, int32_t count);
+        BufferLayout(BufferElement *elements, int32_t count);
 
-        GPAPI BufferLayout(std::initializer_list<BufferElement> elements);
+        BufferLayout(std::initializer_list<BufferElement> elements);
 
-        [[nodiscard]] GPAPI std::vector<BufferElement>::iterator begin();
+        [[nodiscard]] std::vector<BufferElement>::iterator begin();
 
-        [[nodiscard]] GPAPI std::vector<BufferElement>::iterator end();
+        [[nodiscard]] std::vector<BufferElement>::iterator end();
 
-        [[nodiscard]] GPAPI std::vector<BufferElement>::const_iterator begin() const;
+        [[nodiscard]] std::vector<BufferElement>::const_iterator begin() const;
 
-        [[nodiscard]] GPAPI std::vector<BufferElement>::const_iterator end() const;
+        [[nodiscard]] std::vector<BufferElement>::const_iterator end() const;
 
-        GPAPI void calculateOffsetAndStride();
+        void calculateOffsetAndStride();
 
     private:
         std::vector<BufferElement> m_Elements;

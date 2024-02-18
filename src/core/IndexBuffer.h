@@ -6,17 +6,19 @@ namespace gp {
     class IndexBuffer final : public Buffer {
 
     public:
-        GPAPI IndexBuffer(int32_t count, uint32_t *indices);
+        IndexBuffer(const uint32_t *indices, int32_t length);
 
-        GPAPI IndexBuffer(std::initializer_list<uint32_t> indices);
+        IndexBuffer(std::initializer_list<uint32_t> indices);
 
-        GPAPI IndexBuffer(const IndexBuffer &) = delete;
+        IndexBuffer(const IndexBuffer &) = delete;
 
-        GPAPI IndexBuffer(IndexBuffer &&other) noexcept = default;
+        IndexBuffer(IndexBuffer &&other) noexcept = default;
 
-        GPAPI static void unbind();
+        void setData(const void *data, int32_t length) override;
+
+        static void unbind();
 
     protected:
-        GPAPI uint32_t _getBufferTarget() const override;
+        uint32_t _getBufferTarget() const override;
     };
 }

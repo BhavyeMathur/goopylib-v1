@@ -1,9 +1,9 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "core/Buffer.h"
+
 #include <opengl.h>
 #include <GLFW/glfw3.h>
-
 #include <utility>
 
 
