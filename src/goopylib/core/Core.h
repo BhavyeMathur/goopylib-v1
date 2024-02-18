@@ -92,7 +92,7 @@ namespace gp {
      *
      * @return the number of seconds since goopylib was initialized
      */
-    [[nodiscard]] GPAPI float getTime();
+    [[nodiscard]] GPAPI double getTime();
 
     /**
      *

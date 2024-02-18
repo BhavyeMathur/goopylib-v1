@@ -2,6 +2,8 @@
 
 
 TEST(ColorRandomTests, ColorFromColorSubclass) {
+    gp::init();
+
     gp::Color color = gp::randomColor();
     gp::ColorRGB colorRGB = gp::randomRGB();
     gp::ColorHex colorHex = gp::randomHex();

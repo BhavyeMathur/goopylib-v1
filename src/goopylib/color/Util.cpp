@@ -3,6 +3,8 @@
 #include "Util.h"
 #include "src/goopylib/debug/Error.h"
 
+#include "src/goopylib/core/Core.h"
+
 #include <random>
 
 unique_ptr<std::random_device> rand_dev;
@@ -11,6 +13,10 @@ unique_ptr<std::mt19937> generator;
 unique_ptr<std::uniform_int_distribution<> > rgb_distribution;
 unique_ptr<std::uniform_int_distribution<> > angle_distribution;
 unique_ptr<std::uniform_real_distribution<float> > normalized_distribution;
+
+namespace {
+    bool is_initialized = false;
+}
 
 namespace gp {
     void initColorRNG() {
@@ -27,10 +33,13 @@ namespace gp {
         catch (...) {
             GP_RUNTIME_ERROR("gp::initRNG() failed to initialize random color generator");
         }
+
+        is_initialized = true;
     }
 
-    ColorRGB randomColor() {
+    Color randomColor() {
         GP_CORE_INFO("gp::randomColor()");
+        GP_CHECK_INITIALISED("gp::randomColor()");
 
         return {
             (*rgb_distribution)(*generator),
@@ -41,16 +50,19 @@ namespace gp {
 
     ColorRGB randomRGB() {
         GP_CORE_INFO("gp::randomRGB()");
+        GP_CHECK_INITIALISED("gp::randomRGB()");
         return randomColor();
     }
 
     ColorHex randomHex() {
         GP_CORE_INFO("gp::randomHex()");
+        GP_CHECK_INITIALISED("gp::randomHex()");
         return randomRGB();
     }
 
     ColorCMYK randomCMYK() {
         GP_CORE_INFO("gp::randomCMYK()");
+        GP_CHECK_INITIALISED("gp::randomCMYK()");
 
         return {
             (*normalized_distribution)(*generator),
@@ -62,6 +74,7 @@ namespace gp {
 
     ColorHSV randomHSV() {
         GP_CORE_INFO("gp::randomHSV()");
+        GP_CHECK_INITIALISED("gp::randomHSV()");
 
         return {
             (*angle_distribution)(*generator),
@@ -72,6 +85,7 @@ namespace gp {
 
     ColorHSL randomHSL() {
         GP_CORE_INFO("gp::randomHSL()");
+        GP_CHECK_INITIALISED("gp::randomHSL()");
 
         return {
             (*angle_distribution)(*generator),

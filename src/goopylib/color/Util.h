@@ -11,27 +11,32 @@ namespace gp {
     void initColorRNG();
 
     /**
+     * @return a random color
+     */
+    [[nodiscard]] GPAPI Color randomColor();
+
+    /**
      * @return a random RGB color
      */
-    [[nodiscard]] ColorRGB GPAPI randomRGB();
+    [[nodiscard]] GPAPI ColorRGB randomRGB();
 
     /**
      * @return a random Hexadecimal color
      */
-    [[nodiscard]] ColorHex GPAPI randomHex();
+    [[nodiscard]] GPAPI ColorHex randomHex();
 
     /**
      * @return a random CMYK color
      */
-    [[nodiscard]] ColorCMYK GPAPI randomCMYK();
+    [[nodiscard]] GPAPI ColorCMYK randomCMYK();
 
     /**
      * @return a random HSV color
      */
-    [[nodiscard]] ColorHSV GPAPI randomHSV();
+    [[nodiscard]] GPAPI ColorHSV randomHSV();
 
     /**
      * @return a random HSL color
      */
-    [[nodiscard]] ColorHSL GPAPI randomHSL();
+    [[nodiscard]] GPAPI ColorHSL randomHSL();
 }

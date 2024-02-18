@@ -19,8 +19,8 @@
 #endif
 
 
-namespace gp {
-    static bool is_initialized = false;
+namespace {
+    bool is_initialized = false;
 }
 
 namespace {
@@ -28,7 +28,7 @@ namespace {
         GP_CORE_TRACE_ALL("gp::onUpdate()");
         gp::Window::updateAll();
 
-        #if (GP_ERROR_CHECKING and GP_USING_OPENGL)
+#if (GP_ERROR_CHECKING and GP_USING_OPENGL)
         if (glfwGetCurrentContext()) {
             GLenum error;
             while ((error = glGetError()) != GL_NO_ERROR) {
@@ -69,29 +69,29 @@ namespace {
                 }
             }
         }
-        #endif
+#endif
     }
 
     void initGLFW() {
         GP_CORE_DEBUG("gp::init() initialising GLFW");
 
-        #if GP_USING_GLFW
+#if GP_USING_GLFW
         glfwSetErrorCallback([](int error, const char *description) {
             GP_CORE_WARN("GLFW Error Code {0}: {1}", error, description);
         });
         if (!glfwInit()) {
             GP_RUNTIME_ERROR("gp::init() failed to initialize GLFW");
         }
-        gp::is_initialized = true;
+        is_initialized = true;
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        #if __APPLE__
+#if __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-        #endif
-        #endif
+#endif
+#endif
     }
 }
 
@@ -102,9 +102,9 @@ namespace gp {
 
         initColorRNG();
 
-        #if GP_USING_GLFW
+#if GP_USING_GLFW
         initGLFW();
-        #endif
+#endif
     }
 
     void terminate() {
@@ -112,12 +112,12 @@ namespace gp {
 
         Window::destroyAll();
 
-        #if GP_USING_GLFW
+#if GP_USING_GLFW
         GP_CORE_DEBUG("gp::terminate() terminating GLFW");
 
         glfwTerminate();
         is_initialized = false;
-        #endif
+#endif
     }
 
     bool isInitialized() {
@@ -126,17 +126,19 @@ namespace gp {
 
     void update() {
         GP_CORE_TRACE_ALL("gp::update()");
+        GP_CHECK_INITIALISED("gp::update()");
 
         onUpdate();
-        #if GP_USING_GLFW
+#if GP_USING_GLFW
         glfwPollEvents();
-        #endif
+#endif
     }
 
-    #if GP_USING_GLFW
+#if GP_USING_GLFW
 
     void updateOnEvent() {
         GP_CORE_TRACE_ALL("gp::updateOnEvent()");
+        GP_CHECK_INITIALISED("gp::updateOnEvent()");
 
         glfwWaitEvents();
         onUpdate();
@@ -144,6 +146,7 @@ namespace gp {
 
     void updateTimeout(double timeout) {
         GP_CORE_TRACE_ALL("gp::updateTimeout(timeout={0})", timeout);
+        GP_CHECK_INITIALISED("gp::updateTimeout()");
 
         GP_CHECK_GE(timeout, 0, "gp::updateTimeout() timeout must be greater than or equal to 0");
 
@@ -154,6 +157,7 @@ namespace gp {
     void setBufferSwapInterval(int32_t interval) {
         GP_CORE_TRACE("gp::setBufferSwapInterval(interval={0})", interval);
 
+        GP_CHECK_INITIALISED("gp::setBufferSwapInterval()");
         GP_CHECK_GE(interval, 0, "gp::setBufferSwapInterval() interval must be greater than or equal to 0");
 
         glfwSwapInterval(interval);
@@ -161,36 +165,36 @@ namespace gp {
 
     int getRefreshRate() {
         GP_CORE_TRACE("gp::getRefreshRate()");
-
+        GP_CHECK_ACTIVE_CONTEXT("gp::getRefreshRate()");
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->refreshRate;
     }
 
     int getScreenWidth() {
         GP_CORE_TRACE("gp::getScreenWidth()");
-
+        GP_CHECK_ACTIVE_CONTEXT("gp::getScreenWidth()");
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
     }
 
     int getScreenHeight() {
         GP_CORE_TRACE("gp::getScreenHeight()");
-
+        GP_CHECK_ACTIVE_CONTEXT("gp::getScreenHeight()");
         return glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
     }
 
     int getNumberOfMonitors() {
         GP_CORE_TRACE("gp::getNumberOfMonitors()");
-
+        GP_CHECK_ACTIVE_CONTEXT("gp::getNumberOfMonitors()");
         int count;
         glfwGetMonitors(&count);
         return count;
     }
 
-    float getTime() {
-        return (float) glfwGetTime();
+    double getTime() {
+        return glfwGetTime();
     }
 
     bool hasActiveContext() {
-        return (bool) glfwGetCurrentContext();
+        return glfwGetCurrentContext();
     }
 
     std::string glfwCompiledVersion() {
@@ -202,21 +206,23 @@ namespace gp {
     std::string glfwCurrentVersion() {
         GP_CORE_TRACE("gp::glfwCurrentVersion()");
 
-        int major, minor, revision;
+        int major;
+        int minor;
+        int revision;
         glfwGetVersion(&major, &minor, &revision);
 
         return std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(revision);
     }
 
-    #endif
+#endif
 
-    #if GP_USING_OPENGL
+#if GP_USING_OPENGL
 
     std::string openglVersion() {
         GP_CORE_TRACE("gp::openglVersion()");
 
-        return {(char *)(glGetString(GL_VERSION))};
+        return {reinterpret_cast<const char *>(glGetString(GL_VERSION))};
     }
 
-    #endif
+#endif
 }
