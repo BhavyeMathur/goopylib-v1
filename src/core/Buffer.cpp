@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "core/Buffer.h"
+#include "debug/Error.h"
 
 #include <opengl.h>
 #include <GLFW/glfw3.h>
@@ -12,6 +13,8 @@ namespace gp {
         : m_Length{length},
           m_Layout{layout} {
         GP_CORE_INFO("gp::Buffer::Buffer(layout)");
+        GP_CHECK_GE(length, 0, "gp::Buffer::Buffer() – length must be greater than or equal to 0");
+
         if (glfwGetCurrentContext()) {
             init();
         }
@@ -33,6 +36,7 @@ namespace gp {
 
     void Buffer::bind() const {
         GP_CORE_TRACE("gp::Buffer::bind({0})", m_RendererID);
+        GP_CHECK_NOT_EQUALS(m_RendererID, 0, "gp::Buffer::bind() – cannot bind uninitialised buffer");
         glBindBuffer(_getBufferTarget(), m_RendererID);
     }
 
@@ -56,6 +60,7 @@ namespace gp {
 
     void Buffer::setData(const void *data, const int32_t length) {
         GP_CORE_DEBUG("gp::Buffer::setData({0}, length={1})", m_RendererID, length);
+        GP_CHECK_GE(length, 0, "gp::Buffer::setData() – data length must be greater than or equal to 0");
 
         bind();
         glBufferData(_getBufferTarget(), length * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
@@ -65,6 +70,9 @@ namespace gp {
 
     void Buffer::setData(const void *data, const int32_t length, const int32_t offset) const {
         GP_CORE_DEBUG("gp::Buffer::setData({0}, length={1}, offset={2})", m_RendererID, length, offset);
+        GP_CHECK_GE(length, 0, "gp::Buffer::setData() – data length must be greater than or equal to 0");
+        GP_CHECK_GE(offset, 0, "gp::Buffer::setData() – offset must be greater than or equal to 0");
+        GP_CHECK_GE(length + offset, m_Length, "gp::Buffer::setData() – length + offset must be less than buffer size");
 
         bind();
         glBufferSubData(_getBufferTarget(), offset * m_Layout.m_Stride, length * m_Layout.m_Stride, data);
