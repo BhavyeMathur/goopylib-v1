@@ -20,7 +20,7 @@ namespace gp {
         /**
          * Create a ColorHSL from another color object.
          */
-        ColorHSL(const Color &color);
+        ColorHSL(const Color &color); // NOLINT(*-explicit-conversions)
 
         /**
          * Create an HSL color by passing hue (0-360), saturation (0-1), luminance (0-1) and optionally, alpha (0-1)

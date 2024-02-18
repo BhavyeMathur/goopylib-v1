@@ -20,7 +20,7 @@ namespace gp {
         /**
          * Create a ColorHSV from another color object.
          */
-        ColorHSV(const Color &color);
+        ColorHSV(const Color &color); // NOLINT(*-explicit-conversions)
 
         /**
          * Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)

@@ -1,6 +1,8 @@
 #include "color.h"
 
 
+// TODO Unittests for HSL -> HSV and HSV -> HSL conversions, HSL & HSV copy assignment & const Color& constructors
+
 TEST(ColorHSLTests, ColorFromHSL) {
     gp::ColorHSL color{0, 0.1, 0.2};
     EXPECT_NEAR(color.getHue(), 0, 1e-2);

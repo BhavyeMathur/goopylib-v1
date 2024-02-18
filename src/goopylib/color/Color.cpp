@@ -8,6 +8,13 @@
 #include "ColorHSV.h"
 #include "src/goopylib/debug/Error.h"
 
+#define GP_COLOR_CLAMP(arg) arg = std::clamp(arg, 0, 255)
+#define GP_COLOR_CLAMPf(arg) std::clamp(arg, 0.0f, 1.0f)
+#define GP_COLOR_CLAMP_01(arg) arg = GP_COLOR_CLAMPf(arg)
+#define GP_COLOR_CLAMP_RGB GP_COLOR_CLAMP(red); GP_COLOR_CLAMP(green); GP_COLOR_CLAMP(blue)
+
+#define GP_COLOR_NORMALISE(arg) static_cast<float>(arg) / 255.0f
+
 
 // Color Base Class
 namespace gp {
@@ -16,9 +23,9 @@ namespace gp {
           m_Green{green},
           m_Blue{blue},
           m_Alpha{alpha},
-          m_Redf{static_cast<float>(m_Red) / 255.0f},
-          m_Greenf{static_cast<float>(m_Green) / 255.0f},
-          m_Bluef{static_cast<float>(m_Blue) / 255.0f} {
+          m_Redf{GP_COLOR_NORMALISE(red)},
+          m_Greenf{GP_COLOR_NORMALISE(green)},
+          m_Bluef{GP_COLOR_NORMALISE(blue)} {
         GP_CORE_INFO("gp::Color::Color({0}, {1}, {2}, alpha={3})", red, green, blue, alpha);
 
         GP_CHECK_INCLUSIVE_RANGE(red, 0, 255, "Color red value must be between 0 and 255")
@@ -48,15 +55,15 @@ namespace gp {
     void Color::_clampValues() {
         GP_CORE_DEBUG("gp::Color::update()");
 
-        m_Red = std::clamp(m_Red, 0, 255);
-        m_Green = std::clamp(m_Green, 0, 255);
-        m_Blue = std::clamp(m_Blue, 0, 255);
+        GP_COLOR_CLAMP(m_Red);
+        GP_COLOR_CLAMP(m_Green);
+        GP_COLOR_CLAMP(m_Blue);
 
-        m_Alpha = std::clamp(m_Alpha, 0.0f, 1.0f);
+        GP_COLOR_CLAMP_01(m_Alpha);
 
-        m_Redf = static_cast<float>(m_Red) / 255.0f;
-        m_Greenf = static_cast<float>(m_Green) / 255.0f;
-        m_Bluef = static_cast<float>(m_Blue) / 255.0f;
+        m_Redf = GP_COLOR_NORMALISE(m_Red);
+        m_Greenf = GP_COLOR_NORMALISE(m_Green);
+        m_Bluef = GP_COLOR_NORMALISE(m_Blue);
 
         _updateDerivedClass();
     }
@@ -78,7 +85,7 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color red value must be between 0 and 255")
 
         m_Red = value;
-        m_Redf = static_cast<float>(value) / 255.0f;
+        m_Redf = GP_COLOR_NORMALISE(value);
         _updateDerivedClass();
     }
 
@@ -92,7 +99,7 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color green value must be between 0 and 255")
 
         m_Green = value;
-        m_Greenf = static_cast<float>(value) / 255.0f;
+        m_Greenf = GP_COLOR_NORMALISE(value);
         _updateDerivedClass();
     }
 
@@ -106,7 +113,7 @@ namespace gp {
         GP_CHECK_INCLUSIVE_RANGE(value, 0, 255, "Color blue value must be between 0 and 255")
 
         m_Blue = value;
-        m_Bluef = static_cast<float>(value) / 255.0f;
+        m_Bluef = GP_COLOR_NORMALISE(value);
         _updateDerivedClass();
     }
 
@@ -170,10 +177,10 @@ namespace gp {
         const float key = 1 - maximum;
 
         return {
-            std::clamp(cyan, 0.0f, 1.0f),
-            std::clamp(magenta, 0.0f, 1.0f),
-            std::clamp(yellow, 0.0f, 1.0f),
-            std::clamp(key, 0.0f, 1.0f),
+            GP_COLOR_CLAMPf(cyan),
+            GP_COLOR_CLAMPf(magenta),
+            GP_COLOR_CLAMPf(yellow),
+            GP_COLOR_CLAMPf(key),
             m_Alpha,
         };
     }
@@ -187,7 +194,7 @@ namespace gp {
         const float luminance = (cmax + cmin) / 2;
 
         if (delta == 0) {
-            return {0, 0, std::clamp(luminance, 0.0f, 1.0f)};
+            return {0, 0, GP_COLOR_CLAMPf(luminance)};
         }
 
         const float saturation = delta / (1 - abs(2 * luminance - 1));
@@ -206,8 +213,8 @@ namespace gp {
 
         return {
             std::clamp(static_cast<int>(round(60 * hue)), 0, 360),
-            std::clamp(saturation, 0.0f, 1.0f),
-            std::clamp(luminance, 0.0f, 1.0f),
+            GP_COLOR_CLAMPf(saturation),
+            GP_COLOR_CLAMPf(luminance),
             m_Alpha,
         };
     }
@@ -237,7 +244,7 @@ namespace gp {
 
         return {
             static_cast<int>(round(60 * hue)),
-            std::clamp(saturation, 0.0f, 1.0f),
+            GP_COLOR_CLAMPf(saturation),
             cmax,
             m_Alpha,
         };
@@ -251,9 +258,7 @@ namespace gp {
         int green = m_Green + value;
         int blue = m_Blue + value;
 
-        red = std::clamp(red, 0, 255);
-        green = std::clamp(green, 0, 255);
-        blue = std::clamp(blue, 0, 255);
+        GP_COLOR_CLAMP_RGB;
 
         return {red, green, blue, m_Alpha};
     }
@@ -263,9 +268,7 @@ namespace gp {
         int green = m_Green + value.m_Green;
         int blue = m_Blue + value.m_Blue;
 
-        red = std::clamp(red, 0, 255);
-        green = std::clamp(green, 0, 255);
-        blue = std::clamp(blue, 0, 255);
+        GP_COLOR_CLAMP_RGB;
 
         return {red, green, blue, m_Alpha};
     }
@@ -275,9 +278,7 @@ namespace gp {
         int green = m_Green - value;
         int blue = m_Blue - value;
 
-        red = std::clamp(red, 0, 255);
-        green = std::clamp(green, 0, 255);
-        blue = std::clamp(blue, 0, 255);
+        GP_COLOR_CLAMP_RGB;
 
         return {red, green, blue, m_Alpha};
     }
@@ -287,9 +288,7 @@ namespace gp {
         int green = m_Green - value.m_Green;
         int blue = m_Blue - value.m_Blue;
 
-        red = std::clamp(red, 0, 255);
-        green = std::clamp(green, 0, 255);
-        blue = std::clamp(blue, 0, 255);
+        GP_COLOR_CLAMP_RGB;
 
         return {red, green, blue, m_Alpha};
     }
@@ -359,6 +358,13 @@ namespace gp {
     }
 }
 
+#undef GP_COLOR_CLAMP_ARG
+#undef GP_COLOR_CLAMP_RGB
+#undef GP_COLOR_CLAMPf
+#undef GP_COLOR_CLAMP
+#undef GP_COLOR_CLAMP_01
+#undef GP_COLOR_NORMALISE
+
 #define GP_COLOR_SWAP(arg) std::swap(arg, other.arg)
 #define GP_COLOR_SWAP_RGBA GP_COLOR_SWAP(m_Red); GP_COLOR_SWAP(m_Green); GP_COLOR_SWAP(m_Blue); GP_COLOR_SWAP(m_Alpha)
 #define GP_COLOR_COPY_ASSIGNMENT GP_COLOR_SWAP_RGBA; return *this
@@ -369,25 +375,25 @@ namespace gp {
 #define GP_COLOR_MOVE_ASSIGNMENT GP_COLOR_MOVE_RGBA; return *this;
 #define GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(T) Color &Color::operator=(T &&other) noexcept { GP_COLOR_MOVE_ASSIGNMENT }
 
+#define GP_COLOR_MOVE_AND_COPY_OPERATOR(T) GP_COLOR_COPY_ASSIGNMENT_OPERATOR(T) GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(T)
+
 // Move & Copy
 namespace gp {
-    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorRGB)
-    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorRGB)
-
-    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorHex)
-    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorHex)
-
-    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorCMYK)
-    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorCMYK)
-
-    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorHSL)
-    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorHSL)
-
-    GP_COLOR_COPY_ASSIGNMENT_OPERATOR(ColorHSV)
-    GP_COLOR_MOVE_ASSIGNMENT_OPERATOR(ColorHSV)
+    GP_COLOR_MOVE_AND_COPY_OPERATOR(ColorRGB)
+    GP_COLOR_MOVE_AND_COPY_OPERATOR(ColorHex)
+    GP_COLOR_MOVE_AND_COPY_OPERATOR(ColorCMYK)
+    GP_COLOR_MOVE_AND_COPY_OPERATOR(ColorHSL)
+    GP_COLOR_MOVE_AND_COPY_OPERATOR(ColorHSV)
 }
 
 #undef GP_COLOR_SWAP
 #undef GP_COLOR_SWAP_RGBA
 #undef GP_COLOR_COPY_ASSIGNMENT
 #undef GP_COLOR_COPY_ASSIGNMENT_OPERATOR
+
+#undef GP_COLOR_MOVE
+#undef GP_COLOR_MOVE_RGBA
+#undef GP_COLOR_MOVE_ASSIGNMENT
+#undef GP_COLOR_MOVE_ASSIGNMENT_OPERATOR
+
+#undef GP_COLOR_MOVE_AND_COPY_OPERATOR

@@ -20,7 +20,7 @@ namespace gp {
         /**
          * Create a ColorCMYK from another color object.
          */
-        ColorCMYK(const Color &color);
+        ColorCMYK(const Color &color); // NOLINT(*-explicit-conversions)
 
         /**
          * Create a CMYK color by passing cyan, magenta, yellow, key and optionally, alpha.
