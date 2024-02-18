@@ -15,7 +15,7 @@ namespace gp {
      * @example
      *      auto color = ColorCMYK(otherColor);
      */
-    class ColorCMYK final : public Color {
+    class GPAPI ColorCMYK final : public Color {
     public:
         /**
          * Create a ColorCMYK from another color object.
@@ -37,58 +37,58 @@ namespace gp {
          */
         ColorCMYK(float cyan, float magenta, float yellow, float key, float alpha = 1.0f);
 
-        [[nodiscard]] GPAPI std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
         /**
          * @return the cyan component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getCyan() const;
+        [[nodiscard]] float getCyan() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setCyan(float value);
+        void setCyan(float value);
 
         /**
          * @return the magenta component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getMagenta() const;
+        [[nodiscard]] float getMagenta() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setMagenta(float value);
+        void setMagenta(float value);
 
         /**
          * @return the yellow component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getYellow() const;
+        [[nodiscard]] float getYellow() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setYellow(float value);
+        void setYellow(float value);
 
         /**
          * @return the key component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getKey() const;
+        [[nodiscard]] float getKey() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setKey(float value);
+        void setKey(float value);
 
-        [[nodiscard]] GPAPI ColorRGB toRGB() const override;
+        [[nodiscard]] ColorRGB toRGB() const override;
 
-        [[nodiscard]] GPAPI static ColorRGB toRGB(float cyan, float magenta, float yellow, float key, float alpha = 1);
+        [[nodiscard]] static ColorRGB toRGB(float cyan, float magenta, float yellow, float key, float alpha = 1);
 
     protected:
-        GPAPI void _updateDerivedClass() override;
+        void _updateDerivedClass() override;
 
     private:
         float m_Cyan;

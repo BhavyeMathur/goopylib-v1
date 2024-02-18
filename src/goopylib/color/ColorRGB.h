@@ -14,12 +14,12 @@ namespace gp {
      * @example
      *      auto color = ColorRGB(otherColor);
      */
-    class ColorRGB final : public Color {
+    class GPAPI ColorRGB final : public Color {
     public:
         /**
          * Create a ColorRGB from another color object.
          */
-        GPAPI ColorRGB(const Color &color); // NOLINT(*-explicit-conversions)
+        ColorRGB(const Color &color); // NOLINT(*-explicit-conversions)
 
         /**
          * Create an RGB color by passing RGB arguments with an optional alpha parameter.
@@ -33,6 +33,6 @@ namespace gp {
          * @throws std::invalid_argument RGB must be between 0-255
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI ColorRGB(int red, int green, int blue, float alpha = 1.0f);
+        ColorRGB(int red, int green, int blue, float alpha = 1.0f);
     };
 }

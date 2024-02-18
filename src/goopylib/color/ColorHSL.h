@@ -15,7 +15,7 @@ namespace gp {
      * @example
      *      auto color = ColorHSL(otherColor);
      */
-    class ColorHSL final : public Color {
+    class GPAPI ColorHSL final : public Color {
     public:
         /**
          * Create a ColorHSL from another color object.
@@ -37,49 +37,49 @@ namespace gp {
          */
         ColorHSL(int hue, float saturation, float luminance, float alpha = 1.0f);
 
-        [[nodiscard]] GPAPI std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
         /**
          * @return the hue component of the color between 0-360
          */
-        [[nodiscard]] GPAPI int getHue() const;
+        [[nodiscard]] int getHue() const;
 
         /**
          * @param value between 0-360
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setHue(int value);
+        void setHue(int value);
 
         /**
          * @return the saturation component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getSaturation() const;
+        [[nodiscard]] float getSaturation() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setSaturation(float value);
+        void setSaturation(float value);
 
         /**
          * @return the luminance component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getLuminance() const;
+        [[nodiscard]] float getLuminance() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setLuminance(float value);
+        void setLuminance(float value);
 
-        [[nodiscard]] GPAPI ColorRGB toRGB() const override;
+        [[nodiscard]] ColorRGB toRGB() const override;
 
-        [[nodiscard]] GPAPI ColorHSV toHSV() const override;
+        [[nodiscard]] ColorHSV toHSV() const override;
 
-        [[nodiscard]] GPAPI static ColorRGB toRGB(int hue, float saturation, float luminance, float alpha = 1);
+        [[nodiscard]] static ColorRGB toRGB(int hue, float saturation, float luminance, float alpha = 1);
 
     protected:
-        GPAPI void _updateDerivedClass() override;
+        void _updateDerivedClass() override;
 
     private:
         int m_Hue;

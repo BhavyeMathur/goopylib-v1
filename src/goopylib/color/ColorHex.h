@@ -15,7 +15,7 @@ namespace gp {
      * @example
      *      auto color = ColorHex(otherColor);
      */
-    class ColorHex final : public Color {
+    class GPAPI ColorHex final : public Color {
     public:
         /**
          * Create a ColorHex from another color object.
@@ -34,21 +34,21 @@ namespace gp {
          */
         ColorHex(const std::string& hexstring, float alpha = 1.0f); // NOLINT(*-explicit-conversions)
 
-        [[nodiscard]] GPAPI std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
-        [[nodiscard]] GPAPI ColorRGB toRGB() const override;
+        [[nodiscard]] ColorRGB toRGB() const override;
 
-        [[nodiscard]] static GPAPI ColorRGB toRGB(const std::string& hexstring, float alpha = 1);
+        [[nodiscard]] static ColorRGB toRGB(const std::string& hexstring, float alpha = 1);
 
     private:
-        GPAPI static ColorRGB _3toRGB(const std::string &hexstring, float alpha);
+        static ColorRGB _3toRGB(const std::string &hexstring, float alpha);
 
-        GPAPI static ColorRGB _4toRGB(const std::string &hexstring, float alpha);
+        static ColorRGB _4toRGB(const std::string &hexstring, float alpha);
 
-        GPAPI static ColorRGB _6toRGB(const std::string &hexstring, float alpha);
+        static ColorRGB _6toRGB(const std::string &hexstring, float alpha);
 
-        GPAPI static ColorRGB _7toRGB(const std::string &hexstring, float alpha);
+        static ColorRGB _7toRGB(const std::string &hexstring, float alpha);
 
-        GPAPI static int _digitToInt(char digit);
+        static int _digitToInt(char digit);
     };
 }

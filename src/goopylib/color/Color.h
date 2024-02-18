@@ -25,19 +25,19 @@ namespace gp {
      * @example
      *      auto color = Color(60, 180, 90, 0.5);
      */
-    class Color {
+    class GPAPI Color {
     public:
         /**
-            * Create colors by passing RGB arguments or a hexstring.
-            * Specify an alpha value by passing a float as the last parameter.
-            *
-            * @param hexstring color hexadecimal string. '#' is optional.
-            * @param alpha alpha component of the color between 0-1
-            *
-            * @throws std::invalid_argument invalid hexstring
-            * @throws std::invalid_argument alpha must be between 0-1
-            */
-        Color(const std::string &hexstring, float alpha = 1); // NOLINT(*-explicit-conversions)
+         * Create colors by passing RGB arguments or a hexstring.
+         * Specify an alpha value by passing a float as the last parameter.
+         *
+         * @param hexstring color hexadecimal string. '#' is optional.
+         * @param alpha alpha component of the color between 0-1
+         *
+         * @throws std::invalid_argument invalid hexstring
+         * @throws std::invalid_argument alpha must be between 0-1
+         */
+         Color(const std::string &hexstring, float alpha = 1); // NOLINT(*-explicit-conversions)
 
         /**
          * Create colors by passing RGB arguments or a hexstring.
@@ -57,17 +57,17 @@ namespace gp {
 
         Color(Color &&other) = default;
 
-        GPAPI virtual ~Color() = default;
+        virtual ~Color() = default;
 
         /**
          * @return a string representation of the color
          */
-        [[nodiscard]] GPAPI virtual std::string toString() const;
+        [[nodiscard]] virtual std::string toString() const;
 
         /**
          * @return the red component of the color
          */
-        [[nodiscard]] GPAPI int getRed() const;
+        [[nodiscard]] int getRed() const;
 
         // TODO unittests for changing RGB components and effect on HSV/HSL/CMYK/Hexstring
 
@@ -75,55 +75,55 @@ namespace gp {
          * @param value between 0-255
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setRed(int value);
+        void setRed(int value);
 
         /**
          * @return the green component of the color
          */
-        [[nodiscard]] GPAPI int getGreen() const;
+        [[nodiscard]] int getGreen() const;
 
         /**
          * @param value between 0-255
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setGreen(int value);
+        void setGreen(int value);
 
         /**
          * @return the blue component of the color
          */
-        [[nodiscard]] GPAPI int getBlue() const;
+        [[nodiscard]] int getBlue() const;
 
         /**
          * @param value between 0-255
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setBlue(int value);
+        void setBlue(int value);
 
         /**
          * @return the alpha component of the color
          */
-        [[nodiscard]] GPAPI float getAlpha() const;
+        [[nodiscard]] float getAlpha() const;
 
         /**
          * @param value between 0-1
          * @throws std::invalid_argument value must be in the range specified
          */
-        GPAPI void setAlpha(float value);
+        void setAlpha(float value);
 
         /**
          * @return the red component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getRedf() const;
+        [[nodiscard]] float getRedf() const;
 
         /**
          * @return the green component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getGreenf() const;
+        [[nodiscard]] float getGreenf() const;
 
         /**
          * @return the blue component of the color between 0-1
          */
-        [[nodiscard]] GPAPI float getBluef() const;
+        [[nodiscard]] float getBluef() const;
 
         /**
          * @return a struct with RGBA between 0-1
@@ -133,49 +133,49 @@ namespace gp {
         /**
          * Converts the Color to the RGB format
          */
-        [[nodiscard]] GPAPI virtual ColorRGB toRGB() const;
+        [[nodiscard]] virtual ColorRGB toRGB() const;
 
         /**
         * Converts the Color to the Hexadecimal format
         */
-        [[nodiscard]] GPAPI ColorHex toHex() const;
+        [[nodiscard]] ColorHex toHex() const;
 
         /**
          * Converts the Color to the CMYK format
          */
-        [[nodiscard]] GPAPI ColorCMYK toCMYK() const;
+        [[nodiscard]] ColorCMYK toCMYK() const;
 
         /**
          * Converts the Color to the HSV format
          */
-        [[nodiscard]] GPAPI virtual ColorHSV toHSV() const;
+        [[nodiscard]] virtual ColorHSV toHSV() const;
 
         /**
          * Converts the Color to the HSL format
          */
-        [[nodiscard]] GPAPI virtual ColorHSL toHSL() const;
+        [[nodiscard]] virtual ColorHSL toHSL() const;
 
         // Operator Overloads
 
-        GPAPI Color operator+(int value) const;
+        Color operator+(int value) const;
 
-        GPAPI Color operator+(const Color &value) const;
+        Color operator+(const Color &value) const;
 
-        GPAPI Color operator-(int value) const;
+        Color operator-(int value) const;
 
-        GPAPI Color operator-(const Color &value) const;
+        Color operator-(const Color &value) const;
 
-        GPAPI Color &operator+=(int value);
+        Color &operator+=(int value);
 
-        GPAPI Color &operator+=(const Color &value);
+        Color &operator+=(const Color &value);
 
-        GPAPI Color &operator-=(int value);
+        Color &operator-=(int value);
 
-        GPAPI Color &operator-=(const Color &value);
+        Color &operator-=(const Color &value);
 
-        GPAPI bool operator==(const Color &) const = default;
+        bool operator==(const Color &) const = default;
 
-        GPAPI bool operator==(const std::string &other) const;
+        bool operator==(const std::string &other) const;
 
         Color &operator=(const Color &other) = default;
 
@@ -201,12 +201,12 @@ namespace gp {
         int m_Blue;
         float m_Alpha;
 
-        GPAPI void _updateOnlyRGB(const ColorRGB &color);
+        void _updateOnlyRGB(const ColorRGB &color);
 
-        GPAPI virtual void _updateDerivedClass() {
+        virtual void _updateDerivedClass() {
         }
 
-        GPAPI void _clampValues();
+        void _clampValues();
 
     private:
         float m_Redf;
@@ -216,5 +216,5 @@ namespace gp {
 }
 
 namespace gp {
-    GPAPI std::ostream &operator<<(std::ostream &os, const Color &color);
+    std::ostream &operator<<(std::ostream &os, const Color &color);
 }

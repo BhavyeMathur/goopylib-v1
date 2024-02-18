@@ -1,7 +1,7 @@
 #pragma once
 
 namespace gp {
-    struct RGBAf final {
+    struct GPAPI RGBAf final {
         float red = 0;
         float green = 0;
         float blue = 0;
@@ -14,12 +14,12 @@ namespace gp {
               alpha(alpha) {
         }
 
-        [[nodiscard]] GPAPI std::string toString() const;
+        [[nodiscard]] std::string toString() const;
 
         bool operator==(const RGBAf &) const = default;
     };
 
-    struct RGBf final {
+    struct GPAPI RGBf final {
         float red = 0;
         float green = 0;
         float blue = 0;
@@ -30,7 +30,7 @@ namespace gp {
               blue(blue) {
         }
 
-        [[nodiscard]] GPAPI std::string toString() const;
+        [[nodiscard]] std::string toString() const;
 
         bool operator==(const RGBf &) const = default;
     };
