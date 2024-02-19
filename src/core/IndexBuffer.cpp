@@ -18,7 +18,7 @@ namespace gp {
     }
 
     IndexBuffer::IndexBuffer(std::span<int32_t> indices)
-        : IndexBuffer(indices.data(), indices.length()) {
+        : IndexBuffer(indices.data(), indices.size()) {
     }
 
     IndexBuffer::IndexBuffer(const std::initializer_list<int32_t> indices)
