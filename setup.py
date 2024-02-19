@@ -115,10 +115,6 @@ def find_extensions():
                   sources=["goopylib/maths/easing.cpp"],
                   **ext_kwargs),
 
-        Extension(name="goopylib.ext.color_conversions",
-                  sources=["goopylib/color/conversions.cpp"],
-                  **ext_kwargs),
-
         Extension(name="goopylib.ext.color",
                   sources=["goopylib/color/color.cpp"],
                   **ext_kwargs),

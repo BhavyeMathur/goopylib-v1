@@ -3,7 +3,6 @@
 # pylint: disable=unused-wildcard-import, unused-import
 
 from .color.color import *
-from .color.conversions import *
 from .color.random import *
 from .color.w3cx11 import *
 

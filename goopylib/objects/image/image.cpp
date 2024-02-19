@@ -95,12 +95,7 @@ namespace image {
         }
         #endif
 
-        try {
-            self->image->draw(*((WindowObject *) arg)->window);
-        }
-        catch (std::runtime_error &e) {
-            RAISE_FILENOTFOUND_ERROR(nullptr, self->image->getPath().c_str());
-        }
+        self->image->draw(*((WindowObject *) arg)->window);
         RETURN_PYOBJECT((PyObject *) self);
     }
 

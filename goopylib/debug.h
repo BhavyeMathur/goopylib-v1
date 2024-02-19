@@ -88,7 +88,8 @@ return val
 #define CHECK_GLFW_INITIALIZED(val)
 #define CHECK_GLFW_CONTEXT(val)
 
-#define RAISE_TYPE_ERROR(val, type, value)
-#define RAISE_VALUE_ERROR(val, err)
+#define RAISE_TYPE_ERROR(val, type, value) return val
+#define RAISE_VALUE_ERROR(val, err) return val
+#define RAISE_FILENOTFOUND_ERROR(val, err) return val
 
 #endif

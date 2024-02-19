@@ -11,11 +11,12 @@
 
 #include "macros.h"
 
-#include <goopylib/color/ColorRGB.h>
-#include <goopylib/color/ColorHex.h>
-#include <goopylib/color/ColorCMYK.h>
-#include <goopylib/color/ColorHSV.h>
-#include <goopylib/color/ColorHSL.h>
+#include "color/Color.h"
+#include "color/ColorRGB.h"
+#include "color/ColorHex.h"
+#include "color/ColorCMYK.h"
+#include "color/ColorHSV.h"
+#include "color/ColorHSL.h"
 
 struct ColorRGBObject {
     ColorObject base;
@@ -449,7 +450,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = make_shared<gp::ColorRGB>(((ColorObject *) obj)->color.get());
+                self->color = make_shared<gp::ColorRGB>(*((ColorObject *) obj)->color);
                 self->base.color = self->color;
                 return 0;
             }
@@ -484,7 +485,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = make_shared<gp::ColorHex>(((ColorObject *) obj)->color.get());
+                self->color = make_shared<gp::ColorHex>(*((ColorObject *) obj)->color);
                 self->base.color = self->color;
                 return 0;
             }
@@ -512,7 +513,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = make_shared<gp::ColorCMYK>(((ColorObject *) obj)->color.get());
+                self->color = make_shared<gp::ColorCMYK>(*((ColorObject *) obj)->color);
                 self->base.color = self->color;
                 return 0;
             }
@@ -640,7 +641,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = make_shared<gp::ColorHSV>(((ColorObject *) obj)->color.get());
+                self->color = make_shared<gp::ColorHSV>(*((ColorObject *) obj)->color);
                 self->base.color = self->color;
                 return 0;
             }
@@ -745,7 +746,7 @@ namespace color {
 
             PyObject * obj;
             if (PyArg_ParseTuple(args, "!O", &ColorType, &obj)) {
-                self->color = make_shared<gp::ColorHSL>(((ColorObject *) obj)->color.get());
+                self->color = make_shared<gp::ColorHSL>(*((ColorObject *) obj)->color);
                 self->base.color = self->color;
                 return 0;
             }

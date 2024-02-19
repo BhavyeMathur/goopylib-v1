@@ -8,7 +8,6 @@ from random import randint as _randint
 from random import random as _random
 
 from goopylib.color.color import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
-from goopylib.color.conversions import rgb_to_hex
 
 
 # Random Colors
@@ -26,7 +25,7 @@ def random_hex() -> ColorHex:
     Returns:
          a random Hexadecimal color
     """
-    return ColorHex(rgb_to_hex(_randint(0, 255), _randint(0, 255), _randint(0, 255)))
+    return ColorHex(random_rgb())
 
 
 def random_cmyk() -> ColorCMYK:
