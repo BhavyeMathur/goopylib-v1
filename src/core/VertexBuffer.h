@@ -5,8 +5,6 @@
 namespace gp {
     class GPAPI VertexBuffer final : public Buffer {
 
-        friend class VertexArray;
-
     public:
         VertexBuffer(const BufferLayout &layout);
 

@@ -5,7 +5,8 @@
 
 namespace gp {
     VertexBuffer::VertexBuffer(const BufferLayout &layout)
-            : Buffer(0, layout) {
+            : Buffer{0, layout} {
+        GP_CORE_INFO("gp::VertexBuffer::VertexBuffer({0})", m_RendererID);
     }
 
     uint32_t VertexBuffer::_getBufferTarget() const {
