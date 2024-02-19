@@ -131,12 +131,9 @@ namespace gp {
                     GP_OPENGL(
                         "glVertexAttribPointer({0}, size={1}, type=GL_FLOAT, normalised={2}, stride={3}, offset={4})",
                         index, element.getCount(), element.isNormalised(), stride, element.getOffset());
-                    glVertexAttribPointer(index,
-                                          element.getCount(),
-                                          GL_FLOAT,
-                                          element.isNormalized() ? GL_TRUE : GL_FALSE,
-                                          stride,
-                                          (const void *) element.getOffset());
+                    glVertexAttribPointer(index, element.getCount(), GL_FLOAT,
+                                          element.isNormalized() ? GL_TRUE : GL_FALSE, stride,
+                                          reinterpret_cast<const void *>(element.getOffset()));
                     index++;
                     break;
                 }
@@ -151,7 +148,7 @@ namespace gp {
                     GP_OPENGL("glVertexAttribIPointer({0}, size={1}, type={2}, stride={3}, offset={4})",
                               index, element.getCount(), shaderOpenGLType(type), stride, element.getOffset());
                     glVertexAttribIPointer(index, element.getCount(), shaderOpenGLType(type), stride,
-                                           (const void *) element.getOffset());
+                                           reinterpret_cast<const void *>(element.getOffset()));
                     index++;
                     break;
                 }
@@ -169,7 +166,8 @@ namespace gp {
                         GP_OPENGL(
                             "glVertexAttribPointer({0}, size={1}, type={2}, isNormalized={3}, stride={4}, offset={5})",
                             index, count, glType, normalized, stride, offset);
-                        glVertexAttribPointer(index, size, glType, normalized, stride, (const void *) offset);
+                        glVertexAttribPointer(index, size, glType, normalized, stride,
+                                              reinterpret_cast<const void *>(offset));
                         glVertexAttribDivisor(index, 1);
 
                         offset += sizeof(float) * size * i;
