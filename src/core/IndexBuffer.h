@@ -5,13 +5,14 @@
 
 namespace gp {
     class GPAPI IndexBuffer final : public Buffer {
-
     public:
-        IndexBuffer(const int32_t *indices = nullptr, int32_t length = 0);
+        IndexBuffer();
 
-        IndexBuffer(std::span<int32_t> indices);
+        IndexBuffer(const uint32_t *indices, int32_t length);
 
-        IndexBuffer(std::initializer_list<int32_t> indices);
+        IndexBuffer(std::span<uint32_t> indices);
+
+        IndexBuffer(std::initializer_list<uint32_t> indices);
 
         IndexBuffer(const IndexBuffer &) = delete;
 
@@ -21,5 +22,9 @@ namespace gp {
 
     protected:
         uint32_t _getBufferTarget() const override;
+
+        uint32_t _getBufferUsage() const override;
+
+        std::string _getClassString() const override;
     };
 }

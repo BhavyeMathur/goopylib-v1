@@ -16,5 +16,7 @@ namespace gp {
 
     protected:
         uint32_t _getBufferTarget() const override;
+
+        std::string _getClassString() const override;
     };
 }

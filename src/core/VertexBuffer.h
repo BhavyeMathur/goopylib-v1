@@ -8,6 +8,8 @@ namespace gp {
         friend class VertexArray;
 
     public:
+        VertexBuffer(const BufferLayout &layout);
+
         VertexBuffer(const VertexBuffer &) = delete;
 
         VertexBuffer(VertexBuffer &&other) noexcept = default;
@@ -15,7 +17,6 @@ namespace gp {
     protected:
         uint32_t _getBufferTarget() const override;
 
-    private:
-        VertexBuffer(const BufferLayout &layout);
+        std::string _getClassString() const override;
     };
 }

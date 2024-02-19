@@ -14,4 +14,8 @@ namespace gp {
     uint32_t UniformBuffer::_getBufferTarget() const {
         return GL_UNIFORM_BUFFER;
     }
+
+    std::string UniformBuffer::_getClassString() const {
+        return "UniformBuffer";
+    }
 }

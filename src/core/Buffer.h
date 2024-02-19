@@ -36,5 +36,9 @@ namespace gp {
         BufferLayout m_Layout;
 
         [[nodiscard]] virtual uint32_t _getBufferTarget() const = 0;
+
+        [[nodiscard]] virtual uint32_t _getBufferUsage() const;
+
+        [[nodiscard]] virtual std::string _getClassString() const;
     };
 }

@@ -9,4 +9,8 @@ namespace gp {
     uint32_t VertexBuffer::_getBufferTarget() const {
         return GL_ARRAY_BUFFER;
     }
+
+    std::string VertexBuffer::_getClassString() const {
+        return "VertexBuffer";
+    }
 }
