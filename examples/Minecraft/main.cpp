@@ -19,23 +19,25 @@ int main(int argc, char *argv[]) {
     float width = 812.0f / (float) xN;
     float height = 812.0f / (float) yN;
 
-    std::string paths[] = {"assets/cobblestone.png",
-                           "assets/andesite.png",
-                           "assets/cracked_stone_bricks.png",
-                           "assets/stone.png",
-                           "assets/gravel.png",
-                           "assets/grass_block_top.png",
-                           "assets/coal_ore.png",
-                           "assets/iron_ore.png",
-                           "assets/copper_ore.png",
-                           "assets/diamond_ore.png",
-                           "assets/gold_ore.png",
-                           "assets/dead_tube_coral_block.png",
-                           "assets/dead_horn_coral_block.png",
-                           "assets/dead_bubble_coral_block.png",
-                           "assets/dead_brain_coral_block.png",
-                           "assets/stone_bricks.png",
-                           "assets/light_gray_concrete_powder.png"};
+    std::string paths[] = {
+        "assets/cobblestone.png",
+        "assets/andesite.png",
+        "assets/cracked_stone_bricks.png",
+        "assets/stone.png",
+        "assets/gravel.png",
+        "assets/grass_block_top.png",
+        "assets/coal_ore.png",
+        "assets/iron_ore.png",
+        "assets/copper_ore.png",
+        "assets/diamond_ore.png",
+        "assets/gold_ore.png",
+        "assets/dead_tube_coral_block.png",
+        "assets/dead_horn_coral_block.png",
+        "assets/dead_bubble_coral_block.png",
+        "assets/dead_brain_coral_block.png",
+        "assets/stone_bricks.png",
+        "assets/light_gray_concrete_powder.png"
+    };
 
     std::vector<gp::Image> images;
 
@@ -45,7 +47,7 @@ int main(int argc, char *argv[]) {
         for (int j = 0; j < yN; j++) {
             float y = height * (float) j + height / 2 - 406;
 
-            images.push_back({paths[rand() % 17], {x, y}, width, height});
+            images.emplace_back(paths[rand() % 17], Point{x, y}, width, height);
             images.back().setAnchor(0, 0);
             images.back().draw(window);
         }
