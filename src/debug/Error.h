@@ -40,7 +40,8 @@ namespace gp {
 
 #if GP_ERROR_CHECKING
 #define GP_CHECK_INITIALISED(src) do {if (!is_initialized) { GP_RUNTIME_ERROR(src " goopylib must be initialised first!"); }} while (0)
-#define GP_CHECK_ACTIVE_CONTEXT(src) do {if (!hasActiveContext()) { GP_RUNTIME_ERROR(src " goopylib must have an active window!"); }} while (0)
+#define GP_CHECK_GLFW_INITIALISED(src) do {if (!glfwInit()) { GP_RUNTIME_ERROR(src " goopylib must be initialised first!"); }} while (0)
+#define GP_CHECK_ACTIVE_CONTEXT(src) GP_CHECK_GLFW_INITIALISED(src); do {if (!glfwGetCurrentContext()) { GP_RUNTIME_ERROR(src " goopylib must have an active window!"); }} while (0)
 #define GP_RUNTIME_ERROR(...) gp::setError(gp::ErrorType::RuntimeError, gp::strformat(__VA_ARGS__))
 #define GP_VALUE_ERROR(...) gp::setError(gp::ErrorType::ValueError, gp::strformat(__VA_ARGS__))
 #define GP_FILENOTFOUND_ERROR(...) gp::setError(gp::ErrorType::FileNotFoundError, strformat(__VA_ARGS__))

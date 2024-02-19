@@ -174,7 +174,7 @@ namespace gp {
     }
 
     bool hasActiveContext() {
-        return is_initialized and glfwGetCurrentContext();
+        return glfwInit() and glfwGetCurrentContext();
     }
 
     std::string glfwCompiledVersion() {
