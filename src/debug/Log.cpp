@@ -28,33 +28,42 @@ namespace gp {
             #endif
 
             s_CoreLogger = make_shared<spdlog::logger>("GOOPYLIB", begin(logSinks), end(logSinks));
-            spdlog::register_logger(s_CoreLogger);
+            register_logger(s_CoreLogger);
             s_CoreLogger->flush_on(spdlog::level::trace);
             s_CoreLogger->set_level(spdlog::level::trace);
 
             GP_CORE_DEBUG("gp::Log::init()");
 
             s_PythonLogger = make_shared<spdlog::logger>("PYTHON", begin(logSinks), end(logSinks));
-            spdlog::register_logger(s_PythonLogger);
+            register_logger(s_PythonLogger);
             s_PythonLogger->flush_on(spdlog::level::trace);
             s_PythonLogger->set_level(spdlog::level::trace);
 
             s_ClientLogger = make_shared<spdlog::logger>("APP", begin(logSinks), end(logSinks));
-            spdlog::register_logger(s_ClientLogger);
+            register_logger(s_ClientLogger);
             s_ClientLogger->flush_on(spdlog::level::trace);
             s_ClientLogger->set_level(spdlog::level::trace);
         }
     }
 
     shared_ptr<spdlog::logger> Log::getCoreLogger() {
+        if (!spdlog::get("GOOPYLIB")) {
+            init();
+        }
         return s_CoreLogger;
     }
 
     shared_ptr<spdlog::logger> Log::getClientLogger() {
+        if (!spdlog::get("APP")) {
+            init();
+        }
         return s_ClientLogger;
     }
 
     shared_ptr<spdlog::logger> Log::getPythonLogger() {
+        if (!spdlog::get("Python")) {
+            init();
+        }
         return s_PythonLogger;
     }
 }

@@ -87,9 +87,7 @@ namespace {
 
 namespace gp {
     void init() {
-        Log::init();
         GP_CORE_INFO("gp::init()");
-
         initColorRNG();
         initGLFW();
     }
