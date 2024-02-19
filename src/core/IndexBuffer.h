@@ -8,9 +8,7 @@ namespace gp {
     public:
         IndexBuffer(const int32_t *indices = nullptr, int32_t length = 0);
 
-        IndexBuffer(const int32_t *indices, size_t length);
-
-        IndexBuffer(const std::span<int32_t>& indices);
+        IndexBuffer(std::span<int32_t> indices);
 
         IndexBuffer(std::initializer_list<int32_t> indices);
 
@@ -22,7 +20,5 @@ namespace gp {
 
     protected:
         uint32_t _getBufferTarget() const override;
-
-        uint32_t _getBufferUsage() const override;
     };
 }
