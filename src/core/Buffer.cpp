@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 4
+#define GP_LOGGING_LEVEL 3
 
 #include "core/Core.h"
 #include "core/Buffer.h"
@@ -10,12 +10,14 @@
 
 
 namespace gp {
-    Buffer::Buffer(const int32_t length, const BufferLayout &layout)
+    Buffer::Buffer(const size_t length, const BufferLayout &layout)
         : m_Length{length},
           m_Layout{layout} {
         GP_CORE_INFO("gp::Buffer::Buffer(layout)");
-        GP_CHECK_INITIALISED("gp::Buffer::Buffer()");
         GP_CHECK_GE(length, 0, "gp::Buffer::Buffer() – length must be greater than or equal to 0");
+        if (length > 0) {
+            GP_CHECK_INITIALISED("gp::Buffer::Buffer()");
+        }
 
         if (glfwGetCurrentContext()) {
             init();
@@ -60,32 +62,33 @@ namespace gp {
         }
     }
 
-    int32_t Buffer::length() const {
+    size_t Buffer::length() const {
         GP_CORE_TRACE("gp::Buffer::length{0})", m_RendererID);
         return m_Length;
     }
 
-    void Buffer::setData(const void *data, const int32_t length) {
+    void Buffer::setData(const void *data, const size_t length) {
         GP_CORE_DEBUG("gp::Buffer::setData({0}, length={1})", m_RendererID, length);
-
+        GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::setData()");
         GP_CHECK_GE(length, 0, "gp::Buffer::setData() – data length must be greater than or equal to 0");
-        if (length != 0) {
+        if (length > 0) {
             GP_CHECK_NOT_NULL(data);
         }
 
         bind();
-        glBufferData(_getBufferTarget(), length * m_Layout.m_Stride, data, GL_DYNAMIC_DRAW);
+        glBufferData(_getBufferTarget(), length * m_Layout.m_Stride, data, _getBufferUsage());
 
         m_Length = length;
     }
 
-    void Buffer::setData(const void *data, const int32_t length, const int32_t offset) const {
+    void Buffer::setData(const void *data, const size_t length, const size_t offset) const {
         GP_CORE_DEBUG("gp::Buffer::setData({0}, length={1}, offset={2})", m_RendererID, length, offset);
 
+        GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::setData()");
         GP_CHECK_GE(length, 0, "gp::Buffer::setData() – data length must be greater than or equal to 0");
         GP_CHECK_GE(offset, 0, "gp::Buffer::setData() – offset must be greater than or equal to 0");
         GP_CHECK_GE(length + offset, m_Length, "gp::Buffer::setData() – length + offset must be less than buffer size");
-        if (length != 0) {
+        if (length > 0) {
             GP_CHECK_NOT_NULL(data);
         }
 
@@ -97,4 +100,9 @@ namespace gp {
         GP_CORE_TRACE("gp::Buffer::getLayout({0})", m_RendererID);
         return m_Layout;
     }
+
+    uint32_t Buffer::_getBufferUsage() const {
+        return GL_DYNAMIC_DRAW;
+    }
+
 }
