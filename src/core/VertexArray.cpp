@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "core/VertexArray.h"
+
 #include <GLFW/glfw3.h>
 #include <opengl.h>
 

@@ -7,7 +7,7 @@
 namespace gp {
     class GPAPI Buffer {
     public:
-        Buffer(int32_t length, const BufferLayout &layout = {});
+        Buffer(int32_t length, const BufferLayout &layout);
 
         Buffer(const Buffer &) = delete;
 

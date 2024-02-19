@@ -1,4 +1,4 @@
-#define GP_LOGGING_LEVEL 5
+#define GP_LOGGING_LEVEL 3
 
 #include "core/Core.h"
 #include "core/Buffer.h"

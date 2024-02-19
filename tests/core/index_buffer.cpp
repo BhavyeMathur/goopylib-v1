@@ -32,6 +32,11 @@ TEST(IndexBufferTests, VectorConstructor) {
     EXPECT_EQ(buffer.length(), 6);
 }
 
+TEST(IndexBufferTests, InitialiserListConstructor) {
+    gp::IndexBuffer buffer = {1, 2, 3, 2, 3, 4};
+    EXPECT_EQ(buffer.length(), 6);
+}
+
 TEST(IndexBufferTests, ConstructorErrors) {
     EXPECT_THROW(gp::IndexBuffer(nullptr, -1), std::invalid_argument);
     EXPECT_THROW(gp::IndexBuffer(nullptr, 10), std::invalid_argument);
