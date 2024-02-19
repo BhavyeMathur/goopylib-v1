@@ -55,3 +55,9 @@
 #define GP_CORE_TRACE_ALL(...) nullptr
 #define GP_TRACE_ALL(...) nullptr
 #endif
+
+#if (GP_LOG_OPENGL)
+#define GP_OPENGL(...) GP_CORE_WARN(__VA_ARGS__)
+#else
+#define GP_OPENGL(...) nullptr
+#endif

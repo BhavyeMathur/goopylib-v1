@@ -1,3 +1,4 @@
+#define GP_LOG_OPENGL false
 #define GP_LOGGING_LEVEL 3
 
 #include "core/Core.h"
@@ -7,6 +8,9 @@
 #include <opengl.h>
 #include <GLFW/glfw3.h>
 #include <utility>
+
+
+#define GP_BUFFER_TARGET _getBufferTarget(_getBufferTarget())
 
 
 namespace gp {
@@ -32,8 +36,10 @@ namespace gp {
     void Buffer::init() {
         GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::init()");
         if (m_RendererID == 0) {
+            GP_OPENGL("glGenBuffers(n=1)");
             glGenBuffers(1, &m_RendererID);
             GP_CORE_INFO("gp::{0}::init({1})", _getClassString(), m_RendererID);
+            GP_OPENGL("glGenBuffers(n=1) -> {0}", m_RendererID);
         }
         else {
             GP_CORE_DEBUG("gp::{0}::init({1}) already initialised", _getClassString(), m_RendererID);
@@ -44,12 +50,16 @@ namespace gp {
         GP_CORE_TRACE("gp::{0}::bind({1})", _getClassString(), m_RendererID);
         GP_CHECK_NOT_EQUALS(m_RendererID, 0, "gp::Buffer::bind() – cannot bind uninitialised buffer");
         GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::bind()");
+
+        GP_OPENGL("glBindBuffer(target={0}, buffer={1})", GP_BUFFER_TARGET, m_RendererID);
         glBindBuffer(_getBufferTarget(), m_RendererID);
     }
 
     void Buffer::unbind() const {
         GP_CORE_WARN("gp::{0}::unbind({1})", _getClassString(), m_RendererID);
         GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::unbind()");
+
+        GP_OPENGL("glBindBuffer(target={0}, buffer=0)", GP_BUFFER_TARGET);
         glBindBuffer(_getBufferTarget(), 0);
     }
 
@@ -59,12 +69,13 @@ namespace gp {
             return;
         }
         if (glfwGetCurrentContext()) {
+            GP_OPENGL("glDeleteBuffers(n=1, buffers={0})", m_RendererID);
             glDeleteBuffers(1, &m_RendererID);
         }
     }
 
     int32_t Buffer::length() const {
-        GP_CORE_TRACE("gp::{0}::length{1})", _getClassString(), m_RendererID);
+        GP_CORE_TRACE("gp::{0}::length({1}) -> {2}", _getClassString(), m_RendererID, m_Length);
         return m_Length;
     }
 
@@ -77,6 +88,8 @@ namespace gp {
         }
 
         bind();
+
+        GP_OPENGL("glBufferData(target={0}, size={1}*{2}, data={3}, ...)", GP_BUFFER_TARGET, length, m_Layout.m_Stride, data);
         glBufferData(_getBufferTarget(), length * m_Layout.m_Stride, data, _getBufferUsage());
 
         m_Length = length;
@@ -93,6 +106,8 @@ namespace gp {
         }
 
         bind();
+        GP_OPENGL("glBufferSubData(target={0}, offset={1}*{2}, size={3}*{2}, data={4})",
+                  GP_BUFFER_TARGET, offset, m_Layout.m_Stride, length, data);
         glBufferSubData(_getBufferTarget(), offset * m_Layout.m_Stride, length * m_Layout.m_Stride, data);
     }
 
@@ -109,5 +124,19 @@ namespace gp {
         return "Buffer";
     }
 
-
+    std::string Buffer::_getBufferTarget(const uint32_t target) const {
+        switch (target) {
+            case GL_ELEMENT_ARRAY_BUFFER:
+                return "GL_ELEMENT_ARRAY_BUFFER";
+            case GL_ARRAY_BUFFER:
+                return "GL_ARRAY_BUFFER";
+            case GL_UNIFORM_BUFFER:
+                return "GL_UNIFORM_BUFFER";
+            default:
+                GP_VALUE_ERROR("Unknown buffer target {0}", target);
+                return "Unknown";
+        }
+    }
 }
+
+#undef GP_BUFFER_TARGET

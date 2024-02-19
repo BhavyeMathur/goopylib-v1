@@ -236,7 +236,6 @@ namespace gp {
                 return;
             case RenderableSubclass::TexturedQuad:
                 renderer.updateTexturedQuad(ID, dynamic_cast<TexturedQuad *>(object));
-                return;
         }
     }
 

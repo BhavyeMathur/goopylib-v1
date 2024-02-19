@@ -37,6 +37,8 @@ namespace gp {
 
         [[nodiscard]] virtual uint32_t _getBufferTarget() const = 0;
 
+        [[nodiscard]] virtual std::string _getBufferTarget(uint32_t target) const;
+
         [[nodiscard]] virtual uint32_t _getBufferUsage() const;
 
         [[nodiscard]] virtual std::string _getClassString() const;
