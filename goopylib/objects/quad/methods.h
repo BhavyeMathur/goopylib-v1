@@ -1,7 +1,7 @@
 #pragma once
 
 #include "object.h"
-#include "src/goopylib/objects/Quad.h"
+#include "objects/Quad.h"
 
 extern void **PyColor_API;
 extern PyTypeObject *ColorType;

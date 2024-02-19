@@ -2,7 +2,7 @@
 #include "goopylib/debug.h"
 
 #include "camera_controller.h"
-#include "src/goopylib/scene/CameraController.h"
+#include "scene/CameraController.h"
 
 #include "goopylib/core/window_module.h"
 #include "goopylib/core/window_object.h"

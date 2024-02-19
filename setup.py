@@ -93,7 +93,7 @@ else:
     library_dirs = []
     data_files = []
 
-ext_kwargs = {"include_dirs":         [".", "goopylib", "src", "vendor", "vendor/glad", "vendor/glm",
+ext_kwargs = {"include_dirs":         [".", "src", "vendor", "vendor/glad", "vendor/glm",
                                        "vendor/spdlog/include", "vendor/GLFW/include"],
               "library_dirs":         library_dirs,
               "runtime_library_dirs": RUNTIME_LIBRARY_DIRS,

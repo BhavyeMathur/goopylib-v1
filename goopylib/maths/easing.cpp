@@ -2,7 +2,7 @@
 #include "goopylib/debug.h"
 
 #include "easing.h"
-#include "src/goopylib/maths/Easing.h"
+#include "maths/Easing.h"
 
 // TODO Easing base class (not for v2.0)
 

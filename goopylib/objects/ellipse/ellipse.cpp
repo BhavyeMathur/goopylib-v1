@@ -3,7 +3,7 @@
 #include "goopylib/debug.h"
 
 #include "ellipse.h"
-#include "src/goopylib/objects/Ellipse.h"
+#include "objects/Ellipse.h"
 
 #include "goopylib/color/color_object.h"
 

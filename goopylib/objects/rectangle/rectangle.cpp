@@ -3,7 +3,7 @@
 #include "goopylib/debug.h"
 
 #include "rectangle.h"
-#include "src/goopylib/objects/Rectangle.h"
+#include "objects/Rectangle.h"
 
 
 // Rectangle Core

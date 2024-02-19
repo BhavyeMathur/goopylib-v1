@@ -5,7 +5,7 @@
 #include "goopylib/core/window_object.h"
 
 #include "renderable.h"
-#include "src/goopylib/objects/Renderable.h"
+#include "objects/Renderable.h"
 
 
 namespace renderable {

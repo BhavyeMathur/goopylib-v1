@@ -5,7 +5,7 @@
 #include "goopylib/core/window_object.h"
 
 #include "image.h"
-#include "src/goopylib/objects/Image.h"
+#include "objects/Image.h"
 
 
 namespace image {

@@ -2,7 +2,7 @@
 
 #include "goopylib/debug.h"
 
-#include "src/goopylib/core/Core.h"
+#include "core/Core.h"
 #include "core.h"
 
 

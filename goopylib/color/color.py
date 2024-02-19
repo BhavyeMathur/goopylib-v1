@@ -10,12 +10,13 @@ from typing import Union
 import goopylib.ext.color as _color
 
 
-# The reason docstrings for the class are copied to the __init__() method is because CLion (and presumably PyCharm)
-# renders the 'Raises' section with an odd indentation otherwise.
+# The reason docstrings for the class are copied to the __init__() method is because CLion
+# (and presumably other Jetbrains products) renders the 'Raises' section with an odd indentation otherwise.
 
 # The reason the RGBA properties are repeated in all the subclasses is because the Sphinx autodoc "orderby source"
 # configuration doesn't seem to work with inherited members.
 
+# TODO implement color conversion methods
 
 class Color:
     """

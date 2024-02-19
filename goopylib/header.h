@@ -41,3 +41,5 @@ if (PyModule_AddObject(m, name, (PyObject *) &(ObjectType)) < 0) { \
 static bool isinstance(PyObject * object, PyTypeObject * type) {
     return PyObject_IsInstance(object, (PyObject *) type);
 }
+
+using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;

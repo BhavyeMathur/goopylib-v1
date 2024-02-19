@@ -4,8 +4,6 @@
 #define WINDOW_MODULE
 
 #include "window.h"
-
-#include <memory>
 #include "window_object.h"
 #include "window_module.h"
 #include "window_capsule.h"
@@ -16,8 +14,8 @@
 #include "goopylib/scene/camera_object.h"
 #include "goopylib/scene/camera_module.h"
 
-#include "../../src/goopylib/window/Window.h"
-#include "src/platform/events/MouseCodes.h"
+#include "window/Window.h"
+#include "window/MouseCodes.h"
 
 #if GP_ERROR_CHECKING
 #define CHECK_ACTIVE(val) \
@@ -73,7 +71,7 @@ namespace window {
 
         self->background = PyObject_CallObject((PyObject *) ColorType, Py_BuildValue("iii", 255, 255, 255));
 
-        self->window = unique_ptr<gp::Window>(new gp::Window(width, height, PyUnicode_AsUTF8(tmp)));
+        self->window = gp::unique_ptr<gp::Window>(new gp::Window(width, height, PyUnicode_AsUTF8(tmp)));
         self->window->setBackground(*((ColorObject *) self->background)->color);
 
         self->camera = PyObject_CallObject((PyObject *) CameraType, Py_BuildValue("iiii", 0, 0, 0, 0));

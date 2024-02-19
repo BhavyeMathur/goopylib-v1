@@ -6,7 +6,7 @@
 #include "goopylib/color/color_object.h"
 
 #include "line.h"
-#include "src/goopylib/objects/Line.h"
+#include "objects/Line.h"
 
 
 // Line Core

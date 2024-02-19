@@ -5,7 +5,7 @@
 #include "goopylib/color/color_object.h"
 
 #include "triangle.h"
-#include "src/goopylib/objects/Triangle.h"
+#include "objects/Triangle.h"
 
 
 // Triangle Core

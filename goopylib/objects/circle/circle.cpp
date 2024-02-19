@@ -3,7 +3,7 @@
 #include "goopylib/debug.h"
 
 #include "circle.h"
-#include "src/goopylib/objects/Circle.h"
+#include "objects/Circle.h"
 
 
 namespace circle {

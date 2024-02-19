@@ -3,7 +3,7 @@
 #include "goopylib/debug.h"
 
 #include "quad.h"
-#include "src/goopylib/objects/Quad.h"
+#include "objects/Quad.h"
 
 
 // Quad Core
