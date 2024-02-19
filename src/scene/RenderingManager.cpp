@@ -43,6 +43,7 @@ namespace gp {
         m_TextureShader.set("Texture", Texture2D::getTextureSlots(), samplers);
 
         m_ShaderUniform = unique_ptr<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
+        m_ShaderUniform->init();
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1);
 
         m_SolidShader.setUniformBlock(*m_ShaderUniform, "Projection", 0);
@@ -211,6 +212,7 @@ namespace gp {
 
         Renderer &renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
 
+        // TODO controls to override this logic
         if (m_ObjectToIsOpaque[ID] != object->isVisibleAndOpaque()) {
             _undrawRenderable(object);
 

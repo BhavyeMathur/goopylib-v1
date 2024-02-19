@@ -13,18 +13,18 @@ namespace gp {
 
 namespace gp {
     VertexArray::VertexArray(const BufferLayout &layout)
-        : m_VertexBuffer(layout) {
+        : m_VertexBuffer{layout} {
         GP_CORE_DEBUG("gp::VertexArray::VertexArray()");
 
-        // TODO replace with gp::core function, move out of platform
         if (glfwGetCurrentContext()) {
             init();
         }
     }
 
-    VertexArray::VertexArray(VertexArray &&other) noexcept: m_RendererID(std::exchange(other.m_RendererID, 0)),
-                                                            m_VertexBuffer(std::move(other.m_VertexBuffer)),
-                                                            m_IndexBuffer(std::exchange(other.m_IndexBuffer, nullptr)) {
+    VertexArray::VertexArray(VertexArray &&other) noexcept
+        : m_RendererID{std::exchange(other.m_RendererID, 0)},
+          m_VertexBuffer{std::move(other.m_VertexBuffer)},
+          m_IndexBuffer{std::move(other.m_IndexBuffer)} {
         GP_CORE_DEBUG("gp::VertexArray::VertexArray(gp::VertexArray &&other)");
     }
 
@@ -50,6 +50,8 @@ namespace gp {
             m_IndexBuffer.init();
             m_VertexBuffer.init();
             _setVertexAttribs();
+
+            unbind();
         }
     }
 
@@ -79,30 +81,17 @@ namespace gp {
             GP_OPENGL("glDrawArrays(..., first=0, count={0})", count);
             glDrawArrays(mode, 0, count <= m_VertexBuffer.length() ? count : m_VertexBuffer.length());
         }
+        unbind();
     }
 }
 
 namespace gp {
-    void VertexArray::setIndexBuffer(std::initializer_list<int32_t> indices) {
-        GP_CORE_TRACE("VertexArray::setIndexBuffer()");
-
-        bind();
-        m_IndexBuffer = make_unique<IndexBuffer>(indices);
-    }
-
-    void VertexArray::setIndexBuffer(int32_t *indices, int32_t count) {
-        GP_CORE_TRACE("VertexArray::setIndexBuffer({0})", count);
-
-        bind();
-        m_IndexBuffer = make_unique<IndexBuffer>(indices, count);
-    }
-
-    const VertexBuffer &VertexArray::getVertexBuffer() const {
+    VertexBuffer &VertexArray::getVertexBuffer() {
         GP_CORE_TRACE_ALL("VertexArray::getVertexBuffer()");
         return m_VertexBuffer;
     }
 
-    const shared_ptr<IndexBuffer> &VertexArray::getIndexBuffer() const {
+    IndexBuffer &VertexArray::getIndexBuffer() {
         GP_CORE_TRACE_ALL("VertexArray::getIndexBuffer()");
         return m_IndexBuffer;
     }
@@ -189,5 +178,6 @@ namespace gp {
                     GP_CORE_ERROR("Unrecognised Shader Type");
             }
         }
+        unbind();
     }
 }

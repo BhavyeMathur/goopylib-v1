@@ -487,24 +487,22 @@ namespace gp {
             GP_CORE_TRACE_ALL("gp::Renderer::_updateRenderingObjectEBO(indices={0}, vertices={1})",
                               object.indices, object.vertices);
 
-            // TODO replace with std::array? don't manually call delete[] at the end
-            auto *indices = new int32_t[object.indices];
+            object.indicesData.clear();
+            object.indicesData.reserve(object.indices);
 
             for (int32_t i = 0; i < object.vertices / 4; i++) {
                 const int32_t indicesIndex = i * 6;
                 const int32_t vertexIndex = i * 4;
 
-                indices[indicesIndex + 0] = vertexIndex + 0;
-                indices[indicesIndex + 1] = vertexIndex + 1;
-                indices[indicesIndex + 2] = vertexIndex + 2;
+                object.indicesData[indicesIndex + 0] = vertexIndex + 0;
+                object.indicesData[indicesIndex + 1] = vertexIndex + 1;
+                object.indicesData[indicesIndex + 2] = vertexIndex + 2;
 
-                indices[indicesIndex + 3] = vertexIndex + 0;
-                indices[indicesIndex + 4] = vertexIndex + 2;
-                indices[indicesIndex + 5] = vertexIndex + 3;
+                object.indicesData[indicesIndex + 3] = vertexIndex + 0;
+                object.indicesData[indicesIndex + 4] = vertexIndex + 2;
+                object.indicesData[indicesIndex + 5] = vertexIndex + 3;
             }
-            object.VAO.setIndexBuffer(indices, object.indices);
-
-            delete[] indices;
+            object.VAO.getIndexBuffer().setData(&object.indicesData[0], object.indices);
         }
     }
 }

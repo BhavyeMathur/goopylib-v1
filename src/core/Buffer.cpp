@@ -20,10 +20,6 @@ namespace gp {
         GP_CORE_INFO("gp::Buffer::Buffer(layout)");
         GP_CHECK_INITIALISED("gp::Buffer::Buffer()");
         GP_CHECK_GE(length, 0, "gp::Buffer::Buffer() – length must be greater than or equal to 0");
-
-        if (glfwGetCurrentContext()) {
-            init();
-        }
     }
 
     Buffer::Buffer(Buffer &&other) noexcept
@@ -44,6 +40,7 @@ namespace gp {
         else {
             GP_CORE_DEBUG("gp::{0}::init({1}) already initialised", _getClassString(), m_RendererID);
         }
+        bind();
     }
 
     void Buffer::bind() const {

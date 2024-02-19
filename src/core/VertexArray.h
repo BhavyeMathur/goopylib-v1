@@ -28,19 +28,15 @@ namespace gp {
 
         void draw(int32_t count = 0, int32_t mode = GP_DRAW_MODE_TRIANGLES) const;
 
-        [[nodiscard]] const VertexBuffer &getVertexBuffer() const;
+        [[nodiscard]] VertexBuffer &getVertexBuffer();
 
-        void setIndexBuffer(std::initializer_list<int32_t> indices);
-
-        void setIndexBuffer(int32_t *indices, int32_t count);
-
-        [[nodiscard]] const shared_ptr<IndexBuffer> &getIndexBuffer() const;
+        [[nodiscard]] IndexBuffer &getIndexBuffer();
 
     private:
         uint32_t m_RendererID = 0;
 
         VertexBuffer m_VertexBuffer;
-        shared_ptr<IndexBuffer> m_IndexBuffer = nullptr;
+        IndexBuffer m_IndexBuffer;
 
         void _setVertexAttribs();
     };

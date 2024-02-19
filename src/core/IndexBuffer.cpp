@@ -12,15 +12,10 @@ namespace gp {
     }
 
     IndexBuffer::IndexBuffer(const int32_t *indices, const int32_t length)
-        : Buffer{length, {{ShaderDataType::Int4, "Index"}}} {
+        : Buffer{length, {{ShaderDataType::Int, "Index"}}} {
         GP_CORE_INFO("gp::IndexBuffer::IndexBuffer({0}, length={1})", m_RendererID, length);
-
         if (length != 0) {
             GP_CHECK_NOT_NULL(indices);
-        }
-
-        if (m_RendererID != 0) {
-            setData(indices, length);
         }
     }
 
