@@ -40,16 +40,6 @@ namespace core {
         Py_RETURN_FALSE;
     }
 
-    static PyObject *update(PyObject * ) {
-        GP_PY_TRACE("core.update()");
-
-        gp::update();
-
-        Py_RETURN_NONE;
-    }
-
-    #if GP_USING_GLFW
-
     static PyObject *has_active_context(PyObject * ) {
         GP_PY_TRACE("core.has_active_context()");
 
@@ -57,6 +47,14 @@ namespace core {
             Py_RETURN_TRUE;
         }
         Py_RETURN_FALSE;
+    }
+
+    static PyObject *update(PyObject * ) {
+        GP_PY_TRACE("core.update()");
+
+        gp::update();
+
+        Py_RETURN_NONE;
     }
 
     static PyObject *update_on_event(PyObject * , PyObject * ) {
@@ -121,17 +119,11 @@ namespace core {
         Py_RETURN_NONE;
     }
 
-    #endif
-
-    #if GP_USING_OPENGL
-
     static PyObject *opengl_version(PyObject * ) {
         GP_PY_TRACE("core.opengl_version()");
 
         return PyUnicode_FromString(gp::openglVersion().c_str());
     }
-
-    #endif
 }
 
 static PyMethodDef CoreMethods[] = {
@@ -140,8 +132,6 @@ static PyMethodDef CoreMethods[] = {
         {"is_initialised", (PyCFunction) core::is_initialised, METH_NOARGS, ""},
 
         {"update", (PyCFunction) core::update, METH_NOARGS, ""},
-
-        #if GP_USING_GLFW
 
         {"has_active_context", (PyCFunction) core::has_active_context, METH_NOARGS, ""},
 
@@ -158,13 +148,7 @@ static PyMethodDef CoreMethods[] = {
 
         {"set_buffer_swap_interval", (PyCFunction) core::set_buffer_swap_interval, METH_O, ""},
 
-        #endif
-
-        #if GP_USING_OPENGL
-
         {"opengl_version", (PyCFunction) core::opengl_version, METH_NOARGS, ""},
-
-        #endif
 
         {nullptr, nullptr, 0, nullptr}
 };

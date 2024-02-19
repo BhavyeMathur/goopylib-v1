@@ -12,8 +12,6 @@ namespace core {
 
     static PyObject *is_initialised(PyObject *self);
 
-    #if GP_USING_GLFW
-
     static PyObject *update_on_event(PyObject *self, PyObject *args);
 
     static PyObject *update_timeout(PyObject *self, PyObject *arg);
@@ -32,11 +30,5 @@ namespace core {
 
     static PyObject *set_buffer_swap_interval(PyObject *self, PyObject *arg);
 
-    #endif
-
-    #if GP_USING_OPENGL
-
     static PyObject *opengl_version(PyObject *self);
-
-    #endif
 }
