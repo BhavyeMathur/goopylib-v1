@@ -139,3 +139,35 @@ TEST(IndexBufferTests, SetDataErrors) {
     EXPECT_THROW(buffer.setData(&data2[0], 3, 1), std::invalid_argument);
     EXPECT_THROW(buffer.setData(&data1[0], -6, 0), std::invalid_argument);
 }
+
+TEST(IndexBufferTests, SetDataVector) {
+    gp::init();
+    auto window = gp::Window(100, 100);
+
+    gp::IndexBuffer buffer = {1, 2, 3};
+    buffer.init();
+
+    std::vector data1 = {1, 2, 3, 1, 2, 3};
+    std::vector data2 = {1, 2, 3};
+    std::vector data3 = {1, 2};
+
+    EXPECT_NO_THROW(buffer.setData(data1));
+    EXPECT_NO_THROW(buffer.setData(data2, 0));
+    EXPECT_NO_THROW(buffer.setData(data3, 1));
+}
+
+TEST(IndexBufferTests, SetDataStdArray) {
+    gp::init();
+    auto window = gp::Window(100, 100);
+
+    gp::IndexBuffer buffer = {1, 2, 3};
+    buffer.init();
+
+    std::array data1 = {1, 2, 3, 1, 2, 3};
+    std::array data2 = {1, 2, 3};
+    std::array data3 = {1, 2};
+
+    EXPECT_NO_THROW(buffer.setData(data1));
+    EXPECT_NO_THROW(buffer.setData(data2, 0));
+    EXPECT_NO_THROW(buffer.setData(data3, 1));
+}

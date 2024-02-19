@@ -2,6 +2,7 @@
 
 #include "gp.h"
 #include "BufferLayout.h"
+#include <span>
 
 
 namespace gp {
@@ -23,9 +24,13 @@ namespace gp {
 
         [[nodiscard]] int32_t length() const;
 
-        virtual void setData(const void *data, int32_t length);
+        void setData(const void *data, int32_t length);
 
         void setData(const void *data, int32_t length, int32_t offset) const;
+
+        void setData(std::span<int32_t> data);
+
+        void setData(std::span<int32_t> data, int32_t offset) const;
 
         [[nodiscard]] const BufferLayout &getLayout() const;
 

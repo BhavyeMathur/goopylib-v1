@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Buffer.h"
-#include <span>
 
 namespace gp {
     class GPAPI IndexBuffer final : public Buffer {

@@ -111,6 +111,14 @@ namespace gp {
         glBufferSubData(_getBufferTarget(), offset * m_Layout.m_Stride, length * m_Layout.m_Stride, data);
     }
 
+    void Buffer::setData(const std::span<int32_t> data) {
+        setData(data.data(), data.size());
+    }
+
+    void Buffer::setData(const std::span<int32_t> data, const int32_t offset) const {
+        setData(data.data(), data.size(), offset);
+    }
+
     const BufferLayout &Buffer::getLayout() const {
         GP_CORE_TRACE("gp::{0}::getLayout({1})", _getClassString(), m_RendererID);
         return m_Layout;
