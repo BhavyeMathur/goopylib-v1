@@ -5,12 +5,7 @@
 #include "IndexBuffer.h"
 
 namespace gp {
-    class Window;
-
     class GPAPI VertexArray final {
-
-        friend class Renderer;
-
     public:
         VertexArray(const BufferLayout &layout);
 
@@ -38,6 +33,6 @@ namespace gp {
         VertexBuffer m_VertexBuffer;
         IndexBuffer m_IndexBuffer;
 
-        void _setVertexAttribs();
+        void _setVertexAttribs() const;
     };
 }

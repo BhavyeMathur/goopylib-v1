@@ -472,12 +472,12 @@ namespace gp {
     void Renderer::_updateRenderingObjectVBO(RenderingBatch &object) {
         GP_CORE_TRACE_ALL("gp::Renderer::_updateRenderingObjectVBO()");
         if (object.reallocateBufferData) {
-            object.VAO.m_VertexBuffer.setData(object.bufferData, object.vertices);
+            object.VAO.getVertexBuffer().setData(object.bufferData, object.vertices);
             object.reallocateBufferData = false;
             object.updateBufferData = false;
         }
         else if (object.updateBufferData) {
-            object.VAO.m_VertexBuffer.setData(object.bufferData, object.vertices, 0);
+            object.VAO.getVertexBuffer().setData(object.bufferData, object.vertices, 0);
             object.updateBufferData = false;
         }
     }
