@@ -6,7 +6,7 @@
 #include <opengl.h>
 
 namespace gp {
-    GLenum shaderOpenGLType(ShaderDataType type) {
+    GLenum shaderOpenGLType(const ShaderDataType type) {
         switch (type) {
             case ShaderDataType::Float:
             case ShaderDataType::Float2:
@@ -26,7 +26,7 @@ namespace gp {
                 return GL_BYTE;
 
             default:
-                GP_CORE_ERROR("Unrecognised Shader Type");
+                GP_CORE_ERROR("gp::shaderOpenGLType() Unrecognised Shader Type");
                 return 0;
         }
     }
@@ -34,7 +34,7 @@ namespace gp {
 
 // Buffer Layout Element
 namespace gp {
-    int32_t shaderTypeSize(ShaderDataType type) {
+    int32_t shaderTypeSize(const ShaderDataType type) {
         switch (type) {
             case ShaderDataType::Float:
                 return 4;
@@ -59,17 +59,24 @@ namespace gp {
             case ShaderDataType::Bool:
                 return 1;
             default:
-                GP_CORE_ERROR("Unrecognised Shader Type");
+                GP_CORE_ERROR("gp::shaderTypeSize() Unrecognised Shader Type");
                 return 0;
         }
     }
 
-    BufferElement::BufferElement(ShaderDataType type, const char *name, bool normalized)
-            : m_Name(name),
-              m_Type(type),
-              m_Normalized(normalized),
-              m_Size(shaderTypeSize(type)),
-              m_Offset(0) {
+    BufferElement::BufferElement(const ShaderDataType type, const char *name, const bool normalized)
+        : m_Name(name),
+          m_Type(type),
+          m_Size(shaderTypeSize(type)),
+          m_Normalized(normalized) {
+    }
+
+    const char *BufferElement::getName() const {
+        return m_Name;
+    }
+
+    ShaderDataType BufferElement::getDataType() const {
+        return m_Type;
     }
 
     int32_t BufferElement::getCount() const {
@@ -103,42 +110,46 @@ namespace gp {
         }
     }
 
-    ShaderDataType BufferElement::getDataType() const {
-        return m_Type;
+    int32_t BufferElement::getSize() const {
+        return m_Size;
     }
 
-    bool BufferElement::isNormalised() const {
-        return m_Normalized;
-    }
-
-    size_t BufferElement::getOffset() const {
+    int32_t BufferElement::getOffset() const {
         return m_Offset;
     }
 
-    const char *BufferElement::getName() const {
-        return m_Name;
+    bool BufferElement::isNormalized() const {
+        return m_Normalized;
     }
 }
 
 // Buffer Layout
 namespace gp {
-    BufferLayout::BufferLayout(BufferElement *elements, int32_t count) {
-        GP_CORE_INFO("Initializing BufferLayout");
+    BufferLayout::BufferLayout(const BufferElement *elements, const int32_t count) {
+        GP_CORE_INFO("gp::BufferLayout::BufferLayout({0}, count={1})", reinterpret_cast<std::uintptr_t>(elements), count);
 
-        const gp::BufferElement *end = &elements[count];
+        const BufferElement *end = &elements[count];
 
-        for (gp::BufferElement *element = elements; element != end; element++) {
+        for (const BufferElement *element = elements; element != end; element++) {
             m_Elements.push_back(*element);
         }
 
-        calculateOffsetAndStride();
+        _calculateOffsetAndStride();
     }
 
-    BufferLayout::BufferLayout(std::initializer_list<BufferElement> elements)
-            : m_Elements(elements) {
-        GP_CORE_INFO("Initializing BufferLayout");
+    BufferLayout::BufferLayout(const std::initializer_list<BufferElement> elements)
+        : m_Elements{elements} {
+        GP_CORE_INFO("gp::BufferLayout::BufferLayout(count={0})", elements.size());
 
-        calculateOffsetAndStride();
+        _calculateOffsetAndStride();
+    }
+
+    int32_t BufferLayout::getStride() const {
+        return m_Stride;
+    }
+
+    int32_t BufferLayout::getCount() const {
+        return m_Count;
     }
 
     std::vector<BufferElement>::iterator BufferLayout::begin() {
@@ -157,13 +168,13 @@ namespace gp {
         return m_Elements.end();
     }
 
-    void BufferLayout::calculateOffsetAndStride() {
+    void BufferLayout::_calculateOffsetAndStride() {
         m_Stride = 0;
         m_Count = 0;
 
         for (auto &element: m_Elements) {
             element.m_Offset = m_Stride;
-            m_Stride += element.m_Size;
+            m_Stride += element.getSize();
             m_Count += element.getCount();
         }
     }

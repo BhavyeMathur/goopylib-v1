@@ -87,8 +87,9 @@ namespace gp {
 
         bind();
 
-        GP_OPENGL("glBufferData(target={0}, size={1}*{2}, data={3}, ...)", GP_BUFFER_TARGET, length, m_Layout.m_Stride, data);
-        glBufferData(_getBufferTarget(), length * m_Layout.m_Stride, data, _getBufferUsage());
+        GP_OPENGL("glBufferData(target={0}, size={1}*{2}, data={3}, ...)",
+                  GP_BUFFER_TARGET, length, m_Layout.getStride(), data);
+        glBufferData(_getBufferTarget(), length * m_Layout.getStride(), data, _getBufferUsage());
 
         m_Length = length;
     }
@@ -107,8 +108,8 @@ namespace gp {
 
         bind();
         GP_OPENGL("glBufferSubData(target={0}, offset={1}*{2}, size={3}*{2}, data={4})",
-                  GP_BUFFER_TARGET, offset, m_Layout.m_Stride, length, data);
-        glBufferSubData(_getBufferTarget(), offset * m_Layout.m_Stride, length * m_Layout.m_Stride, data);
+                  GP_BUFFER_TARGET, offset, m_Layout.getStride(), length, data);
+        glBufferSubData(_getBufferTarget(), offset * m_Layout.getStride(), length * m_Layout.getStride(), data);
     }
 
     void Buffer::setData(const std::span<int32_t> data) {

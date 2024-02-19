@@ -119,12 +119,12 @@ namespace gp {
 
                     GP_OPENGL(
                         "glVertexAttribPointer({0}, size={1}, type=GL_FLOAT, normalised={2}, stride={3}, offset={4})",
-                        attrIndex, element.getCount(), element.isNormalised(), layout.m_Stride, element.getOffset());
+                        attrIndex, element.getCount(), element.isNormalised(), layout.getStride(), element.getOffset());
                     glVertexAttribPointer(attrIndex,
                                           element.getCount(),
                                           GL_FLOAT,
-                                          element.isNormalised() ? GL_TRUE : GL_FALSE,
-                                          layout.m_Stride,
+                                          element.isNormalized() ? GL_TRUE : GL_FALSE,
+                                          layout.getStride(),
                                           (const void *) element.getOffset());
                     attrIndex++;
                     break;
@@ -139,11 +139,11 @@ namespace gp {
 
                     GP_OPENGL(
                         "glVertexAttribIPointer({0}, size={1}, type={2}, stride={3}, offset={4})",
-                        attrIndex, element.getCount(), shaderOpenGLType(type), layout.m_Stride, element.getOffset());
+                        attrIndex, element.getCount(), shaderOpenGLType(type), layout.getStride(), element.getOffset());
                     glVertexAttribIPointer(attrIndex,
                                            element.getCount(),
                                            shaderOpenGLType(type),
-                                           layout.m_Stride,
+                                           layout.getStride(),
                                            (const void *) element.getOffset());
                     attrIndex++;
                     break;
@@ -151,9 +151,9 @@ namespace gp {
                 case ShaderDataType::Mat3:
                 case ShaderDataType::Mat4: {
                     GLenum glType = shaderOpenGLType(type);
-                    bool normalized = element.isNormalised() ? GL_TRUE : GL_FALSE;
+                    bool normalized = element.isNormalized() ? GL_TRUE : GL_FALSE;
                     int32_t count = element.getCount();
-                    int32_t stride = layout.m_Stride;
+                    int32_t stride = layout.getStride();
 
                     for (int32_t i = 0; i < count; i++) {
                         GP_OPENGL("glEnableVertexAttribArray({0})", attrIndex);

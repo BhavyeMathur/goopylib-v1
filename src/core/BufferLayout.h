@@ -22,37 +22,39 @@ namespace gp {
     public:
         BufferElement(ShaderDataType type, const char *name, bool normalized = false);
 
-        [[nodiscard]] int32_t getCount() const;
+        [[nodiscard]] const char *getName() const;
 
         [[nodiscard]] ShaderDataType getDataType() const;
 
-        [[nodiscard]] bool isNormalised() const;
+        [[nodiscard]] int32_t getCount() const;
 
-        [[nodiscard]] size_t getOffset() const;
+        [[nodiscard]] int32_t getSize() const;
 
-        [[nodiscard]] const char *getName() const;
+        [[nodiscard]] int32_t getOffset() const;
+
+        [[nodiscard]] bool isNormalized() const;
 
     private:
         const char *m_Name;
         ShaderDataType m_Type;
-        bool m_Normalized;
 
         int32_t m_Size = 0;
-        size_t m_Offset = 0;
+        int32_t m_Offset = 0;
+        bool m_Normalized;
     };
 }
 
 // Buffer Layout
 namespace gp {
     class GPAPI BufferLayout {
-        friend class VertexArray;
-
-        friend class Buffer;
-
     public:
-        BufferLayout(BufferElement *elements, int32_t count);
+        BufferLayout(const BufferElement *elements, int32_t count);
 
         BufferLayout(std::initializer_list<BufferElement> elements);
+
+        int32_t getStride() const;
+
+        int32_t getCount() const;
 
         [[nodiscard]] std::vector<BufferElement>::iterator begin();
 
@@ -62,11 +64,12 @@ namespace gp {
 
         [[nodiscard]] std::vector<BufferElement>::const_iterator end() const;
 
-        void calculateOffsetAndStride();
-
     private:
-        std::vector<BufferElement> m_Elements;
         int32_t m_Stride = 0;
-        uint32_t m_Count = 0;
+        int32_t m_Count = 0;
+
+        std::vector<BufferElement> m_Elements;
+
+        void _calculateOffsetAndStride();
     };
 }
