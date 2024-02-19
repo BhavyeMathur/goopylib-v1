@@ -6,12 +6,14 @@
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 
 #define GP_USING_GLAD true
+#define GP_BUILDING_WINDOWS true
 #define or ||
 #define and &&
 
 #else
 
 #define GP_USING_GLAD false
+#define GP_BUILDING_WINDOWS false
 
 #endif
 

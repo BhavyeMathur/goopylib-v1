@@ -23,7 +23,7 @@ namespace gp {
             logSinks[1]->set_pattern("[%T] [%l] %n: %v");
             #endif
 
-            #if !__WINDOWS__
+            #if !GP_BUILDING_WINDOWS
             colorSink->set_color(spdlog::level::critical, "\033[91m\033[1m");
             #endif
 
