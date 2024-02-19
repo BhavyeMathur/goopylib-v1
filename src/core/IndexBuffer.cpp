@@ -6,7 +6,6 @@
 #include <opengl.h>
 
 namespace gp {
-    // TODO make length, indices order consistent in constructor & setData method
     IndexBuffer::IndexBuffer() : IndexBuffer{nullptr, 0} {
         GP_CORE_INFO("gp::IndexBuffer::IndexBuffer({0})", m_RendererID);
     }

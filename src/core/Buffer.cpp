@@ -17,8 +17,7 @@ namespace gp {
     Buffer::Buffer(const int32_t length, const BufferLayout &layout)
         : m_Length{length},
           m_Layout{layout} {
-        GP_CORE_INFO("gp::Buffer::Buffer(layout)");
-        GP_CHECK_INITIALISED("gp::Buffer::Buffer()");
+        GP_CORE_INFO("gp::Buffer::Buffer(length={0}, layout)", length);
         GP_CHECK_GE(length, 0, "gp::Buffer::Buffer() – length must be greater than or equal to 0");
     }
 
@@ -26,7 +25,7 @@ namespace gp {
         : m_Length{other.m_Length},
           m_RendererID{std::exchange(other.m_RendererID, 0)},
           m_Layout{std::move(other.m_Layout)} {
-        GP_CORE_INFO("gp::Buffer::Buffer({1}) — move constructor", m_RendererID);
+        GP_CORE_INFO("gp::{0}::Buffer({1}) — move constructor", _getClassString(other), m_RendererID);
     }
 
     void Buffer::init() {
@@ -45,7 +44,7 @@ namespace gp {
 
     void Buffer::bind() const {
         GP_CORE_TRACE("gp::{0}::bind({1})", _getClassString(), m_RendererID);
-        GP_CHECK_NOT_EQUALS(m_RendererID, 0, "gp::Buffer::bind() – cannot bind uninitialised buffer");
+        GP_CHECK_RENDERER_ID("gp::Buffer::bind()");
         GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::bind()");
 
         GP_OPENGL("glBindBuffer(target={0}, buffer={1})", GP_BUFFER_TARGET, m_RendererID);
@@ -83,6 +82,8 @@ namespace gp {
         if (length != 0) {
             GP_CHECK_NOT_NULL(data);
         }
+        GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::setData()");
+        GP_CHECK_RENDERER_ID("gp::Buffer::setData()");
 
         bind();
 
@@ -97,10 +98,12 @@ namespace gp {
 
         GP_CHECK_GE(length, 0, "gp::Buffer::setData() – data length must be greater than or equal to 0");
         GP_CHECK_GE(offset, 0, "gp::Buffer::setData() – offset must be greater than or equal to 0");
-        GP_CHECK_GE(length + offset, m_Length, "gp::Buffer::setData() – length + offset must be less than buffer size");
+        GP_CHECK_LE(length + offset, m_Length, "gp::Buffer::setData() – length + offset must be less than buffer size");
         if (length != 0) {
             GP_CHECK_NOT_NULL(data);
         }
+        GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::setData()");
+        GP_CHECK_RENDERER_ID("gp::Buffer::setData()");
 
         bind();
         GP_OPENGL("glBufferSubData(target={0}, offset={1}*{2}, size={3}*{2}, data={4})",

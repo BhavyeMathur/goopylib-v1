@@ -2,7 +2,7 @@
 #include <src/goopylib.h>
 
 TEST(IndexBufferTests, EmptyConstructor) {
-    gp::init();
+    EXPECT_NO_THROW(gp::IndexBuffer());
     EXPECT_NO_THROW(gp::IndexBuffer(nullptr, 0));
 }
 
@@ -40,20 +40,102 @@ TEST(IndexBufferTests, InitialiserListConstructor) {
 TEST(IndexBufferTests, ConstructorErrors) {
     EXPECT_THROW(gp::IndexBuffer(nullptr, -1), std::invalid_argument);
     EXPECT_THROW(gp::IndexBuffer(nullptr, 10), std::invalid_argument);
+}
+
+TEST(IndexBufferTests, Initialisation) {
+    auto buffer = gp::IndexBuffer(nullptr, 0);
+    EXPECT_THROW(buffer.init(), std::runtime_error);
+
+    gp::init();
+    auto window = gp::Window(100, 100);
+    EXPECT_NO_THROW(buffer.init());
+    EXPECT_NO_THROW(buffer.init()); // test twice init
+    gp::terminate();
+}
+
+TEST(IndexBufferTests, UninitialisedAndActiveContext) {
+    gp::init();
+    auto buffer = gp::IndexBuffer{};
+    auto window = gp::Window(100, 100);
+
+    EXPECT_THROW(buffer.bind(), std::runtime_error);
+    EXPECT_THROW(buffer.setData(nullptr, 0), std::runtime_error);
+    EXPECT_THROW(buffer.setData(nullptr, 0, 0), std::runtime_error);
+    EXPECT_NO_THROW(buffer.unbind());
+    EXPECT_NO_THROW(buffer.init());
 
     gp::terminate();
-    EXPECT_THROW(gp::IndexBuffer(nullptr, 0), std::runtime_error);
+}
 
-    int data1[] = {1, 2, 3, 2, 3, 4};
-    EXPECT_THROW(gp::IndexBuffer(data1, 6), std::runtime_error);
+TEST(IndexBufferTests, UninitialisedAndNoActiveContext) {
+    auto buffer = gp::IndexBuffer{};
 
-    int *data2 = new int[10];
-    EXPECT_THROW(gp::IndexBuffer(data2, 10), std::runtime_error);
-    delete[] data2;
+    EXPECT_THROW(buffer.init(), std::runtime_error);
+    EXPECT_THROW(buffer.bind(), std::runtime_error);
+    EXPECT_THROW(buffer.unbind(), std::runtime_error);
+    EXPECT_THROW(buffer.setData(nullptr, 0), std::runtime_error);
+    EXPECT_THROW(buffer.setData(nullptr, 0, 0), std::runtime_error);
+}
 
-    std::array data3 = {1, 2, 3, 2, 3, 4};
-    EXPECT_THROW(auto _ = gp::IndexBuffer(data3), std::runtime_error);
+TEST(IndexBufferTests, InitialisedAndActiveContext) {
+    gp::init();
+    auto window = gp::Window(100, 100);
+    auto buffer = gp::IndexBuffer{};
 
-    std::vector data4 = {1, 2, 3, 2, 3, 4};
-    EXPECT_THROW(auto _ = gp::IndexBuffer(data4), std::runtime_error);
+    EXPECT_NO_THROW(buffer.init());
+    EXPECT_NO_THROW(buffer.bind());
+    EXPECT_NO_THROW(buffer.unbind());
+    EXPECT_NO_THROW(buffer.setData(nullptr, 0));
+    EXPECT_NO_THROW(buffer.setData(nullptr, 0, 0));
+
+    gp::terminate();
+}
+
+TEST(IndexBufferTests, InitialisedAndNoActiveContext) {
+    gp::init();
+    auto window = gp::Window(100, 100);
+
+    auto buffer = gp::IndexBuffer{};
+    buffer.init();
+
+    gp::terminate();
+
+    EXPECT_THROW(buffer.bind(), std::runtime_error);
+    EXPECT_THROW(buffer.unbind(), std::runtime_error);
+    EXPECT_THROW(buffer.setData(nullptr, 0), std::runtime_error);
+    EXPECT_THROW(buffer.setData(nullptr, 0, 0), std::runtime_error);
+}
+
+TEST(IndexBufferTests, SetData) {
+    gp::init();
+    auto window = gp::Window(100, 100);
+
+    gp::IndexBuffer buffer = {1, 2, 3};
+    buffer.init();
+
+    std::array data1 = {1, 2, 3, 1, 2, 3};
+    std::array data2 = {1, 2, 3};
+
+    EXPECT_NO_THROW(buffer.setData(&data1[0], 6));
+    EXPECT_NO_THROW(buffer.setData(&data2[0], 3, 0));
+    EXPECT_NO_THROW(buffer.setData(&data2[0], 2, 1));
+}
+
+TEST(IndexBufferTests, SetDataErrors) {
+    gp::init();
+    auto window = gp::Window(100, 100);
+
+    gp::IndexBuffer buffer = {1, 2, 3};
+    buffer.init();
+
+    std::array data1 = {1, 2, 3, 1, 2, 3};
+    std::array data2 = {1, 2, 3};
+
+    EXPECT_THROW(buffer.setData(nullptr, 10), std::invalid_argument);
+    EXPECT_THROW(buffer.setData(nullptr, 10, 0), std::invalid_argument);
+    EXPECT_THROW(buffer.setData(&data1[0], -10), std::invalid_argument);
+
+    EXPECT_THROW(buffer.setData(&data1[0], 6, 0), std::invalid_argument);
+    EXPECT_THROW(buffer.setData(&data2[0], 3, 1), std::invalid_argument);
+    EXPECT_THROW(buffer.setData(&data1[0], -6, 0), std::invalid_argument);
 }
