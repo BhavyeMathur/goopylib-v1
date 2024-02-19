@@ -461,7 +461,7 @@ namespace gp {
         return texIndex;
     }
 
-    void Renderer::_bindTextureBatch(uint32_t offset) {
+    void Renderer::_bindTextureBatch(uint32_t offset) const {
         const uint32_t textures = min(offset + Texture2D::getTextureSlots(), (uint32_t) m_Textures.size());
 
         for (uint32_t i = offset; i < textures; i++) {

@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing a textured rectangle - an image
      */
-    class Image final : public TexturedRectangle {
+    class GPAPI Image final : public TexturedRectangle {
 
         friend class Renderer;
 
@@ -21,7 +21,7 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        GPAPI Image(std::string path, Point position);
+        Image(std::string path, Point position);
 
         /**
          * An object representing a textured rectangle - an image
@@ -34,7 +34,7 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        GPAPI Image(std::string path, Point position, float width, float height);
+        Image(std::string path, Point position, float width, float height);
 
         /**
          * An object representing a textured rectangle - an image
@@ -46,17 +46,17 @@ namespace gp {
          * @throws std::filesystem::filesystem_error image was not found
          * @throws std::invalid_argument unsupported image format
          */
-        GPAPI Image(std::string path, Point p1, Point p2);
+        Image(std::string path, Point p1, Point p2);
 
-        GPAPI std::string toString() const override;
+        std::string toString() const override;
 
         /**
          *
          * @return the filepath used by the image
          */
-        [[nodiscard]] GPAPI std::string getPath() const;
+        [[nodiscard]] std::string getPath() const;
 
-        [[nodiscard]] GPAPI shared_ptr<Bitmap> getBitmap() const override;
+        [[nodiscard]] shared_ptr<Bitmap> getBitmap() const override;
 
     private:
         const std::string m_Path;

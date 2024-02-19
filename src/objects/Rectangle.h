@@ -6,7 +6,7 @@ namespace gp {
     /**
      * An object representing a rectangle
      */
-    class Rectangle : virtual public Quad {
+    class GPAPI Rectangle : virtual public Quad {
 
     public:
         /**
@@ -16,7 +16,7 @@ namespace gp {
          * @param width in world space
          * @param height in world space
          */
-        GPAPI Rectangle(Point position, float width, float height);
+        Rectangle(Point position, float width, float height);
 
         /**
          * An object representing a rectangle
@@ -24,29 +24,29 @@ namespace gp {
          * @param p1 the 1st coordinate (x, y) of the rectangle
          * @param p2 the 2nd coordinate (x, y) of the rectangle
          */
-        GPAPI Rectangle(Point p1, Point p2);
+        Rectangle(Point p1, Point p2);
 
-        GPAPI ~Rectangle() override = default;
+        ~Rectangle() override = default;
 
-        [[nodiscard]] GPAPI std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
-        GPAPI void setP1(Point point) override;
+        void setP1(Point point) override;
 
-        [[nodiscard]] GPAPI Point getP1() const override;
+        [[nodiscard]] Point getP1() const override;
 
-        GPAPI void setP2(Point point) override;
+        void setP2(Point point) override;
 
-        [[nodiscard]] GPAPI Point getP2() const override;
+        [[nodiscard]] Point getP2() const override;
 
-        GPAPI void setP3(Point point) override;
+        void setP3(Point point) override;
 
-        [[nodiscard]] GPAPI Point getP3() const override;
+        [[nodiscard]] Point getP3() const override;
 
-        GPAPI void setP4(Point point) override;
+        void setP4(Point point) override;
 
-        [[nodiscard]] GPAPI Point getP4() const override;
+        [[nodiscard]] Point getP4() const override;
 
     protected:
-        GPAPI Rectangle() = default;
+        Rectangle() = default;
     };
 }

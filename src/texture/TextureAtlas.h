@@ -20,26 +20,26 @@ namespace gp {
 }
 
 namespace gp {
-    class TextureAtlas {
+    class GPAPI TextureAtlas {
 
         friend class Renderer;
 
     public:
-        GPAPI TextureAtlas(const TextureAtlas &) = delete;
+        TextureAtlas(const TextureAtlas &) = delete;
 
-        GPAPI ~TextureAtlas();
+        ~TextureAtlas();
 
-        GPAPI TextureCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
+        TextureCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
 
-        GPAPI std::vector<TextureCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
+        std::vector<TextureCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
                                              bool allowRotation = true,
                                              const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 
-        GPAPI static void init();
+        static void init();
 
-        [[nodiscard]] GPAPI static int32_t getWidth();
+        [[nodiscard]] static int32_t getWidth();
 
-        [[nodiscard]] GPAPI static int32_t getHeight();
+        [[nodiscard]] static int32_t getHeight();
 
     private:
         packing::shelf::ShelfPackingAlgorithm *m_PackingAlgorithm;
@@ -48,6 +48,6 @@ namespace gp {
         static int32_t s_Width;
         static int32_t s_Height;
 
-        GPAPI TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
+        TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
     };
 }

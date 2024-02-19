@@ -10,7 +10,7 @@ namespace gp {
     /**
      * An object representing a textured rectangle
      */
-    class TexturedRectangle : public TexturedQuad, public Rectangle {
+    class GPAPI TexturedRectangle : public TexturedQuad, public Rectangle {
 
     public:
         /**
@@ -20,14 +20,14 @@ namespace gp {
          * @param width in world space
          * @param height in world space
          */
-        GPAPI TexturedRectangle(const std::string &texture, Point position, float width, float height);
+        TexturedRectangle(const std::string &texture, Point position, float width, float height);
 
         /**
          * An object representing a textured rectangle
          *
          * @param position center (x, y) of the rectangle in world space
          */
-        GPAPI TexturedRectangle(const std::string &texture, const shared_ptr<Bitmap> &bitmap, Point position);
+        TexturedRectangle(const std::string &texture, const shared_ptr<Bitmap> &bitmap, Point position);
 
         /**
          * An object representing a textured rectangle
@@ -36,7 +36,7 @@ namespace gp {
          * @param width in world space
          * @param height in world space
          */
-        GPAPI TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap, Point position, float width,
+        TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap, Point position, float width,
                                 float height);
 
         /**
@@ -45,7 +45,7 @@ namespace gp {
          * @param p1 the 1st coordinate (x, y) of the rectangle
          * @param p2 the 2nd coordinate (x, y) of the rectangle
          */
-        GPAPI TexturedRectangle(std::string texture, Point p1, Point p2);
+        TexturedRectangle(std::string texture, Point p1, Point p2);
 
         /**
          * An object representing a textured rectangle
@@ -53,9 +53,9 @@ namespace gp {
          * @param p1 the 1st coordinate (x, y) of the rectangle
          * @param p2 the 2nd coordinate (x, y) of the rectangle
          */
-        GPAPI TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2);
+        TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2);
 
-        [[nodiscard]] GPAPI std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
     protected:
         /**
@@ -64,7 +64,7 @@ namespace gp {
          * @param p1 the 1st coordinate (x, y) of the rectangle
          * @param p2 the 2nd coordinate (x, y) of the rectangle
          */
-        GPAPI TexturedRectangle(std::string texture);
+        TexturedRectangle(std::string texture);
 
         /**
          * An object representing a textured rectangle
@@ -72,6 +72,6 @@ namespace gp {
          * @param p1 the 1st coordinate (x, y) of the rectangle
          * @param p2 the 2nd coordinate (x, y) of the rectangle
          */
-        GPAPI TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap);
+        TexturedRectangle(std::string texture, const shared_ptr<Bitmap> &bitmap);
     };
 }

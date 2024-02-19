@@ -4,30 +4,30 @@
 
 
 namespace gp {
-    class Bitmap {
+    class GPAPI Bitmap {
 
         friend class Image;
 
     public:
-        GPAPI Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
+        Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
 
-        GPAPI Bitmap(const char *filepath);
+        Bitmap(const char *filepath);
 
-        GPAPI Bitmap(const Bitmap &) = delete;
+        Bitmap(const Bitmap &) = delete;
 
-        GPAPI Bitmap(Bitmap &&other) = delete;
+        Bitmap(Bitmap &&other) = delete;
 
-        GPAPI ~Bitmap();
+        ~Bitmap();
 
-        [[nodiscard]] GPAPI uint32_t getWidth() const;
+        [[nodiscard]] uint32_t getWidth() const;
 
-        [[nodiscard]] GPAPI uint32_t getHeight() const;
+        [[nodiscard]] uint32_t getHeight() const;
 
-        [[nodiscard]] GPAPI uint32_t getChannels() const;
+        [[nodiscard]] uint32_t getChannels() const;
 
-        [[nodiscard]] GPAPI uint8_t *getData() const;
+        [[nodiscard]] uint8_t *getData() const;
 
-        GPAPI void saveBitmap(const std::string &filepath) const;
+        void saveBitmap(const std::string &filepath) const;
 
     private:
         uint32_t m_Width = 0;
@@ -37,6 +37,6 @@ namespace gp {
         bool m_IsImage = false;
         uint8_t *m_Data = nullptr;
 
-        GPAPI Bitmap() = default;
+        Bitmap() = default;
     };
 }

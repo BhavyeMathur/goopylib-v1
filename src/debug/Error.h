@@ -9,7 +9,7 @@ namespace gp {
         FileNotFoundError,
     };
 
-    GPAPI void setError(ErrorType type, const std::string &message);
+    void setError(ErrorType type, const std::string &message);
 }
 
 #if GP_VALUE_CHECKING

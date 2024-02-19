@@ -20,7 +20,7 @@ namespace gp::packing {
 
 // Shelf Class
 namespace gp::packing::shelf {
-    class Shelf {
+    class GPAPI Shelf {
 
         friend class gp::packing::ShelvedBin;
 
@@ -31,19 +31,19 @@ namespace gp::packing::shelf {
         friend class shelf::ScoredFit;
 
     public:
-        [[nodiscard]] GPAPI std::string toString() const;
+        [[nodiscard]] std::string toString() const;
 
-        [[nodiscard]] GPAPI float getWidth() const;
+        [[nodiscard]] float getWidth() const;
 
-        [[nodiscard]] GPAPI float getHeight() const;
+        [[nodiscard]] float getHeight() const;
 
-        [[nodiscard]] GPAPI float getVerticalOffset() const;
+        [[nodiscard]] float getVerticalOffset() const;
 
-        [[nodiscard]] GPAPI float getPackedWidth() const;
+        [[nodiscard]] float getPackedWidth() const;
 
-        [[nodiscard]] GPAPI float getAvailableWidth() const;
+        [[nodiscard]] float getAvailableWidth() const;
 
-        [[nodiscard]] GPAPI bool isOpen() const;
+        [[nodiscard]] bool isOpen() const;
 
     private:
         const float m_Width;
@@ -58,23 +58,23 @@ namespace gp::packing::shelf {
         Bin &m_Bin;
         std::vector<shared_ptr<Item>> m_Items;
 
-        GPAPI Shelf(float verticalOffset, Bin &bin);
+        Shelf(float verticalOffset, Bin &bin);
 
-        [[nodiscard]] GPAPI bool fits(const shared_ptr<Item> &item) const;
+        [[nodiscard]] bool fits(const shared_ptr<Item> &item) const;
 
-        [[nodiscard]] GPAPI bool fitsAbove(const shared_ptr<Item> &item) const;
+        [[nodiscard]] bool fitsAbove(const shared_ptr<Item> &item) const;
 
-        GPAPI void add(const shared_ptr<Item>& item);
+        void add(const shared_ptr<Item>& item);
 
-        GPAPI void close();
+        void close();
 
-        [[nodiscard]] GPAPI float packedArea() const;
+        [[nodiscard]] float packedArea() const;
     };
 }
 
 // Shelved Bin Class
 namespace gp::packing {
-    class ShelvedBin final : public Bin {
+    class GPAPI ShelvedBin final : public Bin {
 
         friend class shelf::Shelf;
 
@@ -87,23 +87,23 @@ namespace gp::packing {
         friend class shelf::ScoredFit;
 
     public:
-        [[nodiscard]] GPAPI float packingRatio() const override;
+        [[nodiscard]] float packingRatio() const override;
 
-        GPAPI shared_ptr<shelf::Shelf> getOpenShelf();
+        shared_ptr<shelf::Shelf> getOpenShelf();
 
-        GPAPI std::vector<shared_ptr<shelf::Shelf>> getShelves();
+        std::vector<shared_ptr<shelf::Shelf>> getShelves();
 
-        [[nodiscard]] GPAPI std::vector<shared_ptr<shelf::Shelf>>::const_iterator begin() const;
+        [[nodiscard]] std::vector<shared_ptr<shelf::Shelf>>::const_iterator begin() const;
 
-        [[nodiscard]] GPAPI std::vector<shared_ptr<shelf::Shelf>>::const_iterator end() const;
+        [[nodiscard]] std::vector<shared_ptr<shelf::Shelf>>::const_iterator end() const;
 
     private:
         shared_ptr<shelf::Shelf> m_OpenShelf;
         std::vector<shared_ptr<shelf::Shelf>> m_Shelves;
 
-        GPAPI ShelvedBin(float width, float height);
+        ShelvedBin(float width, float height);
 
-        GPAPI shared_ptr<shelf::Shelf> addShelf();
+        shared_ptr<shelf::Shelf> addShelf();
     };
 }
 
@@ -112,96 +112,96 @@ namespace gp::packing::shelf {
     using ScoringFunction = std::function<float(const shared_ptr<gp::packing::shelf::Shelf> &,
                                                 const shared_ptr<Item> &)>;
 
-    class ShelfPackingAlgorithm : public PackingAlgorithm {
+    class GPAPI ShelfPackingAlgorithm : public PackingAlgorithm {
 
     public:
-        GPAPI ShelfPackingAlgorithm();
+        ShelfPackingAlgorithm();
 
-        GPAPI virtual ~ShelfPackingAlgorithm() = default;
+        virtual ~ShelfPackingAlgorithm() = default;
 
-        GPAPI virtual void pack(const shared_ptr<Item>& item, bool allowRotation);
+        virtual void pack(const shared_ptr<Item>& item, bool allowRotation);
 
-        GPAPI void packAll(std::vector<shared_ptr<Item>> items,
+        void packAll(std::vector<shared_ptr<Item>> items,
                      bool allowRotation = true,
                      const SortingFunction &sortingFunction = sortByShortSide(true));
 
-        GPAPI void packOriented(const shared_ptr<Item>& item, bool orientVertically = true);
+        void packOriented(const shared_ptr<Item>& item, bool orientVertically = true);
 
-        GPAPI void packAllOriented(std::vector<shared_ptr<Item>> items,
+        void packAllOriented(std::vector<shared_ptr<Item>> items,
                              bool orientVertically = true,
                              const SortingFunction &sortingFunction = sortByLongSide(true));
 
-        [[nodiscard]] GPAPI std::vector<shared_ptr<ShelvedBin>> bins() const;
+        [[nodiscard]] std::vector<shared_ptr<ShelvedBin>> bins() const;
 
     protected:
-        GPAPI ShelfPackingAlgorithm(float binWidth, float binHeight);
+        ShelfPackingAlgorithm(float binWidth, float binHeight);
 
         std::vector<shared_ptr<ShelvedBin>> m_Bins;
     };
 
-    class NextFit final : public ShelfPackingAlgorithm {
+    class GPAPI NextFit final : public ShelfPackingAlgorithm {
 
     public:
-        GPAPI NextFit(float binWidth, float binHeight);
+        NextFit(float binWidth, float binHeight);
 
-        GPAPI void pack(const shared_ptr<Item> &item, bool allowRotation) override;
+        void pack(const shared_ptr<Item> &item, bool allowRotation) override;
 
     private:
         shared_ptr<Shelf> m_Shelf;
     };
 
-    class FirstFit final : public ShelfPackingAlgorithm {
+    class GPAPI FirstFit final : public ShelfPackingAlgorithm {
 
     public:
-        GPAPI FirstFit(float binWidth, float binHeight);
+        FirstFit(float binWidth, float binHeight);
 
-        GPAPI void pack(const shared_ptr<Item> &item, bool allowRotation) override;
+        void pack(const shared_ptr<Item> &item, bool allowRotation) override;
     };
 
-    class ScoredFit : public ShelfPackingAlgorithm {
+    class GPAPI ScoredFit : public ShelfPackingAlgorithm {
 
     public:
-        GPAPI ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction);
+        ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction);
 
-        GPAPI void pack(const shared_ptr<Item> &item, bool allowRotation) override;
+        void pack(const shared_ptr<Item> &item, bool allowRotation) override;
 
     private:
         ScoringFunction m_ScoringFunction;
     };
 
-    class BestWidthFit final : public ScoredFit {
+    class GPAPI BestWidthFit final : public ScoredFit {
 
     public:
-        GPAPI BestWidthFit(float binWidth, float binHeight);
+        BestWidthFit(float binWidth, float binHeight);
     };
 
-    class WorstWidthFit final : public ScoredFit {
+    class GPAPI WorstWidthFit final : public ScoredFit {
 
     public:
-        GPAPI WorstWidthFit(float binWidth, float binHeight);
+        WorstWidthFit(float binWidth, float binHeight);
     };
 
-    class BestHeightFit final : public ScoredFit {
+    class GPAPI BestHeightFit final : public ScoredFit {
 
     public:
-        GPAPI BestHeightFit(float binWidth, float binHeight);
+        BestHeightFit(float binWidth, float binHeight);
     };
 
-    class WorstHeightFit final : public ScoredFit {
+    class GPAPI WorstHeightFit final : public ScoredFit {
 
     public:
-        GPAPI WorstHeightFit(float binWidth, float binHeight);
+        WorstHeightFit(float binWidth, float binHeight);
     };
 
-    class BestAreaFit final : public ScoredFit {
+    class GPAPI BestAreaFit final : public ScoredFit {
 
     public:
-        GPAPI BestAreaFit(float binWidth, float binHeight);
+        BestAreaFit(float binWidth, float binHeight);
     };
 
-    class WorstAreaFit final : public ScoredFit {
+    class GPAPI WorstAreaFit final : public ScoredFit {
 
     public:
-        GPAPI WorstAreaFit(float binWidth, float binHeight);
+        WorstAreaFit(float binWidth, float binHeight);
     };
 }

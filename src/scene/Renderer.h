@@ -27,7 +27,6 @@ namespace gp {
 
     class Window;
 
-
     struct TextureData {
         shared_ptr<Texture2D> texture;
         uint32_t index;
@@ -164,7 +163,7 @@ namespace gp {
 
         [[nodiscard]] uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);
 
-        void _bindTextureBatch(uint32_t offset);
+        void _bindTextureBatch(uint32_t offset) const;
 
         static void _updateRenderingObjectVBO(RenderingBatch &object);
 

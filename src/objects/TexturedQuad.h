@@ -9,7 +9,7 @@ namespace gp {
     /**
      * An object representing a textured quad with 4 vertices.
      */
-    class TexturedQuad : virtual public Quad {
+    class GPAPI TexturedQuad : virtual public Quad {
 
         friend class Renderer;
 
@@ -22,7 +22,7 @@ namespace gp {
          * @param p3 3rd coordinate (x, y) in world space
          * @param p4 4th coordinate (x, y) in world space
          */
-        GPAPI TexturedQuad(std::string texture, Point p1, Point p2, Point p3, Point p4);
+        TexturedQuad(std::string texture, Point p1, Point p2, Point p3, Point p4);
 
         /**
          * An object representing a textured quad with 4 vertices.
@@ -32,15 +32,15 @@ namespace gp {
          * @param p3 3rd coordinate (x, y) in world space
          * @param p4 4th coordinate (x, y) in world space
          */
-        GPAPI TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4);
+        TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4);
 
-        [[nodiscard]] GPAPI std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
-        [[nodiscard]] GPAPI std::string getTextureName() const;
+        [[nodiscard]] std::string getTextureName() const;
 
-        GPAPI void setBitmap(const shared_ptr<Bitmap> &bitmap);
+        void setBitmap(const shared_ptr<Bitmap> &bitmap);
 
-        [[nodiscard]] GPAPI virtual shared_ptr<Bitmap> getBitmap() const;
+        [[nodiscard]] virtual shared_ptr<Bitmap> getBitmap() const;
 
     protected:
         TextureVertexAttrib m_T1 = {{0, 1}};
@@ -50,15 +50,15 @@ namespace gp {
 
         std::string m_Texture;
 
-        GPAPI TexturedQuad() = default;
+        TexturedQuad() = default;
 
-        GPAPI TexturedQuad(std::string texture);
+        TexturedQuad(std::string texture);
 
-        GPAPI TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap);
+        TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap);
 
     private:
         shared_ptr<Bitmap> m_Bitmap = nullptr;
 
-        [[nodiscard]] GPAPI RenderableSubclass _getRenderableSubclass() override;
+        [[nodiscard]] RenderableSubclass _getRenderableSubclass() override;
     };
 }

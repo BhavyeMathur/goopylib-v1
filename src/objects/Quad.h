@@ -7,7 +7,7 @@ namespace gp {
     /**
      * An object representing a quad with 4 vertices.
      */
-    class Quad : public Renderable {
+    class GPAPI Quad : public Renderable {
 
         friend class Renderer;
 
@@ -20,17 +20,17 @@ namespace gp {
          * @param p3 3rd coordinate (x, y) in world space
          * @param p4 4th coordinate (x, y) in world space
          */
-        GPAPI Quad(Point p1, Point p2, Point p3, Point p4);
+        Quad(Point p1, Point p2, Point p3, Point p4);
 
-        GPAPI virtual ~Quad() = default;
+        virtual ~Quad() = default;
 
-        GPAPI std::string toString() const override;
+        std::string toString() const override;
 
         /**
          * Sets the fill color of the object
          * @param color the color of the object
          */
-        GPAPI void setColor(const Color &color);
+        void setColor(const Color &color);
 
         /**
          * Sets the fill color of the object
@@ -40,7 +40,7 @@ namespace gp {
          * @param color3 the color of the 3rd vertex
          * @param color4 the color of the 4th vertex
          */
-        GPAPI void setColor(const Color &color1, const Color &color2, const Color &color3, const Color &color4);
+        void setColor(const Color &color1, const Color &color2, const Color &color3, const Color &color4);
 
         /**
          * Sets the fill color of the object
@@ -51,7 +51,7 @@ namespace gp {
          * @throws std::invalid_argument invalid hexstring
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI void setColor(const char *hexstring, float alpha = 1);
+        void setColor(const char *hexstring, float alpha = 1);
 
         /**
          * Sets the fill color of the object
@@ -63,7 +63,7 @@ namespace gp {
          *
          * @throws std::invalid_argument invalid hexstring
          */
-        GPAPI void setColor(const char *hex1, const char *hex2, const char *hex3, const char *hex4);
+        void setColor(const char *hex1, const char *hex2, const char *hex3, const char *hex4);
 
         /**
          * Sets the fill color of the object
@@ -76,7 +76,7 @@ namespace gp {
          * @throws std::invalid_argument RGB must be between 0-255
          * @throws std::invalid_argument alpha must be between 0-1
          */
-        GPAPI void setColor(int red, int green, int blue, float alpha = 1);
+        void setColor(int red, int green, int blue, float alpha = 1);
 
         /**
          * Sets the transparency of the object
@@ -85,7 +85,7 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        GPAPI void setTransparency(float value) override;
+        void setTransparency(float value) override;
 
         /**
          * Sets the transparency of the object
@@ -97,16 +97,16 @@ namespace gp {
          *
          * @throws std::invalid_argument if values are not between 0 and 1
          */
-        GPAPI void setTransparency(float v1, float v2, float v3, float v4);
+        void setTransparency(float v1, float v2, float v3, float v4);
 
         /**
          *
          * @return the transparency at each vertex of the object
          *
          */
-        [[nodiscard]] GPAPI Float4 getTransparency();
+        [[nodiscard]] Float4 getTransparency();
 
-        [[nodiscard]] GPAPI bool isOpaque() const override;
+        [[nodiscard]] bool isOpaque() const override;
 
         /**
         * Sets the position of the 1st vertex of the object
@@ -114,14 +114,14 @@ namespace gp {
         * @param point the (x, y) coordinate of the 1st vertex in world space
         *
         */
-        GPAPI virtual void setP1(Point point);
+        virtual void setP1(Point point);
 
         /**
          *
          * @return returns the (x, y) coordinates of the 1st vertex in world space
          *
          */
-        [[nodiscard]] virtual GPAPI Point getP1() const;
+        [[nodiscard]] virtual Point getP1() const;
 
         /**
          * Sets the position of the 2nd vertex of the object
@@ -129,14 +129,14 @@ namespace gp {
          * @param point the (x, y) coordinate of the 2nd vertex in world space
          *
          */
-        GPAPI virtual void setP2(Point point);
+        virtual void setP2(Point point);
 
         /**
          *
          * @return returns the (x, y) coordinates of the 2nd vertex in world space
          *
          */
-        [[nodiscard]] virtual GPAPI Point getP2() const;
+        [[nodiscard]] virtual Point getP2() const;
 
         /**
          * Sets the position of the 3rd vertex of the object
@@ -144,14 +144,14 @@ namespace gp {
          * @param point the (x, y) coordinate of the 3rd vertex in world space
          *
          */
-        GPAPI virtual void setP3(Point point);
+        virtual void setP3(Point point);
 
         /**
          *
          * @return returns the (x, y) coordinates of the 3rd vertex in world space
          *
          */
-        [[nodiscard]] virtual GPAPI Point getP3() const;
+        [[nodiscard]] virtual Point getP3() const;
 
         /**
          * Sets the position of the 4th vertex of the object
@@ -159,14 +159,14 @@ namespace gp {
          * @param point the (x, y) coordinate of the 4th vertex in world space
          *
          */
-        GPAPI virtual void setP4(Point point);
+        virtual void setP4(Point point);
 
         /**
          *
          * @return returns the (x, y) coordinates of the 4th vertex in world space
          *
          */
-        [[nodiscard]] virtual GPAPI Point getP4() const;
+        [[nodiscard]] virtual Point getP4() const;
 
     protected:
         SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
@@ -174,11 +174,11 @@ namespace gp {
         SolidVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
         SolidVertexAttrib m_V4 = {{0.0f, 0.55f, 0.9f}};
 
-        GPAPI Quad() = default;
+        Quad() = default;
 
     private:
-        [[nodiscard]] GPAPI bool _contains(float x, float y) const override;
+        [[nodiscard]] bool _contains(float x, float y) const override;
 
-        [[nodiscard]] GPAPI RenderableSubclass _getRenderableSubclass() override;
+        [[nodiscard]] RenderableSubclass _getRenderableSubclass() override;
     };
 }

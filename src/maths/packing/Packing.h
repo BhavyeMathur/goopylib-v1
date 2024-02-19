@@ -19,7 +19,7 @@ namespace gp::packing::shelf {
 
 // Item Class
 namespace gp::packing {
-    class Item {
+    class GPAPI Item {
 
         friend class shelf::Shelf;
 
@@ -32,33 +32,33 @@ namespace gp::packing {
         friend class shelf::ScoredFit;
 
     public:
-        GPAPI Item(float width, float height);
+        Item(float width, float height);
 
-        GPAPI Item (const Item&) = delete;
+        Item (const Item&) = delete;
 
-        [[nodiscard]] GPAPI bool isVertical() const;
+        [[nodiscard]] bool isVertical() const;
 
-        [[nodiscard]] GPAPI bool isHorizontal() const;
+        [[nodiscard]] bool isHorizontal() const;
 
-        [[nodiscard]] GPAPI bool isRotated() const;
+        [[nodiscard]] bool isRotated() const;
 
-        [[nodiscard]] GPAPI float area() const;
+        [[nodiscard]] float area() const;
 
-        [[nodiscard]] GPAPI Point p1() const;
+        [[nodiscard]] Point p1() const;
 
-        [[nodiscard]] GPAPI Point p2() const;
+        [[nodiscard]] Point p2() const;
 
-        [[nodiscard]] GPAPI float getX() const;
+        [[nodiscard]] float getX() const;
 
-        [[nodiscard]] GPAPI float getY() const;
+        [[nodiscard]] float getY() const;
 
-        [[nodiscard]] GPAPI float getWidth() const;
+        [[nodiscard]] float getWidth() const;
 
-        [[nodiscard]] GPAPI float getHeight() const;
+        [[nodiscard]] float getHeight() const;
 
-        [[nodiscard]] GPAPI float getLongSide() const;
+        [[nodiscard]] float getLongSide() const;
 
-        [[nodiscard]] GPAPI float getShortSide() const;
+        [[nodiscard]] float getShortSide() const;
 
     private:
         float m_Width;
@@ -80,20 +80,20 @@ namespace gp::packing {
 
 // Bin Class
 namespace gp::packing {
-    class Bin {
+    class GPAPI Bin {
 
         friend class shelf::Shelf;
 
     public:
-        GPAPI Bin (const Bin&) = delete;
+        Bin (const Bin&) = delete;
 
-        [[nodiscard]] GPAPI virtual float packingRatio() const;
+        [[nodiscard]] virtual float packingRatio() const;
 
-        [[nodiscard]] GPAPI std::vector<shared_ptr<Item>> items() const;
+        [[nodiscard]] std::vector<shared_ptr<Item>> items() const;
 
-        [[nodiscard]] GPAPI float getWidth() const;
+        [[nodiscard]] float getWidth() const;
 
-        [[nodiscard]] GPAPI float getHeight() const;
+        [[nodiscard]] float getHeight() const;
 
     protected:
         const float m_Width;
@@ -115,27 +115,27 @@ namespace gp::packing {
 namespace gp::packing {
     using SortingFunction = std::function<std::vector<shared_ptr<Item>>(std::vector<shared_ptr<Item>>)>;
 
-    GPAPI SortingFunction sortByWidth(bool descending = false);
+    SortingFunction sortByWidth(bool descending = false);
 
-    GPAPI SortingFunction sortByHeight(bool descending = false);
+    SortingFunction sortByHeight(bool descending = false);
 
-    GPAPI SortingFunction sortByPerimeter(bool descending = false);
+    SortingFunction sortByPerimeter(bool descending = false);
 
-    GPAPI SortingFunction sortByArea(bool descending = false);
+    SortingFunction sortByArea(bool descending = false);
 
-    GPAPI SortingFunction sortBySideRatio(bool descending = false);
+    SortingFunction sortBySideRatio(bool descending = false);
 
-    GPAPI SortingFunction sortByLongSide(bool descending = false);
+    SortingFunction sortByLongSide(bool descending = false);
 
-    GPAPI SortingFunction sortByShortSide(bool descending = false);
+    SortingFunction sortByShortSide(bool descending = false);
 }
 
 // Packing Algorithm Class
 namespace gp::packing {
-    class PackingAlgorithm {
+    class GPAPI PackingAlgorithm {
 
     public:
-        GPAPI PackingAlgorithm (const PackingAlgorithm&) = delete;
+        PackingAlgorithm (const PackingAlgorithm&) = delete;
 
     protected:
         PackingAlgorithm(float binWidth, float binHeight);

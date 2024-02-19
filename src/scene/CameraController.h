@@ -10,7 +10,7 @@ namespace gp {
      * Controller class that automatically manages camera movement, rotation, and zoom.\n
      * This is a helper class that wraps around a Window's camera and provides basic but quick functionality.
      */
-    class CameraController {
+    class GPAPI CameraController {
 
     public:
         /**
@@ -19,102 +19,102 @@ namespace gp {
          *
          * @param window the window to use
          */
-        GPAPI CameraController(Window* window);
+        CameraController(Window* window);
 
-        GPAPI CameraController (const CameraController&) = delete;
+        CameraController (const CameraController&) = delete;
 
         /**
          * Updates the controller. Call this method in the mainloop.
          */
-        GPAPI void update();
+        void update();
 
         /**
          * Enables automatic camera movement when the control keys are pressed.
          * @param value whether to enable or disable movement
          */
-        GPAPI void enableMovement(bool value);
+        void enableMovement(bool value);
 
         /**
          * Enables automatic camera rotation when the control keys are pressed.
          * @param value whether to enable or disable rotation
          */
-        GPAPI void enableRotation(bool value);
+        void enableRotation(bool value);
 
         /**
          * Enables automatic camera zooming when the control keys are pressed.
          * @param value whether to enable or disable zooming
          */
-        GPAPI void enableZoom(bool value);
+        void enableZoom(bool value);
 
         /**
          * Inverts camera movement.
          * @param value whether to invert the movement
          */
-        GPAPI void invertMovement(bool value);
+        void invertMovement(bool value);
 
         /**
          * Inverts camera rotation.
          * @param value whether to invert the rotation
          */
-        GPAPI void invertRotation(bool value);
+        void invertRotation(bool value);
 
         /**
          * Sets the horizontal movement speed of the camera.
          * @param value the horizontal speed
          */
-        GPAPI void setHorizontalSpeed(float value);
+        void setHorizontalSpeed(float value);
 
         /**
          *
          * @return the horizontal movement speed of the camera
          */
-        [[nodiscard]] GPAPI float getHorizontalSpeed() const;
+        [[nodiscard]] float getHorizontalSpeed() const;
 
         /**
          * Sets the vertical movement speed of the camera.
          * @param value the vertical speed
          */
-        GPAPI void setVerticalSpeed(float value);
+        void setVerticalSpeed(float value);
 
         /**
          *
          * @return the vertical movement speed of the camera
          */
-        [[nodiscard]] GPAPI float getVerticalSpeed() const;
+        [[nodiscard]] float getVerticalSpeed() const;
 
         /**
          * Sets the rotational speed of the camera.
          * @param value the rotate speed
          */
-        GPAPI void setRotateSpeed(float value);
+        void setRotateSpeed(float value);
 
         /**
          *
          * @return the rotational speed of the camera
          */
-        [[nodiscard]] GPAPI float getRotateSpeed() const;
+        [[nodiscard]] float getRotateSpeed() const;
 
         /**
          * Sets the zoom speed of the camera.
          * @param value the zoom speed
          */
-        GPAPI void setZoomSpeed(float value);
+        void setZoomSpeed(float value);
 
         /**
          *
          * @return the zoom speed of the camera
          */
-        [[nodiscard]] GPAPI float getZoomSpeed() const;
+        [[nodiscard]] float getZoomSpeed() const;
 
         /**
          * Binds the WASD keys for camera movement.
          */
-        GPAPI void useWASD();
+        void useWASD();
 
         /**
          * Binds the arrow keys for camera movement.
          */
-        GPAPI void useArrows();
+        void useArrows();
 
         /**
          * Sets the keys used for camera movement.
@@ -124,7 +124,7 @@ namespace gp {
          * @param down key to use for moving down
          * @param right key to use for moving right
          */
-        GPAPI void setMovementKeys(int up, int left, int down, int right);
+        void setMovementKeys(int up, int left, int down, int right);
 
         /**
          * Sets the keys used for camera rotation.
@@ -132,7 +132,7 @@ namespace gp {
          * @param clockwise key to use for clockwise rotation
          * @param anticlockwise key to use for anticlockwise rotation
          */
-        GPAPI void setRotationKeys(int clockwise, int anticlockwise);
+        void setRotationKeys(int clockwise, int anticlockwise);
 
         /**
          * Sets the keys used for camera zooming.
@@ -140,7 +140,7 @@ namespace gp {
          * @param in key to use for zooming in
          * @param out key to use for zooming out
          */
-        GPAPI void setZoomKeys(int in, int out);
+        void setZoomKeys(int in, int out);
 
     private:
         Camera* m_Camera;

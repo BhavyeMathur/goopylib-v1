@@ -22,7 +22,7 @@ namespace gp {
     /**
      * An orthographic camera associated with a Window.
      */
-    class Camera {
+    class GPAPI Camera {
 
         friend class Window;
         friend class Renderer;
@@ -37,11 +37,11 @@ namespace gp {
          * @param bottom bottom clipping plane
          * @param top top clipping plane
          */
-        GPAPI Camera(float left, float right, float bottom, float top);
+        Camera(float left, float right, float bottom, float top);
 
-        GPAPI Camera (const Camera&) = delete;
+        Camera (const Camera&) = delete;
 
-        GPAPI ~Camera() = default;
+        ~Camera() = default;
 
         /**
          * Sets an orthographic projection for the camera
@@ -51,47 +51,47 @@ namespace gp {
          * @param bottom bottom clipping plane
          * @param top top clipping plane
          */
-        GPAPI void setProjection(float left, float right, float bottom, float top);
+        void setProjection(float left, float right, float bottom, float top);
 
         /**
          * Gets the currently visible camera frame with left, right, bottom, and top values
          */
-        [[nodiscard]] GPAPI CameraFrame getVisibleFrame() const;
+        [[nodiscard]] CameraFrame getVisibleFrame() const;
 
         /**
          * Gets the camera projection frame (zoom=1) with left, right, bottom, and top values
          */
-        [[nodiscard]] GPAPI CameraFrame getProjectionFrame() const;
+        [[nodiscard]] CameraFrame getProjectionFrame() const;
 
         /**
          * Gets the currently visible camera frame width
          */
-        [[nodiscard]] GPAPI float getVisibleWidth() const;
+        [[nodiscard]] float getVisibleWidth() const;
 
         /**
          * Gets the currently visible camera frame height
          */
-        [[nodiscard]] GPAPI float getVisibleHeight() const;
+        [[nodiscard]] float getVisibleHeight() const;
 
         /**
          * Gets the camera projection (zoom=1) width
          */
-        [[nodiscard]] GPAPI float getProjectionWidth() const;
+        [[nodiscard]] float getProjectionWidth() const;
 
         /**
          * Gets the camera projection (zoom=1) height
          */
-        [[nodiscard]] GPAPI float getProjectionHeight() const;
+        [[nodiscard]] float getProjectionHeight() const;
 
         /**
          * Gets the currently visible camera frame size as width, height
          */
-        [[nodiscard]] GPAPI CameraFrameSize getVisibleSize() const;
+        [[nodiscard]] CameraFrameSize getVisibleSize() const;
 
         /**
          * Gets the camera projection (zoom=1) size as width, height
          */
-        [[nodiscard]] GPAPI CameraFrameSize getProjectionSize() const;
+        [[nodiscard]] CameraFrameSize getProjectionSize() const;
 
         /**
          * Moves (translate) the camera's position
@@ -99,31 +99,31 @@ namespace gp {
          * @param dx change in x position
          * @param dy change in y position
          */
-        GPAPI void move(float dx, float dy);
+        void move(float dx, float dy);
 
         /**
          * Sets the x-position of the camera
          * @param x the new x-position
          */
-        GPAPI void setX(float x);
+        void setX(float x);
 
         /**
          *
          * @return the x-position of the camera
          */
-        [[nodiscard]] GPAPI float getX() const;
+        [[nodiscard]] float getX() const;
 
         /**
          * Sets the y-position of the camera
          * @param y the new y-position
          */
-        GPAPI void setY(float y);
+        void setY(float y);
 
         /**
          *
          * @return the y-position of the camera
          */
-        [[nodiscard]] GPAPI float getY() const;
+        [[nodiscard]] float getY() const;
 
         /**
          * Sets the position of the camera
@@ -131,49 +131,49 @@ namespace gp {
          * @param x the new x-position
          * @param y the new y-position
          */
-        GPAPI void setPosition(float x, float y);
+        void setPosition(float x, float y);
 
         /**
          *
          * @return the position of the camera as a struct with (x, y)
          */
-        [[nodiscard]] GPAPI Point getPosition() const;
+        [[nodiscard]] Point getPosition() const;
 
         /**
          * Rotates the camera
          * @param angle in degrees
          */
-        GPAPI void rotate(float angle);
+        void rotate(float angle);
 
         /**
          * Sets the rotation of the camera
          * @param angle in degrees
          */
-        GPAPI void setRotation(float angle);
+        void setRotation(float angle);
 
         /**
          * Gets the rotation of the camera
          * @return angle in degrees
          */
-        [[nodiscard]] GPAPI float getRotation() const;
+        [[nodiscard]] float getRotation() const;
 
         /**
          * Zooms the camera in. A value less than 1 zooms the camera out.
          * @param value zoom amount
          */
-        GPAPI void zoom(float value);
+        void zoom(float value);
 
         /**
          * Sets the zoom of the camera. Defaults to 1.
          * @param value zoom amount
          */
-        GPAPI void setZoom(float value);
+        void setZoom(float value);
 
         /**
          *
          * @return the zoom level of the camera
          */
-        [[nodiscard]] GPAPI float getZoom() const;
+        [[nodiscard]] float getZoom() const;
 
     private:
         glm::mat4 m_ProjectionMatrix;
@@ -191,6 +191,6 @@ namespace gp {
         float m_RotationRadians = 0;
         float m_Zoom = 1;
 
-        GPAPI void _update();
+        void _update();
     };
 }

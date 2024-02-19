@@ -11,20 +11,20 @@ namespace gp {
 
     class Renderable;
 
-    class RenderingManager {
+    class GPAPI RenderingManager {
 
         friend class Renderer;
 
         friend class Renderable;
 
     public:
-        GPAPI RenderingManager(const Window &, int width, int height, const char *title);
+        RenderingManager(const Window &, int width, int height, const char *title);
 
-        GPAPI RenderingManager(const RenderingManager &) = delete;
+        RenderingManager(const RenderingManager &) = delete;
 
-        GPAPI RenderingManager(RenderingManager &&other) = delete;
+        RenderingManager(RenderingManager &&other) = delete;
 
-        GPAPI void render();
+        void render();
 
         // Width
         /**
@@ -33,12 +33,12 @@ namespace gp {
          * @throws std::invalid_argument value must be greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        GPAPI void setWidth(int value);
+        void setWidth(int value);
 
         /**
          * @return in screen coordinates
          */
-        [[nodiscard]] GPAPI int getWidth() const;
+        [[nodiscard]] int getWidth() const;
 
         // Height
         /**
@@ -47,12 +47,12 @@ namespace gp {
          * @throws std::invalid_argument value must be greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        GPAPI void setHeight(int value);
+        void setHeight(int value);
 
         /**
          * @return in screen coordinates
          */
-        [[nodiscard]] GPAPI int getHeight() const;
+        [[nodiscard]] int getHeight() const;
 
         // Background
         /**
@@ -60,17 +60,17 @@ namespace gp {
          *
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        GPAPI void setBackground(const Color &value);
+        void setBackground(const Color &value);
 
         /**
          * @return the background color of the Window
          */
-        [[nodiscard]] GPAPI Color &getBackground();
+        [[nodiscard]] Color &getBackground();
 
         /**
          * @return the Camera object associated with the Window
          */
-        [[nodiscard]] GPAPI Camera &getCamera();
+        [[nodiscard]] Camera &getCamera();
 
         /**
          * Converts coordinates in screen space to world space.
@@ -81,7 +81,7 @@ namespace gp {
          * @param p a struct with (x, y) in screen coordinates
          * @return a struct with (x, y) in world coordinates
          */
-        [[nodiscard]] GPAPI Point toWorld(Point p) const;
+        [[nodiscard]] Point toWorld(Point p) const;
 
         /**
          * Converts coordinates in world space to screen space.
@@ -91,7 +91,7 @@ namespace gp {
          * @param p a struct with (x, y) in world coordinates
          * @return a struct with (x, y) in screen coordinates
          */
-        [[nodiscard]] GPAPI Point toScreen(Point p) const;
+        [[nodiscard]] Point toScreen(Point p) const;
 
     protected:
         int m_Width;
@@ -100,9 +100,9 @@ namespace gp {
 
         Color m_Background;
 
-        GPAPI void init();
+        void init();
 
-        GPAPI virtual void _updateSize() const = 0;
+        virtual void _updateSize() const = 0;
 
     private:
         Camera m_Camera;
@@ -118,16 +118,16 @@ namespace gp {
         uint32_t m_NextObjectID = 0;
         std::unordered_map<uint32_t, bool> m_ObjectToIsOpaque;
 
-        GPAPI void _updateBackground();
+        void _updateBackground();
 
-        GPAPI static void _enableDepthWriting();
+        static void _enableDepthWriting();
 
-        GPAPI static void _disableDepthWriting();
+        static void _disableDepthWriting();
 
-        GPAPI uint32_t _drawRenderable(Renderable *object);
+        uint32_t _drawRenderable(Renderable *object);
 
-        GPAPI void _undrawRenderable(Renderable *object);
+        void _undrawRenderable(Renderable *object);
 
-        GPAPI void _updateRenderable(Renderable *object);
+        void _updateRenderable(Renderable *object);
     };
 }
