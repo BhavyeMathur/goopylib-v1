@@ -489,11 +489,11 @@ namespace gp {
                               object.indices, object.vertices);
 
             // TODO replace with std::array? don't manually call delete[] at the end
-            auto *indices = new uint32_t[object.indices];
+            auto *indices = new int32_t[object.indices];
 
-            for (uint32_t i = 0; i < object.vertices / 4; i++) {
-                const uint32_t indicesIndex = i * 6;
-                const uint32_t vertexIndex = i * 4;
+            for (int32_t i = 0; i < object.vertices / 4; i++) {
+                const int32_t indicesIndex = i * 6;
+                const int32_t vertexIndex = i * 4;
 
                 indices[indicesIndex + 0] = vertexIndex + 0;
                 indices[indicesIndex + 1] = vertexIndex + 1;

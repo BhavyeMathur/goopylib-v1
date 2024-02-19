@@ -71,14 +71,14 @@ namespace gp {
 }
 
 namespace gp {
-    void VertexArray::setIndexBuffer(std::initializer_list<uint32_t> indices) {
+    void VertexArray::setIndexBuffer(std::initializer_list<int32_t> indices) {
         GP_CORE_TRACE("VertexArray::setIndexBuffer()");
 
         bind();
         m_IndexBuffer = make_unique<IndexBuffer>(indices);
     }
 
-    void VertexArray::setIndexBuffer(uint32_t *indices, uint32_t count) {
+    void VertexArray::setIndexBuffer(int32_t *indices, int32_t count) {
         GP_CORE_TRACE("VertexArray::setIndexBuffer({0})", count);
 
         bind();

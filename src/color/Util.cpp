@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
-#include "Util.h"
+#include "core/Core.h"
+#include "color/Util.h"
 #include "debug/Error.h"
 
 #include <random>
@@ -12,9 +13,6 @@ std::unique_ptr<std::uniform_int_distribution<> > rgb_distribution;
 std::unique_ptr<std::uniform_int_distribution<> > angle_distribution;
 std::unique_ptr<std::uniform_real_distribution<float> > normalized_distribution;
 
-namespace {
-    bool is_initialized = false;
-}
 
 namespace gp {
     void initColorRNG() {
@@ -31,8 +29,6 @@ namespace gp {
         catch (...) {
             GP_RUNTIME_ERROR("gp::initRNG() failed to initialize random color generator");
         }
-
-        is_initialized = true;
     }
 
     Color randomColor() {

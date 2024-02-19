@@ -6,9 +6,11 @@ namespace gp {
     class GPAPI IndexBuffer final : public Buffer {
 
     public:
-        IndexBuffer(const uint32_t *indices, int32_t length);
+        IndexBuffer(const int32_t *indices = nullptr, int32_t length = 0);
 
-        IndexBuffer(std::initializer_list<uint32_t> indices);
+        IndexBuffer(std::span<int32_t> indices);
+
+        IndexBuffer(std::initializer_list<int32_t> indices);
 
         IndexBuffer(const IndexBuffer &) = delete;
 

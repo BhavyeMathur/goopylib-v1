@@ -30,9 +30,9 @@ namespace gp {
 
         [[nodiscard]] const VertexBuffer &getVertexBuffer() const;
 
-        void setIndexBuffer(std::initializer_list<uint32_t> indices);
+        void setIndexBuffer(std::initializer_list<int32_t> indices);
 
-        void setIndexBuffer(uint32_t *indices, uint32_t count);
+        void setIndexBuffer(int32_t *indices, int32_t count);
 
         [[nodiscard]] const shared_ptr<IndexBuffer> &getIndexBuffer() const;
 
