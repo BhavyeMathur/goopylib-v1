@@ -19,3 +19,7 @@
 [submodule "examples/BrickBreaker"]
 	path = examples/BrickBreaker
 	url = https://github.com/BhavyeMathur/goopylib-brick-breaker
+[submodule "vendor/pybind11"]
+	path = vendor/pybind11
+	url = https://github.com/pybind/pybind11
+	branch = stable

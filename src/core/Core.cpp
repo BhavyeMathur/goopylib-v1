@@ -110,6 +110,10 @@ namespace gp {
         return is_initialized;
     }
 
+    bool hasActiveContext() {
+        return glfwInit() and glfwGetCurrentContext();
+    }
+
     void update() {
         GP_CORE_TRACE_ALL("gp::update()");
         GP_CHECK_INITIALISED("gp::update()");
@@ -172,10 +176,6 @@ namespace gp {
     double getTime() {
         GP_CHECK_INITIALISED("gp::getTime()");
         return glfwGetTime();
-    }
-
-    bool hasActiveContext() {
-        return glfwInit() and glfwGetCurrentContext();
     }
 
     std::string glfwCompiledVersion() {

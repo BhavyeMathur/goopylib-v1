@@ -94,7 +94,7 @@ else:
     data_files = []
 
 ext_kwargs = {"include_dirs":         [".", "src", "vendor", "vendor/glad", "vendor/glm",
-                                       "vendor/spdlog/include", "vendor/GLFW/include"],
+                                       "vendor/spdlog/include", "vendor/GLFW/include", "vendor/pybind11/include"],
               "library_dirs":         library_dirs,
               "runtime_library_dirs": RUNTIME_LIBRARY_DIRS,
               "libraries":            ["goopylib"],

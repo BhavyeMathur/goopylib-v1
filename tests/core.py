@@ -36,7 +36,7 @@ class CoreMethods(unittest.TestCase):
         self.assertIsInstance(gp.get_screen_height(), int)
 
     def test_number_of_monitors(self):
-        self.assertIsInstance(gp.number_of_monitors(), int)
+        self.assertIsInstance(gp.get_number_of_monitors(), int)
 
     def test_set_buffer_swap_interval(self):
         self.assertIsNone(gp.set_buffer_swap_interval(0))
@@ -65,4 +65,4 @@ class CoreMethodsUninitialized(unittest.TestCase):
 
     def test_number_of_monitors_error(self):
         with self.assertRaises(RuntimeError):
-            gp.number_of_monitors()
+            gp.get_number_of_monitors()
