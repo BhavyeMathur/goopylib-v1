@@ -3,9 +3,17 @@
 #include "Buffer.h"
 
 namespace gp {
+    /**
+     * An object representing a Vertex Buffer to store vertex data
+     */
     class GPAPI VertexBuffer final : public Buffer {
 
     public:
+        /**
+         * An object representing a Vertex Buffer to store vertex data
+         *
+         * @param layout the structure of vertex data
+         */
         VertexBuffer(const BufferLayout &layout);
 
         VertexBuffer(const VertexBuffer &) = delete;

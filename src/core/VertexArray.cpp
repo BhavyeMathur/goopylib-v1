@@ -55,7 +55,7 @@ namespace gp {
             unbind();
         }
         else {
-            GP_CORE_DEBUG("gp::VertexArray::init({0}) already initialised", m_RendererID);
+            GP_CORE_DEBUG("gp::VertexArray::init({0}) already initialized", m_RendererID);
         }
     }
 
