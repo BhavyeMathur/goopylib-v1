@@ -5,8 +5,6 @@ namespace py = pybind11;
 
 
 PYBIND11_MODULE(core, m) {
-    // m.doc() = "pybind11 example plugin";
-
     m.def("init", &gp::init);
     m.def("terminate", &gp::terminate);
     m.def("is_initialized", &gp::isInitialized);
