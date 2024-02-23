@@ -8,7 +8,6 @@ from typing import Union, Tuple
 
 # pylint: disable=import-error, no-name-in-module
 
-from goopylib.ext.color import *
 from goopylib.ext.camera import *
 import goopylib.ext.window as _window
 
