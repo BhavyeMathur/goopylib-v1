@@ -4,7 +4,7 @@ Module defining colors
 
 from __future__ import annotations
 
-from typing import Union
+from typing import Union, Tuple
 
 # pylint: disable-next=no-name-in-module, import-error
 import goopylib.ext.color as _color
@@ -153,6 +153,38 @@ class Color:
     @alpha.setter
     def alpha(self, value: float) -> None:
         self._color.alpha = value
+
+    @property
+    def redf(self) -> float:
+        """
+        Returns:
+            the red component of the color normalised between 0-1
+        """
+        return self._color.redf
+
+    @property
+    def greenf(self) -> float:
+        """
+        Returns:
+            the green component of the color normalised between 0-1
+        """
+        return self._color.greenf
+
+    @property
+    def bluef(self) -> float:
+        """
+        Returns:
+            the blue component of the color normalised between 0-1
+        """
+        return self._color.bluef
+
+    @property
+    def rgbaf(self) -> Tuple[float, float, float, float]:
+        """
+        Returns:
+            the RGBA components of the color normalised between 0-1
+        """
+        return self._color.rgbaf
 
 
 class ColorRGB(Color):
