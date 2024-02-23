@@ -64,7 +64,6 @@ namespace gp {
 }
 
 namespace gp {
-    // Width
     void RenderingManager::setWidth(int value) {
         GP_CORE_DEBUG("gp::RenderingManager::setWidth({1}) - '{0}'", m_Title, value);
 
@@ -79,7 +78,6 @@ namespace gp {
         return m_Width;
     }
 
-    // Height
     void RenderingManager::setHeight(int value) {
         GP_CORE_DEBUG("gp::RenderingManager::setHeight({1}) - '{0}'", m_Title, value);
 
@@ -94,7 +92,6 @@ namespace gp {
         return m_Height;
     }
 
-    // Background
     void RenderingManager::setBackground(const Color &value) {
         GP_CORE_DEBUG("gp::RenderingManager::setBackground({1}) - '{0}'", m_Title, value.toString());
 

@@ -115,7 +115,6 @@ namespace gp {
 
         /* Getters & Setters -----------------------------------------------------------------------------------------*/
 
-        // Title
         /**
          * @param value the title string to show in the title menu
          * @throws std::runtime_error cannot set the attribute of a destroyed window
@@ -127,7 +126,6 @@ namespace gp {
          */
         [[nodiscard]] const char *getTitle() const;
 
-        // X Position
         /**
          * @param value in screen coordinates of the upper-left corner of the Window
          * @throws std::runtime_error cannot set the attribute of a destroyed window
@@ -139,7 +137,6 @@ namespace gp {
          */
         [[nodiscard]] int getXPos() const;
 
-        // Y Position
         /**
          * @param value in screen coordinates of the upper-left corner of the Window
          * @throws std::runtime_error cannot set the attribute of a destroyed window
@@ -151,7 +148,6 @@ namespace gp {
          */
         [[nodiscard]] int getYPos() const;
 
-        // Minimum Width
         /**
          * @param value in screen coordinates
          * 
@@ -167,7 +163,6 @@ namespace gp {
          */
         [[nodiscard]] int getMinWidth() const;
 
-        // Minimum Height
         /**
          * @param value in screen coordinates
          *
@@ -183,7 +178,6 @@ namespace gp {
          */
         [[nodiscard]] int getMinHeight() const;
 
-        // Maximum Width
         /**
          * @param value in screen coordinates
          *
@@ -199,7 +193,6 @@ namespace gp {
          */
         [[nodiscard]] int getMaxWidth() const;
 
-        // Maximum Height
         /**
          * @param value in screen coordinates
          *
@@ -215,7 +208,6 @@ namespace gp {
          */
         [[nodiscard]] int getMaxHeight() const;
 
-        // Get & Set Methods
         /**
          * Sets the size of the window.
          *
@@ -285,6 +277,11 @@ namespace gp {
         void setPosition(int xPos, int yPos);
 
         /**
+         * @return in screen coordinates, the position of the top-left corner of the Window
+         */
+        [[nodiscard]] Point getPosition() const;
+
+        /**
          * Sets the aspect ratio of the window.
          * \n\n
          * The aspect ratio is specified as a numerator and denominator, corresponding to the width and height,
@@ -342,7 +339,7 @@ namespace gp {
          */
         [[nodiscard]] FramebufferSize getFramebufferSize() const;
 
-        /* Window Attributes -----------------------------------------------------------------------------------------*/
+        /* Window Boolean Attributes ---------------------------------------------------------------------------------*/
 
         /**
          * Gets whether the window is resizable by the user or not.
@@ -438,7 +435,6 @@ namespace gp {
          */
         void restore();
 
-        // Fullscreen
         /**
          * Makes the window enter fullscreen mode.
          *
@@ -452,7 +448,6 @@ namespace gp {
          */
         [[nodiscard]] bool isFullscreen() const;
 
-        // Minimize
         /**
          * Minimizes the window.
          *
@@ -466,7 +461,6 @@ namespace gp {
          */
         [[nodiscard]] bool isMinimized() const;
 
-        // Maximize
         /**
          * Maximizes the window.
          *
@@ -480,7 +474,6 @@ namespace gp {
          */
         [[nodiscard]] bool isMaximized() const;
 
-        // Visibility
         /**
          * Makes the window visible to the user.
          *
@@ -503,7 +496,6 @@ namespace gp {
          */
         [[nodiscard]] bool isVisible() const;
 
-        // Input Focus
         /**
          * Gives the window input focus and brings it to the front.
          *

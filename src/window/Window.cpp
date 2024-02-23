@@ -253,7 +253,6 @@ namespace gp {
 
 // Window Get & Set methods
 namespace gp {
-    // Size
     void Window::setSize(int width, int height) {
         GP_CORE_DEBUG("gp::Window::setSize({1}, {2}) - '{0}'", m_Title, width, height);
 
@@ -266,9 +265,7 @@ namespace gp {
         _updateSize();
     }
 
-    // Size Limits
-    void Window::setSizeLimits(int minWidth, int minHeight, int maxWidth,
-                               int maxHeight) {
+    void Window::setSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight) {
         GP_CORE_DEBUG("gp::Window::setSizeLimits({1}, {2}, {3}, {4}) - '{0}'",
                       m_Title, minWidth, minHeight, maxWidth, maxHeight);
 
@@ -311,7 +308,6 @@ namespace gp {
         _updateSizeLimits();
     }
 
-    // Position
     void Window::setPosition(int xPos, int yPos) {
         GP_CORE_DEBUG("gp::Window::setPosition({1}, {2}) - '{0}'", m_Title, xPos, yPos);
 
@@ -321,7 +317,10 @@ namespace gp {
         _updatePosition();
     }
 
-    // Aspect Ratio
+    Point Window::getPosition() const {
+        return {m_xPos, m_yPos};
+    }
+
     void Window::setAspectRatio(int numerator, int denominator) {
         GP_CORE_DEBUG("gp::Window::setAspectRatio({1}, {2}) - '{0}'", m_Title, numerator, denominator);
 

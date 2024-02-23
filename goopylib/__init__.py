@@ -14,10 +14,10 @@ __version__ = "2.0.0"
 # pylint: disable=wrong-import-position
 
 from .core import *
-from .objects import *
+# from .objects import *
 from .maths import *
 from .events import *
-from .scene import *
+# from .scene import *
 
 # pylint: enable=wrong-import-position
 

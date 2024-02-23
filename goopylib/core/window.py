@@ -229,6 +229,7 @@ class Window:
             self._window.background = self._background._color
 
             # Minimum Width
+
     @property
     def min_width(self) -> int:
         """
@@ -466,7 +467,7 @@ class Window:
         """
         return self._window.get_framebuffer_size()
 
-    """Window Attributes --------------------------------------------------------------------------------------------"""
+    """Window Boolean Attributes ------------------------------------------------------------------------------------"""
 
     @property
     def resizable(self) -> bool:
@@ -488,7 +489,6 @@ class Window:
     def resizable(self, value: bool) -> None:
         self._window.resizable = value
 
-    # Decorated
     @property
     def decorated(self) -> bool:
         """
@@ -512,7 +512,6 @@ class Window:
     def decorated(self, value: bool) -> None:
         self._window.decorated = value
 
-    # Floating
     @property
     def floating(self) -> bool:
         """
@@ -533,7 +532,6 @@ class Window:
     def floating(self, value: bool) -> None:
         self._window.floating = value
 
-    # Auto Minimized
     @property
     def auto_minimized(self) -> bool:
         """
@@ -557,7 +555,6 @@ class Window:
     def auto_minimized(self, value: bool) -> None:
         self._window.auto_minimized = value
 
-    # Focused on Show
     @property
     def focused_on_show(self) -> bool:
         """
@@ -854,7 +851,6 @@ class Window:
 
     """Window Callback Functions ------------------------------------------------------------------------------------"""
 
-    # Resize Callback
     @property
     def resize_callback(self) -> callable:
         """
@@ -880,7 +876,6 @@ class Window:
     def resize_callback(self, callback: callable) -> None:
         self._window.resize_callback = callback
 
-    # Close Callback
     @property
     def close_callback(self) -> callable:
         """
@@ -906,7 +901,6 @@ class Window:
     def close_callback(self, callback: callable) -> None:
         self._window.close_callback = callback
 
-    # Destroy Callback
     @property
     def destroy_callback(self) -> callable:
         """
@@ -932,7 +926,6 @@ class Window:
     def destroy_callback(self, callback: callable) -> None:
         self._window.destroy_callback = callback
 
-    # Position Callback
     @property
     def position_callback(self) -> callable:
         """
@@ -958,7 +951,6 @@ class Window:
     def position_callback(self, callback: callable) -> None:
         self._window.position_callback = callback
 
-    # Minimize Callback
     @property
     def minimize_callback(self) -> callable:
         """
@@ -984,7 +976,6 @@ class Window:
     def minimize_callback(self, callback: callable) -> None:
         self._window.minimize_callback = callback
 
-    # Maximize Callback
     @property
     def maximize_callback(self) -> callable:
         """
@@ -1010,7 +1001,6 @@ class Window:
     def maximize_callback(self, callback: callable) -> None:
         self._window.maximize_callback = callback
 
-    # Focus Callback
     @property
     def focus_callback(self) -> callable:
         """
@@ -1041,7 +1031,6 @@ class Window:
     def focus_callback(self, callback: callable) -> None:
         self._window.focus_callback = callback
 
-    # Refresh Callback
     @property
     def refresh_callback(self) -> callable:
         """
@@ -1068,7 +1057,6 @@ class Window:
     def refresh_callback(self, callback: callable) -> None:
         self._window.refresh_callback = callback
 
-    # Content Scale Callback
     @property
     def content_scale_callback(self) -> callable:
         """
@@ -1094,7 +1082,6 @@ class Window:
     def content_scale_callback(self, callback: callable) -> None:
         self._window.content_scale_callback = callback
 
-    # Framebuffer Size Callback
     @property
     def framebuffer_size_callback(self) -> callable:
         """
@@ -1120,7 +1107,6 @@ class Window:
     def framebuffer_size_callback(self, callback: callable) -> None:
         self._window.framebuffer_size_callback = callback
 
-    # Mouse Motion Callback
     @property
     def mouse_motion_callback(self) -> callable:
         """
@@ -1146,7 +1132,6 @@ class Window:
     def mouse_motion_callback(self, callback: callable) -> None:
         self._window.mouse_motion_callback = callback
 
-    # Mouse Enter Callback
     @property
     def mouse_enter_callback(self) -> callable:
         """
@@ -1172,7 +1157,6 @@ class Window:
     def mouse_enter_callback(self, callback: callable) -> None:
         self._window.mouse_enter_callback = callback
 
-    # Scroll Callback
     @property
     def scroll_callback(self) -> callable:
         """
@@ -1198,7 +1182,6 @@ class Window:
     def scroll_callback(self, callback: callable) -> None:
         self._window.scroll_callback = callback
 
-    # Key Callback
     def set_key_callback(self, keycode: int, callback: callable) -> None:
         """
         Callback executed when a key is pressed.
@@ -1223,7 +1206,6 @@ class Window:
         """
         self._window.set_key_callback(keycode, callback)
 
-    # Mouse Button Callback
     def set_mouse_button_callback(self, button: int, callback: callable) -> None:
         """
         Callback executed when a mouse button is pressed.
@@ -1248,7 +1230,6 @@ class Window:
         """
         self._window.set_mouse_button_callback(button, callback)
 
-    # Left Click Callback
     @property
     def left_click_callback(self) -> callable:
         """
@@ -1274,7 +1255,6 @@ class Window:
     def left_click_callback(self, callback: callable) -> None:
         self._window.left_click_callback = callback
 
-    # Middle Click Callback
     @property
     def middle_click_callback(self) -> callable:
         """
@@ -1300,7 +1280,6 @@ class Window:
     def middle_click_callback(self, callback: callable) -> None:
         self._window.middle_click_callback = callback
 
-    # Right Click Callback
     @property
     def right_click_callback(self) -> callable:
         """
@@ -1326,7 +1305,6 @@ class Window:
     def right_click_callback(self, callback: callable) -> None:
         self._window.right_click_callback = callback
 
-    # Camera & Projection
     def get_camera(self) -> Camera:
         """
         Returns:
