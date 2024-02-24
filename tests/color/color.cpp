@@ -1,9 +1,6 @@
 #include "color.h"
 
 
-// TODO tests for conversion to other subclasses
-
-
 TEST(ColorTests, ColorFromColorSubclass) {
     gp::ColorRGB colorRGB{10, 15, 20, 0.1};
     gp::ColorHex colorHex{"#f05", 0.2};

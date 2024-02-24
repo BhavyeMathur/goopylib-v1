@@ -10,7 +10,6 @@ from typing import Union, Tuple
 # The reason docstrings for the class are copied to the __init__() method is because CLion
 # (and presumably other Jetbrains products) renders the 'Raises' section with an odd indentation otherwise.
 
-# TODO implement color conversion methods
 
 class Color:
     """
@@ -166,6 +165,31 @@ class Color:
         """
         Returns:
             the RGB components of the color normalised between 0-1
+        """
+
+    def to_rgb(self) -> ColorHex:
+        """
+        Returns: a ColorRGB representation of the color
+        """
+
+    def to_hex(self) -> ColorHex:
+        """
+        Returns: a ColorHex representation of the color
+        """
+
+    def to_cmyk(self) -> ColorCMYK:
+        """
+        Returns: a ColorCMYK representation of the color
+        """
+
+    def to_hsl(self) -> ColorHSL:
+        """
+        Returns: a ColorHSL representation of the color
+        """
+
+    def to_hsv(self) -> ColorHSV:
+        """
+        Returns: a ColorHSV representation of the color
         """
 
 

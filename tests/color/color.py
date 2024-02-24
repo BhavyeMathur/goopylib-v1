@@ -479,3 +479,101 @@ class ColorHSLClass(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             gp.ColorHSL(0, 0, 0, 2)
+
+
+# TODO tests for HSL -> HSV and HSV -> HSL conversions
+class ColorConversionMethods(unittest.TestCase):
+    def assertColorEqual(self, actual: gp.Color, expected):
+        if isinstance(expected, tuple):
+            self.assertEqual(str(actual), str(actual.__class__(*expected)))
+        else:
+            self.assertEqual(str(actual), str(actual.__class__(expected)))
+
+    def test_rgb_to_hex(self):
+        self.assertColorEqual(gp.ColorRGB(0, 0, 0).to_hex(), "#000000")
+        self.assertColorEqual(gp.ColorRGB(255, 255, 255).to_hex(), "#ffffff")
+        self.assertColorEqual(gp.ColorRGB(125, 125, 125).to_hex(), "#7d7d7d")
+
+        self.assertColorEqual(gp.ColorRGB(255, 0, 0).to_hex(), "#ff0000")
+        self.assertColorEqual(gp.ColorRGB(0, 255, 0).to_hex(), "#00ff00")
+        self.assertColorEqual(gp.ColorRGB(0, 0, 255).to_hex(), "#0000ff")
+
+        self.assertColorEqual(gp.ColorRGB(80, 0, 140).to_hex(), "#50008c")
+        self.assertColorEqual(gp.ColorRGB(0, 50, 60).to_hex(), "#00323c")
+
+    def test_rgb_to_cmyk(self):
+        self.assertColorEqual(gp.ColorRGB(0, 0, 0).to_cmyk(), (0, 0, 0, 1))
+        self.assertColorEqual(gp.ColorRGB(255, 255, 255).to_cmyk(), (0, 0, 0, 0))
+        self.assertColorEqual(gp.ColorRGB(125, 125, 125).to_cmyk(), (0, 0, 0, 0.51))
+
+        self.assertColorEqual(gp.ColorRGB(255, 0, 0).to_cmyk(), (0, 1, 1, 0))
+        self.assertColorEqual(gp.ColorRGB(0, 255, 0).to_cmyk(), (1, 0, 1, 0))
+        self.assertColorEqual(gp.ColorRGB(0, 0, 255).to_cmyk(), (1, 1, 0, 0))
+
+        self.assertColorEqual(gp.ColorRGB(80, 0, 140).to_cmyk(), (0.43, 1.0, 0.0, 0.45))
+        self.assertColorEqual(gp.ColorRGB(0, 50, 60).to_cmyk(), (1.0, 0.17, 0.0, 0.76))
+
+    def test_rgb_to_hsv(self):
+        self.assertColorEqual(gp.ColorRGB(0, 0, 0).to_hsv(), (0, 0, 0))
+        self.assertColorEqual(gp.ColorRGB(255, 255, 255).to_hsv(), (0, 0, 1))
+        self.assertColorEqual(gp.ColorRGB(125, 125, 125).to_hsv(), (0, 0, 0.49))
+
+        self.assertColorEqual(gp.ColorRGB(255, 0, 0).to_hsv(), (0, 1, 1))
+        self.assertColorEqual(gp.ColorRGB(0, 255, 0).to_hsv(), (120, 1, 1))
+        self.assertColorEqual(gp.ColorRGB(0, 0, 255).to_hsv(), (240, 1, 1))
+
+        self.assertColorEqual(gp.ColorRGB(80, 0, 140).to_hsv(), (274, 1, 0.55))
+        self.assertColorEqual(gp.ColorRGB(0, 50, 60).to_hsv(), (190, 1, 0.24))
+
+    def test_rgb_to_hsl(self):
+        self.assertColorEqual(gp.ColorRGB(0, 0, 0).to_hsl(), (0, 0, 0))
+        self.assertColorEqual(gp.ColorRGB(255, 255, 255).to_hsl(), (0, 0, 1))
+        self.assertColorEqual(gp.ColorRGB(125, 125, 125).to_hsl(), (0, 0, 0.49))
+
+        self.assertColorEqual(gp.ColorRGB(255, 0, 0).to_hsl(), (0, 1, 0.5))
+        self.assertColorEqual(gp.ColorRGB(0, 255, 0).to_hsl(), (120, 1, 0.5))
+        self.assertColorEqual(gp.ColorRGB(0, 0, 255).to_hsl(), (240, 1, 0.5))
+
+        self.assertColorEqual(gp.ColorRGB(80, 0, 140).to_hsl(), (274, 1, 0.27))
+        self.assertColorEqual(gp.ColorRGB(0, 50, 60).to_hsl(), (190, 1, 0.12))
+
+    def test_hex_to_rgb(self):
+        self.assertColorEqual(gp.ColorHex("#000000").to_rgb(), (0, 0, 0))
+        self.assertColorEqual(gp.ColorHex("#ffffff").to_rgb(), (255, 255, 255))
+        self.assertColorEqual(gp.ColorHex("#7d7d7d").to_rgb(), (125, 125, 125))
+
+        self.assertColorEqual(gp.ColorHex("#ff0000").to_rgb(), (255, 0, 0))
+        self.assertColorEqual(gp.ColorHex("#00ff00").to_rgb(), (0, 255, 0))
+        self.assertColorEqual(gp.ColorHex("#0000ff").to_rgb(), (0, 0, 255))
+
+        self.assertColorEqual(gp.ColorHex("#50008c").to_rgb(), (80, 0, 140))
+        self.assertColorEqual(gp.ColorHex("#00323c").to_rgb(), (0, 50, 60))
+
+    def test_cmyk_to_rgb(self):
+        self.assertColorEqual(gp.ColorCMYK(1, 1, 1, 1).to_rgb(), (0, 0, 0))
+        self.assertColorEqual(gp.ColorCMYK(0, 0, 0, 0).to_rgb(), (255, 255, 255))
+
+        self.assertColorEqual(gp.ColorCMYK(1, 0, 0, 0).to_rgb(), (0, 255, 255))
+        self.assertColorEqual(gp.ColorCMYK(0, 1, 0, 0).to_rgb(), (255, 0, 255))
+        self.assertColorEqual(gp.ColorCMYK(0, 0, 1, 0).to_rgb(), (255, 255, 0))
+        self.assertColorEqual(gp.ColorCMYK(0, 0, 0, 1).to_rgb(), (0, 0, 0))
+
+        self.assertColorEqual(gp.ColorCMYK(0.2, 0.3, 0.1, 0.5).to_rgb(), (102, 89, 115))
+        self.assertColorEqual(gp.ColorCMYK(0.8, 0.5, 0, 0.1).to_rgb(), (46, 115, 230))
+        self.assertColorEqual(gp.ColorCMYK(0.4, 0.6, 0.3, 0.7).to_rgb(), (46, 31, 54))
+
+    def test_hsl_to_rgb(self):
+        self.assertColorEqual(gp.ColorHSL(0, 0, 0).to_rgb(), (0, 0, 0))
+        self.assertColorEqual(gp.ColorHSL(180, 1, 1).to_rgb(), (255, 255, 255))
+
+        self.assertColorEqual(gp.ColorHSL(191, 0.19, 0.49).to_rgb(), (101, 140, 149))
+        self.assertColorEqual(gp.ColorHSL(29, 0.97, 0.63).to_rgb(), (252, 158, 69))
+        self.assertColorEqual(gp.ColorHSL(260, 0.1, 0.8).to_rgb(), (202, 199, 209))
+
+    def test_hsv_to_rgb(self):
+        self.assertColorEqual(gp.ColorHSV(0, 0, 0).to_rgb(), (0, 0, 0))
+        self.assertColorEqual(gp.ColorHSV(180, 1, 1).to_rgb(), (0, 255, 255))
+
+        self.assertColorEqual(gp.ColorHSV(279, 0.43, 0.21).to_rgb(), (45, 31, 54))
+        self.assertColorEqual(gp.ColorHSV(99, 0.19, 0.48).to_rgb(), (107, 122, 99))
+        self.assertColorEqual(gp.ColorHSV(292, 0.75, 0.26).to_rgb(), (60, 17, 66))
