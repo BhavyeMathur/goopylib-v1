@@ -43,7 +43,16 @@ PYBIND11_MODULE(color, m) {
             .def_property_readonly("redf", &gp::Color::getRedf)
             .def_property_readonly("greenf", &gp::Color::getGreenf)
             .def_property_readonly("bluef", &gp::Color::getBluef)
-            .def_property_readonly("rgbaf", &gp::Color::getRGBAf);
+
+            .def_property_readonly("rgbaf", [](gp::Color &self) {
+                gp::RGBAf rgbaf = self.getRGBAf();
+                return py::make_tuple(rgbaf.red, rgbaf.green, rgbaf.blue, rgbaf.alpha);
+            })
+            .def_property_readonly("rgbf", [](gp::Color &self) {
+                gp::RGBAf rgbaf = self.getRGBAf();
+                return py::make_tuple(rgbaf.red, rgbaf.green, rgbaf.blue);
+            });
+
 
     py::class_<gp::ColorRGB, gp::Color>(m, "ColorRGB")
             .def(py::init<int, int, int, float>(), "red"_a, "green"_a, "blue"_a, "alpha"_a = 1)
@@ -93,7 +102,7 @@ PYBIND11_MODULE(color, m) {
 
             .def_property("hue", &gp::ColorHSV::getHue, &gp::ColorHSV::setHue)
             .def_property("saturation", &gp::ColorHSV::getSaturation, &gp::ColorHSV::setSaturation)
-            .def_property("luminance", &gp::ColorHSV::getValue, &gp::ColorHSV::setValue)
+            .def_property("value", &gp::ColorHSV::getValue, &gp::ColorHSV::setValue)
 
             .def("to_rgb", HSVtoRGB)
             .def("to_hsl", &gp::ColorHSV::toHSL);

@@ -1,5 +1,4 @@
 import unittest
-import math
 
 import goopylib.color as gp
 
@@ -141,6 +140,7 @@ class ColorClass(unittest.TestCase):
         self.assertEqual(color.alpha, 0.5)
 
         self.assertEqual(tuple(map(lambda n: round(n, 2), color.rgbaf)), (0.6, 0.4, 0.2, 0.5))
+        self.assertEqual(tuple(map(lambda n: round(n, 2), color.rgbf)), (0.6, 0.4, 0.2))
         self.assertEqual(f"{color}", "Color(153, 102, 51, alpha=0.50)")
 
     def test_color_property_errors(self):
