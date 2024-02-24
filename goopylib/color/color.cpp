@@ -44,11 +44,11 @@ PYBIND11_MODULE(color, m) {
             .def_property_readonly("greenf", &gp::Color::getGreenf)
             .def_property_readonly("bluef", &gp::Color::getBluef)
 
-            .def_property_readonly("rgbaf", [](gp::Color &self) {
+            .def_property_readonly("rgbaf", [](const gp::Color &self) {
                 gp::RGBAf rgbaf = self.getRGBAf();
                 return py::make_tuple(rgbaf.red, rgbaf.green, rgbaf.blue, rgbaf.alpha);
             })
-            .def_property_readonly("rgbf", [](gp::Color &self) {
+            .def_property_readonly("rgbf", [](const gp::Color &self) {
                 gp::RGBAf rgbaf = self.getRGBAf();
                 return py::make_tuple(rgbaf.red, rgbaf.green, rgbaf.blue);
             });
@@ -58,10 +58,10 @@ PYBIND11_MODULE(color, m) {
             .def(py::init<int, int, int, float>(), "red"_a, "green"_a, "blue"_a, "alpha"_a = 1)
             .def(py::init<gp::Color>());
 
-    gp::ColorRGB(gp::ColorHex::*HextoRGB)(void) const = &gp::ColorHex::toRGB;
-    gp::ColorRGB(gp::ColorCMYK::*CMYKtoRGB)(void) const = &gp::ColorCMYK::toRGB;
-    gp::ColorRGB(gp::ColorHSL::*HSLtoRGB)(void) const = &gp::ColorHSL::toRGB;
-    gp::ColorRGB(gp::ColorHSV::*HSVtoRGB)(void) const = &gp::ColorHSV::toRGB;
+    gp::ColorRGB (gp::ColorHex::*HextoRGB)() const = &gp::ColorHex::toRGB;
+    gp::ColorRGB (gp::ColorCMYK::*CMYKtoRGB)() const = &gp::ColorCMYK::toRGB;
+    gp::ColorRGB (gp::ColorHSL::*HSLtoRGB)() const = &gp::ColorHSL::toRGB;
+    gp::ColorRGB (gp::ColorHSV::*HSVtoRGB)() const = &gp::ColorHSV::toRGB;
 
     py::class_<gp::ColorHex, gp::Color>(m, "ColorHex")
             .def(py::init<std::string, float>(), "hexstring"_a, "alpha"_a = 1)
