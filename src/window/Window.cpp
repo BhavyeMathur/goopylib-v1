@@ -96,7 +96,7 @@ namespace gp {
         if (m_IsDestroyed) {
             return {"Destroyed Window()"};
         }
-        return strformat("Window(%i, %i, '%s')", m_Width, m_Height, m_Title);
+        return strformat("Window(%i, %i, '%s')", m_Width, m_Height, m_Title.c_str());
     }
 
     bool Window::isOpen() const {

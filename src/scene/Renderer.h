@@ -25,7 +25,7 @@ namespace gp {
 
     class VertexArray;
 
-    class Window;
+    class RenderingManager;
 
     struct TextureData {
         shared_ptr<Texture2D> texture;

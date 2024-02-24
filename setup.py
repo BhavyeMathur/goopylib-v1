@@ -123,7 +123,7 @@ def find_extensions():
                   sources=["goopylib/core/core.cpp"],
                   **ext_kwargs),
 
-        Extension(name="goopylib.ext.window",
+        Extension(name="goopylib.core.window",
                   sources=["goopylib/core/window.cpp"],
                   **ext_kwargs),
 
