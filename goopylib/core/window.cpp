@@ -3,10 +3,11 @@
 #include "window/Window.h"
 
 namespace py = pybind11;
+using namespace pybind11::literals;
 
 PYBIND11_MODULE(window, m) {
     py::class_<gp::Window>(m, "Window")
-            .def(py::init<int, int, const char *>())
+            .def(py::init<int, int, const char *>(), "width"_a, "height"_a, "title"_a = "goopylib Window")
             .def("__repr__", &gp::Window::toString)
 
             .def("is_closed", &gp::Window::isClosed)
@@ -16,12 +17,13 @@ PYBIND11_MODULE(window, m) {
             .def("update", &gp::Window::update)
             .def("destroy", &gp::Window::destroy)
 
-            .def("set_size", &gp::Window::setSize)
-            .def("set_size_limits", &gp::Window::setSizeLimits)
-            .def("set_min_size", &gp::Window::setMinSize)
-            .def("set_max_size", &gp::Window::setMaxSize)
+            .def("set_size", &gp::Window::setSize, "width"_a, "height"_a)
+            .def("set_size_limits", &gp::Window::setSizeLimits,
+                 "min_width"_a, "min_height"_a, "max_width"_a, "max_height"_a)
+            .def("set_min_size", &gp::Window::setMinSize, "min_width"_a, "min_height"_a)
+            .def("set_max_size", &gp::Window::setMaxSize, "max_width"_a, "max_height"_a)
 
-            .def("set_aspect_ratio", &gp::Window::setAspectRatio)
+            .def("set_aspect_ratio", &gp::Window::setAspectRatio, "numerator"_a, "denominator"_a)
             .def("get_aspect_ratio", &gp::Window::getAspectRatio)
             .def("get_frame_size", &gp::Window::getFrameSize)
             .def("get_content_scale", &gp::Window::getContentScale)
@@ -35,7 +37,7 @@ PYBIND11_MODULE(window, m) {
             .def("maximize", &gp::Window::maximize)
             .def("is_maximized", &gp::Window::isMaximized)
             .def("show", &gp::Window::show)
-            .def("hide", &gp::Window::hide)
+            .def("hide", &gp::Window::hide, "hide"_a = py::bool_(true))
             .def("is_visible", &gp::Window::isVisible)
             .def("focus", &gp::Window::focus)
             .def("has_focus", &gp::Window::hasFocus)
@@ -43,8 +45,8 @@ PYBIND11_MODULE(window, m) {
 
             .def("is_mouse_hovering", &gp::Window::isMouseHovering)
             .def("get_mouse_position", &gp::Window::getMousePosition)
-            .def("set_cursor_mode", &gp::Window::setCursorMode)
-            .def("check_mouse_button", &gp::Window::checkMouseButton)
+            .def("set_cursor_mode", &gp::Window::setCursorMode, "mode"_a)
+            .def("check_mouse_button", &gp::Window::checkMouseButton, "button"_a)
             .def("check_left_click", &gp::Window::checkLeftClick)
             .def("check_middle_click", &gp::Window::checkMiddleClick)
             .def("check_right_click", &gp::Window::checkRightClick)
@@ -53,7 +55,7 @@ PYBIND11_MODULE(window, m) {
             .def("check_control_key", &gp::Window::checkControlKey)
             .def("check_alt_key", &gp::Window::checkAltKey)
             .def("check_super_key", &gp::Window::checkSuperKey)
-            .def("check_key", &gp::Window::checkKey)
+            .def("check_key", &gp::Window::checkKey, "keycode"_a)
 
             .def_property("resize_callback", py::cpp_function(), &gp::Window::setResizeCallback)
             .def_property("close_callback", py::cpp_function(), &gp::Window::setCloseCallback)
@@ -76,8 +78,15 @@ PYBIND11_MODULE(window, m) {
             .def_property("right_click_callback", py::cpp_function(), &gp::Window::setRightClickCallback)
 
             .def("get_camera", &gp::Window::getCamera)
-            .def("to_world", &gp::Window::toWorld)
-            .def("to_screen", &gp::Window::toScreen)
+            .def("to_world", [](const gp::Window &self, int x, int y) {
+                auto p = self.toWorld({x, y});
+                return py::make_tuple(p.x, p.y);
+            }, "x"_a, "y"_a)
+
+            .def("to_screen", [](const gp::Window &self, int x, int y) {
+                auto p = self.toScreen({x, y});
+                return py::make_tuple(p.x, p.y);
+            }, "x"_a, "y"_a)
 
             .def_property("title", &gp::Window::getTitle, &gp::Window::setTitle)
             .def_property("background", &gp::Window::getBackground, &gp::Window::setBackground)
@@ -99,6 +108,5 @@ PYBIND11_MODULE(window, m) {
             .def_property("focused_on_show", &gp::Window::isFocusedOnShow, &gp::Window::setFocusedOnShow)
 
             .def_static("update_all", &gp::Window::updateAll)
-            .def_static("destroy_all", &gp::Window::destroyAll)
-            ;
+            .def_static("destroy_all", &gp::Window::destroyAll);
 }

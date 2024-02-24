@@ -191,7 +191,7 @@ class Window:
         """
 
     @background.setter
-    def background(self, background: Color) -> None:
+    def background(self, value: Color) -> None:
         pass
 
     @property
@@ -791,7 +791,7 @@ class Window:
         """
 
     @resize_callback.setter
-    def resize_callback(self, callback: callable) -> None:
+    def resize_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -815,7 +815,7 @@ class Window:
         """
 
     @close_callback.setter
-    def close_callback(self, callback: callable) -> None:
+    def close_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -839,7 +839,7 @@ class Window:
         """
 
     @destroy_callback.setter
-    def destroy_callback(self, callback: callable) -> None:
+    def destroy_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -863,7 +863,7 @@ class Window:
         """
 
     @position_callback.setter
-    def position_callback(self, callback: callable) -> None:
+    def position_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -887,7 +887,7 @@ class Window:
         """
 
     @minimize_callback.setter
-    def minimize_callback(self, callback: callable) -> None:
+    def minimize_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -911,7 +911,7 @@ class Window:
         """
 
     @maximize_callback.setter
-    def maximize_callback(self, callback: callable) -> None:
+    def maximize_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -940,7 +940,7 @@ class Window:
         """
 
     @focus_callback.setter
-    def focus_callback(self, callback: callable) -> None:
+    def focus_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -965,7 +965,7 @@ class Window:
         """
 
     @refresh_callback.setter
-    def refresh_callback(self, callback: callable) -> None:
+    def refresh_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -989,7 +989,7 @@ class Window:
         """
 
     @content_scale_callback.setter
-    def content_scale_callback(self, callback: callable) -> None:
+    def content_scale_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -1013,7 +1013,7 @@ class Window:
         """
 
     @framebuffer_size_callback.setter
-    def framebuffer_size_callback(self, callback: callable) -> None:
+    def framebuffer_size_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -1037,7 +1037,7 @@ class Window:
         """
 
     @mouse_motion_callback.setter
-    def mouse_motion_callback(self, callback: callable) -> None:
+    def mouse_motion_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -1061,7 +1061,7 @@ class Window:
         """
 
     @mouse_enter_callback.setter
-    def mouse_enter_callback(self, callback: callable) -> None:
+    def mouse_enter_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -1085,10 +1085,10 @@ class Window:
         """
 
     @scroll_callback.setter
-    def scroll_callback(self, callback: callable) -> None:
+    def scroll_callback(self, value: callable) -> None:
         pass
 
-    def set_key_callback(self, keycode: int, callback: callable) -> None:
+    def set_key_callback(self, keycode: int, value: callable) -> None:
         """
         Callback executed when a key is pressed.
 
@@ -1111,7 +1111,7 @@ class Window:
             RuntimeError: window has been destroyed
         """
 
-    def set_mouse_button_callback(self, button: int, callback: callable) -> None:
+    def set_mouse_button_callback(self, button: int, value: callable) -> None:
         """
         Callback executed when a mouse button is pressed.
 
@@ -1155,7 +1155,7 @@ class Window:
         """
 
     @left_click_callback.setter
-    def left_click_callback(self, callback: callable) -> None:
+    def left_click_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -1179,7 +1179,7 @@ class Window:
         """
 
     @middle_click_callback.setter
-    def middle_click_callback(self, callback: callable) -> None:
+    def middle_click_callback(self, value: callable) -> None:
         pass
 
     @property
@@ -1203,7 +1203,7 @@ class Window:
         """
 
     @right_click_callback.setter
-    def right_click_callback(self, callback: callable) -> None:
+    def right_click_callback(self, value: callable) -> None:
         pass
 
     def get_camera(self) -> Camera:

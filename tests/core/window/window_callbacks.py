@@ -1,44 +1,44 @@
 import goopylib as gp
 
 
-def maximize_callback(maximized):
-    print(f"Window maximized? {maximized}")
+def maximize_callback(window, maximized):
+    print(f"{window} maximized? {maximized}")
 
 
-def minimize_callback(minimized):
-    print(f"Window minimized? {minimized}")
+def minimize_callback(window, minimized):
+    print(f"{window} minimized? {minimized}")
 
 
-def focused_callback(focused):
-    print(f"Window focused? {focused}")
+def focused_callback(window, focused):
+    print(f"{window} focused? {focused}")
 
 
-def space_key_callback(action):
+def space_key_callback(window, action):
     print(f"Space key pressed? {action}")
 
 
-def mouse_motion_callback(xpos, ypos):
+def mouse_motion_callback(window, xpos, ypos):
     """Silenced because it clutters the console"""
     # print("Cursor moved to (%f, %f)", xpos, ypos)
 
 
-def mouse_enter_callback(entered):
-    print(f"Mouse entered window? {entered}")
+def mouse_enter_callback(window, entered):
+    print(f"Mouse entered {window}? {entered}")
 
 
-def scroll_callback(xscroll, yscroll):
+def scroll_callback(window, xscroll, yscroll):
     print(f"Scroll changed to ({xscroll}, {yscroll})")
 
 
-def left_click_callback(pressed):
+def left_click_callback(window, pressed):
     print(f"Left button clicked? {pressed}")
 
 
-def middle_click_callback(pressed):
+def middle_click_callback(window, pressed):
     print(f"Middle button clicked? {pressed}")
 
 
-def right_click_callback(pressed):
+def right_click_callback(window, pressed):
     print(f"Right button clicked? {pressed}")
 
 
@@ -48,9 +48,9 @@ def main():
     window.resizable = True
     window.set_size_limits(200, 200, 900, 900)
 
-    window.resize_callback = lambda width, height: print(f"Resized window to size ({width}, {height})")
-    window.close_callback = lambda: print("Closed window")
-    window.destroy_callback = lambda: print("Destroyed window")
+    window.resize_callback = lambda win, width, height: print(f"Resized {win} to size ({width}, {height})")
+    window.close_callback = lambda _: print("Closed window")
+    window.destroy_callback = lambda _: print("Destroyed window")
 
     window.maximize_callback = maximize_callback
     window.minimize_callback = minimize_callback
