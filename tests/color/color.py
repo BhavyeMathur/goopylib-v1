@@ -1,63 +1,236 @@
 import unittest
+import math
+
 import goopylib.color as gp
 
 
 class ColorClass(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.color = gp.Color(0, 10, 20)
+    def test_color_from_rgb(self):
+        color_rgb = gp.ColorRGB(10, 15, 20, 0.1)
+        color = gp.Color(color_rgb)
 
-    def test_repr(self):
-        self.assertEqual(self.color.__repr__(), "Color(0, 10, 20, 1.00)")
+        self.assertEqual(color.__repr__(), "Color(10, 15, 20, alpha=0.10)")
+        self.assertEqual(color.rgbaf, color_rgb.rgbaf)
 
-    def test_add_int(self):
-        self.assertEqual((self.color + 5).__repr__(), "Color(5, 15, 25, 1.00)")
+    def test_color_from_hex(self):
+        color_hex = gp.ColorHex("#f05", 0.2)
+        color = gp.Color(color_hex)
+        self.assertEqual(color.rgbaf, color_hex.rgbaf)
 
-    def test_add_color(self):
-        self.assertEqual((self.color + gp.Color(5, 10, 20)).__repr__(), "Color(5, 20, 40, 1.00)")
+    def test_color_from_cmyk(self):
+        color_cmyk = gp.ColorCMYK(0.5, 0.6, 0.7, 0.3)
+        color = gp.Color(color_cmyk)
+        self.assertEqual(color.rgbaf, color_cmyk.rgbaf)
 
-    def test_sub_int(self):
-        self.assertEqual((self.color - 5).__repr__(), "Color(0, 5, 15, 1.00)")
+    def test_color_from_hsl(self):
+        color_hsl = gp.ColorHSL(10, 0.2, 0.3, 0.4)
+        color = gp.Color(color_hsl)
+        self.assertEqual(color.rgbaf, color_hsl.rgbaf)
 
-    def test_sub_color(self):
-        self.assertEqual((self.color - gp.Color(5, 5, 15)).__repr__(), "Color(0, 5, 5, 1.00)")
+    def test_color_from_hsv(self):
+        color_hsv = gp.ColorHSV(20, 0.3, 0.4, 0.5)
+        color = gp.Color(color_hsv)
+        self.assertEqual(color.rgbaf, color_hsv.rgbaf)
 
-    def test_get_red(self):
-        self.assertEqual(self.color.red, 0)
+    def test_color_from_rgba(self):
+        color = gp.Color(0, 10, 20)
 
-    def test_get_green(self):
-        self.assertEqual(self.color.green, 10)
+        self.assertEqual(color.red, 0)
+        self.assertEqual(color.green, 10)
+        self.assertEqual(color.blue, 20)
+        self.assertEqual(color.alpha, 1)
 
-    def test_get_blue(self):
-        self.assertEqual(self.color.blue, 20)
+        color = gp.Color(0, 10, 20, 0.5)
+        self.assertEqual(color.alpha, 0.5)
 
-    def test_get_alpha(self):
-        self.assertEqual(self.color.alpha, 1)
-
-    def test_value_error(self):
+    def test_color_from_rgba_error(self):
         with self.assertRaises(ValueError):
-            gp.Color(-5, 0, 0)
-
+            color = gp.Color(300, 0, 0)
         with self.assertRaises(ValueError):
-            gp.Color(0, -5, 0)
-
+            color = gp.Color(0, 300, 0)
         with self.assertRaises(ValueError):
-            gp.Color(0, 0, -5)
-
-        with self.assertRaises(ValueError):
-            gp.Color(265, 0, 0)
-
-        with self.assertRaises(ValueError):
-            gp.Color(0, 265, 0)
-
-        with self.assertRaises(ValueError):
-            gp.Color(0, 0, 265)
+            color = gp.Color(0, 0, 300)
 
         with self.assertRaises(ValueError):
-            gp.Color(0, 0, 0, -1)
+            color = gp.Color(-30, 0, 0)
+        with self.assertRaises(ValueError):
+            color = gp.Color(0, -30, 0)
+        with self.assertRaises(ValueError):
+            color = gp.Color(0, 0, -30)
 
         with self.assertRaises(ValueError):
-            gp.Color(0, 0, 0, 2)
+            color = gp.Color(0, 0, 0, 2)
+        with self.assertRaises(ValueError):
+            color = gp.Color(0, 0, 0, -0.5)
+
+    def test_color_from_hexstring(self):
+        color = gp.Color("#f01")
+        self.assertEqual(color.red, 255)
+        self.assertEqual(color.green, 0)
+        self.assertEqual(color.blue, 17)
+        self.assertEqual(color.alpha, 1)
+
+        color = gp.Color("f01")
+        self.assertEqual(color.red, 255)
+        self.assertEqual(color.green, 0)
+        self.assertEqual(color.blue, 17)
+        self.assertEqual(color.alpha, 1)
+
+        color = gp.Color("#f01001")
+        self.assertEqual(color.red, 240)
+        self.assertEqual(color.green, 16)
+        self.assertEqual(color.blue, 1)
+        self.assertEqual(color.alpha, 1)
+
+        color = gp.Color("f01001")
+        self.assertEqual(color.red, 240)
+        self.assertEqual(color.green, 16)
+        self.assertEqual(color.blue, 1)
+        self.assertEqual(color.alpha, 1)
+
+        color = gp.Color("#f01", 0.5)
+        self.assertEqual(color.red, 255)
+        self.assertEqual(color.green, 0)
+        self.assertEqual(color.blue, 17)
+        self.assertEqual(color.alpha, 0.5)
+
+    def test_color_from_hexstring_errors(self):
+        with self.assertRaises(ValueError):
+            color = gp.Color("#0000")
+        with self.assertRaises(ValueError):
+            color = gp.Color("0000")
+        with self.assertRaises(ValueError):
+            color = gp.Color("#00000")
+        with self.assertRaises(ValueError):
+            color = gp.Color("#0000000")
+        with self.assertRaises(ValueError):
+            color = gp.Color("0000000")
+        with self.assertRaises(ValueError):
+            color = gp.Color("#g00")
+        with self.assertRaises(ValueError):
+            color = gp.Color("gf0011")
+
+        with self.assertRaises(ValueError):
+            color = gp.Color("#000", 2)
+        with self.assertRaises(ValueError):
+            color = gp.Color("#000", -0.5)
+
+    def test_color_repr(self):
+        color = gp.Color(0, 10, 20)
+        self.assertEqual(str(color), "Color(0, 10, 20)")
+
+        color = gp.Color(0, 10, 20, 0.5)
+        self.assertEqual(color.__repr__(), "Color(0, 10, 20, alpha=0.50)")
+
+    def test_color_properties(self):
+        color = gp.Color(0, 0, 0)
+
+        color.red = 153
+        self.assertEqual(color.red, 153)
+        self.assertAlmostEqual(color.redf, 0.6)
+
+        color.green = 102
+        self.assertEqual(color.green, 102)
+        self.assertAlmostEqual(color.greenf, 0.4)
+
+        color.blue = 51
+        self.assertEqual(color.blue, 51)
+        self.assertAlmostEqual(color.bluef, 0.2)
+
+        color.alpha = 0.5
+        self.assertEqual(color.alpha, 0.5)
+
+        self.assertEqual(tuple(map(lambda n: round(n, 2), color.rgbaf)), (0.6, 0.4, 0.2, 0.5))
+        self.assertEqual(f"{color}", "Color(153, 102, 51, alpha=0.50)")
+
+    def test_color_property_errors(self):
+        color = gp.Color(0, 0, 0)
+
+        with self.assertRaises(ValueError):
+            color.red = 300
+        with self.assertRaises(ValueError):
+            color.red = -30
+
+        with self.assertRaises(ValueError):
+            color.green = 300
+        with self.assertRaises(ValueError):
+            color.green = -30
+
+        with self.assertRaises(ValueError):
+            color.blue = 300
+        with self.assertRaises(ValueError):
+            color.blue = -30
+
+        with self.assertRaises(ValueError):
+            color.alpha = 2
+        with self.assertRaises(ValueError):
+            color.alpha = -0.5
+
+    def test_color_arithmetic(self):
+        color1 = gp.Color(100, 100, 100)
+        color2 = gp.Color(5, 10, 15)
+
+        self.assertEqual((color1 + 50).__repr__(), "Color(150, 150, 150)")
+        self.assertEqual((color1 - 50).__repr__(), "Color(50, 50, 50)")
+
+        self.assertEqual((color1 + color2).__repr__(), "Color(105, 110, 115)")
+        self.assertEqual((color1 - color2).__repr__(), "Color(95, 90, 85)")
+
+        color1 += 50
+        self.assertEqual(color1.__repr__(), "Color(150, 150, 150)")
+
+        color1 -= 70
+        self.assertEqual(color1.__repr__(), "Color(80, 80, 80)")
+
+        color1 += color2
+        self.assertEqual(color1.__repr__(), "Color(85, 90, 95)")
+
+        color1 -= color2
+        self.assertEqual(color1.__repr__(), "Color(80, 80, 80)")
+
+    def test_color_arithmetic_alpha(self):
+        color1 = gp.Color(100, 100, 100, 0.5)
+        color2 = gp.Color(5, 10, 15, 0.2)
+
+        self.assertEqual((color1 + 50).__repr__(), "Color(150, 150, 150, alpha=0.50)")
+        self.assertEqual((color1 - 50).__repr__(), "Color(50, 50, 50, alpha=0.50)")
+
+        self.assertEqual((color1 + color2).__repr__(), "Color(105, 110, 115, alpha=0.50)")
+        self.assertEqual((color1 - color2).__repr__(), "Color(95, 90, 85, alpha=0.50)")
+
+        color1 += 50
+        self.assertEqual(color1.__repr__(), "Color(150, 150, 150, alpha=0.50)")
+
+        color1 -= 70
+        self.assertEqual(color1.__repr__(), "Color(80, 80, 80, alpha=0.50)")
+
+        color1 += color2
+        self.assertEqual(color1.__repr__(), "Color(85, 90, 95, alpha=0.50)")
+
+        color1 -= color2
+        self.assertEqual(color1.__repr__(), "Color(80, 80, 80, alpha=0.50)")
+
+    def test_color_arithmetic_overflow(self):
+        color1 = gp.Color(250, 250, 250)
+        color2 = gp.Color(5, 10, 15)
+
+        self.assertEqual((color1 + 50).__repr__(), "Color(255, 255, 255)")
+        self.assertEqual((color1 + color2).__repr__(), "Color(255, 255, 255)")
+
+        color1 += 50
+        self.assertEqual(color1.__repr__(), "Color(255, 255, 255)")
+        self.assertEqual(color1.rgbaf, (1, 1, 1, 1))
+
+    def test_color_arithmetic_underflow(self):
+        color1 = gp.Color(5, 5, 5)
+        color2 = gp.Color(5, 10, 15)
+
+        self.assertEqual((color1 - 50).__repr__(), "Color(0, 0, 0)")
+        self.assertEqual((color1 - color2).__repr__(), "Color(0, 0, 0)")
+
+        color1 -= 50
+        self.assertEqual(color1.__repr__(), "Color(0, 0, 0)")
+        self.assertEqual(color1.rgbaf, (0, 0, 0, 1))
 
 
 class ColorRGBClass(unittest.TestCase):
@@ -69,7 +242,7 @@ class ColorRGBClass(unittest.TestCase):
         self.assertIsInstance(self.color, gp.Color)
 
     def test_repr(self):
-        self.assertEqual("Color(0, 10, 20, 1.00)", self.color.__repr__())
+        self.assertEqual("Color(0, 10, 20)", self.color.__repr__())
 
     def test_get_red(self):
         self.assertEqual(self.color.red, 0)
@@ -161,7 +334,7 @@ class ColorCMYKClass(unittest.TestCase):
         self.assertIsInstance(self.color, gp.Color)
 
     def test_repr(self):
-        self.assertEqual(self.color.__repr__(), "ColorCMYK(0, 0.1, 0.2, 0.9)")
+        self.assertEqual(self.color.__repr__(), "ColorCMYK(0.00, 0.10, 0.20, 0.90)")
 
     def test_get_cyan(self):
         self.assertAlmostEqual(self.color.cyan, 0)
@@ -219,7 +392,7 @@ class ColorHSVClass(unittest.TestCase):
         self.assertIsInstance(self.color, gp.Color)
 
     def test_repr(self):
-        self.assertEqual(self.color.__repr__(), "ColorHSV(0, 0.1, 0.2)")
+        self.assertEqual(self.color.__repr__(), "ColorHSV(0, 0.10, 0.20)")
 
     def test_get_hue(self):
         self.assertEqual(self.color.hue, 0)
@@ -268,7 +441,7 @@ class ColorHSLClass(unittest.TestCase):
         self.assertIsInstance(self.color, gp.Color)
 
     def test_repr(self):
-        self.assertEqual(self.color.__repr__(), "ColorHSL(0, 0, 0)")
+        self.assertEqual(self.color.__repr__(), "ColorHSL(0, 0.00, 0.00)")
 
     def test_get_hue(self):
         self.assertEqual(self.color.hue, 0)
