@@ -13,7 +13,7 @@
 namespace gp {
     std::vector<Window *> Window::s_Instances;
 
-    Window::Window(const int width, const int height, const char *title)
+    Window::Window(const int width, const int height, const std::string& title)
         : RenderingManager{width, height, title},
           m_xPos{50},
           m_yPos{50},

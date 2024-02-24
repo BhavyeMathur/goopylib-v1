@@ -1,8 +1,7 @@
 #pragma once
 
-#include "../scene/RenderingManager.h"
-
-#include <../../../vendor/GLFW/include/GLFW/glfw3.h>
+#include "scene/RenderingManager.h"
+#include <GLFW/glfw3.h>
 
 #ifdef APIENTRY
 #undef APIENTRY
@@ -66,7 +65,7 @@ namespace gp {
          * @throws std::invalid_argument width must be greater than 0
          * @throws std::invalid_argument height must be greater than 0
          */
-        Window(int width, int height, const char *title = "goopylib Window");
+        Window(int width, int height, const std::string& title = "goopylib Window");
 
         Window(const Window &) = delete;
 
