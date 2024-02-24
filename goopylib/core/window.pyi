@@ -69,7 +69,6 @@ class Window:
 
     """Getters & Setters --------------------------------------------------------------------------------------------"""
 
-    # Width
     @property
     def width(self) -> int:
         """
@@ -88,7 +87,6 @@ class Window:
     def width(self, value: int) -> None:
         pass
 
-    # Height
     @property
     def height(self) -> int:
         """
@@ -107,7 +105,6 @@ class Window:
     def height(self, value: int) -> None:
         pass
 
-    # Title
     @property
     def title(self) -> str:
         """
@@ -176,7 +173,6 @@ class Window:
     def position(self, value: Tuple[int, int]) -> None:
         pass
 
-    # Background Color
     @property
     def background(self) -> Color:
         """
@@ -217,7 +213,6 @@ class Window:
     def min_width(self, value: int) -> None:
         pass
 
-    # Minimum Height
     @property
     def min_height(self) -> int:
         """
@@ -529,7 +524,6 @@ class Window:
             RuntimeError: window has been destroyed
         """
 
-    # Fullscreen
     def fullscreen(self) -> None:
         """
         Makes the window enter fullscreen mode.
@@ -547,7 +541,6 @@ class Window:
             RuntimeError: window has been destroyed
         """
 
-    # Minimize
     def minimize(self) -> None:
         """
         Minimizes the window.
@@ -565,7 +558,6 @@ class Window:
             RuntimeError: window has been destroyed
         """
 
-    # Maximize
     def maximize(self) -> None:
         """
         Maximizes the window.
@@ -583,7 +575,6 @@ class Window:
             RuntimeError: window has been destroyed
         """
 
-    # Visibility
     def show(self) -> None:
         """
         Makes the window visible to the user.
@@ -612,7 +603,6 @@ class Window:
             RuntimeError: window has been destroyed
         """
 
-    # Input Focus
     def focus(self) -> None:
         """
         Gives the window input focus and brings it to the front.
@@ -1103,7 +1093,7 @@ class Window:
 
         Args:
             keycode: an int corresponding to the key for which to set the callback
-            callback: the callback function
+            value: the callback function
 
         Raises:
             TypeError: callback must be callable
@@ -1126,7 +1116,7 @@ class Window:
 
         Args:
             button: an int corresponding to the mouse button for which to set the callback
-            callback: the callback function
+            value: the callback function
 
         Raises:
             TypeError: callback must be callable

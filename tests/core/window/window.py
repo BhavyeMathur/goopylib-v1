@@ -140,7 +140,7 @@ class WindowMethods(unittest.TestCase):
 
         callback_executed = False
 
-        def callback(width, height):
+        def callback(window, width, height):
             nonlocal callback_executed
             callback_executed = True
 
@@ -168,7 +168,7 @@ class WindowMethods(unittest.TestCase):
 
         callback_executed = False
 
-        def callback(xpos, ypos):
+        def callback(window, xpos, ypos):
             nonlocal callback_executed
             callback_executed = True
 
@@ -194,7 +194,7 @@ class WindowMethods(unittest.TestCase):
 
     def test_framebuffer_size_callback(self):
 
-        def callback(width, height):
+        def callback(window, width, height):
             pass
 
         self.window.framebuffer_size_callback = callback
@@ -216,7 +216,7 @@ class WindowMethods(unittest.TestCase):
 
     def test_content_scale_callback(self):
 
-        def callback(xscale, yscale):
+        def callback(window, xscale, yscale):
             pass
 
         self.window.content_scale_callback = callback
@@ -254,7 +254,7 @@ class WindowMethods(unittest.TestCase):
 
         callback_executed = 0
 
-        def callback():
+        def callback(window):
             nonlocal callback_executed
             callback_executed += 1
 
@@ -279,7 +279,7 @@ class WindowMethods(unittest.TestCase):
 
         callback_executed = False
 
-        def callback(minimized):
+        def callback(window, minimized):
             nonlocal callback_executed
             callback_executed = True
 
@@ -311,7 +311,7 @@ class WindowMethods(unittest.TestCase):
 
         callback_executed = False
 
-        def callback(maximized):
+        def callback(window, maximized):
             nonlocal callback_executed
             callback_executed = True
 
@@ -340,7 +340,7 @@ class WindowMethods(unittest.TestCase):
 
         callback_executed = False
 
-        def callback(focused):
+        def callback(window, focused):
             nonlocal callback_executed
             callback_executed = True
 
@@ -370,7 +370,7 @@ class WindowMethods(unittest.TestCase):
 
         callback_executed = False
 
-        def callback():
+        def callback(window):
             nonlocal callback_executed
             callback_executed = True
 
@@ -845,7 +845,7 @@ class WindowMethods(unittest.TestCase):
 
     def test_key_code_callback(self):
 
-        def callback(key_coded):
+        def callback(window, key_coded):
             pass
 
         self.window.set_key_callback(gp.KEY_0, callback)

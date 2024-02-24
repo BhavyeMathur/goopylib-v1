@@ -94,8 +94,8 @@ PYBIND11_MODULE(window, m) {
             .def_property("ypos", &gp::Window::getYPos, &gp::Window::setYPos)
             .def_property("position", &gp::Window::getPosition, &gp::Window::setPosition)
 
-            .def_property("width", &gp::Window::getMinWidth, &gp::Window::setMinWidth)
-            .def_property("height", &gp::Window::getMinHeight, &gp::Window::setMinHeight)
+            .def_property("width", &gp::Window::getWidth, &gp::Window::setWidth)
+            .def_property("height", &gp::Window::getHeight, &gp::Window::setHeight)
             .def_property("min_width", &gp::Window::getMinWidth, &gp::Window::setMinWidth)
             .def_property("min_height", &gp::Window::getMinHeight, &gp::Window::setMinHeight)
             .def_property("max_width", &gp::Window::getMaxWidth, &gp::Window::setMaxWidth)
