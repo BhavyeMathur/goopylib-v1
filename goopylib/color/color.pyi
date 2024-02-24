@@ -30,8 +30,6 @@ class Color:
         Color(60, 180, 90)
     """
 
-    __slots__ = ["red", "green", "blue"]
-
     def __init__(self, *args) -> None:
         """
         Create colors by passing RGB arguments or a hexstring.
@@ -213,7 +211,6 @@ class ColorRGB(Color):
         >>> ColorRGB(other_color)
     """
 
-    # pylint: disable-next=super-init-not-called
     def __init__(self, *args) -> None:
         """
         Create an RGB color by passing RGB arguments with an optional alpha parameter.
@@ -385,7 +382,6 @@ class ColorHSV(Color):
         >>> ColorHSV(other_color)
     """
 
-    # pylint: disable-next=super-init-not-called
     def __init__(self, *args) -> None:
         """
         Create an HSV color by passing hue (0-360), saturation (0-1), value (0-1) and optionally, alpha (0-1)

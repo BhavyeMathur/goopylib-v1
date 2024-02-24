@@ -11,8 +11,8 @@ PYBIND11_MODULE(core, m) {
     m.def("has_active_context", &gp::hasActiveContext);
 
     m.def("update", &gp::update);
-    m.def("updateTimeout", &gp::updateTimeout);
-    m.def("updateOnEvent", &gp::updateOnEvent);
+    m.def("update_timeout", &gp::updateTimeout);
+    m.def("update_on_event", &gp::updateOnEvent);
 
     m.def("set_buffer_swap_interval", &gp::setBufferSwapInterval);
 

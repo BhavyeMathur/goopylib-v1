@@ -3,6 +3,10 @@ import goopylib as gp
 
 
 class CoreTestsInit(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        gp.terminate()
+
     def test_init(self):
         self.assertFalse(gp.is_initialized())
         gp.init()
@@ -99,19 +103,20 @@ class CoreTestsUninitialized(unittest.TestCase):
             gp.opengl_version()
 
 
-class CoreTestsContext(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        gp.init()
-        cls.window = gp.Window(100, 100)
-
-    @classmethod
-    def tearDownClass(cls):
-        gp.terminate()
-
-    def test_set_buffer_swap_interval(self):
-        self.assertIsNone(gp.set_buffer_swap_interval(0))
-
-    def test_set_buffer_swap_interval_type_error(self):
-        with self.assertRaises(TypeError):
-            self.assertIsNone(gp.set_buffer_swap_interval(0.5))
+# TODO add window Python binding
+# class CoreTestsContext(unittest.TestCase):
+#     @classmethod
+#     def setUpClass(cls):
+#         gp.init()
+#         cls.window = gp.Window(100, 100)
+#
+#     @classmethod
+#     def tearDownClass(cls):
+#         gp.terminate()
+#
+#     def test_set_buffer_swap_interval(self):
+#         self.assertIsNone(gp.set_buffer_swap_interval(0))
+#
+#     def test_set_buffer_swap_interval_type_error(self):
+#         with self.assertRaises(TypeError):
+#             self.assertIsNone(gp.set_buffer_swap_interval(0.5))

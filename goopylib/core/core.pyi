@@ -8,12 +8,6 @@ information about goopylib.
 
 from __future__ import annotations
 
-# pylint: disable-next=no-name-in-module, import-error
-import goopylib.ext.core as _core
-
-from goopylib._internal import raise_ as _raise
-from goopylib._internal import raise_type_error as _raise_type_error
-
 
 def init() -> None:
     """Initializes goopylib internally.
@@ -22,7 +16,6 @@ def init() -> None:
     Raises:
         RuntimeError: if the initialization fails
     """
-    _core.init()
 
 
 def terminate() -> None:
@@ -32,19 +25,16 @@ def terminate() -> None:
     Note:
         goopylib can be reinitialized using :func:`gp.init()<goopylib.init>`
     """
-    _core.terminate()
 
 
 def is_initialized() -> bool:
     """Checks if goopylib has been initialized
     """
-    return _core.is_initialized()
 
 
 def has_active_context() -> bool:
     """Checks if goopylib has an active context (window)
     """
-    return _core.has_active_context()
 
 
 def update() -> None:
@@ -63,9 +53,6 @@ def update() -> None:
     Raises:
         RuntimeError: goopylib must be initialized first
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-
-    _core.update()
 
 
 def update_on_event() -> None:
@@ -75,9 +62,6 @@ def update_on_event() -> None:
     Raises:
         RuntimeError: goopylib must be initialized first
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-
-    _core.update_on_event()
 
 
 def update_timeout(timeout: float = 0, /) -> None:
@@ -91,11 +75,6 @@ def update_timeout(timeout: float = 0, /) -> None:
         ValueError: timeout must be greater than or equal to 0
         RuntimeError: goopylib must be initialized first
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-    assert isinstance(timeout, (float, int)), _raise_type_error(timeout, "float")
-    assert timeout >= 0, _raise(ValueError, f"timeout must be greater than or equal to 0, not {timeout}")
-
-    _core.update_timeout(timeout)
 
 
 def set_buffer_swap_interval(interval: int, /) -> None:
@@ -109,12 +88,6 @@ def set_buffer_swap_interval(interval: int, /) -> None:
         ValueError: interval must be greater than or equal to 0
         RuntimeError: goopylib must be initialized first and have an active context (window)
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-    assert _core.has_active_context(), _raise(RuntimeError, "goopylib must have an active window first.")
-    assert isinstance(interval, int), _raise_type_error(interval, "int")
-    assert interval >= 0, _raise(ValueError, f"interval must be greater than or equal to 0, not {interval}")
-
-    return _core.set_buffer_swap_interval(interval)
 
 
 def get_refresh_rate() -> int:
@@ -126,9 +99,6 @@ def get_refresh_rate() -> int:
     Raises:
         RuntimeError: goopylib must be initialized first
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-
-    return _core.get_refresh_rate()
 
 
 def get_screen_width() -> int:
@@ -140,10 +110,6 @@ def get_screen_width() -> int:
     Raises:
         RuntimeError: goopylib must be initialized first
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-
-    return _core.get_screen_width()
-
 
 def get_screen_height() -> int:
     """Returns the height of the primary monitor.
@@ -154,9 +120,6 @@ def get_screen_height() -> int:
     Raises:
         RuntimeError: goopylib must be initialized first
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-
-    return _core.get_screen_height()
 
 
 def get_number_of_monitors() -> int:
@@ -165,9 +128,6 @@ def get_number_of_monitors() -> int:
     Raises:
         RuntimeError: goopylib must be initialized first
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-
-    return _core.get_number_of_monitors()
 
 
 def get_time() -> float:
@@ -176,21 +136,16 @@ def get_time() -> float:
     Raises:
         RuntimeError: goopylib must be initialized first
     """
-    assert _core.is_initialized(), _raise(RuntimeError, "goopylib has not been initialized! Use gp.init() first.")
-
-    return _core.get_time()
 
 
 def glfw_compiled_version() -> str:
     """Returns the version of GLFW that goopylib was compiled with.
     """
-    return _core.glfw_compiled_version()
 
 
 def glfw_current_version() -> str:
     """Returns the version of GLFW that is currently running.
     """
-    return _core.glfw_current_version()
 
 
 def opengl_version() -> str:
@@ -199,15 +154,3 @@ def opengl_version() -> str:
     Raises:
         RuntimeError: goopylib must have an active context (window)
     """
-    assert _core.has_active_context(), _raise(RuntimeError, "goopylib must have an active window first.")
-
-    return _core.opengl_version()
-
-
-if not __debug__:
-    # Override module functions & classes with direct access to C API
-    # This also means that docstrings are no longer present
-    # pylint: disable-next=no-name-in-module, import-error
-    from goopylib.ext.core import *
-
-init()

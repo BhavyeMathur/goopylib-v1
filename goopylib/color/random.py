@@ -7,7 +7,7 @@ from __future__ import annotations
 from random import randint as _randint
 from random import random as _random
 
-from goopylib.color.color import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
+from .color import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
 
 
 # Random Colors

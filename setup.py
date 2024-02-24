@@ -119,7 +119,7 @@ def find_extensions():
                   sources=["goopylib/color/color.cpp"],
                   **ext_kwargs),
 
-        Extension(name="goopylib.ext.core",
+        Extension(name="goopylib.core.core",
                   sources=["goopylib/core/core.cpp"],
                   **ext_kwargs),
 

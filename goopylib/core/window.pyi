@@ -6,14 +6,8 @@ from __future__ import annotations
 
 from typing import Union, Tuple
 
-# pylint: disable=import-error, no-name-in-module
-
-from goopylib.ext.camera import *
-import goopylib.ext.window as _window
-
-# pylint: enable=import-error, no-name-in-module
-
-from goopylib.color.color import Color
+from goopylib.color import Color
+from goopylib.scene import Camera
 
 
 class Window:
@@ -26,8 +20,6 @@ class Window:
         title: displayed in the title bar
     """
 
-    __slots__ = ["_window", "_background", "_camera"]
-
     def __init__(self, width: int, height: int, title: str = "goopylib Window") -> None:
         """
         Creates a window that can be used to draw graphics and widgets.
@@ -37,36 +29,27 @@ class Window:
             height: in screen coordinates
             title: displayed in the title bar
         """
-        self._window: Window = _window.Window(width, height, title)
-        self._background = Color(255, 255, 255)
-        self._camera = Camera(0, 0, 0, 0)
-
-        self._window.background = self._background._color
-        self._camera._camera = self._window.get_camera()
 
     def __repr__(self) -> str:
-        return self._window.__repr__()
+        pass
 
     def is_closed(self) -> bool:
         """
         Returns:
              whether the window is closed.
         """
-        return self._window.is_closed()
 
     def is_open(self) -> bool:
         """
         Returns:
              whether the window is open.
         """
-        return self._window.is_open()
 
     def is_destroyed(self) -> bool:
         """
         Returns:
             whether the window has been destroyed.
         """
-        return self._window.is_destroyed()
 
     def update(self) -> None:
         """
@@ -75,7 +58,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.update()
 
     def destroy(self) -> None:
         """
@@ -84,7 +66,6 @@ class Window:
         Warning:
             Once the window is destroyed, accessing its attributes or calling its methods is undefined.
         """
-        self._window.destroy()
 
     """Getters & Setters --------------------------------------------------------------------------------------------"""
 
@@ -102,11 +83,10 @@ class Window:
             ValueError: width must be greater than 0
             RuntimeError: window has been destroyed
         """
-        return self._window.width
 
     @width.setter
     def width(self, value: int) -> None:
-        self._window.width = value
+        pass
 
     # Height
     @property
@@ -122,11 +102,10 @@ class Window:
             ValueError: height must be greater than 0
             RuntimeError: window has been destroyed
         """
-        return self._window.height
 
     @height.setter
     def height(self, value: int) -> None:
-        self._window.height = value
+        pass
 
     # Title
     @property
@@ -141,13 +120,11 @@ class Window:
             TypeError: title must be a str
             RuntimeError: window has been destroyed
         """
-        return self._window.title
 
     @title.setter
     def title(self, value: str) -> None:
-        self._window.title = value
+        pass
 
-    # X Position
     @property
     def xpos(self) -> int:
         """
@@ -160,13 +137,11 @@ class Window:
             TypeError: xpos must be an int
             RuntimeError: window has been destroyed
         """
-        return self._window.xpos
 
     @xpos.setter
     def xpos(self, value: int) -> None:
-        self._window.xpos = value
+        pass
 
-    # Y Position
     @property
     def ypos(self) -> int:
         """
@@ -179,11 +154,10 @@ class Window:
             TypeError: ypos must be an int
             RuntimeError: window has been destroyed
         """
-        return self._window.ypos
 
     @ypos.setter
     def ypos(self, value: int) -> None:
-        self._window.ypos = value
+        pass
 
     @property
     def position(self) -> Tuple[int, int]:
@@ -197,11 +171,10 @@ class Window:
             TypeError: position must be a tuple of integers
             RuntimeError: window has been destroyed
         """
-        return self._window.position
 
     @position.setter
     def position(self, value: Tuple[int, int]) -> None:
-        self._window.position = value
+        pass
 
     # Background Color
     @property
@@ -216,18 +189,10 @@ class Window:
             TypeError: background must be a color
             RuntimeError: window has been destroyed
         """
-        return self._background
 
     @background.setter
     def background(self, background: Color) -> None:
-        if isinstance(background, Color):
-            self._window.background = background._color
-            self._background = background
-        else:
-            self._background = Color(background)
-            self._window.background = self._background._color
-
-            # Minimum Width
+        pass
 
     @property
     def min_width(self) -> int:
@@ -247,11 +212,10 @@ class Window:
             ValueError: min_width must be greater than or equal to 0
             RuntimeError: window has been destroyed
         """
-        return self._window.min_width
 
     @min_width.setter
     def min_width(self, value: int) -> None:
-        self._window.min_width = value
+        pass
 
     # Minimum Height
     @property
@@ -272,13 +236,11 @@ class Window:
             ValueError: min_height must be greater than or equal to 0
             RuntimeError: window has been destroyed
         """
-        return self._window.min_height
 
     @min_height.setter
     def min_height(self, value: int) -> None:
-        self._window.min_height = value
+        pass
 
-    # Maximum Width
     @property
     def max_width(self) -> int:
         """
@@ -297,13 +259,11 @@ class Window:
             ValueError: max_width must be greater than or equal to min_width
             RuntimeError: window has been destroyed
         """
-        return self._window.max_width
 
     @max_width.setter
     def max_width(self, value: Union[int]) -> None:
-        self._window.max_width = value
+        pass
 
-    # Maximum Height
     @property
     def max_height(self) -> int:
         """
@@ -322,11 +282,10 @@ class Window:
             ValueError: max_height must be greater than or equal to min_height
             RuntimeError: window has been destroyed
         """
-        return self._window.max_height
 
     @max_height.setter
     def max_height(self, value: int) -> None:
-        self._window.max_height = value
+        pass
 
     # Get & Set Methods
     def set_size(self, width: int, height: int) -> None:
@@ -342,9 +301,8 @@ class Window:
             ValueError: width and height must be greater than 0
             RuntimeError: window has been destroyed
         """
-        self._window.set_size(width, height)
 
-    def set_size_limits(self, min_width: int, min_height: int, max_width: Union[int], max_height: Union[int]) -> None:
+    def set_size_limits(self, min_width: int, min_height: int, max_width: int, max_height: int) -> None:
         """
         Sets the minimum and maximum resizable dimensions of the window.
 
@@ -357,7 +315,6 @@ class Window:
                 max_width and max_height must be greater than or equal min_width and min_height
             RuntimeError: window has been destroyed
         """
-        self._window.set_size_limits(min_width, min_height, max_width, max_height)
 
     def set_min_size(self, min_width: Union[int], min_height: Union[int]) -> None:
         """
@@ -371,7 +328,6 @@ class Window:
             ValueError: min_width and min_height must be greater than or equal to 0
             RuntimeError: window has been destroyed
         """
-        self._window.set_min_size(min_width, min_height)
 
     def set_max_size(self, max_width: Union[int], max_height: Union[int]) -> None:
         """
@@ -385,7 +341,6 @@ class Window:
             ValueError: max_width and max_height must be greater than or equal to min_width and min_height.
             RuntimeError: window has been destroyed
         """
-        self._window.set_max_size(max_width, max_height)
 
     def set_aspect_ratio(self, numerator: Union[int], denominator: Union[int]) -> None:
         """
@@ -405,7 +360,6 @@ class Window:
             ValueError: numerator and denominator must be greater than 0
             RuntimeError: window has been destroyed
         """
-        self._window.set_aspect_ratio(numerator, denominator)
 
     def get_aspect_ratio(self) -> Tuple[int, int]:
         """
@@ -417,7 +371,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.get_aspect_ratio()
 
     def get_frame_size(self) -> Tuple[int, int, int, int]:
         """
@@ -436,7 +389,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.get_frame_size()
 
     def get_content_scale(self) -> Tuple[float, float]:
         """
@@ -452,7 +404,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.get_content_scale()
 
     def get_framebuffer_size(self) -> Tuple[int, int]:
         """
@@ -464,7 +415,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.get_framebuffer_size()
 
     """Window Boolean Attributes ------------------------------------------------------------------------------------"""
 
@@ -482,11 +432,10 @@ class Window:
             TypeError: resizable must be a bool
             RuntimeError: window has been destroyed
         """
-        return self._window.resizable
 
     @resizable.setter
     def resizable(self, value: bool) -> None:
-        self._window.resizable = value
+        pass
 
     @property
     def decorated(self) -> bool:
@@ -505,11 +454,10 @@ class Window:
             TypeError: decorated must be a bool
             RuntimeError: window has been destroyed
         """
-        return self._window.decorated
 
     @decorated.setter
     def decorated(self, value: bool) -> None:
-        self._window.decorated = value
+        pass
 
     @property
     def floating(self) -> bool:
@@ -525,11 +473,10 @@ class Window:
             TypeError: floating must be a bool
             RuntimeError: window has been destroyed
         """
-        return self._window.floating
 
     @floating.setter
     def floating(self, value: bool) -> None:
-        self._window.floating = value
+        pass
 
     @property
     def auto_minimized(self) -> bool:
@@ -548,11 +495,10 @@ class Window:
             TypeError: auto_minimized must be a bool
             RuntimeError: window has been destroyed
         """
-        return self._window.auto_minimized
 
     @auto_minimized.setter
     def auto_minimized(self, value: bool) -> None:
-        self._window.auto_minimized = value
+        pass
 
     @property
     def focused_on_show(self) -> bool:
@@ -568,11 +514,10 @@ class Window:
             TypeError: focused_on_show must be a bool
             RuntimeError: window has been destroyed
         """
-        return self._window.focused_on_show
 
     @focused_on_show.setter
     def focused_on_show(self, value: bool) -> None:
-        self._window.focused_on_show = value
+        pass
 
     """Window State Methods -----------------------------------------------------------------------------------------"""
 
@@ -583,7 +528,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.restore()
 
     # Fullscreen
     def fullscreen(self) -> None:
@@ -593,7 +537,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.fullscreen()
 
     def is_fullscreen(self) -> bool:
         """
@@ -603,7 +546,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.is_fullscreen()
 
     # Minimize
     def minimize(self) -> None:
@@ -613,7 +555,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.minimize()
 
     def is_minimized(self) -> bool:
         """
@@ -623,7 +564,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.is_minimized()
 
     # Maximize
     def maximize(self) -> None:
@@ -633,7 +573,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.maximize()
 
     def is_maximized(self) -> bool:
         """
@@ -643,7 +582,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.is_maximized()
 
     # Visibility
     def show(self) -> None:
@@ -653,7 +591,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.show()
 
     def hide(self, hide: bool = True) -> None:
         """
@@ -665,7 +602,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.hide(hide)
 
     def is_visible(self) -> bool:
         """
@@ -675,7 +611,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.is_visible()
 
     # Input Focus
     def focus(self) -> None:
@@ -685,7 +620,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.focus()
 
     def has_focus(self) -> bool:
         """
@@ -695,7 +629,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.has_focus()
 
     def request_attention(self) -> None:
         """
@@ -709,7 +642,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.request_attention()
 
     """Window Input Events ------------------------------------------------------------------------------------------"""
 
@@ -721,7 +653,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.is_mouse_hovering()
 
     def get_mouse_position(self) -> Tuple[float, float]:
         """
@@ -731,7 +662,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.get_mouse_position()
 
     def set_cursor_mode(self, mode: str) -> None:
         """
@@ -750,7 +680,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        self._window.set_cursor_mode(mode.lower())
 
     def check_shift_key(self) -> bool:
         """
@@ -760,7 +689,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_shift_key()
 
     def check_control_key(self) -> bool:
         """
@@ -770,7 +698,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_control_key()
 
     def check_alt_key(self) -> bool:
         """
@@ -780,7 +707,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_alt_key()
 
     def check_super_key(self) -> bool:
         """
@@ -790,7 +716,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_super_key()
 
     def check_key(self, keycode: int) -> bool:
         """
@@ -803,7 +728,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_key(keycode)
 
     def check_mouse_button(self, button: int) -> bool:
         """
@@ -816,7 +740,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_mouse_button(button)
 
     def check_left_click(self) -> bool:
         """
@@ -826,7 +749,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_left_click()
 
     def check_middle_click(self) -> bool:
         """
@@ -836,7 +758,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_middle_click()
 
     def check_right_click(self) -> bool:
         """
@@ -846,7 +767,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.check_right_click()
 
     """Window Callback Functions ------------------------------------------------------------------------------------"""
 
@@ -869,11 +789,10 @@ class Window:
             ValueError: callback function must take 2 arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.resize_callback
 
     @resize_callback.setter
     def resize_callback(self, callback: callable) -> None:
-        self._window.resize_callback = callback
+        pass
 
     @property
     def close_callback(self) -> callable:
@@ -894,11 +813,10 @@ class Window:
             ValueError: callback function must not take arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.close_callback
 
     @close_callback.setter
     def close_callback(self, callback: callable) -> None:
-        self._window.close_callback = callback
+        pass
 
     @property
     def destroy_callback(self) -> callable:
@@ -919,11 +837,10 @@ class Window:
             ValueError: callback function must not take arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.destroy_callback
 
     @destroy_callback.setter
     def destroy_callback(self, callback: callable) -> None:
-        self._window.destroy_callback = callback
+        pass
 
     @property
     def position_callback(self) -> callable:
@@ -944,11 +861,10 @@ class Window:
             ValueError: callback function must take 2 arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.position_callback
 
     @position_callback.setter
     def position_callback(self, callback: callable) -> None:
-        self._window.position_callback = callback
+        pass
 
     @property
     def minimize_callback(self) -> callable:
@@ -969,11 +885,10 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        return self._window.minimize_callback
 
     @minimize_callback.setter
     def minimize_callback(self, callback: callable) -> None:
-        self._window.minimize_callback = callback
+        pass
 
     @property
     def maximize_callback(self) -> callable:
@@ -994,11 +909,10 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        return self._window.maximize_callback
 
     @maximize_callback.setter
     def maximize_callback(self, callback: callable) -> None:
-        self._window.maximize_callback = callback
+        pass
 
     @property
     def focus_callback(self) -> callable:
@@ -1024,11 +938,10 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        return self._window.focus_callback
 
     @focus_callback.setter
     def focus_callback(self, callback: callable) -> None:
-        self._window.focus_callback = callback
+        pass
 
     @property
     def refresh_callback(self) -> callable:
@@ -1050,11 +963,10 @@ class Window:
             ValueError: callback function must not take arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.refresh_callback
 
     @refresh_callback.setter
     def refresh_callback(self, callback: callable) -> None:
-        self._window.refresh_callback = callback
+        pass
 
     @property
     def content_scale_callback(self) -> callable:
@@ -1075,11 +987,10 @@ class Window:
             ValueError: callback function must take 2 arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.content_scale_callback
 
     @content_scale_callback.setter
     def content_scale_callback(self, callback: callable) -> None:
-        self._window.content_scale_callback = callback
+        pass
 
     @property
     def framebuffer_size_callback(self) -> callable:
@@ -1100,11 +1011,10 @@ class Window:
             ValueError: callback function must take 2 arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.framebuffer_size_callback
 
     @framebuffer_size_callback.setter
     def framebuffer_size_callback(self, callback: callable) -> None:
-        self._window.framebuffer_size_callback = callback
+        pass
 
     @property
     def mouse_motion_callback(self) -> callable:
@@ -1125,11 +1035,10 @@ class Window:
             ValueError: callback function must take 2 arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.mouse_motion_callback
 
     @mouse_motion_callback.setter
     def mouse_motion_callback(self, callback: callable) -> None:
-        self._window.mouse_motion_callback = callback
+        pass
 
     @property
     def mouse_enter_callback(self) -> callable:
@@ -1150,11 +1059,10 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        return self._window.mouse_enter_callback
 
     @mouse_enter_callback.setter
     def mouse_enter_callback(self, callback: callable) -> None:
-        self._window.mouse_enter_callback = callback
+        pass
 
     @property
     def scroll_callback(self) -> callable:
@@ -1175,11 +1083,10 @@ class Window:
             ValueError: callback function must take 2 arguments
             RuntimeError: window has been destroyed
         """
-        return self._window.scroll_callback
 
     @scroll_callback.setter
     def scroll_callback(self, callback: callable) -> None:
-        self._window.scroll_callback = callback
+        pass
 
     def set_key_callback(self, keycode: int, callback: callable) -> None:
         """
@@ -1203,7 +1110,6 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        self._window.set_key_callback(keycode, callback)
 
     def set_mouse_button_callback(self, button: int, callback: callable) -> None:
         """
@@ -1227,7 +1133,6 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        self._window.set_mouse_button_callback(button, callback)
 
     @property
     def left_click_callback(self) -> callable:
@@ -1248,11 +1153,10 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        return self._window.left_click_callback
 
     @left_click_callback.setter
     def left_click_callback(self, callback: callable) -> None:
-        self._window.left_click_callback = callback
+        pass
 
     @property
     def middle_click_callback(self) -> callable:
@@ -1273,11 +1177,10 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        return self._window.middle_click_callback
 
     @middle_click_callback.setter
     def middle_click_callback(self, callback: callable) -> None:
-        self._window.middle_click_callback = callback
+        pass
 
     @property
     def right_click_callback(self) -> callable:
@@ -1298,11 +1201,10 @@ class Window:
             ValueError: callback function must take 1 argument
             RuntimeError: window has been destroyed
         """
-        return self._window.right_click_callback
 
     @right_click_callback.setter
     def right_click_callback(self, callback: callable) -> None:
-        self._window.right_click_callback = callback
+        pass
 
     def get_camera(self) -> Camera:
         """
@@ -1312,7 +1214,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._camera
 
     def to_world(self, x: float, y: float) -> Tuple[float, float]:
         """
@@ -1330,7 +1231,6 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.to_world(x, y)
 
     def to_screen(self, x: float, y: float) -> Tuple[float, float]:
         """
@@ -1346,29 +1246,15 @@ class Window:
         Raises:
             RuntimeError: window has been destroyed
         """
-        return self._window.to_screen(x, y)
 
     @staticmethod
     def update_all() -> None:
         """
         Updates all the windows currently active.
         """
-        _window.Window.update_all()
 
     @staticmethod
     def destroy_all() -> None:
         """
         Destroys all active windows.
         """
-        _window.Window.destroy_all()
-
-
-# pylint: disable-next=wrong-import-position
-from goopylib.scene.camera import Camera
-
-if not __debug__:
-    # pylint: disable-next=no-name-in-module, import-error
-    from goopylib.ext.window import *
-    from goopylib._internal import convert_getset_descriptor_to_properties as _convert_getset_descriptor_to_properties
-
-    _convert_getset_descriptor_to_properties(Window)
