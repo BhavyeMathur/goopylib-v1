@@ -27,32 +27,6 @@ namespace gp {
         void render();
 
         /**
-         * @param value in screen coordinates
-         *
-         * @throws std::invalid_argument value must be greater than 0
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        void setWidth(int value);
-
-        /**
-         * @return in screen coordinates
-         */
-        [[nodiscard]] int getWidth() const;
-
-        /**
-         * @param value in screen coordinates
-         *
-         * @throws std::invalid_argument value must be greater than 0
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        void setHeight(int value);
-
-        /**
-         * @return in screen coordinates
-         */
-        [[nodiscard]] int getHeight() const;
-
-        /**
          * The background color of the window.
          *
          * @throws std::runtime_error cannot set the attribute of a destroyed window
@@ -98,8 +72,6 @@ namespace gp {
         Color m_Background;
 
         void init();
-
-        virtual void _updateSize() const = 0;
 
     private:
         Camera m_Camera;

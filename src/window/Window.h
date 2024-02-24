@@ -53,7 +53,6 @@ namespace gp {
      * @param title displayed in the title bar
      */
     class GPAPI Window final : public RenderingManager {
-
         friend class Renderer;
 
     public:
@@ -73,16 +72,16 @@ namespace gp {
 
         Window(Window &&other) = delete;
 
-        ~Window();
+        ~Window() override;
 
-        std::string toString();
+        std::string toString() const;
 
         /**
          * @return a pointer to the underlying GLFW context.
          *
          * @throws std::runtime_error window has been destroyed
          */
-        GLFWwindow *getWindowGLFW();
+        GLFWwindow *getWindowGLFW() const;
 
         /**
          * @return whether the window is closed.
@@ -119,12 +118,12 @@ namespace gp {
          * @param value the title string to show in the title menu
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setTitle(const char *value);
+        void setTitle(const std::string &value);
 
         /**
          * @return the title string showed in the title menu
          */
-        [[nodiscard]] const char *getTitle() const;
+        [[nodiscard]] std::string getTitle() const;
 
         /**
          * @param value in screen coordinates of the upper-left corner of the Window
@@ -147,6 +146,32 @@ namespace gp {
          * @return in screen coordinates, the position of the lower-right corner of the Window
          */
         [[nodiscard]] int getYPos() const;
+
+        /**
+         * @param value in screen coordinates
+         *
+         * @throws std::invalid_argument value must be greater than 0
+         * @throws std::runtime_error cannot set the attribute of a destroyed window
+         */
+        void setWidth(int value);
+
+        /**
+         * @return in screen coordinates
+         */
+        [[nodiscard]] int getWidth() const;
+
+        /**
+         * @param value in screen coordinates
+         *
+         * @throws std::invalid_argument value must be greater than 0
+         * @throws std::runtime_error cannot set the attribute of a destroyed window
+         */
+        void setHeight(int value);
+
+        /**
+         * @return in screen coordinates
+         */
+        [[nodiscard]] int getHeight() const;
 
         /**
          * @param value in screen coordinates
@@ -294,7 +319,7 @@ namespace gp {
          * @throws std::invalid_argument denominator must be -1 or greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setAspectRatio(int numerator, int denominator);
+        void setAspectRatio(int numerator, int denominator) const;
 
         /**
          * Gets the current aspect ratio of the window.
@@ -355,7 +380,7 @@ namespace gp {
          * @param value whether the window is resizable by the user or not.
          * @throws std::runtime_error window has been destroyed
          */
-        void setResizable(bool value);
+        void setResizable(bool value) const;
 
         /**
          * Gets whether the window has window decorations.
@@ -376,7 +401,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void setDecorated(bool value);
+        void setDecorated(bool value) const;
 
         /**
          * Gets whether the window is always on top.
@@ -392,7 +417,7 @@ namespace gp {
          * @param value whether the window is always on top of other regular windows.
          * @throws std::runtime_error window has been destroyed
          */
-        void setFloating(bool value);
+        void setFloating(bool value) const;
 
         /**
          * Gets whether the window is automatically minimized when it loses focus.
@@ -408,7 +433,7 @@ namespace gp {
          * @param value whether the window is automatically minimized when it loses focus.
          * @throws std::runtime_error window has been destroyed
          */
-        void setAutoMinimized(bool value);
+        void setAutoMinimized(bool value) const;
 
         /**
          * Gets whether the window gains input focus when it is shown.
@@ -424,7 +449,7 @@ namespace gp {
          * @param value whether calling Window::show() gives this window input focus
          * @throws std::runtime_error window has been destroyed
          */
-        void setFocusedOnShow(bool value);
+        void setFocusedOnShow(bool value) const;
 
         /* Window State Methods --------------------------------------------------------------------------------------*/
 
@@ -433,7 +458,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void restore();
+        void restore() const;
 
         /**
          * Makes the window enter fullscreen mode.
@@ -453,7 +478,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void minimize();
+        void minimize() const;
 
         /**
          * @return whether the window is in minimized mode.
@@ -466,7 +491,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void maximize();
+        void maximize() const;
 
         /**
          * @return whether the window is in maximized mode.
@@ -479,7 +504,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void show();
+        void show() const;
 
         /**
          * Makes the window invisible to the user.
@@ -488,7 +513,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void hide(bool hide = true);
+        void hide(bool hide = true) const;
 
         /**
          * @return whether the window is visible to the user.
@@ -501,7 +526,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-        void focus();
+        void focus() const;
 
         /**
          * @return whether the window has input focus.
@@ -746,7 +771,7 @@ namespace gp {
          *
          * @throws std::runtime_error window has been destroyed
          */
-         void setRefreshCallback(std::function<void(Window *window)> callback);
+        void setRefreshCallback(std::function<void(Window *window)> callback);
 
         /**
          * Callback executed when the Window's content scale changes.
@@ -948,7 +973,7 @@ namespace gp {
         int m_WindowedYPos;
 
         bool m_IsDestroyed = false;
-        int m_KeyModifiers = 0;  // check if the shift, control, alt, and super keys are pressed
+        int m_KeyModifiers = 0; // check if the shift, control, alt, and super keys are pressed
 
         std::function<void(Window *window, int width, int height)> m_ResizeCallback;
         std::function<void(Window *window)> m_CloseCallback;
@@ -964,8 +989,8 @@ namespace gp {
         std::function<void(Window *window, bool entered)> m_MouseEnterCallback;
         std::function<void(Window *window, float xScroll, float yScroll)> m_ScrollCallback;
 
-        std::unordered_map<int, std::function<void(Window *window, int action)>> m_KeyCallbacks;
-        std::unordered_map<int, std::function<void(Window *window, bool pressed)>> m_MouseCallbacks;
+        std::unordered_map<int, std::function<void(Window *window, int action)> > m_KeyCallbacks;
+        std::unordered_map<int, std::function<void(Window *window, bool pressed)> > m_MouseCallbacks;
 
         GLFWwindow *m_Window = nullptr;
 
@@ -977,54 +1002,10 @@ namespace gp {
 
         void _onResize(int width, int height);
 
-        void _onClose();
-
-        void _onDestroy();
-
         void _onMove(int xPos, int yPos);
-
-        void _onMinimize(bool iconified);
-
-        void _onMaximize(bool maximized);
-
-        void _onFocus(bool focused);
-
-        void _onRefreshRequired();
-
-        void _onContentScale(float xScale, float yScale);
-
-        void _onFramebufferSize(int width, int height);
-
-        void _onMouseMotion(float xPos, float yPos);
-
-        void _onMouseEnter(bool entered);
-
-        void _onScroll(float xScroll, float yScroll);
 
         void _onKeyPress(int key, int scancode, int action, int mods);
 
         void _onMousePress(int button, int action, int mods);
-
-        void _swapBuffers() const;
-
-        void _destroy() const;
-
-        void _updateSize() const override;
-
-        void _updatePosition() const;
-
-        void _updateSizeLimits() const;
-
-        void _updateAspectRatio(int numerator, int denominator) const;
-
-        void _fullscreen() const;
-
-        void _unfullscreen(int width, int height, int xPos, int yPos) const;
-
-        void _restore() const;
-
-        void _setKeyCallback() const;
-
-        void _setMouseButtonCallback() const;
     };
 }

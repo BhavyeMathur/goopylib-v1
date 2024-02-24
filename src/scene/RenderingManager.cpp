@@ -10,8 +10,6 @@
 #include "objects/Line.h"
 #include "objects/Image.h"
 
-#include "debug/Error.h"
-
 #include <opengl.h>
 
 namespace gp {
@@ -68,32 +66,6 @@ namespace gp {
 }
 
 namespace gp {
-    void RenderingManager::setWidth(const int value) {
-        GP_CORE_DEBUG("gp::RenderingManager::setWidth({1}) - '{0}'", m_Title, value);
-        GP_CHECK_GT(value, 0, "Window width must be greater than 0")
-
-        m_Width = value;
-        _updateSize();
-    }
-
-    int RenderingManager::getWidth() const {
-        GP_CORE_TRACE("gp::RenderingManager::getWidth() - '{0}'", m_Title);
-        return m_Width;
-    }
-
-    void RenderingManager::setHeight(const int value) {
-        GP_CORE_DEBUG("gp::RenderingManager::setHeight({1}) - '{0}'", m_Title, value);
-        GP_CHECK_GT(value, 0, "Window height must be greater than 0")
-
-        m_Height = value;
-        _updateSize();
-    }
-
-    int RenderingManager::getHeight() const {
-        GP_CORE_TRACE("gp::RenderingManager::getHeight() - '{0}'", m_Title);
-        return m_Height;
-    }
-
     void RenderingManager::setBackground(const Color &value) {
         GP_CORE_DEBUG("gp::RenderingManager::setBackground({1}) - '{0}'", m_Title, value.toString());
 
