@@ -318,7 +318,7 @@ namespace gp {
         return {m_xPos, m_yPos};
     }
 
-    void Window::setAspectRatio(const int numerator, const int denominator) const {
+    void Window::setAspectRatio(const int numerator, const int denominator) {
         GP_CORE_DEBUG("gp::Window::setAspectRatio({1}, {2}) - '{0}'", m_Title, numerator, denominator);
 
         if (numerator == -1 or denominator == -1) {
@@ -331,6 +331,7 @@ namespace gp {
 
         const int g = gcd(numerator, denominator);
         glfwSetWindowAspectRatio(m_Window, numerator / g, denominator / g);
+        setSize(m_Width, (m_Width * denominator) / numerator);
     }
 
     AspectRatio Window::getAspectRatio() const {

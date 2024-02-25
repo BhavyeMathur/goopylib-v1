@@ -318,7 +318,7 @@ namespace gp {
          * @throws std::invalid_argument denominator must be -1 or greater than 0
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
-        void setAspectRatio(int numerator, int denominator) const;
+        void setAspectRatio(int numerator, int denominator);
 
         /**
          * Gets the current aspect ratio of the window.
