@@ -23,3 +23,6 @@
 	path = vendor/pybind11
 	url = https://github.com/pybind/pybind11
 	branch = stable
+[submodule "vendor/map-macro"]
+	path = vendor/map-macro
+	url = https://github.com/swansontec/map-macro
