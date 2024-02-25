@@ -1,5 +1,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/operators.h>
+#include <map-macro/map.h>
+
+#include "goopylib/header.h"
 
 #include "color/Color.h"
 #include "color/ColorRGB.h"
@@ -44,14 +47,8 @@ PYBIND11_MODULE(color, m) {
             .def_property_readonly("greenf", &gp::Color::getGreenf)
             .def_property_readonly("bluef", &gp::Color::getBluef)
 
-            .def_property_readonly("rgbaf", [](const gp::Color &self) {
-                gp::RGBAf rgbaf = self.getRGBAf();
-                return py::make_tuple(rgbaf.red, rgbaf.green, rgbaf.blue, rgbaf.alpha);
-            })
-            .def_property_readonly("rgbf", [](const gp::Color &self) {
-                gp::RGBAf rgbaf = self.getRGBAf();
-                return py::make_tuple(rgbaf.red, rgbaf.green, rgbaf.blue);
-            });
+            .def_property_readonly("rgbaf", GP_GET_STRUCT_TUPLE(gp::Color, RGBAf, red, green, blue, alpha))
+            .def_property_readonly("rgbf", GP_GET_STRUCT_TUPLE(gp::Color, RGBAf, red, green, blue));
 
 
     py::class_<gp::ColorRGB, gp::Color>(m, "ColorRGB")

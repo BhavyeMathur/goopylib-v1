@@ -2,6 +2,7 @@
 #include <pybind11/functional.h>
 #include <map-macro/map.h>
 
+#include "goopylib/header.h"
 #include "window/Window.h"
 
 namespace py = pybind11;
@@ -17,8 +18,8 @@ using namespace pybind11::literals;
 #define GP_SAFE_OPTIONALS_TO_INT(...) MAP(GP_SAFE_OPTIONAL_TO_INT, __VA_ARGS__)
 
 #define GP_SIZE_LIMIT_SETTER_BODY(func, ...) GP_SAFE_OPTIONALS_TO_INT(__VA_ARGS__) self.set##func(MAP_LIST(GP_INT_SUFFIX, __VA_ARGS__))
-#define GP_SIZE_LIMIT_SETTER(func, ...) [](gp::Window &self, MAP_LIST(GP_PYOBJ, __VA_ARGS__)) {GP_SIZE_LIMIT_SETTER_BODY(func, __VA_ARGS__);}
-#define GP_SET_SIZE_LIMIT(func, ...) GP_SIZE_LIMIT_SETTER(func, __VA_ARGS__), MAP_LIST(GP_KWARG, __VA_ARGS__)
+#define GP_OPTIONAL_ARGS_SETTER(func, ...) [](gp::Window &self, MAP_LIST(GP_PYOBJ, __VA_ARGS__)) {GP_SIZE_LIMIT_SETTER_BODY(func, __VA_ARGS__);}
+#define GP_SET_OPTIONAL_ARGS(func, ...) GP_OPTIONAL_ARGS_SETTER(func, __VA_ARGS__), MAP_LIST(GP_KWARG, __VA_ARGS__)
 
 PYBIND11_MODULE(window, m) {
     py::class_<gp::Window>(m, "Window")
@@ -33,15 +34,15 @@ PYBIND11_MODULE(window, m) {
             .def("destroy", &gp::Window::destroy)
 
             .def("set_size", &gp::Window::setSize, "width"_a, "height"_a)
-            .def("set_size_limits", GP_SET_SIZE_LIMIT(SizeLimits, min_width, min_height, max_width, max_height))
-            .def("set_min_size", GP_SET_SIZE_LIMIT(MinSize, min_width, min_height))
-            .def("set_max_size", GP_SET_SIZE_LIMIT(MaxSize, max_width, max_height))
+            .def("set_size_limits", GP_SET_OPTIONAL_ARGS(SizeLimits, min_width, min_height, max_width, max_height))
+            .def("set_min_size", GP_SET_OPTIONAL_ARGS(MinSize, min_width, min_height))
+            .def("set_max_size", GP_SET_OPTIONAL_ARGS(MaxSize, max_width, max_height))
 
-            .def("set_aspect_ratio", &gp::Window::setAspectRatio, "numerator"_a, "denominator"_a)
-            .def("get_aspect_ratio", &gp::Window::getAspectRatio)
-            .def("get_frame_size", &gp::Window::getFrameSize)
-            .def("get_content_scale", &gp::Window::getContentScale)
-            .def("get_framebuffer_size", &gp::Window::getFramebufferSize)
+            .def("set_aspect_ratio", GP_SET_OPTIONAL_ARGS(AspectRatio, numerator, denominator))
+            .def("get_aspect_ratio", GP_GET_STRUCT_TUPLE(gp::Window, AspectRatio, numerator, denominator))
+            .def("get_frame_size", GP_GET_STRUCT_TUPLE(gp::Window, FrameSize, left, top, right, bottom))
+            .def("get_content_scale", GP_GET_STRUCT_TUPLE(gp::Window, ContentScale, xScale, yScale))
+            .def("get_framebuffer_size", GP_GET_STRUCT_TUPLE(gp::Window, FramebufferSize, width, height))
 
             .def("restore", &gp::Window::restore)
             .def("fullscreen", &gp::Window::fullscreen)
@@ -106,15 +107,20 @@ PYBIND11_MODULE(window, m) {
             .def_property("background", &gp::Window::getBackground, &gp::Window::setBackground)
             .def_property("xpos", &gp::Window::getXPos, &gp::Window::setXPos)
             .def_property("ypos", &gp::Window::getYPos, &gp::Window::setYPos)
-            .def_property("position", &gp::Window::getPosition, &gp::Window::setPosition)
+            .def_property("position", GP_GET_STRUCT_TUPLE(gp::Window, Position, x, y),
+                          [](gp::Window &self, const py::tuple &object) {
+                              GP_RETHROW_TYPE_ERROR(
+                                      self.setPosition(object[0].cast<int>(), object[1].cast<int>());, int
+                              )
+                          })
 
             .def_property("width", &gp::Window::getWidth, &gp::Window::setWidth)
             .def_property("height", &gp::Window::getHeight, &gp::Window::setHeight)
 
-            .def_property("min_width", &gp::Window::getMinWidth, GP_SIZE_LIMIT_SETTER(MinWidth, value))
-            .def_property("min_height", &gp::Window::getMinHeight, GP_SIZE_LIMIT_SETTER(MinHeight, value))
-            .def_property("max_width", &gp::Window::getMaxWidth, GP_SIZE_LIMIT_SETTER(MaxWidth, value))
-            .def_property("max_height", &gp::Window::getMaxHeight, GP_SIZE_LIMIT_SETTER(MaxHeight, value))
+            .def_property("min_width", &gp::Window::getMinWidth, GP_OPTIONAL_ARGS_SETTER(MinWidth, value))
+            .def_property("min_height", &gp::Window::getMinHeight, GP_OPTIONAL_ARGS_SETTER(MinHeight, value))
+            .def_property("max_width", &gp::Window::getMaxWidth, GP_OPTIONAL_ARGS_SETTER(MaxWidth, value))
+            .def_property("max_height", &gp::Window::getMaxHeight, GP_OPTIONAL_ARGS_SETTER(MaxHeight, value))
 
             .def_property("resizable", &gp::Window::isResizable, &gp::Window::setResizable)
             .def_property("decorated", &gp::Window::isDecorated, &gp::Window::setDecorated)

@@ -13,14 +13,14 @@
 namespace gp {
     std::vector<Window *> Window::s_Instances;
 
-    Window::Window(const int width, const int height, const std::string& title)
-        : RenderingManager{width, height, title},
-          m_xPos{50},
-          m_yPos{50},
-          m_WindowedWidth{m_Width},
-          m_WindowedHeight{m_Height},
-          m_WindowedXPos{m_xPos},
-          m_WindowedYPos{m_yPos} {
+    Window::Window(const int width, const int height, const std::string &title)
+            : RenderingManager{width, height, title},
+              m_xPos{50},
+              m_yPos{50},
+              m_WindowedWidth{m_Width},
+              m_WindowedHeight{m_Height},
+              m_WindowedXPos{m_xPos},
+              m_WindowedYPos{m_yPos} {
         GP_CORE_INFO("gp::Window::Window({0}, {1} '{2}')", m_Width, m_Height, m_Title);
 
         GP_CHECK_GT(width, 0, "Window width must be greater than 0");
@@ -33,12 +33,12 @@ namespace gp {
 
         glfwSetWindowUserPointer(m_Window, this);
 
-#if GP_USING_GLAD
+        #if GP_USING_GLAD
         GP_CORE_DEBUG("gp::Window::Window() initialising GLAD");
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
             GP_RUNTIME_ERROR("gp::Window::Window() failed to initialize GLAD");
         }
-#endif
+        #endif
 
         super();
 
@@ -72,19 +72,19 @@ namespace gp {
         setPositionCallback(nullptr);
 
         glfwSetMouseButtonCallback(
-            m_Window,
-            [](GLFWwindow *window, const int button, const int action, const int mods) {
-                auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
-                windowObject->_onMousePress(button, action, mods);
-            });
+                m_Window,
+                [](GLFWwindow *window, const int button, const int action, const int mods) {
+                    auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+                    windowObject->_onMousePress(button, action, mods);
+                });
 
         glfwSetKeyCallback(
-            m_Window,
-            [](GLFWwindow *window, const int key, const int scancode, const int action,
-               const int mods) {
-                auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
-                windowObject->_onKeyPress(key, scancode, action, mods);
-            });
+                m_Window,
+                [](GLFWwindow *window, const int key, const int scancode, const int action,
+                   const int mods) {
+                    auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+                    windowObject->_onKeyPress(key, scancode, action, mods);
+                });
     }
 
     GLFWwindow *Window::getWindowGLFW() const {
@@ -274,19 +274,25 @@ namespace gp {
         GP_CORE_DEBUG("gp::Window::setSizeLimits({1}, {2}, {3}, {4}) - '{0}'",
                       m_Title, minWidth, minHeight, maxWidth, maxHeight);
 
-        GP_CHECK_GE(minWidth, 0, "Window minimum width must be greater than or equal to 0");
-        GP_CHECK_GE(minHeight, 0, "Window minimum height must be greater than or equal to 0");
-        GP_CHECK_GE(maxWidth, minWidth, "Window maximum width must be greater than or equal to its minimum width");
-        GP_CHECK_GE(maxHeight, minHeight, "Window maximum height must be greater than or equal to its minimum height");
+        if (minWidth != GLFW_DONT_CARE) {
+            GP_CHECK_GE(minWidth, 0, "Window minimum width must be greater than or equal to 0");
+        }
+        if (minHeight != GLFW_DONT_CARE) {
+            GP_CHECK_GE(minHeight, 0, "Window minimum height must be greater than or equal to 0");
+        }
+        if (maxWidth != GLFW_DONT_CARE) {
+            GP_CHECK_GE(maxWidth, minWidth, "Window maximum width must be greater than or equal to minimum width");
+        }
+        if (maxHeight != GLFW_DONT_CARE) {
+            GP_CHECK_GE(maxHeight, minHeight, "Window maximum height must be greater than or equal to minimum height");
+        }
 
-        m_MinWidth = minWidth;
-        m_MinHeight = minHeight;
-        m_MaxWidth = maxWidth;
-        m_MaxHeight = maxHeight;
+        m_MinWidth = minWidth == GLFW_DONT_CARE ? 0 : minWidth;
+        m_MinHeight = minHeight == GLFW_DONT_CARE ? 0 : minHeight;
+        m_MaxWidth = maxWidth == GLFW_DONT_CARE ? INT_MAX : maxWidth;
+        m_MaxHeight = maxHeight == GLFW_DONT_CARE ? INT_MAX : maxHeight;
 
-        glfwSetWindowSizeLimits(m_Window, m_MinWidth, m_MinHeight,
-                                m_MaxWidth == INT_MAX ? GLFW_DONT_CARE : m_MaxWidth,
-                                m_MaxHeight == INT_MAX ? GLFW_DONT_CARE : m_MaxHeight);
+        glfwSetWindowSizeLimits(m_Window, m_MinWidth, m_MinHeight, m_MaxWidth, m_MaxHeight);
     }
 
     void Window::setMinSize(const int minWidth, const int minHeight) {
@@ -343,8 +349,7 @@ namespace gp {
         if (isFullscreen()) {
             glfwSetWindowMonitor(m_Window, nullptr,
                                  m_WindowedXPos, m_WindowedYPos, m_WindowedWidth, m_WindowedHeight, 0);
-        }
-        else {
+        } else {
             glfwRestoreWindow(m_Window);
         }
     }
@@ -393,8 +398,7 @@ namespace gp {
         GP_CORE_INFO("gp::Window::hide() - '{0}'", m_Title);
         if (hide) {
             glfwHideWindow(m_Window);
-        }
-        else {
+        } else {
             glfwShowWindow(m_Window);
         }
     }
@@ -782,8 +786,7 @@ namespace gp {
 
         if (callback) {
             m_KeyCallbacks[key] = std::move(callback);
-        }
-        else if (m_KeyCallbacks.contains(key)) {
+        } else if (m_KeyCallbacks.contains(key)) {
             m_KeyCallbacks.erase(key);
         }
     }
@@ -802,8 +805,7 @@ namespace gp {
 
         if (callback) {
             m_MouseCallbacks[button] = std::move(callback);
-        }
-        else if (m_MouseCallbacks.contains(button)) {
+        } else if (m_MouseCallbacks.contains(button)) {
             m_MouseCallbacks.erase(button);
         }
     }

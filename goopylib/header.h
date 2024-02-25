@@ -43,3 +43,7 @@ static bool isinstance(PyObject * object, PyTypeObject * type) {
 }
 
 using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
+
+#define GP_GET_VALUE_ATTR(attr) value.attr
+#define GP_GET_STRUCT_TUPLE_BODY(func, ...) auto value = self.get##func(); return py::make_tuple(MAP_LIST(GP_GET_VALUE_ATTR, __VA_ARGS__))
+#define GP_GET_STRUCT_TUPLE(type, func, ...) [](const type &self) { GP_GET_STRUCT_TUPLE_BODY(func, __VA_ARGS__); }
