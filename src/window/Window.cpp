@@ -139,6 +139,26 @@ namespace gp {
 
 // Window getters & setters
 namespace gp {
+    void Window::setWidth(const int value) {
+        GP_CORE_DEBUG("gp::Window::setWidth({1}) - '{0}'", m_Title, value);
+        setSize(value, m_Height);
+    }
+
+    int Window::getWidth() const {
+        GP_CORE_TRACE("gp::Window::getWidth() - '{0}'", m_Title);
+        return m_Width;
+    }
+
+    void Window::setHeight(const int value) {
+        GP_CORE_DEBUG("gp::Window::setHeight({1}) - '{0}'", m_Title, value);
+        setSize(m_Width, value);
+    }
+
+    int Window::getHeight() const {
+        GP_CORE_TRACE("gp::Window::getHeight() - '{0}'", m_Title);
+        return m_Height;
+    }
+
     void Window::setTitle(const std::string &value) {
         GP_CORE_DEBUG("gp::setTitle({1}) - '{0}'", m_Title, value);
 
@@ -169,26 +189,6 @@ namespace gp {
     int Window::getYPos() const {
         GP_CORE_TRACE("gp::Window::getYPos() - '{0}'", m_Title);
         return m_yPos;
-    }
-
-    void Window::setWidth(const int value) {
-        GP_CORE_DEBUG("gp::Window::setWidth({1}) - '{0}'", m_Title, value);
-        setSize(value, m_Height);
-    }
-
-    int Window::getWidth() const {
-        GP_CORE_TRACE("gp::Window::getWidth() - '{0}'", m_Title);
-        return m_Width;
-    }
-
-    void Window::setHeight(const int value) {
-        GP_CORE_DEBUG("gp::Window::setHeight({1}) - '{0}'", m_Title, value);
-        setSize(m_Width, value);
-    }
-
-    int Window::getHeight() const {
-        GP_CORE_TRACE("gp::Window::getHeight() - '{0}'", m_Title);
-        return m_Height;
     }
 
     void Window::setMinWidth(const int value) {

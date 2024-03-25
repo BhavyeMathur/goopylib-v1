@@ -114,6 +114,32 @@ namespace gp {
         /* Getters & Setters -----------------------------------------------------------------------------------------*/
 
         /**
+         * @param value in screen coordinates
+         *
+         * @throws std::invalid_argument value must be greater than 0
+         * @throws std::runtime_error cannot set the attribute of a destroyed window
+         */
+        void setWidth(int value);
+
+        /**
+         * @return in screen coordinates
+         */
+        [[nodiscard]] int getWidth() const;
+
+        /**
+         * @param value in screen coordinates
+         *
+         * @throws std::invalid_argument value must be greater than 0
+         * @throws std::runtime_error cannot set the attribute of a destroyed window
+         */
+        void setHeight(int value);
+
+        /**
+         * @return in screen coordinates
+         */
+        [[nodiscard]] int getHeight() const;
+
+        /**
          * @param value the title string to show in the title menu
          * @throws std::runtime_error cannot set the attribute of a destroyed window
          */
@@ -145,32 +171,6 @@ namespace gp {
          * @return in screen coordinates, the position of the lower-right corner of the Window
          */
         [[nodiscard]] int getYPos() const;
-
-        /**
-         * @param value in screen coordinates
-         *
-         * @throws std::invalid_argument value must be greater than 0
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        void setWidth(int value);
-
-        /**
-         * @return in screen coordinates
-         */
-        [[nodiscard]] int getWidth() const;
-
-        /**
-         * @param value in screen coordinates
-         *
-         * @throws std::invalid_argument value must be greater than 0
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        void setHeight(int value);
-
-        /**
-         * @return in screen coordinates
-         */
-        [[nodiscard]] int getHeight() const;
 
         /**
          * @param value in screen coordinates

@@ -64,6 +64,7 @@ PYBIND11_MODULE(window, m) {
             .def("is_mouse_hovering", &gp::Window::isMouseHovering)
             .def("get_mouse_position", &gp::Window::getMousePosition)
             .def("set_cursor_mode", &gp::Window::setCursorMode, "mode"_a)
+
             .def("check_mouse_button", &gp::Window::checkMouseButton, "button"_a)
             .def("check_left_click", &gp::Window::checkLeftClick)
             .def("check_middle_click", &gp::Window::checkMiddleClick)
@@ -75,6 +76,7 @@ PYBIND11_MODULE(window, m) {
             .def("check_super_key", &gp::Window::checkSuperKey)
             .def("check_key", &gp::Window::checkKey, "keycode"_a)
 
+            // TODO either add getter functions for callbacks or convert to method, not property
             .def_property("resize_callback", py::cpp_function(), &gp::Window::setResizeCallback)
             .def_property("close_callback", py::cpp_function(), &gp::Window::setCloseCallback)
             .def_property("destroy_callback", py::cpp_function(), &gp::Window::setDestroyCallback)
@@ -106,13 +108,10 @@ PYBIND11_MODULE(window, m) {
                 return py::make_tuple(p.x, p.y);
             }, "x"_a, "y"_a)
 
+            .def_property("width", &gp::Window::getWidth, &gp::Window::setWidth)
+            .def_property("height", &gp::Window::getHeight, &gp::Window::setHeight)
             .def_property("title", &gp::Window::getTitle, &gp::Window::setTitle)
-            .def_property("background", &gp::Window::getBackground, [Color](gp::Window &self, py::object& value) {
-                if (!py::isinstance(value, Color)) {
-                    value = py::isinstance<py::tuple>(value) ? Color(*value) : Color(value);
-                }
-                self.setBackground(value.cast<gp::Color>());
-            })
+
             .def_property("xpos", &gp::Window::getXPos, &gp::Window::setXPos)
             .def_property("ypos", &gp::Window::getYPos, &gp::Window::setYPos)
             .def_property("position", GP_GET_STRUCT_TUPLE(gp::Window, Position, x, y),
@@ -122,8 +121,12 @@ PYBIND11_MODULE(window, m) {
                               )
                           })
 
-            .def_property("width", &gp::Window::getWidth, &gp::Window::setWidth)
-            .def_property("height", &gp::Window::getHeight, &gp::Window::setHeight)
+            .def_property("background", &gp::Window::getBackground, [Color](gp::Window &self, py::object& value) {
+                if (!py::isinstance(value, Color)) {
+                    value = py::isinstance<py::tuple>(value) ? Color(*value) : Color(value);
+                }
+                self.setBackground(value.cast<gp::Color>());
+            })
 
             .def_property("min_width", &gp::Window::getMinWidth, GP_OPTIONAL_ARGS_SETTER(MinWidth, value))
             .def_property("min_height", &gp::Window::getMinHeight, GP_OPTIONAL_ARGS_SETTER(MinHeight, value))

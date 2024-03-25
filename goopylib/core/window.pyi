@@ -671,6 +671,45 @@ class Window:
             RuntimeError: window has been destroyed
         """
 
+    def check_mouse_button(self, button: int) -> bool:
+        """
+        Args:
+            button: an int corresponding to the mouse button
+
+        Returns:
+            whether the specified mouse button is being pressed
+
+        Raises:
+            RuntimeError: window has been destroyed
+        """
+
+    def check_left_click(self) -> bool:
+        """
+        Returns:
+            whether the left mouse button is being pressed
+
+        Raises:
+            RuntimeError: window has been destroyed
+        """
+
+    def check_middle_click(self) -> bool:
+        """
+        Returns:
+            whether the middle mouse button is being pressed
+
+        Raises:
+            RuntimeError: window has been destroyed
+        """
+
+    def check_right_click(self) -> bool:
+        """
+        Returns:
+            whether the right mouse button is being pressed
+
+        Raises:
+            RuntimeError: window has been destroyed
+        """
+
     def check_shift_key(self) -> bool:
         """
         Returns:
@@ -714,45 +753,6 @@ class Window:
 
         Returns:
             whether the specified key is being pressed
-
-        Raises:
-            RuntimeError: window has been destroyed
-        """
-
-    def check_mouse_button(self, button: int) -> bool:
-        """
-        Args:
-            button: an int corresponding to the mouse button
-
-        Returns:
-            whether the specified mouse button is being pressed
-
-        Raises:
-            RuntimeError: window has been destroyed
-        """
-
-    def check_left_click(self) -> bool:
-        """
-        Returns:
-            whether the left mouse button is being pressed
-
-        Raises:
-            RuntimeError: window has been destroyed
-        """
-
-    def check_middle_click(self) -> bool:
-        """
-        Returns:
-            whether the middle mouse button is being pressed
-
-        Raises:
-            RuntimeError: window has been destroyed
-        """
-
-    def check_right_click(self) -> bool:
-        """
-        Returns:
-            whether the right mouse button is being pressed
 
         Raises:
             RuntimeError: window has been destroyed
