@@ -44,6 +44,12 @@ static bool isinstance(PyObject * object, PyTypeObject * type) {
 
 using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 
+#define GP_RETHROW_ERROR(code, error, msg) try { code; } catch (std::runtime_error &e) { throw py::error(msg); };
+#define GP_RETHROW_TYPE_ERROR(code, type) GP_RETHROW_ERROR(code, type_error, "Expected " #type " argument")
+#define GP_RETHROW_TYPE_ERROR_POSITION(code, type, pos) GP_RETHROW_ERROR(code, type_error, "Expected " #type " argument in position " #pos)
+
 #define GP_GET_VALUE_ATTR(attr) value.attr
 #define GP_GET_STRUCT_TUPLE_BODY(func, ...) auto value = self.get##func(); return py::make_tuple(MAP_LIST(GP_GET_VALUE_ATTR, __VA_ARGS__))
 #define GP_GET_STRUCT_TUPLE(type, func, ...) [](const type &self) { GP_GET_STRUCT_TUPLE_BODY(func, __VA_ARGS__); }
+
+#define GP_GET_ELEMENT_FROM_TUPLE(el, type) int value##el; GP_RETHROW_TYPE_ERROR_POSITION(value##el = object[el].cast<type>(), type, el)

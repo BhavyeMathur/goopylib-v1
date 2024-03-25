@@ -11,9 +11,8 @@ using namespace pybind11::literals;
 #define GP_PYOBJ const py::object &
 #define GP_INT_SUFFIX(arg) arg##_int
 #define GP_KWARG(kwarg) py::arg(#kwarg)
-#define GP_RETHROW_TYPE_ERROR(code, type) try { code } catch (std::runtime_error &e) { throw py::type_error("Expected " #type " argument"); };
 
-#define GP_OPTIONAL_TO_INT(arg) GP_INT_SUFFIX(arg) = (arg.is_none() ? -1 : arg.cast<int>());
+#define GP_OPTIONAL_TO_INT(arg) GP_INT_SUFFIX(arg) = (arg.is_none() ? -1 : arg.cast<int>())
 #define GP_SAFE_OPTIONAL_TO_INT(arg) int GP_INT_SUFFIX(arg); GP_RETHROW_TYPE_ERROR(GP_OPTIONAL_TO_INT(arg), int)
 #define GP_SAFE_OPTIONALS_TO_INT(...) MAP(GP_SAFE_OPTIONAL_TO_INT, __VA_ARGS__)
 
@@ -76,7 +75,7 @@ PYBIND11_MODULE(window, m) {
             .def("check_super_key", &gp::Window::checkSuperKey)
             .def("check_key", &gp::Window::checkKey, "keycode"_a)
 
-            // TODO either add getter functions for callbacks or convert to method, not property
+                    // TODO either add getter functions for callbacks or convert to method, not property
             .def_property("resize_callback", py::cpp_function(), &gp::Window::setResizeCallback)
             .def_property("close_callback", py::cpp_function(), &gp::Window::setCloseCallback)
             .def_property("destroy_callback", py::cpp_function(), &gp::Window::setDestroyCallback)
@@ -117,11 +116,18 @@ PYBIND11_MODULE(window, m) {
             .def_property("position", GP_GET_STRUCT_TUPLE(gp::Window, Position, x, y),
                           [](gp::Window &self, const py::tuple &object) {
                               GP_RETHROW_TYPE_ERROR(
-                                      self.setPosition(object[0].cast<int>(), object[1].cast<int>());, int
+                                      self.setPosition(object[0].cast<int>(), object[1].cast<int>()), int
                               )
                           })
 
-            .def_property("background", &gp::Window::getBackground, [Color](gp::Window &self, py::object& value) {
+            .def_property("position", GP_GET_STRUCT_TUPLE(gp::Window, Position, x, y),
+                          [](gp::Window &self, const py::tuple &object) {
+                              GP_GET_ELEMENT_FROM_TUPLE(0, int);
+                              GP_GET_ELEMENT_FROM_TUPLE(1, int);
+                              self.setPosition(value0, value1);
+                          })
+
+            .def_property("background", &gp::Window::getBackground, [Color](gp::Window &self, py::object &value) {
                 if (!py::isinstance(value, Color)) {
                     value = py::isinstance<py::tuple>(value) ? Color(*value) : Color(value);
                 }
