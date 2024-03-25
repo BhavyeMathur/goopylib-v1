@@ -111,6 +111,7 @@ def get_screen_width() -> int:
         RuntimeError: goopylib must be initialized first
     """
 
+
 def get_screen_height() -> int:
     """Returns the height of the primary monitor.
 

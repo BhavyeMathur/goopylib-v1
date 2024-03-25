@@ -22,6 +22,9 @@ using namespace pybind11::literals;
 #define GP_SET_OPTIONAL_ARGS(func, ...) GP_OPTIONAL_ARGS_SETTER(func, __VA_ARGS__), MAP_LIST(GP_KWARG, __VA_ARGS__)
 
 PYBIND11_MODULE(window, m) {
+    auto colorModule = py::module_::import("goopylib.color");
+    py::object Color = colorModule.attr("Color");
+
     py::class_<gp::Window>(m, "Window")
             .def(py::init<int, int, const char *>(), "width"_a, "height"_a, "title"_a = "goopylib Window")
             .def("__repr__", &gp::Window::toString)
@@ -104,7 +107,16 @@ PYBIND11_MODULE(window, m) {
             }, "x"_a, "y"_a)
 
             .def_property("title", &gp::Window::getTitle, &gp::Window::setTitle)
-            .def_property("background", &gp::Window::getBackground, &gp::Window::setBackground)
+            .def_property("background", &gp::Window::getBackground, [Color](gp::Window &self, GP_PYOBJ value) {
+                try {
+                    self.setBackground(value.cast<gp::Color>());
+                    return;
+                }
+                catch (const std::runtime_error &e) {
+                    auto instance = Color(value);
+                    self.setBackground(instance.cast<gp::Color>());
+                }
+            })
             .def_property("xpos", &gp::Window::getXPos, &gp::Window::setXPos)
             .def_property("ypos", &gp::Window::getYPos, &gp::Window::setYPos)
             .def_property("position", GP_GET_STRUCT_TUPLE(gp::Window, Position, x, y),

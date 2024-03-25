@@ -68,7 +68,6 @@ namespace gp {
 namespace gp {
     void RenderingManager::setBackground(const Color &value) {
         GP_CORE_DEBUG("gp::RenderingManager::setBackground({1}) - '{0}'", m_Title, value.toString());
-
         m_Background = value;
     }
 
