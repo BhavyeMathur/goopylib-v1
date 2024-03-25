@@ -107,15 +107,11 @@ PYBIND11_MODULE(window, m) {
             }, "x"_a, "y"_a)
 
             .def_property("title", &gp::Window::getTitle, &gp::Window::setTitle)
-            .def_property("background", &gp::Window::getBackground, [Color](gp::Window &self, GP_PYOBJ value) {
-                try {
-                    self.setBackground(value.cast<gp::Color>());
-                    return;
+            .def_property("background", &gp::Window::getBackground, [Color](gp::Window &self, py::object& value) {
+                if (!py::isinstance(value, Color)) {
+                    value = py::isinstance<py::tuple>(value) ? Color(*value) : Color(value);
                 }
-                catch (const std::runtime_error &e) {
-                    auto instance = Color(value);
-                    self.setBackground(instance.cast<gp::Color>());
-                }
+                self.setBackground(value.cast<gp::Color>());
             })
             .def_property("xpos", &gp::Window::getXPos, &gp::Window::setXPos)
             .def_property("ypos", &gp::Window::getYPos, &gp::Window::setYPos)

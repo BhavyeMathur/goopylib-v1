@@ -13,6 +13,7 @@ __version__ = "2.0.0"
 
 # pylint: disable=wrong-import-position
 
+from .color import *
 from .core import *
 # from .objects import *
 from .maths import *
