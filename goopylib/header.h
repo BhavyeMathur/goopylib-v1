@@ -58,3 +58,8 @@ using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 #define _GP_SET_POINT(n) GP_GET_ELEMENT_FROM_TUPLE(0, float); GP_GET_ELEMENT_FROM_TUPLE(1, float); self.setP##n({value0, value1})
 #define _GP_POINT_SETTER(obj, n) [](obj &self, const py::tuple &object) { _GP_SET_POINT(n); }
 #define GP_POINT_PROPERTY(obj, n) .def_property("p" #n, _GP_POINT_GETTER(obj, n), _GP_POINT_SETTER(obj, n))
+
+#define _GP_POINT_TO_FLOATS(n) x##n = p##n[0].cast<float>(); y##n = p##n[1].cast<float>()
+#define GP_POINT_TO_FLOATS(n) float x##n, y##n; GP_RETHROW_ERROR(_GP_POINT_TO_FLOATS(n), type_error, "Point must be a tuple of (x: float, y: float)")
+#define GP_PARSE_POINT(n) GP_POINT_TO_FLOATS(n); Point v##n{x##n, y##n};
+#define GP_PARSE_POINTS(...) MAP(GP_PARSE_POINT, __VA_ARGS__)

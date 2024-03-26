@@ -1,6 +1,6 @@
 """Helper module to import all goopylib functionality"""
 
-# pylint: disable=unused-wildcard-import, unused-import
+# pylint: disable=unused-wildcard-import, unused-import, no-name-in-module, import-error
 
 from .color.color import *
 from .color.random import *
@@ -27,4 +27,4 @@ from .objects.triangle import *
 from .scene.camera import *
 from .scene.camera_controller import *
 
-# pylint: enable=unused-wildcard-import, unused-import
+# pylint: enable=unused-wildcard-import, unused-import, no-name-in-module, import-error

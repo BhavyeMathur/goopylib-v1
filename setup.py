@@ -127,8 +127,8 @@ def find_extensions():
 
         get_object_extension("renderable"),
         get_object_extension("triangle"),
+        get_object_extension("quad"),
 
-        # get_object_extension("quad"),
         # get_object_extension("rectangle"),
         # get_object_extension("line"),
         #

@@ -7,11 +7,6 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-#define GP_POINT_TO_FLOATS(n) x##n = p##n[0].cast<float>(); y##n = p##n[1].cast<float>()
-#define GP_SAFE_POINT_TO_FLOATS(n) float x##n, y##n; GP_RETHROW_ERROR(GP_POINT_TO_FLOATS(n), type_error, "Point must be a tuple of (x: float, y: float)")
-#define GP_PARSE_POINT(n) GP_SAFE_POINT_TO_FLOATS(n); Point v##n{x##n, y##n};
-#define GP_PARSE_POINTS(...) MAP(GP_PARSE_POINT, __VA_ARGS__)
-
 PYBIND11_MODULE(triangle, m) {
     py::class_<gp::Triangle, gp::Renderable>(m, "Triangle")
             .def(py::init([](py::tuple p1, py::tuple p2, py::tuple p3) {
