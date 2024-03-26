@@ -112,7 +112,7 @@ namespace gp {
          * @return the transparency at each vertex of the object
          *
          */
-        [[nodiscard]] Float4 getTransparency();
+        [[nodiscard]] Float4 getTransparency() const;
 
         [[nodiscard]] bool isOpaque() const override;
 
