@@ -42,8 +42,8 @@ PYBIND11_MODULE(camera, m) {
             .def_property("y", &gp::Camera::getY, &gp::Camera::setY)
             .def_property("position", GP_GET_STRUCT_TUPLE(gp::Camera, Position, x, y),
                           [](gp::Camera &self, const py::tuple &object) {
-                              GP_GET_ELEMENT_FROM_TUPLE(0, int);
-                              GP_GET_ELEMENT_FROM_TUPLE(1, int);
+                              GP_GET_ELEMENT_FROM_TUPLE(0, float);
+                              GP_GET_ELEMENT_FROM_TUPLE(1, float);
                               self.setPosition(value0, value1);
                           })
             .def_property("rotation", &gp::Camera::getRotation, &gp::Camera::setRotation)

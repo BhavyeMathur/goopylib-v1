@@ -95,12 +95,12 @@ PYBIND11_MODULE(window, m) {
             .def_property("right_click_callback", py::cpp_function(), &gp::Window::setRightClickCallback)
 
             .def("get_camera", &gp::Window::getCamera, py::return_value_policy::reference)
-            .def("to_world", [](const gp::Window &self, int x, int y) {
+            .def("to_world", [](const gp::Window &self, float x, float y) {
                 auto p = self.toWorld({x, y});
                 return py::make_tuple(p.x, p.y);
             }, "x"_a, "y"_a)
 
-            .def("to_screen", [](const gp::Window &self, int x, int y) {
+            .def("to_screen", [](const gp::Window &self, float x, float y) {
                 auto p = self.toScreen({x, y});
                 return py::make_tuple(p.x, p.y);
             }, "x"_a, "y"_a)
@@ -114,14 +114,14 @@ PYBIND11_MODULE(window, m) {
             .def_property("position", GP_GET_STRUCT_TUPLE(gp::Window, Position, x, y),
                           [](gp::Window &self, const py::tuple &object) {
                               GP_RETHROW_TYPE_ERROR(
-                                      self.setPosition(object[0].cast<int>(), object[1].cast<int>()), int
+                                      self.setPosition(object[0].cast<float>(), object[1].cast<float>()), float
                               )
                           })
 
             .def_property("position", GP_GET_STRUCT_TUPLE(gp::Window, Position, x, y),
                           [](gp::Window &self, const py::tuple &object) {
-                              GP_GET_ELEMENT_FROM_TUPLE(0, int);
-                              GP_GET_ELEMENT_FROM_TUPLE(1, int);
+                              GP_GET_ELEMENT_FROM_TUPLE(0, float);
+                              GP_GET_ELEMENT_FROM_TUPLE(1, float);
                               self.setPosition(value0, value1);
                           })
 

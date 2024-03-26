@@ -79,8 +79,8 @@ PYBIND11_MODULE(renderable, m) {
             .def_property("z", &gp::Renderable::getZ, &gp::Renderable::setZ)
             .def_property("position", GP_GET_STRUCT_TUPLE(gp::Renderable, Position, x, y),
                           [](gp::Renderable &self, const py::tuple &object) {
-                              GP_GET_ELEMENT_FROM_TUPLE(0, int);
-                              GP_GET_ELEMENT_FROM_TUPLE(1, int);
+                              GP_GET_ELEMENT_FROM_TUPLE(0, float);
+                              GP_GET_ELEMENT_FROM_TUPLE(1, float);
                               self.setPosition(value0, value1);
                           })
             .def_property("rotation", &gp::Renderable::getRotation, &gp::Renderable::setRotation)
