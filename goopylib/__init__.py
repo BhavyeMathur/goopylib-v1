@@ -18,7 +18,7 @@ from .core import *
 from .objects import *
 from .maths import *
 from .events import *
-# from .scene import *
+from .scene import *
 
 # pylint: enable=wrong-import-position
 

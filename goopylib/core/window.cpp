@@ -1,4 +1,3 @@
-#include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 #include <map-macro/map.h>
 
@@ -95,7 +94,7 @@ PYBIND11_MODULE(window, m) {
             .def_property("middle_click_callback", py::cpp_function(), &gp::Window::setMiddleClickCallback)
             .def_property("right_click_callback", py::cpp_function(), &gp::Window::setRightClickCallback)
 
-            .def("get_camera", &gp::Window::getCamera)
+            .def("get_camera", &gp::Window::getCamera, py::return_value_policy::reference)
             .def("to_world", [](const gp::Window &self, int x, int y) {
                 auto p = self.toWorld({x, y});
                 return py::make_tuple(p.x, p.y);

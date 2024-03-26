@@ -101,9 +101,9 @@ ext_kwargs = {"include_dirs":         [".", "src", "vendor", "vendor/glad", "ven
               "extra_compile_args":   compile_args}
 
 
-def get_object_extension(obj: str):
-    return Extension(name=f"goopylib.objects.{obj}",
-                     sources=[f"goopylib/objects/{obj}.cpp"],
+def get_extension(path: str):
+    return Extension(name=f"goopylib.{path}",
+                     sources=[f"goopylib/{path.replace('.', '/')}.cpp"],
                      **ext_kwargs)
 
 
@@ -125,22 +125,17 @@ def find_extensions():
                   sources=["goopylib/core/window.cpp"],
                   **ext_kwargs),
 
-        get_object_extension("renderable"),
-        get_object_extension("triangle"),
-        get_object_extension("quad"),
-        get_object_extension("rectangle"),
-        get_object_extension("line"),
-        get_object_extension("ellipse"),
-        get_object_extension("circle"),
-        get_object_extension("image"),
+        get_extension("objects.renderable"),
+        get_extension("objects.triangle"),
+        get_extension("objects.quad"),
+        get_extension("objects.rectangle"),
+        get_extension("objects.line"),
+        get_extension("objects.ellipse"),
+        get_extension("objects.circle"),
+        get_extension("objects.image"),
 
-        # Extension(name="goopylib.ext.camera",
-        #           sources=["goopylib/scene/camera.cpp"],
-        #           **ext_kwargs),
-        #
-        # Extension(name="goopylib.ext.camera_controller",
-        #           sources=["goopylib/scene/camera_controller.cpp"],
-        #           **ext_kwargs)
+        get_extension("scene.camera"),
+        get_extension("scene.camera_controller"),
     ]
 
 

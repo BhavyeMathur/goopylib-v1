@@ -1,4 +1,4 @@
-#include <pybind11/pybind11.h>
+#include "goopylib/header.h"
 #include "core/Core.h"
 
 namespace py = pybind11;

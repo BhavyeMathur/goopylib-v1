@@ -1,5 +1,4 @@
 #include <map-macro/map.h>
-#include <pybind11/pybind11.h>
 
 #include "goopylib/header.h"
 #include "objects/Triangle.h"

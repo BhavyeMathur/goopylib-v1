@@ -3,9 +3,8 @@
 #include <Python.h>
 #include <iostream>
 
-#include <memory>
+#include <pybind11/pybind11.h>
 #include <string>
-#include <stdexcept>
 
 #define EXPOSE_PYOBJECT_CLASS(ObjectType, name) \
 if (PyType_Ready(&(ObjectType)) < 0) return nullptr; \
