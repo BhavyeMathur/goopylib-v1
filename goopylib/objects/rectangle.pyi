@@ -6,10 +6,7 @@ from __future__ import annotations
 
 from typing import Union, Tuple
 
-# pylint: disable-next=no-name-in-module, import-error
-import goopylib.ext.rectangle as _rectangle
-
-from goopylib.objects.quad import Quad
+from . import Quad
 
 
 class Rectangle(Quad):
@@ -36,7 +33,6 @@ class Rectangle(Quad):
             >>> Rectangle((0, 0), 50, 100)
     """
 
-    # pylint: disable-next=super-init-not-called
     def __init__(self, p1: Tuple[float, float], *args: Union[Tuple[float, float], float]) -> None:
         """
         An object representing a rectangle
@@ -60,12 +56,3 @@ class Rectangle(Quad):
 
                 >>> Rectangle((0, 0), 50, 100)
         """
-        self._renderable: Rectangle = _rectangle.Rectangle(p1, *args)
-
-
-if not __debug__:
-    # pylint: disable-next=no-name-in-module, import-error
-    from goopylib.ext.rectangle import *
-    from goopylib._internal import convert_getset_descriptor_to_properties as _convert_getset_descriptor_to_properties
-
-    _convert_getset_descriptor_to_properties(Rectangle)

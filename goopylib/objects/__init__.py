@@ -7,7 +7,7 @@ from .renderable import *
 
 from .triangle import *
 from .quad import *
-# from .rectangle import *
+from .rectangle import *
 # from .line import *
 
 # from .ellipse import *
