@@ -131,8 +131,7 @@ def find_extensions():
         get_object_extension("rectangle"),
         get_object_extension("line"),
         get_object_extension("ellipse"),
-        # get_object_extension("circle"),
-
+        get_object_extension("circle"),
         # get_object_extension("image"),
 
         # Extension(name="goopylib.ext.camera",
