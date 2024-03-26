@@ -11,5 +11,4 @@ from .rectangle import *
 from .line import *
 from .ellipse import *
 from .circle import *
-
-# from .image import *
+from .image import *
