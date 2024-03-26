@@ -17,12 +17,11 @@ PYBIND11_MODULE(quad, m) {
                 return new gp::Quad(v1, v2, v3, v4);
             }), "p1"_a, "p2"_a, "p3"_a, "p4"_a)
 
-            .def("set_color", static_cast<void (gp::Quad::*)(const gp::Color &)>(&gp::Quad::setColor))
-            .def("set_color", static_cast<void (gp::Quad::*)(const char *, float)>(&gp::Quad::setColor),
-                 "color"_a, "alpha"_a=1)
-            .def("set_color", static_cast<void (gp::Quad::*)(int, int, int, float)>(&gp::Quad::setColor),
-                 "red"_a, "green"_a, "blue"_a, "alpha"_a=1)
-            .def("set_color", GP_COLOR_SETTER(gp::Quad, 1, 2, 3, 4))
+                    GP_COLOR_SETTERS(gp::Quad, 1, 2, 3, 4)
+                    GP_POINT_PROPERTY(gp::Quad, 1)
+                    GP_POINT_PROPERTY(gp::Quad, 2)
+                    GP_POINT_PROPERTY(gp::Quad, 3)
+                    GP_POINT_PROPERTY(gp::Quad, 4)
 
             .def_property("transparency", GP_GET_STRUCT_TUPLE(gp::Quad, Transparency, a1, a2, a3, a4),
                           [](gp::Quad &self, const py::object &value) {
@@ -41,11 +40,5 @@ PYBIND11_MODULE(quad, m) {
                               } else {
                                   self.setTransparency(value.cast<float>());
                               }
-                          })
-
-                    GP_POINT_PROPERTY(gp::Quad, 1)
-                    GP_POINT_PROPERTY(gp::Quad, 2)
-                    GP_POINT_PROPERTY(gp::Quad, 3)
-                    GP_POINT_PROPERTY(gp::Quad, 4)
-                    ;
+                          });
 }

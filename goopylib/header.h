@@ -73,3 +73,9 @@ using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 #define _GP_COLOR_CAST(n) _GP_COLOR_PREFIX(n).cast<gp::Color>()
 #define _GP_COLOR_SETTER(cls, ...) MAP(GP_TO_COLOR, MAP_LIST(_GP_COLOR_PREFIX, __VA_ARGS__)) self.setColor(MAP_LIST(_GP_COLOR_CAST, __VA_ARGS__))
 #define GP_COLOR_SETTER(cls, ...) [Color](_GP_COLOR_SETTER_ARGS(cls, __VA_ARGS__)) { _GP_COLOR_SETTER(cls, __VA_ARGS__); }
+
+#define _GP_COLOR_SETTER1(cls) .def("set_color", py::overload_cast<const gp::Color &>(&cls::setColor))
+#define _GP_COLOR_SETTER2(cls) .def("set_color", py::overload_cast<const char *, float>(&cls::setColor), "color"_a, "alpha"_a=1)
+#define _GP_COLOR_SETTER3(cls) .def("set_color", py::overload_cast<int, int, int, float>(&cls::setColor), "red"_a, "green"_a, "blue"_a, "alpha"_a=1)
+#define _GP_COLOR_SETTER4(cls, ...) .def("set_color", GP_COLOR_SETTER(cls, __VA_ARGS__))
+#define GP_COLOR_SETTERS(cls, ...) _GP_COLOR_SETTER1(cls) _GP_COLOR_SETTER2(cls) _GP_COLOR_SETTER3(cls) _GP_COLOR_SETTER4(cls, __VA_ARGS__)

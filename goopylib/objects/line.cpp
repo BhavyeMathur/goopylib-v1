@@ -17,12 +17,7 @@ PYBIND11_MODULE(line, m) {
                 return new gp::Line(v1, v2, thickness);
             }), "p1"_a, "p2"_a, "thickness"_a = 3)
 
-            .def("set_color", static_cast<void (gp::Line::*)(const gp::Color &)>(&gp::Line::setColor))
-            .def("set_color", static_cast<void (gp::Line::*)(const char *, float)>(&gp::Line::setColor),
-                 "color"_a, "alpha"_a=1)
-            .def("set_color", static_cast<void (gp::Line::*)(int, int, int, float)>(&gp::Line::setColor),
-                 "red"_a, "green"_a, "blue"_a, "alpha"_a=1)
-            .def("set_color", GP_COLOR_SETTER(gp::Line, 1, 2, 3, 4))
+            GP_COLOR_SETTERS(gp::Line, 1, 2, 3, 4)
             .def("set_color", GP_COLOR_SETTER(gp::Line, 1, 2))
             
             .def_property("transparency",

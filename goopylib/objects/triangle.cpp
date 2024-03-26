@@ -17,12 +17,10 @@ PYBIND11_MODULE(triangle, m) {
                 return new gp::Triangle(v1, v2, v3);
             }), "p1"_a, "p2"_a, "p3"_a)
 
-            .def("set_color", static_cast<void (gp::Triangle::*)(const gp::Color &)>(&gp::Triangle::setColor))
-            .def("set_color", static_cast<void (gp::Triangle::*)(const char *, float)>(&gp::Triangle::setColor),
-                 "color"_a, "alpha"_a=1)
-            .def("set_color", static_cast<void (gp::Triangle::*)(int, int, int, float)>(&gp::Triangle::setColor),
-                 "red"_a, "green"_a, "blue"_a, "alpha"_a=1)
-            .def("set_color", GP_COLOR_SETTER(gp::Triangle, 1, 2, 3))
+                    GP_COLOR_SETTERS(gp::Triangle, 1, 2, 3)
+                    GP_POINT_PROPERTY(gp::Triangle, 1)
+                    GP_POINT_PROPERTY(gp::Triangle, 2)
+                    GP_POINT_PROPERTY(gp::Triangle, 3)
 
             .def_property("transparency", GP_GET_STRUCT_TUPLE(gp::Triangle, Transparency, a1, a2, a3),
                           [](gp::Triangle &self, const py::object &value) {
@@ -40,10 +38,5 @@ PYBIND11_MODULE(triangle, m) {
                               } else {
                                   self.setTransparency(value.cast<float>());
                               }
-                          })
-
-                    GP_POINT_PROPERTY(gp::Triangle, 1)
-                    GP_POINT_PROPERTY(gp::Triangle, 2)
-                    GP_POINT_PROPERTY(gp::Triangle, 3)
-                    ;
+                          });
 }
