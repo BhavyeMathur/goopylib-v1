@@ -8,10 +8,16 @@ using namespace pybind11::literals;
 
 PYBIND11_MODULE(camera, m) {
     py::class_<gp::CameraFrame>(m, "CameraFrame")
-            .def(py::init<float, float, float, float>());
+            .def(py::init<float, float, float, float>())
+            .def_property_readonly("left", [](gp::CameraFrame &self) {return self.left; } )
+            .def_property_readonly("right", [](gp::CameraFrame &self) {return self.left; } )
+            .def_property_readonly("bottom", [](gp::CameraFrame &self) {return self.bottom; } )
+            .def_property_readonly("top", [](gp::CameraFrame &self) {return self.top; } );
 
     py::class_<gp::CameraFrameSize>(m, "CameraFrameSize")
-            .def(py::init<float, float>());
+            .def(py::init<float, float>())
+            .def_property_readonly("width", [](gp::CameraFrameSize &self) {return self.width; } )
+            .def_property_readonly("height", [](gp::CameraFrameSize &self) {return self.height; } );
 
     py::class_<gp::Camera>(m, "Camera")
             .def(py::init<float, float, float, float>(), "left"_a, "right"_a, "bottom"_a, "top"_a)

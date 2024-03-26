@@ -6,22 +6,8 @@ from __future__ import annotations
 
 from typing import Callable
 
-# pylint: disable-next=no-name-in-module, import-error
-import goopylib.ext.easing as _easing
 
-
-class EasingType:
-    """Generic Easing Type"""
-
-    __slots__ = []
-
-    def __call__(self, t: float) -> float:
-        """
-        Raises:
-            TypeError: easing argument must be a float
-        """
-
-        raise NotImplementedError()
+EasingType = Callable[[float], float]
 
 
 def ease_linear() -> EasingType:
@@ -34,7 +20,6 @@ def ease_linear() -> EasingType:
     Returns:
         a linear ease callable
     """
-    return _easing.ease_linear()
 
 
 def ease_poly(power: float = 6) -> EasingType:
@@ -50,7 +35,6 @@ def ease_poly(power: float = 6) -> EasingType:
     Returns:
         a polynomial in-out ease callable
     """
-    return _easing.ease_poly(power)
 
 
 def ease_poly_in(power: float = 6) -> EasingType:
@@ -66,7 +50,6 @@ def ease_poly_in(power: float = 6) -> EasingType:
     Returns:
         a polynomial in ease callable
     """
-    return _easing.ease_poly_in(power)
 
 
 def ease_poly_out(power: float = 6) -> EasingType:
@@ -82,7 +65,6 @@ def ease_poly_out(power: float = 6) -> EasingType:
     Returns:
         a polynomial out ease callable
     """
-    return _easing.ease_poly_out(power)
 
 
 def ease_quad() -> EasingType:
@@ -95,7 +77,6 @@ def ease_quad() -> EasingType:
     Returns:
         a quadratic in-out ease callable
     """
-    return _easing.ease_quad()
 
 
 def ease_quad_in() -> EasingType:
@@ -108,7 +89,6 @@ def ease_quad_in() -> EasingType:
     Returns:
         a quadratic in ease callable
     """
-    return _easing.ease_quad_in()
 
 
 def ease_quad_out() -> EasingType:
@@ -121,7 +101,6 @@ def ease_quad_out() -> EasingType:
     Returns:
         a quadratic out ease callable
     """
-    return _easing.ease_quad_out()
 
 
 def ease_cubic() -> EasingType:
@@ -134,7 +113,6 @@ def ease_cubic() -> EasingType:
     Returns:
         a cubic in-out ease callable
     """
-    return _easing.ease_cubic()
 
 
 def ease_cubic_in() -> EasingType:
@@ -147,7 +125,6 @@ def ease_cubic_in() -> EasingType:
     Returns:
         a cubic in ease callable
     """
-    return _easing.ease_cubic_in()
 
 
 def ease_cubic_out() -> EasingType:
@@ -160,7 +137,6 @@ def ease_cubic_out() -> EasingType:
     Returns:
         a cubic out ease callable
     """
-    return _easing.ease_cubic_out()
 
 
 def ease_quart() -> EasingType:
@@ -173,7 +149,6 @@ def ease_quart() -> EasingType:
     Returns:
         a quartic in-out ease callable
     """
-    return _easing.ease_quart()
 
 
 def ease_quart_in() -> EasingType:
@@ -186,7 +161,6 @@ def ease_quart_in() -> EasingType:
     Returns:
         a quartic in ease callable
     """
-    return _easing.ease_quart_in()
 
 
 def ease_quart_out() -> EasingType:
@@ -199,7 +173,6 @@ def ease_quart_out() -> EasingType:
     Returns:
         a quartic out ease callable
     """
-    return _easing.ease_quart_out()
 
 
 def ease_quint() -> EasingType:
@@ -212,7 +185,6 @@ def ease_quint() -> EasingType:
     Returns:
         a quintic in-out ease callable
     """
-    return _easing.ease_quint()
 
 
 def ease_quint_in() -> EasingType:
@@ -225,7 +197,6 @@ def ease_quint_in() -> EasingType:
     Returns:
         a quintic in ease callable
     """
-    return _easing.ease_quint_in()
 
 
 def ease_quint_out() -> EasingType:
@@ -238,7 +209,6 @@ def ease_quint_out() -> EasingType:
     Returns:
         a quintic out ease callable
     """
-    return _easing.ease_quint_out()
 
 
 def ease_circle() -> EasingType:
@@ -251,7 +221,6 @@ def ease_circle() -> EasingType:
     Returns:
         an circular in-out ease callable
     """
-    return _easing.ease_circle()
 
 
 def ease_circle_in() -> EasingType:
@@ -264,7 +233,6 @@ def ease_circle_in() -> EasingType:
     Returns:
         an circular in ease callable
     """
-    return _easing.ease_circle_in()
 
 
 def ease_circle_out() -> EasingType:
@@ -277,7 +245,6 @@ def ease_circle_out() -> EasingType:
     Returns:
         an circular out ease callable
     """
-    return _easing.ease_circle_out()
 
 
 def ease_sin() -> EasingType:
@@ -290,7 +257,6 @@ def ease_sin() -> EasingType:
     Returns:
         a sine in-out ease callable
     """
-    return _easing.ease_sin()
 
 
 def ease_sin_in() -> EasingType:
@@ -303,7 +269,6 @@ def ease_sin_in() -> EasingType:
     Returns:
         a sine in ease callable
     """
-    return _easing.ease_sin_in()
 
 
 def ease_sin_out() -> EasingType:
@@ -316,7 +281,6 @@ def ease_sin_out() -> EasingType:
     Returns:
         a sine out ease callable
     """
-    return _easing.ease_sin_out()
 
 
 def ease_exp(base: float = 2.718281828459045) -> EasingType:
@@ -332,7 +296,6 @@ def ease_exp(base: float = 2.718281828459045) -> EasingType:
     Returns:
         an exponential in-out ease callable
     """
-    return _easing.ease_exp(base)
 
 
 def ease_exp_in(base: float = 2.718281828459045) -> EasingType:
@@ -348,7 +311,6 @@ def ease_exp_in(base: float = 2.718281828459045) -> EasingType:
     Returns:
         an exponential in ease callable
     """
-    return _easing.ease_exp_in(base)
 
 
 def ease_exp_out(base: float = 2.718281828459045) -> EasingType:
@@ -364,7 +326,6 @@ def ease_exp_out(base: float = 2.718281828459045) -> EasingType:
     Returns:
         an exponential out ease callable
     """
-    return _easing.ease_exp_out(base)
 
 
 def ease_back(factor: float = 1.70158) -> EasingType:
@@ -380,7 +341,6 @@ def ease_back(factor: float = 1.70158) -> EasingType:
     Returns:
         a back in-out ease callable
     """
-    return _easing.ease_back(factor)
 
 
 def ease_back_in(factor: float = 1.70158) -> EasingType:
@@ -396,7 +356,6 @@ def ease_back_in(factor: float = 1.70158) -> EasingType:
     Returns:
         a back in ease callable
     """
-    return _easing.ease_back_in(factor)
 
 
 def ease_back_out(factor: float = 1.70158) -> EasingType:
@@ -412,7 +371,6 @@ def ease_back_out(factor: float = 1.70158) -> EasingType:
     Returns:
         a back out ease callable
     """
-    return _easing.ease_back_out(factor)
 
 
 def ease_elastic(factor: int = 3) -> EasingType:
@@ -428,7 +386,6 @@ def ease_elastic(factor: int = 3) -> EasingType:
     Returns:
         an elastic in-out ease callable
     """
-    return _easing.ease_elastic(factor)
 
 
 def ease_elastic_in(factor: int = 3) -> EasingType:
@@ -444,7 +401,6 @@ def ease_elastic_in(factor: int = 3) -> EasingType:
     Returns:
         an elastic in ease callable
     """
-    return _easing.ease_elastic_in(factor)
 
 
 def ease_elastic_out(factor: int = 3) -> EasingType:
@@ -460,7 +416,6 @@ def ease_elastic_out(factor: int = 3) -> EasingType:
     Returns:
         an elastic out ease callable
     """
-    return _easing.ease_elastic_out(factor)
 
 
 def ease_bounce(bounces: int = 4, damping: float = 0.4) -> EasingType:
@@ -476,7 +431,6 @@ def ease_bounce(bounces: int = 4, damping: float = 0.4) -> EasingType:
     Raises:
         ValueError: damping must be ≥ 0, bounces must be ≥ 1
     """
-    return _easing.ease_bounce(bounces, damping)
 
 
 def ease_bounce_in(bounces: int = 4, damping: float = 0.4) -> EasingType:
@@ -492,7 +446,6 @@ def ease_bounce_in(bounces: int = 4, damping: float = 0.4) -> EasingType:
     Raises:
         ValueError: damping must be ≥ 0, bounces must be ≥ 1
     """
-    return _easing.ease_bounce_in(bounces, damping)
 
 
 def ease_bounce_out(bounces: int = 4, damping: float = 0.4) -> EasingType:
@@ -508,7 +461,6 @@ def ease_bounce_out(bounces: int = 4, damping: float = 0.4) -> EasingType:
     Raises:
         ValueError: damping must be ≥ 0, bounces must be ≥ 1
     """
-    return _easing.ease_bounce_out(bounces, damping)
 
 
 def combine_easing(easing1: EasingType, easing2: EasingType) -> Callable[[float], float]:
@@ -544,8 +496,3 @@ def combine_easing(easing1: EasingType, easing2: EasingType) -> Callable[[float]
         return closure
 
     raise TypeError(f"Easing functions expected, got {type(easing1)} and {type(easing2)}")
-
-
-if not __debug__:
-    # pylint: disable-next=no-name-in-module, import-error
-    from goopylib.ext.easing import *

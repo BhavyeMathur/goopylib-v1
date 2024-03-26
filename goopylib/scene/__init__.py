@@ -2,5 +2,5 @@
 goopylib module initialization
 """
 
-from .camera import Camera
-from .camera_controller import CameraController
+from .camera import *
+from .camera_controller import *

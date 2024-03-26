@@ -109,21 +109,12 @@ def get_extension(path: str):
 
 def find_extensions():
     return [
-        # Extension(name="goopylib.ext.easing",
-        #           sources=["goopylib/maths/easing.cpp"],
-        #           **ext_kwargs),
+        get_extension("color.color"),
 
-        Extension(name="goopylib.color.color",
-                  sources=["goopylib/color/color.cpp"],
-                  **ext_kwargs),
+        get_extension("core.core"),
+        get_extension("core.window"),
 
-        Extension(name="goopylib.core.core",
-                  sources=["goopylib/core/core.cpp"],
-                  **ext_kwargs),
-
-        Extension(name="goopylib.core.window",
-                  sources=["goopylib/core/window.cpp"],
-                  **ext_kwargs),
+        get_extension("maths.easing"),
 
         get_extension("objects.renderable"),
         get_extension("objects.triangle"),
