@@ -82,7 +82,7 @@ namespace gp {
         return "Renderable()";
     }
 
-    Renderable* Renderable::draw(Window &window) {
+    Renderable& Renderable::draw(Window &window) {
         GP_CORE_DEBUG("gp::Renderable::_drawRenderable({0})", window.getTitle());
 
         #if GP_ERROR_CHECKING
@@ -98,7 +98,7 @@ namespace gp {
         m_RendererID = window._drawRenderable(this);
         m_Window = &window;
         m_Drawn = true;
-        return this;
+        return *this;
     }
 
     void Renderable::destroy() {
@@ -346,6 +346,10 @@ namespace gp {
     float Renderable::getHeight() const {
         GP_CORE_TRACE("gp::Renderable::getHeight()");
         return m_Height;
+    }
+
+    gp::Window &Renderable::getWindow() const {
+        return *m_Window;
     }
 
     void Renderable::setSize(float width, float height) {

@@ -43,7 +43,7 @@ namespace gp {
          *
          * @throws std::runtime_error the window has been destroyed
          */
-        [[maybe_unused]] Renderable *draw(Window &window);
+        [[maybe_unused]] Renderable &draw(Window &window);
 
         /**
          * Destroys and undraws the object
@@ -223,6 +223,12 @@ namespace gp {
         [[nodiscard]] float getHeight() const;
 
         /**
+         *
+         * @return the window this object is drawn to
+         */
+        [[nodiscard]] gp::Window& getWindow() const;
+
+        /**
          * Sets the dimensions of the object by resizing it
          * @param width in screen coordinates
          * @param height in screen coordinates
@@ -331,11 +337,11 @@ namespace gp {
 
         float m_ZPosition = 0;
 
+        Renderable() = default;
+
         Renderable(Point position, std::initializer_list<Point> points);
 
         Renderable(std::initializer_list<Point> points);
-
-        Renderable() = default;
 
         void update();
 
