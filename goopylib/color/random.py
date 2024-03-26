@@ -7,7 +7,8 @@ from __future__ import annotations
 from random import randint as _randint
 from random import random as _random
 
-from .color import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
+# pylint: disable-next=no-name-in-module
+from . import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
 
 
 # Random Colors

@@ -393,7 +393,3 @@ def sort_by_short_side(descending: bool = False) -> SortingFunction:
         return sorted(items, reverse=descending, key=lambda item: item.short_side)
 
     return _sort
-
-
-# pylint: enable=redefined-builtin
-# pylint: enable=unsubscriptable-object

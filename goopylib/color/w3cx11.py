@@ -6,7 +6,8 @@ from __future__ import annotations
 
 from typing import Dict
 
-from goopylib.color import ColorHex
+# pylint: disable-next=no-name-in-module
+from . import ColorHex
 
 
 colors: Dict[str, ColorHex] = {

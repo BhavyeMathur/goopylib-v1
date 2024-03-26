@@ -266,6 +266,3 @@ class _Dimension(int):
                 return int(dim[:-len(unit)]), unit
 
         raise ValueError(dim)
-
-
-# pylint: enable=unsubscriptable-object

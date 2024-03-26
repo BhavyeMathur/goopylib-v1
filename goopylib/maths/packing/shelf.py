@@ -544,5 +544,3 @@ class WorstAreaFit(ScoredFit):
         """
         super().__init__(bin_width, bin_height,
                          lambda shelf, obj: -(shelf.packed_width + obj.width) * max(obj.height, shelf.height))
-
-# pylint: enable=redefined-builtin
