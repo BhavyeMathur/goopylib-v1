@@ -60,7 +60,7 @@ PYBIND11_MODULE(window, m) {
             .def("request_attention", &gp::Window::requestAttention)
 
             .def("is_mouse_hovering", &gp::Window::isMouseHovering)
-            .def("get_mouse_position", &gp::Window::getMousePosition)
+            .def("get_mouse_position", GP_GET_STRUCT_TUPLE(gp::Window, MousePosition, x, y))
             .def("set_cursor_mode", &gp::Window::setCursorMode, "mode"_a)
 
             .def("check_mouse_button", &gp::Window::checkMouseButton, "button"_a)
