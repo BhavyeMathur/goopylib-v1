@@ -8,7 +8,6 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-#define GP_PYOBJ const py::object &
 #define GP_INT_SUFFIX(arg) arg##_int
 #define GP_KWARG(kwarg) py::arg(#kwarg)
 
@@ -17,7 +16,7 @@ using namespace pybind11::literals;
 #define GP_SAFE_OPTIONALS_TO_INT(...) MAP(GP_SAFE_OPTIONAL_TO_INT, __VA_ARGS__)
 
 #define GP_SIZE_LIMIT_SETTER_BODY(func, ...) GP_SAFE_OPTIONALS_TO_INT(__VA_ARGS__) self.set##func(MAP_LIST(GP_INT_SUFFIX, __VA_ARGS__))
-#define GP_OPTIONAL_ARGS_SETTER(func, ...) [](gp::Window &self, MAP_LIST(GP_PYOBJ, __VA_ARGS__)) {GP_SIZE_LIMIT_SETTER_BODY(func, __VA_ARGS__);}
+#define GP_OPTIONAL_ARGS_SETTER(func, ...) [](gp::Window &self, MAP_LIST(CONST_PYOBJ, __VA_ARGS__)) {GP_SIZE_LIMIT_SETTER_BODY(func, __VA_ARGS__);}
 #define GP_SET_OPTIONAL_ARGS(func, ...) GP_OPTIONAL_ARGS_SETTER(func, __VA_ARGS__), MAP_LIST(GP_KWARG, __VA_ARGS__)
 
 PYBIND11_MODULE(window, m) {
@@ -128,9 +127,7 @@ PYBIND11_MODULE(window, m) {
                           })
 
             .def_property("background", &gp::Window::getBackground, [Color](gp::Window &self, py::object &value) {
-                if (!py::isinstance(value, Color)) {
-                    value = py::isinstance<py::tuple>(value) ? Color(*value) : Color(value);
-                }
+                GP_TO_COLOR(value)
                 self.setBackground(value.cast<gp::Color>());
             })
 

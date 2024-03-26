@@ -8,6 +8,9 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 
 PYBIND11_MODULE(triangle, m) {
+    auto colorModule = py::module_::import("goopylib.color");
+    py::object Color = colorModule.attr("Color");
+
     py::class_<gp::Triangle, gp::Renderable>(m, "Triangle")
             .def(py::init([](py::tuple p1, py::tuple p2, py::tuple p3) {
                 GP_PARSE_POINTS(1, 2, 3);
@@ -15,11 +18,11 @@ PYBIND11_MODULE(triangle, m) {
             }), "p1"_a, "p2"_a, "p3"_a)
 
             .def("set_color", static_cast<void (gp::Triangle::*)(const gp::Color &)>(&gp::Triangle::setColor))
-            .def("set_color", static_cast<void (gp::Triangle::*)(const gp::Color &, const gp::Color &,
-                                                                 const gp::Color &)>(&gp::Triangle::setColor))
-            .def("set_color", static_cast<void (gp::Triangle::*)(const char *, float)>(&gp::Triangle::setColor))
-            .def("set_color", static_cast<void (gp::Triangle::*)(const char *, const char *, const char *)>(&gp::Triangle::setColor))
-            .def("set_color", static_cast<void (gp::Triangle::*)(int, int, int, float)>(&gp::Triangle::setColor))
+            .def("set_color", static_cast<void (gp::Triangle::*)(const char *, float)>(&gp::Triangle::setColor),
+                 "color"_a, "alpha"_a=1)
+            .def("set_color", static_cast<void (gp::Triangle::*)(int, int, int, float)>(&gp::Triangle::setColor),
+                 "red"_a, "green"_a, "blue"_a, "alpha"_a=1)
+            .def("set_color", GP_COLOR_SETTER(gp::Triangle, 1, 2, 3))
 
             .def_property("transparency", GP_GET_STRUCT_TUPLE(gp::Triangle, Transparency, a1, a2, a3),
                           [](gp::Triangle &self, const py::object &value) {

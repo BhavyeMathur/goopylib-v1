@@ -44,6 +44,9 @@ static bool isinstance(PyObject * object, PyTypeObject * type) {
 
 using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 
+#define PYOBJ py::object &
+#define CONST_PYOBJ const PYOBJ
+
 #define GP_RETHROW_ERROR(code, error, msg) try { code; } catch (std::runtime_error &e) { throw py::error(msg); };
 #define GP_RETHROW_TYPE_ERROR(code, type) GP_RETHROW_ERROR(code, type_error, "Expected " #type " argument")
 #define GP_RETHROW_TYPE_ERROR_POSITION(code, type, pos) GP_RETHROW_ERROR(code, type_error, "Expected " #type " argument in position " #pos)
@@ -63,3 +66,10 @@ using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 #define GP_POINT_TO_FLOATS(n) float x##n, y##n; GP_RETHROW_ERROR(_GP_POINT_TO_FLOATS(n), type_error, "Point must be a tuple of (x: float, y: float)")
 #define GP_PARSE_POINT(n) GP_POINT_TO_FLOATS(n); Point v##n{x##n, y##n};
 #define GP_PARSE_POINTS(...) MAP(GP_PARSE_POINT, __VA_ARGS__)
+
+#define GP_TO_COLOR(v) if (!py::isinstance(v, Color)) { v = py::isinstance<py::tuple>(v) ? Color(*v) : Color(v); }
+#define _GP_COLOR_PREFIX(n) color##n
+#define _GP_COLOR_SETTER_ARGS(cls, ...) cls &self, MAP_LIST(PYOBJ, MAP_LIST(_GP_COLOR_PREFIX, __VA_ARGS__))
+#define _GP_COLOR_CAST(n) _GP_COLOR_PREFIX(n).cast<gp::Color>()
+#define _GP_COLOR_SETTER(cls, ...) MAP(GP_TO_COLOR, MAP_LIST(_GP_COLOR_PREFIX, __VA_ARGS__)) self.setColor(MAP_LIST(_GP_COLOR_CAST, __VA_ARGS__))
+#define GP_COLOR_SETTER(cls, ...) [Color](_GP_COLOR_SETTER_ARGS(cls, __VA_ARGS__)) { _GP_COLOR_SETTER(cls, __VA_ARGS__); }

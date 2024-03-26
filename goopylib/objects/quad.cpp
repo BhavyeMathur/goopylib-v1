@@ -8,6 +8,9 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 
 PYBIND11_MODULE(quad, m) {
+    auto colorModule = py::module_::import("goopylib.color");
+    py::object Color = colorModule.attr("Color");
+
     py::class_<gp::Quad, gp::Renderable>(m, "Quad")
             .def(py::init([](py::tuple p1, py::tuple p2, py::tuple p3, py::tuple p4) {
                 GP_PARSE_POINTS(1, 2, 3, 4);
@@ -15,10 +18,11 @@ PYBIND11_MODULE(quad, m) {
             }), "p1"_a, "p2"_a, "p3"_a, "p4"_a)
 
             .def("set_color", static_cast<void (gp::Quad::*)(const gp::Color &)>(&gp::Quad::setColor))
-            .def("set_color", static_cast<void (gp::Quad::*)(const gp::Color &, const gp::Color &, const gp::Color &, const gp::Color &)>(&gp::Quad::setColor))
-            .def("set_color", static_cast<void (gp::Quad::*)(const char *, float)>(&gp::Quad::setColor))
-            .def("set_color", static_cast<void (gp::Quad::*)(const char *, const char *, const char *, const char *)>(&gp::Quad::setColor))
-            .def("set_color", static_cast<void (gp::Quad::*)(int, int, int, float)>(&gp::Quad::setColor))
+            .def("set_color", static_cast<void (gp::Quad::*)(const char *, float)>(&gp::Quad::setColor),
+                 "color"_a, "alpha"_a=1)
+            .def("set_color", static_cast<void (gp::Quad::*)(int, int, int, float)>(&gp::Quad::setColor),
+                 "red"_a, "green"_a, "blue"_a, "alpha"_a=1)
+            .def("set_color", GP_COLOR_SETTER(gp::Quad, 1, 2, 3, 4))
 
             .def_property("transparency", GP_GET_STRUCT_TUPLE(gp::Quad, Transparency, a1, a2, a3, a4),
                           [](gp::Quad &self, const py::object &value) {
