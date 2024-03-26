@@ -5,8 +5,8 @@ goopylib module initialization
 # pylint: disable-next=no-name-in-module, import-error
 from .renderable import *
 
-# from .triangle import *
-#
+from .triangle import *
+
 # from .quad import *
 # from .rectangle import *
 # from .line import *

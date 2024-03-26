@@ -15,7 +15,7 @@ __version__ = "2.0.0"
 
 from .color import *
 from .core import *
-# from .objects import *
+from .objects import *
 from .maths import *
 from .events import *
 # from .scene import *

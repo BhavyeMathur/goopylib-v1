@@ -48,8 +48,13 @@ using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 #define GP_RETHROW_TYPE_ERROR(code, type) GP_RETHROW_ERROR(code, type_error, "Expected " #type " argument")
 #define GP_RETHROW_TYPE_ERROR_POSITION(code, type, pos) GP_RETHROW_ERROR(code, type_error, "Expected " #type " argument in position " #pos)
 
-#define GP_GET_VALUE_ATTR(attr) value.attr
-#define GP_GET_STRUCT_TUPLE_BODY(func, ...) auto value = self.get##func(); return py::make_tuple(MAP_LIST(GP_GET_VALUE_ATTR, __VA_ARGS__))
-#define GP_GET_STRUCT_TUPLE(type, func, ...) [](const type &self) { GP_GET_STRUCT_TUPLE_BODY(func, __VA_ARGS__); }
+#define _GP_VALUE_ATTR(attr) value.attr
+#define _GP_GET_STRUCT_TUPLE(func, ...) auto value = self.get##func(); return py::make_tuple(MAP_LIST(_GP_VALUE_ATTR, __VA_ARGS__))
+#define GP_GET_STRUCT_TUPLE(type, func, ...) [](const type &self) { _GP_GET_STRUCT_TUPLE(func, __VA_ARGS__); }
 
 #define GP_GET_ELEMENT_FROM_TUPLE(el, type) int value##el; GP_RETHROW_TYPE_ERROR_POSITION(value##el = object[el].cast<type>(), type, el)
+
+#define _GP_POINT_GETTER(obj, n) GP_GET_STRUCT_TUPLE(obj, P##n, x, y)
+#define _GP_SET_POINT(n) GP_GET_ELEMENT_FROM_TUPLE(0, float); GP_GET_ELEMENT_FROM_TUPLE(1, float); self.setP##n({value0, value1})
+#define _GP_POINT_SETTER(obj, n) [](obj &self, const py::tuple &object) { _GP_SET_POINT(n); }
+#define GP_POINT_PROPERTY(obj, n) .def_property("p" #n, _GP_POINT_GETTER(obj, n), _GP_POINT_SETTER(obj, n))
