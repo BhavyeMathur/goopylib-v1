@@ -4,25 +4,53 @@ Module defining an Orthographic camera
 
 from __future__ import annotations
 
-from typing import TypedDict, Tuple
+from typing import Tuple
 
 
-class CameraFrame(TypedDict):
-    """
-    A dictionary containing the left, right, top, and bottom values of a camera frame
-    """
-    left: float
-    right: float
-    top: float
-    bottom: float
+class CameraFrame:
+    @property
+    def left(self) -> float:
+        """
+        Returns:
+            the left value of a camera frame
+        """
+
+    @property
+    def right(self) -> float:
+        """
+        Returns:
+            the right value of a camera frame
+        """
+
+    @property
+    def bottom(self) -> float:
+        """
+        Returns:
+            the bottom value of a camera frame
+        """
+
+    @property
+    def top(self) -> float:
+        """
+        Returns:
+            the top value of a camera frame
+        """
 
 
-class CameraFrameSize(TypedDict):
-    """
-    A dictionary containing the width and height of a camera frame
-    """
-    width: float
-    height: float
+class CameraFrameSize:
+    @property
+    def width(self) -> float:
+        """
+        Returns:
+            the width of a camera frame
+        """
+
+    @property
+    def height(self) -> float:
+        """
+        Returns:
+            the height of a camera frame
+        """
 
 
 class Camera:
