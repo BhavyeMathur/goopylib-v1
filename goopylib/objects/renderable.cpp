@@ -23,9 +23,9 @@ PYBIND11_MODULE(renderable, m) {
 
             .def("move", &gp::Renderable::move)
             .def("rotate", &gp::Renderable::rotate)
-                    //.def("scale", &gp::Renderable::scale)
-                    //.def("scale", &gp::Renderable::scale)
 
+            .def("scale", static_cast<void (gp::Renderable::*)(float)>(&gp::Renderable::scale))
+            .def("scale", static_cast<void (gp::Renderable::*)(float, float)>(&gp::Renderable::scale))
             .def("set_size", &gp::Renderable::setSize)
 
             .def("hide", &gp::Renderable::hide)
@@ -33,10 +33,9 @@ PYBIND11_MODULE(renderable, m) {
             .def("is_hidden", &gp::Renderable::isHidden)
             .def("is_opaque", &gp::Renderable::isOpaque)
 
-                    // .def("box_contains", &gp::Renderable::boxContains)
-                    // .def("contains", &gp::Renderable::contains)
+            .def("box_contains", static_cast<bool (gp::Renderable::*)(float, float) const>(&gp::Renderable::boxContains))
+            .def("contains", static_cast<bool (gp::Renderable::*)(float, float) const>(&gp::Renderable::contains))
 
-                    // TODO either add getter functions for callbacks or convert to method, not property
             .def_property("x", &gp::Renderable::getX, &gp::Renderable::setX)
             .def_property("y", &gp::Renderable::getY, &gp::Renderable::setY)
             .def_property("z", &gp::Renderable::getZ, &gp::Renderable::setZ)
@@ -47,11 +46,12 @@ PYBIND11_MODULE(renderable, m) {
                               self.setPosition(value0, value1);
                           })
             .def_property("rotation", &gp::Renderable::getRotation, &gp::Renderable::setRotation)
-//            .def_property("scalex", &gp::Renderable::getScaleX, &gp::Renderable::setScaleX)
-//            .def_property("scaley", &gp::Renderable::getScaleY, &gp::Renderable::setScaleY)
+            .def_property("scalex", [](gp::Renderable &self) {
+                return self.getScale().xscale;
+            }, &gp::Renderable::setScaleX)
+            .def_property("scaley", [](gp::Renderable &self) {
+                return self.getScale().yscale;
+            }, &gp::Renderable::setScaleY)
             .def_property("width", &gp::Renderable::getWidth, &gp::Renderable::setWidth)
-            .def_property("height", &gp::Renderable::getHeight, &gp::Renderable::setHeight)
-
-        // .def_property("transparency", &gp::Renderable::getTransparency, &gp::Renderable::setTransparency)
-            ;
+            .def_property("height", &gp::Renderable::getHeight, &gp::Renderable::setHeight);
 }

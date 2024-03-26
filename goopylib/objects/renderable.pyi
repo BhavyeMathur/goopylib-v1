@@ -15,8 +15,6 @@ class Renderable:
     The methods provided can be called by any other goopylib objects.
     """
 
-    __slots__ = ["_renderable", "_window"]
-
     # pylint: disable-next=super-init-not-called
     def __init__(self) -> None:
         """
@@ -26,11 +24,9 @@ class Renderable:
         Raises:
             NotImplementedError: cannot directly initialize a Renderable
         """
-        self._renderable = None
-        self._window: Union[Window, None] = None
 
     def __repr__(self) -> str:
-        return self._renderable.__repr__()
+        pass
 
     def draw(self, window: Window) -> Renderable:
         """
@@ -43,25 +39,17 @@ class Renderable:
             TypeError: argument must be a Window
             RuntimeError: window has been destroyed
         """
-        if isinstance(window, Window):
-            self._renderable.draw(window._window)
-            self._window = window
-        else:
-            self._renderable.draw(window)
-        return self
 
     def destroy(self) -> None:
         """
         Destroys and undraws the object
         """
-        self._renderable.destroy()
 
     def is_drawn(self) -> bool:
         """
         Returns:
             whether the object has been drawn
         """
-        return self._renderable.is_drawn()
 
     def set_anchor(self, x: float, y: float) -> None:
         """
@@ -74,13 +62,11 @@ class Renderable:
         Raises:
             TypeError: x and y must be numbers
         """
-        return self._renderable.set_anchor(x, y)
 
     def reset_anchor(self) -> None:
         """
         Resets the anchor of the object to its center (average of its vertices)
         """
-        return self._renderable.reset_anchor()
 
     def move(self, dx: float, dy: float) -> None:
         """
@@ -93,7 +79,6 @@ class Renderable:
         Raises:
             TypeError: dx and dy must be numbers
         """
-        return self._renderable.move(dx, dy)
 
     def rotate(self, angle: float) -> None:
         """
@@ -105,7 +90,6 @@ class Renderable:
         Raises:
             TypeError: angle must be a number
         """
-        return self._renderable.rotate(angle)
 
     def scale(self, *args: float) -> None:
         """
@@ -117,7 +101,6 @@ class Renderable:
         Raises:
             TypeError: scale factor must be numbers
         """
-        return self._renderable.scale(*args)
 
     def set_size(self, width: float, height: float) -> None:
         """
@@ -130,14 +113,12 @@ class Renderable:
         Raises:
             TypeError: width and height must be numbers
         """
-        return self._renderable.set_size(width, height)
 
     @property
     def window(self) -> Union[Window, None]:
         """
         The window the object is drawn to (or None)
         """
-        return self._window
 
     @property
     def x(self) -> float:
@@ -147,11 +128,10 @@ class Renderable:
         Raises:
             TypeError: value must be a number
         """
-        return self._renderable.x
 
     @x.setter
     def x(self, value: float) -> None:
-        self._renderable.x = value
+        pass
 
     @property
     def y(self) -> float:
@@ -161,11 +141,23 @@ class Renderable:
         Raises:
             TypeError: value must be a number
         """
-        return self._renderable.y
 
     @y.setter
     def y(self, value: float) -> None:
-        self._renderable.y = value
+        pass
+
+    @property
+    def z(self) -> float:
+        """
+        The z-position of the object
+
+        Raises:
+            TypeError: value must be a number
+        """
+
+    @z.setter
+    def z(self, value: float) -> None:
+        pass
 
     @property
     def position(self) -> Tuple[float, float]:
@@ -178,11 +170,10 @@ class Renderable:
         Raises:
             TypeError: value must be a tuple of x, y numbers
         """
-        return self._renderable.position
 
     @position.setter
     def position(self, value: Tuple[float, float]) -> None:
-        self._renderable.position = value
+        pass
 
     @property
     def rotation(self) -> float:
@@ -192,11 +183,10 @@ class Renderable:
         Raises:
             TypeError: value must be a number
         """
-        return self._renderable.rotation
 
     @rotation.setter
     def rotation(self, value: float) -> None:
-        self._renderable.rotation = value
+        pass
 
     @property
     def xscale(self) -> float:
@@ -206,11 +196,10 @@ class Renderable:
         Raises:
             TypeError: value must be a number
         """
-        return self._renderable.xscale
 
     @xscale.setter
     def xscale(self, value: float) -> None:
-        self._renderable.xscale = value
+        pass
 
     @property
     def yscale(self) -> float:
@@ -220,11 +209,10 @@ class Renderable:
         Raises:
             TypeError: value must be a number
         """
-        return self._renderable.yscale
 
     @yscale.setter
     def yscale(self, value: float) -> None:
-        self._renderable.yscale = value
+        pass
 
     @property
     def width(self) -> float:
@@ -234,11 +222,10 @@ class Renderable:
         Raises:
             TypeError: value must be a number
         """
-        return self._renderable.width
 
     @width.setter
     def width(self, value: float) -> None:
-        self._renderable.width = value
+        pass
 
     @property
     def height(self) -> float:
@@ -248,25 +235,10 @@ class Renderable:
         Raises:
             TypeError: value must be a number
         """
-        return self._renderable.height
 
     @height.setter
     def height(self, value: float) -> None:
-        self._renderable.height = value
-
-    @property
-    def z(self) -> float:
-        """
-        The z-position of the object
-
-        Raises:
-            TypeError: value must be a number
-        """
-        return self._renderable.z
-
-    @z.setter
-    def z(self, value: float) -> None:
-        self._renderable.z = value
+        pass
 
     def hide(self, hide=True) -> None:
         """
@@ -278,27 +250,23 @@ class Renderable:
         Raises:
             TypeError: hide must be a boolean
         """
-        return self._renderable.hide(hide)
 
     def show(self) -> None:
         """
         Unhides the object if it was hidden
         """
-        return self._renderable.show()
 
     def is_hidden(self) -> bool:
         """
         Returns:
             whether the object is hidden
         """
-        return self._renderable.is_hidden()
 
     def is_opaque(self) -> bool:
         """
         Returns:
             whether the object is completely opaque
         """
-        return self._renderable.is_opaque()
 
     def box_contains(self, x: float, y: float) -> bool:
         """
@@ -311,7 +279,6 @@ class Renderable:
         Raises:
             TypeError: x and y must be numbers
         """
-        return self._renderable.box_contains(x, y)
 
     def contains(self, x: float, y: float) -> bool:
         """
@@ -324,4 +291,3 @@ class Renderable:
         Raises:
             TypeError: x and y must be numbers
         """
-        return self._renderable.contains(x, y)
