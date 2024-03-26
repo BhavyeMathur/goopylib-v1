@@ -55,7 +55,7 @@ using std::make_unique, std::make_shared, std::shared_ptr, std::unique_ptr;
 #define _GP_GET_STRUCT_TUPLE(func, ...) auto value = self.get##func(); return py::make_tuple(MAP_LIST(_GP_VALUE_ATTR, __VA_ARGS__))
 #define GP_GET_STRUCT_TUPLE(cls, func, ...) [](const cls &self) { _GP_GET_STRUCT_TUPLE(func, __VA_ARGS__); }
 
-#define GP_GET_ELEMENT_FROM_TUPLE(el, type) int value##el; GP_RETHROW_TYPE_ERROR_POSITION(value##el = object[el].cast<type>(), type, el)
+#define GP_GET_ELEMENT_FROM_TUPLE(el, type) type value##el; GP_RETHROW_TYPE_ERROR_POSITION(value##el = object[el].cast<type>(), type, el)
 
 #define _GP_POINT_GETTER(cls, n) GP_GET_STRUCT_TUPLE(cls, P##n, x, y)
 #define _GP_SET_POINT(n) GP_GET_ELEMENT_FROM_TUPLE(0, float); GP_GET_ELEMENT_FROM_TUPLE(1, float); self.setP##n({value0, value1})

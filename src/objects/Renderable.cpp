@@ -82,7 +82,7 @@ namespace gp {
         return "Renderable()";
     }
 
-    void Renderable::draw(Window &window) {
+    Renderable* Renderable::draw(Window &window) {
         GP_CORE_DEBUG("gp::Renderable::_drawRenderable({0})", window.getTitle());
 
         #if GP_ERROR_CHECKING
@@ -98,6 +98,7 @@ namespace gp {
         m_RendererID = window._drawRenderable(this);
         m_Window = &window;
         m_Drawn = true;
+        return this;
     }
 
     void Renderable::destroy() {

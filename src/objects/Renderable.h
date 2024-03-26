@@ -43,7 +43,7 @@ namespace gp {
          *
          * @throws std::runtime_error the window has been destroyed
          */
-        void draw(Window &window);
+        [[maybe_unused]] Renderable *draw(Window &window);
 
         /**
          * Destroys and undraws the object
