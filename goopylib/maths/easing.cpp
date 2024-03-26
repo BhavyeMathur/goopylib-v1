@@ -9,9 +9,9 @@ using namespace pybind11::literals;
 PYBIND11_MODULE(easing, m) {
     m.def("ease_linear", &gp::easeLinear);
 
-    m.def("ease_poly", &gp::easePolyInOut);
-    m.def("ease_poly_in", &gp::easePolyIn);
-    m.def("ease_poly_out", &gp::easePolyOut);
+    m.def("ease_poly", &gp::easePolyInOut, "power"_a=6);
+    m.def("ease_poly_in", &gp::easePolyIn, "power"_a=6);
+    m.def("ease_poly_out", &gp::easePolyOut, "power"_a=6);
 
     m.def("ease_quad", &gp::easeQuadInOut);
     m.def("ease_quad_in", &gp::easeQuadIn);
@@ -37,19 +37,19 @@ PYBIND11_MODULE(easing, m) {
     m.def("ease_sin_in", &gp::easeSinIn);
     m.def("ease_sin_out", &gp::easeSinOut);
 
-    m.def("ease_exp", &gp::easeExpInOut);
-    m.def("ease_exp_in", &gp::easeExpIn);
-    m.def("ease_exp_out", &gp::easeExpOut);
+    m.def("ease_exp", &gp::easeExpInOut, "base"_a=2.718281828459045);
+    m.def("ease_exp_in", &gp::easeExpIn, "base"_a=2.718281828459045);
+    m.def("ease_exp_out", &gp::easeExpOut, "base"_a=2.718281828459045);
 
-    m.def("ease_back", &gp::easeBackInOut);
-    m.def("ease_back_in", &gp::easeBackIn);
-    m.def("ease_back_out", &gp::easeBackOut);
+    m.def("ease_back", &gp::easeBackInOut, "factor"_a=1.70158);
+    m.def("ease_back_in", &gp::easeBackIn, "factor"_a=1.70158);
+    m.def("ease_back_out", &gp::easeBackOut, "factor"_a=1.70158);
 
-    m.def("ease_elastic", &gp::easeElasticInOut);
-    m.def("ease_elastic_in", &gp::easeElasticIn);
-    m.def("ease_elastic_out", &gp::easeElasticOut);
+    m.def("ease_elastic", &gp::easeElasticInOut, "factor"_a=3);
+    m.def("ease_elastic_in", &gp::easeElasticIn, "factor"_a=3);
+    m.def("ease_elastic_out", &gp::easeElasticOut, "factor"_a=3);
 
-    m.def("ease_bounce", &gp::easeBounceInOut);
-    m.def("ease_bounce_in", &gp::easeBounceIn);
-    m.def("ease_bounce_out", &gp::easeBounceOut);
+    m.def("ease_bounce", &gp::easeBounceInOut, "bounces"_a=4, "damping"_a=0.4);
+    m.def("ease_bounce_in", &gp::easeBounceIn, "bounces"_a=4, "damping"_a=0.4);
+    m.def("ease_bounce_out", &gp::easeBounceOut, "bounces"_a=4, "damping"_a=0.4);
 }
