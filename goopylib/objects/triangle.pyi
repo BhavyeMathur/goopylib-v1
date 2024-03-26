@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from typing import Union, Tuple
 
-from goopylib.color.color import Color
-from goopylib.objects.renderable import Renderable
+from . import Renderable
 
 
 class Triangle(Renderable):
@@ -23,7 +22,6 @@ class Triangle(Renderable):
         TypeError: p1, p2, and p3 must be (x, y) tuples of numbers
     """
 
-    # pylint: disable-next=super-init-not-called
     def __init__(self, p1: Tuple[float, float], p2: Tuple[float, float], p3: Tuple[float, float]) -> None:
         """
         An object representing a triangle with 3 vertices.
@@ -36,7 +34,6 @@ class Triangle(Renderable):
         Raises:
             TypeError: p1, p2, and p3 must be (x, y) tuples of numbers
         """
-        self._renderable: Triangle = _triangle.Triangle(p1, p2, p3)
 
     def set_color(self, *args) -> None:
         """
@@ -48,7 +45,6 @@ class Triangle(Renderable):
         Raises:
             TypeError: arguments must be colors
         """
-        self._renderable.set_color(*(arg._color if isinstance(arg, Color) else arg for arg in args))
 
     @property
     def p1(self) -> Tuple[float, float]:
@@ -61,11 +57,10 @@ class Triangle(Renderable):
         Raises:
             TypeError: value must be a tuple of x, y numbers
         """
-        return self._renderable.p1
 
     @p1.setter
     def p1(self, value: Tuple[float, float]) -> None:
-        self._renderable.p1 = value
+        pass
 
     @property
     def p2(self) -> Tuple[float, float]:
@@ -78,11 +73,10 @@ class Triangle(Renderable):
         Raises:
             TypeError: value must be a tuple of x, y numbers
         """
-        return self._renderable.p2
 
     @p2.setter
     def p2(self, value: Tuple[float, float]) -> None:
-        self._renderable.p2 = value
+        pass
 
     @property
     def p3(self) -> Tuple[float, float]:
@@ -95,11 +89,10 @@ class Triangle(Renderable):
         Raises:
             TypeError: value must be a tuple of x, y numbers
         """
-        return self._renderable.p3
 
     @p3.setter
     def p3(self, value: Tuple[float, float]) -> None:
-        self._renderable.p3 = value
+        pass
 
     @property
     def transparency(self) -> Union[float, Tuple[float, float, float]]:
@@ -110,8 +103,7 @@ class Triangle(Renderable):
             TypeError: transparency must be a float or tuple of floats
             ValueError: transparency must be between 0 and 1
         """
-        return self._renderable.transparency
 
     @transparency.setter
     def transparency(self, value: Union[float, Tuple[float, float, float]]) -> None:
-        self._renderable.transparency = value
+        pass

@@ -15,7 +15,6 @@ class Renderable:
     The methods provided can be called by any other goopylib objects.
     """
 
-    # pylint: disable-next=super-init-not-called
     def __init__(self) -> None:
         """
         This is the base class from which all goopylib objects are derived.

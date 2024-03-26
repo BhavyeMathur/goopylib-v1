@@ -23,8 +23,7 @@ PYBIND11_MODULE(triangle, m) {
             .def("set_color", static_cast<void (gp::Triangle::*)(const gp::Color &, const gp::Color &,
                                                                  const gp::Color &)>(&gp::Triangle::setColor))
             .def("set_color", static_cast<void (gp::Triangle::*)(const char *, float)>(&gp::Triangle::setColor))
-            .def("set_color",
-                 static_cast<void (gp::Triangle::*)(const char *, const char *, const char *)>(&gp::Triangle::setColor))
+            .def("set_color", static_cast<void (gp::Triangle::*)(const char *, const char *, const char *)>(&gp::Triangle::setColor))
             .def("set_color", static_cast<void (gp::Triangle::*)(int, int, int, float)>(&gp::Triangle::setColor))
 
             .def_property("transparency", GP_GET_STRUCT_TUPLE(gp::Triangle, Transparency, a1, a2, a3),

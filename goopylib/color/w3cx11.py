@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import Dict
 
-from goopylib.color.color import ColorHex
+from goopylib.color import ColorHex
 
 
 colors: Dict[str, ColorHex] = {
