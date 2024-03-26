@@ -207,6 +207,15 @@ namespace gp {
         return m_Position.y;
     }
 
+    void Renderable::setZ(float value) {
+        m_ZPosition = value;
+        update();
+    }
+
+    float Renderable::getZ() const {
+        return m_ZPosition;
+    }
+
     void Renderable::setPosition(float x, float y) {
         GP_CORE_DEBUG("gp::Renderable::setPosition({0}, {1})", x, y);
         move(x - m_Position.x, y - m_Position.y);
@@ -367,15 +376,6 @@ namespace gp {
     bool Renderable::isVisibleAndOpaque() const {
         GP_CORE_TRACE("gp::Renderable::isVisibleAndOpaque()");
         return isOpaque() && !isHidden();
-    }
-
-    void Renderable::setZPosition(float value) {
-        m_ZPosition = value;
-        update();
-    }
-
-    float Renderable::getZPosition() const {
-        return m_ZPosition;
     }
 }
 

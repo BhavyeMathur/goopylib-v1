@@ -8,7 +8,7 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 
 PYBIND11_MODULE(renderable, m) {
-    auto windowModule = py::module_::import("goopylib.window");
+    auto windowModule = py::module_::import("goopylib.core");
     py::object Window = windowModule.attr("Window");
 
     py::class_<gp::Renderable>(m, "Renderable")
@@ -39,7 +39,7 @@ PYBIND11_MODULE(renderable, m) {
                     // TODO either add getter functions for callbacks or convert to method, not property
             .def_property("x", &gp::Renderable::getX, &gp::Renderable::setX)
             .def_property("y", &gp::Renderable::getY, &gp::Renderable::setY)
-            .def_property("z", &gp::Renderable::getZPosition, &gp::Renderable::setZPosition)
+            .def_property("z", &gp::Renderable::getZ, &gp::Renderable::setZ)
             .def_property("position", GP_GET_STRUCT_TUPLE(gp::Renderable, Position, x, y),
                           [](gp::Renderable &self, const py::tuple &object) {
                               GP_GET_ELEMENT_FROM_TUPLE(0, int);

@@ -106,6 +106,21 @@ namespace gp {
         [[nodiscard]] float getY() const;
 
         /**
+         * Sets the z-index/position of the object
+         *
+         * @param value the z-position of the object
+         *
+         */
+        void setZ(float value);
+
+        /**
+         *
+         * @return the z-position of the object
+         *
+         */
+        [[nodiscard]] float getZ() const;
+
+        /**
          * Sets the position of the object by moving its anchor
          * @param x in world coordinates
          * @param y in world coordinates
@@ -240,21 +255,6 @@ namespace gp {
          * @return whether the object is hidden
          */
         [[nodiscard]] bool isHidden() const;
-
-        /**
-         * Sets the z-index/position of the object
-         *
-         * @param value the z-position of the object
-         *
-         */
-        void setZPosition(float value);
-
-        /**
-         *
-         * @return the z-position of the object
-         *
-         */
-        [[nodiscard]] float getZPosition() const;
 
         /* Methods */
 
