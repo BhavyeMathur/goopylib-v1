@@ -28,6 +28,11 @@ PYBIND11_MODULE(triangle, m) {
                           [](gp::Triangle &self, const py::object &value) {
                               if (py::isinstance<py::tuple>(value)) {
                                   py::tuple object = value;
+
+                                  if (len(object) != 3) {
+                                      throw std::invalid_argument("Transparency tuple must contain 3 values");
+                                  }
+
                                   GP_GET_ELEMENT_FROM_TUPLE(0, float);
                                   GP_GET_ELEMENT_FROM_TUPLE(1, float);
                                   GP_GET_ELEMENT_FROM_TUPLE(2, float);

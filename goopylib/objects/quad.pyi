@@ -119,7 +119,7 @@ class Quad(Renderable):
     @property
     def transparency(self) -> Union[float, Tuple[float, float, float, float]]:
         """
-        The transparency of the object at each vertex between 0 (transpareny) and 1 (opaque)
+        The transparency of the object at each vertex between 0 (transparent) and 1 (opaque)
 
         Raises:
             TypeError: transparency must be a float or tuple of floats

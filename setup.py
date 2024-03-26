@@ -109,9 +109,9 @@ def get_object_extension(obj: str):
 
 def find_extensions():
     return [
-        Extension(name="goopylib.ext.easing",
-                  sources=["goopylib/maths/easing.cpp"],
-                  **ext_kwargs),
+        # Extension(name="goopylib.ext.easing",
+        #           sources=["goopylib/maths/easing.cpp"],
+        #           **ext_kwargs),
 
         Extension(name="goopylib.color.color",
                   sources=["goopylib/color/color.cpp"],
@@ -129,20 +129,20 @@ def find_extensions():
         get_object_extension("triangle"),
         get_object_extension("quad"),
         get_object_extension("rectangle"),
-        # get_object_extension("line"),
+        get_object_extension("line"),
 
         # get_object_extension("ellipse"),
         # get_object_extension("circle"),
 
         # get_object_extension("image"),
 
-        Extension(name="goopylib.ext.camera",
-                  sources=["goopylib/scene/camera.cpp"],
-                  **ext_kwargs),
-
-        Extension(name="goopylib.ext.camera_controller",
-                  sources=["goopylib/scene/camera_controller.cpp"],
-                  **ext_kwargs)
+        # Extension(name="goopylib.ext.camera",
+        #           sources=["goopylib/scene/camera.cpp"],
+        #           **ext_kwargs),
+        #
+        # Extension(name="goopylib.ext.camera_controller",
+        #           sources=["goopylib/scene/camera_controller.cpp"],
+        #           **ext_kwargs)
     ]
 
 

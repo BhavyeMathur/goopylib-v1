@@ -28,6 +28,11 @@ PYBIND11_MODULE(quad, m) {
                           [](gp::Quad &self, const py::object &value) {
                               if (py::isinstance<py::tuple>(value)) {
                                   py::tuple object = value;
+
+                                  if (len(object) != 4) {
+                                      throw std::invalid_argument("Transparency tuple must contain 4 values");
+                                  }
+
                                   GP_GET_ELEMENT_FROM_TUPLE(0, float);
                                   GP_GET_ELEMENT_FROM_TUPLE(1, float);
                                   GP_GET_ELEMENT_FROM_TUPLE(2, float);
