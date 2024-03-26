@@ -73,7 +73,7 @@ namespace gp {
         update();
     }
 
-    Float3 Triangle::getTransparency() {
+    Float3 Triangle::getTransparency() const {
         return {m_V1.color.alpha, m_V2.color.alpha, m_V3.color.alpha};
     }
 
