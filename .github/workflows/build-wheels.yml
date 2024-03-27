@@ -38,7 +38,6 @@ jobs:
   build-wheels:
     name: Build ${{ matrix.os }} Python wheels
     runs-on: ${{ matrix.os }}
-    needs: build-cmake
 
     strategy:
       fail-fast: false
