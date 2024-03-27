@@ -23,7 +23,7 @@ namespace gp {
 
         #if GP_ERROR_CHECKING
         if (m_Width == 0 and m_Height == 0 and m_Channels == 0) {
-            GP_FILENOTFOUND_ERROR("gp::Bitmap::Bitmap() file '{0}' not found", filepath);
+            GP_FILENOTFOUND_ERROR("gp::Bitmap::Bitmap() file '%s' not found", filepath);
         }
         #endif
     }

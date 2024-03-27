@@ -6,13 +6,11 @@ on:
   workflow_dispatch:
 
   push:
-    branches: [ "master" ]
     paths:
       - goopylib/**
       - .github/workflows/codeql-python.yml
 
   pull_request:
-    branches: [ "master" ]
     paths:
       - goopylib/**
       - .github/workflows/codeql-python.yml

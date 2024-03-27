@@ -8,6 +8,7 @@
 #include <opengl.h>
 
 #include <GLFW/glfw3.h>
+
 #undef APIENTRY
 
 
@@ -20,7 +21,7 @@ namespace {
         GP_CORE_TRACE_ALL("gp::onUpdate()");
         gp::Window::updateAll();
 
-#if GP_ERROR_CHECKING
+        #if GP_ERROR_CHECKING
         if (glfwGetCurrentContext()) {
             GLenum error;
             while ((error = glGetError()) != GL_NO_ERROR) {
@@ -61,7 +62,7 @@ namespace {
                 }
             }
         }
-#endif
+        #endif
     }
 
     void initGLFW() {
@@ -70,6 +71,11 @@ namespace {
         glfwSetErrorCallback([](int error, const char *description) {
             GP_CORE_WARN("GLFW Error Code {0}: {1}", error, description);
         });
+
+        #if __APPLE__
+        glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GL_FALSE);
+        #endif
+
         if (!glfwInit()) {
             GP_RUNTIME_ERROR("gp::init() failed to initialize GLFW");
         }
@@ -79,9 +85,9 @@ namespace {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#if __APPLE__
+        #if __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+        #endif
     }
 }
 
@@ -108,6 +114,10 @@ namespace gp {
 
     bool isInitialized() {
         return is_initialized;
+    }
+
+    bool hasActiveContext() {
+        return glfwInit() and glfwGetCurrentContext();
     }
 
     void update() {
@@ -172,10 +182,6 @@ namespace gp {
     double getTime() {
         GP_CHECK_INITIALISED("gp::getTime()");
         return glfwGetTime();
-    }
-
-    bool hasActiveContext() {
-        return glfwInit() and glfwGetCurrentContext();
     }
 
     std::string glfwCompiledVersion() {

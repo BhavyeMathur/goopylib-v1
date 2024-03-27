@@ -13,16 +13,14 @@
 namespace gp {
     std::vector<Window *> Window::s_Instances;
 
-    Window::Window(int width, int height, const char *title)
-        : RenderingManager(*this, width, height, title),
-
-          m_xPos(50),
-          m_yPos(50),
-
-          m_WindowedWidth(m_Width),
-          m_WindowedHeight(m_Height),
-          m_WindowedXPos(m_xPos),
-          m_WindowedYPos(m_yPos) {
+    Window::Window(const int width, const int height, const std::string &title)
+            : RenderingManager{width, height, title},
+              m_xPos{50},
+              m_yPos{50},
+              m_WindowedWidth{m_Width},
+              m_WindowedHeight{m_Height},
+              m_WindowedXPos{m_xPos},
+              m_WindowedYPos{m_yPos} {
         GP_CORE_INFO("gp::Window::Window({0}, {1} '{2}')", m_Width, m_Height, m_Title);
 
         GP_CHECK_GT(width, 0, "Window width must be greater than 0");
@@ -30,25 +28,17 @@ namespace gp {
 
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        m_Window = glfwCreateWindow(m_Width,
-                                    m_Height,
-                                    m_Title, nullptr, nullptr);
+        m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
 
         glfwSetWindowUserPointer(m_Window, this);
 
-#if GP_USING_GLAD
+        #if GP_USING_GLAD
         GP_CORE_DEBUG("gp::Window::Window() initialising GLAD");
-#if GP_USING_GLFW
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
             GP_RUNTIME_ERROR("gp::Window::Window() failed to initialize GLAD");
         }
-#else
-        if (!gladLoadGL()) {
-            GP_RUNTIME_ERROR("gp::Window::Window() failed to initialize GLAD");
-        }
-#endif
-#endif
+        #endif
 
         super();
 
@@ -67,8 +57,7 @@ namespace gp {
         GP_CORE_INFO("gp::Window::~Window() - '{0}'", m_Title);
 
         destroy();
-
-        s_Instances.erase(std::remove(s_Instances.begin(), s_Instances.end(), this), s_Instances.end());
+        std::erase(s_Instances, this);
     }
 
     void Window::super() {
@@ -76,25 +65,38 @@ namespace gp {
 
         init();
 
-        _updatePosition();
-        _updateSizeLimits();
+        setPosition(m_xPos, m_yPos);
+        setSizeLimits(m_MinWidth, m_MinHeight, m_MaxWidth, m_MaxHeight);
 
         setResizeCallback(nullptr);
         setPositionCallback(nullptr);
-        _setKeyCallback();
-        _setMouseButtonCallback();
+
+        glfwSetMouseButtonCallback(
+                m_Window,
+                [](GLFWwindow *window, const int button, const int action, const int mods) {
+                    auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+                    windowObject->_onMousePress(button, action, mods);
+                });
+
+        glfwSetKeyCallback(
+                m_Window,
+                [](GLFWwindow *window, const int key, const int scancode, const int action,
+                   const int mods) {
+                    auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+                    windowObject->_onKeyPress(key, scancode, action, mods);
+                });
     }
 
-    GLFWwindow *Window::getWindowGLFW() {
+    GLFWwindow *Window::getWindowGLFW() const {
         GP_CORE_TRACE("gp::Window::getWindowGLFW() - '{0}'", m_Title);
         return m_Window;
     }
 
-    std::string Window::toString() {
+    std::string Window::toString() const {
         if (m_IsDestroyed) {
             return {"Destroyed Window()"};
         }
-        return strformat("Window(%i, %i, '%s')", m_Width, m_Height, m_Title);
+        return strformat("Window(%i, %i, '%s')", m_Width, m_Height, m_Title.c_str());
     }
 
     bool Window::isOpen() const {
@@ -118,39 +120,60 @@ namespace gp {
         glfwMakeContextCurrent(m_Window);
 
         render();
-        _swapBuffers();
+        glfwSwapBuffers(m_Window);
     }
 
     void Window::destroy() {
         GP_CORE_INFO("gp::Window::destroy() - '{0}'", m_Title);
 
         if (!m_IsDestroyed) {
-            _destroy();
+            glfwDestroyWindow(m_Window);
             m_IsDestroyed = true;
-            _onDestroy();
+
+            if (m_DestroyCallback) {
+                m_DestroyCallback(this);
+            }
         }
     }
 }
 
 // Window getters & setters
 namespace gp {
-    void Window::setTitle(const char *value) {
+    void Window::setWidth(const int value) {
+        GP_CORE_DEBUG("gp::Window::setWidth({1}) - '{0}'", m_Title, value);
+        setSize(value, m_Height);
+    }
+
+    int Window::getWidth() const {
+        GP_CORE_TRACE("gp::Window::getWidth() - '{0}'", m_Title);
+        return m_Width;
+    }
+
+    void Window::setHeight(const int value) {
+        GP_CORE_DEBUG("gp::Window::setHeight({1}) - '{0}'", m_Title, value);
+        setSize(m_Width, value);
+    }
+
+    int Window::getHeight() const {
+        GP_CORE_TRACE("gp::Window::getHeight() - '{0}'", m_Title);
+        return m_Height;
+    }
+
+    void Window::setTitle(const std::string &value) {
         GP_CORE_DEBUG("gp::setTitle({1}) - '{0}'", m_Title, value);
 
         m_Title = value;
-        glfwSetWindowTitle(m_Window, m_Title);
+        glfwSetWindowTitle(m_Window, m_Title.c_str());
     }
 
-    const char *Window::getTitle() const {
+    std::string Window::getTitle() const {
         GP_CORE_TRACE("gp::Window::getTitle() - '{0}'", m_Title);
         return m_Title;
     }
 
-    void Window::setXPos(int value) {
+    void Window::setXPos(const int value) {
         GP_CORE_DEBUG("gp::Window::setXPos({1}) - '{0}'", m_Title, value);
-
-        m_xPos = value;
-        _updatePosition();
+        setPosition(value, m_yPos);
     }
 
     int Window::getXPos() const {
@@ -158,11 +181,9 @@ namespace gp {
         return m_xPos;
     }
 
-    void Window::setYPos(int value) {
+    void Window::setYPos(const int value) {
         GP_CORE_DEBUG("gp::Window::setYPos({1}) - '{0}'", m_Title, value);
-
-        m_yPos = value;
-        _updatePosition();
+        setPosition(m_xPos, value);
     }
 
     int Window::getYPos() const {
@@ -170,13 +191,9 @@ namespace gp {
         return m_yPos;
     }
 
-    void Window::setMinWidth(int value) {
+    void Window::setMinWidth(const int value) {
         GP_CORE_DEBUG("gp::Window::setMinWidth({1}) - '{0}'", m_Title, value);
-
-        GP_CHECK_GE(value, 0, "Window minimum width must be greater than or equal to 0");
-
-        m_MinWidth = value;
-        _updateSizeLimits();
+        setMinSize(value, m_MinHeight);
     }
 
     int Window::getMinWidth() const {
@@ -184,13 +201,9 @@ namespace gp {
         return m_MinWidth;
     }
 
-    void Window::setMinHeight(int value) {
+    void Window::setMinHeight(const int value) {
         GP_CORE_DEBUG("gp::Window::setMinHeight({1}) - '{0}'", m_Title, value);
-
-        GP_CHECK_GE(value, 0, "Window minimum height must be greater than or equal to 0");
-
-        m_MinHeight = value;
-        _updateSizeLimits();
+        setMinSize(m_MinHeight, value);
     }
 
     int Window::getMinHeight() const {
@@ -198,13 +211,9 @@ namespace gp {
         return m_MinHeight;
     }
 
-    void Window::setMaxWidth(int value) {
+    void Window::setMaxWidth(const int value) {
         GP_CORE_DEBUG("gp::Window::setMaxWidth({1}) - '{0}'", m_Title, value);
-
-        GP_CHECK_GE(value, m_MinWidth, "Window maximum width must be greater than or equal to its minimum width");
-
-        m_MaxWidth = value;
-        _updateSizeLimits();
+        setMaxSize(value, m_MaxHeight);
     }
 
     int Window::getMaxWidth() const {
@@ -212,13 +221,9 @@ namespace gp {
         return m_MaxWidth;
     }
 
-    void Window::setMaxHeight(int value) {
+    void Window::setMaxHeight(const int value) {
         GP_CORE_DEBUG("gp::Window::setMaxHeight({1}) - '{0}'", m_Title, value);
-
-        GP_CHECK_GE(value, m_MinHeight, "Window maximum height must be greater than or equal to its minimum height");
-
-        m_MaxHeight = value;
-        _updateSizeLimits();
+        setMaxSize(m_MaxWidth, value);
     }
 
     int Window::getMaxHeight() const {
@@ -253,8 +258,7 @@ namespace gp {
 
 // Window Get & Set methods
 namespace gp {
-    // Size
-    void Window::setSize(int width, int height) {
+    void Window::setSize(const int width, const int height) {
         GP_CORE_DEBUG("gp::Window::setSize({1}, {2}) - '{0}'", m_Title, width, height);
 
         GP_CHECK_GT(width, 0, "Window width must be greater than 0");
@@ -263,70 +267,62 @@ namespace gp {
         m_Width = width;
         m_Height = height;
 
-        _updateSize();
+        glfwSetWindowSize(m_Window, m_Width, m_Height);
     }
 
-    // Size Limits
-    void Window::setSizeLimits(int minWidth, int minHeight, int maxWidth,
-                               int maxHeight) {
+    void Window::setSizeLimits(const int minWidth, const int minHeight, const int maxWidth, const int maxHeight) {
         GP_CORE_DEBUG("gp::Window::setSizeLimits({1}, {2}, {3}, {4}) - '{0}'",
                       m_Title, minWidth, minHeight, maxWidth, maxHeight);
 
-        GP_CHECK_GE(minWidth, 0, "Window minimum width must be greater than or equal to 0");
-        GP_CHECK_GE(minHeight, 0, "Window minimum height must be greater than or equal to 0");
-        GP_CHECK_GE(maxWidth, minWidth, "Window maximum width must be greater than or equal to its minimum width");
-        GP_CHECK_GE(maxHeight, minHeight, "Window maximum height must be greater than or equal to its minimum height");
+        if (minWidth != GLFW_DONT_CARE) {
+            GP_CHECK_GE(minWidth, 0, "Window minimum width must be greater than or equal to 0");
+        }
+        if (minHeight != GLFW_DONT_CARE) {
+            GP_CHECK_GE(minHeight, 0, "Window minimum height must be greater than or equal to 0");
+        }
+        if (maxWidth != GLFW_DONT_CARE) {
+            GP_CHECK_GE(maxWidth, minWidth, "Window maximum width must be greater than or equal to minimum width");
+        }
+        if (maxHeight != GLFW_DONT_CARE) {
+            GP_CHECK_GE(maxHeight, minHeight, "Window maximum height must be greater than or equal to minimum height");
+        }
 
-        m_MinWidth = minWidth;
-        m_MinHeight = minHeight;
-        m_MaxWidth = maxWidth;
-        m_MaxHeight = maxHeight;
+        m_MinWidth = minWidth == GLFW_DONT_CARE ? 0 : minWidth;
+        m_MinHeight = minHeight == GLFW_DONT_CARE ? 0 : minHeight;
+        m_MaxWidth = maxWidth == GLFW_DONT_CARE ? INT_MAX : maxWidth;
+        m_MaxHeight = maxHeight == GLFW_DONT_CARE ? INT_MAX : maxHeight;
 
-        _updateSizeLimits();
+        glfwSetWindowSizeLimits(m_Window, m_MinWidth, m_MinHeight, m_MaxWidth, m_MaxHeight);
     }
 
-    void Window::setMinSize(int minWidth, int minHeight) {
+    void Window::setMinSize(const int minWidth, const int minHeight) {
         GP_CORE_DEBUG("gp::Window::setMinSize({1}, {2}) - '{0}'", m_Title, minWidth, minHeight);
-
-        GP_CHECK_GE(minWidth, 0, "Window minimum width must be greater than or equal to 0");
-        GP_CHECK_GE(minHeight, 0, "Window minimum height must be greater than or equal to 0");
-
-        m_MinWidth = minWidth;
-        m_MinHeight = minHeight;
-
-        _updateSizeLimits();
+        setSizeLimits(minWidth, minHeight, m_MaxWidth, m_MaxHeight);
     }
 
-    void Window::setMaxSize(int maxWidth, int maxHeight) {
+    void Window::setMaxSize(const int maxWidth, const int maxHeight) {
         GP_CORE_DEBUG("gp::Window::setMaxSize({1}, {2}) - '{0}'", m_Title, maxWidth, maxHeight);
-
-        GP_CHECK_GE(maxWidth, m_MinWidth,
-                    "Window maximum width must be greater than or equal to its minimum width");
-        GP_CHECK_GE(maxHeight, m_MinHeight,
-                    "Window maximum height must be greater than or equal to its minimum height");
-
-        m_MaxWidth = maxWidth;
-        m_MaxHeight = maxHeight;
-
-        _updateSizeLimits();
+        setSizeLimits(m_MinWidth, m_MinHeight, maxWidth, maxHeight);
     }
 
-    // Position
-    void Window::setPosition(int xPos, int yPos) {
+    void Window::setPosition(const int xPos, const int yPos) {
         GP_CORE_DEBUG("gp::Window::setPosition({1}, {2}) - '{0}'", m_Title, xPos, yPos);
 
         m_xPos = xPos;
         m_yPos = yPos;
 
-        _updatePosition();
+        glfwSetWindowPos(m_Window, m_xPos, m_yPos);
     }
 
-    // Aspect Ratio
-    void Window::setAspectRatio(int numerator, int denominator) {
+    Point Window::getPosition() const {
+        return {m_xPos, m_yPos};
+    }
+
+    void Window::setAspectRatio(const int numerator, const int denominator) {
         GP_CORE_DEBUG("gp::Window::setAspectRatio({1}, {2}) - '{0}'", m_Title, numerator, denominator);
 
         if (numerator == -1 or denominator == -1) {
-            _updateAspectRatio(-1, -1);
+            glfwSetWindowAspectRatio(m_Window, -1, -1);
             return;
         }
 
@@ -334,7 +330,8 @@ namespace gp {
         GP_CHECK_GT(denominator, 0, "Aspect ratio denominator must be greater than 0");
 
         const int g = gcd(numerator, denominator);
-        _updateAspectRatio(numerator / g, denominator / g);
+        glfwSetWindowAspectRatio(m_Window, numerator / g, denominator / g);
+        setSize(m_Width, (m_Width * denominator) / numerator);
     }
 
     AspectRatio Window::getAspectRatio() const {
@@ -347,14 +344,14 @@ namespace gp {
 
 // Window state methods
 namespace gp {
-    void Window::restore() {
+    void Window::restore() const {
         GP_CORE_INFO("gp::Window::restore() - '{0}'", m_Title);
 
         if (isFullscreen()) {
-            _unfullscreen(m_WindowedWidth, m_WindowedHeight, m_WindowedXPos, m_WindowedYPos);
-        }
-        else {
-            _restore();
+            glfwSetWindowMonitor(m_Window, nullptr,
+                                 m_WindowedXPos, m_WindowedYPos, m_WindowedWidth, m_WindowedHeight, 0);
+        } else {
+            glfwRestoreWindow(m_Window);
         }
     }
 
@@ -367,63 +364,64 @@ namespace gp {
         m_WindowedYPos = m_yPos;
 
         if (!isFullscreen()) {
-            _fullscreen();
+            GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+            const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+            glfwSetWindowMonitor(m_Window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
         }
     }
 
     bool Window::isFullscreen() const {
         GP_CORE_TRACE("gp::Window::isFullscreen() - '{0}'", m_Title);
-        return (bool) glfwGetWindowMonitor(m_Window);
+        return static_cast<bool>(glfwGetWindowMonitor(m_Window));
     }
 
-    void Window::minimize() {
+    void Window::minimize() const {
         GP_CORE_INFO("gp::Window::minimize() - '{0}'", m_Title);
         glfwIconifyWindow(m_Window);
     }
 
     bool Window::isMinimized() const {
         GP_CORE_TRACE("gp::Window::isMinimized() - '{0}'", m_Title);
-        return (bool) glfwGetWindowAttrib(m_Window, GLFW_ICONIFIED);
+        return static_cast<bool>(glfwGetWindowAttrib(m_Window, GLFW_ICONIFIED));
     }
 
-    void Window::maximize() {
+    void Window::maximize() const {
         GP_CORE_INFO("gp::Window::maximize() - '{0}'", m_Title);
         glfwMaximizeWindow(m_Window);
     }
 
     bool Window::isMaximized() const {
         GP_CORE_TRACE("gp::Window::isMaximized() - '{0}'", m_Title);
-        return (bool) glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED);
+        return static_cast<bool>(glfwGetWindowAttrib(m_Window, GLFW_MAXIMIZED));
     }
 
-    void Window::hide(bool hide) {
+    void Window::hide(const bool hide) const {
         GP_CORE_INFO("gp::Window::hide() - '{0}'", m_Title);
         if (hide) {
             glfwHideWindow(m_Window);
-        }
-        else {
+        } else {
             glfwShowWindow(m_Window);
         }
     }
 
-    void Window::show() {
+    void Window::show() const {
         GP_CORE_INFO("gp::Window::show() - '{0}'", m_Title);
         glfwShowWindow(m_Window);
     }
 
     bool Window::isVisible() const {
         GP_CORE_TRACE("gp::Window::isVisible() - '{0}'", m_Title);
-        return (bool) glfwGetWindowAttrib(m_Window, GLFW_VISIBLE);
+        return static_cast<bool>(glfwGetWindowAttrib(m_Window, GLFW_VISIBLE));
     }
 
-    void Window::focus() {
+    void Window::focus() const {
         GP_CORE_INFO("gp::Window::focus() - '{0}'", m_Title);
         glfwFocusWindow(m_Window);
     }
 
     bool Window::hasFocus() const {
         GP_CORE_TRACE("gp::Window::hasFocus() - '{0}'", m_Title);
-        return (bool) glfwGetWindowAttrib(m_Window, GLFW_FOCUSED);
+        return static_cast<bool>(glfwGetWindowAttrib(m_Window, GLFW_FOCUSED));
     }
 
     void Window::requestAttention() const {
@@ -440,7 +438,7 @@ namespace gp {
         return glfwGetWindowAttrib(m_Window, GLFW_RESIZABLE);
     }
 
-    void Window::setResizable(bool value) {
+    void Window::setResizable(const bool value) const {
         GP_CORE_DEBUG("gp::Window::setResizable({1}) - '{0}'", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, value ? GLFW_TRUE : GLFW_FALSE);
     }
@@ -450,7 +448,7 @@ namespace gp {
         return glfwGetWindowAttrib(m_Window, GLFW_DECORATED);
     }
 
-    void Window::setDecorated(bool value) {
+    void Window::setDecorated(const bool value) const {
         GP_CORE_DEBUG("gp::Window::setDecorated({1}) - '{0}'", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_DECORATED, value ? GLFW_TRUE : GLFW_FALSE);
     }
@@ -460,7 +458,7 @@ namespace gp {
         return glfwGetWindowAttrib(m_Window, GLFW_FLOATING);
     }
 
-    void Window::setFloating(bool value) {
+    void Window::setFloating(const bool value) const {
         GP_CORE_DEBUG("gp::Window::setFloating({1}) - '{0}'", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_FLOATING, value ? GLFW_TRUE : GLFW_FALSE);
     }
@@ -470,7 +468,7 @@ namespace gp {
         return glfwGetWindowAttrib(m_Window, GLFW_AUTO_ICONIFY);
     }
 
-    void Window::setAutoMinimized(bool value) {
+    void Window::setAutoMinimized(const bool value) const {
         GP_CORE_DEBUG("gp::Window::setAutoMinimized({1}) - '{0}'", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_AUTO_ICONIFY, value ? GLFW_TRUE : GLFW_FALSE);
     }
@@ -480,7 +478,7 @@ namespace gp {
         return glfwGetWindowAttrib(m_Window, GLFW_FOCUS_ON_SHOW);
     }
 
-    void Window::setFocusedOnShow(bool value) {
+    void Window::setFocusedOnShow(const bool value) const {
         GP_CORE_DEBUG("gp::Window::setFocusedOnShow({1}) - '{0}'", m_Title, value);
         glfwSetWindowAttrib(m_Window, GLFW_FOCUS_ON_SHOW, value ? GLFW_TRUE : GLFW_FALSE);
     }
@@ -490,7 +488,7 @@ namespace gp {
 namespace gp {
     bool Window::isMouseHovering() const {
         GP_CORE_TRACE("gp::Window::isMouseHovering() - '{0}'", m_Title);
-        return (bool) glfwGetWindowAttrib(m_Window, GLFW_HOVERED);
+        return static_cast<bool>(glfwGetWindowAttrib(m_Window, GLFW_HOVERED));
     }
 
     Point Window::getMousePosition() const {
@@ -498,12 +496,12 @@ namespace gp {
 
         double xPos, yPos;
         glfwGetCursorPos(m_Window, &xPos, &yPos);
-        return toWorld({(float) xPos, (float) yPos});
+        return toWorld({static_cast<float>(xPos), static_cast<float>(yPos)});
     }
 
     void Window::setCursorMode(CursorMode mode) const {
-        GP_CORE_DEBUG("gp::Window::setCursorMode({1}) - '{0}'", m_Title, (int) mode);
-        glfwSetInputMode(m_Window, GLFW_CURSOR, (int) mode);
+        GP_CORE_DEBUG("gp::Window::setCursorMode({1}) - '{0}'", m_Title, static_cast<int>(mode));
+        glfwSetInputMode(m_Window, GLFW_CURSOR, static_cast<int>(mode));
     }
 
     bool Window::checkShiftKey() const {
@@ -526,12 +524,12 @@ namespace gp {
         return m_KeyModifiers & (1 << 3);
     }
 
-    int Window::checkKey(int key) const {
+    int Window::checkKey(const int key) const {
         GP_CORE_TRACE("gp::Window::checkKey({1}) - '{0}'", m_Title, key);
         return glfwGetKey(m_Window, key);
     }
 
-    bool Window::checkMouseButton(int button) const {
+    bool Window::checkMouseButton(const int button) const {
         GP_CORE_TRACE("gp::Window::checkMouseButton({1}) - '{0}'", m_Title, button);
         return glfwGetMouseButton(m_Window, button) == GLFW_PRESS;
     }
@@ -555,8 +553,8 @@ namespace gp {
 
         m_ResizeCallback = std::move(callback);
 
-        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, const int width, const int height) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
             windowObject->_onResize(width, height);
         });
     }
@@ -567,14 +565,14 @@ namespace gp {
         m_CloseCallback = std::move(callback);
 
         if (!m_CloseCallback) {
-            glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
+            glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *) {
             });
             return;
         }
 
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onClose();
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_CloseCallback(windowObject);
         });
     }
 
@@ -583,10 +581,9 @@ namespace gp {
 
         m_PositionCallback = std::move(callback);
 
-        glfwSetWindowPosCallback(m_Window, [](GLFWwindow *window, int xPos, int yPos) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
+        glfwSetWindowPosCallback(m_Window, [](GLFWwindow *window, const int xPos, const int yPos) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
             windowObject->_onMove(xPos, yPos);
-            return;
         });
     }
 
@@ -596,14 +593,14 @@ namespace gp {
         m_MinimizeCallback = std::move(callback);
 
         if (!m_MinimizeCallback) {
-            glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow *window, int iconified) {
+            glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow *, int) {
             });
             return;
         }
 
-        glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow *window, int iconified) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onMinimize(iconified == GLFW_TRUE);
+        glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow *window, const int iconified) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_MinimizeCallback(windowObject, iconified == GLFW_TRUE);
         });
     }
 
@@ -613,15 +610,15 @@ namespace gp {
         m_MaximizeCallback = std::move(callback);
 
         if (!m_MaximizeCallback) {
-            glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *window, int maximized) {
+            glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *, int) {
             });
             return;
         }
 
         // TODO fix issue with maximize callback not working. Tested on M1 macOS Monterey 12.4, 3.3.8 Cocoa NSGL EGL OSMesa dynamic, OpenGL 4.1
-        glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *window, int maximized) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onMaximize(maximized == GLFW_TRUE);
+        glfwSetWindowMaximizeCallback(m_Window, [](GLFWwindow *window, const int maximized) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_MaximizeCallback(windowObject, maximized == GLFW_TRUE);
         });
     }
 
@@ -631,14 +628,14 @@ namespace gp {
         m_FocusedCallback = std::move(callback);
 
         if (!m_FocusedCallback) {
-            glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *window, int focused) {
+            glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *, int) {
             });
             return;
         }
 
-        glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *window, int focused) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onFocus(focused == GLFW_TRUE);
+        glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *window, const int focused) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_FocusedCallback(windowObject, focused == GLFW_TRUE);
         });
     }
 
@@ -648,14 +645,14 @@ namespace gp {
         m_RefreshCallback = std::move(callback);
 
         if (!m_RefreshCallback) {
-            glfwSetWindowRefreshCallback(m_Window, [](GLFWwindow *window) {
+            glfwSetWindowRefreshCallback(m_Window, [](GLFWwindow *) {
             });
             return;
         }
 
         glfwSetWindowRefreshCallback(m_Window, [](GLFWwindow *window) {
-            auto windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onRefreshRequired();
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_RefreshCallback(windowObject);
         });
     }
 
@@ -665,14 +662,14 @@ namespace gp {
         m_ContentScaleCallback = std::move(callback);
 
         if (!m_ContentScaleCallback) {
-            glfwSetWindowContentScaleCallback(m_Window, [](GLFWwindow *window, float xScale, float yScale) {
+            glfwSetWindowContentScaleCallback(m_Window, [](GLFWwindow *, float, float) {
             });
             return;
         }
 
-        glfwSetWindowContentScaleCallback(m_Window, [](GLFWwindow *window, float xScale, float yScale) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onContentScale(xScale, yScale);
+        glfwSetWindowContentScaleCallback(m_Window, [](GLFWwindow *window, const float xScale, const float yScale) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_ContentScaleCallback(windowObject, xScale, yScale);
         });
     }
 
@@ -682,14 +679,14 @@ namespace gp {
         m_FramebufferSizeCallback = std::move(callback);
 
         if (!m_FramebufferSizeCallback) {
-            glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
+            glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow *, int, int) {
             });
             return;
         }
 
-        glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onFramebufferSize(width, height);
+        glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow *window, const int width, const int height) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_FramebufferSizeCallback(windowObject, width, height);
         });
     }
 
@@ -699,14 +696,14 @@ namespace gp {
         m_MouseMotionCallback = std::move(callback);
 
         if (!m_MouseMotionCallback) {
-            glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xPos, double yPos) {
+            glfwSetCursorPosCallback(m_Window, [](GLFWwindow *, double, double) {
             });
             return;
         }
 
-        glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xPos, double yPos) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onMouseMotion((float) xPos, (float) yPos);
+        glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, const double xPos, const double yPos) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_MouseMotionCallback(windowObject, static_cast<float>(xPos), static_cast<float>(yPos));
         });
     }
 
@@ -716,14 +713,14 @@ namespace gp {
         m_MouseEnterCallback = std::move(callback);
 
         if (!m_MouseEnterCallback) {
-            glfwSetCursorEnterCallback(m_Window, [](GLFWwindow *window, int entered) {
+            glfwSetCursorEnterCallback(m_Window, [](GLFWwindow *, int) {
             });
             return;
         }
 
-        glfwSetCursorEnterCallback(m_Window, [](GLFWwindow *window, int entered) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onMouseEnter((bool) entered);
+        glfwSetCursorEnterCallback(m_Window, [](GLFWwindow *window, const int entered) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_MouseEnterCallback(windowObject, entered == GL_TRUE);
         });
     }
 
@@ -733,32 +730,14 @@ namespace gp {
         m_ScrollCallback = std::move(callback);
 
         if (!m_ScrollCallback) {
-            glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xScroll, double yScroll) {
+            glfwSetScrollCallback(m_Window, [](GLFWwindow *, double, double) {
             });
             return;
         }
 
-        glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xScroll, double yScroll) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onScroll((float) xScroll, (float) yScroll);
-        });
-    }
-
-    void Window::_setKeyCallback() const {
-        GP_CORE_DEBUG("gp::Window::_setKeyCallback() - '{0}'", m_Title);
-
-        glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onKeyPress(key, scancode, action, mods);
-        });
-    }
-
-    void Window::_setMouseButtonCallback() const {
-        GP_CORE_DEBUG("gp::Window::_setMouseButtonCallback() - '{0}'", m_Title);
-
-        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button, int action, int mods) {
-            auto *windowObject = (Window *) glfwGetWindowUserPointer(window);
-            windowObject->_onMousePress(button, action, mods);
+        glfwSetScrollCallback(m_Window, [](GLFWwindow *window, const double xScroll, const double yScroll) {
+            auto *windowObject = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            windowObject->m_ScrollCallback(windowObject, xScroll, yScroll);
         });
     }
 }
@@ -767,92 +746,34 @@ namespace gp {
 namespace gp {
     void Window::setDestroyCallback(std::function<void(Window *window)> callback) {
         GP_CORE_DEBUG("gp::Window::setDestroyCallback() - '{0}'", m_Title);
-
         m_DestroyCallback = std::move(callback);
     }
 
-    void Window::_onResize(int width, int height) {
+    void Window::_onResize(const int width, const int height) {
         GP_CORE_TRACE_ALL("gp::Window::on({1}, {2}) - '{0}'", m_Title, width, height);
 
         m_Width = width;
         m_Height = height;
 
         if (m_ResizeCallback) {
-            m_ResizeCallback((Window *) this, width, height);
+            m_ResizeCallback(this, width, height);
         }
 
         update();
     }
 
-    void Window::_onClose() {
-        GP_CORE_DEBUG("gp::Window::_onClose() - '{0}'", m_Title);
-        m_CloseCallback((Window *) this);
-    }
-
-    void Window::_onDestroy() {
-        GP_CORE_DEBUG("gp::Window::_onDestroy() - '{0}'", m_Title);
-        if (m_DestroyCallback) {
-            m_DestroyCallback((Window *) this);
-        }
-    }
-
-    void Window::_onMove(int xPos, int yPos) {
+    void Window::_onMove(const int xPos, const int yPos) {
         GP_CORE_TRACE_ALL("gp::Window::_onMove({1}, {2}) - '{0}'", m_Title, xPos, yPos);
 
         m_xPos = xPos;
         m_yPos = yPos;
 
         if (m_PositionCallback) {
-            m_PositionCallback((Window *) this, xPos, yPos);
+            m_PositionCallback(this, xPos, yPos);
         }
     }
 
-    void Window::_onMinimize(bool iconified) {
-        GP_CORE_DEBUG("gp::Window::_onMinimize() - '{0}'", m_Title);
-        m_MinimizeCallback((Window *) this, iconified);
-    }
-
-    void Window::_onMaximize(bool maximized) {
-        GP_CORE_DEBUG("gp::Window::_onMaximize() - '{0}'", m_Title);
-        m_MaximizeCallback((Window *) this, maximized);
-    }
-
-    void Window::_onFocus(bool focused) {
-        GP_CORE_DEBUG("gp::Window::_onFocus() - '{0}'", m_Title);
-        m_FocusedCallback((Window *) this, focused);
-    }
-
-    void Window::_onRefreshRequired() {
-        GP_CORE_TRACE_ALL("gp::Window::_onRefreshRequired() - '{0}'", m_Title);
-        m_RefreshCallback((Window *) this);
-    }
-
-    void Window::_onContentScale(float xScale, float yScale) {
-        GP_CORE_TRACE_ALL("gp::Window::_onContentScale({1}, {2}) - '{0}'", m_Title, xScale, yScale);
-        m_ContentScaleCallback((Window *) this, xScale, yScale);
-    }
-
-    void Window::_onFramebufferSize(int width, int height) {
-        GP_CORE_TRACE_ALL("gp::Window::_onFramebufferSize({1}, {2}) - '{0}'", m_Title, width, height);
-        m_FramebufferSizeCallback((Window *) this, width, height);
-    }
-
-    void Window::_onMouseMotion(float xPos, float yPos) {
-        GP_CORE_TRACE_ALL("gp::Window::_onMouseMotion({1}, {2}) - '{0}'", m_Title, xPos, yPos);
-        m_MouseMotionCallback((Window *) this, xPos, yPos);
-    }
-
-    void Window::_onMouseEnter(bool entered) {
-        GP_CORE_TRACE_ALL("gp::Window::_onMouseEnter({1}) - '{0}'", m_Title, entered);
-        m_MouseEnterCallback((Window *) this, entered);
-    }
-
-    void Window::_onScroll(float xScroll, float yScroll) {
-        GP_CORE_TRACE_ALL("gp::Window::_onScroll({1}, {2}) - '{0}'", m_Title, xScroll, yScroll);
-        m_ScrollCallback((Window *) this, xScroll, yScroll);
-    }
-
-    void Window::_onKeyPress(int key, [[maybe_unused]] int scancode, int action, int mods) {
+    void Window::_onKeyPress(const int key, int, const int action, const int mods) {
         GP_CORE_TRACE_ALL("gp::Window::_onKeyPress({1}, {2}, {3}, {4}) - '{0}'", m_Title, key, scancode, action, mods);
 
         m_KeyModifiers = mods;
@@ -861,37 +782,33 @@ namespace gp {
         }
     }
 
-    void Window::setKeyCallback(int key, std::function<void(Window *window, int action)> callback) {
+    void Window::setKeyCallback(const int key, std::function<void(Window *window, int action)> callback) {
         GP_CORE_DEBUG("gp::Window::setKeyCallback({1}) - '{0}'", m_Title, key);
 
         if (callback) {
             m_KeyCallbacks[key] = std::move(callback);
-        }
-        else if (m_KeyCallbacks.contains(key)) {
+        } else if (m_KeyCallbacks.contains(key)) {
             m_KeyCallbacks.erase(key);
         }
-        // _setKeyCallback(); // Not required as it is already set in super()
     }
 
-    void Window::_onMousePress(int button, int action, int mods) {
+    void Window::_onMousePress(const int button, const int action, const int mods) {
         GP_CORE_TRACE_ALL("gp::Window::_onMousePress({1}, {2}, {3}) - '{0}'", m_Title, button, action, mods);
 
         m_KeyModifiers = mods;
         if (m_MouseCallbacks.contains(button)) {
-            m_MouseCallbacks[button]((Window *) this, (bool) action);
+            m_MouseCallbacks[button](this, static_cast<bool>(action));
         }
     }
 
-    void Window::setMouseButtonCallback(int button, std::function<void(Window *window, bool pressed)> callback) {
+    void Window::setMouseButtonCallback(const int button, std::function<void(Window *window, bool pressed)> callback) {
         GP_CORE_DEBUG("gp::Window::setMouseButtonCallback({1}) - '{0}'", m_Title, button);
 
         if (callback) {
             m_MouseCallbacks[button] = std::move(callback);
-        }
-        else if (m_MouseCallbacks.contains(button)) {
+        } else if (m_MouseCallbacks.contains(button)) {
             m_MouseCallbacks.erase(button);
         }
-        // _setMouseButtonCallback(); // Not required as it is already set in super()
     }
 
     void Window::setLeftClickCallback(std::function<void(Window *, bool)> callback) {
@@ -904,60 +821,6 @@ namespace gp {
 
     void Window::setRightClickCallback(std::function<void(Window *, bool)> callback) {
         setMouseButtonCallback(GP_MOUSE_RIGHT_BUTTON, std::move(callback));
-    }
-}
-
-// Window private methods
-namespace gp {
-    void Window::_swapBuffers() const {
-        GP_CORE_TRACE_ALL("gp::Window::_swapBuffers() - {0}", m_Title);
-        glfwSwapBuffers(m_Window);
-    }
-
-    void Window::_destroy() const {
-        GP_CORE_TRACE("gp::Window::_destroy() - '{0}'", m_Title);
-        glfwDestroyWindow(m_Window);
-    }
-
-    void Window::_updateSize() const {
-        GP_CORE_TRACE("gp::Window::_updateSize() - '{0}' - ({1}, {2})", m_Title, m_Width, m_Height);
-        glfwSetWindowSize(m_Window, m_Width, m_Height);
-    }
-
-    void Window::_updatePosition() const {
-        GP_CORE_TRACE("gp::Window::_updatePosition() - '{0}'", m_Title);
-        glfwSetWindowPos(m_Window, m_xPos, m_yPos);
-    }
-
-    void Window::_updateSizeLimits() const {
-        GP_CORE_TRACE("gp::Window::_updateSizeLimits({1}, {2}, {3}, {4}) - '{0}'", m_Title,
-                      m_MinWidth, m_MinHeight, m_MaxWidth, m_MaxHeight);
-        glfwSetWindowSizeLimits(m_Window, m_MinWidth, m_MinHeight,
-                                m_MaxWidth == INT_MAX ? GLFW_DONT_CARE : m_MaxWidth,
-                                m_MaxHeight == INT_MAX ? GLFW_DONT_CARE : m_MaxHeight);
-    }
-
-    void Window::_updateAspectRatio(int numerator, int denominator) const {
-        GP_CORE_TRACE("gp::Window::_updateAspectRatio() - '{0}'", m_Title);
-        glfwSetWindowAspectRatio(m_Window, numerator, denominator);
-    }
-
-    void Window::_fullscreen() const {
-        GP_CORE_TRACE("gp::Window::_fullscreen() - '{0}'", m_Title);
-
-        GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-        const GLFWvidmode *mode = glfwGetVideoMode(monitor);
-        glfwSetWindowMonitor(m_Window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-    }
-
-    void Window::_unfullscreen(int width, int height, int xPos, int yPos) const {
-        GP_CORE_TRACE("gp::Window::_unfullscreen() - '{0}'", m_Title);
-        glfwSetWindowMonitor(m_Window, nullptr, xPos, yPos, width, height, 0);
-    }
-
-    void Window::_restore() const {
-        GP_CORE_TRACE("gp::Window::_restore() - '{0}'", m_Title);
-        glfwRestoreWindow(m_Window);
     }
 }
 

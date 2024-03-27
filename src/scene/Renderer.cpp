@@ -12,7 +12,7 @@
 #include "objects/TexturedQuad.h"
 
 namespace gp {
-    Renderer::Renderer(const Window &window)
+    Renderer::Renderer(const RenderingManager &window)
         : m_Window(window) {
     }
 

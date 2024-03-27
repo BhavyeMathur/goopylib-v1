@@ -131,20 +131,20 @@ namespace gp {
     }
 
     void Line::setP3(Point point) {
-        GP_CORE_ERROR("gp::Line cannot set point 3");
+        GP_VALUE_ERROR("gp::Line cannot set point 3");
     }
 
     Point Line::getP3() const {
-        GP_CORE_ERROR("gp::Line cannot get point 3");
+        GP_VALUE_ERROR("gp::Line cannot get point 3");
         return {NAN, NAN};
     }
 
     void Line::setP4(Point point) {
-        GP_CORE_ERROR("gp::Line cannot set point 4");
+        GP_VALUE_ERROR("gp::Line cannot set point 3");
     }
 
     Point Line::getP4() const {
-        GP_CORE_ERROR("gp::Line cannot set point 4");
+        GP_VALUE_ERROR("gp::Line cannot get point 4");
         return {NAN, NAN};
     }
 }

@@ -30,6 +30,8 @@ namespace gp {
     public:
         friend std::ostream &operator<<(std::ostream &out, const Renderable &obj);
 
+        virtual ~Renderable() = default;
+
         /**
          *
          * @return a string representation of the object
@@ -43,7 +45,7 @@ namespace gp {
          *
          * @throws std::runtime_error the window has been destroyed
          */
-        void draw(Window &window);
+        [[maybe_unused]] Renderable &draw(Window &window);
 
         /**
          * Destroys and undraws the object
@@ -104,6 +106,21 @@ namespace gp {
          * @return the y position of the object's anchor in world coordinates
          */
         [[nodiscard]] float getY() const;
+
+        /**
+         * Sets the z-index/position of the object
+         *
+         * @param value the z-position of the object
+         *
+         */
+        void setZ(float value);
+
+        /**
+         *
+         * @return the z-position of the object
+         *
+         */
+        [[nodiscard]] float getZ() const;
 
         /**
          * Sets the position of the object by moving its anchor
@@ -208,6 +225,12 @@ namespace gp {
         [[nodiscard]] float getHeight() const;
 
         /**
+         *
+         * @return the window this object is drawn to
+         */
+        [[nodiscard]] gp::Window& getWindow() const;
+
+        /**
          * Sets the dimensions of the object by resizing it
          * @param width in screen coordinates
          * @param height in screen coordinates
@@ -240,21 +263,6 @@ namespace gp {
          * @return whether the object is hidden
          */
         [[nodiscard]] bool isHidden() const;
-
-        /**
-         * Sets the z-index/position of the object
-         *
-         * @param value the z-position of the object
-         *
-         */
-        void setZPosition(float value);
-
-        /**
-         *
-         * @return the z-position of the object
-         *
-         */
-        [[nodiscard]] float getZPosition() const;
 
         /* Methods */
 
@@ -331,11 +339,11 @@ namespace gp {
 
         float m_ZPosition = 0;
 
+        Renderable() = default;
+
         Renderable(Point position, std::initializer_list<Point> points);
 
         Renderable(std::initializer_list<Point> points);
-
-        Renderable() = default;
 
         void update();
 

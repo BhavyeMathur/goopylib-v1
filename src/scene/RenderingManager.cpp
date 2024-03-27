@@ -10,23 +10,21 @@
 #include "objects/Line.h"
 #include "objects/Image.h"
 
-#include "debug/Error.h"
-
 #include <opengl.h>
 
 namespace gp {
-    RenderingManager::RenderingManager(const Window &window, int width, int height, const char *title) : m_Width(width),
-        m_Height(height),
-        m_Title(title),
-        m_Background(Color(255, 255, 255)),
-        m_Camera((float) -width / 2.0f, (float) width / 2.0f, (float) -height / 2.0f, (float) height / 2.0f),
-        m_Renderer(window),
-        m_AlphaRenderer(window) {
+    RenderingManager::RenderingManager(const int width, const int height, const std::string &title)
+        : m_Width{width},
+          m_Height{height},
+          m_Title{std::move(title)},
+          m_Background{255, 255, 255},
+          m_Camera{-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f},
+          m_Renderer{*this},
+          m_AlphaRenderer{*this} {
     }
 
     void RenderingManager::init() {
         Texture2D::init();
-//        TextureAtlas::init();
 
         m_Renderer.init();
         m_AlphaRenderer.init();
@@ -42,7 +40,7 @@ namespace gp {
         m_TextureShader.compile();
         m_TextureShader.set("Texture", Texture2D::getTextureSlots(), samplers);
 
-        m_ShaderUniform = unique_ptr<UniformBuffer>(new UniformBuffer({{ShaderDataType::Mat4, "PVMatrix"}}));
+        m_ShaderUniform = make_unique<UniformBuffer>(BufferLayout{{ShaderDataType::Mat4, "PVMatrix"}});
         m_ShaderUniform->init();
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1);
 
@@ -52,52 +50,24 @@ namespace gp {
     }
 
     void RenderingManager::render() {
-        _enableDepthWriting();
-        _updateBackground();
+        glDepthMask(true);
+
+        glClearColor(m_Background.getRedf(),
+                     m_Background.getGreenf(),
+                     m_Background.getBluef(), 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_ShaderUniform->setData(&m_Camera.m_ProjectionViewMatrix, 1, 0);
         m_Renderer.flush();
 
-        _disableDepthWriting();
+        glDepthMask(false);
         m_AlphaRenderer.flush();
     }
 }
 
 namespace gp {
-    // Width
-    void RenderingManager::setWidth(int value) {
-        GP_CORE_DEBUG("gp::RenderingManager::setWidth({1}) - '{0}'", m_Title, value);
-
-        GP_CHECK_GT(value, 0, "Window width must be greater than 0")
-
-        m_Width = value;
-        _updateSize();
-    }
-
-    int RenderingManager::getWidth() const {
-        GP_CORE_TRACE("gp::RenderingManager::getWidth() - '{0}'", m_Title);
-        return m_Width;
-    }
-
-    // Height
-    void RenderingManager::setHeight(int value) {
-        GP_CORE_DEBUG("gp::RenderingManager::setHeight({1}) - '{0}'", m_Title, value);
-
-        GP_CHECK_GT(value, 0, "Window height must be greater than 0")
-
-        m_Height = value;
-        _updateSize();
-    }
-
-    int RenderingManager::getHeight() const {
-        GP_CORE_TRACE("gp::RenderingManager::getHeight() - '{0}'", m_Title);
-        return m_Height;
-    }
-
-    // Background
     void RenderingManager::setBackground(const Color &value) {
         GP_CORE_DEBUG("gp::RenderingManager::setBackground({1}) - '{0}'", m_Title, value.toString());
-
         m_Background = value;
     }
 
@@ -114,8 +84,8 @@ namespace gp {
     Point RenderingManager::toWorld(Point p) const {
         GP_CORE_TRACE_ALL("gp::RenderingManager::toWorld({1}, {2}) - '{0}'", m_Title, p.x, p.y);
 
-        p.x /= (float) (m_Width >> 1);
-        p.y /= (float) (m_Height >> 1);
+        p.x /= static_cast<float>(m_Width >> 1);
+        p.y /= static_cast<float>(m_Height >> 1);
 
         p.x -= 1;
         p.y = 1 - p.y;
@@ -125,13 +95,13 @@ namespace gp {
         return {pos.x, pos.y};
     }
 
-    Point RenderingManager::toScreen(Point p) const {
+    Point RenderingManager::toScreen(const Point p) const {
         GP_CORE_TRACE_ALL("gp::RenderingManager::toScreen({1}, {2}) - '{0}'", m_Title, p.x, p.y);
 
         auto pos = m_Camera.m_ProjectionViewMatrix * glm::vec4(p.x, p.y, 0, 1.0);
 
-        const auto halfWidth = (float) (m_Width >> 1);
-        const auto halfHeight = (float) (m_Height >> 1);
+        const auto halfWidth = static_cast<float>(m_Width >> 1);
+        const auto halfHeight = static_cast<float>(m_Height >> 1);
 
         pos.x *= halfWidth;
         pos.x += halfWidth;
@@ -180,7 +150,7 @@ namespace gp {
     }
 
     void RenderingManager::_undrawRenderable(Renderable *object) {
-        uint32_t ID = object->m_RendererID;
+        const uint32_t ID = object->m_RendererID;
         GP_CORE_TRACE("gp::RenderingManager::destroy({0})", ID);
 
         Renderer &renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
@@ -239,20 +209,5 @@ namespace gp {
             case RenderableSubclass::TexturedQuad:
                 renderer.updateTexturedQuad(ID, dynamic_cast<TexturedQuad *>(object));
         }
-    }
-
-    void RenderingManager::_updateBackground() {
-        glClearColor(m_Background.getRedf(),
-                     m_Background.getGreenf(),
-                     m_Background.getBluef(), 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    void RenderingManager::_enableDepthWriting() {
-        glDepthMask(true);
-    }
-
-    void RenderingManager::_disableDepthWriting() {
-        glDepthMask(false);
     }
 }

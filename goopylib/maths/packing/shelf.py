@@ -78,8 +78,7 @@ class Shelf:
         self.bin._add(item)
         self.items.append(item)
 
-        if item.height > self.height:
-            self.height = item.height
+        self.height = max(self.height, item.height)
 
         self.packed_width += item.width
         self.available_width -= item.width
@@ -544,5 +543,3 @@ class WorstAreaFit(ScoredFit):
         """
         super().__init__(bin_width, bin_height,
                          lambda shelf, obj: -(shelf.packed_width + obj.width) * max(obj.height, shelf.height))
-
-# pylint: enable=redefined-builtin

@@ -2,5 +2,6 @@
 goopylib module initialization
 """
 
-from .camera import Camera
-from .camera_controller import CameraController
+# pylint: disable=import-error
+from .camera import *
+from .camera_controller import *

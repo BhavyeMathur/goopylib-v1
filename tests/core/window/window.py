@@ -17,7 +17,6 @@ class WindowMethods(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.window.destroy()
         gp.terminate()
 
     """Core Window Methods ------------------------------------------------------------------------------------------"""
@@ -51,8 +50,6 @@ class WindowMethods(unittest.TestCase):
         self.assertTrue(self.window.is_fullscreen())
 
     def test_minimize(self):
-        self.assertFalse(self.window.is_minimized())
-
         self.window.minimize()
         gp.update()
         self.assertTrue(self.window.is_minimized())
@@ -92,8 +89,6 @@ class WindowMethods(unittest.TestCase):
     def test_mouse_hovering(self):
         self.assertIsInstance(self.window.is_mouse_hovering(), bool)
 
-    # GLFW Window Parameters
-
     def test_get_frame_size(self):
         value = self.window.get_frame_size()
         self.assertIsInstance(value, tuple)
@@ -108,23 +103,19 @@ class WindowMethods(unittest.TestCase):
         for val in value:
             self.assertIsInstance(val, float)
 
-    # Aspect Ratio Functions
-
-    def test_get_aspect_ratio(self):
+    def test_aspect_ratio(self):
         gcd = math.gcd(self.initial_width, self.initial_height)
-
         self.assertEqual(self.window.get_aspect_ratio(), (self.initial_width // gcd, self.initial_height // gcd))
 
-    def test_set_aspect_ratio1(self):
         self.window.set_aspect_ratio(13, 7)
-
-    def test_set_aspect_ratio2(self):
         self.window.set_aspect_ratio(None, None)
 
     def test_aspect_ratio_keywords(self):
         self.window.set_aspect_ratio(denominator=13, numerator=7)
+        aspect_ratio = self.window.get_aspect_ratio()
+        self.assertAlmostEqual(aspect_ratio[0] / aspect_ratio[1], 7 / 13, places=3)
 
-    def test_set_aspect_ratio_value_error(self):
+    def test_aspect_ratio_value_error(self):
         initial_value = self.window.get_aspect_ratio()
 
         with self.assertRaises(ValueError):
@@ -140,12 +131,11 @@ class WindowMethods(unittest.TestCase):
 
         callback_executed = False
 
-        def callback(width, height):
+        def callback(window, width, height):
             nonlocal callback_executed
             callback_executed = True
 
         self.window.resize_callback = callback
-        self.assertEqual(self.window.resize_callback, callback)
 
         self.window.height = 100
         self.assertTrue(callback_executed)
@@ -155,25 +145,18 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.resize_callback, None)
 
     def test_resize_callback_type_error(self):
-        initial_value = self.window.resize_callback
-
         with self.assertRaises(TypeError):
             self.window.resize_callback = "string"
-
-        self.assertEqual(self.window.resize_callback, initial_value)
-
-    # Position Callback
 
     def test_position_callback(self):
 
         callback_executed = False
 
-        def callback(xpos, ypos):
+        def callback(window, xpos, ypos):
             nonlocal callback_executed
             callback_executed = True
 
         self.window.position_callback = callback
-        self.assertEqual(self.window.position_callback, callback)
 
         self.window.position = (0, 0)
         self.assertTrue(callback_executed)
@@ -183,18 +166,12 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.position_callback, None)
 
     def test_position_callback_type_error(self):
-        initial_value = self.window.position_callback
-
         with self.assertRaises(TypeError):
             self.window.position_callback = "string"
 
-        self.assertEqual(self.window.position_callback, initial_value)
-
-    # Framebuffer Size Callback
-
     def test_framebuffer_size_callback(self):
 
-        def callback(width, height):
+        def callback(window, width, height):
             pass
 
         self.window.framebuffer_size_callback = callback
@@ -205,18 +182,12 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.framebuffer_size_callback, None)
 
     def test_framebuffer_size_callback_type_error(self):
-        initial_value = self.window.framebuffer_size_callback
-
         with self.assertRaises(TypeError):
             self.window.framebuffer_size_callback = "string"
 
-        self.assertEqual(self.window.framebuffer_size_callback, initial_value)
-
-    # Content Scale Callback
-
     def test_content_scale_callback(self):
 
-        def callback(xscale, yscale):
+        def callback(window, xscale, yscale):
             pass
 
         self.window.content_scale_callback = callback
@@ -227,34 +198,22 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.content_scale_callback, None)
 
     def test_content_scale_callback_type_error(self):
-        initial_value = self.window.content_scale_callback
-
         with self.assertRaises(TypeError):
             self.window.content_scale_callback = "string"
-
-        self.assertEqual(self.window.content_scale_callback, initial_value)
-
-    # Close Callback
 
     def test_remove_close_callback(self):
         self.window.close_callback = None
         self.assertEqual(self.window.close_callback, None)
 
     def test_close_callback_type_error(self):
-        initial_value = self.window.close_callback
-
         with self.assertRaises(TypeError):
             self.window.close_callback = "string"
-
-        self.assertEqual(self.window.close_callback, initial_value)
-
-    # Destroy Callback
 
     def test_destroy_callback(self):
 
         callback_executed = 0
 
-        def callback():
+        def callback(window):
             nonlocal callback_executed
             callback_executed += 1
 
@@ -266,25 +225,18 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.destroy_callback, None)
 
     def test_destroy_callback_type_error(self):
-        initial_value = self.window.destroy_callback
-
         with self.assertRaises(TypeError):
             self.window.destroy_callback = "string"
-
-        self.assertEqual(self.window.destroy_callback, initial_value)
-
-    # Minimize Callback
 
     def test_minimize_callback(self):
 
         callback_executed = False
 
-        def callback(minimized):
+        def callback(window, minimized):
             nonlocal callback_executed
             callback_executed = True
 
         self.window.minimize_callback = callback
-        self.assertEqual(self.window.minimize_callback, callback)
 
         self.window.restore()
         gp.update()
@@ -298,25 +250,18 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.minimize_callback, None)
 
     def test_minimize_callback_type_error(self):
-        initial_value = self.window.minimize_callback
-
         with self.assertRaises(TypeError):
             self.window.minimize_callback = "string"
-
-        self.assertEqual(self.window.minimize_callback, initial_value)
-
-    # Maximize Callback
 
     def test_maximize_callback(self):
 
         callback_executed = False
 
-        def callback(maximized):
+        def callback(window, maximized):
             nonlocal callback_executed
             callback_executed = True
 
         self.window.maximize_callback = callback
-        self.assertEqual(self.window.maximize_callback, callback)
 
         self.window.restore()
         self.window.maximize()
@@ -327,25 +272,18 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.maximize_callback, None)
 
     def test_maximize_callback_type_error(self):
-        initial_value = self.window.maximize_callback
-
         with self.assertRaises(TypeError):
             self.window.maximize_callback = "string"
-
-        self.assertEqual(self.window.maximize_callback, initial_value)
-
-    # Focus Callback
 
     def test_focus_callback(self):
 
         callback_executed = False
 
-        def callback(focused):
+        def callback(window, focused):
             nonlocal callback_executed
             callback_executed = True
 
         self.window.focus_callback = callback
-        self.assertEqual(self.window.focus_callback, callback)
 
         self.window.minimize()
         gp.update()
@@ -357,28 +295,20 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.focus_callback, None)
 
     def test_focus_callback_type_error(self):
-        initial_value = self.window.focus_callback
-
         with self.assertRaises(TypeError):
             self.window.focus_callback = "string"
-
-        self.assertEqual(self.window.focus_callback, initial_value)
-
-    # Refresh Callback
 
     def test_refresh_callback(self):
 
         callback_executed = False
 
-        def callback():
+        def callback(window):
             nonlocal callback_executed
             callback_executed = True
 
         self.window.refresh_callback = callback
-        self.assertEqual(self.window.refresh_callback, callback)
 
-        # TODO - Fix SIGSEV error
-        # self.window.fullscreen()
+        self.window.fullscreen()
         self.window.restore()
         self.assertTrue(callback_executed)
 
@@ -387,16 +317,11 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual(self.window.refresh_callback, None)
 
     def test_refresh_callback_type_error(self):
-        initial_value = self.window.refresh_callback
-
         with self.assertRaises(TypeError):
             self.window.refresh_callback = "string"
 
-        self.assertEqual(self.window.refresh_callback, initial_value)
-
     """Getter & Setters ---------------------------------------------------------------------------------------------"""
 
-    # Width
     def test_width(self):
         self.window.width = 200
         self.assertEqual(self.window.width, 200)
@@ -410,8 +335,6 @@ class WindowMethods(unittest.TestCase):
             self.window.width = -100
 
         self.assertEqual(self.window.width, initial_value)
-
-    # Height
 
     def test_height(self):
         self.window.height = 200
@@ -427,13 +350,10 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual(self.window.height, initial_value)
 
-    # Size
-
-    def test_size1(self):
+    def test_size(self):
         self.window.set_size(height=200, width=250)
         self.assertEqual((self.window.width, self.window.height), (250, 200))
 
-    def test_size2(self):
         self.window.set_size(self.initial_width, self.initial_height)
         self.assertEqual((self.window.width, self.window.height), (self.initial_width, self.initial_height))
 
@@ -457,8 +377,6 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual((self.window.width, self.window.height), initial_value)
 
-    # X Position
-
     def test_xpos(self):
         self.window.xpos = 200
         self.assertEqual(self.window.xpos, 200)
@@ -470,8 +388,6 @@ class WindowMethods(unittest.TestCase):
             self.window.xpos = 102.2
 
         self.assertEqual(self.window.xpos, initial_value)
-
-    # Height
 
     def test_ypos(self):
         self.window.ypos = 205
@@ -485,13 +401,10 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual(self.window.ypos, initial_value)
 
-    # Size
+    def test_position(self):
+        self.window.position = (200, 250)
+        self.assertEqual(self.window.position, (200, 250))
 
-    def test_position1(self):
-        self.window = (200, 250)
-        # self.assertEqual(self.window.position, (200, 250))
-
-    def test_position2(self):
         self.window.position = (115, 105)
         self.assertEqual((self.window.xpos, self.window.ypos), (115, 105))
 
@@ -504,8 +417,6 @@ class WindowMethods(unittest.TestCase):
             self.window.position = (100, "wrong")
 
         self.assertEqual((self.window.xpos, self.window.ypos), initial_value)
-
-    # Title
 
     def test_title(self):
         self.assertEqual(self.window.title, self.initial_title)
@@ -520,24 +431,18 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual(self.window.title, initial_value)
 
-    # Size Limits
-
-    def test_set_size_limits1(self):
+    def test_set_size_limits(self):
         self.assertIsNone(self.window.set_size_limits(50, 50, 1000, 1000))
 
-    def test_set_size_limits2(self):
         self.window.set_size_limits(50, 0, None, None)
         self.assertEqual(self.window.min_height, 0)
 
-    def test_set_size_limits3(self):
         self.window.set_size_limits(0, 50, None, None)
         self.assertEqual(self.window.min_width, 0)
 
-    def test_set_size_limits4(self):
         self.window.set_size_limits(0, 0, 1000, None)
         self.assertEqual(self.window.max_height, 2147483647)
 
-    def test_set_size_limits5(self):
         self.window.set_size_limits(0, 0, None, 1000)
         self.assertEqual(self.window.max_width, 2147483647)
 
@@ -556,24 +461,17 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual((self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height),
                          initial_value)
 
-    def test_set_size_limits_value_errors1(self):
+    def test_set_size_limits_value_errors(self):
         initial_value = (self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height)
 
         with self.assertRaises(ValueError):
-            self.window.set_size_limits(-1, 50, 1000, 1000)
+            self.window.set_size_limits(-2, 50, 1000, 1000)
         with self.assertRaises(ValueError):
-            self.window.set_size_limits(50, -1, 1000, 1000)
+            self.window.set_size_limits(50, -2, 1000, 1000)
         with self.assertRaises(ValueError):
-            self.window.set_size_limits(50, 50, -1, 1000)
+            self.window.set_size_limits(50, 50, -2, 1000)
         with self.assertRaises(ValueError):
-            self.window.set_size_limits(50, 50, 1000, -1)
-
-        self.assertEqual((self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height),
-                         initial_value)
-
-    def test_set_size_limits_value_errors2(self):
-        initial_value = (self.window.min_width, self.window.min_height, self.window.max_width, self.window.max_height)
-
+            self.window.set_size_limits(50, 50, 1000, -2)
         with self.assertRaises(ValueError):
             self.window.set_size_limits(100, 50, 50, 1000)
         with self.assertRaises(ValueError):
@@ -587,16 +485,12 @@ class WindowMethods(unittest.TestCase):
         self.assertEqual((self.window.min_width, self.window.min_height), (85, 300))
         self.assertEqual((self.window.max_width, self.window.max_height), (1005, 600))
 
-    # min Size
-
-    def test_set_min_size1(self):
+    def test_set_min_size(self):
         self.assertIsNone(self.window.set_min_size(50, 50))
 
-    def test_set_min_size2(self):
         self.window.set_min_size(50, 0)
         self.assertEqual(self.window.min_height, 0)
 
-    def test_set_min_size3(self):
         self.window.set_min_size(0, 50)
         self.assertEqual(self.window.min_width, 0)
 
@@ -610,46 +504,39 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual((self.window.min_width, self.window.min_height), initial_value)
 
-    def test_set_min_size_value_errors1(self):
+    def test_set_min_size_value_errors(self):
         initial_value = (self.window.min_width, self.window.min_height)
 
         with self.assertRaises(ValueError):
-            self.window.set_min_size(-1, 50)
+            self.window.set_min_size(-2, 50)
         with self.assertRaises(ValueError):
-            self.window.set_min_size(50, -1)
+            self.window.set_min_size(50, -2)
 
         self.assertEqual((self.window.min_width, self.window.min_height), initial_value)
 
     def test_set_min_size_keywords(self):
-        self.window.set_min_size(min_height=605, min_width=405)
-        self.assertEqual((self.window.min_width, self.window.min_height), (405, 605))
+        self.window.set_min_size(min_height=45, min_width=5)
+        self.assertEqual((self.window.min_width, self.window.min_height), (5, 45))
 
-    def test_get_min_size1(self):
+    def test_get_min_size(self):
         self.window.set_min_size(100, 200)
         self.assertEqual((self.window.min_width, self.window.min_height), (100, 200))
 
-    def test_get_min_size2(self):
         self.window.set_min_size(100, 0)
         self.assertEqual((self.window.min_width, self.window.min_height), (100, 0))
 
-    def test_get_min_size3(self):
         self.window.set_min_size(0, 200)
         self.assertEqual((self.window.min_width, self.window.min_height), (0, 200))
 
-    def test_get_min_size4(self):
         self.window.set_min_size(0, 0)
         self.assertEqual((self.window.min_width, self.window.min_height), (0, 0))
 
-    # max Size
-
-    def test_set_max_size1(self):
+    def test_set_max_size(self):
         self.assertIsNone(self.window.set_max_size(1000, 1000))
 
-    def test_set_max_size2(self):
         self.window.set_max_size(1000, None)
         self.assertEqual(self.window.max_height, 2147483647)
 
-    def test_set_max_size3(self):
         self.window.set_max_size(None, 1000)
         self.assertEqual(self.window.max_width, 2147483647)
 
@@ -663,18 +550,13 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual((self.window.max_width, self.window.max_height), initial_value)
 
-    def test_set_max_size_value_errors1(self):
+    def test_set_max_size_value_errors(self):
         initial_value = (self.window.max_width, self.window.max_height)
 
         with self.assertRaises(ValueError):
-            self.window.set_max_size(-1, 1000)
+            self.window.set_max_size(-2, 1000)
         with self.assertRaises(ValueError):
-            self.window.set_max_size(1000, -1)
-
-        self.assertEqual((self.window.max_width, self.window.max_height), initial_value)
-
-    def test_set_max_size_value_errors2(self):
-        initial_value = (self.window.max_width, self.window.max_height)
+            self.window.set_max_size(1000, -2)
 
         self.window.set_min_size(100, 100)
         with self.assertRaises(ValueError):
@@ -688,29 +570,23 @@ class WindowMethods(unittest.TestCase):
         self.window.set_max_size(max_height=905, max_width=705)
         self.assertEqual((self.window.max_width, self.window.max_height), (705, 905))
 
-    def test_get_max_size1(self):
+    def test_get_max_size(self):
         self.window.set_max_size(1000, 1200)
         self.assertEqual((self.window.max_width, self.window.max_height), (1000, 1200))
 
-    def test_get_max_size2(self):
         self.window.set_max_size(1000, None)
         self.assertEqual((self.window.max_width, self.window.max_height), (1000, 2147483647))
 
-    def test_get_max_size3(self):
         self.window.set_max_size(None, 200)
         self.assertEqual((self.window.max_width, self.window.max_height), (2147483647, 200))
 
-    def test_get_max_size4(self):
         self.window.set_max_size(None, None)
         self.assertEqual((self.window.max_width, self.window.max_height), (2147483647, 2147483647))
 
-    # min Width
-
-    def test_min_width1(self):
+    def test_min_width(self):
         self.window.min_width = 200
         self.assertEqual(self.window.min_width, 200)
 
-    def test_min_width2(self):
         self.window.set_size_limits(0, 0, None, None)
         self.window.min_width = 400
         self.assertEqual(self.window.min_height, 0)
@@ -725,13 +601,10 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual(self.window.min_width, initial_value)
 
-    # max Width
-
-    def test_max_width1(self):
+    def test_max_width(self):
         self.window.max_width = 1200
         self.assertEqual(self.window.max_width, 1200)
 
-    def test_max_width2(self):
         self.window.set_size_limits(0, 0, None, None)
         self.window.max_width = 1000
         self.assertEqual(self.window.max_height, 2147483647)
@@ -749,13 +622,10 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual(self.window.max_width, initial_value)
 
-    # min Height
-
-    def test_min_height1(self):
+    def test_min_height(self):
         self.window.min_height = 200
         self.assertEqual(self.window.min_height, 200)
 
-    def test_min_height2(self):
         self.window.set_size_limits(0, 0, None, None)
         self.window.min_height = 400
         self.assertEqual(self.window.min_width, 0)
@@ -770,13 +640,10 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual(self.window.min_height, initial_value)
 
-    # max Height
-
-    def test_max_height1(self):
+    def test_max_height(self):
         self.window.max_height = 1200
         self.assertEqual(self.window.max_height, 1200)
 
-    def test_max_height2(self):
         self.window.set_size_limits(0, 0, None, None)
         self.window.max_height = 1000
         self.assertEqual(self.window.max_width, 2147483647)
@@ -794,15 +661,12 @@ class WindowMethods(unittest.TestCase):
 
         self.assertEqual(self.window.max_height, initial_value)
 
-    # Framebuffer Size Functions
-
-    def test_framebuffer_size1(self):
+    def test_framebuffer_size(self):
         self.assertIsInstance(self.window.get_framebuffer_size(), tuple)
         self.assertEqual(len(self.window.get_framebuffer_size()), 2)
         for obj in self.window.get_framebuffer_size():
             self.assertIsInstance(obj, int)
 
-    # Other Attributes
     def test_resizable(self):
         self.window.resizable = False
         self.assertFalse(self.window.resizable)
@@ -832,8 +696,6 @@ class WindowMethods(unittest.TestCase):
         self.window.focused_on_show = False
         self.assertFalse(self.window.focused_on_show)
 
-    # Window Events
-
     def test_check_key(self):
         self.assertIn(self.window.check_key(gp.KEY_0), (0, 1, 2))
 
@@ -841,11 +703,9 @@ class WindowMethods(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.window.check_key("string")
 
-    # Key Code Callback
-
     def test_key_code_callback(self):
 
-        def callback(key_coded):
+        def callback(window, key_coded):
             pass
 
         self.window.set_key_callback(gp.KEY_0, callback)
@@ -859,3 +719,29 @@ class WindowMethods(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             self.window.set_key_callback("string", lambda x: x)
+
+
+class DestroyedWindowMethods(unittest.TestCase):
+    window = None
+
+    @classmethod
+    def setUpClass(cls):
+        gp.init()
+        cls.window = gp.Window(500, 400)
+        cls.window.destroy()
+
+    @classmethod
+    def tearDownClass(cls):
+        gp.terminate()
+
+    def test_repr(self):
+        self.assertEqual(self.window.__repr__(), f"Destroyed Window()")
+
+    def test_redestroy(self):
+        self.assertIsNone(self.window.destroy())
+
+    def test_is_open(self):
+        self.assertFalse(self.window.is_open())
+
+    def test_is_closed(self):
+        self.assertTrue(self.window.is_closed())

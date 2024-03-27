@@ -25,7 +25,7 @@ namespace gp {
 
     class VertexArray;
 
-    class Window;
+    class RenderingManager;
 
     struct TextureData {
         shared_ptr<Texture2D> texture;
@@ -147,9 +147,9 @@ namespace gp {
         std::vector<shared_ptr<Texture2D> > m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 
-        const Window &m_Window;
+        const RenderingManager &m_Window;
 
-        Renderer(const Window &window);
+        Renderer(const RenderingManager &window);
 
         void _createLineBuffer();
 

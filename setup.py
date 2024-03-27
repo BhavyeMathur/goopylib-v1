@@ -5,7 +5,7 @@ import warnings
 from setuptools import setup, Extension
 import setuptools
 
-FULLVERSION = "2.0.0"
+FULLVERSION = "2.1.0"
 PYTHON_REQUIRES = (3, 8)
 
 RUNTIME_LIBRARY_DIRS = []
@@ -94,59 +94,39 @@ else:
     data_files = []
 
 ext_kwargs = {"include_dirs":         [".", "src", "vendor", "vendor/glad", "vendor/glm",
-                                       "vendor/spdlog/include", "vendor/GLFW/include"],
+                                       "vendor/spdlog/include", "vendor/GLFW/include", "vendor/pybind11/include"],
               "library_dirs":         library_dirs,
               "runtime_library_dirs": RUNTIME_LIBRARY_DIRS,
               "libraries":            ["goopylib"],
               "extra_compile_args":   compile_args}
 
 
-def get_object_extension(obj: str):
-    return Extension(name=f"goopylib.ext.{obj}",
-                     sources=[f"goopylib/objects/{obj}/module.cpp",
-                              f"goopylib/objects/{obj}/{obj}.cpp",
-                              f"goopylib/objects/{obj}/type.cpp"],
+def get_extension(path: str):
+    return Extension(name=f"goopylib.{path}",
+                     sources=[f"goopylib/{path.replace('.', '/')}.cpp"],
                      **ext_kwargs)
 
 
 def find_extensions():
     return [
-        Extension(name="goopylib.ext.easing",
-                  sources=["goopylib/maths/easing.cpp"],
-                  **ext_kwargs),
+        get_extension("color.color"),
 
-        Extension(name="goopylib.ext.color",
-                  sources=["goopylib/color/color.cpp"],
-                  **ext_kwargs),
+        get_extension("core.core"),
+        get_extension("core.window"),
 
-        Extension(name="goopylib.ext.core",
-                  sources=["goopylib/core/core.cpp"],
-                  **ext_kwargs),
+        get_extension("maths.easing"),
 
-        Extension(name="goopylib.ext.window",
-                  sources=["goopylib/core/window.cpp"],
-                  **ext_kwargs),
+        get_extension("objects.renderable"),
+        get_extension("objects.triangle"),
+        get_extension("objects.quad"),
+        get_extension("objects.rectangle"),
+        get_extension("objects.line"),
+        get_extension("objects.ellipse"),
+        get_extension("objects.circle"),
+        get_extension("objects.image"),
 
-        get_object_extension("renderable"),
-
-        get_object_extension("triangle"),
-
-        get_object_extension("quad"),
-        get_object_extension("rectangle"),
-        get_object_extension("line"),
-
-        get_object_extension("ellipse"),
-        get_object_extension("circle"),
-
-        get_object_extension("image"),
-
-        Extension(name="goopylib.ext.camera",
-                  sources=["goopylib/scene/camera.cpp"],
-                  **ext_kwargs),
-
-        Extension(name="goopylib.ext.camera_controller",
-                  sources=["goopylib/scene/camera_controller.cpp"],
-                  **ext_kwargs)
+        get_extension("scene.camera"),
+        get_extension("scene.camera_controller"),
     ]
 
 

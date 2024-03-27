@@ -8,53 +8,24 @@
 #include "shader/ShaderFiles.h"
 
 namespace gp {
-
     class Renderable;
 
     class GPAPI RenderingManager {
-
         friend class Renderer;
 
         friend class Renderable;
 
     public:
-        RenderingManager(const Window &, int width, int height, const char *title);
+        RenderingManager(int width, int height, const std::string& title);
 
         RenderingManager(const RenderingManager &) = delete;
 
         RenderingManager(RenderingManager &&other) = delete;
 
+        virtual ~RenderingManager() = default;
+
         void render();
 
-        // Width
-        /**
-         * @param value in screen coordinates
-         *
-         * @throws std::invalid_argument value must be greater than 0
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        void setWidth(int value);
-
-        /**
-         * @return in screen coordinates
-         */
-        [[nodiscard]] int getWidth() const;
-
-        // Height
-        /**
-         * @param value in screen coordinates
-         *
-         * @throws std::invalid_argument value must be greater than 0
-         * @throws std::runtime_error cannot set the attribute of a destroyed window
-         */
-        void setHeight(int value);
-
-        /**
-         * @return in screen coordinates
-         */
-        [[nodiscard]] int getHeight() const;
-
-        // Background
         /**
          * The background color of the window.
          *
@@ -96,13 +67,11 @@ namespace gp {
     protected:
         int m_Width;
         int m_Height;
-        const char *m_Title;
+        std::string m_Title;  // TODO move title out of RenderingManager
 
         Color m_Background;
 
         void init();
-
-        virtual void _updateSize() const = 0;
 
     private:
         Camera m_Camera;
@@ -117,12 +86,6 @@ namespace gp {
 
         uint32_t m_NextObjectID = 0;
         std::unordered_map<uint32_t, bool> m_ObjectToIsOpaque;
-
-        void _updateBackground();
-
-        static void _enableDepthWriting();
-
-        static void _disableDepthWriting();
 
         uint32_t _drawRenderable(Renderable *object);
 

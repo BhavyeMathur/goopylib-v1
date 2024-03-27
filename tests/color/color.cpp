@@ -1,7 +1,7 @@
 #include "color.h"
 
 
-TEST(CoreColorTests, ColorFromColorSubclass) {
+TEST(ColorTests, ColorFromColorSubclass) {
     gp::ColorRGB colorRGB{10, 15, 20, 0.1};
     gp::ColorHex colorHex{"#f05", 0.2};
     gp::ColorCMYK colorCMYK{0.5, 0.6, 0.7, 0.3};
@@ -34,7 +34,7 @@ TEST(CoreColorTests, ColorFromColorSubclass) {
     EXPECT_EQ(color5.getRGBAf(), colorHSV.getRGBAf());
 }
 
-TEST(CoreColorTests, ColorFromRGB) {
+TEST(ColorTests, ColorFromRGB) {
     gp::Color color{0, 10, 20};
     EXPECT_EQ(color.getRed(), 0);
     EXPECT_EQ(color.getGreen(), 10);
@@ -45,7 +45,7 @@ TEST(CoreColorTests, ColorFromRGB) {
     EXPECT_EQ(color2.getAlpha(), 0.5);
 }
 
-TEST(CoreColorTests, ColorFromRGBErrors) {
+TEST(ColorTests, ColorFromRGBErrors) {
     EXPECT_THROW(auto color = gp::Color(300, 0, 0), std::invalid_argument);
     EXPECT_THROW(auto color = gp::Color(0, 300, 0), std::invalid_argument);
     EXPECT_THROW(auto color = gp::Color(0, 0, 300), std::invalid_argument);
@@ -58,7 +58,7 @@ TEST(CoreColorTests, ColorFromRGBErrors) {
     EXPECT_THROW(auto color = gp::Color(0, 0, 0, -0.5), std::invalid_argument);
 }
 
-TEST(CoreColorTests, ColorFromHex) {
+TEST(ColorTests, ColorFromHex) {
     gp::Color color{"#f01"};
     EXPECT_EQ(color.getRed(), 255);
     EXPECT_EQ(color.getGreen(), 0);
@@ -90,7 +90,7 @@ TEST(CoreColorTests, ColorFromHex) {
     EXPECT_EQ(color4.getAlpha(), 0.5);
 }
 
-TEST(CoreColorTests, ColorFromHexErrors) {
+TEST(ColorTests, ColorFromHexErrors) {
     EXPECT_THROW(auto color = gp::Color("#0000"), std::invalid_argument);
     EXPECT_THROW(auto color = gp::Color("0000"), std::invalid_argument);
     EXPECT_THROW(auto color = gp::Color("#00000"), std::invalid_argument);
@@ -103,7 +103,7 @@ TEST(CoreColorTests, ColorFromHexErrors) {
     EXPECT_THROW(auto color = gp::Color("#000", -0.5), std::invalid_argument);
 }
 
-TEST(CoreColorTests, ColorToString) {
+TEST(ColorTests, ColorToString) {
     gp::Color color1{0, 10, 20};
     EXPECT_EQ(color1.toString(), "Color(0, 10, 20)");
 
@@ -111,7 +111,7 @@ TEST(CoreColorTests, ColorToString) {
     EXPECT_EQ(color2.toString(), "Color(0, 10, 20, alpha=0.50)");
 }
 
-TEST(CoreColorTests, ColorAttributes) {
+TEST(ColorTests, ColorAttributes) {
     gp::Color color{0, 0, 0};
 
     color.setRed(153);
@@ -133,7 +133,7 @@ TEST(CoreColorTests, ColorAttributes) {
     EXPECT_EQ(color.toString(), "Color(153, 102, 51, alpha=0.50)");
 }
 
-TEST(CoreColorTests, ColorAttributesError) {
+TEST(ColorTests, ColorAttributesError) {
     gp::Color color{0, 0, 0};
 
     EXPECT_THROW(color.setRed(300), std::invalid_argument);
@@ -149,7 +149,7 @@ TEST(CoreColorTests, ColorAttributesError) {
     EXPECT_THROW(color.setAlpha(-0.5), std::invalid_argument);
 }
 
-TEST(CoreColorTests, ColorArithmetic) {
+TEST(ColorTests, ColorArithmetic) {
     gp::Color color1{100, 100, 100};
     gp::Color color2{5, 10, 15};
 
@@ -172,7 +172,7 @@ TEST(CoreColorTests, ColorArithmetic) {
     EXPECT_EQ(color1.toString(), "Color(80, 80, 80)");
 }
 
-TEST(CoreColorTests, ColorArithmeticWithAlpha) {
+TEST(ColorTests, ColorArithmeticWithAlpha) {
     gp::Color color1{100, 100, 100, 0.5};
     gp::Color color2{5, 10, 15, 0.2};
 
@@ -195,7 +195,7 @@ TEST(CoreColorTests, ColorArithmeticWithAlpha) {
     EXPECT_EQ(color1.toString(), "Color(80, 80, 80, alpha=0.50)");
 }
 
-TEST(CoreColorTests, ColorArithmeticOverflow) {
+TEST(ColorTests, ColorArithmeticOverflow) {
     gp::Color color1{250, 250, 250};
     gp::Color color2{5, 10, 15};
 
@@ -207,7 +207,7 @@ TEST(CoreColorTests, ColorArithmeticOverflow) {
     EXPECT_EQ(color1.getRGBAf(), gp::RGBAf(1, 1, 1, 1));
 }
 
-TEST(CoreColorTests, ColorArithmeticUnderflow) {
+TEST(ColorTests, ColorArithmeticUnderflow) {
     gp::Color color1{5, 5, 5};
     gp::Color color2{5, 10, 15};
 

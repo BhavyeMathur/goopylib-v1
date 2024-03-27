@@ -82,7 +82,7 @@ namespace gp {
         return "Renderable()";
     }
 
-    void Renderable::draw(Window &window) {
+    Renderable& Renderable::draw(Window &window) {
         GP_CORE_DEBUG("gp::Renderable::_drawRenderable({0})", window.getTitle());
 
         #if GP_ERROR_CHECKING
@@ -98,6 +98,7 @@ namespace gp {
         m_RendererID = window._drawRenderable(this);
         m_Window = &window;
         m_Drawn = true;
+        return *this;
     }
 
     void Renderable::destroy() {
@@ -205,6 +206,15 @@ namespace gp {
     float Renderable::getY() const {
         GP_CORE_TRACE("gp::Renderable::getY()");
         return m_Position.y;
+    }
+
+    void Renderable::setZ(float value) {
+        m_ZPosition = value;
+        update();
+    }
+
+    float Renderable::getZ() const {
+        return m_ZPosition;
     }
 
     void Renderable::setPosition(float x, float y) {
@@ -338,6 +348,10 @@ namespace gp {
         return m_Height;
     }
 
+    gp::Window &Renderable::getWindow() const {
+        return *m_Window;
+    }
+
     void Renderable::setSize(float width, float height) {
         scale(width / m_Width, height / m_Height);
     }
@@ -367,15 +381,6 @@ namespace gp {
     bool Renderable::isVisibleAndOpaque() const {
         GP_CORE_TRACE("gp::Renderable::isVisibleAndOpaque()");
         return isOpaque() && !isHidden();
-    }
-
-    void Renderable::setZPosition(float value) {
-        m_ZPosition = value;
-        update();
-    }
-
-    float Renderable::getZPosition() const {
-        return m_ZPosition;
     }
 }
 

@@ -49,4 +49,4 @@ def countlines(start,
 
 
 countlines(start="..",
-           included_folders=("src", "goopylib", "tests", "tools"))
+           included_folders=("src", "goopylib"))
