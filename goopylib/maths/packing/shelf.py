@@ -78,8 +78,7 @@ class Shelf:
         self.bin._add(item)
         self.items.append(item)
 
-        if item.height > self.height:
-            self.height = item.height
+        self.height = max(self.height, item.height)
 
         self.packed_width += item.width
         self.available_width -= item.width

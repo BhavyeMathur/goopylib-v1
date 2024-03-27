@@ -2,6 +2,7 @@
 goopylib module initialization
 """
 
+# pylint: disable=import-error
 from .core import *
 from .window import *
 
