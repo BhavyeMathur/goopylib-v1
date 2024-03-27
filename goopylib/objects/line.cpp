@@ -16,7 +16,7 @@ PYBIND11_MODULE(line, m) {
                 return new gp::Line(v1, v2, thickness);
             }), "p1"_a, "p2"_a, "thickness"_a = 3)
 
-            GP_COLOR_SETTERS(gp::Line, 1, 2, 3, 4)
+            GP_COLOR_SETTERS(gp::Quad, 1, 2, 3, 4)
             .def("set_color", GP_COLOR_SETTER(gp::Line, 1, 2))
             
             .def_property("transparency",
