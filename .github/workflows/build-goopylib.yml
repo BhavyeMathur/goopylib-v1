@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 
   push:
-    branches: [ "master" ]
     paths:
       - src/**
       - goopylib/**/*.cpp
@@ -20,7 +19,6 @@ on:
       - .github/workflows/build-goopylib.yml
 
   pull_request:
-    branches: [ "master" ]
     paths:
       - src/**
       - goopylib/**/*.cpp
