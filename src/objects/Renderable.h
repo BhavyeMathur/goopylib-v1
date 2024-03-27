@@ -30,6 +30,8 @@ namespace gp {
     public:
         friend std::ostream &operator<<(std::ostream &out, const Renderable &obj);
 
+        virtual ~Renderable() = default;
+
         /**
          *
          * @return a string representation of the object
