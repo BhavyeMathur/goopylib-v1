@@ -1,5 +1,6 @@
 import sys
 import os
+import pathlib
 
 import setuptools
 
@@ -20,9 +21,9 @@ if len(sys.argv) == 1:
     """))
 
     if option == 2:
-        for item in os.listdir("goopylib/ext"):
-            if item.endswith(".so"):
-                os.remove(f"goopylib/ext/{item}")
+        ext_files = pathlib.Path("goopylib/").rglob("*.so")  # recursively
+        for file in ext_files:
+            file.unlink()
 
     elif option != 1:
         raise ValueError("Unknown option")
