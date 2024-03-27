@@ -11,6 +11,25 @@ on:
     types:
       - completed
 
+  push:
+    paths:
+      - goopylib/**/*.cpp
+      - setup.py
+      - tools/setup_extensions.py
+      - pyproject.toml
+      - MANIFEST.in
+      - .github/workflows/build-wheels.yml
+
+  pull_request:
+    paths:
+      - goopylib/**/*.cpp
+      - CMakeLists.txt
+      - setup.py
+      - tools/setup_extensions.py
+      - pyproject.toml
+      - MANIFEST.in
+      - .github/workflows/build-wheels.yml
+
 env:
   BUILD_TYPE: Release
 

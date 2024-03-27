@@ -9,25 +9,13 @@ on:
   push:
     paths:
       - src/**
-      - goopylib/**/*.cpp
-      - goopylib/**/*.h
       - CMakeLists.txt
-      - setup.py
-      - tools/setup_extensions.py
-      - pyproject.toml
-      - MANIFEST.in
       - .github/workflows/build-goopylib.yml
 
   pull_request:
     paths:
       - src/**
-      - goopylib/**/*.cpp
-      - goopylib/**/*.h
       - CMakeLists.txt
-      - setup.py
-      - tools/setup_extensions.py
-      - pyproject.toml
-      - MANIFEST.in
       - .github/workflows/build-goopylib.yml
 
 env:
