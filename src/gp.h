@@ -10,6 +10,11 @@
 #define or ||
 #define and &&
 
+#elif defined(__linux__) || defined(__gnu_linux__)
+
+#define GP_USING_GLAD true
+#define GP_BUILDING_WINDOWS false
+
 #else
 
 #define GP_USING_GLAD false

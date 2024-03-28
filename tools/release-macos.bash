@@ -20,4 +20,4 @@ cibuildwheel --platform macos
 twine check wheelhouse/*
 twine upload -r testpypi wheelhouse/*
 
-twine upload dist/*
+twine upload wheelhouse/*
