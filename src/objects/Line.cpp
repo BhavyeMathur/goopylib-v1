@@ -8,7 +8,7 @@ namespace {
         thickness /= 2;
         float theta = atan((p2.y - p1.y) / (p2.x - p1.x));
 
-        if (isnan(theta)) {
+        if (std::isnan(theta)) {
             return {thickness, thickness};
         }
 
