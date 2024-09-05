@@ -5,18 +5,18 @@
 namespace gp {
     class Bitmap;
 
-    class GPAPI Texture2D {
+    class GPAPI TextureBuffer {
 
         friend class Renderer;
 
         friend class TextureAtlas;
 
     public:
-        Texture2D(const Texture2D &) = delete;
+        TextureBuffer(const TextureBuffer &) = delete;
 
-        Texture2D(Texture2D &&other) = delete;
+        TextureBuffer(TextureBuffer &&other) = delete;
 
-        ~Texture2D();
+        ~TextureBuffer();
 
         void bind(uint32_t slot) const;
 
@@ -43,9 +43,9 @@ namespace gp {
 
         static int32_t s_TextureSlots;
 
-        Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
+        TextureBuffer(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
 
-        Texture2D(const Bitmap &bitmap);
+        TextureBuffer(const Bitmap &bitmap);
 
         [[nodiscard]] uint32_t _getDataFormat() const;
 

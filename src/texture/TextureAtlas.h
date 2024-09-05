@@ -3,7 +3,7 @@
 #include "gp.h"
 
 #include "Bitmap.h"
-#include "Texture2D.h"
+#include "TextureBuffer.h"
 #include "maths/gpmath.h"
 #include "maths/packing/Shelf.h"
 

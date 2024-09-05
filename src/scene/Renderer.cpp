@@ -3,7 +3,7 @@
 #include "Renderer.h"
 
 #include "core/VertexArray.h"
-#include "texture/Texture2D.h"
+#include "texture/TextureBuffer.h"
 
 #include "objects/Line.h"
 #include "objects/Triangle.h"
@@ -324,7 +324,7 @@ namespace gp {
         object->m_T3.texSlot = texSlot;
         object->m_T4.texSlot = texSlot;
 
-        const uint32_t batch = texIndex / Texture2D::getTextureSlots();
+        const uint32_t batch = texIndex / TextureBuffer::getTextureSlots();
 
         const uint32_t index = m_TexturedQuadVertices[batch].size();
         m_TexturedQuadToBatch.insert({ID, batch});
@@ -436,7 +436,7 @@ namespace gp {
         uint32_t textureSlotOffset = 0;
         for (auto &batch: m_TexturedQuadBatches) {
             _bindTextureBatch(textureSlotOffset);
-            textureSlotOffset += Texture2D::getTextureSlots();
+            textureSlotOffset += TextureBuffer::getTextureSlots();
 
             if (batch.indices) {
                 m_Window.m_TextureShader.bind();
@@ -452,7 +452,7 @@ namespace gp {
     uint32_t Renderer::_cacheTexture(const std::string &name, const Bitmap &bitmap) {
         GP_CORE_DEBUG("gp::Renderer::_cacheTexture('{0}')", name);
 
-        auto texture = shared_ptr<Texture2D>(new Texture2D(bitmap));
+        auto texture = shared_ptr<TextureBuffer>(new TextureBuffer(bitmap));
         const uint32_t texIndex = m_Textures.size();
 
         m_TexturesCache.insert({name, {texture, texIndex}});
@@ -462,10 +462,10 @@ namespace gp {
     }
 
     void Renderer::_bindTextureBatch(uint32_t offset) const {
-        const uint32_t textures = min(offset + Texture2D::getTextureSlots(), (uint32_t) m_Textures.size());
+        const uint32_t textures = min(offset + TextureBuffer::getTextureSlots(), (uint32_t) m_Textures.size());
 
         for (uint32_t i = offset; i < textures; i++) {
-            m_Textures[i]->bind(i % Texture2D::getTextureSlots());
+            m_Textures[i]->bind(i % TextureBuffer::getTextureSlots());
         }
     }
 

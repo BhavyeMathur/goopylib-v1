@@ -1,6 +1,6 @@
 #define GP_LOGGING_LEVEL 3
 
-#include "Texture2D.h"
+#include "TextureBuffer.h"
 #include "Bitmap.h"
 #include "debug/Error.h"
 
@@ -8,9 +8,9 @@
 
 
 namespace gp {
-    int32_t Texture2D::s_TextureSlots = 0;
+    int32_t TextureBuffer::s_TextureSlots = 0;
 
-    Texture2D::Texture2D(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data)
+    TextureBuffer::TextureBuffer(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data)
         : m_Width(width),
           m_Height(height),
           m_Channels(channels) {
@@ -39,31 +39,31 @@ namespace gp {
         }
     }
 
-    Texture2D::Texture2D(const Bitmap &bitmap)
-        : Texture2D(bitmap.getWidth(), bitmap.getHeight(), bitmap.getChannels(), bitmap.getData()) {
+    TextureBuffer::TextureBuffer(const Bitmap &bitmap)
+        : TextureBuffer(bitmap.getWidth(), bitmap.getHeight(), bitmap.getChannels(), bitmap.getData()) {
     }
 
-    Texture2D::~Texture2D() {
+    TextureBuffer::~TextureBuffer() {
         GP_CORE_DEBUG("gp::Texture2D::~Texture2D()");
         glDeleteTextures(1, &m_RendererID);
     }
 
-    void Texture2D::init() {
+    void TextureBuffer::init() {
         glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &s_TextureSlots);
     }
 
-    void Texture2D::bind(uint32_t slot) const {
+    void TextureBuffer::bind(uint32_t slot) const {
         GP_CORE_TRACE_ALL("gp::Texture2D::bind({1}) - '{0}'", slot, m_Path);
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, m_RendererID);
     }
 
-    void Texture2D::unbind() {
+    void TextureBuffer::unbind() {
         GP_CORE_WARN("gp::Texture2D::unbind()");
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    void Texture2D::setData(uint32_t width, uint32_t height, uint32_t channels, const uint8_t *data) {
+    void TextureBuffer::setData(uint32_t width, uint32_t height, uint32_t channels, const uint8_t *data) {
         m_Channels = channels;
         m_Width = width;
         m_Height = height;
@@ -82,7 +82,7 @@ namespace gp {
                      data);
     }
 
-    void Texture2D::setData(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, const uint8_t *data) {
+    void TextureBuffer::setData(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height, const uint8_t *data) {
         int32_t internalFormat = _getInternalFormat();
 
         bind(0);
@@ -97,7 +97,7 @@ namespace gp {
                         data);
     }
 
-    uint32_t Texture2D::_getDataFormat() const {
+    uint32_t TextureBuffer::_getDataFormat() const {
         if (m_Channels == 4) {
             return GL_RGBA;
         }
@@ -113,7 +113,7 @@ namespace gp {
         return 0;
     }
 
-    int32_t Texture2D::_getInternalFormat() const {
+    int32_t TextureBuffer::_getInternalFormat() const {
         if (m_Channels == 4) {
             return GL_RGBA8;
         }
@@ -129,7 +129,7 @@ namespace gp {
         return 0;
     }
 
-    int32_t Texture2D::getTextureSlots() {
+    int32_t TextureBuffer::getTextureSlots() {
         return s_TextureSlots;
     }
 }

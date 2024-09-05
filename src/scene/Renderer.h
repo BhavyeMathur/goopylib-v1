@@ -19,7 +19,7 @@ namespace gp {
 
     class Shader;
 
-    class Texture2D;
+    class TextureBuffer;
 
     class Bitmap;
 
@@ -28,7 +28,7 @@ namespace gp {
     class RenderingManager;
 
     struct TextureData {
-        shared_ptr<Texture2D> texture;
+        shared_ptr<TextureBuffer> texture;
         uint32_t index;
     };
 
@@ -144,7 +144,7 @@ namespace gp {
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
         std::vector<std::unordered_map<uint32_t, uint32_t> > m_TexturedQuadToIndex;
 
-        std::vector<shared_ptr<Texture2D> > m_Textures;
+        std::vector<shared_ptr<TextureBuffer> > m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 
         const RenderingManager &m_Window;

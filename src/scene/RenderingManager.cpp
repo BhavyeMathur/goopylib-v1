@@ -3,7 +3,7 @@
 #include "RenderingManager.h"
 
 #include "core/Buffer.h"
-#include "texture/Texture2D.h"
+#include "texture/TextureBuffer.h"
 
 #include "objects/Triangle.h"
 #include "objects/Circle.h"
@@ -24,7 +24,7 @@ namespace gp {
     }
 
     void RenderingManager::init() {
-        Texture2D::init();
+        TextureBuffer::init();
 
         m_Renderer.init();
         m_AlphaRenderer.init();
@@ -38,7 +38,7 @@ namespace gp {
         };
 
         m_TextureShader.compile();
-        m_TextureShader.set("Texture", Texture2D::getTextureSlots(), samplers);
+        m_TextureShader.set("Texture", TextureBuffer::getTextureSlots(), samplers);
 
         m_ShaderUniform = make_unique<UniformBuffer>(BufferLayout{{ShaderDataType::Mat4, "PVMatrix"}});
         m_ShaderUniform->init();

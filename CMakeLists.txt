@@ -114,7 +114,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/scene/CameraController.cpp
 
             src/texture/Bitmap.cpp
-            src/texture/Texture2D.cpp
+            src/texture/TextureBuffer.cpp
 
             src/window/Window.cpp
 
