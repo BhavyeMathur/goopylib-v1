@@ -21,4 +21,6 @@
 #include "objects/Circle.h"
 #include "objects/Image.h"
 
+#include "texture/TextureAtlas.h"
+
 #include "scene/CameraController.h"
