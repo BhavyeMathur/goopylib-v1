@@ -66,6 +66,6 @@ namespace gp {
 
     shared_ptr<Bitmap> Image::getBitmap() const {
         GP_CORE_TRACE("gp::Image::getBitmap() - '{0}'", m_Path);
-        return shared_ptr<Bitmap>(new Bitmap(m_Path.c_str()));
+        return make_shared<Bitmap>(m_Path.c_str());
     }
 }
