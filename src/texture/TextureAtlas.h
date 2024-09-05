@@ -4,6 +4,7 @@
 
 #include "Bitmap.h"
 #include "TextureBuffer.h"
+
 #include "maths/gpmath.h"
 #include "maths/packing/Shelf.h"
 
@@ -32,8 +33,8 @@ namespace gp {
         TextureCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
 
         std::vector<TextureCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
-                                             bool allowRotation = true,
-                                             const packing::SortingFunction &sorting = packing::sortByShortSide(true));
+                                       bool allowRotation = true,
+                                       const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 
         static void init();
 

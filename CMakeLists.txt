@@ -150,10 +150,10 @@ if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/examples/BrickBreaker/CMakeLists.txt")
 endif ()
 
 add_subdirectory(examples/Minecraft)
-add_subdirectory(examples/algorithms/packing)
 
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest/CMakeLists.txt")
     add_subdirectory(vendor/googletest)
 endif ()
 add_subdirectory(tests/color)
 add_subdirectory(tests/core)
+add_subdirectory(tests/maths/packing)

@@ -11,7 +11,7 @@ namespace gp {
 
     // TODO use TextureAtlas to optimise textures in the GPU
     TextureAtlas::TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm)
-        : m_PackingAlgorithm(packingAlgorithm) {
+            : m_PackingAlgorithm(packingAlgorithm) {
         s_Atlases.push_back(this);
 
         if (m_PackingAlgorithm == nullptr) {
@@ -39,7 +39,7 @@ namespace gp {
 
     TextureCoords TextureAtlas::add(const shared_ptr<Bitmap> &bitmap, bool allowRotation) {
         auto item = shared_ptr<packing::Item>(
-            new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight()));
+                new packing::Item((float) bitmap->getWidth(), (float) bitmap->getHeight()));
         m_PackingAlgorithm->pack(item, allowRotation);
         return {item->p1(), item->p2()};
     }
