@@ -3,6 +3,7 @@
 #include "gp.h"
 #include <unordered_map>
 
+#include "RenderingBatch.h"
 #include "objects/Vertex.h"
 #include "core/VertexArray.h"
 
@@ -21,32 +22,11 @@ namespace gp {
 
     class Bitmap;
 
-    class VertexArray;
-
     class RenderingManager;
 
     struct TextureData {
         shared_ptr<TextureBuffer> texture;
         uint32_t index;
-    };
-
-    struct RenderingBatch {
-        VertexArray VAO;
-        int32_t mode;
-
-        int32_t indices = 0;
-        std::vector<uint32_t> indicesData{};
-
-        int32_t vertices = 0;
-        void *bufferData = nullptr;
-
-        bool reallocateBufferData = false;
-        bool updateBufferData = false;
-
-        RenderingBatch(const BufferLayout &layout, const int32_t mode = GP_DRAW_MODE_TRIANGLES)
-                : VAO(layout),
-                  mode(mode) {
-        }
     };
 
     class GPAPI Renderer {

@@ -110,6 +110,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
 
             src/scene/RenderingManager.cpp
             src/scene/Renderer.cpp
+            src/scene/RenderingBatch.cpp
             src/scene/Camera.cpp
             src/scene/CameraController.cpp
 
