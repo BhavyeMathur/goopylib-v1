@@ -65,12 +65,6 @@ namespace gp {
 
         void init();
 
-        void drawLine(uint32_t ID, const shared_ptr<Line> object);
-
-        void destroyLine(uint32_t ID);
-
-        void updateLine(uint32_t ID, const shared_ptr<Line> object);
-
         void drawTriangle(uint32_t ID, const shared_ptr<Triangle> object);
 
         void destroyTriangle(uint32_t ID);
@@ -98,16 +92,6 @@ namespace gp {
         void flush();
 
     private:
-        RenderingBatch m_LineBatch{
-                {
-                        {ShaderDataType::Float2, "position"},
-                        {ShaderDataType::Float, "z"},
-                        {ShaderDataType::Float4, "color"}
-                }, GP_DRAW_MODE_LINES
-        };
-        std::vector<SolidVertex> m_LineVertices;
-        std::unordered_map<uint32_t, uint32_t> m_LineToIndex;
-
         RenderingBatch m_TriangleBatch{
                 {
                         {ShaderDataType::Float2, "position"},

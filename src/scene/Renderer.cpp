@@ -21,7 +21,6 @@ namespace gp {
     void Renderer::init() {
         GP_CORE_INFO("Rendering::init() initializing Renderer");
 
-        m_LineBatch.VAO.init();
         m_TriangleBatch.VAO.init();
         m_QuadBatch.VAO.init();
         m_EllipseBatch.VAO.init();
@@ -41,59 +40,6 @@ namespace gp {
 
         m_TexturedQuadVertices.emplace_back();
         m_TexturedQuadToIndex.emplace_back();
-    }
-
-    void Renderer::drawLine(uint32_t ID, const shared_ptr<Line> object) {
-        GP_CORE_DEBUG("gp::Renderer::drawLine({0})", ID);
-
-        const uint32_t index = m_LineVertices.size();
-        m_LineToIndex.insert({ID, index});
-
-        m_LineVertices.emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1);
-        m_LineVertices.emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2);
-
-        if (object->isHidden()) {
-            m_LineVertices[index + 0].attrib.color.alpha = 0;
-            m_LineVertices[index + 1].attrib.color.alpha = 0;
-        }
-
-        m_LineBatch.indices += 2;
-        m_LineBatch.vertices += 2;
-        m_LineBatch.bufferData = &m_LineVertices[0];
-        m_LineBatch.reallocateBufferData = true;
-    }
-
-    void Renderer::destroyLine(uint32_t ID) {
-        const uint32_t index = m_LineToIndex[ID];
-
-        m_LineVertices.erase(std::next(m_LineVertices.begin(), index),
-                             std::next(m_LineVertices.begin(), index + 2));
-
-        m_LineToIndex.erase(ID);
-        for (auto &i: m_LineToIndex) {
-            if (i.second > index) {
-                i.second -= 2;
-            }
-        }
-
-        m_LineBatch.indices -= 2;
-        m_LineBatch.vertices -= 2;
-        m_LineBatch.bufferData = m_LineVertices.empty() ? nullptr : &m_LineVertices[0];
-        m_LineBatch.reallocateBufferData = true;
-    }
-
-    void Renderer::updateLine(uint32_t ID, const shared_ptr<Line> object) {
-        const uint32_t index = m_LineToIndex[ID];
-
-        m_LineVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
-        m_LineVertices[index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2};
-
-        if (object->isHidden()) {
-            m_LineVertices[index + 0].attrib.color.alpha = 0;
-            m_LineVertices[index + 1].attrib.color.alpha = 0;
-        }
-
-        m_LineBatch.updateBufferData = true;
     }
 
     void Renderer::drawTriangle(uint32_t ID, const shared_ptr<Triangle> object) {
@@ -382,14 +328,8 @@ namespace gp {
     void Renderer::flush() {
         GP_CORE_TRACE_ALL("gp::Renderer::flush()");
 
-        if (m_LineBatch.indices or m_TriangleBatch.indices or m_QuadBatch.indices) {
+        if (m_TriangleBatch.indices or m_QuadBatch.indices) {
             m_Window.m_SolidShader.bind();
-        }
-
-        GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing lines");
-        if (m_LineBatch.indices) {
-            _updateRenderingObjectVBO(m_LineBatch);
-            m_LineBatch.VAO.draw(m_LineBatch.indices, m_LineBatch.mode);
         }
 
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing triangles");
