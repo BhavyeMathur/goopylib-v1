@@ -7,8 +7,6 @@
 #include "core/VertexArray.h"
 
 namespace gp {
-    class Line;
-
     class Triangle;
 
     class Quad;
@@ -37,7 +35,7 @@ namespace gp {
         int32_t mode;
 
         int32_t indices = 0;
-        std::vector<uint32_t> indicesData;
+        std::vector<uint32_t> indicesData{};
 
         int32_t vertices = 0;
         void *bufferData = nullptr;

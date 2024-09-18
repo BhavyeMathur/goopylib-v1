@@ -30,33 +30,27 @@ namespace gp {
     }
 
     void Triangle::setColor(const Color &color1, const Color &color2, const Color &color3) {
-        m_V1.color = color1.getRGBAf();
-        m_V2.color = color2.getRGBAf();
-        m_V3.color = color3.getRGBAf();
-
-        update();
+        setColor(color1.getRGBAf(), color2.getRGBAf(), color3.getRGBAf());
     }
 
     void Triangle::setColor(const char *hexstring, float alpha) {
-        m_V1.color = Color(hexstring, alpha).getRGBAf();
-        m_V2.color = m_V1.color;
-        m_V3.color = m_V1.color;
-
-        update();
+        auto color = Color(hexstring, alpha).getRGBAf();
+        setColor(color, color, color);
     }
 
     void Triangle::setColor(const char *hex1, const char *hex2, const char *hex3) {
-        m_V1.color = Color(hex1).getRGBAf();
-        m_V2.color = Color(hex2).getRGBAf();
-        m_V3.color = Color(hex3).getRGBAf();
-
-        update();
+        setColor(Color(hex1).getRGBAf(), Color(hex2).getRGBAf(), Color(hex3).getRGBAf());
     }
 
     void Triangle::setColor(int red, int green, int blue, float alpha) {
-        m_V1.color = Color(red, green, blue, alpha).getRGBAf();
-        m_V2.color = m_V1.color;
-        m_V3.color = m_V1.color;
+        auto color = Color(red, green, blue, alpha).getRGBAf();
+        setColor(color, color, color);
+    }
+
+    void Triangle::setColor(const gp::RGBAf rgbaf1, const gp::RGBAf rgbaf2, const gp::RGBAf rgbaf3) {
+        m_VertexAttribs[0].color = rgbaf1;
+        m_VertexAttribs[1].color = rgbaf2;
+        m_VertexAttribs[2].color = rgbaf3;
 
         update();
     }
@@ -66,19 +60,23 @@ namespace gp {
     }
 
     void Triangle::setTransparency(float v1, float v2, float v3) {
-        m_V1.color.alpha = v1;
-        m_V2.color.alpha = v2;
-        m_V3.color.alpha = v3;
+        m_VertexAttribs[0].color.alpha = v1;
+        m_VertexAttribs[1].color.alpha = v2;
+        m_VertexAttribs[2].color.alpha = v3;
 
         update();
     }
 
     Float3 Triangle::getTransparency() const {
-        return {m_V1.color.alpha, m_V2.color.alpha, m_V3.color.alpha};
+        return {m_VertexAttribs[0].color.alpha,
+                m_VertexAttribs[1].color.alpha,
+                m_VertexAttribs[2].color.alpha};
     }
 
     bool Triangle::isOpaque() const {
-        return (m_V1.color.alpha == 1) && (m_V2.color.alpha == 1) && (m_V3.color.alpha == 1);
+        return (m_VertexAttribs[0].color.alpha == 1)
+               && (m_VertexAttribs[1].color.alpha == 1)
+               && (m_VertexAttribs[2].color.alpha == 1);
     }
 }
 

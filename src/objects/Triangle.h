@@ -75,6 +75,8 @@ namespace gp {
          */
         void setColor(int red, int green, int blue, float alpha = 1);
 
+        void setColor(const RGBAf rgbaf1, const RGBAf rgbaf2, const RGBAf rgbaf3);
+
         /**
          * Sets the transparency of the object
          *
@@ -150,9 +152,9 @@ namespace gp {
         [[nodiscard]] virtual Point getP3() const;
 
     private:
-        SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
-        SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
-        SolidVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
+        SolidVertexAttrib m_VertexAttribs[3] = {{{0.0f, 0.55f, 0.9f}},
+                                                {{0.0f, 0.55f, 0.9f}},
+                                                {{0.0f, 0.55f, 0.9f}}};
 
         [[nodiscard]] bool _contains(float x, float y) const override;
 

@@ -5,7 +5,6 @@
 #include "core/VertexArray.h"
 #include "texture/TextureBuffer.h"
 
-#include "objects/Line.h"
 #include "objects/Triangle.h"
 #include "objects/Quad.h"
 #include "objects/Ellipse.h"
@@ -48,14 +47,12 @@ namespace gp {
         const uint32_t index = m_TriangleVertices.size();
         m_TriangleToIndex.insert({ID, index});
 
-        m_TriangleVertices.emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1);
-        m_TriangleVertices.emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2);
-        m_TriangleVertices.emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3);
+        for (int i = 0; i < 3; i++) {
+            m_TriangleVertices.emplace_back(object->m_Points[i], object->m_ZPosition, object->m_VertexAttribs[i]);
 
-        if (object->isHidden()) {
-            m_TriangleVertices[index + 0].attrib.color.alpha = 0;
-            m_TriangleVertices[index + 1].attrib.color.alpha = 0;
-            m_TriangleVertices[index + 2].attrib.color.alpha = 0;
+            if (object->isHidden()) {
+                m_TriangleVertices[index + i].attrib.color.alpha = 0;
+            }
         }
 
         m_TriangleBatch.indices += 3;
@@ -87,14 +84,12 @@ namespace gp {
     void Renderer::updateTriangle(uint32_t ID, const shared_ptr<Triangle> object) {
         const uint32_t index = m_TriangleToIndex[ID];
 
-        m_TriangleVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
-        m_TriangleVertices[index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2};
-        m_TriangleVertices[index + 2] = {object->m_Points[2], object->m_ZPosition, object->m_V3};
+        for (int i = 0; i < 3; i++) {
+            m_TriangleVertices[index + i] = {object->m_Points[i], object->m_ZPosition, object->m_VertexAttribs[i]};
 
-        if (object->isHidden()) {
-            m_TriangleVertices[index + 0].attrib.color.alpha = 0;
-            m_TriangleVertices[index + 1].attrib.color.alpha = 0;
-            m_TriangleVertices[index + 2].attrib.color.alpha = 0;
+            if (object->isHidden()) {
+                m_TriangleVertices[index + i].attrib.color.alpha = 0;
+            }
         }
 
         m_TriangleBatch.updateBufferData = true;
@@ -159,16 +154,12 @@ namespace gp {
         const uint32_t index = m_EllipseVertices.size();
         m_EllipseToIndex.insert({ID, index});
 
-        m_EllipseVertices.emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1);
-        m_EllipseVertices.emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2);
-        m_EllipseVertices.emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3);
-        m_EllipseVertices.emplace_back(object->m_Points[3], object->m_ZPosition, object->m_V4);
+        for (int i = 0; i < 4; i++) {
+            m_EllipseVertices.emplace_back(object->m_Points[i], object->m_ZPosition, object->m_VertexAttribs[i]);
 
-        if (object->isHidden()) {
-            m_EllipseVertices[index + 0].attrib.color.alpha = 0;
-            m_EllipseVertices[index + 1].attrib.color.alpha = 0;
-            m_EllipseVertices[index + 2].attrib.color.alpha = 0;
-            m_EllipseVertices[index + 3].attrib.color.alpha = 0;
+            if (object->isHidden()) {
+                m_EllipseVertices[index + i].attrib.color.alpha = 0;
+            }
         }
 
         m_EllipseBatch.indices += 6;
@@ -199,16 +190,12 @@ namespace gp {
     void Renderer::updateEllipse(uint32_t ID, const shared_ptr<Ellipse> object) {
         const uint32_t index = m_EllipseToIndex[ID];
 
-        m_EllipseVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
-        m_EllipseVertices[index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2};
-        m_EllipseVertices[index + 2] = {object->m_Points[2], object->m_ZPosition, object->m_V3};
-        m_EllipseVertices[index + 3] = {object->m_Points[3], object->m_ZPosition, object->m_V4};
+        for (int i = 0; i < 4; i++) {
+            m_EllipseVertices[index + i] = {object->m_Points[i], object->m_ZPosition, object->m_VertexAttribs[i]};
 
-        if (object->isHidden()) {
-            m_EllipseVertices[index + 0].attrib.color.alpha = 0;
-            m_EllipseVertices[index + 1].attrib.color.alpha = 0;
-            m_EllipseVertices[index + 2].attrib.color.alpha = 0;
-            m_EllipseVertices[index + 3].attrib.color.alpha = 0;
+            if (object->isHidden()) {
+                m_EllipseVertices[index + i].attrib.color.alpha = 0;
+            }
         }
 
         m_EllipseBatch.updateBufferData = true;

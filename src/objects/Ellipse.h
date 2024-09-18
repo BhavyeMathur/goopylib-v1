@@ -86,6 +86,8 @@ namespace gp {
          */
         void setColor(int red, int green, int blue, float alpha = 1);
 
+        void setColor(const RGBAf rgbaf1, const RGBAf rgbaf2, const RGBAf rgbaf3, const RGBAf rgbaf4);
+
         /**
          * Sets the transparency of the object
          *
@@ -121,14 +123,10 @@ namespace gp {
         float m_Radius2;
 
     private:
-        EllipseVertexAttrib m_V1 = {{-1,   -1},
-                                    {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V2 = {{1,    -1},
-                                    {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V3 = {{1,    1},
-                                    {0.0f, 0.55f, 0.9f}};
-        EllipseVertexAttrib m_V4 = {{-1,   1},
-                                    {0.0f, 0.55f, 0.9f}};
+        EllipseVertexAttrib m_VertexAttribs[4] = {{{-1, -1}, {0.0f, 0.55f, 0.9f}},
+                                                  {{1, -1}, {0.0f, 0.55f, 0.9f}},
+                                                  {{1, 1}, {0.0f, 0.55f, 0.9f}},
+                                                  {{-1, 1}, {0.0f, 0.55f, 0.9f}}};
 
         [[nodiscard]] bool _contains(float x, float y) const override;
 
