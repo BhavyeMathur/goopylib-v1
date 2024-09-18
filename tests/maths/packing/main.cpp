@@ -1,6 +1,8 @@
 #include <goopylib.h>
 #include <iostream>
 
+using std::shared_ptr, std::make_shared;
+
 int getPackingAlgorithmChoice() {
     const char *choices = R""""(
     Choose an algorithm: {
@@ -77,10 +79,10 @@ void printPackingRatio(std::vector<std::shared_ptr<gp::packing::ShelvedBin>> &bi
     std::cout << "Average Packing Ratio: " << 100 * packingRatio / (float) bins.size() << "%\n";
 }
 
-void showPage(int page, std::vector<std::vector<gp::Rectangle>> &objects) {
+void showPage(int page, std::vector<std::vector<shared_ptr<gp::Rectangle>>> &objects) {
     for (int i = 0; i < objects.size(); i++) {
         for (auto &obj: objects[i]) {
-            obj.hide(i != page);
+            obj->hide(i != page);
         }
     }
 }
@@ -89,7 +91,7 @@ void plotItemBins(std::vector<std::shared_ptr<gp::packing::ShelvedBin>> &bins) {
     gp::Window window = {800, 800};
     window.getCamera().setProjection(0, window.getWidth(), 0, window.getHeight());
 
-    std::vector<std::vector<gp::Rectangle>> objects;
+    std::vector<std::vector<shared_ptr<gp::Rectangle>>> objects;
 
     gp::Color colors[5] = {gp::Color(65, 110, 230),
                            gp::Color(190, 240, 140),
@@ -102,9 +104,9 @@ void plotItemBins(std::vector<std::shared_ptr<gp::packing::ShelvedBin>> &bins) {
 
         for (int j = 0; j < bin->items().size(); j++) {
             auto item = bin->items()[j];
-            auto obj = gp::Rectangle(item->p1(), item->p2());
-            obj.setColor(colors[j % 5]);
-            obj.draw(window);
+            auto obj = make_shared<gp::Rectangle>(item->p1(), item->p2());
+            obj->setColor(colors[j % 5]);
+            window.draw(obj);
             objects.back().push_back(obj);
         }
     }

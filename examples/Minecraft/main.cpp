@@ -1,9 +1,10 @@
 #include "../../src/goopylib.h"
 #include <iostream>
 
-#define SET_TRANSPARENCY(x, y, val) if ((x) < xN and (x) >= 0 and (y) < yN and (y) >= 0) { images[xN * (x) + (y)].setTransparency(val); }
-#define SET_TRANSPARENCY4(x, y, v1, v2, v3, v4) if ((x) < xN and (x) >= 0 and (y) < yN and (y) >= 0) { images[xN * (x) + (y)].setTransparency(v1, v2, v3, v4); }
+#define SET_TRANSPARENCY(x, y, val) if ((x) < xN and (x) >= 0 and (y) < yN and (y) >= 0) { images[xN * (x) + (y)]->setTransparency(val); }
+#define SET_TRANSPARENCY4(x, y, v1, v2, v3, v4) if ((x) < xN and (x) >= 0 and (y) < yN and (y) >= 0) { images[xN * (x) + (y)]->setTransparency(v1, v2, v3, v4); }
 
+using std::shared_ptr, std::make_shared;
 
 int main(int argc, char *argv[]) {
     gp::init();
@@ -39,7 +40,7 @@ int main(int argc, char *argv[]) {
         "assets/light_gray_concrete_powder.png"
     };
 
-    std::vector<gp::Image> images;
+    std::vector<shared_ptr<gp::Image>> images;
 
     for (int i = 0; i < xN; i++) {
         float x = width * (float) i + width / 2 - 406;
@@ -47,9 +48,11 @@ int main(int argc, char *argv[]) {
         for (int j = 0; j < yN; j++) {
             float y = height * (float) j + height / 2 - 406;
 
-            images.emplace_back(paths[rand() % 17], Point{x, y}, width, height);
-            images.back().setAnchor(0, 0);
-            images.back().draw(window);
+            auto img = make_shared<gp::Image>(paths[rand() % 17], Point{x, y}, width, height);
+            img->setAnchor(0, 0);
+            window.draw(img);
+
+            images.push_back(img);
         }
     }
 
@@ -57,7 +60,7 @@ int main(int argc, char *argv[]) {
         gp::update();
 
         for (auto &object: images) {
-            object.setTransparency(0.1);
+            object->setTransparency(0.1);
         }
 
         auto pos = window.getMousePosition();
