@@ -20,9 +20,9 @@ namespace gp {
     void Renderer::init() {
         GP_CORE_INFO("Rendering::init() initializing Renderer");
 
-        m_TriangleBatch.VAO.init();
-        m_QuadBatch.VAO.init();
-        m_EllipseBatch.VAO.init();
+        m_TriangleBatch.init();
+        m_QuadBatch.init();
+        m_EllipseBatch.init();
     }
 
     void Renderer::_createTexturedBuffer() {
@@ -34,8 +34,8 @@ namespace gp {
                                                                 {ShaderDataType::Float4, "color"},
                                                                 {ShaderDataType::Float2, "texCoord"},
                                                                 {ShaderDataType::Int,    "texSlot"},
-                                                        }));
-        m_TexturedQuadBatches.back().VAO.init();
+                                                        }), 6, 4);
+        m_TexturedQuadBatches.back().init();
 
         m_TexturedQuadVertices.emplace_back();
         m_TexturedQuadToIndex.emplace_back();
@@ -55,10 +55,8 @@ namespace gp {
             }
         }
 
-        m_TriangleBatch.indices += 3;
-        m_TriangleBatch.vertices += 3;
-        m_TriangleBatch.bufferData = &m_TriangleVertices[0];
-        m_TriangleBatch.reallocateBufferData = true;
+        m_TriangleBatch.addObject();
+        m_TriangleBatch.m_BufferData = &m_TriangleVertices[0];
     }
 
     void Renderer::destroyTriangle(uint32_t ID) {
@@ -75,10 +73,8 @@ namespace gp {
             }
         }
 
-        m_TriangleBatch.indices -= 3;
-        m_TriangleBatch.vertices -= 3;
-        m_TriangleBatch.bufferData = m_TriangleVertices.empty() ? nullptr : &m_TriangleVertices[0];
-        m_TriangleBatch.reallocateBufferData = true;
+        m_TriangleBatch.removeObject();
+        m_TriangleBatch.m_BufferData = m_TriangleVertices.empty() ? nullptr : &m_TriangleVertices[0];
     }
 
     void Renderer::updateTriangle(uint32_t ID, const shared_ptr<Triangle> object) {
@@ -91,8 +87,7 @@ namespace gp {
                 m_TriangleVertices[index + i].attrib.color.alpha = 0;
             }
         }
-
-        m_TriangleBatch.updateBufferData = true;
+        m_TriangleBatch.updateObjects();
     }
 
     void Renderer::drawQuad(uint32_t ID, const shared_ptr<Quad> object) {
@@ -109,10 +104,8 @@ namespace gp {
             }
         }
 
-        m_QuadBatch.indices += 6;
-        m_QuadBatch.vertices += 4;
-        m_QuadBatch.bufferData = &m_QuadVertices[0];
-        m_QuadBatch.reallocateBufferData = true;
+        m_QuadBatch.addObject();
+        m_QuadBatch.m_BufferData = &m_QuadVertices[0];
     }
 
     void Renderer::destroyQuad(uint32_t ID) {
@@ -128,10 +121,8 @@ namespace gp {
             }
         }
 
-        m_QuadBatch.indices -= 6;
-        m_QuadBatch.vertices -= 4;
-        m_QuadBatch.bufferData = m_QuadVertices.empty() ? nullptr : &m_QuadVertices[0];
-        m_QuadBatch.reallocateBufferData = true;
+        m_QuadBatch.removeObject();
+        m_QuadBatch.m_BufferData = m_QuadVertices.empty() ? nullptr : &m_QuadVertices[0];
     }
 
     void Renderer::updateQuad(uint32_t ID, const shared_ptr<Quad> object) {
@@ -144,8 +135,7 @@ namespace gp {
                 m_QuadVertices[index + i].attrib.color.alpha = 0;
             }
         }
-
-        m_QuadBatch.updateBufferData = true;
+        m_QuadBatch.updateObjects();
     }
 
     void Renderer::drawEllipse(uint32_t ID, const shared_ptr<Ellipse> object) {
@@ -162,10 +152,8 @@ namespace gp {
             }
         }
 
-        m_EllipseBatch.indices += 6;
-        m_EllipseBatch.vertices += 4;
-        m_EllipseBatch.bufferData = &m_EllipseVertices[0];
-        m_EllipseBatch.reallocateBufferData = true;
+        m_EllipseBatch.addObject();
+        m_EllipseBatch.m_BufferData = &m_EllipseVertices[0];
     }
 
     void Renderer::destroyEllipse(uint32_t ID) {
@@ -181,10 +169,8 @@ namespace gp {
             }
         }
 
-        m_EllipseBatch.indices -= 6;
-        m_EllipseBatch.vertices -= 4;
-        m_EllipseBatch.bufferData = m_EllipseVertices.empty() ? nullptr : &m_EllipseVertices[0];
-        m_EllipseBatch.reallocateBufferData = true;
+        m_EllipseBatch.removeObject();
+        m_EllipseBatch.m_BufferData = m_EllipseVertices.empty() ? nullptr : &m_EllipseVertices[0];
     }
 
     void Renderer::updateEllipse(uint32_t ID, const shared_ptr<Ellipse> object) {
@@ -197,8 +183,7 @@ namespace gp {
                 m_EllipseVertices[index + i].attrib.color.alpha = 0;
             }
         }
-
-        m_EllipseBatch.updateBufferData = true;
+        m_EllipseBatch.updateObjects();
     }
 
     void Renderer::drawTexturedQuad(uint32_t ID, shared_ptr<TexturedQuad> object) {
@@ -232,17 +217,16 @@ namespace gp {
 
         for (int i = 0; i < 4; i++) {
             object->m_TextureAttribs[i].texSlot = texSlot;
-            m_TexturedQuadVertices[batch].emplace_back(object->m_Points[i], object->m_ZPosition, object->m_VertexAttribs[i], object->m_TextureAttribs[i]);
+            m_TexturedQuadVertices[batch].emplace_back(object->m_Points[i], object->m_ZPosition,
+                                                       object->m_VertexAttribs[i], object->m_TextureAttribs[i]);
 
             if (object->isHidden()) {
                 m_TexturedQuadVertices[batch][index + i].attrib.color.alpha = 0;
             }
         }
 
-        m_TexturedQuadBatches[batch].indices += 6;
-        m_TexturedQuadBatches[batch].vertices += 4;
-        m_TexturedQuadBatches[batch].bufferData = &m_TexturedQuadVertices[batch][0];
-        m_TexturedQuadBatches[batch].reallocateBufferData = true;
+        m_TexturedQuadBatches[batch].addObject();
+        m_TexturedQuadBatches[batch].m_BufferData = &m_TexturedQuadVertices[batch][0];
     }
 
     void Renderer::destroyTexturedQuad(uint32_t ID) {
@@ -260,12 +244,10 @@ namespace gp {
             }
         }
 
-        m_TexturedQuadBatches[batch].indices -= 6;
-        m_TexturedQuadBatches[batch].vertices -= 4;
-        m_TexturedQuadBatches[batch].bufferData = m_TexturedQuadVertices[batch].empty()
+        m_TexturedQuadBatches[batch].removeObject();
+        m_TexturedQuadBatches[batch].m_BufferData = m_TexturedQuadVertices[batch].empty()
                                                   ? nullptr
                                                   : &m_TexturedQuadVertices[batch][0];
-        m_TexturedQuadBatches[batch].reallocateBufferData = true;
     }
 
     void Renderer::updateTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad> object) {
@@ -273,43 +255,44 @@ namespace gp {
         const uint32_t index = m_TexturedQuadToIndex[batch][ID];
 
         for (int i = 0; i < 4; i++) {
-            m_TexturedQuadVertices[batch][index + i] = {object->m_Points[i], object->m_ZPosition, object->m_VertexAttribs[i], object->m_TextureAttribs[i]};
+            m_TexturedQuadVertices[batch][index + i] = {object->m_Points[i], object->m_ZPosition,
+                                                        object->m_VertexAttribs[i], object->m_TextureAttribs[i]};
 
             if (object->isHidden()) {
                 m_TexturedQuadVertices[batch][index + i].attrib.color.alpha = 0;
             }
         }
 
-        m_TexturedQuadBatches[batch].updateBufferData = true;
+        m_TexturedQuadBatches[batch].updateObjects();
     }
 
     void Renderer::flush() {
         GP_CORE_TRACE_ALL("gp::Renderer::flush()");
 
-        if (m_TriangleBatch.indices or m_QuadBatch.indices) {
+        if (!(m_TriangleBatch.empty() and m_QuadBatch.empty())) {
             m_Window.m_SolidShader.bind();
         }
 
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing triangles");
-        if (m_TriangleBatch.indices) {
-            _updateRenderingObjectVBO(m_TriangleBatch);
-            m_TriangleBatch.VAO.draw(m_TriangleBatch.indices, m_TriangleBatch.mode);
+        if (!m_TriangleBatch.empty()) {
+            m_TriangleBatch.updateRenderingObjectVBO();
+            m_TriangleBatch.draw();
         }
 
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing quads");
-        if (m_QuadBatch.indices) {
-            _updateRenderingObjectEBO(m_QuadBatch);
-            _updateRenderingObjectVBO(m_QuadBatch);
-            m_QuadBatch.VAO.draw(m_QuadBatch.indices, m_QuadBatch.mode);
+        if (!m_QuadBatch.empty()) {
+            m_QuadBatch.updateRenderingObjectEBO();
+            m_QuadBatch.updateRenderingObjectVBO();
+            m_QuadBatch.draw();
         }
 
         GP_CORE_TRACE_ALL("gp::Renderer::flush() drawing ellipses");
-        if (m_EllipseBatch.indices) {
-            _updateRenderingObjectEBO(m_EllipseBatch);
-            _updateRenderingObjectVBO(m_EllipseBatch);
+        if (!m_EllipseBatch.empty()) {
+            m_EllipseBatch.updateRenderingObjectEBO();
+            m_EllipseBatch.updateRenderingObjectVBO();
 
             m_Window.m_EllipseShader.bind();
-            m_EllipseBatch.VAO.draw(m_EllipseBatch.indices, m_EllipseBatch.mode);
+            m_EllipseBatch.draw();
         }
 
         uint32_t textureSlotOffset = 0;
@@ -317,13 +300,12 @@ namespace gp {
             _bindTextureBatch(textureSlotOffset);
             textureSlotOffset += TextureBuffer::getTextureSlots();
 
-            if (batch.indices) {
+            if (!batch.empty()) {
                 m_Window.m_TextureShader.bind();
 
-                _updateRenderingObjectEBO(batch);
-                _updateRenderingObjectVBO(batch);
-
-                batch.VAO.draw(batch.indices, batch.mode);
+                batch.updateRenderingObjectEBO();
+                batch.updateRenderingObjectVBO();
+                batch.draw();
             }
         }
     }
@@ -345,42 +327,6 @@ namespace gp {
 
         for (uint32_t i = offset; i < textures; i++) {
             m_Textures[i]->bind(i % TextureBuffer::getTextureSlots());
-        }
-    }
-
-    void Renderer::_updateRenderingObjectVBO(RenderingBatch &object) {
-        GP_CORE_TRACE_ALL("gp::Renderer::_updateRenderingObjectVBO()");
-        if (object.reallocateBufferData) {
-            object.VAO.getVertexBuffer().setData(object.bufferData, object.vertices);
-            object.reallocateBufferData = false;
-            object.updateBufferData = false;
-        } else if (object.updateBufferData) {
-            object.VAO.getVertexBuffer().setData(object.bufferData, object.vertices, 0);
-            object.updateBufferData = false;
-        }
-    }
-
-    void Renderer::_updateRenderingObjectEBO(RenderingBatch &object) {
-        if (object.reallocateBufferData) {
-            GP_CORE_TRACE_ALL("gp::Renderer::_updateRenderingObjectEBO(indices={0}, vertices={1})",
-                              object.indices, object.vertices);
-
-            object.indicesData.clear();
-            object.indicesData = std::vector<uint32_t>(object.indices);
-
-            for (int32_t i = 0; i < object.vertices / 4; i++) {
-                const int32_t indicesIndex = i * 6;
-                const int32_t vertexIndex = i * 4;
-
-                object.indicesData[indicesIndex + 0] = vertexIndex + 0;
-                object.indicesData[indicesIndex + 1] = vertexIndex + 1;
-                object.indicesData[indicesIndex + 2] = vertexIndex + 2;
-
-                object.indicesData[indicesIndex + 3] = vertexIndex + 0;
-                object.indicesData[indicesIndex + 4] = vertexIndex + 2;
-                object.indicesData[indicesIndex + 5] = vertexIndex + 3;
-            }
-            object.VAO.getIndexBuffer().setData(&object.indicesData[0], object.indices);
         }
     }
 }

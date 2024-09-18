@@ -75,7 +75,8 @@ namespace gp {
                         {ShaderDataType::Float2, "position"},
                         {ShaderDataType::Float, "z"},
                         {ShaderDataType::Float4, "color"}
-                }
+                },
+                3, 3
         };
         std::vector<SolidVertex> m_TriangleVertices;
         std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
@@ -85,7 +86,8 @@ namespace gp {
                         {ShaderDataType::Float2, "position"},
                         {ShaderDataType::Float, "z"},
                         {ShaderDataType::Float4, "color"}
-                }
+                },
+                6, 4
         };
         std::vector<SolidVertex> m_QuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
@@ -96,7 +98,8 @@ namespace gp {
                         {ShaderDataType::Float, "z"},
                         {ShaderDataType::Float2, "localCoord"},
                         {ShaderDataType::Float4, "color"}
-                }
+                },
+                6, 4
         };
         std::vector<EllipseVertex> m_EllipseVertices;
         std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;
@@ -118,9 +121,5 @@ namespace gp {
         [[nodiscard]] uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);
 
         void _bindTextureBatch(uint32_t offset) const;
-
-        static void _updateRenderingObjectVBO(RenderingBatch &object);
-
-        static void _updateRenderingObjectEBO(RenderingBatch &object);
     };
 }
