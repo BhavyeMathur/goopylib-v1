@@ -78,6 +78,8 @@ namespace gp {
          */
         void setColor(int red, int green, int blue, float alpha = 1);
 
+        void setColor(const RGBAf rgbaf1, const RGBAf rgbaf2, const RGBAf rgbaf3, const RGBAf rgbaf4);
+
         /**
          * Sets the transparency of the object
          *
@@ -169,10 +171,10 @@ namespace gp {
         [[nodiscard]] virtual Point getP4() const;
 
     protected:
-        SolidVertexAttrib m_V1 = {{0.0f, 0.55f, 0.9f}};
-        SolidVertexAttrib m_V2 = {{0.0f, 0.55f, 0.9f}};
-        SolidVertexAttrib m_V3 = {{0.0f, 0.55f, 0.9f}};
-        SolidVertexAttrib m_V4 = {{0.0f, 0.55f, 0.9f}};
+        SolidVertexAttrib m_VertexAttribs[4] = {{{0.0f, 0.55f, 0.9f}},
+                                                {{0.0f, 0.55f, 0.9f}},
+                                                {{0.0f, 0.55f, 0.9f}},
+                                                {{0.0f, 0.55f, 0.9f}}};
 
         Quad() = default;
 

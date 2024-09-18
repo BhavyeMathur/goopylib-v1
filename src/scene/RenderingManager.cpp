@@ -127,9 +127,6 @@ namespace gp {
 
         GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 1");
         switch (object->_getRenderableSubclass()) {
-            case RenderableSubclass::Line:
-                renderer.drawLine(ID, std::dynamic_pointer_cast<Line>(object));
-                break;
             case RenderableSubclass::Triangle:
                 renderer.drawTriangle(ID, std::dynamic_pointer_cast<Triangle>(object));
                 break;
@@ -157,9 +154,6 @@ namespace gp {
         Renderer &renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
 
         switch (object->_getRenderableSubclass()) {
-            case RenderableSubclass::Line:
-                renderer.destroyLine(ID);
-                break;
             case RenderableSubclass::Triangle:
                 renderer.destroyTriangle(ID);
                 break;
@@ -192,9 +186,6 @@ namespace gp {
         }
 
         switch (object->_getRenderableSubclass()) {
-            case RenderableSubclass::Line:
-                renderer.updateLine(ID, std::dynamic_pointer_cast<Line>(object));
-                return;
             case RenderableSubclass::Triangle:
                 renderer.updateTriangle(ID, std::dynamic_pointer_cast<Triangle>(object));
                 return;

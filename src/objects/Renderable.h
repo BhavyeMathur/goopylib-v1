@@ -15,7 +15,7 @@ namespace gp {
 
 namespace gp {
     enum class RenderableSubclass {
-        Line, Triangle, Quad, Ellipse, TexturedQuad
+        Triangle, Quad, Ellipse, TexturedQuad
     };
 
     /**

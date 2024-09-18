@@ -30,12 +30,12 @@ namespace gp {
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating TexturedQuad buffer");
 
         m_TexturedQuadBatches.emplace_back(BufferLayout({
-            {ShaderDataType::Float2, "position"},
-            {ShaderDataType::Float, "z"},
-            {ShaderDataType::Float4, "color"},
-            {ShaderDataType::Float2, "texCoord"},
-            {ShaderDataType::Int, "texSlot"},
-        }));
+                                                                {ShaderDataType::Float2, "position"},
+                                                                {ShaderDataType::Float,  "z"},
+                                                                {ShaderDataType::Float4, "color"},
+                                                                {ShaderDataType::Float2, "texCoord"},
+                                                                {ShaderDataType::Int,    "texSlot"},
+                                                        }));
         m_TexturedQuadBatches.back().VAO.init();
 
         m_TexturedQuadVertices.emplace_back();
@@ -106,16 +106,12 @@ namespace gp {
         const uint32_t index = m_QuadVertices.size();
         m_QuadToIndex.insert({ID, index});
 
-        m_QuadVertices.emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1);
-        m_QuadVertices.emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2);
-        m_QuadVertices.emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3);
-        m_QuadVertices.emplace_back(object->m_Points[3], object->m_ZPosition, object->m_V4);
+        for (int i = 0; i < 4; i++) {
+            m_QuadVertices.emplace_back(object->m_Points[i], object->m_ZPosition, object->m_VertexAttribs[i]);
 
-        if (object->isHidden()) {
-            m_QuadVertices[index + 0].attrib.color.alpha = 0;
-            m_QuadVertices[index + 1].attrib.color.alpha = 0;
-            m_QuadVertices[index + 2].attrib.color.alpha = 0;
-            m_QuadVertices[index + 3].attrib.color.alpha = 0;
+            if (object->isHidden()) {
+                m_QuadVertices[index + i].attrib.color.alpha = 0;
+            }
         }
 
         m_QuadBatch.indices += 6;
@@ -146,16 +142,12 @@ namespace gp {
     void Renderer::updateQuad(uint32_t ID, const shared_ptr<Quad> object) {
         const uint32_t index = m_QuadToIndex[ID];
 
-        m_QuadVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
-        m_QuadVertices[index + 1] = {object->m_Points[1], object->m_ZPosition, object->m_V2};
-        m_QuadVertices[index + 2] = {object->m_Points[2], object->m_ZPosition, object->m_V3};
-        m_QuadVertices[index + 3] = {object->m_Points[3], object->m_ZPosition, object->m_V4};
+        for (int i = 0; i < 4; i++) {
+            m_QuadVertices[index + i] = {object->m_Points[i], object->m_ZPosition, object->m_VertexAttribs[i]};
 
-        if (object->isHidden()) {
-            m_QuadVertices[index + 0].attrib.color.alpha = 0;
-            m_QuadVertices[index + 1].attrib.color.alpha = 0;
-            m_QuadVertices[index + 2].attrib.color.alpha = 0;
-            m_QuadVertices[index + 3].attrib.color.alpha = 0;
+            if (object->isHidden()) {
+                m_QuadVertices[index + i].attrib.color.alpha = 0;
+            }
         }
 
         m_QuadBatch.updateBufferData = true;
@@ -231,8 +223,7 @@ namespace gp {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - using cached texture '{0}'", object->getTextureName());
             texIndex = m_TexturesCache[object->getTextureName()].index;
             texSlot = texIndex % 16;
-        }
-        else {
+        } else {
             GP_CORE_TRACE("gp::Renderer::drawTexturedQuad() - no cached texture '{0}'", object->getTextureName());
 
             auto bitmap = object->getBitmap();
@@ -257,14 +248,14 @@ namespace gp {
         m_TexturedQuadToBatch.insert({ID, batch});
         m_TexturedQuadToIndex[batch].insert({ID, index});
 
-        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[0], object->m_ZPosition, object->m_V1,
-                                                   object->m_T1);
-        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[1], object->m_ZPosition, object->m_V2,
-                                                   object->m_T2);
-        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[2], object->m_ZPosition, object->m_V3,
-                                                   object->m_T3);
-        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[3], object->m_ZPosition, object->m_V4,
-                                                   object->m_T4);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[0], object->m_ZPosition,
+                                                   object->m_VertexAttribs[0], object->m_T1);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[1], object->m_ZPosition,
+                                                   object->m_VertexAttribs[1], object->m_T2);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[2], object->m_ZPosition,
+                                                   object->m_VertexAttribs[2], object->m_T3);
+        m_TexturedQuadVertices[batch].emplace_back(object->m_Points[3], object->m_ZPosition,
+                                                   object->m_VertexAttribs[3], object->m_T4);
 
         if (object->isHidden()) {
             m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;
@@ -306,14 +297,14 @@ namespace gp {
         const uint32_t batch = m_TexturedQuadToBatch[ID];
         const uint32_t index = m_TexturedQuadToIndex[batch][ID];
 
-        m_TexturedQuadVertices[batch][index +
-                                      0] = {object->m_Points[0], object->m_ZPosition, object->m_V1, object->m_T1};
-        m_TexturedQuadVertices[batch][index +
-                                      1] = {object->m_Points[1], object->m_ZPosition, object->m_V2, object->m_T2};
-        m_TexturedQuadVertices[batch][index +
-                                      2] = {object->m_Points[2], object->m_ZPosition, object->m_V3, object->m_T3};
-        m_TexturedQuadVertices[batch][index +
-                                      3] = {object->m_Points[3], object->m_ZPosition, object->m_V4, object->m_T4};
+        m_TexturedQuadVertices[batch][index + 0] = {object->m_Points[0], object->m_ZPosition,
+                                                    object->m_VertexAttribs[0], object->m_T1};
+        m_TexturedQuadVertices[batch][index + 1] = {object->m_Points[1], object->m_ZPosition,
+                                                    object->m_VertexAttribs[1], object->m_T2};
+        m_TexturedQuadVertices[batch][index + 2] = {object->m_Points[2], object->m_ZPosition,
+                                                    object->m_VertexAttribs[2], object->m_T3};
+        m_TexturedQuadVertices[batch][index + 3] = {object->m_Points[3], object->m_ZPosition,
+                                                    object->m_VertexAttribs[3], object->m_T4};
 
         if (object->isHidden()) {
             m_TexturedQuadVertices[batch][index + 0].attrib.color.alpha = 0;

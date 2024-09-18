@@ -13,13 +13,11 @@ namespace gp {
         GP_CORE_DEBUG("gp::TexturedQuad::TexturedQuad(({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
 
-        m_V1.color = {1, 1, 1, 1};
-        m_V2.color = m_V1.color;
-        m_V3.color = m_V1.color;
-        m_V4.color = m_V1.color;
+        setColor({1, 1, 1, 1});
     }
 
-    TexturedQuad::TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2, Point p3, Point p4)
+    TexturedQuad::TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap, Point p1, Point p2, Point p3,
+                               Point p4)
             : TexturedQuad(std::move(texture), p1, p2, p3, p4) {
         GP_CORE_DEBUG("gp::TexturedQuad::TexturedQuad({8}, ({0}, {1}), ({2}, {3}), ({4}, {5}), ({6}, {7})",
                       p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y, texture);
@@ -29,11 +27,7 @@ namespace gp {
 
     TexturedQuad::TexturedQuad(std::string texture)
             : m_Texture(std::move(texture)) {
-
-        m_V1.color = {1, 1, 1, 1};
-        m_V2.color = m_V1.color;
-        m_V3.color = m_V1.color;
-        m_V4.color = m_V1.color;
+        setColor({1, 1, 1, 1});
     }
 
     TexturedQuad::TexturedQuad(std::string texture, const shared_ptr<Bitmap> &bitmap)
