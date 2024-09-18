@@ -66,6 +66,8 @@ namespace gp {
 
         void draw(shared_ptr<Renderable> object);
 
+        void destroy(shared_ptr<Renderable> object);
+
     protected:
         int m_Width;
         int m_Height;
@@ -89,8 +91,6 @@ namespace gp {
         uint32_t m_NextObjectID = -1;
         std::unordered_map<uint32_t, shared_ptr<Renderable>> m_IDtoObject;
         std::unordered_map<uint32_t, bool> m_ObjectToIsOpaque;
-
-        void destroy(shared_ptr<Renderable> object);
 
         void _updateRenderable(uint32_t ID);
     };

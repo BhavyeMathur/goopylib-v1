@@ -21,29 +21,9 @@ namespace gp {
     void Renderer::init() {
         GP_CORE_INFO("Rendering::init() initializing Renderer");
 
-        _createLineBuffer();
-        _createTriangleBuffer();
-        _createQuadBuffer();
-        _createEllipseBuffer();
-    }
-
-    void Renderer::_createLineBuffer() {
-        GP_CORE_TRACE("Renderer::_createLineBuffer()");
         m_LineBatch.VAO.init();
-    }
-
-    void Renderer::_createTriangleBuffer() {
-        GP_CORE_TRACE("Renderer::_createTriangleBuffer()");
         m_TriangleBatch.VAO.init();
-    }
-
-    void Renderer::_createQuadBuffer() {
-        GP_CORE_TRACE("Renderer::_createQuadBuffer()");
         m_QuadBatch.VAO.init();
-    }
-
-    void Renderer::_createEllipseBuffer() {
-        GP_CORE_TRACE("Renderer::_createEllipseBuffer()");
         m_EllipseBatch.VAO.init();
     }
 
@@ -141,6 +121,7 @@ namespace gp {
     void Renderer::destroyTriangle(uint32_t ID) {
         const uint32_t index = m_TriangleToIndex[ID];
 
+        // TODO optimise destroying multiple contiguous objects
         m_TriangleVertices.erase(std::next(m_TriangleVertices.begin(), index),
                                  std::next(m_TriangleVertices.begin(), index + 3));
 

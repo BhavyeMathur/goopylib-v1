@@ -151,14 +151,6 @@ namespace gp {
 
         Renderer(const RenderingManager &window);
 
-        void _createLineBuffer();
-
-        void _createTriangleBuffer();
-
-        void _createQuadBuffer();
-
-        void _createEllipseBuffer();
-
         void _createTexturedBuffer();
 
         [[nodiscard]] uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);

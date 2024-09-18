@@ -123,6 +123,7 @@ namespace gp {
         GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 0");
 
         Renderer &renderer = (object->isVisibleAndOpaque() ? m_Renderer : m_AlphaRenderer);
+        m_ObjectToIsOpaque[ID] = object->isVisibleAndOpaque();
 
         GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 1");
         switch (object->_getRenderableSubclass()) {
@@ -147,7 +148,6 @@ namespace gp {
 
         object->_drawToWindow(ID, this);
         m_IDtoObject[ID] = object;
-        m_ObjectToIsOpaque[ID] = object->isVisibleAndOpaque();
     }
 
     void RenderingManager::destroy(shared_ptr<Renderable> object) {
