@@ -82,42 +82,27 @@ namespace gp {
         return "Renderable()";
     }
 
-    Renderable& Renderable::draw(Window &window) {
-        GP_CORE_DEBUG("gp::Renderable::_drawRenderable({0})", window.getTitle());
+    void Renderable::_drawToWindow(uint32_t ID, RenderingManager *window) {
+        GP_CORE_DEBUG("gp::Renderable::_drawToWindow({0})", window.getTitle());
 
-        #if GP_ERROR_CHECKING
-        if (window.isDestroyed()) {
-            GP_RUNTIME_ERROR("Renderable::_drawRenderable() window has been destroyed");
-        }
-        #endif
-
-        if (m_Drawn) {
-            m_Window->_undrawRenderable(this);
-        }
-
-        m_RendererID = window._drawRenderable(this);
-        m_Window = &window;
+        m_RendererID = ID;
+        m_Window = window;
         m_Drawn = true;
-        return *this;
     }
 
-    void Renderable::destroy() {
-        GP_CORE_INFO("gp::Renderable::destroy()");
+    void Renderable::_undrawFromWindow() {
+        GP_CORE_INFO("gp::Renderable::_undrawFromWindow()");
 
-        if (m_Drawn) {
-            m_Window->_undrawRenderable(this);
-
-            m_Window = nullptr;
-            m_Drawn = false;
-            m_RendererID = 0;
-        }
+        m_Window = nullptr;
+        m_Drawn = false;
+        m_RendererID = -1;
     }
 
     void Renderable::update() {
         GP_CORE_TRACE("gp::Renderable::_update()");
 
         if (m_Drawn) {
-            m_Window->_updateRenderable(this);
+            m_Window->_updateRenderable(m_RendererID);
         }
     }
 
@@ -346,10 +331,6 @@ namespace gp {
     float Renderable::getHeight() const {
         GP_CORE_TRACE("gp::Renderable::getHeight()");
         return m_Height;
-    }
-
-    gp::Window &Renderable::getWindow() const {
-        return *m_Window;
     }
 
     void Renderable::setSize(float width, float height) {

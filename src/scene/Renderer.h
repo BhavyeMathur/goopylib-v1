@@ -46,8 +46,8 @@ namespace gp {
         bool updateBufferData = false;
 
         RenderingBatch(const BufferLayout &layout, const int32_t mode = GP_DRAW_MODE_TRIANGLES)
-            : VAO(layout),
-              mode(mode) {
+                : VAO(layout),
+                  mode(mode) {
         }
     };
 
@@ -65,76 +65,76 @@ namespace gp {
 
         void init();
 
-        void drawLine(uint32_t ID, const Line *object);
+        void drawLine(uint32_t ID, const shared_ptr<Line> object);
 
         void destroyLine(uint32_t ID);
 
-        void updateLine(uint32_t ID, const Line *object);
+        void updateLine(uint32_t ID, const shared_ptr<Line> object);
 
-        void drawTriangle(uint32_t ID, const Triangle *object);
+        void drawTriangle(uint32_t ID, const shared_ptr<Triangle> object);
 
         void destroyTriangle(uint32_t ID);
 
-        void updateTriangle(uint32_t ID, const Triangle *object);
+        void updateTriangle(uint32_t ID, const shared_ptr<Triangle> object);
 
-        void drawQuad(uint32_t ID, const Quad *object);
+        void drawQuad(uint32_t ID, const shared_ptr<Quad> object);
 
         void destroyQuad(uint32_t ID);
 
-        void updateQuad(uint32_t ID, const Quad *object);
+        void updateQuad(uint32_t ID, const shared_ptr<Quad> object);
 
-        void drawEllipse(uint32_t ID, const Ellipse *object);
+        void drawEllipse(uint32_t ID, const shared_ptr<Ellipse> object);
 
         void destroyEllipse(uint32_t ID);
 
-        void updateEllipse(uint32_t ID, const Ellipse *object);
+        void updateEllipse(uint32_t ID, const shared_ptr<Ellipse> object);
 
-        void drawTexturedQuad(uint32_t ID, TexturedQuad *object);
+        void drawTexturedQuad(uint32_t ID, shared_ptr<TexturedQuad> object);
 
         void destroyTexturedQuad(uint32_t ID);
 
-        void updateTexturedQuad(uint32_t ID, const TexturedQuad *object);
+        void updateTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad> object);
 
         void flush();
 
     private:
         RenderingBatch m_LineBatch{
-            {
-                {ShaderDataType::Float2, "position"},
-                {ShaderDataType::Float, "z"},
-                {ShaderDataType::Float4, "color"}
-            }, GP_DRAW_MODE_LINES
+                {
+                        {ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float, "z"},
+                        {ShaderDataType::Float4, "color"}
+                }, GP_DRAW_MODE_LINES
         };
         std::vector<SolidVertex> m_LineVertices;
         std::unordered_map<uint32_t, uint32_t> m_LineToIndex;
 
         RenderingBatch m_TriangleBatch{
-            {
-                {ShaderDataType::Float2, "position"},
-                {ShaderDataType::Float, "z"},
-                {ShaderDataType::Float4, "color"}
-            }
+                {
+                        {ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float, "z"},
+                        {ShaderDataType::Float4, "color"}
+                }
         };
         std::vector<SolidVertex> m_TriangleVertices;
         std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
 
         RenderingBatch m_QuadBatch{
-            {
-                {ShaderDataType::Float2, "position"},
-                {ShaderDataType::Float, "z"},
-                {ShaderDataType::Float4, "color"}
-            }
+                {
+                        {ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float, "z"},
+                        {ShaderDataType::Float4, "color"}
+                }
         };
         std::vector<SolidVertex> m_QuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
 
         RenderingBatch m_EllipseBatch{
-            {
-                {ShaderDataType::Float2, "position"},
-                {ShaderDataType::Float, "z"},
-                {ShaderDataType::Float2, "localCoord"},
-                {ShaderDataType::Float4, "color"}
-            }
+                {
+                        {ShaderDataType::Float2, "position"},
+                        {ShaderDataType::Float, "z"},
+                        {ShaderDataType::Float2, "localCoord"},
+                        {ShaderDataType::Float4, "color"}
+                }
         };
         std::vector<EllipseVertex> m_EllipseVertices;
         std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;

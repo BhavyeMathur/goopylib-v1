@@ -66,7 +66,8 @@ import goopylib as gp
 window = gp.Window(700, 500)  # width=700, height=500
 
 # centered at (0, 0), width=100, height=50
-rect = gp.Rectangle((0, 0), 100, 50).draw(window)
+rect = gp.Rectangle((0, 0), 100, 50)
+window.draw(rect)
 
 while window.is_open():
     gp.update()
@@ -92,7 +93,8 @@ while window.is_open():
 Draw other shapes or more complex objects:
 
 ```python
-img = gp.Image("filepath.png", (0, 0)).draw(window)
+img = gp.Image("filepath.png", (0, 0))
+window.draw(img)
 ```
 
 Install a simple camera controller that automatically moves, rotates, and zooms in & out!

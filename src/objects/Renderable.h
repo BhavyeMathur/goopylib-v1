@@ -39,20 +39,6 @@ namespace gp {
         virtual std::string toString() const;
 
         /**
-         * Draws the object to a window
-         *
-         * @param window the Window to _drawRenderable to
-         *
-         * @throws std::runtime_error the window has been destroyed
-         */
-        [[maybe_unused]] Renderable &draw(Window &window);
-
-        /**
-         * Destroys and undraws the object
-         */
-        void destroy();
-
-        /**
          *
          * @return whether the object has been drawn
          */
@@ -225,12 +211,6 @@ namespace gp {
         [[nodiscard]] float getHeight() const;
 
         /**
-         *
-         * @return the window this object is drawn to
-         */
-        [[nodiscard]] gp::Window& getWindow() const;
-
-        /**
          * Sets the dimensions of the object by resizing it
          * @param width in screen coordinates
          * @param height in screen coordinates
@@ -311,8 +291,8 @@ namespace gp {
         [[nodiscard]] virtual bool isOpaque() const = 0;
 
     protected:
-        Window *m_Window = nullptr;
-        uint32_t m_RendererID = 0;
+        RenderingManager *m_Window = nullptr;
+        uint32_t m_RendererID = -1;
 
         Point *m_Points = nullptr;
         uint32_t m_Vertices = 0;
@@ -364,5 +344,17 @@ namespace gp {
          * @return whether the object is fully opaque and visible or not
          */
         [[nodiscard]] bool isVisibleAndOpaque() const;
+
+        /**
+         * Draws the object to a window
+         *
+         * @param window the Window to draw to
+         */
+        void _drawToWindow(uint32_t ID, RenderingManager *window);
+
+        /**
+         * Destroys and undraws the object
+         */
+        void _undrawFromWindow();
     };
 }

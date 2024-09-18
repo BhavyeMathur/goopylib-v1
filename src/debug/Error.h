@@ -46,9 +46,11 @@ namespace gp {
 #define GP_RUNTIME_ERROR(...) gp::setError(gp::ErrorType::RuntimeError, gp::strformat(__VA_ARGS__))
 #define GP_VALUE_ERROR(...) gp::setError(gp::ErrorType::ValueError, gp::strformat(__VA_ARGS__))
 #define GP_FILENOTFOUND_ERROR(...) gp::setError(gp::ErrorType::FileNotFoundError, strformat(__VA_ARGS__))
+#define GP_CHECK_DRAWN do {if (!m_Drawn) gp::setError(gp::ErrorType::RuntimeError, "object must be drawn before this method is called"); } while (0)
 #else
 #define GP_CHECK_INITIALISED(src) nullptr
 #define GP_RUNTIME_ERROR(...) nullptr
 #define GP_VALUE_ERROR(...) nullptr
 #define GP_FILENOTFOUND_ERROR(...) nullptr
+#define GP_CHECK_DRAWN nullptr
 #endif

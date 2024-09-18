@@ -64,6 +64,8 @@ namespace gp {
          */
         [[nodiscard]] Point toScreen(Point p) const;
 
+        void draw(shared_ptr<Renderable> object);
+
     protected:
         int m_Width;
         int m_Height;
@@ -84,13 +86,12 @@ namespace gp {
 
         unique_ptr<UniformBuffer> m_ShaderUniform;
 
-        uint32_t m_NextObjectID = 0;
+        uint32_t m_NextObjectID = -1;
+        std::unordered_map<uint32_t, shared_ptr<Renderable>> m_IDtoObject;
         std::unordered_map<uint32_t, bool> m_ObjectToIsOpaque;
 
-        uint32_t _drawRenderable(Renderable *object);
+        void destroy(shared_ptr<Renderable> object);
 
-        void _undrawRenderable(Renderable *object);
-
-        void _updateRenderable(Renderable *object);
+        void _updateRenderable(uint32_t ID);
     };
 }

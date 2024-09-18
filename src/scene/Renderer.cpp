@@ -13,7 +13,7 @@
 
 namespace gp {
     Renderer::Renderer(const RenderingManager &window)
-        : m_Window(window) {
+            : m_Window(window) {
     }
 
     Renderer::~Renderer() = default;
@@ -63,7 +63,7 @@ namespace gp {
         m_TexturedQuadToIndex.emplace_back();
     }
 
-    void Renderer::drawLine(uint32_t ID, const Line *object) {
+    void Renderer::drawLine(uint32_t ID, const shared_ptr<Line> object) {
         GP_CORE_DEBUG("gp::Renderer::drawLine({0})", ID);
 
         const uint32_t index = m_LineVertices.size();
@@ -102,7 +102,7 @@ namespace gp {
         m_LineBatch.reallocateBufferData = true;
     }
 
-    void Renderer::updateLine(uint32_t ID, const Line *object) {
+    void Renderer::updateLine(uint32_t ID, const shared_ptr<Line> object) {
         const uint32_t index = m_LineToIndex[ID];
 
         m_LineVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
@@ -116,7 +116,7 @@ namespace gp {
         m_LineBatch.updateBufferData = true;
     }
 
-    void Renderer::drawTriangle(uint32_t ID, const Triangle *object) {
+    void Renderer::drawTriangle(uint32_t ID, const shared_ptr<Triangle> object) {
         GP_CORE_DEBUG("gp::Renderer::drawTriangle({0})", ID);
 
         const uint32_t index = m_TriangleVertices.size();
@@ -157,7 +157,7 @@ namespace gp {
         m_TriangleBatch.reallocateBufferData = true;
     }
 
-    void Renderer::updateTriangle(uint32_t ID, const Triangle *object) {
+    void Renderer::updateTriangle(uint32_t ID, const shared_ptr<Triangle> object) {
         const uint32_t index = m_TriangleToIndex[ID];
 
         m_TriangleVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
@@ -173,7 +173,7 @@ namespace gp {
         m_TriangleBatch.updateBufferData = true;
     }
 
-    void Renderer::drawQuad(uint32_t ID, const Quad *object) {
+    void Renderer::drawQuad(uint32_t ID, const shared_ptr<Quad> object) {
         GP_CORE_DEBUG("gp::Renderer::drawQuad({0})", ID);
 
         const uint32_t index = m_QuadVertices.size();
@@ -216,7 +216,7 @@ namespace gp {
         m_QuadBatch.reallocateBufferData = true;
     }
 
-    void Renderer::updateQuad(uint32_t ID, const Quad *object) {
+    void Renderer::updateQuad(uint32_t ID, const shared_ptr<Quad> object) {
         const uint32_t index = m_QuadToIndex[ID];
 
         m_QuadVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
@@ -234,7 +234,7 @@ namespace gp {
         m_QuadBatch.updateBufferData = true;
     }
 
-    void Renderer::drawEllipse(uint32_t ID, const Ellipse *object) {
+    void Renderer::drawEllipse(uint32_t ID, const shared_ptr<Ellipse> object) {
         GP_CORE_DEBUG("gp::Renderer::drawEllipse({0})", ID);
 
         const uint32_t index = m_EllipseVertices.size();
@@ -277,7 +277,7 @@ namespace gp {
         m_EllipseBatch.reallocateBufferData = true;
     }
 
-    void Renderer::updateEllipse(uint32_t ID, const Ellipse *object) {
+    void Renderer::updateEllipse(uint32_t ID, const shared_ptr<Ellipse> object) {
         const uint32_t index = m_EllipseToIndex[ID];
 
         m_EllipseVertices[index + 0] = {object->m_Points[0], object->m_ZPosition, object->m_V1};
@@ -295,7 +295,7 @@ namespace gp {
         m_EllipseBatch.updateBufferData = true;
     }
 
-    void Renderer::drawTexturedQuad(uint32_t ID, TexturedQuad *object) {
+    void Renderer::drawTexturedQuad(uint32_t ID, shared_ptr<TexturedQuad> object) {
         GP_CORE_DEBUG("gp::Renderer::drawTexturedQuad({0})", ID);
 
         uint32_t texIndex, texSlot;
@@ -370,12 +370,12 @@ namespace gp {
         m_TexturedQuadBatches[batch].indices -= 6;
         m_TexturedQuadBatches[batch].vertices -= 4;
         m_TexturedQuadBatches[batch].bufferData = m_TexturedQuadVertices[batch].empty()
-                                                      ? nullptr
-                                                      : &m_TexturedQuadVertices[batch][0];
+                                                  ? nullptr
+                                                  : &m_TexturedQuadVertices[batch][0];
         m_TexturedQuadBatches[batch].reallocateBufferData = true;
     }
 
-    void Renderer::updateTexturedQuad(uint32_t ID, const TexturedQuad *object) {
+    void Renderer::updateTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad> object) {
         const uint32_t batch = m_TexturedQuadToBatch[ID];
         const uint32_t index = m_TexturedQuadToIndex[batch][ID];
 
@@ -475,8 +475,7 @@ namespace gp {
             object.VAO.getVertexBuffer().setData(object.bufferData, object.vertices);
             object.reallocateBufferData = false;
             object.updateBufferData = false;
-        }
-        else if (object.updateBufferData) {
+        } else if (object.updateBufferData) {
             object.VAO.getVertexBuffer().setData(object.bufferData, object.vertices, 0);
             object.updateBufferData = false;
         }
@@ -488,7 +487,7 @@ namespace gp {
                               object.indices, object.vertices);
 
             object.indicesData.clear();
-            object.indicesData.reserve(object.indices);
+            object.indicesData = std::vector<uint32_t>(object.indices);
 
             for (int32_t i = 0; i < object.vertices / 4; i++) {
                 const int32_t indicesIndex = i * 6;
