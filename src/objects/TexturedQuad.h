@@ -43,11 +43,10 @@ namespace gp {
         [[nodiscard]] virtual shared_ptr<Bitmap> getBitmap() const;
 
     protected:
-        TextureVertexAttrib m_T1 = {{0, 1}};
-        TextureVertexAttrib m_T2 = {{1, 1}};
-        TextureVertexAttrib m_T3 = {{1, 0}};
-        TextureVertexAttrib m_T4 = {{0, 0}};
-
+        TextureVertexAttrib m_TextureAttribs[4] = {{{0, 1}},
+                                                   {{1, 1}},
+                                                   {{1, 0}},
+                                                   {{0, 0}}};
         std::string m_Texture;
 
         TexturedQuad() = default;
