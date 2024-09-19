@@ -9,8 +9,6 @@ namespace gp {
      */
     class GPAPI Quad : public Renderable {
 
-        friend class Renderer;
-
     public:
         /**
          * An object representing a quad with 4 vertices.
@@ -24,7 +22,7 @@ namespace gp {
 
         virtual ~Quad() = default;
 
-        std::string toString() const override;
+        [[nodiscard]] std::string toString() const override;
 
         /**
          * Sets the fill color of the object
@@ -169,6 +167,8 @@ namespace gp {
          *
          */
         [[nodiscard]] virtual Point getP4() const;
+
+        [[nodiscard]] const void *vertexAttribData() const override;
 
     protected:
         SolidVertexAttrib m_VertexAttribs[4] = {{{0.0f, 0.55f, 0.9f}},

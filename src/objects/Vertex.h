@@ -17,6 +17,7 @@ namespace gp {
     };
 
     struct TextureVertexAttrib {
+        RGBAf color;
         Point texCoord;
         uint32_t texSlot = 0;
     };
@@ -50,14 +51,12 @@ namespace gp {
     struct TextureVertex {
         Point vertex;
         float z;
-        SolidVertexAttrib attrib;
-        TextureVertexAttrib texture;
+        TextureVertexAttrib attrib;
 
-        TextureVertex(Point vertex, float z, SolidVertexAttrib attrib, TextureVertexAttrib texture) :
+        TextureVertex(Point vertex, float z, TextureVertexAttrib attrib) :
                 vertex(vertex),
                 z(z),
-                attrib(attrib),
-                texture(texture) {
+                attrib(attrib) {
 
         }
     };

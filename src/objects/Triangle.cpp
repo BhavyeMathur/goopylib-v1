@@ -21,6 +21,10 @@ namespace gp {
         return strformat("Triangle((%g, %g), (%g, %g), (%g, %g))",
                          getP1().x, getP1().y, getP2().x, getP2().y, getP3().x, getP3().y);
     }
+
+    const void *Triangle::vertexAttribData() const {
+        return static_cast<const void *>(m_VertexAttribs);
+    }
 }
 
 // Triangle Methods

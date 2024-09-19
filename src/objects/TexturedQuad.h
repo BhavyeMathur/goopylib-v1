@@ -42,11 +42,13 @@ namespace gp {
 
         [[nodiscard]] virtual shared_ptr<Bitmap> getBitmap() const;
 
+        [[nodiscard]] const void *vertexAttribData() const override;
+
     protected:
-        TextureVertexAttrib m_TextureAttribs[4] = {{{0, 1}},
-                                                   {{1, 1}},
-                                                   {{1, 0}},
-                                                   {{0, 0}}};
+        TextureVertexAttrib m_VertexAttribs[4] = {{{1.0f, 1.0f, 1.0f}, {0, 1}},
+                                                  {{1.0f, 1.0f, 1.0f}, {1, 1}},
+                                                  {{1.0f, 1.0f, 1.0f}, {1, 0}},
+                                                  {{1.0f, 1.0f, 1.0f}, {0, 0}}};
         std::string m_Texture;
 
         TexturedQuad() = default;

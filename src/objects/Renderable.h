@@ -23,8 +23,6 @@ namespace gp {
      */
     class GPAPI Renderable {
 
-        friend class Renderer;
-
         friend class RenderingManager;
 
     public:
@@ -289,6 +287,10 @@ namespace gp {
          * @return whether the object is fully opaque or not
          */
         [[nodiscard]] virtual bool isOpaque() const = 0;
+
+        [[nodiscard]] const Point *vertexData() const;
+
+        [[nodiscard]] virtual const void *vertexAttribData() const = 0;
 
     protected:
         RenderingManager *m_Window = nullptr;

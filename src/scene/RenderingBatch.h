@@ -1,51 +1,80 @@
 #pragma once
 
-#include "gp.h"
-#include <core/VertexArray.h>
+#include "RenderingBatchBase.h"
+#include "objects/Vertex.h"
 
 namespace gp {
-    class Shader;
 
-    class RenderingBatch {
-    public:
-        RenderingBatch(const BufferLayout &layout, const uint32_t indexIncrement, const uint32_t vertexIncrement,
-                       const Shader &shader, const int32_t mode = GP_DRAW_MODE_TRIANGLES);
+    class Triangle;
 
-        void init();
+    class Quad;
 
-        void draw();
+    class Ellipse;
 
-        void addObject();
+    class TexturedQuad;
 
-        void updateObjects();
+    template<typename Object, typename VertexType, typename VertexAttribType>
+        class GPAPI RenderingBatch : public RenderingBatchBase {
+        public:
+            RenderingBatch(BufferLayout layout, int indexIncrement, int vertexIncrement, const Shader &shader)
+                    : RenderingBatchBase(layout, indexIncrement, vertexIncrement, shader) {
+            }
 
-        void removeObject();
+            void drawObject(uint32_t ID, const shared_ptr<Object> &object) {
+                GP_CORE_DEBUG("gp::RenderingBatch::drawObject({0})", ID);
 
-        [[nodiscard]] bool empty() const;
+                const uint32_t index = m_VertexData.size();
+                std::cout << "Creating " << ID << std::endl;
+                m_IDToIndex.insert({ID, index});
 
-    private:
-        VertexArray m_VAO;
-        int32_t m_Mode;
-        const Shader &m_Shader;
+                auto vertexAttribs = static_cast<const VertexAttribType *>(object->vertexAttribData());
 
-        const uint32_t m_IndexIncrement;
-        uint32_t m_Indices = 0;
-        std::vector<uint32_t> m_IndicesData;
+                for (int i = 0; i < m_VertexIncrement; i++) {
+                    m_VertexData.emplace_back(object->vertexData()[i], object->getZ(), vertexAttribs[i]);
 
-        const uint32_t m_VertexIncrement;
-        uint32_t m_Vertices = 0;
-        void *m_BufferData = nullptr;
+                    if (object->isHidden())
+                        m_VertexData[index + i].attrib.color.alpha = 0;
+                }
 
-        bool m_ReallocateBufferData = false;
-        bool m_UpdateBufferData = false;
+                m_Indices += m_IndexIncrement;
+                m_Vertices += m_VertexIncrement;
+                m_ReallocateBufferData = true;
+                m_BufferData = m_VertexData.data();
+            }
 
-        void _reallocateBufferData();
+            void destroyObject(uint32_t ID) {
+                std::cout << "Destroying " << ID << std::endl;
+                const uint32_t index = m_IDToIndex.at(ID);
 
-        void _updateRenderingObjectVBO();
+                m_VertexData.erase(std::next(m_VertexData.begin(), index),
+                                   std::next(m_VertexData.begin(), index + m_VertexIncrement));
+                m_IDToIndex.erase(ID);
 
-        // NOTE: this is only used for objects which have 6 indices / 4 vertexes (quads, ellipses, lines, etc.)
-        void _updateRenderingObjectEBO();
+                for (auto &i: m_IDToIndex) {
+                    if (i.second > index)
+                        i.second -= m_VertexIncrement;
+                }
 
-        friend class Renderer;
-    };
+                m_Indices -= m_IndexIncrement;
+                m_Vertices -= m_VertexIncrement;
+                m_ReallocateBufferData = true;
+                m_BufferData = m_VertexData.data();
+            }
+
+            void updateObject(uint32_t ID, const shared_ptr<Object> &object) {
+                const uint32_t index = m_IDToIndex.at(ID);
+                auto vertexAttribs = static_cast<const VertexAttribType *>(object->vertexAttribData());
+
+                for (int i = 0; i < m_VertexIncrement; i++) {
+                    m_VertexData[index + i] = {object->vertexData()[i], object->getZ(), vertexAttribs[i]};
+
+                    if (object->isHidden())
+                        m_VertexData[index + i].attrib.color.alpha = 0;
+                }
+                m_UpdateBufferData = true;
+            }
+
+        private:
+            std::vector<VertexType> m_VertexData;
+        };
 }

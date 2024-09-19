@@ -51,6 +51,10 @@ namespace gp {
     std::string Ellipse::toString() const {
         return strformat("Ellipse((%g, %g), radii=(%g, %g))", m_Position.x, m_Position.y, m_Radius1, m_Radius2);
     }
+
+    const void *Ellipse::vertexAttribData() const {
+        return static_cast<const void *>(m_VertexAttribs);
+    }
 }
 
 // Ellipse Methods

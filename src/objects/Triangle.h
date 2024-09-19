@@ -9,8 +9,6 @@ namespace gp {
      */
     class GPAPI Triangle : public Renderable {
 
-        friend class Renderer;
-
     public:
         /**
          * An object representing a triangle with 3 vertices.
@@ -150,6 +148,8 @@ namespace gp {
          *
          */
         [[nodiscard]] virtual Point getP3() const;
+
+        [[nodiscard]] const void *vertexAttribData() const override;
 
     private:
         SolidVertexAttrib m_VertexAttribs[3] = {{{0.0f, 0.55f, 0.9f}},

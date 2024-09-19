@@ -9,7 +9,7 @@
 namespace gp {
     class GPAPI Shader final {
 
-        friend class RenderingBatch;
+        friend class RenderingBatchBase;
 
     public:
         Shader() = delete;

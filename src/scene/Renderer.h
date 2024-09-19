@@ -53,7 +53,7 @@ namespace gp {
 
         void destroyQuad(uint32_t ID);
 
-        void updateQuad(uint32_t ID, const shared_ptr<Quad> object);
+        void updateQuad(uint32_t ID, const shared_ptr<Quad>& object);
 
         void drawEllipse(uint32_t ID, const shared_ptr<Ellipse>& object);
 
@@ -65,29 +65,19 @@ namespace gp {
 
         void destroyTexturedQuad(uint32_t ID);
 
-        void updateTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad> object);
+        void updateTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad>& object);
 
         void flush();
 
     private:
         const RenderingManager &m_Window;
 
-        RenderingBatch m_TriangleBatch;
-        std::vector<SolidVertex> m_TriangleVertices;
-        std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
+        RenderingBatch<Triangle, SolidVertex, SolidVertexAttrib> m_TriangleBatch;
+        RenderingBatch<Quad, SolidVertex, SolidVertexAttrib> m_QuadBatch;
+        RenderingBatch<Ellipse, EllipseVertex, EllipseVertexAttrib> m_EllipseBatch;
 
-        RenderingBatch m_QuadBatch;
-        std::vector<SolidVertex> m_QuadVertices;
-        std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
-
-        RenderingBatch m_EllipseBatch;
-        std::vector<EllipseVertex> m_EllipseVertices;
-        std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;
-
-        std::vector<RenderingBatch> m_TexturedQuadBatches;
-        std::vector<std::vector<TextureVertex> > m_TexturedQuadVertices;
+        std::vector<RenderingBatch<TexturedQuad, TextureVertex, TextureVertexAttrib>> m_TexturedQuadBatches;
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
-        std::vector<std::unordered_map<uint32_t, uint32_t> > m_TexturedQuadToIndex;
 
         std::vector<shared_ptr<TextureBuffer> > m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;

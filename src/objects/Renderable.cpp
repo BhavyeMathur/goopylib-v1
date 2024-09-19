@@ -123,6 +123,10 @@ namespace gp {
         GP_CORE_TRACE("gp::Renderable::contains({0}, {1})", x, y);
         return boxContains(x, y) and _contains(x, y);  // early exit if box doesn't contain point
     }
+
+    const Point *Renderable::vertexData() const {
+        return m_Points;
+    }
 }
 
 // Getter & Setter Methods

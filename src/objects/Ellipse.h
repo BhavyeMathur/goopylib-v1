@@ -9,8 +9,6 @@ namespace gp {
      */
     class GPAPI Ellipse : public Renderable {
 
-        friend class Renderer;
-
     public:
         /**
          * An object representing an ellipse or oval
@@ -117,6 +115,8 @@ namespace gp {
         [[nodiscard]] Float4 getTransparency() const;
 
         [[nodiscard]] bool isOpaque() const override;
+
+        [[nodiscard]] const void *vertexAttribData() const override;
 
     protected:
         float m_Radius1;

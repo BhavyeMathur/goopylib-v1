@@ -23,6 +23,10 @@ namespace gp {
         return strformat("Quad((%g, %g), (%g, %g), (%g, %g), (%g, %g))",
                          getP1().x, getP1().y, getP2().x, getP2().y, getP3().x, getP3().y, getP4().x, getP4().y);
     }
+
+    const void *Quad::vertexAttribData() const {
+        return static_cast<const void *>(m_VertexAttribs);
+    }
 }
 
 // Quad Methods

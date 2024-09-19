@@ -44,6 +44,10 @@ namespace gp {
         return strformat("TexturedQuad('%s', (%g, %g), (%g, %g), (%g, %g), (%g, %g))", m_Texture.c_str(),
                          getP1().x, getP1().y, getP2().x, getP2().y, getP3().x, getP3().y, getP4().x, getP4().y);
     }
+
+    const void *TexturedQuad::vertexAttribData() const {
+        return static_cast<const void *>(m_VertexAttribs);
+    }
 }
 
 namespace gp {

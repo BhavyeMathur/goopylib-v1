@@ -1,12 +1,12 @@
 #define GP_LOGGING_LEVEL 3
 
-#include "RenderingBatch.h"
+#include "RenderingBatchBase.h"
 #include "shader/Shader.h"
 #include "debug/Error.h"
 
 namespace gp {
-    RenderingBatch::RenderingBatch(const BufferLayout &layout, const uint32_t indexIncrement,
-                                   const uint32_t vertexIncrement, const Shader &shader, const int32_t mode)
+    RenderingBatchBase::RenderingBatchBase(const BufferLayout &layout, const uint32_t indexIncrement,
+                                           const uint32_t vertexIncrement, const Shader &shader, const int32_t mode)
             : m_VAO(layout),
               m_Mode(mode),
               m_Shader(shader),
@@ -14,12 +14,12 @@ namespace gp {
               m_VertexIncrement(vertexIncrement) {
     }
 
-    void RenderingBatch::init() {
+    void RenderingBatchBase::init() {
         m_VAO.init();
     }
 
-    void RenderingBatch::draw() {
-        if (empty())
+    void RenderingBatchBase::draw() {
+        if (m_Indices == 0)
             return;
 
         if (m_IndexIncrement == 6)
@@ -30,27 +30,7 @@ namespace gp {
         m_VAO.draw(m_Indices, m_Mode);
     }
 
-    void RenderingBatch::updateObjects() {
-        m_UpdateBufferData = true;
-    }
-
-    bool RenderingBatch::empty() const {
-        return m_Indices == 0;
-    }
-
-    void RenderingBatch::addObject() {
-        m_Indices += m_IndexIncrement;
-        m_Vertices += m_VertexIncrement;
-        m_ReallocateBufferData = true;
-    }
-
-    void RenderingBatch::removeObject() {
-        m_Indices -= m_IndexIncrement;
-        m_Vertices -= m_VertexIncrement;
-        m_ReallocateBufferData = true;
-    }
-
-    void RenderingBatch::_updateRenderingObjectVBO() {
+    void RenderingBatchBase::_updateRenderingObjectVBO() {
         GP_CORE_TRACE_ALL("gp::RenderingBatch::updateRenderingObjectVBO()");
         if (m_ReallocateBufferData) {
             _reallocateBufferData();
@@ -61,7 +41,7 @@ namespace gp {
         }
     }
 
-    void RenderingBatch::_updateRenderingObjectEBO() {
+    void RenderingBatchBase::_updateRenderingObjectEBO() {
         if (!m_ReallocateBufferData)
             return;
         GP_CORE_TRACE_ALL("gp::RenderingBatch::updateRenderingObjectEBO(indices={0}, vertices={1})",
@@ -85,7 +65,7 @@ namespace gp {
         m_VAO.getIndexBuffer().setData(m_IndicesData.data(), m_Indices);
     }
 
-    void RenderingBatch::_reallocateBufferData() {
+    void RenderingBatchBase::_reallocateBufferData() {
         m_VAO.getVertexBuffer().setData(m_BufferData, m_Vertices);
         m_ReallocateBufferData = false;
         m_UpdateBufferData = false;
