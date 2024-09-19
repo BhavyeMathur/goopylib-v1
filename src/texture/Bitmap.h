@@ -9,7 +9,7 @@ namespace gp {
         friend class Image;
 
     public:
-        Bitmap(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data);
+        Bitmap(uint32_t width, uint32_t height, uint32_t channels);
 
         Bitmap(const char *filepath);
 
