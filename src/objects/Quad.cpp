@@ -36,16 +36,16 @@ namespace gp {
     }
 
     void Quad::setColor(const Color &color1, const Color &color2, const Color &color3, const Color &color4) {
-        setColor(color1.getRGBAf(), color2.getRGBAf(), color3.getRGBAf(), color4.getRGBAf());
+        _setColor(color1.getRGBAf(), color2.getRGBAf(), color3.getRGBAf(), color4.getRGBAf());
     }
 
     void Quad::setColor(const char *hexstring, float alpha) {
         auto color = Color(hexstring, alpha).getRGBAf();
-        setColor(color, color, color, color);
+        _setColor(color, color, color, color);
     }
 
     void Quad::setColor(const char *hex1, const char *hex2, const char *hex3, const char *hex4) {
-        setColor(Color(hex1).getRGBAf(),
+        _setColor(Color(hex1).getRGBAf(),
                  Color(hex2).getRGBAf(),
                  Color(hex3).getRGBAf(),
                  Color(hex4).getRGBAf());
@@ -53,10 +53,10 @@ namespace gp {
 
     void Quad::setColor(int red, int green, int blue, float alpha) {
         auto color = Color(red, green, blue, alpha).getRGBAf();
-        setColor(color, color, color, color);
+        _setColor(color, color, color, color);
     }
 
-    void Quad::setColor(const RGBAf rgbaf1, const RGBAf rgbaf2, const RGBAf rgbaf3, const RGBAf rgbaf4) {
+    void Quad::_setColor(const RGBAf rgbaf1, const RGBAf rgbaf2, const RGBAf rgbaf3, const RGBAf rgbaf4) {
         m_VertexAttribs[0].color = rgbaf1;
         m_VertexAttribs[1].color = rgbaf2;
         m_VertexAttribs[2].color = rgbaf3;
@@ -70,6 +70,10 @@ namespace gp {
     }
 
     void Quad::setTransparency(float v1, float v2, float v3, float v4) {
+        _setTransparency(v1, v2, v3, v4);
+    }
+
+    void Quad::_setTransparency(float v1, float v2, float v3, float v4) {
         GP_CHECK_INCLUSIVE_RANGE(v1, 0, 1, "transparency must be between 0 and 1")
         GP_CHECK_INCLUSIVE_RANGE(v2, 0, 1, "transparency must be between 0 and 1")
         GP_CHECK_INCLUSIVE_RANGE(v3, 0, 1, "transparency must be between 0 and 1")

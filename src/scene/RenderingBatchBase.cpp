@@ -7,11 +7,11 @@
 namespace gp {
     RenderingBatchBase::RenderingBatchBase(const BufferLayout &layout, const uint32_t indexIncrement,
                                            const uint32_t vertexIncrement, const Shader &shader, const int32_t mode)
-            : m_VAO(layout),
+            : m_IndexIncrement(indexIncrement),
+              m_VertexIncrement(vertexIncrement),
+              m_VAO(layout),
               m_Mode(mode),
-              m_Shader(shader),
-              m_IndexIncrement(indexIncrement),
-              m_VertexIncrement(vertexIncrement) {
+              m_Shader(shader) {
     }
 
     void RenderingBatchBase::init() {
@@ -36,6 +36,7 @@ namespace gp {
             _reallocateBufferData();
 
         } else if (m_UpdateBufferData) {
+            // TODO optimise, don't update the entire vertex buffer each time
             m_VAO.getVertexBuffer().setData(m_BufferData, m_Vertices, 0);
             m_UpdateBufferData = false;
         }

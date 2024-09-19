@@ -76,8 +76,6 @@ namespace gp {
          */
         void setColor(int red, int green, int blue, float alpha = 1);
 
-        void setColor(const RGBAf rgbaf1, const RGBAf rgbaf2, const RGBAf rgbaf3, const RGBAf rgbaf4);
-
         /**
          * Sets the transparency of the object
          *
@@ -182,5 +180,9 @@ namespace gp {
         [[nodiscard]] bool _contains(float x, float y) const override;
 
         [[nodiscard]] RenderableSubclass _getRenderableSubclass() override;
+
+        virtual void _setTransparency(float v1, float v2, float v3, float v4);
+
+        virtual void _setColor(const RGBAf rgbaf1, const RGBAf rgbaf2, const RGBAf rgbaf3, const RGBAf rgbaf4);
     };
 }

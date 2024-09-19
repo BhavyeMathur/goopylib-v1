@@ -61,5 +61,9 @@ namespace gp {
         shared_ptr<Bitmap> m_Bitmap = nullptr;
 
         [[nodiscard]] RenderableSubclass _getRenderableSubclass() override;
+
+        void _setTransparency(float v1, float v2, float v3, float v4) override;
+
+        void _setColor(const RGBAf rgbaf1, const RGBAf rgbaf2, const RGBAf rgbaf3, const RGBAf rgbaf4) override;
     };
 }

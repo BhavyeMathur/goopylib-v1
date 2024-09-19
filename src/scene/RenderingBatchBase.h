@@ -16,11 +16,11 @@ namespace gp {
         void draw();
 
     protected:
-        uint32_t m_Vertices = 0;
         uint32_t m_Indices = 0;
+        uint32_t m_Vertices = 0;
 
-        const uint32_t m_VertexIncrement;
         const uint32_t m_IndexIncrement;
+        const uint32_t m_VertexIncrement;
 
         bool m_ReallocateBufferData = false;
         bool m_UpdateBufferData = false;
