@@ -4,10 +4,12 @@
 #include <core/VertexArray.h>
 
 namespace gp {
+    class Shader;
+
     class RenderingBatch {
     public:
         RenderingBatch(const BufferLayout &layout, const uint32_t indexIncrement, const uint32_t vertexIncrement,
-                       const int32_t mode = GP_DRAW_MODE_TRIANGLES);
+                       const Shader &shader, const int32_t mode = GP_DRAW_MODE_TRIANGLES);
 
         void init();
 
@@ -19,26 +21,30 @@ namespace gp {
 
         void removeObject();
 
-        void updateRenderingObjectVBO();
-
-        void updateRenderingObjectEBO();
-
-        [[nodiscard]] bool empty();
+        [[nodiscard]] bool empty() const;
 
     private:
         VertexArray m_VAO;
         int32_t m_Mode;
+        const Shader &m_Shader;
 
         const uint32_t m_IndexIncrement;
-        int32_t m_Indices = 0;
-        std::vector<uint32_t> m_IndicesData{};
+        uint32_t m_Indices = 0;
+        std::vector<uint32_t> m_IndicesData;
 
-        const int32_t m_VertexIncrement;
-        int32_t m_Vertices = 0;
+        const uint32_t m_VertexIncrement;
+        uint32_t m_Vertices = 0;
         void *m_BufferData = nullptr;
 
         bool m_ReallocateBufferData = false;
         bool m_UpdateBufferData = false;
+
+        void _reallocateBufferData();
+
+        void _updateRenderingObjectVBO();
+
+        // NOTE: this is only used for objects which have 6 indices / 4 vertexes (quads, ellipses, lines, etc.)
+        void _updateRenderingObjectEBO();
 
         friend class Renderer;
     };

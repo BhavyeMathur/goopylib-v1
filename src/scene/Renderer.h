@@ -43,25 +43,25 @@ namespace gp {
 
         void init();
 
-        void drawTriangle(uint32_t ID, const shared_ptr<Triangle> object);
+        void drawTriangle(uint32_t ID, const shared_ptr<Triangle>& object);
 
         void destroyTriangle(uint32_t ID);
 
-        void updateTriangle(uint32_t ID, const shared_ptr<Triangle> object);
+        void updateTriangle(uint32_t ID, const shared_ptr<Triangle>& object);
 
-        void drawQuad(uint32_t ID, const shared_ptr<Quad> object);
+        void drawQuad(uint32_t ID, const shared_ptr<Quad>& object);
 
         void destroyQuad(uint32_t ID);
 
         void updateQuad(uint32_t ID, const shared_ptr<Quad> object);
 
-        void drawEllipse(uint32_t ID, const shared_ptr<Ellipse> object);
+        void drawEllipse(uint32_t ID, const shared_ptr<Ellipse>& object);
 
         void destroyEllipse(uint32_t ID);
 
-        void updateEllipse(uint32_t ID, const shared_ptr<Ellipse> object);
+        void updateEllipse(uint32_t ID, const shared_ptr<Ellipse>& object);
 
-        void drawTexturedQuad(uint32_t ID, shared_ptr<TexturedQuad> object);
+        void drawTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad>& object);
 
         void destroyTexturedQuad(uint32_t ID);
 
@@ -70,37 +70,17 @@ namespace gp {
         void flush();
 
     private:
-        RenderingBatch m_TriangleBatch{
-                {
-                        {ShaderDataType::Float2, "position"},
-                        {ShaderDataType::Float, "z"},
-                        {ShaderDataType::Float4, "color"}
-                },
-                3, 3
-        };
+        const RenderingManager &m_Window;
+
+        RenderingBatch m_TriangleBatch;
         std::vector<SolidVertex> m_TriangleVertices;
         std::unordered_map<uint32_t, uint32_t> m_TriangleToIndex;
 
-        RenderingBatch m_QuadBatch{
-                {
-                        {ShaderDataType::Float2, "position"},
-                        {ShaderDataType::Float, "z"},
-                        {ShaderDataType::Float4, "color"}
-                },
-                6, 4
-        };
+        RenderingBatch m_QuadBatch;
         std::vector<SolidVertex> m_QuadVertices;
         std::unordered_map<uint32_t, uint32_t> m_QuadToIndex;
 
-        RenderingBatch m_EllipseBatch{
-                {
-                        {ShaderDataType::Float2, "position"},
-                        {ShaderDataType::Float, "z"},
-                        {ShaderDataType::Float2, "localCoord"},
-                        {ShaderDataType::Float4, "color"}
-                },
-                6, 4
-        };
+        RenderingBatch m_EllipseBatch;
         std::vector<EllipseVertex> m_EllipseVertices;
         std::unordered_map<uint32_t, uint32_t> m_EllipseToIndex;
 
@@ -111,8 +91,6 @@ namespace gp {
 
         std::vector<shared_ptr<TextureBuffer> > m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
-
-        const RenderingManager &m_Window;
 
         Renderer(const RenderingManager &window);
 
