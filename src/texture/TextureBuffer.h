@@ -16,6 +16,10 @@ namespace gp {
 
         TextureBuffer(TextureBuffer &&other) = delete;
 
+        TextureBuffer(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
+
+        TextureBuffer(const Bitmap &bitmap);
+
         ~TextureBuffer();
 
         void bind(uint32_t slot) const;
@@ -42,10 +46,6 @@ namespace gp {
         uint32_t m_RendererID = 0;
 
         static int32_t s_TextureSlots;
-
-        TextureBuffer(uint32_t width, uint32_t height, uint32_t channels, uint8_t *data = nullptr);
-
-        TextureBuffer(const Bitmap &bitmap);
 
         [[nodiscard]] uint32_t _getDataFormat() const;
 

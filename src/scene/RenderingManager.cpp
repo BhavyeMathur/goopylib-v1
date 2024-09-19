@@ -12,8 +12,10 @@
 
 #include <opengl.h>
 
+#include <utility>
+
 namespace gp {
-    RenderingManager::RenderingManager(const int width, const int height, const std::string &title)
+    RenderingManager::RenderingManager(const int width, const int height, std::string title)
             : m_Width{width},
               m_Height{height},
               m_Title{std::move(title)},
@@ -31,13 +33,12 @@ namespace gp {
 
         m_SolidShader.compile();
         m_EllipseShader.compile();
+        m_TextureShader.compile();
 
         int32_t samplers[16] = {
                 0, 1, 2, 3, 4, 5, 6, 7, 8,
                 9, 10, 11, 12, 13, 14, 15
         };
-
-        m_TextureShader.compile();
         m_TextureShader.set("Texture", TextureBuffer::getTextureSlots(), samplers);
 
         m_ShaderUniform = make_unique<UniformBuffer>(BufferLayout{{ShaderDataType::Mat4, "PVMatrix"}});

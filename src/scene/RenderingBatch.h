@@ -24,7 +24,6 @@ namespace gp {
                 GP_CORE_DEBUG("gp::RenderingBatch::drawObject({0})", ID);
 
                 const uint32_t index = m_VertexData.size();
-                std::cout << "Creating " << ID << std::endl;
                 m_IDToIndex.insert({ID, index});
 
                 auto vertexAttribs = static_cast<const VertexAttribType *>(object->vertexAttribData());
@@ -43,7 +42,6 @@ namespace gp {
             }
 
             void destroyObject(uint32_t ID) {
-                std::cout << "Destroying " << ID << std::endl;
                 const uint32_t index = m_IDToIndex.at(ID);
 
                 m_VertexData.erase(std::next(m_VertexData.begin(), index),

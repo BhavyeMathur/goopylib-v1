@@ -11,7 +11,7 @@ namespace gp {
      */
     class GPAPI TexturedQuad : virtual public Quad {
 
-        friend class Renderer;
+        friend class TextureRenderer;
 
     public:
         /**

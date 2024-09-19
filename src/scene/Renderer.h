@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "RenderingBatch.h"
+#include "TextureRenderer.h"
 #include "objects/Vertex.h"
 
 namespace gp {
@@ -15,20 +16,7 @@ namespace gp {
 
     class Ellipse;
 
-    class TexturedQuad;
-
-    class Shader;
-
-    class TextureBuffer;
-
-    class Bitmap;
-
     class RenderingManager;
-
-    struct TextureData {
-        shared_ptr<TextureBuffer> texture;
-        uint32_t index;
-    };
 
     class GPAPI Renderer {
         friend class Window;
@@ -40,7 +28,7 @@ namespace gp {
 
         Renderer(Renderer &&other) = delete;
 
-        ~Renderer();
+        ~Renderer() = default;
 
         void init();
 
@@ -50,12 +38,6 @@ namespace gp {
 
         void update(uint32_t ID, const shared_ptr<Renderable>& object);
 
-        void drawTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad>& object);
-
-        void destroyTexturedQuad(uint32_t ID);
-
-        void updateTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad>& object);
-
         void flush();
 
     private:
@@ -64,19 +46,8 @@ namespace gp {
         RenderingBatch<Triangle, SolidVertex, SolidVertexAttrib> m_TriangleBatch;
         RenderingBatch<Quad, SolidVertex, SolidVertexAttrib> m_QuadBatch;
         RenderingBatch<Ellipse, EllipseVertex, EllipseVertexAttrib> m_EllipseBatch;
-
-        std::vector<RenderingBatch<TexturedQuad, TextureVertex, TextureVertexAttrib>> m_TexturedQuadBatches;
-        std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
-
-        std::vector<shared_ptr<TextureBuffer> > m_Textures;
-        std::unordered_map<std::string, TextureData> m_TexturesCache;
+        TextureRenderer m_TextureRenderer;
 
         Renderer(const RenderingManager &window);
-
-        void _createTexturedBuffer();
-
-        [[nodiscard]] uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);
-
-        void _bindTextureBatch(uint32_t offset) const;
     };
 }

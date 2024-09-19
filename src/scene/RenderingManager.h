@@ -7,6 +7,22 @@
 
 #include "shader/ShaderFiles.h"
 
+/*
+ * The RenderingManager is responsible for a few things:
+ *
+ * 1. Managing shaders: initialising & compiling each shader & passing it to the Renderer
+ *
+ * 2. Managing the camera: including updating the Shader Uniform Projection-View matrix each render step. In addition,
+ *      it also contains the utility methods toWorld() and toScreen() to convert between coordinate systems.
+ *
+ * 3. Managing the renderers: specifically, the RenderingManager holds 2 instances: m_Renderer & m_AlphaRenderer
+ *      (which is used to renderer transparent objects). It is also responsible for select the correct Renderer to use
+ *      and creating/destroying the object IDs. When the user draws, destroys, or updates an object, the
+ *      RenderingManager is responsible for dispatching calls to the correct Renderer instance.
+ *
+ *  4. Window background color: including calls to glClearColor() and glClear() in the render loop.
+ */
+
 namespace gp {
     class Renderable;
 
@@ -16,7 +32,7 @@ namespace gp {
         friend class Renderable;
 
     public:
-        RenderingManager(int width, int height, const std::string& title);
+        RenderingManager(int width, int height, std::string  title);
 
         RenderingManager(const RenderingManager &) = delete;
 
