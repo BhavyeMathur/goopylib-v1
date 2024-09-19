@@ -40,6 +40,58 @@ namespace gp {
         m_EllipseBatch.init();
     }
 
+    void Renderer::draw(uint32_t ID, const shared_ptr<gp::Renderable> &object) {
+        switch (object->_getRenderableSubclass()) {
+            case RenderableSubclass::Triangle:
+                m_TriangleBatch.drawObject(ID, std::dynamic_pointer_cast<Triangle>(object));
+                break;
+            case RenderableSubclass::Quad:
+                GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 2");
+                m_QuadBatch.drawObject(ID, std::dynamic_pointer_cast<Quad>(object));
+                break;
+            case RenderableSubclass::Ellipse:
+                m_EllipseBatch.drawObject(ID, std::dynamic_pointer_cast<Ellipse>(object));
+                break;
+            case RenderableSubclass::TexturedQuad:
+                GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 3");
+                drawTexturedQuad(ID, std::dynamic_pointer_cast<TexturedQuad>(object));
+                break;
+        }
+    }
+
+    void Renderer::destroy(uint32_t ID, const shared_ptr<gp::Renderable> &object) {
+        switch (object->_getRenderableSubclass()) {
+            case RenderableSubclass::Triangle:
+                m_TriangleBatch.destroyObject(ID);
+                return;
+            case RenderableSubclass::Quad:
+                m_QuadBatch.destroyObject(ID);
+                return;
+            case RenderableSubclass::Ellipse:
+                m_EllipseBatch.destroyObject(ID);
+                return;
+            case RenderableSubclass::TexturedQuad:
+                destroyTexturedQuad(ID);
+                return;
+        }
+    }
+
+    void Renderer::update(uint32_t ID, const shared_ptr<gp::Renderable> &object) {
+        switch (object->_getRenderableSubclass()) {
+            case RenderableSubclass::Triangle:
+                m_TriangleBatch.updateObject(ID, std::dynamic_pointer_cast<Triangle>(object));
+                break;
+            case RenderableSubclass::Quad:
+                m_QuadBatch.updateObject(ID, std::dynamic_pointer_cast<Quad>(object));
+                break;
+            case RenderableSubclass::Ellipse:
+                m_EllipseBatch.updateObject(ID, std::dynamic_pointer_cast<Ellipse>(object));
+                break;
+            case RenderableSubclass::TexturedQuad:
+                updateTexturedQuad(ID, std::dynamic_pointer_cast<TexturedQuad>(object));
+        }
+    }
+
     void Renderer::_createTexturedBuffer() {
         GP_CORE_TRACE("Renderer::_createTexturedBuffer() creating TexturedQuad buffer");
 
@@ -51,42 +103,6 @@ namespace gp {
                                                                 {ShaderDataType::Int, "texSlot"},
                                                         }}, 6, 4, m_Window.m_TextureShader);
         m_TexturedQuadBatches.back().init();
-    }
-
-    void Renderer::drawTriangle(uint32_t ID, const shared_ptr<Triangle> &object) {
-        m_TriangleBatch.drawObject(ID, object);
-    }
-
-    void Renderer::destroyTriangle(uint32_t ID) {
-        m_TriangleBatch.destroyObject(ID);
-    }
-
-    void Renderer::updateTriangle(uint32_t ID, const shared_ptr<Triangle> &object) {
-        m_TriangleBatch.updateObject(ID, object);
-    }
-
-    void Renderer::drawQuad(uint32_t ID, const shared_ptr<Quad> &object) {
-        m_QuadBatch.drawObject(ID, object);
-    }
-
-    void Renderer::destroyQuad(uint32_t ID) {
-        m_QuadBatch.destroyObject(ID);
-    }
-
-    void Renderer::updateQuad(uint32_t ID, const shared_ptr<Quad> &object) {
-        m_QuadBatch.updateObject(ID, object);
-    }
-
-    void Renderer::drawEllipse(uint32_t ID, const shared_ptr<Ellipse> &object) {
-        m_EllipseBatch.drawObject(ID, object);
-    }
-
-    void Renderer::destroyEllipse(uint32_t ID) {
-        m_EllipseBatch.destroyObject(ID);
-    }
-
-    void Renderer::updateEllipse(uint32_t ID, const shared_ptr<Ellipse> &object) {
-        m_EllipseBatch.updateObject(ID, object);
     }
 
     void Renderer::drawTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad> &object) {

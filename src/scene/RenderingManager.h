@@ -64,9 +64,9 @@ namespace gp {
          */
         [[nodiscard]] Point toScreen(Point p) const;
 
-        void draw(shared_ptr<Renderable> object);
+        void draw(const shared_ptr<Renderable>& object);
 
-        void destroy(shared_ptr<Renderable> object);
+        void destroy(const shared_ptr<Renderable>& object);
 
     protected:
         int m_Width;

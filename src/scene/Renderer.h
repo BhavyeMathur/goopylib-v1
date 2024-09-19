@@ -5,9 +5,10 @@
 
 #include "RenderingBatch.h"
 #include "objects/Vertex.h"
-#include "core/VertexArray.h"
 
 namespace gp {
+    class Renderable;
+
     class Triangle;
 
     class Quad;
@@ -43,23 +44,11 @@ namespace gp {
 
         void init();
 
-        void drawTriangle(uint32_t ID, const shared_ptr<Triangle>& object);
+        void draw(uint32_t ID, const shared_ptr<Renderable>& object);
 
-        void destroyTriangle(uint32_t ID);
+        void destroy(uint32_t ID, const shared_ptr<Renderable>& object);
 
-        void updateTriangle(uint32_t ID, const shared_ptr<Triangle>& object);
-
-        void drawQuad(uint32_t ID, const shared_ptr<Quad>& object);
-
-        void destroyQuad(uint32_t ID);
-
-        void updateQuad(uint32_t ID, const shared_ptr<Quad>& object);
-
-        void drawEllipse(uint32_t ID, const shared_ptr<Ellipse>& object);
-
-        void destroyEllipse(uint32_t ID);
-
-        void updateEllipse(uint32_t ID, const shared_ptr<Ellipse>& object);
+        void update(uint32_t ID, const shared_ptr<Renderable>& object);
 
         void drawTexturedQuad(uint32_t ID, const shared_ptr<TexturedQuad>& object);
 

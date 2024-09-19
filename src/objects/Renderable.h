@@ -23,6 +23,8 @@ namespace gp {
      */
     class GPAPI Renderable {
 
+        friend class Renderer;
+
         friend class RenderingManager;
 
     public:

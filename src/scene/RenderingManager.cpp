@@ -114,59 +114,27 @@ namespace gp {
 }
 
 namespace gp {
-    void RenderingManager::draw(shared_ptr<Renderable> object) {
+    void RenderingManager::draw(const shared_ptr<Renderable>& object) {
         GP_CORE_TRACE("gp::RenderingManager::_drawToWindow()");
 
         m_NextObjectID++;
         const uint32_t ID = m_NextObjectID;
 
-        GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 0");
-
         Renderer &renderer = (object->isVisibleAndOpaque() ? m_Renderer : m_AlphaRenderer);
-        m_ObjectToIsOpaque[ID] = object->isVisibleAndOpaque();
-
-        GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 1");
-        switch (object->_getRenderableSubclass()) {
-            case RenderableSubclass::Triangle:
-                renderer.drawTriangle(ID, std::dynamic_pointer_cast<Triangle>(object));
-                break;
-            case RenderableSubclass::Quad:
-                GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 2");
-                renderer.drawQuad(ID, std::dynamic_pointer_cast<Quad>(object));
-                break;
-            case RenderableSubclass::Ellipse:
-                renderer.drawEllipse(ID, std::dynamic_pointer_cast<Ellipse>(object));
-                break;
-            case RenderableSubclass::TexturedQuad:
-                GP_CORE_TRACE("gp::RenderingManager::_drawToWindow() - 3");
-                renderer.drawTexturedQuad(ID, std::dynamic_pointer_cast<TexturedQuad>(object));
-                break;
-        }
+        renderer.draw(ID, object);
 
         object->_drawToWindow(ID, this);
         m_IDtoObject[ID] = object;
+        m_ObjectToIsOpaque[ID] = object->isVisibleAndOpaque();
     }
 
-    void RenderingManager::destroy(shared_ptr<Renderable> object) {
+    void RenderingManager::destroy(const shared_ptr<Renderable>& object) {
         const uint32_t ID = object->m_RendererID;
         GP_CORE_TRACE("gp::RenderingManager::_undrawFromWindow({0})", ID);
 
         Renderer &renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
+        renderer.destroy(ID, object);
 
-        switch (object->_getRenderableSubclass()) {
-            case RenderableSubclass::Triangle:
-                renderer.destroyTriangle(ID);
-                break;
-            case RenderableSubclass::Quad:
-                renderer.destroyQuad(ID);
-                break;
-            case RenderableSubclass::Ellipse:
-                renderer.destroyEllipse(ID);
-                break;
-            case RenderableSubclass::TexturedQuad:
-                renderer.destroyTexturedQuad(ID);
-                break;
-        }
         m_IDtoObject.erase(ID);
         m_ObjectToIsOpaque.erase(ID);
         object->_undrawFromWindow();
@@ -178,25 +146,10 @@ namespace gp {
 
         Renderer &renderer = (m_ObjectToIsOpaque[ID] ? m_Renderer : m_AlphaRenderer);
 
-        // TODO controls to override this logic
-        if (m_ObjectToIsOpaque[ID] != object->isVisibleAndOpaque()) {
-            destroy(object);
-            draw(object);
-            return;
-        }
+        if (m_ObjectToIsOpaque[ID] == object->isVisibleAndOpaque())
+            return renderer.update(ID, object);
 
-        switch (object->_getRenderableSubclass()) {
-            case RenderableSubclass::Triangle:
-                renderer.updateTriangle(ID, std::dynamic_pointer_cast<Triangle>(object));
-                return;
-            case RenderableSubclass::Quad:
-                renderer.updateQuad(ID, std::dynamic_pointer_cast<Quad>(object));
-                return;
-            case RenderableSubclass::Ellipse:
-                renderer.updateEllipse(ID, std::dynamic_pointer_cast<Ellipse>(object));
-                return;
-            case RenderableSubclass::TexturedQuad:
-                renderer.updateTexturedQuad(ID, std::dynamic_pointer_cast<TexturedQuad>(object));
-        }
+        destroy(object);
+        draw(object);
     }
 }
