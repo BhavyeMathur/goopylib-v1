@@ -31,13 +31,14 @@ namespace gp {
 
         void destroyObject(uint32_t ID);
 
-        void updateObject(uint32_t ID, const shared_ptr<TexturedQuad>& object);
+        void updateObject(uint32_t ID, const shared_ptr<TexturedQuad> &object);
 
         void draw();
 
     private:
         const Shader &m_Shader;
 
+        std::unordered_map<uint32_t, shared_ptr<TexturedQuad>> m_QueuedObjects;
         std::vector<shared_ptr<TextureBuffer> > m_Textures;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 
@@ -46,8 +47,10 @@ namespace gp {
 
         void _createTexturedBuffer();
 
-        [[nodiscard]] uint32_t _cacheTexture(const std::string &name, const Bitmap &bitmap);
+        void _cacheTexture(const shared_ptr<TexturedQuad> &object);
 
         void _bindTextureBatch(uint32_t offset) const;
+
+        void _processQueuedObjects();
     };
 }

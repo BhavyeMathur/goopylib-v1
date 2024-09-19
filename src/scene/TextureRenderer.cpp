@@ -13,8 +13,9 @@ namespace gp {
     }
 
     void TextureRenderer::draw() {
-        uint32_t textureSlotOffset = 0;
+        _processQueuedObjects();
 
+        uint32_t textureSlotOffset = 0;
         for (auto &batch: m_TexturedQuadBatches) {
             _bindTextureBatch(textureSlotOffset);
             textureSlotOffset += TextureBuffer::getTextureSlots();
@@ -25,25 +26,16 @@ namespace gp {
     void TextureRenderer::drawObject(uint32_t ID, const shared_ptr<gp::TexturedQuad> &object) {
         GP_CORE_DEBUG("gp::TextureRenderer::drawTexturedQuad({0})", ID);
 
-        uint32_t texIndex, texSlot;
-
-        if (m_TexturesCache.contains(object->getTextureName())) {
-            GP_CORE_TRACE("gp::TextureRenderer::drawObject() - using cached texture '{0}'", object->getTextureName());
-            texIndex = m_TexturesCache[object->getTextureName()].index;
-            texSlot = texIndex % 16;
-        } else {
-            GP_CORE_TRACE("gp::TextureRenderer::drawObject() - no cached texture '{0}'", object->getTextureName());
-
-            auto bitmap = object->getBitmap();
-            texIndex = _cacheTexture(object->getTextureName(), *bitmap);
-            texSlot = texIndex % 16;
-
-            if (texSlot == 0) {
-                _createTexturedBuffer();
-            }
+        if (!m_TexturesCache.contains(object->getTextureName())) {
+            m_QueuedObjects.emplace(ID, object);
+            return;
         }
 
-        GP_CORE_TRACE("gp::TextureRenderer::drawObject() - texIndex={0}, texSlot={1}", texIndex, texSlot);
+        uint32_t texIndex = m_TexturesCache[object->getTextureName()].index;
+        uint32_t texSlot = texIndex % 16;
+
+        if (texSlot == 0)
+            _createTexturedBuffer();
 
         object->m_VertexAttribs[0].texSlot = texSlot;
         object->m_VertexAttribs[1].texSlot = texSlot;
@@ -56,12 +48,20 @@ namespace gp {
     }
 
     void TextureRenderer::destroyObject(uint32_t ID) {
-        const uint32_t batch = m_TexturedQuadToBatch.at(ID);
+        if (m_QueuedObjects.contains(ID)) {
+            m_QueuedObjects.erase(ID);
+            return;
+        }
+
+        const uint32_t batch = m_TexturedQuadToBatch[ID];
         m_TexturedQuadBatches[batch].destroyObject(ID);
         m_TexturedQuadToBatch.erase(ID);
     }
 
     void TextureRenderer::updateObject(uint32_t ID, const shared_ptr<TexturedQuad> &object) {
+        if (m_QueuedObjects.contains(ID))
+            return;
+
         const uint32_t batch = m_TexturedQuadToBatch[ID];
         m_TexturedQuadBatches[batch].updateObject(ID, object);
     }
@@ -79,16 +79,18 @@ namespace gp {
         m_TexturedQuadBatches.back().init();
     }
 
-    uint32_t TextureRenderer::_cacheTexture(const std::string &name, const Bitmap &bitmap) {
+    void TextureRenderer::_cacheTexture(const shared_ptr<TexturedQuad> &object) {
         GP_CORE_INFO("gp::TextureRenderer::_cacheTexture('{0}')", name);
 
-        auto texture = make_shared<TextureBuffer>(bitmap);
+        auto name = object->getTextureName();
+        if (m_TexturesCache.contains(name))
+            return;
+
+        auto texture = make_shared<TextureBuffer>(*object->getBitmap());
         const uint32_t texIndex = m_Textures.size();
 
         m_TexturesCache.insert({name, {texture, texIndex}});
         m_Textures.push_back(texture);
-
-        return texIndex;
     }
 
     void TextureRenderer::_bindTextureBatch(uint32_t offset) const {
@@ -100,5 +102,13 @@ namespace gp {
         for (uint32_t i = offset; i < textures; i++) {
             m_Textures[i]->bind(i % TextureBuffer::getTextureSlots());
         }
+    }
+
+    void TextureRenderer::_processQueuedObjects() {
+        for (const auto & [ ID, object ] : m_QueuedObjects) {
+            _cacheTexture(object);
+            drawObject(ID, object);
+        }
+        m_QueuedObjects.clear();
     }
 }
