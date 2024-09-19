@@ -134,9 +134,6 @@ namespace gp::packing {
 namespace gp::packing {
     class GPAPI PackingAlgorithm {
 
-    public:
-        PackingAlgorithm (const PackingAlgorithm&) = delete;
-
     protected:
         PackingAlgorithm(float binWidth, float binHeight);
 

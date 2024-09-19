@@ -26,9 +26,9 @@ namespace gp {
     public:
         TextureAtlas(const TextureAtlas &) = delete;
 
-        ~TextureAtlas();
+        ~TextureAtlas() = default;
 
-        TextureAtlas(packing::shelf::ShelfPackingAlgorithm *packingAlgorithm = nullptr);
+        TextureAtlas(packing::shelf::ShelfPackingAlgorithm packingAlgorithm = packing::shelf::BestAreaFit(s_Width, s_Height));
 
         TextureCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
 
@@ -38,17 +38,16 @@ namespace gp {
 
         static void init();
 
-        [[nodiscard]] static int32_t getWidth();
+        [[nodiscard]] static uint32_t getWidth();
 
-        [[nodiscard]] static int32_t getHeight();
+        [[nodiscard]] static uint32_t getHeight();
+
+        [[nodiscard]] std::vector<shared_ptr<packing::ShelvedBin>> getPages();
 
     private:
-        packing::shelf::ShelfPackingAlgorithm *m_PackingAlgorithm;
+        packing::shelf::ShelfPackingAlgorithm m_PackingAlgorithm;
 
-        static std::vector<TextureAtlas *> s_Atlases;
-        static int32_t s_Width;
-        static int32_t s_Height;
-
-
+        static uint32_t s_Width;
+        static uint32_t s_Height;
     };
 }
