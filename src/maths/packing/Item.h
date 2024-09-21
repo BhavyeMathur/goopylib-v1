@@ -5,29 +5,17 @@
 struct Point;
 
 namespace gp::packing {
+    class PackingAlgorithm;
+
     namespace shelf {
         class Shelf;
-
-        class ShelfPackingAlgorithm;
-
-        class NextFit;
-
-        class FirstFit;
-
-        class ScoredFit;
     }
 
     class GPAPI Item {
 
         friend class shelf::Shelf;
 
-        friend class shelf::ShelfPackingAlgorithm;
-
-        friend class shelf::NextFit;
-
-        friend class shelf::FirstFit;
-
-        friend class shelf::ScoredFit;
+        friend class PackingAlgorithm;
 
     public:
         Item(float width, float height);

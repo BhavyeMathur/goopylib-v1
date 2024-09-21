@@ -3,12 +3,16 @@
 #include "gp.h"
 
 namespace gp::packing {
+    class Item;
+
     class GPAPI PackingAlgorithm {
 
     protected:
-        PackingAlgorithm(float binWidth, float binHeight);
-
         const float m_BinWidth;
         const float m_BinHeight;
+
+        PackingAlgorithm(float binWidth, float binHeight);
+
+        void rotateItem(Item &item);
     };
 }
