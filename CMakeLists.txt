@@ -85,8 +85,14 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
 
             src/maths/gpmath.cpp
             src/maths/Easing.cpp
-            src/maths/packing/Packing.cpp
+
+            src/maths/packing/Item.cpp
+            src/maths/packing/Bin.cpp
+            src/maths/packing/ShelvedBin.cpp
             src/maths/packing/Shelf.cpp
+            src/maths/packing/PackingAlgorithm.cpp
+            src/maths/packing/ShelfPackingAlgorithm.cpp
+            src/maths/packing/SortingAlgorithms.cpp
 
             src/color/Color.cpp
             src/color/ColorRGB.cpp

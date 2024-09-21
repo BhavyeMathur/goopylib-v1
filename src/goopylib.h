@@ -4,8 +4,7 @@
 #include "window/Window.h"
 
 #include "maths/Easing.h"
-#include "maths/packing/Packing.h"
-#include "maths/packing/Shelf.h"
+#include "maths/Packing.h"
 
 #include "color/Color.h"
 #include "color/Util.h"
