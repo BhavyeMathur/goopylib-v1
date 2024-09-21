@@ -9,8 +9,6 @@ namespace gp::packing {
     public:
         Item(float width, float height);
 
-        Item(const Item &) = delete;
-
         [[nodiscard]] bool isVertical() const;
 
         [[nodiscard]] bool isHorizontal() const;
@@ -43,8 +41,8 @@ namespace gp::packing {
     private:
         float m_Width;
         float m_Height;
-        const float m_LongSide;
-        const float m_ShortSide;
+        float m_LongSide;
+        float m_ShortSide;
 
         float m_X = -1;
         float m_Y = -1;

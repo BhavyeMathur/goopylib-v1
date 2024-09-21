@@ -1,7 +1,6 @@
 #pragma once
 
 #include "gp.h"
-#include "PackingAlgorithm.h"
 
 namespace gp::packing {
     class ShelvedBin;

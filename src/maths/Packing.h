@@ -6,6 +6,6 @@
 #include "packing/Shelf.h"
 #include "packing/ShelvedBin.h"
 
-#include "packing/PackingAlgorithm.h"
-#include "packing/ShelfPackingAlgorithm.h"
-#include "packing/SortingAlgorithms.h"
+#include "packing/algorithms/PackingAlgorithm.h"
+#include "packing/algorithms/ShelfPackingAlgorithm.h"
+#include "packing/algorithms/SortingAlgorithms.h"

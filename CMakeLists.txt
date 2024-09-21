@@ -90,9 +90,9 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/maths/packing/Bin.cpp
             src/maths/packing/ShelvedBin.cpp
             src/maths/packing/Shelf.cpp
-            src/maths/packing/PackingAlgorithm.cpp
-            src/maths/packing/ShelfPackingAlgorithm.cpp
-            src/maths/packing/SortingAlgorithms.cpp
+            src/maths/packing/algorithms/PackingAlgorithm.cpp
+            src/maths/packing/algorithms/ShelfPackingAlgorithm.cpp
+            src/maths/packing/algorithms/SortingAlgorithms.cpp
 
             src/color/Color.cpp
             src/color/ColorRGB.cpp

@@ -5,7 +5,7 @@
 namespace gp::packing {
     class Item;
 
-    using SortingFunction = std::function<std::vector<shared_ptr<Item>>(std::vector<shared_ptr<Item>>)>;
+    using SortingFunction = std::function<std::vector<Item>(std::vector<Item>)>;
 
     SortingFunction sortByWidth(bool descending = false);
 

@@ -60,11 +60,10 @@ gp::packing::shelf::ShelfPackingAlgorithm *getPackingAlgorithm(int choice) {
     }
 }
 
-void createRandomItems(int n, std::vector<std::shared_ptr<gp::packing::Item>>& items) {
+void createRandomItems(int n, std::vector<gp::packing::Item> &items) {
     items.reserve(n);
     for (int i = 0; i < n; i++) {
-        items.emplace_back(new gp::packing::Item(5 + (float) (rand() % 6500) / 100,
-                                                 5 + (float) (rand() % 7500) / 100));
+        items.emplace_back(5 + (float) (rand() % 6500) / 100, 5 + (float) (rand() % 7500) / 100);
     }
 }
 
@@ -132,10 +131,10 @@ void plotItemBins(std::vector<std::shared_ptr<gp::packing::ShelvedBin>> &bins) {
 int main() {
     gp::init();
 
-    int choice = getPackingAlgorithmChoice();
-    auto algorithm = getPackingAlgorithm(choice);
+    int const choice = getPackingAlgorithmChoice();
+    auto *algorithm = getPackingAlgorithm(choice);
 
-    std::vector<std::shared_ptr<gp::packing::Item>> items;
+    std::vector<gp::packing::Item> items;
     createRandomItems(500, items);
 
     algorithm->packAll(items);

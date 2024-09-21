@@ -1,5 +1,4 @@
 #include "PackingAlgorithm.h"
-#include "Item.h"
 
 namespace gp::packing {
     PackingAlgorithm::PackingAlgorithm(float binWidth, float binHeight)

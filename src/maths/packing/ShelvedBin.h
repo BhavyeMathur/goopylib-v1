@@ -1,7 +1,6 @@
 #pragma once
 
 #include "gp.h"
-#include "PackingAlgorithm.h"
 #include "Bin.h"
 
 namespace gp::packing::shelf {
