@@ -25,13 +25,13 @@ namespace gp::packing::shelf {
 
         virtual ~ShelfPackingAlgorithm() = default;
 
-        virtual void pack(const shared_ptr<Item>& item, bool allowRotation);
+        virtual void pack(const shared_ptr<Item> &item, bool allowRotation);
 
         void packAll(std::vector<shared_ptr<Item>> items,
                      bool allowRotation = true,
                      const SortingFunction &sortingFunction = sortByShortSide(true));
 
-        void packOriented(const shared_ptr<Item>& item, bool orientVertically = true);
+        void packOriented(const shared_ptr<Item> &item, bool orientVertically = true);
 
         void packAllOriented(std::vector<shared_ptr<Item>> items,
                              bool orientVertically = true,
@@ -40,9 +40,11 @@ namespace gp::packing::shelf {
         [[nodiscard]] std::vector<shared_ptr<ShelvedBin>> bins() const;
 
     protected:
+        std::vector<shared_ptr<ShelvedBin>> m_Bins;
+
         ShelfPackingAlgorithm(float binWidth, float binHeight);
 
-        std::vector<shared_ptr<ShelvedBin>> m_Bins;
+        void addItemToShelf(Item &item, Shelf &shelf);
     };
 
     class GPAPI NextFit final : public ShelfPackingAlgorithm {

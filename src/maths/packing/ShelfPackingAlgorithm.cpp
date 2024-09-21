@@ -53,6 +53,10 @@ namespace gp::packing::shelf {
         return copy;
     }
 
+    void ShelfPackingAlgorithm::addItemToShelf(Item &item, shelf::Shelf &shelf) {
+        shelf.add(item);
+    }
+
     NextFit::NextFit(float binWidth, float binHeight)
             : ShelfPackingAlgorithm(binWidth, binHeight),
               m_Shelf(m_Bins.back()->m_OpenShelf) {
@@ -62,10 +66,8 @@ namespace gp::packing::shelf {
         if (allowRotation and (item->isVertical() != (item->getLongSide() <= m_Shelf->getHeight())))
             item->rotate();
 
-        if (m_Shelf->fits(item)) {
-            m_Shelf->add(item);
-            return;
-        }
+        if (m_Shelf->fits(item))
+            return addItemToShelf(*item, *m_Shelf);
 
         if (m_Shelf->fitsAbove(item)) {
             m_Shelf = m_Bins.back()->addShelf();
@@ -77,7 +79,7 @@ namespace gp::packing::shelf {
         if (allowRotation and item->isVertical())
             item->rotate();
 
-        m_Shelf->add(item);
+        return addItemToShelf(*item, *m_Shelf);
     }
 
     FirstFit::FirstFit(float binWidth, float binHeight)
@@ -90,18 +92,15 @@ namespace gp::packing::shelf {
                 if (allowRotation and (item->isVertical() != (item->getLongSide() <= shelf->getHeight())))
                     item->rotate();
 
-                if (shelf->fits(item)) {
-                    shelf->add(item);
-                    return;
-                }
+                if (shelf->fits(item))
+                    return addItemToShelf(*item, *shelf);
             }
 
             if (bin->m_OpenShelf->fitsAbove(item)) {
                 if (allowRotation and item->isVertical())
                     item->rotate();
 
-                bin->addShelf()->add(item);
-                return;
+                return addItemToShelf(*item, *bin->addShelf());
             }
         }
         // code only reaches here if item has not been added to a shelf
@@ -112,7 +111,7 @@ namespace gp::packing::shelf {
 
         const auto &newBin = m_Bins.back();
         const auto &newShelf = newBin->m_OpenShelf;
-        newShelf->add(item);
+        addItemToShelf(*item, *newShelf);
     }
 
     ScoredFit::ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction)
@@ -165,7 +164,7 @@ namespace gp::packing::shelf {
         if (item->isRotated() != bestOrientation)
             item->rotate();
 
-        bestShelf->add(item);
+        addItemToShelf(*item, *bestShelf);
     }
 
     BestWidthFit::BestWidthFit(float binWidth, float binHeight)

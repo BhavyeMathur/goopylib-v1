@@ -63,18 +63,18 @@ namespace gp::packing::shelf {
         return m_VerticalOffset + m_Height + item->getHeight() <= m_Bin.getHeight();
     }
 
-    void Shelf::add(const shared_ptr<Item> &item) {
-        item->setX(m_PackedWidth);
-        item->setY(m_VerticalOffset);
+    void Shelf::add(Item &item) {
+        item.setX(m_PackedWidth);
+        item.setY(m_VerticalOffset);
         m_Bin.add(item);
-        m_Items.push_back(item);
+        m_Items.push_back(&item);
 
-        if (item->getHeight() > m_Height) {
-            m_Height = item->getHeight();
+        if (item.getHeight() > m_Height) {
+            m_Height = item.getHeight();
         }
 
-        m_PackedWidth += item->getWidth();
-        m_AvailableWidth -= item->getWidth();
+        m_PackedWidth += item.getWidth();
+        m_AvailableWidth -= item.getWidth();
     }
 
     void Shelf::close() {

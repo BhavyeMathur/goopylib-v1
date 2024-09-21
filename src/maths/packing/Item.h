@@ -52,8 +52,5 @@ namespace gp::packing {
         float m_Y = -1;
 
         bool m_Rotated = false;
-
-        const uint32_t m_ID;
-        static uint32_t s_Items;
     };
 }

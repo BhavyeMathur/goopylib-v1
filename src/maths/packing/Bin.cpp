@@ -11,8 +11,8 @@ namespace gp::packing {
         Bin::s_Bins++;
     }
 
-    void Bin::add(const shared_ptr<Item> &item) {
-        m_Items.push_back(item);
+    void Bin::add(Item &item) {
+        m_Items.push_back(&item);
     }
 
     float Bin::packingRatio() const {
@@ -24,8 +24,8 @@ namespace gp::packing {
         return sum / (m_Width * m_Height);
     }
 
-    std::vector<shared_ptr<Item>> Bin::items() const {
-        std::vector<shared_ptr<Item>> copy = m_Items;
+    std::vector<Item *> Bin::items() const {
+        std::vector<Item *> copy = m_Items;
         return copy;
     }
 

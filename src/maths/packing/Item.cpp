@@ -4,15 +4,11 @@
 #include "maths/gpmath.h"
 
 namespace gp::packing {
-    uint32_t Item::s_Items = 0;
-
     Item::Item(float width, float height)
             : m_Width(width),
               m_Height(height),
               m_LongSide(max(width, height)),
-              m_ShortSide(min(width, height)),
-              m_ID(Item::s_Items) {
-        Item::s_Items++;
+              m_ShortSide(min(width, height)) {
     }
 
     void Item::rotate() {

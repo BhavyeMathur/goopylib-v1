@@ -18,7 +18,7 @@ namespace gp::packing {
 
         [[nodiscard]] virtual float packingRatio() const;
 
-        [[nodiscard]] std::vector<shared_ptr<Item>> items() const;
+        [[nodiscard]] std::vector<Item *> items() const;
 
         [[nodiscard]] float getWidth() const;
 
@@ -29,12 +29,12 @@ namespace gp::packing {
         const float m_Height;
         const uint32_t m_ID;
 
-        std::vector<shared_ptr<Item>> m_Items;
+        std::vector<Item *> m_Items;
 
         static uint32_t s_Bins;
 
         Bin(float width, float height);
 
-        void add(const shared_ptr<Item> &item);
+        void add(Item &item);
     };
 }
