@@ -66,10 +66,10 @@ namespace gp::packing::shelf {
         if (allowRotation and (item->isVertical() != (item->getLongSide() <= m_Shelf->getHeight())))
             item->rotate();
 
-        if (m_Shelf->fits(item))
+        if (m_Shelf->fits(*item))
             return addItemToShelf(*item, *m_Shelf);
 
-        if (m_Shelf->fitsAbove(item)) {
+        if (m_Shelf->fitsAbove(*item)) {
             m_Shelf = m_Bins.back()->addShelf();
         } else {
             m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
@@ -92,11 +92,11 @@ namespace gp::packing::shelf {
                 if (allowRotation and (item->isVertical() != (item->getLongSide() <= shelf->getHeight())))
                     item->rotate();
 
-                if (shelf->fits(item))
+                if (shelf->fits(*item))
                     return addItemToShelf(*item, *shelf);
             }
 
-            if (bin->m_OpenShelf->fitsAbove(item)) {
+            if (bin->m_OpenShelf->fitsAbove(*item)) {
                 if (allowRotation and item->isVertical())
                     item->rotate();
 
@@ -129,7 +129,7 @@ namespace gp::packing::shelf {
                 if (allowRotation and (item->isVertical() != (item->getLongSide() <= shelf->getHeight())))
                     item->rotate();
 
-                if (shelf->fits(item)) {
+                if (shelf->fits(*item)) {
                     float score = m_ScoringFunction(shelf, item);
                     if (score > bestScore) {
                         bestShelf = shelf;
@@ -139,7 +139,7 @@ namespace gp::packing::shelf {
                 }
             }
 
-            if (bestShelf == nullptr and bin->m_OpenShelf->fitsAbove(item)) {
+            if (bestShelf == nullptr and bin->m_OpenShelf->fitsAbove(*item)) {
                 auto shelf = bin->addShelf();
 
                 float score = m_ScoringFunction(shelf, item);

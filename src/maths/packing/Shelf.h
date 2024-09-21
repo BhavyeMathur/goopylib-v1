@@ -15,7 +15,6 @@ namespace gp::packing {
     }
 }
 
-// Shelf Class
 namespace gp::packing::shelf {
     class GPAPI Shelf {
 
@@ -38,9 +37,9 @@ namespace gp::packing::shelf {
 
         [[nodiscard]] bool isOpen() const;
 
-        [[nodiscard]] bool fits(const shared_ptr<Item> &item) const;
+        [[nodiscard]] bool fits(const Item &item) const;
 
-        [[nodiscard]] bool fitsAbove(const shared_ptr<Item> &item) const;
+        [[nodiscard]] bool fitsAbove(const Item &item) const;
 
         [[nodiscard]] float packedArea() const;
 
@@ -59,7 +58,7 @@ namespace gp::packing::shelf {
 
         Shelf(float verticalOffset, Bin &bin);
 
-        void add(Item& item);
+        void add(Item &item);
 
         void close();
     };

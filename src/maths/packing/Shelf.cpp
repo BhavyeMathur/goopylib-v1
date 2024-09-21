@@ -18,14 +18,41 @@ namespace gp::packing::shelf {
         return strformat("Shelf(offset=%f, packed=%f) with %i items", m_VerticalOffset, m_PackedWidth, m_Items.size());
     }
 
-    float Shelf::packedArea() const {
-        if (m_IsOpen) {
-            return m_PackedWidth * m_Height;
-        } else {
-            return m_Width * m_Height;
-        }
+    std::ostream &operator<<(std::ostream &os, const Shelf &shelf) {
+        os << shelf.toString();
+        return os;
     }
 
+    float Shelf::packedArea() const {
+        if (m_IsOpen)
+            return m_PackedWidth * m_Height;
+        return m_Width * m_Height;
+    }
+
+    bool Shelf::fits(const Item &item) const {
+        if (m_IsOpen)
+            return item.getWidth() <= m_AvailableWidth and m_VerticalOffset + item.getHeight() <= m_Bin.getHeight();
+        return item.getWidth() <= m_AvailableWidth and item.getHeight() <= m_Height;
+    }
+
+    bool Shelf::fitsAbove(const Item &item) const {
+        return m_VerticalOffset + m_Height + item.getHeight() <= m_Bin.getHeight();
+    }
+
+    void Shelf::add(Item &item) {
+        item.setPosition(m_PackedWidth, m_VerticalOffset);
+        m_Bin.add(item);
+        m_Items.push_back(&item);
+
+        if (item.getHeight() > m_Height)
+            m_Height = item.getHeight();
+
+        m_PackedWidth += item.getWidth();
+        m_AvailableWidth -= item.getWidth();
+    }
+}
+
+namespace gp::packing::shelf {
     float Shelf::getWidth() const {
         return m_Width;
     }
@@ -50,39 +77,7 @@ namespace gp::packing::shelf {
         return m_IsOpen;
     }
 
-    bool Shelf::fits(const shared_ptr<Item> &item) const {
-        if (m_IsOpen) {
-            return item->getWidth() <= m_AvailableWidth and
-                   m_VerticalOffset + item->getHeight() <= m_Bin.getHeight();
-        } else {
-            return item->getWidth() <= m_AvailableWidth and item->getHeight() <= m_Height;
-        }
-    }
-
-    bool Shelf::fitsAbove(const shared_ptr<Item> &item) const {
-        return m_VerticalOffset + m_Height + item->getHeight() <= m_Bin.getHeight();
-    }
-
-    void Shelf::add(Item &item) {
-        item.setX(m_PackedWidth);
-        item.setY(m_VerticalOffset);
-        m_Bin.add(item);
-        m_Items.push_back(&item);
-
-        if (item.getHeight() > m_Height) {
-            m_Height = item.getHeight();
-        }
-
-        m_PackedWidth += item.getWidth();
-        m_AvailableWidth -= item.getWidth();
-    }
-
     void Shelf::close() {
         m_IsOpen = false;
-    }
-
-    std::ostream &operator<<(std::ostream &os, const Shelf &shelf) {
-        os << shelf.toString();
-        return os;
     }
 }

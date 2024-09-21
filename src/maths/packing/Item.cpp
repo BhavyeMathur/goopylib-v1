@@ -47,15 +47,12 @@ namespace gp::packing {
         return m_X;
     }
 
-    void Item::setX(float x) {
-        m_X = x;
-    }
-
     float Item::getY() const {
         return m_Y;
     }
 
-    void Item::setY(float y) {
+    void Item::setPosition(float x, float y) {
+        m_X = x;
         m_Y = y;
     }
 

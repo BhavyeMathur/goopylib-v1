@@ -25,12 +25,10 @@ namespace gp::packing {
 
         [[nodiscard]] float getX() const;
 
-        // TODO setX, setY and rotate() mutate the item and should not be public
-        void setX(float x);
-
         [[nodiscard]] float getY() const;
 
-        void setY(float y);
+        // TODO setPosition() and rotate() mutate the item and should not be public
+        void setPosition(float x, float y);
 
         [[nodiscard]] float getWidth() const;
 
