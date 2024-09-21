@@ -41,23 +41,4 @@ namespace gp::packing::shelf {
 
         void addItemToShelf(Item &item, Shelf &shelf);
     };
-
-    class GPAPI NextFit final : public ShelfPackingAlgorithm {
-
-    public:
-        NextFit(float binWidth, float binHeight);
-
-        void pack(Item &item, bool allowRotation) override;
-
-    private:
-        shared_ptr<Shelf> m_Shelf;
-    };
-
-    class GPAPI FirstFit final : public ShelfPackingAlgorithm {
-
-    public:
-        FirstFit(float binWidth, float binHeight);
-
-        void pack(Item &item, bool allowRotation) override;
-    };
 }

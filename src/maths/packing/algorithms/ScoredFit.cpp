@@ -24,7 +24,7 @@ namespace gp::packing::shelf {
                     item.rotate();
 
                 if (shelf->fits(item)) {
-                    float score = m_ScoringFunction(shelf, item);
+                    float score = m_ScoringFunction(*shelf, item);
                     if (score > bestScore) {
                         bestShelf = shelf;
                         bestScore = score;
@@ -36,7 +36,7 @@ namespace gp::packing::shelf {
             if (bestShelf == nullptr and bin->m_OpenShelf->fitsAbove(item)) {
                 auto shelf = bin->addShelf();
 
-                float score = m_ScoringFunction(shelf, item);
+                float score = m_ScoringFunction(*shelf, item);
                 if (score > bestScore) {
                     bestShelf = shelf;
                     bestScore = score;

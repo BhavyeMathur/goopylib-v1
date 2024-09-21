@@ -6,45 +6,45 @@
 namespace gp::packing::shelf {
     BestWidthFit::BestWidthFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const shared_ptr<Shelf> &shelf, Item &obj) {
-                            return obj.getWidth() - shelf->getAvailableWidth();
+                        [](const Shelf &shelf, const Item &obj) {
+                            return obj.getWidth() - shelf.getAvailableWidth();
                         }) {
     }
 
     WorstWidthFit::WorstWidthFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const shared_ptr<Shelf> &shelf, Item &obj) {
-                            return shelf->getAvailableWidth() - obj.getWidth();
+                        [](const Shelf &shelf, const Item &obj) {
+                            return shelf.getAvailableWidth() - obj.getWidth();
                         }) {
     }
 
     BestHeightFit::BestHeightFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const shared_ptr<Shelf> &shelf, Item &obj) {
-                            return obj.getHeight() - shelf->getHeight();
+                        [](const Shelf &shelf, const Item &obj) {
+                            return obj.getHeight() - shelf.getHeight();
                         }) {
     }
 
     WorstHeightFit::WorstHeightFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const shared_ptr<Shelf> &shelf, Item &obj) {
-                            return shelf->getHeight() - obj.getHeight();
+                        [](const Shelf &shelf, const Item &obj) {
+                            return shelf.getHeight() - obj.getHeight();
                         }) {
     }
 
     BestAreaFit::BestAreaFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const shared_ptr<Shelf> &shelf, Item &obj) {
-                            return (shelf->getPackedWidth() + obj.getWidth()) *
-                                   std::max(obj.getHeight(), shelf->getHeight());
+                        [](const Shelf &shelf, const Item &obj) {
+                            return (shelf.getPackedWidth() + obj.getWidth()) *
+                                   std::max(obj.getHeight(), shelf.getHeight());
                         }) {
     }
 
     WorstAreaFit::WorstAreaFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
-                        [](const shared_ptr<Shelf> &shelf, Item &obj) {
-                            return -(shelf->getPackedWidth() + obj.getWidth()) *
-                                   std::max(obj.getHeight(), shelf->getHeight());
+                        [](const Shelf &shelf, const Item &obj) {
+                            return -(shelf.getPackedWidth() + obj.getWidth()) *
+                                   std::max(obj.getHeight(), shelf.getHeight());
                         }) {
     }
 }

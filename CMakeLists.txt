@@ -92,6 +92,8 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/maths/packing/Shelf.cpp
             src/maths/packing/algorithms/PackingAlgorithm.cpp
             src/maths/packing/algorithms/ShelfPackingAlgorithm.cpp
+            src/maths/packing/algorithms/FirstFit.cpp
+            src/maths/packing/algorithms/NextFit.cpp
             src/maths/packing/algorithms/ScoredFit.cpp
             src/maths/packing/algorithms/ScoredAlgorithms.cpp
             src/maths/packing/algorithms/SortingAlgorithms.cpp
