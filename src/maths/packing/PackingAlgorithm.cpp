@@ -6,8 +6,4 @@ namespace gp::packing {
             : m_BinWidth(binWidth),
               m_BinHeight(binHeight) {
     }
-
-    void PackingAlgorithm::rotateItem(Item &item) {
-        item.rotate();
-    }
 }

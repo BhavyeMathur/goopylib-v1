@@ -64,8 +64,8 @@ namespace gp::packing::shelf {
     }
 
     void Shelf::add(const shared_ptr<Item> &item) {
-        item->m_X = m_PackedWidth;
-        item->m_Y = m_VerticalOffset;
+        item->setX(m_PackedWidth);
+        item->setY(m_VerticalOffset);
         m_Bin.add(item);
         m_Items.push_back(item);
 

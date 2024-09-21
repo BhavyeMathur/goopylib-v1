@@ -32,7 +32,7 @@ namespace gp::packing::shelf {
 
     void ShelfPackingAlgorithm::packOriented(const shared_ptr<Item> &item, bool orientVertically) {
         if (item->isHorizontal() == orientVertically)
-            rotateItem(*item);
+            item->rotate();
 
         pack(item, false);
     }
@@ -60,7 +60,7 @@ namespace gp::packing::shelf {
 
     void NextFit::pack(const shared_ptr<Item> &item, bool allowRotation) {
         if (allowRotation and (item->isVertical() != (item->getLongSide() <= m_Shelf->getHeight())))
-            rotateItem(*item);
+            item->rotate();
 
         if (m_Shelf->fits(item)) {
             m_Shelf->add(item);
@@ -75,7 +75,7 @@ namespace gp::packing::shelf {
         }
 
         if (allowRotation and item->isVertical())
-            rotateItem(*item);
+            item->rotate();
 
         m_Shelf->add(item);
     }
@@ -88,7 +88,7 @@ namespace gp::packing::shelf {
         for (const auto &bin: m_Bins) {
             for (const auto &shelf: *bin) {
                 if (allowRotation and (item->isVertical() != (item->getLongSide() <= shelf->getHeight())))
-                    rotateItem(*item);
+                    item->rotate();
 
                 if (shelf->fits(item)) {
                     shelf->add(item);
@@ -98,7 +98,7 @@ namespace gp::packing::shelf {
 
             if (bin->m_OpenShelf->fitsAbove(item)) {
                 if (allowRotation and item->isVertical())
-                    rotateItem(*item);
+                    item->rotate();
 
                 bin->addShelf()->add(item);
                 return;
@@ -108,7 +108,7 @@ namespace gp::packing::shelf {
         m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
 
         if (allowRotation and item->isVertical())
-            rotateItem(*item);
+            item->rotate();
 
         const auto &newBin = m_Bins.back();
         const auto &newShelf = newBin->m_OpenShelf;
@@ -128,7 +128,7 @@ namespace gp::packing::shelf {
         for (const auto &bin: m_Bins) {
             for (const auto &shelf: *bin) {
                 if (allowRotation and (item->isVertical() != (item->getLongSide() <= shelf->getHeight())))
-                    rotateItem(*item);
+                    item->rotate();
 
                 if (shelf->fits(item)) {
                     float score = m_ScoringFunction(shelf, item);
@@ -156,14 +156,14 @@ namespace gp::packing::shelf {
             m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
 
             if (allowRotation and item->isVertical())
-                rotateItem(*item);
+                item->rotate();
 
             bestShelf = m_Bins.back()->m_OpenShelf;
             bestOrientation = item->isRotated();
         }
 
         if (item->isRotated() != bestOrientation)
-            rotateItem(*item);
+            item->rotate();
 
         bestShelf->add(item);
     }

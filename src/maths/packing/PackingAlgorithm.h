@@ -12,7 +12,5 @@ namespace gp::packing {
         const float m_BinHeight;
 
         PackingAlgorithm(float binWidth, float binHeight);
-
-        void rotateItem(Item &item);
     };
 }

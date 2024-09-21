@@ -5,18 +5,7 @@
 struct Point;
 
 namespace gp::packing {
-    class PackingAlgorithm;
-
-    namespace shelf {
-        class Shelf;
-    }
-
     class GPAPI Item {
-
-        friend class shelf::Shelf;
-
-        friend class PackingAlgorithm;
-
     public:
         Item(float width, float height);
 
@@ -36,7 +25,12 @@ namespace gp::packing {
 
         [[nodiscard]] float getX() const;
 
+        // TODO setX, setY and rotate() mutate the item and should not be public
+        void setX(float x);
+
         [[nodiscard]] float getY() const;
+
+        void setY(float y);
 
         [[nodiscard]] float getWidth() const;
 
@@ -45,6 +39,8 @@ namespace gp::packing {
         [[nodiscard]] float getLongSide() const;
 
         [[nodiscard]] float getShortSide() const;
+
+        void rotate();
 
     private:
         float m_Width;
@@ -59,7 +55,5 @@ namespace gp::packing {
 
         const uint32_t m_ID;
         static uint32_t s_Items;
-
-        void rotate();
     };
 }
