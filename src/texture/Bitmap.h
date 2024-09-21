@@ -13,10 +13,6 @@ namespace gp {
 
         Bitmap(const char *filepath);
 
-        Bitmap(const Bitmap &) = delete;
-
-        Bitmap(Bitmap &&other) = delete;
-
         ~Bitmap();
 
         [[nodiscard]] uint32_t getWidth() const;
