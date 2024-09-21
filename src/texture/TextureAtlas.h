@@ -6,7 +6,7 @@
 #include "TextureBuffer.h"
 
 #include "maths/gpmath.h"
-#include "maths/packing/Shelf.h"
+#include "maths/packing/algorithms/ScoredAlgorithms.h"
 
 namespace gp {
     struct TextureCoords {

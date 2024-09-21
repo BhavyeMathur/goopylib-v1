@@ -8,4 +8,5 @@
 
 #include "packing/algorithms/PackingAlgorithm.h"
 #include "packing/algorithms/ShelfPackingAlgorithm.h"
+#include "packing/algorithms/ScoredFit.h"
 #include "packing/algorithms/SortingAlgorithms.h"

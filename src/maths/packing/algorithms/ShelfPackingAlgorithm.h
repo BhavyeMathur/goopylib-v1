@@ -15,8 +15,6 @@ namespace gp::packing {
 }
 
 namespace gp::packing::shelf {
-    using ScoringFunction = std::function<float(const shared_ptr<gp::packing::shelf::Shelf> &, Item &)>;
-
     class GPAPI ShelfPackingAlgorithm : public PackingAlgorithm {
 
     public:
@@ -61,52 +59,5 @@ namespace gp::packing::shelf {
         FirstFit(float binWidth, float binHeight);
 
         void pack(Item &item, bool allowRotation) override;
-    };
-
-    class GPAPI ScoredFit : public ShelfPackingAlgorithm {
-
-    public:
-        ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction);
-
-        void pack(Item &item, bool allowRotation) override;
-
-    private:
-        ScoringFunction m_ScoringFunction;
-    };
-
-    class GPAPI BestWidthFit final : public ScoredFit {
-
-    public:
-        BestWidthFit(float binWidth, float binHeight);
-    };
-
-    class GPAPI WorstWidthFit final : public ScoredFit {
-
-    public:
-        WorstWidthFit(float binWidth, float binHeight);
-    };
-
-    class GPAPI BestHeightFit final : public ScoredFit {
-
-    public:
-        BestHeightFit(float binWidth, float binHeight);
-    };
-
-    class GPAPI WorstHeightFit final : public ScoredFit {
-
-    public:
-        WorstHeightFit(float binWidth, float binHeight);
-    };
-
-    class GPAPI BestAreaFit final : public ScoredFit {
-
-    public:
-        BestAreaFit(float binWidth, float binHeight);
-    };
-
-    class GPAPI WorstAreaFit final : public ScoredFit {
-
-    public:
-        WorstAreaFit(float binWidth, float binHeight);
     };
 }
