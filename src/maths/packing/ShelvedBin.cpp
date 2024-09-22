@@ -2,20 +2,19 @@
 #include "Shelf.h"
 #include "Item.h"
 
+
 namespace gp::packing {
     ShelvedBin::ShelvedBin(float width, float height)
             : Bin(width, height),
-              m_Shelves({{0, *this}}),
-              m_OpenShelf(&m_Shelves[0]) {
+              m_Shelves({{0, *this}}) {
     }
 
     shelf::Shelf &ShelvedBin::addShelf() {
-        m_OpenShelf->close();
+        auto shelf = getOpenShelf();
+        shelf.close();
 
-        m_Shelves.push_back({m_OpenShelf->m_VerticalOffset + m_OpenShelf->m_Height, *this});
-        m_OpenShelf = &m_Shelves.back();
-
-        return *m_OpenShelf;
+        m_Shelves.push_back({shelf.m_VerticalOffset + shelf.m_Height, *this});
+        return getOpenShelf();
     }
 
     float ShelvedBin::packingRatio() const {
@@ -32,7 +31,7 @@ namespace gp::packing {
     }
 
     shelf::Shelf &ShelvedBin::getOpenShelf() {
-        return *m_OpenShelf;
+        return m_Shelves.back();
     }
 
     const std::vector<shelf::Shelf> &ShelvedBin::getShelves() {

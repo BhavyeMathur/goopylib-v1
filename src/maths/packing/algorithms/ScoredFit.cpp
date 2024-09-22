@@ -33,7 +33,7 @@ namespace gp::packing::shelf {
                     updateScore(bestScore, bestOrientation, bestShelf, shelf, item);
             }
 
-            if (bestShelf == nullptr and tryAddingToNewShelf(item, *bin->m_OpenShelf, *bin, allowRotation))
+            if (bestShelf == nullptr and tryAddingToNewShelf(item, bin->getOpenShelf(), *bin, allowRotation))
                 return;
         }
 

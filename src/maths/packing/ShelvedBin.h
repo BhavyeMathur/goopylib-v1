@@ -5,26 +5,12 @@
 
 namespace gp::packing::shelf {
     class ShelfPackingAlgorithm;
-
-    class NextFit;
-
-    class FirstFit;
-
-    class ScoredFit;
 }
 
 namespace gp::packing {
     class GPAPI ShelvedBin final : public Bin {
 
-        friend class shelf::Shelf;
-
         friend class shelf::ShelfPackingAlgorithm;
-
-        friend class shelf::NextFit;
-
-        friend class shelf::FirstFit;
-
-        friend class shelf::ScoredFit;
 
     public:
         [[nodiscard]] float packingRatio() const override;
@@ -39,7 +25,6 @@ namespace gp::packing {
 
     private:
         std::vector<shelf::Shelf> m_Shelves;
-        shelf::Shelf *m_OpenShelf;
 
         ShelvedBin(float width, float height);
 

@@ -81,11 +81,10 @@ namespace gp::packing::shelf {
     void ShelfPackingAlgorithm::addItemToNewBin(Item &item, bool allowRotation) {
         m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
         const auto &newBin = m_Bins.back();
-        const auto &newShelf = newBin->m_OpenShelf;
 
         if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
             item.setHorizontal();
 
-        addItemToShelf(item, *newShelf);
+        addItemToShelf(item, newBin->getOpenShelf());
     }
 }

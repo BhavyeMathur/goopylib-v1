@@ -16,7 +16,7 @@ namespace gp::packing::shelf {
                     return addItemToShelf(item, shelf);
             }
 
-            if (tryAddingToNewShelf(item, *bin->m_OpenShelf, *bin, allowRotation))
+            if (tryAddingToNewShelf(item, bin->getOpenShelf(), *bin, allowRotation))
                 return;
         }
         addItemToNewBin(item, allowRotation);
