@@ -3,6 +3,7 @@
 #include "gp.h"
 #include "ShelfPackingAlgorithm.h"
 
+
 namespace gp::packing {
     class Item;
 }

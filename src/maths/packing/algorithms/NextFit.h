@@ -2,6 +2,10 @@
 
 #include "gp.h"
 #include "ShelfPackingAlgorithm.h"
+#include "maths/packing/Item.h"
+#include "maths/packing/ShelvedBin.h"
+#include "maths/packing/Shelf.h"
+
 
 namespace gp::packing::shelf {
     class GPAPI NextFit final : public ShelfPackingAlgorithm {

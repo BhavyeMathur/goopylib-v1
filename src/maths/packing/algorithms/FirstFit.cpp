@@ -1,7 +1,4 @@
 #include "FirstFit.h"
-#include "maths/packing/Item.h"
-#include "maths/packing/Shelf.h"
-#include "maths/packing/ShelvedBin.h"
 
 
 namespace gp::packing::shelf {
@@ -9,14 +6,14 @@ namespace gp::packing::shelf {
     }
 
     void FirstFit::pack(Item &item, bool allowRotation) {
-        for (const auto &bin: m_Bins) {
-            for (auto &shelf: *bin) {
+        for (auto &bin: m_Bins) {
+            for (auto &shelf: bin) {
                 orientItemForShelf(item, shelf, allowRotation);
                 if (shelf.fits(item))
                     return addItemToShelf(item, shelf);
             }
 
-            if (tryAddingToNewShelf(item, bin->getOpenShelf(), *bin, allowRotation))
+            if (tryAddingToNewShelf(item, bin.getOpenShelf(), bin, allowRotation))
                 return;
         }
         addItemToNewBin(item, allowRotation);

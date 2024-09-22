@@ -3,6 +3,7 @@
 #include "gp.h"
 #include "ScoredFit.h"
 
+
 namespace gp::packing::shelf {
     class GPAPI BestWidthFit final : public ScoredFit {
     public:

@@ -36,7 +36,7 @@ namespace gp::packing {
         return m_Shelves.back();
     }
 
-    const std::vector<shelf::Shelf> &ShelvedBin::getShelves() {
+    const std::vector<shelf::Shelf> &ShelvedBin::getShelves() const {
         return m_Shelves;
     }
 

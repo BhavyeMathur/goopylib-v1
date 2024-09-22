@@ -26,14 +26,14 @@ namespace gp::packing::shelf {
         float bestScore = -std::numeric_limits<float>::infinity();
         bool bestOrientation = false;  // un-rotated
 
-        for (const auto &bin: m_Bins) {
-            for (auto &shelf: *bin) {
+        for (auto &bin: m_Bins) {
+            for (auto &shelf: bin) {
                 orientItemForShelf(item, shelf, allowRotation);
                 if (shelf.fits(item))
                     updateScore(bestScore, bestOrientation, bestShelf, shelf, item);
             }
 
-            if (bestShelf == nullptr and tryAddingToNewShelf(item, bin->getOpenShelf(), *bin, allowRotation))
+            if (bestShelf == nullptr and tryAddingToNewShelf(item, bin.getOpenShelf(), bin, allowRotation))
                 return;
         }
 

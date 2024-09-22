@@ -4,6 +4,7 @@
 #include "PackingAlgorithm.h"
 #include "SortingAlgorithms.h"
 
+
 namespace gp::packing {
     class Item;
 
@@ -32,10 +33,10 @@ namespace gp::packing::shelf {
         void packAllOriented(std::vector<Item> &items, bool orientVertically = true,
                              const SortingFunction &sortingFunction = sortByLongSide(true));
 
-        [[nodiscard]] std::vector<shared_ptr<ShelvedBin>> bins() const;
+        [[nodiscard]] const std::vector<ShelvedBin>& bins() const;
 
     protected:
-        std::vector<shared_ptr<ShelvedBin>> m_Bins;
+        std::vector<ShelvedBin> m_Bins;
 
         ShelfPackingAlgorithm(float binWidth, float binHeight);
 

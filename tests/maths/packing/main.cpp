@@ -67,12 +67,12 @@ void createRandomItems(int n, std::vector<gp::packing::Item> &items) {
     }
 }
 
-void printPackingRatio(std::vector<std::shared_ptr<gp::packing::ShelvedBin>> &bins) {
+void printPackingRatio(const std::vector<gp::packing::ShelvedBin> &bins) {
     float packingRatio = 0;
 
     for (int i = 0; i < bins.size(); i++) {
-        packingRatio += bins[i]->packingRatio();
-        std::cout << "Packing Ratio for Bin " << i << ": " << 100 * bins[i]->packingRatio() << "%\n";
+        packingRatio += bins[i].packingRatio();
+        std::cout << "Packing Ratio for Bin " << i << ": " << 100 * bins[i].packingRatio() << "%\n";
     }
 
     std::cout << "Average Packing Ratio: " << 100 * packingRatio / (float) bins.size() << "%\n";
@@ -86,7 +86,7 @@ void showPage(int page, std::vector<std::vector<shared_ptr<gp::Rectangle>>> &obj
     }
 }
 
-void plotItemBins(std::vector<std::shared_ptr<gp::packing::ShelvedBin>> &bins) {
+void plotItemBins(const std::vector<gp::packing::ShelvedBin> &bins) {
     gp::Window window = {800, 800};
     window.getCamera().setProjection(0, window.getWidth(), 0, window.getHeight());
 
@@ -101,8 +101,8 @@ void plotItemBins(std::vector<std::shared_ptr<gp::packing::ShelvedBin>> &bins) {
     for (auto bin: bins) {
         objects.emplace_back();
 
-        for (int j = 0; j < bin->items().size(); j++) {
-            auto item = bin->items()[j];
+        for (int j = 0; j < bin.items().size(); j++) {
+            auto item = bin.items()[j];
             auto obj = make_shared<gp::Rectangle>(item.p1(), item.p2());
             obj->setColor(colors[j % 5]);
             window.draw(obj);

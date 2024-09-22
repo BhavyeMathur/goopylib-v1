@@ -13,11 +13,13 @@ namespace gp::packing {
         friend class shelf::ShelfPackingAlgorithm;
 
     public:
+        ShelvedBin(float width, float height);
+
         [[nodiscard]] float packingRatio() const override;
 
         shelf::Shelf &getOpenShelf();
 
-        const std::vector<shelf::Shelf> &getShelves();
+        const std::vector<shelf::Shelf> &getShelves() const;
 
         [[nodiscard]] std::vector<shelf::Shelf>::iterator begin();
 
@@ -25,8 +27,6 @@ namespace gp::packing {
 
     private:
         std::vector<shelf::Shelf> m_Shelves;
-
-        ShelvedBin(float width, float height);
 
         shelf::Shelf &addShelf();
     };

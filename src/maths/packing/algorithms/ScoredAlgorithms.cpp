@@ -1,7 +1,8 @@
 #include "ScoredAlgorithms.h"
+
 #include "maths/packing/Item.h"
 #include "maths/packing/Shelf.h"
-
+#include "maths/packing/ShelvedBin.h"
 #include "maths/gpmath.h"
 
 
