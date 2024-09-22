@@ -2,7 +2,6 @@
 #include "maths/packing/Item.h"
 #include "maths/packing/Shelf.h"
 #include "maths/packing/ShelvedBin.h"
-#include "ScoredFit.h"
 
 #include "debug/Error.h"
 

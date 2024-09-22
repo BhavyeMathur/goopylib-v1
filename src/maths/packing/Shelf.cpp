@@ -7,8 +7,8 @@
 
 namespace gp::packing::shelf {
     Shelf::Shelf(float verticalOffset, ShelvedBin &bin)
-            : m_Width(bin.getWidth()),
-              m_AvailableWidth(bin.getWidth()),
+            : m_Width(bin.width()),
+              m_AvailableWidth(bin.width()),
               m_VerticalOffset(verticalOffset),
               m_Bin(bin) {
 
@@ -25,12 +25,12 @@ namespace gp::packing::shelf {
 
     bool Shelf::fits(const Item &item) const {
         if (m_IsOpen)
-            return item.width() <= m_AvailableWidth and m_VerticalOffset + item.height() <= m_Bin.getHeight();
+            return item.width() <= m_AvailableWidth and m_VerticalOffset + item.height() <= m_Bin.height();
         return item.width() <= m_AvailableWidth and item.height() <= m_Height;
     }
 
     bool Shelf::fitsShelfAbove(const Item &item) const {
-        return m_VerticalOffset + m_Height + item.height() <= m_Bin.getHeight();
+        return m_VerticalOffset + m_Height + item.height() <= m_Bin.height();
     }
 
     bool Shelf::fitsItemVertically(const Item &item) const {

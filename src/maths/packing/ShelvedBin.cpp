@@ -1,3 +1,5 @@
+#define GP_LOGGING_LEVEl 3
+
 #include "ShelvedBin.h"
 #include "Shelf.h"
 #include "Item.h"

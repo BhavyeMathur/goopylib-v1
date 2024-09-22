@@ -20,9 +20,9 @@ namespace gp::packing {
 
         [[nodiscard]] const std::vector<Item> &items() const;
 
-        [[nodiscard]] float getWidth() const;
+        [[nodiscard]] float width() const;
 
-        [[nodiscard]] float getHeight() const;
+        [[nodiscard]] float height() const;
 
     protected:
         const float m_Width;

@@ -1,3 +1,5 @@
+#define GP_LOGGING_LEVEl 3
+
 #include "Bin.h"
 #include "Item.h"
 
@@ -23,11 +25,11 @@ namespace gp::packing {
         return m_Items;
     }
 
-    float Bin::getWidth() const {
+    float Bin::width() const {
         return m_Width;
     }
 
-    float Bin::getHeight() const {
+    float Bin::height() const {
         return m_Height;
     }
 }
