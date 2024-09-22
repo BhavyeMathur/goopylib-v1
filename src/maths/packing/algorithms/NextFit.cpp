@@ -18,7 +18,7 @@ namespace gp::packing::shelf {
             return addItemToShelf(item, *m_Shelf);
 
         if (m_Shelf->fitsAbove(item))
-            m_Shelf = m_Bins.back()->addShelf();
+            m_Shelf = &m_Bins.back()->addShelf();
         else {
             m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
             m_Shelf = m_Bins.back()->m_OpenShelf;

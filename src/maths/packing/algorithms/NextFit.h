@@ -12,6 +12,6 @@ namespace gp::packing::shelf {
         void pack(Item &item, bool allowRotation) override;
 
     private:
-        shared_ptr<Shelf> m_Shelf;
+        Shelf *m_Shelf;
     };
 }

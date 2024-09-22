@@ -29,20 +29,20 @@ namespace gp::packing {
     public:
         [[nodiscard]] float packingRatio() const override;
 
-        shared_ptr<shelf::Shelf> getOpenShelf();
+        shelf::Shelf &getOpenShelf();
 
-        std::vector<shared_ptr<shelf::Shelf>> getShelves();
+        const std::vector<shelf::Shelf> &getShelves();
 
-        [[nodiscard]] std::vector<shared_ptr<shelf::Shelf>>::const_iterator begin() const;
+        [[nodiscard]] std::vector<shelf::Shelf>::iterator begin();
 
-        [[nodiscard]] std::vector<shared_ptr<shelf::Shelf>>::const_iterator end() const;
+        [[nodiscard]] std::vector<shelf::Shelf>::iterator end();
 
     private:
-        shared_ptr<shelf::Shelf> m_OpenShelf;
-        std::vector<shared_ptr<shelf::Shelf>> m_Shelves;
+        std::vector<shelf::Shelf> m_Shelves;
+        shelf::Shelf *m_OpenShelf;
 
         ShelvedBin(float width, float height);
 
-        shared_ptr<shelf::Shelf> addShelf();
+        shelf::Shelf &addShelf();
     };
 }

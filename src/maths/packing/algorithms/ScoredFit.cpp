@@ -14,19 +14,19 @@ namespace gp::packing::shelf {
     }
 
     void ScoredFit::pack(Item &item, bool allowRotation) {
-        shared_ptr<Shelf> bestShelf = nullptr;
+        Shelf *bestShelf = nullptr;
         float bestScore = -std::numeric_limits<float>::infinity();
         bool bestOrientation = false;  // un-rotated
 
         for (const auto &bin: m_Bins) {
-            for (const auto &shelf: *bin) {
-                if (allowRotation and (item.isVertical() != (item.getLongSide() <= shelf->getHeight())))
+            for (auto &shelf: *bin) {
+                if (allowRotation and (item.isVertical() != (item.getLongSide() <= shelf.getHeight())))
                     item.rotate();
 
-                if (shelf->fits(item)) {
-                    float score = m_ScoringFunction(*shelf, item);
+                if (shelf.fits(item)) {
+                    float score = m_ScoringFunction(shelf, item);
                     if (score > bestScore) {
-                        bestShelf = shelf;
+                        bestShelf = &shelf;
                         bestScore = score;
                         bestOrientation = item.isRotated();
                     }
@@ -34,11 +34,11 @@ namespace gp::packing::shelf {
             }
 
             if (bestShelf == nullptr and bin->m_OpenShelf->fitsAbove(item)) {
-                auto shelf = bin->addShelf();
+                auto &shelf = bin->addShelf();
 
-                float score = m_ScoringFunction(*shelf, item);
+                float score = m_ScoringFunction(shelf, item);
                 if (score > bestScore) {
-                    bestShelf = shelf;
+                    bestShelf = &shelf;
                     bestScore = score;
                     bestOrientation = item.isRotated();
                 }

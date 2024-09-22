@@ -52,10 +52,10 @@ namespace gp::packing::shelf {
 
         bool m_IsOpen = true;
 
-        Bin &m_Bin;
+        ShelvedBin &m_Bin;
         std::vector<Item *> m_Items;
 
-        Shelf(float verticalOffset, Bin &bin);
+        Shelf(float verticalOffset, ShelvedBin &bin);
 
         void add(Item &item);
 

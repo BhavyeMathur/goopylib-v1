@@ -1,12 +1,12 @@
 #define GP_LOGGING_LEVEl 3
 
 #include "Shelf.h"
-#include "Bin.h"
+#include "ShelvedBin.h"
 #include "Item.h"
 
 
 namespace gp::packing::shelf {
-    Shelf::Shelf(float verticalOffset, Bin &bin)
+    Shelf::Shelf(float verticalOffset, ShelvedBin &bin)
             : m_Width(bin.getWidth()),
               m_AvailableWidth(bin.getWidth()),
               m_VerticalOffset(verticalOffset),

@@ -5,48 +5,48 @@
 namespace gp::packing {
     ShelvedBin::ShelvedBin(float width, float height)
             : Bin(width, height),
-              m_OpenShelf(shared_ptr<shelf::Shelf>(new shelf::Shelf(0, *this))) {
-        m_Shelves.push_back(m_OpenShelf);
+              m_Shelves({{0, *this}}),
+              m_OpenShelf(&m_Shelves[0]) {
     }
 
-    shared_ptr<shelf::Shelf> ShelvedBin::addShelf() {
+    shelf::Shelf &ShelvedBin::addShelf() {
         m_OpenShelf->close();
-        m_OpenShelf = shared_ptr<shelf::Shelf>(new shelf::Shelf(m_OpenShelf->m_VerticalOffset + m_OpenShelf->m_Height, *this));
-        m_Shelves.push_back(m_OpenShelf);
 
-        return m_OpenShelf;
+        m_Shelves.push_back({m_OpenShelf->m_VerticalOffset + m_OpenShelf->m_Height, *this});
+        m_OpenShelf = &m_Shelves.back();
+
+        return *m_OpenShelf;
     }
 
     float ShelvedBin::packingRatio() const {
-        if (m_ID == Bin::s_Bins - 1) { // this is the latest bin
-            float sum = 0;
-            float area = 0;
-            for (const auto &item: m_Items) {
-                sum += item->area();
-            }
-            for (const auto &shelf: m_Shelves) {
-                area += shelf->packedArea();
-            }
+        if (m_ID != Bin::s_Bins - 1)  // this is not the latest bin
+            return Bin::packingRatio();
 
-            return sum / area;
-        }
-        return Bin::packingRatio();
+        float sum = 0.0f;
+        float area = 0.0f;
+
+        for (const auto &item: m_Items)
+            sum += item->area();
+
+        for (const auto &shelf: m_Shelves)
+            area += shelf.packedArea();
+
+        return sum / area;
     }
 
-    shared_ptr<shelf::Shelf> ShelvedBin::getOpenShelf() {
-        return m_OpenShelf;
+    shelf::Shelf &ShelvedBin::getOpenShelf() {
+        return *m_OpenShelf;
     }
 
-    std::vector<shared_ptr<shelf::Shelf>> ShelvedBin::getShelves() {
-        std::vector<shared_ptr<shelf::Shelf>> copy = m_Shelves;
-        return copy;
+    const std::vector<shelf::Shelf> &ShelvedBin::getShelves() {
+        return m_Shelves;
     }
 
-    std::vector<shared_ptr<shelf::Shelf>>::const_iterator ShelvedBin::begin() const {
+    std::vector<shelf::Shelf>::iterator ShelvedBin::begin() {
         return m_Shelves.begin();
     }
 
-    std::vector<shared_ptr<shelf::Shelf>>::const_iterator ShelvedBin::end() const {
+    std::vector<shelf::Shelf>::iterator ShelvedBin::end() {
         return m_Shelves.end();
     }
 }

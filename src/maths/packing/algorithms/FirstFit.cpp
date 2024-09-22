@@ -13,19 +13,19 @@ namespace gp::packing::shelf {
 
     void FirstFit::pack(Item &item, bool allowRotation) {
         for (const auto &bin: m_Bins) {
-            for (const auto &shelf: *bin) {
-                if (allowRotation and (item.isVertical() != (item.getLongSide() <= shelf->getHeight())))
+            for (auto &shelf: *bin) {
+                if (allowRotation and (item.isVertical() != (item.getLongSide() <= shelf.getHeight())))
                     item.rotate();
 
-                if (shelf->fits(item))
-                    return addItemToShelf(item, *shelf);
+                if (shelf.fits(item))
+                    return addItemToShelf(item, shelf);
             }
 
             if (bin->m_OpenShelf->fitsAbove(item)) {
                 if (allowRotation and item.isVertical())
                     item.rotate();
 
-                return addItemToShelf(item, *bin->addShelf());
+                return addItemToShelf(item, bin->addShelf());
             }
         }
         // code only reaches here if item has not been added to a shelf
