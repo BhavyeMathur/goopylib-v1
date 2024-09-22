@@ -19,17 +19,14 @@ namespace gp::packing {
     }
 
     float ShelvedBin::packingRatio() const {
-        if (m_ID != Bin::s_Bins - 1)  // this is not the latest bin
-            return Bin::packingRatio();
-
         float sum = 0.0f;
         float area = 0.0f;
 
         for (const auto &item: m_Items)
-            sum += item->area();
+            sum += item.area();
 
         for (const auto &shelf: m_Shelves)
-            area += shelf.packedArea();
+            area += shelf.area();
 
         return sum / area;
     }

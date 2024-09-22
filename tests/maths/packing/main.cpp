@@ -103,7 +103,7 @@ void plotItemBins(std::vector<std::shared_ptr<gp::packing::ShelvedBin>> &bins) {
 
         for (int j = 0; j < bin->items().size(); j++) {
             auto item = bin->items()[j];
-            auto obj = make_shared<gp::Rectangle>(item->p1(), item->p2());
+            auto obj = make_shared<gp::Rectangle>(item.p1(), item.p2());
             obj->setColor(colors[j % 5]);
             window.draw(obj);
             objects.back().push_back(obj);

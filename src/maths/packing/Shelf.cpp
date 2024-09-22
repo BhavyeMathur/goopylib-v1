@@ -23,9 +23,7 @@ namespace gp::packing::shelf {
         return os;
     }
 
-    float Shelf::packedArea() const {
-        if (m_IsOpen)
-            return m_PackedWidth * m_Height;
+    float Shelf::area() const {
         return m_Width * m_Height;
     }
 

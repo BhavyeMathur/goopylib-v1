@@ -42,7 +42,7 @@ namespace gp::packing::shelf {
 
         [[nodiscard]] bool fitsItemVertically(const Item &item) const;
 
-        [[nodiscard]] float packedArea() const;
+        [[nodiscard]] float area() const;
 
     private:
         const float m_Width;
