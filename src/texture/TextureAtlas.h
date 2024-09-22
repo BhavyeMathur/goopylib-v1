@@ -9,20 +9,19 @@
 #include "maths/packing/algorithms/ScoredAlgorithms.h"
 
 namespace gp {
-    struct TextureCoords;
+    struct TextureAtlasCoords;
 
     class GPAPI TextureAtlas {
 
     public:
         TextureAtlas(const TextureAtlas &) = delete;
 
-        TextureAtlas(packing::shelf::ShelfPackingAlgorithm packingAlgorithm = packing::shelf::BestAreaFit(s_Width,
-                                                                                                          s_Height));
+        TextureAtlas(uint32_t channels, unique_ptr<packing::shelf::ShelfPackingAlgorithm> packingAlgorithm = nullptr);
 
-        TextureCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
+        TextureAtlasCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
 
-        std::vector<TextureCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps, bool allowRotation = true,
-                                       const packing::SortingFunction &sorting = packing::sortByShortSide(true));
+        std::vector<TextureAtlasCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps, bool allowRotation = true,
+                                            const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 
         static void init();
 
@@ -30,11 +29,13 @@ namespace gp {
 
         [[nodiscard]] static uint32_t height();
 
-        [[nodiscard]] const std::vector<packing::ShelvedBin> &getPages() const;
+        [[nodiscard]] uint32_t pages();
+
+        [[nodiscard]] const shared_ptr<Bitmap> &getBitmap(uint32_t i) const;
 
     private:
-        packing::shelf::ShelfPackingAlgorithm m_PackingAlgorithm;
-        std::vector<Bitmap> m_Bitmaps;
+        unique_ptr<packing::shelf::ShelfPackingAlgorithm> m_PackingAlgorithm;
+        std::vector<shared_ptr<Bitmap>> m_Bitmaps;
 
         const uint32_t m_Channels;
 

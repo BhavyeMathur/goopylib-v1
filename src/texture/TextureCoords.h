@@ -10,4 +10,11 @@ namespace gp {
 
         TextureCoords(Point p1, Point p2);
     };
+
+    struct GPAPI TextureAtlasCoords {
+        TextureCoords coords;
+        uint32_t page;
+
+        TextureAtlasCoords(Point p1, Point p2, uint32_t page);
+    };
 }

@@ -25,10 +25,10 @@ namespace gp {
         void bind(uint32_t slot) const;
 
         void setData(uint32_t xOffset,
-                           uint32_t yOffset,
-                           uint32_t width,
-                           uint32_t height,
-                           const uint8_t *data);
+                     uint32_t yOffset,
+                     uint32_t width,
+                     uint32_t height,
+                     const uint8_t *data);
 
         void setData(uint32_t width, uint32_t height, uint32_t channels, const uint8_t *data = nullptr);
 
