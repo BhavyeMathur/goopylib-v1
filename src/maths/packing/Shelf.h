@@ -24,9 +24,11 @@ namespace gp::packing::shelf {
     public:
         [[nodiscard]] std::string toString() const;
 
-        [[nodiscard]] float getWidth() const;
+        [[nodiscard]] float width() const;
 
-        [[nodiscard]] float getHeight() const;
+        [[nodiscard]] float height() const;
+
+        [[nodiscard]] float area() const;
 
         [[nodiscard]] float getVerticalOffset() const;
 
@@ -42,8 +44,6 @@ namespace gp::packing::shelf {
 
         [[nodiscard]] bool fitsItemVertically(const Item &item) const;
 
-        [[nodiscard]] float area() const;
-
     private:
         const float m_Width;
         float m_Height = 0;
@@ -55,7 +55,6 @@ namespace gp::packing::shelf {
         bool m_IsOpen = true;
 
         ShelvedBin &m_Bin;
-        std::vector<Item *> m_Items;
 
         Shelf(float verticalOffset, ShelvedBin &bin);
 

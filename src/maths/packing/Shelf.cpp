@@ -15,7 +15,7 @@ namespace gp::packing::shelf {
     }
 
     std::string Shelf::toString() const {
-        return strformat("Shelf(offset=%f, packed=%f) with %i items", m_VerticalOffset, m_PackedWidth, m_Items.size());
+        return strformat("Shelf(offset=%f, packed=%f)", m_VerticalOffset, m_PackedWidth);
     }
 
     std::ostream &operator<<(std::ostream &os, const Shelf &shelf) {
@@ -23,18 +23,14 @@ namespace gp::packing::shelf {
         return os;
     }
 
-    float Shelf::area() const {
-        return m_Width * m_Height;
-    }
-
     bool Shelf::fits(const Item &item) const {
         if (m_IsOpen)
-            return item.getWidth() <= m_AvailableWidth and m_VerticalOffset + item.getHeight() <= m_Bin.getHeight();
-        return item.getWidth() <= m_AvailableWidth and item.getHeight() <= m_Height;
+            return item.width() <= m_AvailableWidth and m_VerticalOffset + item.height() <= m_Bin.getHeight();
+        return item.width() <= m_AvailableWidth and item.height() <= m_Height;
     }
 
     bool Shelf::fitsShelfAbove(const Item &item) const {
-        return m_VerticalOffset + m_Height + item.getHeight() <= m_Bin.getHeight();
+        return m_VerticalOffset + m_Height + item.height() <= m_Bin.getHeight();
     }
 
     bool Shelf::fitsItemVertically(const Item &item) const {
@@ -44,23 +40,26 @@ namespace gp::packing::shelf {
     void Shelf::add(Item &item) {
         item.setPosition(m_PackedWidth, m_VerticalOffset);
         m_Bin.add(item);
-        m_Items.push_back(&item);
 
-        if (item.getHeight() > m_Height)
-            m_Height = item.getHeight();
+        if (item.height() > m_Height)
+            m_Height = item.height();
 
-        m_PackedWidth += item.getWidth();
-        m_AvailableWidth -= item.getWidth();
+        m_PackedWidth += item.width();
+        m_AvailableWidth -= item.width();
     }
 }
 
 namespace gp::packing::shelf {
-    float Shelf::getWidth() const {
+    float Shelf::width() const {
         return m_Width;
     }
 
-    float Shelf::getHeight() const {
+    float Shelf::height() const {
         return m_Height;
+    }
+
+    float Shelf::area() const {
+        return m_Width * m_Height;
     }
 
     float Shelf::getVerticalOffset() const {

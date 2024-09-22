@@ -53,11 +53,11 @@ namespace gp::packing {
         return {m_X + m_Width, m_Y + m_Height};
     }
 
-    float Item::getX() const {
+    float Item::x() const {
         return m_X;
     }
 
-    float Item::getY() const {
+    float Item::y() const {
         return m_Y;
     }
 
@@ -66,11 +66,11 @@ namespace gp::packing {
         m_Y = y;
     }
 
-    float Item::getWidth() const {
+    float Item::width() const {
         return m_Width;
     }
 
-    float Item::getHeight() const {
+    float Item::height() const {
         return m_Height;
     }
 

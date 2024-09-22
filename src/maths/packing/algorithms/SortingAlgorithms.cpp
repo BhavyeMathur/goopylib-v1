@@ -11,11 +11,11 @@ namespace gp::packing {
 
         if (descending)
             compare = [](const Item &item1, const Item &item2) {
-                return item1.getWidth() > item2.getWidth();
+                return item1.width() > item2.width();
             };
         else
             compare = [](const Item &item1, const Item &item2) {
-                return item1.getWidth() < item2.getWidth();
+                return item1.width() < item2.width();
             };
 
         RETURN_SORTING_FUNC;
@@ -26,11 +26,11 @@ namespace gp::packing {
 
         if (descending)
             compare = [](const Item &item1, const Item &item2) {
-                return item1.getHeight() > item2.getHeight();
+                return item1.height() > item2.height();
             };
         else
             compare = [](const Item &item1, const Item &item2) {
-                return item1.getHeight() < item2.getHeight();
+                return item1.height() < item2.height();
             };
 
         RETURN_SORTING_FUNC;
@@ -41,13 +41,13 @@ namespace gp::packing {
 
         if (descending)
             compare = [](const Item &item1, const Item &item2) {
-                return (item1.getWidth() + item1.getHeight()) >
-                       (item2.getWidth() + item2.getHeight());
+                return (item1.width() + item1.height()) >
+                       (item2.width() + item2.height());
             };
         else
             compare = [](const Item &item1, const Item &item2) {
-                return (item1.getWidth() + item1.getHeight()) <
-                       (item2.getWidth() + item2.getHeight());
+                return (item1.width() + item1.height()) <
+                       (item2.width() + item2.height());
             };
 
         RETURN_SORTING_FUNC;
@@ -58,13 +58,13 @@ namespace gp::packing {
 
         if (descending)
             compare = [](const Item &item1, const Item &item2) {
-                return (item1.getWidth() * item1.getHeight()) >
-                       (item2.getWidth() * item2.getHeight());
+                return (item1.width() * item1.height()) >
+                       (item2.width() * item2.height());
             };
         else
             compare = [](const Item &item1, const Item &item2) {
-                return (item1.getWidth() * item1.getHeight()) <
-                       (item2.getWidth() * item2.getHeight());
+                return (item1.width() * item1.height()) <
+                       (item2.width() * item2.height());
             };
 
         RETURN_SORTING_FUNC;
@@ -75,13 +75,13 @@ namespace gp::packing {
 
         if (descending)
             compare = [](const Item &item1, const Item &item2) {
-                return (item1.getWidth() / item1.getHeight()) >
-                       (item2.getWidth() / item2.getHeight());
+                return (item1.width() / item1.height()) >
+                       (item2.width() / item2.height());
             };
         else
             compare = [](const Item &item1, const Item &item2) {
-                return (item1.getWidth() / item1.getHeight()) <
-                       (item2.getWidth() / item2.getHeight());
+                return (item1.width() / item1.height()) <
+                       (item2.width() / item2.height());
             };
 
         RETURN_SORTING_FUNC;

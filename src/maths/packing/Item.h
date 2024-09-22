@@ -21,16 +21,16 @@ namespace gp::packing {
 
         [[nodiscard]] Point p2() const;
 
-        [[nodiscard]] float getX() const;
+        [[nodiscard]] float x() const;
 
-        [[nodiscard]] float getY() const;
+        [[nodiscard]] float y() const;
 
         // TODO setPosition() and rotate() mutate the item and should not be public
         void setPosition(float x, float y);
 
-        [[nodiscard]] float getWidth() const;
+        [[nodiscard]] float width() const;
 
-        [[nodiscard]] float getHeight() const;
+        [[nodiscard]] float height() const;
 
         [[nodiscard]] float getLongSide() const;
 
