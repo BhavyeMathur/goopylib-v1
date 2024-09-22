@@ -34,6 +34,7 @@ namespace gp {
         m_TriangleBatch.init();
         m_QuadBatch.init();
         m_EllipseBatch.init();
+        m_TextureRenderer.init();
     }
 
     void Renderer::draw(uint32_t ID, const shared_ptr<gp::Renderable> &object) {

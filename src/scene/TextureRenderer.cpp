@@ -12,8 +12,14 @@ namespace gp {
             : m_Shader(shader) {
     }
 
+    void TextureRenderer::init() {
+        TextureAtlas::init();
+        m_TextureAtlas = make_unique<TextureAtlas>(m_Channels);
+    }
+
     void TextureRenderer::draw() {
         _processQueuedObjects();
+        _updateTextureBufferData();
 
         uint32_t textureSlotOffset = 0;
         for (auto &batch: m_TexturedQuadBatches) {
@@ -79,31 +85,32 @@ namespace gp {
         m_TexturedQuadBatches.back().init();
     }
 
+    void TextureRenderer::_updateTextureBufferData() {
+        uint32_t i = m_TextureBuffers.size() - 1;
+        while (i < m_TextureAtlas->pages())
+            m_TextureBuffers.push_back(make_unique<TextureBuffer>(*m_TextureAtlas->getBitmap(i)));
+    }
+
     void TextureRenderer::_cacheTexture(const shared_ptr<TexturedQuad> &object) {
         GP_CORE_INFO("gp::TextureRenderer::_cacheTexture('{0}')", name);
 
         auto name = object->getTextureName();
+
         if (m_TexturesCache.contains(name))
             return;
 
-        auto texCoords = m_TextureAtlas.add(object->getBitmap());
-
-        auto texture = make_shared<TextureBuffer>(*object->getBitmap());
-        const uint32_t texIndex = m_Textures.size();
-
-        m_TexturesCache.insert({name, {texture, texIndex, texCoords}});
-        m_Textures.push_back(texture);
+        auto texCoords = m_TextureAtlas->add(object->getBitmap());
+        m_TexturesCache.insert({name, {texCoords.page, texCoords.coords}});
     }
 
     void TextureRenderer::_bindTextureBatch(uint32_t offset) const {
         GP_CORE_DEBUG("gp::TextureRenderer::_bindTextureBatch(offset={0})", offset);
 
         const uint32_t textures = std::min(offset + TextureBuffer::getTextureSlots(),
-                                           static_cast<uint32_t>(m_Textures.size()));
+                                           static_cast<uint32_t>(m_TextureBuffers.size()));
 
-        for (uint32_t i = offset; i < textures; i++) {
-            m_Textures[i]->bind(i % TextureBuffer::getTextureSlots());
-        }
+        for (uint32_t i = offset; i < textures; i++)
+            m_TextureBuffers[i]->bind(i % TextureBuffer::getTextureSlots());
     }
 
     void TextureRenderer::_processQueuedObjects() {

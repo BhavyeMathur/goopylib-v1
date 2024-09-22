@@ -15,7 +15,6 @@ namespace gp {
     struct TextureVertexAttrib;
 
     struct TextureData {
-        shared_ptr<TextureBuffer> texture;
         uint32_t index;
         TextureCoords texCoords;
     };
@@ -25,6 +24,8 @@ namespace gp {
     class TextureRenderer {
     public:
         TextureRenderer(const Shader &shader);
+
+        void init();
 
         void drawObject(uint32_t ID, const shared_ptr<TexturedQuad> &object);
 
@@ -36,16 +37,21 @@ namespace gp {
 
     private:
         const Shader &m_Shader;
-        TextureAtlas m_TextureAtlas;
+
+        unique_ptr<TextureAtlas> m_TextureAtlas;
+        std::vector<unique_ptr<TextureBuffer>> m_TextureBuffers;
+        std::unordered_map<std::string, TextureData> m_TexturesCache;
 
         std::unordered_map<uint32_t, shared_ptr<TexturedQuad>> m_QueuedObjects;
-        std::vector<shared_ptr<TextureBuffer> > m_Textures;
-        std::unordered_map<std::string, TextureData> m_TexturesCache;
 
         std::vector<RenderingBatch<TexturedQuad, TextureVertex, TextureVertexAttrib>> m_TexturedQuadBatches{};
         std::unordered_map<uint32_t, uint32_t> m_TexturedQuadToBatch;
 
+        const uint32_t m_Channels = 4;
+
         void _createTexturedBuffer();
+
+        void _updateTextureBufferData();
 
         void _cacheTexture(const shared_ptr<TexturedQuad> &object);
 
