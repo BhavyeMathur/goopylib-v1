@@ -3,7 +3,6 @@
 #include "maths/packing/Item.h"
 #include "maths/packing/ShelvedBin.h"
 
-#include "debug/Error.h"
 
 namespace gp::packing::shelf {
     ShelfPackingAlgorithm::ShelfPackingAlgorithm(float binWidth, float binHeight)
@@ -12,10 +11,6 @@ namespace gp::packing::shelf {
     }
 
     ShelfPackingAlgorithm::ShelfPackingAlgorithm() : PackingAlgorithm(0, 0) {
-    }
-
-    void ShelfPackingAlgorithm::pack(Item &item, bool allowRotation) {
-        GP_RUNTIME_ERROR("ShelfPackingAlgorithm::pack() unimplemented");
     }
 
     void ShelfPackingAlgorithm::packAll(std::vector<Item> &items, bool allowRotation,
@@ -53,23 +48,20 @@ namespace gp::packing::shelf {
             item.rotate();
     }
 
-    void ShelfPackingAlgorithm::addItemToShelf(Item &item, shelf::Shelf &shelf) {
-        shelf.add(item);
-    }
-
     void ShelfPackingAlgorithm::addItemToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation) {
         auto shelf = bin.addShelf();
 
         if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
             item.setHorizontal();
-        addItemToShelf(item, shelf);
+
+        bin.add(item, shelf);
     }
 
-    bool ShelfPackingAlgorithm::tryAddingToNewShelf(Item &item, Shelf &shelf, ShelvedBin &bin, bool allowRotation) {
+    bool ShelfPackingAlgorithm::tryAddingToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation) {
         if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
             item.setHorizontal();
 
-        if (shelf.fitsShelfAbove(item)) {
+        if (bin.fitsNewShelf(item)) {
             addItemToNewShelf(item, bin, false);
             return true;
         }
@@ -77,12 +69,13 @@ namespace gp::packing::shelf {
     }
 
     void ShelfPackingAlgorithm::addItemToNewBin(Item &item, bool allowRotation) {
+        m_Pages++;
         m_Bins.emplace_back(m_BinWidth, m_BinHeight, m_Bins.size());
         auto &newBin = m_Bins.back();
 
         if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
             item.setHorizontal();
 
-        addItemToShelf(item, newBin.getOpenShelf());
+        newBin.add(item, newBin.getOpenShelf());
     }
 }

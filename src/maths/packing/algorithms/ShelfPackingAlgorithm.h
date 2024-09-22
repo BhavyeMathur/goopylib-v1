@@ -25,7 +25,7 @@ namespace gp::packing::shelf {
 
         virtual ~ShelfPackingAlgorithm() = default;
 
-        virtual void pack(Item &item, bool allowRotation);
+        virtual void pack(Item &item, bool allowRotation) = 0;
 
         void packAll(std::vector<Item> &items, bool allowRotation = true,
                      const SortingFunction &sortingFunction = sortByShortSide(true));
@@ -44,11 +44,9 @@ namespace gp::packing::shelf {
 
         void orientItemForShelf(Item &item, Shelf &shelf, bool allowRotation);
 
-        void addItemToShelf(Item &item, Shelf &shelf);
-
         void addItemToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation);
 
-        bool tryAddingToNewShelf(Item &item, Shelf &shelf, ShelvedBin &bin, bool allowRotation);
+        bool tryAddingToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation);
 
         void addItemToNewBin(Item &item, bool allowRotation);
     };

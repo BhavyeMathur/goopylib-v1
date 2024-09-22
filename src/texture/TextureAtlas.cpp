@@ -51,8 +51,8 @@ namespace gp {
         return {item.p1(), item.p2(), item.page()};
     }
 
-    std::vector<TextureAtlasCoords> TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps, bool allowRotation,
-                                                 const packing::SortingFunction &sorting) {
+    std::vector<TextureAtlasCoords> TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
+                                                      bool allowRotation, const packing::SortingFunction &sorting) {
         std::vector<packing::Item> items;
         std::vector<TextureAtlasCoords> texCoords;
         items.reserve(bitmaps.size());

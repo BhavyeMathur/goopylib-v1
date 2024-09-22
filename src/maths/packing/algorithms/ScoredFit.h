@@ -15,10 +15,6 @@ namespace gp::packing::shelf {
 
     class GPAPI ScoredFit : public ShelfPackingAlgorithm {
 
-        void updateScore(float &bestScore, bool &bestOrientation, Shelf *&bestShelf, Shelf &shelf, Item &item);
-
-
-
     public:
         ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction);
 

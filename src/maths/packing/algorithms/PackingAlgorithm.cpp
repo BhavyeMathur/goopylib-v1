@@ -5,4 +5,8 @@ namespace gp::packing {
             : m_BinWidth(binWidth),
               m_BinHeight(binHeight) {
     }
+
+    uint32_t PackingAlgorithm::pages() const {
+        return m_Pages;
+    }
 }

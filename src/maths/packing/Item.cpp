@@ -61,9 +61,12 @@ namespace gp::packing {
         return m_Y;
     }
 
-    void Item::setPosition(float x, float y, uint32_t page) {
+    void Item::setPosition(float x, float y) {
         m_X = x;
         m_Y = y;
+    }
+
+    void Item::setPage(uint32_t page) {
         m_Page = page;
     }
 

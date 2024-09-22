@@ -26,7 +26,9 @@ namespace gp::packing {
         [[nodiscard]] float y() const;
 
         // TODO setPosition() and rotate() mutate the item and should not be public
-        void setPosition(float x, float y, uint32_t page);
+        void setPosition(float x, float y);
+
+        void setPage(uint32_t page);
 
         [[nodiscard]] float width() const;
 

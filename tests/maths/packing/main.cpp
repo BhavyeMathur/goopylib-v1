@@ -89,6 +89,7 @@ void showPage(int page, std::vector<std::vector<shared_ptr<gp::Rectangle>>> &obj
 void plotItemBins(const std::vector<gp::packing::ShelvedBin> &bins) {
     gp::Window window = {800, 800};
     window.getCamera().setProjection(0, window.getWidth(), 0, window.getHeight());
+    gp::CameraController controller = {&window};
 
     std::vector<std::vector<shared_ptr<gp::Rectangle>>> objects;
 
@@ -125,6 +126,7 @@ void plotItemBins(const std::vector<gp::packing::ShelvedBin> &bins) {
             }
         }
         gp::update();
+        controller.update();
     }
 }
 

@@ -4,13 +4,14 @@
 #include "ShelvedBin.h"
 #include "Item.h"
 
+#include "debug/Error.h"
+
 
 namespace gp::packing::shelf {
-    Shelf::Shelf(float verticalOffset, ShelvedBin &bin)
-            : m_Width(bin.width()),
-              m_AvailableWidth(bin.width()),
-              m_VerticalOffset(verticalOffset),
-              m_Bin(bin) {
+    Shelf::Shelf(float verticalOffset, float width)
+            : m_Width(width),
+              m_AvailableWidth(width),
+              m_VerticalOffset(verticalOffset) {
 
     }
 
@@ -23,23 +24,14 @@ namespace gp::packing::shelf {
         return os;
     }
 
-    bool Shelf::fits(const Item &item) const {
-        if (m_IsOpen)
-            return item.width() <= m_AvailableWidth and m_VerticalOffset + item.height() <= m_Bin.height();
-        return item.width() <= m_AvailableWidth and item.height() <= m_Height;
-    }
-
-    bool Shelf::fitsShelfAbove(const Item &item) const {
-        return m_VerticalOffset + m_Height + item.height() <= m_Bin.height();
-    }
-
     bool Shelf::fitsItemVertically(const Item &item) const {
         return item.getLongSide() <= m_Height;
     }
 
     void Shelf::add(Item &item) {
-        item.setPosition(m_PackedWidth, m_VerticalOffset, m_Bin.page());
-        m_Bin.add(item);
+        GP_CHECK_LE(item.width(), m_AvailableWidth, "Item does not fit into shelf")
+
+        item.setPosition(m_PackedWidth, m_VerticalOffset);
 
         if (item.height() > m_Height)
             m_Height = item.height();

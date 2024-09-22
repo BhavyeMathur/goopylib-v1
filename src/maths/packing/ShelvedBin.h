@@ -17,6 +17,16 @@ namespace gp::packing {
 
         [[nodiscard]] float packingRatio() const override;
 
+        bool fitsOpenShelf(Item &item) const;
+
+        bool fitsShelf(Item &item, shelf::Shelf &shelf) const;
+
+        bool fitsNewShelf(Item &item) const;
+
+        void add(Item &item, shelf::Shelf &shelf);
+
+        const shelf::Shelf &getOpenShelf() const;
+
         shelf::Shelf &getOpenShelf();
 
         const std::vector<shelf::Shelf> &getShelves() const;
@@ -27,6 +37,8 @@ namespace gp::packing {
 
     private:
         std::vector<shelf::Shelf> m_Shelves;
+        float m_AvailableHeight;
+        float m_PackedHeight = 0;
 
         shelf::Shelf &addShelf();
     };

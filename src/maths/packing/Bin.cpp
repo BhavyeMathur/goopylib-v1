@@ -10,9 +10,7 @@ namespace gp::packing {
               m_Page(page) {
     }
 
-    void Bin::add(Item &item) {
-        m_Items.push_back(item);
-    }
+    Bin::~Bin() = default;
 
     float Bin::packingRatio() const {
         float sum = 0;

@@ -38,10 +38,6 @@ namespace gp::packing::shelf {
 
         [[nodiscard]] bool isOpen() const;
 
-        [[nodiscard]] bool fits(const Item &item) const;
-
-        [[nodiscard]] bool fitsShelfAbove(const Item &item) const;
-
         [[nodiscard]] bool fitsItemVertically(const Item &item) const;
 
     private:
@@ -54,9 +50,7 @@ namespace gp::packing::shelf {
 
         bool m_IsOpen = true;
 
-        ShelvedBin &m_Bin;
-
-        Shelf(float verticalOffset, ShelvedBin &bin);
+        Shelf(float verticalOffset, float width);
 
         void add(Item &item);
 

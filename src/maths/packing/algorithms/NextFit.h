@@ -14,8 +14,5 @@ namespace gp::packing::shelf {
         NextFit(float binWidth, float binHeight);
 
         void pack(Item &item, bool allowRotation) override;
-
-    private:
-        Shelf *m_Shelf;
     };
 }

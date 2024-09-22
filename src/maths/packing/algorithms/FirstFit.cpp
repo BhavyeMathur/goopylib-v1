@@ -9,11 +9,11 @@ namespace gp::packing::shelf {
         for (auto &bin: m_Bins) {
             for (auto &shelf: bin) {
                 orientItemForShelf(item, shelf, allowRotation);
-                if (shelf.fits(item))
-                    return addItemToShelf(item, shelf);
+                if (bin.fitsShelf(item, shelf))
+                    return bin.add(item, shelf);
             }
 
-            if (tryAddingToNewShelf(item, bin.getOpenShelf(), bin, allowRotation))
+            if (tryAddingToNewShelf(item, bin, allowRotation))
                 return;
         }
         addItemToNewBin(item, allowRotation);

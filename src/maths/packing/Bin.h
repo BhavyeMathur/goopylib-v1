@@ -15,6 +15,8 @@ namespace gp::packing {
         friend class shelf::Shelf;
 
     public:
+        ~Bin();
+
         [[nodiscard]] virtual float packingRatio() const;
 
         [[nodiscard]] const std::vector<Item> &items() const;
@@ -33,7 +35,5 @@ namespace gp::packing {
         std::vector<Item> m_Items;
 
         Bin(float width, float height, uint32_t page);
-
-        void add(Item &item);
     };
 }

@@ -10,18 +10,8 @@ namespace gp::packing::shelf {
               m_ScoringFunction(std::move(scoringFunction)) {
     }
 
-    void ScoredFit::updateScore(float &bestScore, bool &bestOrientation, Shelf *&bestShelf, Shelf &shelf, Item &item) {
-        float score = m_ScoringFunction(shelf, item);
-
-        if (score <= bestScore)
-            return;
-
-        bestShelf = &shelf;
-        bestScore = score;
-        bestOrientation = item.isRotated();
-    }
-
     void ScoredFit::pack(Item &item, bool allowRotation) {
+        ShelvedBin *bestBin = nullptr;
         Shelf *bestShelf = nullptr;
         float bestScore = -std::numeric_limits<float>::infinity();
         bool bestOrientation = false;  // un-rotated
@@ -29,19 +19,28 @@ namespace gp::packing::shelf {
         for (auto &bin: m_Bins) {
             for (auto &shelf: bin) {
                 orientItemForShelf(item, shelf, allowRotation);
-                if (shelf.fits(item))
-                    updateScore(bestScore, bestOrientation, bestShelf, shelf, item);
+                if (bin.fitsShelf(item, shelf)) {
+                    float score = m_ScoringFunction(shelf, item);
+                    if (score <= bestScore)
+                        continue;
+
+                    bestBin = &bin;
+                    bestShelf = &shelf;
+                    bestScore = score;
+                    bestOrientation = item.isRotated();
+                }
             }
 
-            if (bestShelf == nullptr and tryAddingToNewShelf(item, bin.getOpenShelf(), bin, allowRotation))
+            if (bestShelf == nullptr and tryAddingToNewShelf(item, bin, allowRotation))
                 return;
         }
 
-        if (bestShelf == nullptr)
+        if (bestBin == nullptr or bestShelf == nullptr)  // or bestShelf == nullptr is only for IDE type checking
             return addItemToNewBin(item, allowRotation);
 
         if (item.isRotated() != bestOrientation)
             item.rotate();
-        addItemToShelf(item, *bestShelf);
+
+        bestBin->add(item, *bestShelf);
     }
 }
