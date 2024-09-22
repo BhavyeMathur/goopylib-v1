@@ -52,6 +52,50 @@ namespace gp {
         return m_Data;
     }
 
+    void Bitmap::setValue(uint32_t x, uint32_t y, uint32_t channel, uint8_t value) {
+        m_Data[getIndex(x, y, channel)] = value;
+    }
+
+    uint8_t Bitmap::getValue(uint32_t x, uint32_t y, uint32_t channel) const {
+        return m_Data[getIndex(x, y, channel)];
+    }
+
+    void Bitmap::setPixel(uint32_t x, uint32_t y, uint8_t *value) {
+        auto index = getIndex(x, y, 0);
+
+        for (uint32_t i = 0; i < m_Channels; i++)
+            m_Data[index + i] = value[i];
+    }
+
+    uint8_t *Bitmap::getPixel(uint32_t x, uint32_t y) const {
+        return &m_Data[getIndex(x, y, 0)];
+    }
+
+    void Bitmap::setSubdata(gp::Bitmap &bitmap, uint32_t x, uint32_t y) {
+        GP_CHECK_LE(bitmap.m_Channels, m_Channels, "gp::Bitmap::setSubdata() number of channels must be equal")
+
+        uint32_t other_index = 0;
+
+        for (uint32_t r = 0; r < bitmap.getHeight(); r++) {
+            for (uint32_t c = 0; c < bitmap.getWidth(); c++) {
+                for (uint32_t i = 0; i < bitmap.m_Channels; i++) {
+                    auto index = getIndex(x + c, y + r, i);
+                    m_Data[index] = bitmap.m_Data[other_index];
+                    other_index++;
+                }
+            }
+        }
+    }
+
+    uint32_t Bitmap::getIndex(uint32_t x, uint32_t y, uint32_t channel) const {
+        GP_CHECK_INCLUSIVE_RANGE(x, 0, m_Width - 1, "gp::Bitmap::getValue() x must be between 0 and bitmap width");
+        GP_CHECK_INCLUSIVE_RANGE(y, 0, m_Height - 1, "gp::Bitmap::getValue() y must be between 0 and bitmap height");
+        GP_CHECK_INCLUSIVE_RANGE(channel, 0, m_Channels - 1,
+                                 "gp::Bitmap::getValue() channel must be between 0 and bitmap channels");
+
+        return (x + y * m_Width) * m_Channels + channel;
+    }
+
     void Bitmap::saveBitmap(const std::string &filepath) const {
         stbi_write_bmp(filepath.c_str(), (int32_t) m_Width, (int32_t) m_Height, m_Channels, m_Data);
     }

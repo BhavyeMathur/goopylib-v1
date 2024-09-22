@@ -23,6 +23,18 @@ namespace gp {
 
         [[nodiscard]] uint8_t *getData() const;
 
+        void setValue(uint32_t x, uint32_t y, uint32_t channel, uint8_t value);
+
+        [[nodiscard]] uint8_t getValue(uint32_t x, uint32_t y, uint32_t channel) const;
+
+        void setPixel(uint32_t x, uint32_t y, uint8_t *value);
+
+        [[nodiscard]] uint8_t *getPixel(uint32_t x, uint32_t y) const;
+
+        void setSubdata(Bitmap &bitmap, uint32_t x, uint32_t y);
+
+        [[nodiscard]] uint32_t getIndex(uint32_t x, uint32_t y, uint32_t channel) const;
+
         void saveBitmap(const std::string &filepath) const;
 
     private:
