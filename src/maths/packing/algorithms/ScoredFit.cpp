@@ -5,12 +5,20 @@
 
 
 namespace gp::packing::shelf {
-    ScoredFit::ScoredFit(float
-                         binWidth, float
-                         binHeight, ScoringFunction
-                         scoringFunction)
+    ScoredFit::ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction)
             : ShelfPackingAlgorithm(binWidth, binHeight),
               m_ScoringFunction(std::move(scoringFunction)) {
+    }
+
+    void ScoredFit::updateScore(float &bestScore, bool &bestOrientation, Shelf *&bestShelf, Shelf &shelf, Item &item) {
+        float score = m_ScoringFunction(shelf, item);
+
+        if (score <= bestScore)
+            return;
+
+        bestShelf = &shelf;
+        bestScore = score;
+        bestOrientation = item.isRotated();
     }
 
     void ScoredFit::pack(Item &item, bool allowRotation) {
@@ -20,44 +28,20 @@ namespace gp::packing::shelf {
 
         for (const auto &bin: m_Bins) {
             for (auto &shelf: *bin) {
-                if (allowRotation and (item.isVertical() != (item.getLongSide() <= shelf.getHeight())))
-                    item.rotate();
-
-                if (shelf.fits(item)) {
-                    float score = m_ScoringFunction(shelf, item);
-                    if (score > bestScore) {
-                        bestShelf = &shelf;
-                        bestScore = score;
-                        bestOrientation = item.isRotated();
-                    }
-                }
+                orientItemForShelf(item, shelf, allowRotation);
+                if (shelf.fits(item))
+                    updateScore(bestScore, bestOrientation, bestShelf, shelf, item);
             }
 
-            if (bestShelf == nullptr and bin->m_OpenShelf->fitsAbove(item)) {
-                auto &shelf = bin->addShelf();
-
-                float score = m_ScoringFunction(shelf, item);
-                if (score > bestScore) {
-                    bestShelf = &shelf;
-                    bestScore = score;
-                    bestOrientation = item.isRotated();
-                }
-            }
+            if (bestShelf == nullptr and tryAddingToNewShelf(item, *bin->m_OpenShelf, *bin, allowRotation))
+                return;
         }
 
-        if (bestShelf == nullptr) {
-            m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
-
-            if (allowRotation and item.isVertical())
-                item.rotate();
-
-            bestShelf = m_Bins.back()->m_OpenShelf;
-            bestOrientation = item.isRotated();
-        }
+        if (bestShelf == nullptr)
+            return addItemToNewBin(item, allowRotation);
 
         if (item.isRotated() != bestOrientation)
             item.rotate();
-
         addItemToShelf(item, *bestShelf);
     }
 }

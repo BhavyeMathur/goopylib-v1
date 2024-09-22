@@ -38,7 +38,9 @@ namespace gp::packing::shelf {
 
         [[nodiscard]] bool fits(const Item &item) const;
 
-        [[nodiscard]] bool fitsAbove(const Item &item) const;
+        [[nodiscard]] bool fitsShelfAbove(const Item &item) const;
+
+        [[nodiscard]] bool fitsItemVertically(const Item &item) const;
 
         [[nodiscard]] float packedArea() const;
 

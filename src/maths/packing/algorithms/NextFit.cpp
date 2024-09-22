@@ -5,28 +5,18 @@
 
 
 namespace gp::packing::shelf {
-    NextFit::NextFit(float binWidth, float binHeight)
-            : ShelfPackingAlgorithm(binWidth, binHeight),
-              m_Shelf(m_Bins.back()->m_OpenShelf) {
+    NextFit::NextFit(float binWidth, float binHeight) : ShelfPackingAlgorithm(binWidth, binHeight),
+                                                        m_Shelf(m_Bins.back()->m_OpenShelf) {
     }
 
     void NextFit::pack(Item &item, bool allowRotation) {
-        if (allowRotation and (item.isVertical() != (item.getLongSide() <= m_Shelf->getHeight())))
-            item.rotate();
-
+        orientItemForShelf(item, *m_Shelf, allowRotation);
         if (m_Shelf->fits(item))
             return addItemToShelf(item, *m_Shelf);
 
-        if (m_Shelf->fitsAbove(item))
-            m_Shelf = &m_Bins.back()->addShelf();
-        else {
-            m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
-            m_Shelf = m_Bins.back()->m_OpenShelf;
-        }
+        if (!tryAddingToNewShelf(item, *m_Shelf, *m_Bins.back(), allowRotation))
+            addItemToNewBin(item, false);  // allowRotation false since item is horizontal after tryAddingToNewShelf
 
-        if (allowRotation and item.isVertical())
-            item.rotate();
-
-        return addItemToShelf(item, *m_Shelf);
+        m_Shelf = m_Bins.back()->m_OpenShelf;
     }
 }

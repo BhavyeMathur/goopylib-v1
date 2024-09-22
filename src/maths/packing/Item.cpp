@@ -19,6 +19,16 @@ namespace gp::packing {
         m_Rotated = !m_Rotated;
     }
 
+    void Item::setHorizontal() {
+        if (isVertical())
+            rotate();
+    }
+
+    void Item::setVertical() {
+        if (!isVertical())
+            rotate();
+    }
+
     bool Item::isVertical() const {
         return m_Height > m_Width;
     }

@@ -46,12 +46,46 @@ namespace gp::packing::shelf {
     }
 
     std::vector<shared_ptr<ShelvedBin>> ShelfPackingAlgorithm::bins() const {
-        std::vector<shared_ptr<ShelvedBin>>
-                copy = m_Bins;
+        std::vector<shared_ptr<ShelvedBin>> copy = m_Bins;
         return copy;
+    }
+
+    void ShelfPackingAlgorithm::orientItemForShelf(Item &item, Shelf &shelf, bool allowRotation) {
+        if (allowRotation and shelf.fitsItemVertically(item) != item.isVertical())
+            item.rotate();
     }
 
     void ShelfPackingAlgorithm::addItemToShelf(Item &item, shelf::Shelf &shelf) {
         shelf.add(item);
+    }
+
+    void ShelfPackingAlgorithm::addItemToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation) {
+        auto shelf = bin.addShelf();
+
+        if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
+            item.setHorizontal();
+        addItemToShelf(item, shelf);
+    }
+
+    bool ShelfPackingAlgorithm::tryAddingToNewShelf(Item &item, Shelf &shelf, ShelvedBin &bin, bool allowRotation) {
+        if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
+            item.setHorizontal();
+
+        if (shelf.fitsShelfAbove(item)) {
+            addItemToNewShelf(item, bin, false);
+            return true;
+        }
+        return false;
+    }
+
+    void ShelfPackingAlgorithm::addItemToNewBin(Item &item, bool allowRotation) {
+        m_Bins.push_back(shared_ptr<ShelvedBin>(new ShelvedBin(m_BinWidth, m_BinHeight)));
+        const auto &newBin = m_Bins.back();
+        const auto &newShelf = newBin->m_OpenShelf;
+
+        if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
+            item.setHorizontal();
+
+        addItemToShelf(item, *newShelf);
     }
 }

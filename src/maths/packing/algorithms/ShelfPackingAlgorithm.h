@@ -39,6 +39,14 @@ namespace gp::packing::shelf {
 
         ShelfPackingAlgorithm(float binWidth, float binHeight);
 
+        void orientItemForShelf(Item &item, Shelf &shelf, bool allowRotation);
+
         void addItemToShelf(Item &item, Shelf &shelf);
+
+        void addItemToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation);
+
+        bool tryAddingToNewShelf(Item &item, Shelf &shelf, ShelvedBin &bin, bool allowRotation);
+
+        void addItemToNewBin(Item &item, bool allowRotation);
     };
 }

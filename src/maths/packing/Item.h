@@ -36,6 +36,10 @@ namespace gp::packing {
 
         [[nodiscard]] float getShortSide() const;
 
+        void setHorizontal();
+
+        void setVertical();
+
         void rotate();
 
     private:

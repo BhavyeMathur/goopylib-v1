@@ -35,8 +35,12 @@ namespace gp::packing::shelf {
         return item.getWidth() <= m_AvailableWidth and item.getHeight() <= m_Height;
     }
 
-    bool Shelf::fitsAbove(const Item &item) const {
+    bool Shelf::fitsShelfAbove(const Item &item) const {
         return m_VerticalOffset + m_Height + item.getHeight() <= m_Bin.getHeight();
+    }
+
+    bool Shelf::fitsItemVertically(const Item &item) const {
+        return item.getLongSide() <= m_Height;
     }
 
     void Shelf::add(Item &item) {
