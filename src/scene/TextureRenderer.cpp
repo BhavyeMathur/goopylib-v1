@@ -31,7 +31,7 @@ namespace gp {
             return;
         }
 
-        uint32_t texIndex = m_TexturesCache[object->getTextureName()].index;
+        uint32_t texIndex = m_TexturesCache.at(object->getTextureName()).index;
         uint32_t texSlot = texIndex % 16;
 
         if (texSlot == 0)
@@ -86,10 +86,12 @@ namespace gp {
         if (m_TexturesCache.contains(name))
             return;
 
+        auto texCoords = m_TextureAtlas.add(object->getBitmap());
+
         auto texture = make_shared<TextureBuffer>(*object->getBitmap());
         const uint32_t texIndex = m_Textures.size();
 
-        m_TexturesCache.insert({name, {texture, texIndex}});
+        m_TexturesCache.insert({name, {texture, texIndex, texCoords}});
         m_Textures.push_back(texture);
     }
 
@@ -105,7 +107,7 @@ namespace gp {
     }
 
     void TextureRenderer::_processQueuedObjects() {
-        for (const auto & [ ID, object ] : m_QueuedObjects) {
+        for (const auto &[ID, object]: m_QueuedObjects) {
             _cacheTexture(object);
             drawObject(ID, object);
         }

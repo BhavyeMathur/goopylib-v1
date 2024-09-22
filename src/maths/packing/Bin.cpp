@@ -4,9 +4,10 @@
 #include "Item.h"
 
 namespace gp::packing {
-    Bin::Bin(float width, float height)
+    Bin::Bin(float width, float height, uint32_t page)
             : m_Width(width),
-              m_Height(height) {
+              m_Height(height),
+              m_Page(page) {
     }
 
     void Bin::add(Item &item) {
@@ -31,5 +32,9 @@ namespace gp::packing {
 
     float Bin::height() const {
         return m_Height;
+    }
+
+    uint32_t Bin::page() const {
+        return m_Page;
     }
 }

@@ -129,6 +129,7 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/texture/Bitmap.cpp
             src/texture/TextureBuffer.cpp
             src/texture/TextureAtlas.cpp
+            src/texture/TextureCoords.cpp
 
             src/window/Window.cpp
 

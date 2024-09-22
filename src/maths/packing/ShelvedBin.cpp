@@ -6,8 +6,8 @@
 
 
 namespace gp::packing {
-    ShelvedBin::ShelvedBin(float width, float height)
-            : Bin(width, height),
+    ShelvedBin::ShelvedBin(float width, float height, uint32_t page)
+            : Bin(width, height, page),
               m_Shelves({{0, *this}}) {
     }
 

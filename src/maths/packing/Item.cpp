@@ -61,9 +61,10 @@ namespace gp::packing {
         return m_Y;
     }
 
-    void Item::setPosition(float x, float y) {
+    void Item::setPosition(float x, float y, uint32_t page) {
         m_X = x;
         m_Y = y;
+        m_Page = page;
     }
 
     float Item::width() const {
@@ -72,6 +73,10 @@ namespace gp::packing {
 
     float Item::height() const {
         return m_Height;
+    }
+
+    uint32_t Item::page() const {
+        return m_Page;
     }
 
     float Item::getLongSide() const {

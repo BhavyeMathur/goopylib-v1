@@ -13,7 +13,7 @@ namespace gp::packing {
         friend class shelf::ShelfPackingAlgorithm;
 
     public:
-        ShelvedBin(float width, float height);
+        ShelvedBin(float width, float height, uint32_t page);
 
         [[nodiscard]] float packingRatio() const override;
 

@@ -1,6 +1,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "TextureAtlas.h"
+#include "TextureCoords.h"
 #include "maths/packing/Item.h"
 #include <opengl.h>
 
@@ -11,7 +12,8 @@ namespace gp {
 
     // TODO use TextureAtlas to optimise textures in the GPU
     TextureAtlas::TextureAtlas(packing::shelf::ShelfPackingAlgorithm packingAlgorithm)
-            : m_PackingAlgorithm(packingAlgorithm) {
+            : m_PackingAlgorithm(packingAlgorithm),
+              m_Channels(3) {
     }
 
     void TextureAtlas::init() {
@@ -34,6 +36,11 @@ namespace gp {
     TextureCoords TextureAtlas::add(const shared_ptr<Bitmap> &bitmap, bool allowRotation) {
         auto item = packing::Item(bitmap->getWidth(), bitmap->getHeight());
         m_PackingAlgorithm.pack(item, allowRotation);
+
+        while (item.page() >= m_Bitmaps.size())
+            m_Bitmaps.emplace_back(s_Width, s_Height, m_Channels);
+        m_Bitmaps[item.page()];
+
         return {item.p1(), item.p2()};
     }
 

@@ -38,7 +38,7 @@ namespace gp::packing::shelf {
     }
 
     void Shelf::add(Item &item) {
-        item.setPosition(m_PackedWidth, m_VerticalOffset);
+        item.setPosition(m_PackedWidth, m_VerticalOffset, m_Bin.page());
         m_Bin.add(item);
 
         if (item.height() > m_Height)

@@ -8,7 +8,7 @@
 namespace gp::packing::shelf {
     ShelfPackingAlgorithm::ShelfPackingAlgorithm(float binWidth, float binHeight)
             : PackingAlgorithm(binWidth, binHeight) {
-        m_Bins.emplace_back(m_BinWidth, m_BinHeight);
+        m_Bins.emplace_back(m_BinWidth, m_BinHeight, m_Bins.size());
     }
 
     ShelfPackingAlgorithm::ShelfPackingAlgorithm() : PackingAlgorithm(0, 0) {
@@ -77,7 +77,7 @@ namespace gp::packing::shelf {
     }
 
     void ShelfPackingAlgorithm::addItemToNewBin(Item &item, bool allowRotation) {
-        m_Bins.emplace_back(m_BinWidth, m_BinHeight);
+        m_Bins.emplace_back(m_BinWidth, m_BinHeight, m_Bins.size());
         auto &newBin = m_Bins.back();
 
         if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)

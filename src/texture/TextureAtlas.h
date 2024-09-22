@@ -9,24 +9,12 @@
 #include "maths/packing/algorithms/ScoredAlgorithms.h"
 
 namespace gp {
-    struct TextureCoords {
-        Point p1;
-        Point p2;
+    struct TextureCoords;
 
-        TextureCoords(Point p1, Point p2)
-                : p1(p1),
-                  p2(p2) {
-        }
-    };
-}
-
-namespace gp {
     class GPAPI TextureAtlas {
 
     public:
         TextureAtlas(const TextureAtlas &) = delete;
-
-        ~TextureAtlas() = default;
 
         TextureAtlas(packing::shelf::ShelfPackingAlgorithm packingAlgorithm = packing::shelf::BestAreaFit(s_Width,
                                                                                                           s_Height));
@@ -46,6 +34,9 @@ namespace gp {
 
     private:
         packing::shelf::ShelfPackingAlgorithm m_PackingAlgorithm;
+        std::vector<Bitmap> m_Bitmaps;
+
+        const uint32_t m_Channels;
 
         static uint32_t s_Width;
         static uint32_t s_Height;
