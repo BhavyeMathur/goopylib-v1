@@ -28,21 +28,21 @@ namespace gp {
 
         ~TextureAtlas() = default;
 
-        TextureAtlas(packing::shelf::ShelfPackingAlgorithm packingAlgorithm = packing::shelf::BestAreaFit(s_Width, s_Height));
+        TextureAtlas(packing::shelf::ShelfPackingAlgorithm packingAlgorithm = packing::shelf::BestAreaFit(s_Width,
+                                                                                                          s_Height));
 
         TextureCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
 
-        std::vector<TextureCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
-                                       bool allowRotation = true,
+        std::vector<TextureCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps, bool allowRotation = true,
                                        const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 
         static void init();
 
-        [[nodiscard]] static uint32_t getWidth();
+        [[nodiscard]] static uint32_t width();
 
-        [[nodiscard]] static uint32_t getHeight();
+        [[nodiscard]] static uint32_t height();
 
-        [[nodiscard]] std::vector<shared_ptr<packing::ShelvedBin>> getPages();
+        [[nodiscard]] const std::vector<packing::ShelvedBin> &getPages() const;
 
     private:
         packing::shelf::ShelfPackingAlgorithm m_PackingAlgorithm;

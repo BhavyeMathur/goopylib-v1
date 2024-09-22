@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gp.h"
+#include "maths/packing/Item.h"
 
 namespace gp::packing::shelf {
     class Shelf;

@@ -3,6 +3,8 @@
 #include "gp.h"
 #include "PackingAlgorithm.h"
 #include "SortingAlgorithms.h"
+#include "maths/packing/ShelvedBin.h"
+#include "maths/packing/Shelf.h"
 
 
 namespace gp::packing {
@@ -33,7 +35,7 @@ namespace gp::packing::shelf {
         void packAllOriented(std::vector<Item> &items, bool orientVertically = true,
                              const SortingFunction &sortingFunction = sortByLongSide(true));
 
-        [[nodiscard]] const std::vector<ShelvedBin>& bins() const;
+        [[nodiscard]] const std::vector<ShelvedBin> &bins() const;
 
     protected:
         std::vector<ShelvedBin> m_Bins;
