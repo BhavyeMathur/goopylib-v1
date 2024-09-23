@@ -48,7 +48,7 @@ namespace gp {
             m_Bitmaps.push_back(make_unique<Bitmap>(s_Width, s_Height, m_Channels));
         m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
 
-        return {item.p1(), item.p2(), item.page()};
+        return {item.p1() / s_Width, item.p2() / s_Height, item.page()};
     }
 
     std::vector<TextureAtlasCoords> TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
@@ -70,7 +70,7 @@ namespace gp {
             const auto &item = items[i];
             const auto &bitmap = bitmaps[i];
 
-            texCoords.emplace_back(item.p1(), item.p2(), item.page());
+            texCoords.emplace_back(item.p1() / s_Width, item.p2() / s_Height, item.page());
             m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
         }
 

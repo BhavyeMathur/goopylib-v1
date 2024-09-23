@@ -30,12 +30,11 @@ namespace gp::packing::shelf {
 
     void ShelfPackingAlgorithm::packAllOriented(std::vector<Item> &items, bool orientVertically,
                                                 const SortingFunction &sortingFunction) {
-        if (sortingFunction) {
+        if (sortingFunction)
             items = sortingFunction(items);
 
-            for (auto &item: items)
-                packOriented(item, orientVertically);
-        }
+        for (auto &item: items)
+            packOriented(item, orientVertically);
     }
 
     const std::vector<ShelvedBin> &ShelfPackingAlgorithm::bins() const {

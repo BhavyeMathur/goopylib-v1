@@ -38,12 +38,17 @@ namespace gp {
         }
 
         auto texData = m_TexturesCache.at(object->getTextureName());
-        uint32_t texIndex = texData.index;
         auto texCoords = texData.texCoords;
+        uint32_t texIndex = texData.index;
         uint32_t texSlot = texIndex % 16;
 
         if (texSlot == 0)
             _createTexturedBuffer();
+
+        object->m_VertexAttribs[0].texCoord = texCoords.bottomright();
+        object->m_VertexAttribs[1].texCoord = texCoords.topright();
+        object->m_VertexAttribs[2].texCoord = texCoords.topleft();
+        object->m_VertexAttribs[3].texCoord = texCoords.bottomleft();
 
         object->m_VertexAttribs[0].texSlot = texSlot;
         object->m_VertexAttribs[1].texSlot = texSlot;

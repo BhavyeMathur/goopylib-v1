@@ -50,6 +50,16 @@ struct GPAPI Point {
     Point() = default;
 
     template<typename T>
+        Point operator/(const T &b) const {
+            return {x / b, y / b};
+        }
+
+    template<typename T>
+        Point operator*(const T &b) const {
+            return {x * b, y * b};
+        }
+
+    template<typename T>
         Point(T x, T y) : x(x), y(y) {
         }
 };

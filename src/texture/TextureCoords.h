@@ -9,6 +9,14 @@ namespace gp {
         Point p2{0, 0};
 
         TextureCoords(Point p1, Point p2);
+
+        Point topleft();
+
+        Point topright();
+
+        Point bottomleft();
+
+        Point bottomright();
     };
 
     struct GPAPI TextureAtlasCoords {
