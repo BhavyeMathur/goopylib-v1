@@ -45,9 +45,9 @@ namespace gp {
         if (texSlot == 0)
             _createTexturedBuffer();
 
-        object->m_VertexAttribs[0].texCoord = texCoords.bottomright();
+        object->m_VertexAttribs[0].texCoord = texCoords.topleft();
         object->m_VertexAttribs[1].texCoord = texCoords.topright();
-        object->m_VertexAttribs[2].texCoord = texCoords.topleft();
+        object->m_VertexAttribs[2].texCoord = texCoords.bottomright();
         object->m_VertexAttribs[3].texCoord = texCoords.bottomleft();
 
         object->m_VertexAttribs[0].texSlot = texSlot;
@@ -95,6 +95,7 @@ namespace gp {
     void TextureRenderer::_updateTextureBufferData() {
         uint32_t i = m_TextureBuffers.size();
         while (i < m_TextureAtlas->pages()) {
+            m_TextureAtlas->getBitmap(i)->saveBitmap(strformat("%i.png", i));
             m_TextureBuffers.push_back(make_unique<TextureBuffer>(*m_TextureAtlas->getBitmap(i)));
             i++;
         }

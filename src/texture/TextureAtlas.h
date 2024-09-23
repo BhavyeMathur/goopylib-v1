@@ -33,6 +33,8 @@ namespace gp {
 
         [[nodiscard]] const shared_ptr<Bitmap> &getBitmap(uint32_t i) const;
 
+        [[nodiscard]] TextureAtlasCoords toUVCoordinate(Point x, Point y, uint32_t page);
+
     private:
         unique_ptr<packing::shelf::ShelfPackingAlgorithm> m_PackingAlgorithm;
         std::vector<shared_ptr<Bitmap>> m_Bitmaps;

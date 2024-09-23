@@ -20,7 +20,7 @@ namespace gp {
 
     void TextureAtlas::init() {
         // glGetIntegerv(GL_MAX_TEXTURE_SIZE, reinterpret_cast<GLint *>(&s_Width));
-        s_Width = 64;
+        s_Width = 128;
         s_Height = s_Width;
     }
 
@@ -48,7 +48,7 @@ namespace gp {
             m_Bitmaps.push_back(make_unique<Bitmap>(s_Width, s_Height, m_Channels));
         m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
 
-        return {item.p1() / s_Width, item.p2() / s_Height, item.page()};
+        return toUVCoordinate(item.p1(), item.p2(), item.page());
     }
 
     std::vector<TextureAtlasCoords> TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
@@ -70,10 +70,16 @@ namespace gp {
             const auto &item = items[i];
             const auto &bitmap = bitmaps[i];
 
-            texCoords.emplace_back(item.p1() / s_Width, item.p2() / s_Height, item.page());
+            texCoords.emplace_back(toUVCoordinate(item.p1(), item.p2(), item.page()));
             m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
         }
 
         return texCoords;
+    }
+
+    TextureAtlasCoords TextureAtlas::toUVCoordinate(Point p1, Point p2, uint32_t page) {
+        // see https://gamedev.stackexchange.com/questions/46963/how-to-avoid-texture-bleeding-in-a-texture-atlas
+        // for why we add/subtract 0.5
+        return {(p1 + 0.5) / s_Width, (p2 - 0.5) / s_Width, page};
     }
 }
