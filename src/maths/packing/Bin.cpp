@@ -26,8 +26,9 @@ namespace gp::packing {
         return m_Page;
     }
 
-    void Bin::add(gp::packing::Item & item, float x, float y) {
+    void Bin::add(gp::packing::Item &item, float x, float y) {
         item.setPage(m_Page);
         item.setPosition(x, y);
+        m_Items.push_back(item);
     }
 }

@@ -1,8 +1,8 @@
-#define GP_LOGGING_LEVEl 3
-
 #include "ShelvedBin.h"
 #include "Shelf.h"
 #include "Item.h"
+
+#include "debug/Error.h"
 
 
 namespace gp::packing {
@@ -13,20 +13,19 @@ namespace gp::packing {
     }
 
     void ShelvedBin::addShelf() {
-        auto &shelf = getOpenShelf();
-        shelf.close();
+        m_Shelves.back().close();
         m_Shelves.push_back({m_PackedHeight, m_Width});
     }
 
     bool ShelvedBin::fitsOpenShelf(Item &item) const {
         const auto &shelf = m_Shelves.back();
-        return item.width() <= shelf.getAvailableWidth() and shelf.getVerticalOffset() + item.height() <= m_Height;
+        return shelf.fitsItemHorizontally(item) and shelf.y() + item.height() <= m_Height;
     }
 
     bool ShelvedBin::fitsShelf(Item &item, Shelf &shelf) const {
         if (shelf.isOpen())
-            return item.width() <= shelf.getAvailableWidth() and shelf.getVerticalOffset() + item.height() <= m_Height;
-        return item.width() <= shelf.getAvailableWidth() and item.height() <= shelf.height();
+            return shelf.fitsItemHorizontally(item) and shelf.y() + item.height() <= m_Height;
+        return shelf.fitsItemHorizontally(item) and item.height() <= shelf.height();
     }
 
     bool ShelvedBin::fitsNewShelf(Item &item) const {
@@ -34,15 +33,15 @@ namespace gp::packing {
     }
 
     void ShelvedBin::add(Item &item, Shelf &shelf) {
-        Bin::add(item, shelf.getPackedWidth(), shelf.getVerticalOffset());
-
         if (item.height() > shelf.height()) {
-            m_PackedHeight = shelf.getVerticalOffset() + item.height();
+            m_PackedHeight = shelf.y() + item.height();
             m_AvailableHeight = m_Height - m_PackedHeight;
+
+            GP_CHECK_GE(m_AvailableHeight, 0, strformat("Item with height %i does not fit into shelf", item.height()));
         }
 
+        Bin::add(item, shelf.packedWidth(), shelf.y());
         shelf.add(item);
-        m_Items.push_back(item);
     }
 
     Shelf &ShelvedBin::getOpenShelf() {

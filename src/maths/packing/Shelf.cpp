@@ -6,15 +6,18 @@
 
 
 namespace gp::packing {
-    Shelf::Shelf(float verticalOffset, float width)
+    Shelf::Shelf(float y, float width)
             : m_Width(width),
               m_AvailableWidth(width),
-              m_VerticalOffset(verticalOffset) {
-
+              m_Y(y) {
     }
 
     bool Shelf::fitsItemVertically(const Item &item) const {
         return item.getLongSide() <= m_Height;
+    }
+
+    bool Shelf::fitsItemHorizontally(const Item &item) const {
+        return item.width() <= m_AvailableWidth;
     }
 
     void Shelf::add(Item &item) {
@@ -37,19 +40,15 @@ namespace gp::packing {
         return m_Height;
     }
 
-    float Shelf::area() const {
-        return m_Width * m_Height;
+    float Shelf::y() const {
+        return m_Y;
     }
 
-    float Shelf::getVerticalOffset() const {
-        return m_VerticalOffset;
-    }
-
-    float Shelf::getPackedWidth() const {
+    float Shelf::packedWidth() const {
         return m_PackedWidth;
     }
 
-    float Shelf::getAvailableWidth() const {
+    float Shelf::availableWidth() const {
         return m_AvailableWidth;
     }
 

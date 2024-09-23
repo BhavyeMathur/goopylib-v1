@@ -9,9 +9,6 @@ namespace gp::packing {
             : PackingAlgorithm(binWidth, binHeight) {
     }
 
-    ShelfPackingAlgorithm::ShelfPackingAlgorithm() : PackingAlgorithm(0, 0) {
-    }
-
     void ShelfPackingAlgorithm::packAll(std::vector<Item> &items, bool allowRotation,
                                         const SortingFunction &sortingFunction) {
         if (sortingFunction)
@@ -68,7 +65,7 @@ namespace gp::packing {
 
     void ShelfPackingAlgorithm::addItemToNewBin(Item &item, bool allowRotation) {
         m_Pages++;
-        m_Bins.emplace_back(m_BinWidth, m_BinHeight, m_Bins.size());
+        m_Bins.push_back({m_BinWidth, m_BinHeight, static_cast<uint32_t>(m_Bins.size())});
         auto &newBin = m_Bins.back();
 
         if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)

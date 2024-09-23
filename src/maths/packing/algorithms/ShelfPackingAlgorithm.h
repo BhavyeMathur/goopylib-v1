@@ -17,8 +17,6 @@ namespace gp::packing {
     class GPAPI ShelfPackingAlgorithm : public PackingAlgorithm {
 
     public:
-        ShelfPackingAlgorithm();
-
         virtual ~ShelfPackingAlgorithm() = default;
 
         virtual void pack(Item &item, bool allowRotation) = 0;

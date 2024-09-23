@@ -2,7 +2,6 @@
 
 #include "maths/packing/Item.h"
 #include "maths/packing/Shelf.h"
-#include "maths/packing/ShelvedBin.h"
 #include "maths/gpmath.h"
 
 
@@ -10,14 +9,14 @@ namespace gp::packing {
     BestWidthFit::BestWidthFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
                         [](const Shelf &shelf, const Item &obj) {
-                            return obj.width() - shelf.getAvailableWidth();
+                            return obj.width() - shelf.availableWidth();
                         }) {
     }
 
     WorstWidthFit::WorstWidthFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
                         [](const Shelf &shelf, const Item &obj) {
-                            return shelf.getAvailableWidth() - obj.width();
+                            return shelf.availableWidth() - obj.width();
                         }) {
     }
 
@@ -38,14 +37,14 @@ namespace gp::packing {
     BestAreaFit::BestAreaFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
                         [](const Shelf &shelf, const Item &obj) {
-                            return (shelf.getPackedWidth() + obj.width()) * max(obj.height(), shelf.height());
+                            return (shelf.packedWidth() + obj.width()) * max(obj.height(), shelf.height());
                         }) {
     }
 
     WorstAreaFit::WorstAreaFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
                         [](const Shelf &shelf, const Item &obj) {
-                            return -(shelf.getPackedWidth() + obj.width()) * max(obj.height(), shelf.height());
+                            return -(shelf.packedWidth() + obj.width()) * max(obj.height(), shelf.height());
                         }) {
     }
 }
