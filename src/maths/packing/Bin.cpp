@@ -1,7 +1,5 @@
-#define GP_LOGGING_LEVEl 3
-
 #include "Bin.h"
-#include "Item.h"
+
 
 namespace gp::packing {
     Bin::Bin(float width, float height, uint32_t page)

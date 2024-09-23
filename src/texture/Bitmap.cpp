@@ -26,7 +26,9 @@ namespace gp {
         if (m_Width == 0 and m_Height == 0 and m_Channels == 0) {
             GP_FILENOTFOUND_ERROR("gp::Bitmap::Bitmap() file '%s' not found", filepath);
         }
-        #endif
+                #endif
+
+        GP_CHECK_INCLUSIVE_RANGE(m_Channels, 3, 4, "gp::Bitmap::Bitmap() no current support for non-RGBA/RGB images")
     }
 
     Bitmap::~Bitmap() {
@@ -72,27 +74,31 @@ namespace gp {
     }
 
     void Bitmap::setSubdata(gp::Bitmap &bitmap, uint32_t x, uint32_t y) {
-        // TODO this should check equal
         GP_CHECK_LE(bitmap.m_Channels, m_Channels, "gp::Bitmap::setSubdata() number of channels must be equal")
 
         uint32_t other_index = 0;
+        auto index = getIndex(x, y, 0);
 
         for (uint32_t r = 0; r < bitmap.getHeight(); r++) {
             for (uint32_t c = 0; c < bitmap.getWidth(); c++) {
-                for (uint32_t i = 0; i < m_Channels; i++) {
-                    auto index = getIndex(x + c, y + r, i);
-
-                    // TODO remove
-                    if (i >= bitmap.m_Channels) {
-                        m_Data[index] = 255;
-                        continue;
-                    }
-
-                    m_Data[index] = bitmap.m_Data[other_index];
+                for (uint32_t i = 0; i < bitmap.m_Channels; i++) {
+                    m_Data[index + m_Channels * (c + r * m_Width) + i] = bitmap.m_Data[other_index];
                     other_index++;
                 }
             }
         }
+
+        if (bitmap.m_Channels == 4 or m_Channels == 3)
+            return;
+
+        // For RGB images, set the alpha channel to 100%
+        index = getIndex(x, y, 3);
+        for (uint32_t r = 0; r < bitmap.getHeight(); r++) {
+            for (uint32_t i = 0; i < bitmap.getWidth(); i++) {
+                m_Data[index + 4 * (i + r * m_Width)] = 255;
+            }
+        }
+
     }
 
     uint32_t Bitmap::getIndex(uint32_t x, uint32_t y, uint32_t channel) const {
