@@ -5,10 +5,6 @@
 
 
 namespace gp::packing {
-    class Item;
-
-    class Shelf;
-
     using ScoringFunction = std::function<float(const Shelf &, const Item &)>;
 
     class GPAPI ScoredFit : public ShelfPackingAlgorithm {

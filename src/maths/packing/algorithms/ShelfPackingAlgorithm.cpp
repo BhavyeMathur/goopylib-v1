@@ -18,22 +18,6 @@ namespace gp::packing {
             pack(item, allowRotation);
     }
 
-    void ShelfPackingAlgorithm::packOriented(Item &item, bool orientVertically) {
-        if (item.isHorizontal() == orientVertically)
-            item.rotate();
-
-        pack(item, false);
-    }
-
-    void ShelfPackingAlgorithm::packAllOriented(std::vector<Item> &items, bool orientVertically,
-                                                const SortingFunction &sortingFunction) {
-        if (sortingFunction)
-            items = sortingFunction(items);
-
-        for (auto &item: items)
-            packOriented(item, orientVertically);
-    }
-
     const std::vector<ShelvedBin> &ShelfPackingAlgorithm::bins() const {
         return m_Bins;
     }
@@ -44,11 +28,10 @@ namespace gp::packing {
     }
 
     void ShelfPackingAlgorithm::addItemToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation) {
-        bin.addShelf();
-
         if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
             item.setHorizontal();
 
+        bin.addShelf();
         bin.add(item, bin.getOpenShelf());
     }
 

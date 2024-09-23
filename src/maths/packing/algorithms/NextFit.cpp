@@ -15,6 +15,6 @@ namespace gp::packing {
             return addItemToShelf(item, bin, bin.getOpenShelf());
 
         if (!tryAddingToNewShelf(item, bin, allowRotation))
-            addItemToNewBin(item, false);  // allowRotation false since item is horizontal after tryAddingToNewShelf
+            addItemToNewBin(item, allowRotation);
     }
 }

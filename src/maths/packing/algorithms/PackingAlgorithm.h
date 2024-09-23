@@ -8,6 +8,9 @@ namespace gp::packing {
     class GPAPI PackingAlgorithm {
 
     public:
+        /**
+         * @return the number of pages (bins) in the rectangle packing
+         */
         [[nodiscard]] uint32_t pages() const;
 
     protected:

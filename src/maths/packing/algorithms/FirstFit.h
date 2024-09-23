@@ -2,15 +2,15 @@
 
 #include "gp.h"
 #include "ShelfPackingAlgorithm.h"
-#include "maths/packing/ShelvedBin.h"
-#include "maths/packing/Shelf.h"
-#include "maths/packing/Item.h"
 
 
 namespace gp::packing {
     class GPAPI FirstFit final : public ShelfPackingAlgorithm {
 
     public:
+        /**
+         * Uses a greedy first-fit algorithm to pack rectangles.
+         */
         FirstFit(float binWidth, float binHeight);
 
         void pack(Item &item, bool allowRotation) override;

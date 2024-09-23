@@ -33,6 +33,8 @@ namespace gp::packing {
     }
 
     void ShelvedBin::add(Item &item, Shelf &shelf) {
+        // If the item's height exceeds the shelf's current height, we must resize the shelf and update the
+        // available & packed height in the bin
         if (item.height() > shelf.height()) {
             m_PackedHeight = shelf.y() + item.height();
             m_AvailableHeight = m_Height - m_PackedHeight;
