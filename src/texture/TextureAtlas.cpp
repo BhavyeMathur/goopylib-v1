@@ -20,7 +20,7 @@ namespace gp {
 
     void TextureAtlas::init() {
         // glGetIntegerv(GL_MAX_TEXTURE_SIZE, reinterpret_cast<GLint *>(&s_Width));
-        s_Width = 32;
+        s_Width = 64;
         s_Height = s_Width;
     }
 
@@ -44,7 +44,7 @@ namespace gp {
         auto item = packing::Item(bitmap->getWidth(), bitmap->getHeight());
         m_PackingAlgorithm->pack(item, allowRotation);
 
-        while (item.page() >= m_Bitmaps.size())
+        while (m_PackingAlgorithm->pages() > m_Bitmaps.size())
             m_Bitmaps.push_back(make_unique<Bitmap>(s_Width, s_Height, m_Channels));
         m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
 
@@ -63,8 +63,16 @@ namespace gp {
 
         m_PackingAlgorithm->packAll(items, allowRotation, sorting);
 
-        for (const auto &item: items)
+        while (m_PackingAlgorithm->pages() > m_Bitmaps.size())
+            m_Bitmaps.push_back(make_unique<Bitmap>(s_Width, s_Height, m_Channels));
+
+        for (int32_t i = 0; i < items.size(); i++) {
+            const auto &item = items[i];
+            const auto &bitmap = bitmaps[i];
+
             texCoords.emplace_back(item.p1(), item.p2(), item.page());
+            m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
+        }
 
         return texCoords;
     }

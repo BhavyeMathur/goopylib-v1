@@ -37,7 +37,9 @@ namespace gp {
             return;
         }
 
-        uint32_t texIndex = m_TexturesCache.at(object->getTextureName()).index;
+        auto texData = m_TexturesCache.at(object->getTextureName());
+        uint32_t texIndex = texData.index;
+        auto texCoords = texData.texCoords;
         uint32_t texSlot = texIndex % 16;
 
         if (texSlot == 0)
@@ -86,9 +88,11 @@ namespace gp {
     }
 
     void TextureRenderer::_updateTextureBufferData() {
-        uint32_t i = m_TextureBuffers.size() - 1;
-        while (i < m_TextureAtlas->pages())
+        uint32_t i = m_TextureBuffers.size();
+        while (i < m_TextureAtlas->pages()) {
             m_TextureBuffers.push_back(make_unique<TextureBuffer>(*m_TextureAtlas->getBitmap(i)));
+            i++;
+        }
     }
 
     void TextureRenderer::_cacheTexture(const shared_ptr<TexturedQuad> &object) {

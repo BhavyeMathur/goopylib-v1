@@ -80,8 +80,8 @@ namespace gp {
             for (uint32_t c = 0; c < bitmap.getWidth(); c++) {
                 for (uint32_t i = 0; i < bitmap.m_Channels; i++) {
                     auto index = getIndex(x + c, y + r, i);
-                    m_Data[index] = bitmap.m_Data[other_index];
-                    other_index++;
+                     m_Data[index] = bitmap.m_Data[other_index];
+                     other_index++;
                 }
             }
         }

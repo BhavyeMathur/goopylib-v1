@@ -7,7 +7,6 @@
 namespace gp::packing::shelf {
     ShelfPackingAlgorithm::ShelfPackingAlgorithm(float binWidth, float binHeight)
             : PackingAlgorithm(binWidth, binHeight) {
-        m_Bins.emplace_back(m_BinWidth, m_BinHeight, m_Bins.size());
     }
 
     ShelfPackingAlgorithm::ShelfPackingAlgorithm() : PackingAlgorithm(0, 0) {
