@@ -12,7 +12,7 @@ namespace gp::packing {
               m_AvailableHeight(height) {
     }
 
-    shelf::Shelf &ShelvedBin::addShelf() {
+    Shelf &ShelvedBin::addShelf() {
         auto shelf = getOpenShelf();
         shelf.close();
 
@@ -38,7 +38,7 @@ namespace gp::packing {
         return item.width() <= shelf.getAvailableWidth() and shelf.getVerticalOffset() + item.height() <= m_Height;
     }
 
-    bool ShelvedBin::fitsShelf(Item &item, shelf::Shelf &shelf) const {
+    bool ShelvedBin::fitsShelf(Item &item, Shelf &shelf) const {
         if (shelf.isOpen())
             return item.width() <= shelf.getAvailableWidth() and shelf.getVerticalOffset() + item.height() <= m_Height;
         return item.width() <= shelf.getAvailableWidth() and item.height() <= shelf.height();
@@ -48,7 +48,7 @@ namespace gp::packing {
         return item.height() <= m_AvailableHeight;
     }
 
-    void ShelvedBin::add(Item &item, shelf::Shelf &shelf) {
+    void ShelvedBin::add(Item &item, Shelf &shelf) {
         item.setPage(m_Page);
 
         if (item.height() > shelf.height()) {
@@ -60,23 +60,23 @@ namespace gp::packing {
         m_Items.push_back(item);
     }
 
-    const shelf::Shelf &ShelvedBin::getOpenShelf() const {
+    const Shelf &ShelvedBin::getOpenShelf() const {
         return m_Shelves.back();
     }
 
-    shelf::Shelf &ShelvedBin::getOpenShelf() {
+    Shelf &ShelvedBin::getOpenShelf() {
         return m_Shelves.back();
     }
 
-    const std::vector<shelf::Shelf> &ShelvedBin::getShelves() const {
+    const std::vector<Shelf> &ShelvedBin::getShelves() const {
         return m_Shelves;
     }
 
-    std::vector<shelf::Shelf>::iterator ShelvedBin::begin() {
+    std::vector<Shelf>::iterator ShelvedBin::begin() {
         return m_Shelves.begin();
     }
 
-    std::vector<shelf::Shelf>::iterator ShelvedBin::end() {
+    std::vector<Shelf>::iterator ShelvedBin::end() {
         return m_Shelves.end();
     }
 }

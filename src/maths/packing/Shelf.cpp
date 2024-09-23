@@ -7,7 +7,7 @@
 #include "debug/Error.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     Shelf::Shelf(float verticalOffset, float width)
             : m_Width(width),
               m_AvailableWidth(width),
@@ -41,7 +41,7 @@ namespace gp::packing::shelf {
     }
 }
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     float Shelf::width() const {
         return m_Width;
     }

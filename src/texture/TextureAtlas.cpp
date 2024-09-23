@@ -10,12 +10,11 @@ namespace gp {
     uint32_t TextureAtlas::s_Width = 0;
     uint32_t TextureAtlas::s_Height = 0;
 
-    // TODO use TextureAtlas to optimise textures in the GPU
-    TextureAtlas::TextureAtlas(uint32_t channels, unique_ptr<packing::shelf::ShelfPackingAlgorithm> packingAlgorithm)
+    TextureAtlas::TextureAtlas(uint32_t channels, unique_ptr<packing::ShelfPackingAlgorithm> packingAlgorithm)
             : m_PackingAlgorithm(std::move(packingAlgorithm)),
               m_Channels(channels) {
         if (packingAlgorithm == nullptr)
-            m_PackingAlgorithm = make_unique<packing::shelf::BestAreaFit>(s_Width, s_Height);
+            m_PackingAlgorithm = make_unique<packing::BestAreaFit>(s_Width, s_Height);
     }
 
     void TextureAtlas::init() {

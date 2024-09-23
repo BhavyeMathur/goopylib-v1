@@ -4,7 +4,7 @@
 #include "ScoredFit.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     class GPAPI BestWidthFit final : public ScoredFit {
     public:
         BestWidthFit(float binWidth, float binHeight);

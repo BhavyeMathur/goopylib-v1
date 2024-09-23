@@ -1,7 +1,7 @@
 #include "FirstFit.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     FirstFit::FirstFit(float binWidth, float binHeight) : ShelfPackingAlgorithm(binWidth, binHeight) {
     }
 

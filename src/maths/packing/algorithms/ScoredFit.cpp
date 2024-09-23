@@ -4,7 +4,7 @@
 #include "maths/packing/ShelvedBin.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     ScoredFit::ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction)
             : ShelfPackingAlgorithm(binWidth, binHeight),
               m_ScoringFunction(std::move(scoringFunction)) {

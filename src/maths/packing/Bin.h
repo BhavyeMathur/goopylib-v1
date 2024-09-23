@@ -1,22 +1,15 @@
 #pragma once
 
 #include "gp.h"
-#include "maths/packing/Item.h"
+#include "Item.h"
 
-namespace gp::packing::shelf {
-    class Shelf;
-}
 
 namespace gp::packing {
     class Item;
 
     class GPAPI Bin {
 
-        friend class shelf::Shelf;
-
     public:
-        ~Bin();
-
         [[nodiscard]] virtual float packingRatio() const;
 
         [[nodiscard]] const std::vector<Item> &items() const;

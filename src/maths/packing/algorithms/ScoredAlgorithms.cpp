@@ -6,7 +6,7 @@
 #include "maths/gpmath.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     BestWidthFit::BestWidthFit(float binWidth, float binHeight)
             : ScoredFit(binWidth, binHeight,
                         [](const Shelf &shelf, const Item &obj) {

@@ -6,9 +6,7 @@
 
 namespace gp::packing {
     class Item;
-}
 
-namespace gp::packing::shelf {
     class Shelf;
 
     using ScoringFunction = std::function<float(const Shelf &, const Item &)>;

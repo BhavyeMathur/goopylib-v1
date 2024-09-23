@@ -7,7 +7,7 @@
 #include "maths/packing/Shelf.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     class GPAPI NextFit final : public ShelfPackingAlgorithm {
 
     public:

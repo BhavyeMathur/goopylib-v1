@@ -4,7 +4,7 @@
 #include "maths/packing/ShelvedBin.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     ShelfPackingAlgorithm::ShelfPackingAlgorithm(float binWidth, float binHeight)
             : PackingAlgorithm(binWidth, binHeight) {
     }

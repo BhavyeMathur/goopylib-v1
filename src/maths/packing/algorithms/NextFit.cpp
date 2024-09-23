@@ -1,7 +1,7 @@
 #include "NextFit.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     NextFit::NextFit(float binWidth, float binHeight) : ShelfPackingAlgorithm(binWidth, binHeight) {
     }
 

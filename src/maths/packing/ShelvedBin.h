@@ -3,14 +3,14 @@
 #include "gp.h"
 #include "Bin.h"
 
-namespace gp::packing::shelf {
-    class ShelfPackingAlgorithm;
-}
-
 namespace gp::packing {
+    class ShelfPackingAlgorithm;
+
+    class Shelf;
+
     class GPAPI ShelvedBin final : public Bin {
 
-        friend class shelf::ShelfPackingAlgorithm;
+        friend class ShelfPackingAlgorithm;
 
     public:
         ShelvedBin(float width, float height, uint32_t page);
@@ -19,27 +19,27 @@ namespace gp::packing {
 
         bool fitsOpenShelf(Item &item) const;
 
-        bool fitsShelf(Item &item, shelf::Shelf &shelf) const;
+        bool fitsShelf(Item &item, Shelf &shelf) const;
 
         bool fitsNewShelf(Item &item) const;
 
-        void add(Item &item, shelf::Shelf &shelf);
+        void add(Item &item, Shelf &shelf);
 
-        const shelf::Shelf &getOpenShelf() const;
+        const Shelf &getOpenShelf() const;
 
-        shelf::Shelf &getOpenShelf();
+        Shelf &getOpenShelf();
 
-        const std::vector<shelf::Shelf> &getShelves() const;
+        const std::vector<Shelf> &getShelves() const;
 
-        [[nodiscard]] std::vector<shelf::Shelf>::iterator begin();
+        [[nodiscard]] std::vector<Shelf>::iterator begin();
 
-        [[nodiscard]] std::vector<shelf::Shelf>::iterator end();
+        [[nodiscard]] std::vector<Shelf>::iterator end();
 
     private:
-        std::vector<shelf::Shelf> m_Shelves;
+        std::vector<Shelf> m_Shelves;
         float m_AvailableHeight;
         float m_PackedHeight = 0;
 
-        shelf::Shelf &addShelf();
+        Shelf &addShelf();
     };
 }

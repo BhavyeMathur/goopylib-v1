@@ -16,7 +16,7 @@ namespace gp {
     public:
         TextureAtlas(const TextureAtlas &) = delete;
 
-        TextureAtlas(uint32_t channels, unique_ptr<packing::shelf::ShelfPackingAlgorithm> packingAlgorithm = nullptr);
+        TextureAtlas(uint32_t channels, unique_ptr<packing::ShelfPackingAlgorithm> packingAlgorithm = nullptr);
 
         TextureAtlasCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
 
@@ -36,7 +36,7 @@ namespace gp {
         [[nodiscard]] TextureAtlasCoords toUVCoordinate(Point x, Point y, uint32_t page);
 
     private:
-        unique_ptr<packing::shelf::ShelfPackingAlgorithm> m_PackingAlgorithm;
+        unique_ptr<packing::ShelfPackingAlgorithm> m_PackingAlgorithm;
         std::vector<shared_ptr<Bitmap>> m_Bitmaps;
 
         const uint32_t m_Channels;

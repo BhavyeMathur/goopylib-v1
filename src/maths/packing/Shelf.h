@@ -2,6 +2,7 @@
 
 #include "gp.h"
 
+
 namespace gp::packing {
     class ShelvedBin;
 
@@ -9,17 +10,13 @@ namespace gp::packing {
 
     class Bin;
 
-    namespace shelf {
-        class ShelfPackingAlgorithm;
-    }
-}
+    class ShelfPackingAlgorithm;
 
-namespace gp::packing::shelf {
     class GPAPI Shelf {
 
         friend class gp::packing::ShelvedBin;
 
-        friend class shelf::ShelfPackingAlgorithm;
+        friend class ShelfPackingAlgorithm;
 
     public:
         [[nodiscard]] std::string toString() const;

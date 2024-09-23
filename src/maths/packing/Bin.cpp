@@ -10,8 +10,6 @@ namespace gp::packing {
               m_Page(page) {
     }
 
-    Bin::~Bin() = default;
-
     float Bin::packingRatio() const {
         float sum = 0;
         for (auto &item: m_Items)

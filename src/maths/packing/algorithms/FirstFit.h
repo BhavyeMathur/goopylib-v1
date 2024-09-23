@@ -7,7 +7,7 @@
 #include "maths/packing/Item.h"
 
 
-namespace gp::packing::shelf {
+namespace gp::packing {
     class GPAPI FirstFit final : public ShelfPackingAlgorithm {
 
     public:

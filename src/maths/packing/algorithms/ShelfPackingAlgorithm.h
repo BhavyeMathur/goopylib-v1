@@ -12,12 +12,8 @@ namespace gp::packing {
 
     class ShelvedBin;
 
-    namespace shelf {
-        class Shelf;
-    }
-}
+    class Shelf;
 
-namespace gp::packing::shelf {
     class GPAPI ShelfPackingAlgorithm : public PackingAlgorithm {
 
     public:
