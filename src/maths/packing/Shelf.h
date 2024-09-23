@@ -4,23 +4,15 @@
 
 
 namespace gp::packing {
-    class ShelvedBin;
-
     class Item;
-
-    class Bin;
-
-    class ShelfPackingAlgorithm;
 
     class GPAPI Shelf {
 
-        friend class gp::packing::ShelvedBin;
+        friend class ShelvedBin;
 
         friend class ShelfPackingAlgorithm;
 
     public:
-        [[nodiscard]] std::string toString() const;
-
         [[nodiscard]] float width() const;
 
         [[nodiscard]] float height() const;

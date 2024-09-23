@@ -20,21 +20,8 @@ namespace gp::packing {
         return getOpenShelf();
     }
 
-    float ShelvedBin::packingRatio() const {
-        float sum = 0.0f;
-        float area = 0.0f;
-
-        for (const auto &item: m_Items)
-            sum += item.area();
-
-        for (const auto &shelf: m_Shelves)
-            area += shelf.area();
-
-        return sum / area;
-    }
-
     bool ShelvedBin::fitsOpenShelf(Item &item) const {
-        const auto shelf = getOpenShelf();
+        const auto &shelf = m_Shelves.back();
         return item.width() <= shelf.getAvailableWidth() and shelf.getVerticalOffset() + item.height() <= m_Height;
     }
 
@@ -58,10 +45,6 @@ namespace gp::packing {
 
         shelf.add(item);
         m_Items.push_back(item);
-    }
-
-    const Shelf &ShelvedBin::getOpenShelf() const {
-        return m_Shelves.back();
     }
 
     Shelf &ShelvedBin::getOpenShelf() {

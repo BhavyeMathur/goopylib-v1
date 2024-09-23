@@ -4,8 +4,6 @@
 #include "Bin.h"
 
 namespace gp::packing {
-    class ShelfPackingAlgorithm;
-
     class Shelf;
 
     class GPAPI ShelvedBin final : public Bin {
@@ -15,8 +13,6 @@ namespace gp::packing {
     public:
         ShelvedBin(float width, float height, uint32_t page);
 
-        [[nodiscard]] float packingRatio() const override;
-
         bool fitsOpenShelf(Item &item) const;
 
         bool fitsShelf(Item &item, Shelf &shelf) const;
@@ -24,8 +20,6 @@ namespace gp::packing {
         bool fitsNewShelf(Item &item) const;
 
         void add(Item &item, Shelf &shelf);
-
-        const Shelf &getOpenShelf() const;
 
         Shelf &getOpenShelf();
 

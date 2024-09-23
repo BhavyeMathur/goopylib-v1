@@ -10,14 +10,6 @@ namespace gp::packing {
               m_Page(page) {
     }
 
-    float Bin::packingRatio() const {
-        float sum = 0;
-        for (auto &item: m_Items)
-            sum += item.area();
-
-        return sum / (m_Width * m_Height);
-    }
-
     const std::vector<Item> &Bin::items() const {
         return m_Items;
     }
