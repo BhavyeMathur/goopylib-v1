@@ -72,16 +72,24 @@ namespace gp {
     }
 
     void Bitmap::setSubdata(gp::Bitmap &bitmap, uint32_t x, uint32_t y) {
+        // TODO this should check equal
         GP_CHECK_LE(bitmap.m_Channels, m_Channels, "gp::Bitmap::setSubdata() number of channels must be equal")
 
         uint32_t other_index = 0;
 
         for (uint32_t r = 0; r < bitmap.getHeight(); r++) {
             for (uint32_t c = 0; c < bitmap.getWidth(); c++) {
-                for (uint32_t i = 0; i < bitmap.m_Channels; i++) {
+                for (uint32_t i = 0; i < m_Channels; i++) {
                     auto index = getIndex(x + c, y + r, i);
-                     m_Data[index] = bitmap.m_Data[other_index];
-                     other_index++;
+
+                    // TODO remove
+                    if (i >= bitmap.m_Channels) {
+                        m_Data[index] = 255;
+                        continue;
+                    }
+
+                    m_Data[index] = bitmap.m_Data[other_index];
+                    other_index++;
                 }
             }
         }
