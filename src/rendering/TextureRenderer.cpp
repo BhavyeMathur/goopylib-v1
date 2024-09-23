@@ -12,9 +12,8 @@ namespace gp {
             : m_Shader(shader) {
     }
 
-    void TextureRenderer::init() {
-        TextureAtlas::init();
-        m_TextureAtlas = make_unique<TextureAtlas>(m_Channels);
+    void TextureRenderer::setTextureAtlas(const shared_ptr<TextureAtlas>& textureAtlas) {
+        m_TextureAtlas = textureAtlas;
     }
 
     void TextureRenderer::draw() {

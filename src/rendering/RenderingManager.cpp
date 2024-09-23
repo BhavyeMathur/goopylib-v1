@@ -28,8 +28,14 @@ namespace gp {
     void RenderingManager::init() {
         TextureBuffer::init();
 
+        TextureAtlas::init();
+        m_TextureAtlas = make_shared<TextureAtlas>(4);
+
         m_Renderer.init();
         m_AlphaRenderer.init();
+
+        m_Renderer.setTextureAtlas(m_TextureAtlas);
+        m_AlphaRenderer.setTextureAtlas(m_TextureAtlas);
 
         m_SolidShader.compile();
         m_EllipseShader.compile();

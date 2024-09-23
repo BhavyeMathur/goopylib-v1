@@ -32,6 +32,8 @@ namespace gp {
 
         void init();
 
+        void setTextureAtlas(const shared_ptr<TextureAtlas>& textureAtlas);
+
         void draw(uint32_t ID, const shared_ptr<Renderable>& object);
 
         void destroy(uint32_t ID, const shared_ptr<Renderable>& object);

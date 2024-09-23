@@ -25,7 +25,7 @@ namespace gp {
     public:
         TextureRenderer(const Shader &shader);
 
-        void init();
+        void setTextureAtlas(const shared_ptr<TextureAtlas>& textureAtlas);
 
         void drawObject(uint32_t ID, const shared_ptr<TexturedQuad> &object);
 
@@ -38,7 +38,7 @@ namespace gp {
     private:
         const Shader &m_Shader;
 
-        unique_ptr<TextureAtlas> m_TextureAtlas;
+        shared_ptr<TextureAtlas> m_TextureAtlas;
         std::vector<unique_ptr<TextureBuffer>> m_TextureBuffers;
         std::unordered_map<std::string, TextureData> m_TexturesCache;
 

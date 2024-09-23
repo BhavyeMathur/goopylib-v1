@@ -16,8 +16,8 @@
  *      it also contains the utility methods toWorld() and toScreen() to convert between coordinate systems.
  *
  * 3. Managing the renderers: specifically, the RenderingManager holds 2 instances: m_Renderer & m_AlphaRenderer
- *      (which is used to renderer transparent objects). It is also responsible for select the correct Renderer to use
- *      and creating/destroying the object IDs. When the user draws, destroys, or updates an object, the
+ *      (which is used to renderer transparent objects). It is also responsible for selecting the correct Renderer to
+ *      use and creating/destroying the object IDs. When the user draws, destroys, or updates an object, the
  *      RenderingManager is responsible for dispatching calls to the correct Renderer instance.
  *
  *  4. Window background color: including calls to glClearColor() and glClear() in the render loop.
@@ -32,7 +32,7 @@ namespace gp {
         friend class Renderable;
 
     public:
-        RenderingManager(int width, int height, std::string  title);
+        RenderingManager(int width, int height, std::string title);
 
         RenderingManager(const RenderingManager &) = delete;
 
@@ -80,9 +80,9 @@ namespace gp {
          */
         [[nodiscard]] Point toScreen(Point p) const;
 
-        void draw(const shared_ptr<Renderable>& object);
+        void draw(const shared_ptr<Renderable> &object);
 
-        void destroy(const shared_ptr<Renderable>& object);
+        void destroy(const shared_ptr<Renderable> &object);
 
     protected:
         int m_Width;
@@ -102,6 +102,7 @@ namespace gp {
         Shader m_EllipseShader{ellipseVertexShader, ellipseFragmentShader};
         Shader m_TextureShader{textureVertexShader, textureFragmentShader};
 
+        shared_ptr<TextureAtlas> m_TextureAtlas;
         unique_ptr<UniformBuffer> m_ShaderUniform;
 
         uint32_t m_NextObjectID = -1;
