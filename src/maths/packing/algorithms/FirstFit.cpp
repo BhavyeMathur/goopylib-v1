@@ -10,7 +10,7 @@ namespace gp::packing {
             for (auto &shelf: bin) {
                 orientItemForShelf(item, shelf, allowRotation);
                 if (bin.fitsShelf(item, shelf))
-                    return bin.add(item, shelf);
+                    return addItemToShelf(item, bin, shelf);
             }
 
             if (tryAddingToNewShelf(item, bin, allowRotation))

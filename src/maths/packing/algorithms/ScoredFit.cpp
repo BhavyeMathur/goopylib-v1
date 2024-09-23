@@ -41,6 +41,6 @@ namespace gp::packing {
         if (item.isRotated() != bestOrientation)
             item.rotate();
 
-        bestBin->add(item, *bestShelf);
+        addItemToShelf(item, *bestBin, *bestShelf);
     }
 }

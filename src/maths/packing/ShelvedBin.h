@@ -19,8 +19,6 @@ namespace gp::packing {
 
         bool fitsNewShelf(Item &item) const;
 
-        void add(Item &item, Shelf &shelf);
-
         Shelf &getOpenShelf();
 
         const std::vector<Shelf> &getShelves() const;
@@ -34,6 +32,8 @@ namespace gp::packing {
         float m_AvailableHeight;
         float m_PackedHeight = 0;
 
-        Shelf &addShelf();
+        void addShelf();
+
+        void add(Item &item, Shelf &shelf);
     };
 }

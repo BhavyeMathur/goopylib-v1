@@ -47,12 +47,12 @@ namespace gp::packing {
     }
 
     void ShelfPackingAlgorithm::addItemToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation) {
-        auto shelf = bin.addShelf();
+        bin.addShelf();
 
         if (allowRotation)  // Ensure item added is horizontal (so that it occupies less vertical space)
             item.setHorizontal();
 
-        bin.add(item, shelf);
+        bin.add(item, bin.getOpenShelf());
     }
 
     bool ShelfPackingAlgorithm::tryAddingToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation) {
@@ -75,5 +75,9 @@ namespace gp::packing {
             item.setHorizontal();
 
         newBin.add(item, newBin.getOpenShelf());
+    }
+
+    void ShelfPackingAlgorithm::addItemToShelf(Item &item, ShelvedBin &bin, Shelf &shelf) {
+        bin.add(item, shelf);
     }
 }

@@ -24,5 +24,7 @@ namespace gp::packing {
         std::vector<Item> m_Items;  // TODO m_Items should reserve space when packAll() is called
 
         Bin(float width, float height, uint32_t page);
+
+        void add(Item &item, float x, float y);
     };
 }

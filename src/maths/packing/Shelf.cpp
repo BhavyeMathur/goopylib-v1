@@ -20,7 +20,6 @@ namespace gp::packing {
     void Shelf::add(Item &item) {
         GP_CHECK_LE(item.width(), m_AvailableWidth, "Item does not fit into shelf")
 
-        item.setPosition(m_PackedWidth, m_VerticalOffset);
         m_PackedWidth += item.width();
         m_AvailableWidth -= item.width();
 

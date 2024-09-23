@@ -12,12 +12,10 @@ namespace gp::packing {
               m_AvailableHeight(height) {
     }
 
-    Shelf &ShelvedBin::addShelf() {
-        auto shelf = getOpenShelf();
+    void ShelvedBin::addShelf() {
+        auto &shelf = getOpenShelf();
         shelf.close();
-
         m_Shelves.push_back({m_PackedHeight, m_Width});
-        return getOpenShelf();
     }
 
     bool ShelvedBin::fitsOpenShelf(Item &item) const {
@@ -36,7 +34,7 @@ namespace gp::packing {
     }
 
     void ShelvedBin::add(Item &item, Shelf &shelf) {
-        item.setPage(m_Page);
+        Bin::add(item, shelf.getPackedWidth(), shelf.getVerticalOffset());
 
         if (item.height() > shelf.height()) {
             m_PackedHeight = shelf.getVerticalOffset() + item.height();

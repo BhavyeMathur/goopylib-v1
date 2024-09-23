@@ -25,4 +25,9 @@ namespace gp::packing {
     uint32_t Bin::page() const {
         return m_Page;
     }
+
+    void Bin::add(gp::packing::Item & item, float x, float y) {
+        item.setPage(m_Page);
+        item.setPosition(x, y);
+    }
 }

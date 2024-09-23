@@ -45,5 +45,7 @@ namespace gp::packing {
         bool tryAddingToNewShelf(Item &item, ShelvedBin &bin, bool allowRotation);
 
         void addItemToNewBin(Item &item, bool allowRotation);
+
+        void addItemToShelf(Item &item, ShelvedBin& bin, Shelf& shelf);
     };
 }
