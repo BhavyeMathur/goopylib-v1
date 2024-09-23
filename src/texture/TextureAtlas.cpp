@@ -19,6 +19,8 @@ namespace gp {
 
     void TextureAtlas::init() {
         // glGetIntegerv(GL_MAX_TEXTURE_SIZE, reinterpret_cast<GLint *>(&s_Width));
+        // TODO TextureAtlas should dynamically adjust its width to ensure we are not copying more data than required
+        // into the texture buffer
         s_Width = 128;
         s_Height = s_Width;
     }

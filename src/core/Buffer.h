@@ -54,7 +54,7 @@ namespace gp {
         [[nodiscard]] int32_t length() const;
 
         /**
-         * Sets the data in the buffer
+         * Sets the data in the buffer and resizes it
          *
          * @param data pointer to a data array
          * @param length number of elements
@@ -67,7 +67,7 @@ namespace gp {
         void setData(const void *data, int32_t length);
 
         /**
-         * Sets a subset of the data in the buffer
+         * Sets a subset of the data in the buffer, without resizing it
          *
          * @param data pointer to a data array
          * @param length number of elements
