@@ -3,7 +3,11 @@
 #include "TextureAtlas.h"
 #include "TextureCoords.h"
 #include "maths/packing/Item.h"
+
+#include "debug/Error.h"
+
 #include <opengl.h>
+#include <GLFW/glfw3.h>
 
 
 namespace gp {
@@ -18,9 +22,12 @@ namespace gp {
     }
 
     void TextureAtlas::init() {
+        GP_CHECK_ACTIVE_CONTEXT("gp::TextureAtlas::init()");
+
+        // GP_OPENGL("glGetIntegerv(GL_MAX_TEXTURE_SIZE");
         // glGetIntegerv(GL_MAX_TEXTURE_SIZE, reinterpret_cast<GLint *>(&s_Width));
+
         // TODO TextureAtlas should dynamically adjust its width to ensure we are not copying more data than required
-        // into the texture buffer
         s_Width = 128;
         s_Height = s_Width;
     }
@@ -42,14 +49,7 @@ namespace gp {
     }
 
     TextureAtlasCoords TextureAtlas::add(const shared_ptr<Bitmap> &bitmap, bool allowRotation) {
-        auto item = packing::Item(bitmap->getWidth(), bitmap->getHeight());
-        m_PackingAlgorithm->pack(item, allowRotation);
-
-        while (m_PackingAlgorithm->pages() > m_Bitmaps.size())
-            m_Bitmaps.push_back(make_unique<Bitmap>(s_Width, s_Height, m_Channels));
-        m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
-
-        return toUVCoordinate(item.p1(), item.p2(), item.page());
+        return add({bitmap}, allowRotation, nullptr)[0];
     }
 
     std::vector<TextureAtlasCoords> TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
@@ -69,10 +69,10 @@ namespace gp {
 
         for (int32_t i = 0; i < items.size(); i++) {
             const auto &item = items[i];
-            const auto &bitmap = bitmaps[i];
-
             texCoords.emplace_back(toUVCoordinate(item.p1(), item.p2(), item.page()));
-            m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
+
+            // TODO TextureAtlas should directly set the subdata of the TextureBuffer, this is slower
+            m_Bitmaps[item.page()]->setSubdata(*bitmaps[i], item.p1().x, item.p1().y);
         }
 
         return texCoords;
