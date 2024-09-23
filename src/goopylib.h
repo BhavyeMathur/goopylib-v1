@@ -2,6 +2,7 @@
 
 #include "core/Core.h"
 #include "window/Window.h"
+#include "window/CameraController.h"
 
 #include "maths/Easing.h"
 #include "maths/Packing.h"
@@ -21,5 +22,3 @@
 #include "objects/Image.h"
 
 #include "texture/TextureAtlas.h"
-
-#include "scene/CameraController.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scene/RenderingManager.h"
+#include "rendering/RenderingManager.h"
 #include <GLFW/glfw3.h>
 
 #ifdef APIENTRY

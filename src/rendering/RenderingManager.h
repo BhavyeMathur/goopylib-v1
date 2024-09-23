@@ -1,8 +1,8 @@
 #pragma once
 
 #include "gp.h"
-#include "scene/Renderer.h"
-#include "scene/Camera.h"
+#include "Renderer.h"
+#include "window/Camera.h"
 #include "color/Color.h"
 
 #include "shader/ShaderFiles.h"

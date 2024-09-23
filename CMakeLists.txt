@@ -118,13 +118,10 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/objects/TexturedRectangle.cpp
             src/objects/Image.cpp
 
-            src/scene/RenderingManager.cpp
-            src/scene/Renderer.cpp
-            src/scene/TextureRenderer.cpp
-            src/scene/RenderingBatchBase.cpp
-
-            src/scene/Camera.cpp
-            src/scene/CameraController.cpp
+            src/rendering/RenderingManager.cpp
+            src/rendering/Renderer.cpp
+            src/rendering/TextureRenderer.cpp
+            src/rendering/RenderingBatchBase.cpp
 
             src/texture/Bitmap.cpp
             src/texture/TextureBuffer.cpp
@@ -132,6 +129,8 @@ add_library(goopylib SHARED ${WINDOWS_SOURCES}
             src/texture/TextureCoords.cpp
 
             src/window/Window.cpp
+            src/window/Camera.cpp
+            src/window/CameraController.cpp
 
             src/shader/Shader.cpp
 
