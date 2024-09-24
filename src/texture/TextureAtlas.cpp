@@ -44,8 +44,20 @@ namespace gp {
         return m_PackingAlgorithm->pages();
     }
 
+    bool TextureAtlas::contains(const std::string &texture) const {
+        return m_TexturesCache.contains(texture);
+    }
+
+    const TextureData &TextureAtlas::getTextureData(const std::string &texture) const {
+        return m_TexturesCache.at(texture);
+    }
+
     const shared_ptr<Bitmap> &TextureAtlas::getBitmap(uint32_t i) const {
         return m_Bitmaps.at(i);
+    }
+
+    const shared_ptr<TextureBuffer> &TextureAtlas::getTextureBuffer(uint32_t i) const {
+        return m_TextureBuffers.at(i);
     }
 
     TextureAtlasCoords TextureAtlas::add(const shared_ptr<Bitmap> &bitmap, bool allowRotation) {
@@ -69,10 +81,14 @@ namespace gp {
 
         for (int32_t i = 0; i < items.size(); i++) {
             const auto &item = items[i];
-            texCoords.emplace_back(toUVCoordinate(item.p1(), item.p2(), item.page()));
+            auto texCoord = toUVCoordinate(item.p1(), item.p2(), item.page());
+            auto &bitmap = m_Bitmaps[item.page()];
+
+            texCoords.push_back(texCoord);
 
             // TODO TextureAtlas should directly set the subdata of the TextureBuffer, this is slower
-            m_Bitmaps[item.page()]->setSubdata(*bitmaps[i], item.p1().x, item.p1().y);
+            bitmap->setSubdata(*bitmaps[i], item.p1().x, item.p1().y);
+            // m_TexturesCache.insert({bitmap->name(), {item.page(), texCoord.coords}});
         }
 
         return texCoords;
@@ -82,5 +98,14 @@ namespace gp {
         // see https://gamedev.stackexchange.com/questions/46963/how-to-avoid-texture-bleeding-in-a-texture-atlas
         // for why we add/subtract 0.5
         return {(p1 + 0.5) / s_Width, (p2 - 0.5) / s_Width, page};
+    }
+
+    void TextureAtlas::_updateTextureBufferData() {
+        uint32_t i = m_TextureBuffers.size();
+        while (i < pages()) {
+            getBitmap(i)->saveBitmap(strformat("%i.png", i));
+            m_TextureBuffers.push_back(make_shared<TextureBuffer>(*getBitmap(i)));
+            i++;
+        }
     }
 }

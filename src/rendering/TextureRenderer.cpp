@@ -12,13 +12,12 @@ namespace gp {
             : m_Shader(shader) {
     }
 
-    void TextureRenderer::setTextureAtlas(const shared_ptr<TextureAtlas>& textureAtlas) {
+    void TextureRenderer::setTextureAtlas(const shared_ptr<TextureAtlas> &textureAtlas) {
         m_TextureAtlas = textureAtlas;
     }
 
     void TextureRenderer::draw() {
         _processQueuedObjects();
-        _updateTextureBufferData();
 
         uint32_t textureSlotOffset = 0;
         for (auto &batch: m_TexturedQuadBatches) {
@@ -31,13 +30,13 @@ namespace gp {
     void TextureRenderer::drawObject(uint32_t ID, const shared_ptr<gp::TexturedQuad> &object) {
         GP_CORE_DEBUG("gp::TextureRenderer::drawTexturedQuad({0})", ID);
 
-        if (!m_TexturesCache.contains(object->getTextureName())) {
+        if (!m_TextureAtlas->contains(object->getTextureName())) {
             m_QueuedObjects.emplace(ID, object);
             return;
         }
 
-        auto texData = m_TexturesCache.at(object->getTextureName());
-        auto texCoords = texData.texCoords;
+        auto &texData = m_TextureAtlas->getTextureData(object->getTextureName());
+        auto &texCoords = texData.texCoords;
         uint32_t texIndex = texData.index;
         uint32_t texSlot = texIndex % 16;
 
@@ -91,35 +90,26 @@ namespace gp {
         m_TexturedQuadBatches.back().init();
     }
 
-    void TextureRenderer::_updateTextureBufferData() {
-        uint32_t i = m_TextureBuffers.size();
-        while (i < m_TextureAtlas->pages()) {
-            m_TextureAtlas->getBitmap(i)->saveBitmap(strformat("%i.png", i));
-            m_TextureBuffers.push_back(make_unique<TextureBuffer>(*m_TextureAtlas->getBitmap(i)));
-            i++;
-        }
-    }
-
     void TextureRenderer::_cacheTexture(const shared_ptr<TexturedQuad> &object) {
         GP_CORE_INFO("gp::TextureRenderer::_cacheTexture('{0}')", name);
 
         auto name = object->getTextureName();
 
-        if (m_TexturesCache.contains(name))
+        if (m_TextureAtlas->contains(name))
             return;
 
         auto texCoords = m_TextureAtlas->add(object->getBitmap());
-        m_TexturesCache.insert({name, {texCoords.page, texCoords.coords}});
+        m_TextureAtlas->m_TexturesCache.insert({name, {texCoords.page, texCoords.coords}});
     }
 
     void TextureRenderer::_bindTextureBatch(uint32_t offset) const {
         GP_CORE_DEBUG("gp::TextureRenderer::_bindTextureBatch(offset={0})", offset);
 
         const uint32_t textures = std::min(offset + TextureBuffer::getTextureSlots(),
-                                           static_cast<uint32_t>(m_TextureBuffers.size()));
+                                           static_cast<uint32_t>(m_TextureAtlas->pages()));
 
         for (uint32_t i = offset; i < textures; i++)
-            m_TextureBuffers[i]->bind(i % TextureBuffer::getTextureSlots());
+            m_TextureAtlas->getTextureBuffer(i)->bind(i % TextureBuffer::getTextureSlots());
     }
 
     void TextureRenderer::_processQueuedObjects() {
@@ -128,5 +118,6 @@ namespace gp {
             drawObject(ID, object);
         }
         m_QueuedObjects.clear();
+        m_TextureAtlas->_updateTextureBufferData();
     }
 }

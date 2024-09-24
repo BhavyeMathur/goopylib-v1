@@ -19,7 +19,8 @@ namespace gp {
 
     Bitmap::Bitmap(const char *filepath)
             : m_IsImage(true),
-              m_Data(stbi_load(filepath, (int32_t *) &m_Width, (int32_t *) &m_Height, (int32_t *) &m_Channels, 0)) {
+              m_Data(stbi_load(filepath, (int32_t *) &m_Width, (int32_t *) &m_Height, (int32_t *) &m_Channels, 0)),
+              m_Name(filepath) {
         GP_CORE_INFO("gp::Bitmap::Bitmap({0})", filepath);
 
         #if GP_ERROR_CHECKING
@@ -52,6 +53,10 @@ namespace gp {
 
     uint8_t *Bitmap::getData() const {
         return m_Data;
+    }
+
+    const std::string &Bitmap::name() const {
+        return m_Name;
     }
 
     void Bitmap::setValue(uint32_t x, uint32_t y, uint32_t channel, uint8_t value) {

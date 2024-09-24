@@ -2,7 +2,6 @@
 
 #include "gp.h"
 #include "RenderingBatch.h"
-#include "texture/TextureCoords.h"
 #include "texture/TextureAtlas.h"
 
 namespace gp {
@@ -13,11 +12,6 @@ namespace gp {
     struct TextureVertex;
 
     struct TextureVertexAttrib;
-
-    struct TextureData {
-        uint32_t index;
-        TextureCoords texCoords;
-    };
 }
 
 namespace gp {
@@ -39,8 +33,6 @@ namespace gp {
         const Shader &m_Shader;
 
         shared_ptr<TextureAtlas> m_TextureAtlas;
-        std::vector<unique_ptr<TextureBuffer>> m_TextureBuffers;
-        std::unordered_map<std::string, TextureData> m_TexturesCache;
 
         std::unordered_map<uint32_t, shared_ptr<TexturedQuad>> m_QueuedObjects;
 
@@ -50,8 +42,6 @@ namespace gp {
         const uint32_t m_Channels = 4;
 
         void _createTexturedBuffer();
-
-        void _updateTextureBufferData();
 
         void _cacheTexture(const shared_ptr<TexturedQuad> &object);
 

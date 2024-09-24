@@ -54,6 +54,8 @@ namespace gp {
          */
         [[nodiscard]] uint8_t *getData() const;
 
+        [[nodiscard]] const std::string &name() const;
+
         /**
          * @return sets the value of a byte at position x, y, and channel
          */
@@ -108,6 +110,7 @@ namespace gp {
 
         bool m_IsImage = false;
         uint8_t *m_Data = nullptr;
+        std::string m_Name;
 
         Bitmap() = default;
     };

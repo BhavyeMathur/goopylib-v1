@@ -6,19 +6,19 @@ namespace gp {
               p2(p2) {
     }
 
-    Point TextureCoords::topleft() {
+    Point TextureCoords::topleft() const {
         return {p1.x, p2.y};
     }
 
-    Point TextureCoords::topright() {
+    Point TextureCoords::topright() const {
         return {p2.x, p2.y};
     }
 
-    Point TextureCoords::bottomleft() {
+    Point TextureCoords::bottomleft() const {
         return {p1.x, p1.y};
     }
 
-    Point TextureCoords::bottomright() {
+    Point TextureCoords::bottomright() const {
         return {p2.x, p1.y};
     }
 

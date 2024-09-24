@@ -10,13 +10,13 @@ namespace gp {
 
         TextureCoords(Point p1, Point p2);
 
-        Point topleft();
+        Point topleft() const;
 
-        Point topright();
+        Point topright() const;
 
-        Point bottomleft();
+        Point bottomleft() const;
 
-        Point bottomright();
+        Point bottomright() const;
     };
 
     struct GPAPI TextureAtlasCoords {
@@ -24,5 +24,10 @@ namespace gp {
         uint32_t page;
 
         TextureAtlasCoords(Point p1, Point p2, uint32_t page);
+    };
+
+    struct TextureData {
+        uint32_t index;
+        TextureCoords texCoords;
     };
 }

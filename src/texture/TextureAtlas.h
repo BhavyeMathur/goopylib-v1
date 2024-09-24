@@ -4,6 +4,7 @@
 
 #include "Bitmap.h"
 #include "TextureBuffer.h"
+#include "TextureCoords.h"
 
 #include "maths/gpmath.h"
 #include "maths/packing/algorithms/ScoredAlgorithms.h"
@@ -72,18 +73,46 @@ namespace gp {
         [[nodiscard]] uint32_t pages();
 
         /**
+         * @return whether the TextureAtlas contains the specified texture
+         */
+        [[nodiscard]] bool contains(const std::string &texture) const;
+
+        /**
+         *
+         * @return the TextureData (UV coords, page) for a texture in the atlas
+         *
+         * @throws std::out_of_range if the texture is not in the atlas
+         */
+        [[nodiscard]] const TextureData &getTextureData(const std::string &texture) const;
+
+        /**
          * @return the bitmap of the ith page in the atlas
+         *
+         * @throws std::out_of_range if the index i exceeds the number of pages in the atlas
          */
         [[nodiscard]] const shared_ptr<Bitmap> &getBitmap(uint32_t i) const;
+
+        /**
+         * @return the bitmap of the ith page in the atlas
+         *
+         * @throws std::out_of_range if the index i exceeds the number of pages in the atlas
+         */
+        [[nodiscard]] const shared_ptr<TextureBuffer> &getTextureBuffer(uint32_t i) const;
 
         /**
          * @return converts a pixel coordinate (x, y) to (u, v) coordinate..
          */
         [[nodiscard]] TextureAtlasCoords toUVCoordinate(Point x, Point y, uint32_t page);
 
+        void _updateTextureBufferData();
+
+        std::unordered_map<std::string, TextureData> m_TexturesCache;
+
     private:
         unique_ptr<packing::ShelfPackingAlgorithm> m_PackingAlgorithm;
+
         std::vector<shared_ptr<Bitmap>> m_Bitmaps;
+        std::vector<shared_ptr<TextureBuffer>> m_TextureBuffers;
 
         const uint32_t m_Channels;
 
