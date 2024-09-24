@@ -13,6 +13,7 @@ namespace gp::packing {
          */
         FirstFit(float binWidth, float binHeight);
 
-        void pack(Item &item, bool allowRotation) override;
+    protected:
+        void _packItem(Item &item, bool allowRotation) override;
     };
 }

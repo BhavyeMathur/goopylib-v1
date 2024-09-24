@@ -33,7 +33,7 @@ namespace gp::packing {
         const float m_Height;
         const uint32_t m_Page;
 
-        std::vector<Item> m_Items;  // TODO m_Items should reserve space when packAll() is called
+        std::vector<Item> m_Items;
 
         Bin(float width, float height, uint32_t page);
 

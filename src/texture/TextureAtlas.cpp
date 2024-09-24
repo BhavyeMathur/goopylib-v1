@@ -75,7 +75,7 @@ namespace gp {
         for (const auto &bitmap: bitmaps)
             items.emplace_back(bitmap->width(), bitmap->height());
 
-        m_PackingAlgorithm->packAll(items, allowRotation, sorting);
+        m_PackingAlgorithm->pack(items, allowRotation, sorting);
         _createTextureBuffers();
 
         for (int32_t i = 0; i < items.size(); i++) {

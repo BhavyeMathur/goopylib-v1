@@ -10,7 +10,7 @@ namespace gp::packing {
               m_ScoringFunction(std::move(scoringFunction)) {
     }
 
-    void ScoredFit::pack(Item &item, bool allowRotation) {
+    void ScoredFit::_packItem(Item &item, bool allowRotation) {
         ShelvedBin *bestBin = nullptr;
         Shelf *bestShelf = nullptr;
         float bestScore = -std::numeric_limits<float>::infinity();

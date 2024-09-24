@@ -2,7 +2,6 @@
 
 #include "gp.h"
 #include "PackingAlgorithm.h"
-#include "SortingAlgorithms.h"
 #include "maths/packing/ShelvedBin.h"
 #include "maths/packing/Shelf.h"
 
@@ -18,30 +17,6 @@ namespace gp::packing {
         virtual ~ShelfPackingAlgorithm() = default;
 
         /**
-         * Packs an item into a bin
-         *
-         * @param item the item to pack
-         * @param allowRotation whether the item is allowed to be rotated. Defaults to true.
-         *
-         * @note for multiple items, use packAll() since packing ratio is often better after sorting the items
-         *
-         * @throws std::value_error if an item does not fit into the dimensions of the bin
-         */
-        virtual void pack(Item &item, bool allowRotation) = 0;
-
-        /**
-         * Packs a vector of items into a bin, optionally after sorting them.
-         *
-         * @param items the items to pack
-         * @param allowRotation whether the items are allowed to be rotated. Defaults to true.
-         * @param sortingFunction the function to use for sorting the items. Defaults to sortByShortSide.
-         *
-         * @throws std::value_error if an item does not fit into the dimensions of the bin
-         */
-        void packAll(std::vector<Item> &items, bool allowRotation = true,
-                     const SortingFunction &sortingFunction = sortByShortSide(true));
-
-        /**
          * @return a vector of bins containing the packed items
          */
         [[nodiscard]] const std::vector<ShelvedBin> &bins() const;
@@ -50,6 +25,10 @@ namespace gp::packing {
         std::vector<ShelvedBin> m_Bins;
 
         ShelfPackingAlgorithm(float binWidth, float binHeight);
+
+        void _pack(std::vector<Item> &items, bool allowRotation = true) override;
+
+        virtual void _packItem(Item &items, bool allowRotation = true) = 0;
 
         /**
          * Creates a new ShelvedBin with an open shelf and adds the given item to it.
@@ -91,6 +70,6 @@ namespace gp::packing {
         /**
          * Adds the item (in its current orientation) to the specified shelf in the specified bin.
          */
-        static void addItemToShelf(Item &item, ShelvedBin& bin, Shelf& shelf);
+        static void addItemToShelf(Item &item, ShelvedBin &bin, Shelf &shelf);
     };
 }

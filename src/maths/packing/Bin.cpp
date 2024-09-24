@@ -1,6 +1,5 @@
 #include "Bin.h"
 
-
 namespace gp::packing {
     Bin::Bin(float width, float height, uint32_t page)
             : m_Width(width),

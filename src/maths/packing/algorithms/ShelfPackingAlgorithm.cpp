@@ -9,13 +9,9 @@ namespace gp::packing {
             : PackingAlgorithm(binWidth, binHeight) {
     }
 
-    void ShelfPackingAlgorithm::packAll(std::vector<Item> &items, bool allowRotation,
-                                        const SortingFunction &sortingFunction) {
-        if (sortingFunction)
-            items = sortingFunction(items);
-
+    void ShelfPackingAlgorithm::_pack(std::vector<Item> &items, bool allowRotation) {
         for (auto &item: items)
-            pack(item, allowRotation);
+            _packItem(item, allowRotation);
     }
 
     const std::vector<ShelvedBin> &ShelfPackingAlgorithm::bins() const {

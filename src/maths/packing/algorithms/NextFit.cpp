@@ -5,7 +5,7 @@ namespace gp::packing {
     NextFit::NextFit(float binWidth, float binHeight) : ShelfPackingAlgorithm(binWidth, binHeight) {
     }
 
-    void NextFit::pack(Item &item, bool allowRotation) {
+    void NextFit::_packItem(Item &item, bool allowRotation) {
         auto &bin = m_Bins.back();
         auto &shelf = bin.getOpenShelf();
 

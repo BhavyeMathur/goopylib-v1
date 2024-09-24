@@ -12,7 +12,8 @@ namespace gp::packing {
     public:
         ScoredFit(float binWidth, float binHeight, ScoringFunction scoringFunction);
 
-        void pack(Item &item, bool allowRotation) override;
+    protected:
+        void _packItem(Item &item, bool allowRotation) override;
 
     private:
         ScoringFunction m_ScoringFunction;
