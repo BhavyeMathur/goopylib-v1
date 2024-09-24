@@ -106,17 +106,18 @@ namespace gp {
 
         void _updateTextureBufferData();
 
-        std::unordered_map<std::string, TextureData> m_TexturesCache;
-
     private:
         unique_ptr<packing::ShelfPackingAlgorithm> m_PackingAlgorithm;
 
         std::vector<shared_ptr<Bitmap>> m_Bitmaps;
         std::vector<shared_ptr<TextureBuffer>> m_TextureBuffers;
+        std::unordered_map<std::string, TextureData> m_TexturesCache;
 
         const uint32_t m_Channels;
 
         static uint32_t s_Width;
         static uint32_t s_Height;
+
+
     };
 }

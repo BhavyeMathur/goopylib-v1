@@ -93,13 +93,9 @@ namespace gp {
     void TextureRenderer::_cacheTexture(const shared_ptr<TexturedQuad> &object) {
         GP_CORE_INFO("gp::TextureRenderer::_cacheTexture('{0}')", name);
 
-        auto name = object->getTextureName();
-
-        if (m_TextureAtlas->contains(name))
+        if (m_TextureAtlas->contains(object->getTextureName()))
             return;
-
-        auto texCoords = m_TextureAtlas->add(object->getBitmap());
-        m_TextureAtlas->m_TexturesCache.insert({name, {texCoords.page, texCoords.coords}});
+        m_TextureAtlas->add(object->getBitmap());
     }
 
     void TextureRenderer::_bindTextureBatch(uint32_t offset) const {

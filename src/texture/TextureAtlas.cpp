@@ -79,18 +79,20 @@ namespace gp {
         while (m_PackingAlgorithm->pages() > m_Bitmaps.size())
             m_Bitmaps.push_back(make_unique<Bitmap>(s_Width, s_Height, m_Channels));
 
+        // _updateTextureBufferData();
+
         for (int32_t i = 0; i < items.size(); i++) {
             const auto &item = items[i];
             auto texCoord = toUVCoordinate(item.p1(), item.p2(), item.page());
-            auto &bitmap = m_Bitmaps[item.page()];
+            auto &bitmap = bitmaps[i];
 
             texCoords.push_back(texCoord);
 
             // TODO TextureAtlas should directly set the subdata of the TextureBuffer, this is slower
-            bitmap->setSubdata(*bitmaps[i], item.p1().x, item.p1().y);
-            // m_TexturesCache.insert({bitmap->name(), {item.page(), texCoord.coords}});
+            m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
+            // m_TextureBuffers[item.page()]->setData(item.p1().x, item.p1().y, item.width(), item.height(), bitmap->getData());
+            m_TexturesCache.insert({bitmap->name(), {item.page(), texCoord.coords}});
         }
-
         return texCoords;
     }
 
