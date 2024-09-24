@@ -43,8 +43,6 @@ namespace gp {
 
         void _createTexturedBuffer();
 
-        void _cacheTexture(const shared_ptr<TexturedQuad> &object);
-
         void _bindTextureBatch(uint32_t offset) const;
 
         void _processQueuedObjects();

@@ -4,6 +4,7 @@
 
 #include "objects/TexturedQuad.h"
 #include "texture/TextureBuffer.h"
+#include <unordered_set>
 
 using std::make_shared;
 
@@ -90,14 +91,6 @@ namespace gp {
         m_TexturedQuadBatches.back().init();
     }
 
-    void TextureRenderer::_cacheTexture(const shared_ptr<TexturedQuad> &object) {
-        GP_CORE_INFO("gp::TextureRenderer::_cacheTexture('{0}')", name);
-
-        if (m_TextureAtlas->contains(object->getTextureName()))
-            return;
-        m_TextureAtlas->add(object->getBitmap());
-    }
-
     void TextureRenderer::_bindTextureBatch(uint32_t offset) const {
         GP_CORE_DEBUG("gp::TextureRenderer::_bindTextureBatch(offset={0})", offset);
 
@@ -109,10 +102,26 @@ namespace gp {
     }
 
     void TextureRenderer::_processQueuedObjects() {
-        for (const auto &[ID, object]: m_QueuedObjects) {
-            _cacheTexture(object);
-            drawObject(ID, object);
+        if (m_QueuedObjects.size() == 0)
+            return;
+
+        std::unordered_set<std::string> newTextures;
+        std::vector<shared_ptr<Bitmap>> newBitmaps;
+
+        for (const auto &[_, object]: m_QueuedObjects) {
+            const auto &name = object->getTextureName();
+            if (newTextures.contains(name))
+                continue;
+
+            newTextures.emplace(name);
+            newBitmaps.push_back(object->getBitmap());
         }
+
+        m_TextureAtlas->add(newBitmaps);
+
+        for (const auto &[ID, object]: m_QueuedObjects)
+            drawObject(ID, object);
+
         m_QueuedObjects.clear();
     }
 }
