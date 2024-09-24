@@ -90,28 +90,20 @@ namespace gp {
          *
          * @throws std::out_of_range if the index i exceeds the number of pages in the atlas
          */
-        [[nodiscard]] const shared_ptr<Bitmap> &getBitmap(uint32_t i) const;
-
-        /**
-         * @return the bitmap of the ith page in the atlas
-         *
-         * @throws std::out_of_range if the index i exceeds the number of pages in the atlas
-         */
         [[nodiscard]] const shared_ptr<TextureBuffer> &getTextureBuffer(uint32_t i) const;
 
         /**
-         * @return converts a pixel coordinate (x, y) to (u, v) coordinate..
+         * @return converts a pixel coordinate (x, y) to (u, v) coordinate.
          */
-        [[nodiscard]] TextureAtlasCoords toUVCoordinate(Point x, Point y, uint32_t page);
+        [[nodiscard]] TextureCoords toUVCoordinate(Point x, Point y);
 
-        void _updateTextureBufferData();
+        void _createTextureBuffers();
 
     private:
         unique_ptr<packing::ShelfPackingAlgorithm> m_PackingAlgorithm;
 
-        std::vector<shared_ptr<Bitmap>> m_Bitmaps;
         std::vector<shared_ptr<TextureBuffer>> m_TextureBuffers;
-        std::unordered_map<std::string, TextureData> m_TexturesCache;
+        std::unordered_map<std::string, TextureData> m_TextureData;
 
         const uint32_t m_Channels;
 

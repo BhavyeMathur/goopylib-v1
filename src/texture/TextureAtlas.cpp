@@ -45,15 +45,11 @@ namespace gp {
     }
 
     bool TextureAtlas::contains(const std::string &texture) const {
-        return m_TexturesCache.contains(texture);
+        return m_TextureData.contains(texture);
     }
 
     const TextureData &TextureAtlas::getTextureData(const std::string &texture) const {
-        return m_TexturesCache.at(texture);
-    }
-
-    const shared_ptr<Bitmap> &TextureAtlas::getBitmap(uint32_t i) const {
-        return m_Bitmaps.at(i);
+        return m_TextureData.at(texture);
     }
 
     const shared_ptr<TextureBuffer> &TextureAtlas::getTextureBuffer(uint32_t i) const {
@@ -65,7 +61,7 @@ namespace gp {
     }
 
     void TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
-                                                      bool allowRotation, const packing::SortingFunction &sorting) {
+                           bool allowRotation, const packing::SortingFunction &sorting) {
         std::vector<packing::Item> items;
         items.reserve(bitmaps.size());
 
@@ -73,36 +69,25 @@ namespace gp {
             items.emplace_back(bitmap->getWidth(), bitmap->getHeight());
 
         m_PackingAlgorithm->packAll(items, allowRotation, sorting);
-
-        while (m_PackingAlgorithm->pages() > m_Bitmaps.size())
-            m_Bitmaps.push_back(make_unique<Bitmap>(s_Width, s_Height, m_Channels));
-
-        _updateTextureBufferData();
+        _createTextureBuffers();
 
         for (int32_t i = 0; i < items.size(); i++) {
             const auto &item = items[i];
-            auto texCoord = toUVCoordinate(item.p1(), item.p2(), item.page());
             auto &bitmap = bitmaps[i];
 
-            // TODO TextureAtlas should directly set the subdata of the TextureBuffer, this is slower
-            m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
             m_TextureBuffers[item.page()]->setData(item.p1().x, item.p1().y, bitmap);
-            m_TexturesCache.insert({bitmap->name(), {item.page(), texCoord.coords}});
+            m_TextureData.insert({bitmap->name(), {item.page(), toUVCoordinate(item.p1(), item.p2())}});
         }
     }
 
-    TextureAtlasCoords TextureAtlas::toUVCoordinate(Point p1, Point p2, uint32_t page) {
+    TextureCoords TextureAtlas::toUVCoordinate(Point p1, Point p2) {
         // see https://gamedev.stackexchange.com/questions/46963/how-to-avoid-texture-bleeding-in-a-texture-atlas
         // for why we add/subtract 0.5
-        return {(p1 + 0.5) / s_Width, (p2 - 0.5) / s_Width, page};
+        return {(p1 + 0.5) / s_Width, (p2 - 0.5) / s_Width};
     }
 
-    void TextureAtlas::_updateTextureBufferData() {
-        uint32_t i = m_TextureBuffers.size();
-        while (i < pages()) {
-            getBitmap(i)->saveBitmap(strformat("%i.png", i));
-            m_TextureBuffers.push_back(make_shared<TextureBuffer>(*getBitmap(i)));
-            i++;
-        }
+    void TextureAtlas::_createTextureBuffers() {
+        while (m_TextureBuffers.size() < pages())
+            m_TextureBuffers.push_back(make_shared<TextureBuffer>(s_Width, s_Height, m_Channels));
     }
 }

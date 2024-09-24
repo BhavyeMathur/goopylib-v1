@@ -36,8 +36,7 @@ namespace gp {
         GP_OPENGL("glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)");
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-        if (data)
-            setData(m_Width, m_Height, m_Channels, data);
+        setData(m_Width, m_Height, m_Channels, data);
     }
 
     TextureBuffer::TextureBuffer(const Bitmap &bitmap)
