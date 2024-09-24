@@ -11,17 +11,17 @@ namespace gp {
     };
 
     TexturedRectangle::TexturedRectangle(const std::string &texture, const shared_ptr<Bitmap> &bitmap, Point position)
-            : Quad({position.x - (float) bitmap->getWidth() / 2.0f,
-                    position.y - (float) bitmap->getHeight() / 2.0f},
+            : Quad({position.x - (float) bitmap->width() / 2.0f,
+                    position.y - (float) bitmap->height() / 2.0f},
 
-                   {position.x + (float) bitmap->getWidth() / 2.0f,
-                    position.y - (float) bitmap->getHeight() / 2.0f},
+                   {position.x + (float) bitmap->width() / 2.0f,
+                    position.y - (float) bitmap->height() / 2.0f},
 
-                   {position.x + (float) bitmap->getWidth() / 2.0f,
-                    position.y + (float) bitmap->getHeight() / 2.0f},
+                   {position.x + (float) bitmap->width() / 2.0f,
+                    position.y + (float) bitmap->height() / 2.0f},
 
-                   {position.x - (float) bitmap->getWidth() / 2.0f,
-                    position.y + (float) bitmap->getHeight() / 2.0f}),
+                   {position.x - (float) bitmap->width() / 2.0f,
+                    position.y + (float) bitmap->height() / 2.0f}),
 
               TexturedQuad(texture, bitmap),
               Rectangle() {

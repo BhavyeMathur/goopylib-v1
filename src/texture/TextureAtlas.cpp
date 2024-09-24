@@ -66,7 +66,7 @@ namespace gp {
         items.reserve(bitmaps.size());
 
         for (const auto &bitmap: bitmaps)
-            items.emplace_back(bitmap->getWidth(), bitmap->getHeight());
+            items.emplace_back(bitmap->width(), bitmap->height());
 
         m_PackingAlgorithm->packAll(items, allowRotation, sorting);
         _createTextureBuffers();

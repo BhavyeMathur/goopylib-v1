@@ -40,19 +40,19 @@ namespace gp {
             delete[] m_Data;
     }
 
-    uint32_t Bitmap::getWidth() const {
+    uint32_t Bitmap::width() const {
         return m_Width;
     }
 
-    uint32_t Bitmap::getHeight() const {
+    uint32_t Bitmap::height() const {
         return m_Height;
     }
 
-    uint32_t Bitmap::getChannels() const {
+    uint32_t Bitmap::channels() const {
         return m_Channels;
     }
 
-    uint8_t *Bitmap::getData() const {
+    uint8_t *Bitmap::data() const {
         return m_Data;
     }
 
@@ -99,8 +99,8 @@ namespace gp {
         uint32_t other_index = 0;
         auto index = getIndex(x, y, 0);
 
-        for (uint32_t r = 0; r < bitmap.getHeight(); r++) {
-            for (uint32_t c = 0; c < bitmap.getWidth(); c++) {
+        for (uint32_t r = 0; r < bitmap.height(); r++) {
+            for (uint32_t c = 0; c < bitmap.width(); c++) {
                 for (uint32_t i = 0; i < bitmap.m_Channels; i++) {
                     m_Data[index + m_Channels * (c + r * m_Width) + i] = bitmap.m_Data[other_index];
                     other_index++;
@@ -113,8 +113,8 @@ namespace gp {
 
         // For RGB images, set the alpha channel to 100%
         index = getIndex(x, y, 3);
-        for (uint32_t r = 0; r < bitmap.getHeight(); r++) {
-            for (uint32_t i = 0; i < bitmap.getWidth(); i++) {
+        for (uint32_t r = 0; r < bitmap.height(); r++) {
+            for (uint32_t i = 0; i < bitmap.width(); i++) {
                 m_Data[index + 4 * (i + r * m_Width)] = 255;
             }
         }

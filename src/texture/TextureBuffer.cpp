@@ -40,7 +40,7 @@ namespace gp {
     }
 
     TextureBuffer::TextureBuffer(const Bitmap &bitmap)
-            : TextureBuffer(bitmap.getWidth(), bitmap.getHeight(), bitmap.getChannels(), bitmap.getData()) {
+            : TextureBuffer(bitmap.width(), bitmap.height(), bitmap.channels(), bitmap.data()) {
     }
 
     TextureBuffer::~TextureBuffer() {
@@ -100,7 +100,7 @@ namespace gp {
     }
 
     void TextureBuffer::setData(uint32_t xOffset, uint32_t yOffset, const shared_ptr<gp::Bitmap> &bitmap) {
-        setData(xOffset, yOffset, bitmap->getWidth(), bitmap->getHeight(), bitmap->getData(), bitmap->getDataFormat());
+        setData(xOffset, yOffset, bitmap->width(), bitmap->height(), bitmap->data(), bitmap->getDataFormat());
     }
 
     uint32_t TextureBuffer::_getDataFormat() const {

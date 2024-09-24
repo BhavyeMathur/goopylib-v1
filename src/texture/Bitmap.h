@@ -37,22 +37,22 @@ namespace gp {
         /**
          * @return the width (in pixels) of the bitmap
          */
-        [[nodiscard]] uint32_t getWidth() const;
+        [[nodiscard]] uint32_t width() const;
 
         /**
          * @return the height (in pixels) of the bitmap
          */
-        [[nodiscard]] uint32_t getHeight() const;
+        [[nodiscard]] uint32_t height() const;
 
         /**
          * @return the number of channels in the bitmap (3 for RGB, 4 for RGBA)
          */
-        [[nodiscard]] uint32_t getChannels() const;
+        [[nodiscard]] uint32_t channels() const;
 
         /**
          * @return a raw pointer to the beginning of the bitmap byte data
          */
-        [[nodiscard]] uint8_t *getData() const;
+        [[nodiscard]] uint8_t *data() const;
 
         /**
          * @return an OpenGL constant corresponding to the number of channels in the Bitmap
