@@ -11,33 +11,40 @@
 
 
 namespace gp {
-    uint32_t TextureAtlas::s_Width = 0;
-    uint32_t TextureAtlas::s_Height = 0;
+    uint32_t TextureAtlas::s_MaxWidth = 0;
+    uint32_t TextureAtlas::s_MaxHeight = 0;
 
     TextureAtlas::TextureAtlas(uint32_t channels, unique_ptr<packing::ShelfPackingAlgorithm> packingAlgorithm)
+            : TextureAtlas(1024, 1024, channels, std::move(packingAlgorithm)) {
+    }
+
+    TextureAtlas::TextureAtlas(uint32_t width, uint32_t height, uint32_t channels,
+                               unique_ptr<packing::ShelfPackingAlgorithm> packingAlgorithm)
             : m_PackingAlgorithm(std::move(packingAlgorithm)),
+              m_Width(width),
+              m_Height(height),
               m_Channels(channels) {
+        GP_CHECK_LE(width, s_MaxWidth, strformat("gp::TextureAtlas::TextureAtlas() max width is %i", s_MaxWidth));
+        GP_CHECK_LE(height, s_MaxHeight, strformat("gp::TextureAtlas::TextureAtlas() max height is %i", s_MaxHeight));
+
         if (packingAlgorithm == nullptr)
-            m_PackingAlgorithm = make_unique<packing::BestAreaFit>(s_Width, s_Height);
+            m_PackingAlgorithm = make_unique<packing::BestAreaFit>(s_MaxWidth, s_MaxHeight);
     }
 
     void TextureAtlas::init() {
         GP_CHECK_ACTIVE_CONTEXT("gp::TextureAtlas::init()");
 
-        // GP_OPENGL("glGetIntegerv(GL_MAX_TEXTURE_SIZE");
-        // glGetIntegerv(GL_MAX_TEXTURE_SIZE, reinterpret_cast<GLint *>(&s_Width));
-
-        // TODO TextureAtlas should dynamically adjust its width to ensure we are not copying more data than required
-        s_Width = 128;
-        s_Height = s_Width;
+        GP_OPENGL("glGetIntegerv(GL_MAX_TEXTURE_SIZE");
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, reinterpret_cast<GLint *>(&s_MaxWidth));
+        s_MaxHeight = s_MaxWidth;
     }
 
     uint32_t TextureAtlas::width() {
-        return s_Width;
+        return m_Width;
     }
 
     uint32_t TextureAtlas::height() {
-        return s_Height;
+        return m_Height;
     }
 
     uint32_t TextureAtlas::pages() {
@@ -83,11 +90,11 @@ namespace gp {
     TextureCoords TextureAtlas::toUVCoordinate(Point p1, Point p2) {
         // see https://gamedev.stackexchange.com/questions/46963/how-to-avoid-texture-bleeding-in-a-texture-atlas
         // for why we add/subtract 0.5
-        return {(p1 + 0.5) / s_Width, (p2 - 0.5) / s_Width};
+        return {(p1 + 0.5) / m_Width, (p2 - 0.5) / m_Height};
     }
 
     void TextureAtlas::_createTextureBuffers() {
         while (m_TextureBuffers.size() < pages())
-            m_TextureBuffers.push_back(make_shared<TextureBuffer>(s_Width, s_Height, m_Channels));
+            m_TextureBuffers.push_back(make_shared<TextureBuffer>(m_Width, m_Height, m_Channels));
     }
 }

@@ -28,6 +28,19 @@ namespace gp {
         TextureAtlas(uint32_t channels, unique_ptr<packing::ShelfPackingAlgorithm> packingAlgorithm = nullptr);
 
         /**
+         * Creates a TextureAtlas that can be used to efficiently pack rectangular textures into a compact atlas.
+         *
+         * @param width the width (in pixels) of the atlas
+         * @param height the height (in pixels) of the atlas
+         * @param channels number of color channels in the textures (3 for RGB, 4 for RGBA)
+         * @param packingAlgorithm the rectangle packing algorithm to use. Defaults to BestAreaFit.
+         *
+         * @note Ensure the TextureAtlas class has been initialised before constructing an object.
+         */
+        TextureAtlas(uint32_t width, uint32_t height, uint32_t channels,
+                     unique_ptr<packing::ShelfPackingAlgorithm> packingAlgorithm = nullptr);
+
+        /**
          * Adds a bitmap to the TextureAtlas
          *
          * @param allowRotation whether the bitmap can be rotated. Defaults to true.
@@ -56,16 +69,15 @@ namespace gp {
          */
         static void init();
 
-        // TODO should these should be non-static methods that return the current packed width & height?
         /**
          * @return the width (in pixels) of the atlas
          */
-        [[nodiscard]] static uint32_t width();
+        [[nodiscard]] uint32_t width();
 
         /**
          * @return the height (in pixels) of the atlas
          */
-        [[nodiscard]] static uint32_t height();
+        [[nodiscard]] uint32_t height();
 
         /**
          * @return the number of packed pages in the atlas
@@ -105,11 +117,11 @@ namespace gp {
         std::vector<shared_ptr<TextureBuffer>> m_TextureBuffers;
         std::unordered_map<std::string, TextureData> m_TextureData;
 
+        const uint32_t m_Width;
+        const uint32_t m_Height;
         const uint32_t m_Channels;
 
-        static uint32_t s_Width;
-        static uint32_t s_Height;
-
-
+        static uint32_t s_MaxWidth;
+        static uint32_t s_MaxHeight;
     };
 }
