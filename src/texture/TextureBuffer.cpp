@@ -90,16 +90,18 @@ namespace gp {
     }
 
     void TextureBuffer::setData(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height,
-                                const uint8_t *data) {
-        GLenum dataFormat = _getDataFormat();
-
+                                const uint8_t *data, uint32_t format) {
         bind(0);
 
         GP_OPENGL("glTexSubImage2D(width={0}, height={1}, xOffset={2}, yOffset={3})", width, height, xOffset, yOffset);
         glTexSubImage2D(GL_TEXTURE_2D, 0,
                         (int32_t) xOffset, (int32_t) yOffset,
                         (int32_t) width, (int32_t) height,
-                        dataFormat, GL_UNSIGNED_BYTE, data);
+                        format, GL_UNSIGNED_BYTE, data);
+    }
+
+    void TextureBuffer::setData(uint32_t xOffset, uint32_t yOffset, const shared_ptr<gp::Bitmap> &bitmap) {
+        setData(xOffset, yOffset, bitmap->getWidth(), bitmap->getHeight(), bitmap->getData(), bitmap->getDataFormat());
     }
 
     uint32_t TextureBuffer::_getDataFormat() const {

@@ -54,6 +54,14 @@ namespace gp {
          */
         [[nodiscard]] uint8_t *getData() const;
 
+        /**
+         * @return an OpenGL constant corresponding to the number of channels in the Bitmap
+         */
+        [[nodiscard]] uint32_t getDataFormat() const;
+
+        /**
+         * @return the name of the bitmap stored. The image path if the bitmap was created from an image. Unitialised otherwise.
+         */
         [[nodiscard]] const std::string &name() const;
 
         /**

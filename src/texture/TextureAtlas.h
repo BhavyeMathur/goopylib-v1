@@ -35,7 +35,7 @@ namespace gp {
          *
          * @throws std::value_error if the bitmap is larger than the TextureAtlas dimensions
          */
-        TextureAtlasCoords add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
+        void add(const shared_ptr<Bitmap> &bitmap, bool allowRotation = true);
 
         /**
          * Adds multiple bitmaps to the TextureAtlas.
@@ -46,8 +46,8 @@ namespace gp {
          *
          * @throws std::value_error if any bitmap is larger than the TextureAtlas dimensions
          */
-        std::vector<TextureAtlasCoords> add(const std::vector<shared_ptr<Bitmap>> &bitmaps, bool allowRotation = true,
-                                            const packing::SortingFunction &sorting = packing::sortByShortSide(true));
+        void add(const std::vector<shared_ptr<Bitmap>> &bitmaps, bool allowRotation = true,
+                 const packing::SortingFunction &sorting = packing::sortByShortSide(true));
 
         /**
          * Initialises the TextureAtlas class. In particular, retrieves the maximum dimensions of a texture atlas

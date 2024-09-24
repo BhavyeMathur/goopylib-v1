@@ -114,6 +114,5 @@ namespace gp {
             drawObject(ID, object);
         }
         m_QueuedObjects.clear();
-        m_TextureAtlas->_updateTextureBufferData();
     }
 }

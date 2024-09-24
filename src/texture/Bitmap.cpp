@@ -6,6 +6,7 @@
 
 #include <stb/stb_image.h>
 #include <stb/stb_image_write.h>
+#include <opengl.h>
 
 
 namespace gp {
@@ -57,6 +58,20 @@ namespace gp {
 
     const std::string &Bitmap::name() const {
         return m_Name;
+    }
+
+    uint32_t Bitmap::getDataFormat() const {
+        switch (m_Channels) {
+            case 4:
+                return GL_RGBA;
+            case 3:
+                return GL_RGB;
+            case 1:
+                return GL_RED;
+            default:
+                GP_VALUE_ERROR("gp::Bitmap::getDataFormat() invalid bitmap format");
+        }
+        return -1;
     }
 
     void Bitmap::setValue(uint32_t x, uint32_t y, uint32_t channel, uint8_t value) {

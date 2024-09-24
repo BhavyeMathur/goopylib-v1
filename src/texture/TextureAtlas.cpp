@@ -60,16 +60,14 @@ namespace gp {
         return m_TextureBuffers.at(i);
     }
 
-    TextureAtlasCoords TextureAtlas::add(const shared_ptr<Bitmap> &bitmap, bool allowRotation) {
-        return add({bitmap}, allowRotation, nullptr)[0];
+    void TextureAtlas::add(const shared_ptr<Bitmap> &bitmap, bool allowRotation) {
+        add({bitmap}, allowRotation, nullptr);
     }
 
-    std::vector<TextureAtlasCoords> TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
+    void TextureAtlas::add(const std::vector<shared_ptr<Bitmap>> &bitmaps,
                                                       bool allowRotation, const packing::SortingFunction &sorting) {
         std::vector<packing::Item> items;
-        std::vector<TextureAtlasCoords> texCoords;
         items.reserve(bitmaps.size());
-        texCoords.reserve(bitmaps.size());
 
         for (const auto &bitmap: bitmaps)
             items.emplace_back(bitmap->getWidth(), bitmap->getHeight());
@@ -79,21 +77,18 @@ namespace gp {
         while (m_PackingAlgorithm->pages() > m_Bitmaps.size())
             m_Bitmaps.push_back(make_unique<Bitmap>(s_Width, s_Height, m_Channels));
 
-        // _updateTextureBufferData();
+        _updateTextureBufferData();
 
         for (int32_t i = 0; i < items.size(); i++) {
             const auto &item = items[i];
             auto texCoord = toUVCoordinate(item.p1(), item.p2(), item.page());
             auto &bitmap = bitmaps[i];
 
-            texCoords.push_back(texCoord);
-
             // TODO TextureAtlas should directly set the subdata of the TextureBuffer, this is slower
             m_Bitmaps[item.page()]->setSubdata(*bitmap, item.p1().x, item.p1().y);
-            // m_TextureBuffers[item.page()]->setData(item.p1().x, item.p1().y, item.width(), item.height(), bitmap->getData());
+            m_TextureBuffers[item.page()]->setData(item.p1().x, item.p1().y, bitmap);
             m_TexturesCache.insert({bitmap->name(), {item.page(), texCoord.coords}});
         }
-        return texCoords;
     }
 
     TextureAtlasCoords TextureAtlas::toUVCoordinate(Point p1, Point p2, uint32_t page) {
