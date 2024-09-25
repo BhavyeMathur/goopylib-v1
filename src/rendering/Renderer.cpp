@@ -13,7 +13,7 @@ namespace gp {
               m_TriangleBatch({{{ShaderDataType::Float2, "position"},
                                 {ShaderDataType::Float, "z"},
                                 {ShaderDataType::Float4, "color"}},
-                               6, 4, m_Window.m_SolidShader}),
+                               3, 3, m_Window.m_SolidShader}),
               m_QuadBatch({{
                                    {ShaderDataType::Float2, "position"},
                                    {ShaderDataType::Float, "z"},

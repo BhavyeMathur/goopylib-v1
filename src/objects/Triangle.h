@@ -19,6 +19,8 @@ namespace gp {
          */
         Triangle(Point p1, Point p2, Point p3);
 
+        static shared_ptr<Triangle> create(Point p1, Point p2, Point p3);
+
         virtual ~Triangle() = default;
 
         [[nodiscard]] std::string toString() const override;
