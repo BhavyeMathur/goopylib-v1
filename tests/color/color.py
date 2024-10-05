@@ -481,7 +481,6 @@ class ColorHSLClass(unittest.TestCase):
             gp.ColorHSL(0, 0, 0, 2)
 
 
-# TODO tests for HSL -> HSV and HSV -> HSL conversions
 class ColorConversionMethods(unittest.TestCase):
     def assertColorEqual(self, actual: gp.Color, expected):
         if isinstance(expected, tuple):
@@ -577,3 +576,19 @@ class ColorConversionMethods(unittest.TestCase):
         self.assertColorEqual(gp.ColorHSV(279, 0.43, 0.21).to_rgb(), (45, 31, 54))
         self.assertColorEqual(gp.ColorHSV(99, 0.19, 0.48).to_rgb(), (107, 122, 99))
         self.assertColorEqual(gp.ColorHSV(292, 0.75, 0.26).to_rgb(), (60, 17, 66))
+
+    def test_hsv_to_hsl(self):
+        self.assertColorEqual(gp.ColorHSV(0, 0, 0).to_hsl(), (0, 0, 0))
+        self.assertColorEqual(gp.ColorHSV(180, 1, 1).to_hsl(), (180, 1, 0.5))
+
+        self.assertColorEqual(gp.ColorHSV(279, 0.43, 0.21).to_hsl(), (279, 0.27, 0.16))
+        self.assertColorEqual(gp.ColorHSV(99, 0.19, 0.48).to_hsl(), (99, 0.1, 0.43))
+        self.assertColorEqual(gp.ColorHSV(292, 0.75, 0.26).to_hsl(), (292, 0.60, 0.16))
+
+    def test_hsl_to_hsv(self):
+        self.assertColorEqual(gp.ColorHSL(0, 0, 0).to_hsv(), (0, 0, 0))
+        self.assertColorEqual(gp.ColorHSL(180, 1, 1).to_hsv(), (180, 0, 1))
+
+        self.assertColorEqual(gp.ColorHSL(279, 0.43, 0.21).to_hsv(), (279, 0.6, 0.3))
+        self.assertColorEqual(gp.ColorHSL(99, 0.19, 0.48).to_hsv(), (99, 0.32, 0.57))
+        self.assertColorEqual(gp.ColorHSL(292, 0.75, 0.26).to_hsv(), (292, 0.86, 0.45))

@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include <src/goopylib.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
 
 TEST(CoreTests, InitAndTermination) {
     gp::init();
@@ -84,3 +86,5 @@ TEST(CoreTests, Time) {
     gp::init();
     EXPECT_GT(gp::getTime(), 0);
 }
+
+#pragma clang diagnostic pop
