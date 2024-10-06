@@ -13,7 +13,6 @@ on:
 
   push:
     paths:
-      - goopylib/**/*.cpp
       - setup.py
       - tools/setup_extensions.py
       - pyproject.toml
@@ -22,8 +21,6 @@ on:
 
   pull_request:
     paths:
-      - goopylib/**/*.cpp
-      - CMakeLists.txt
       - setup.py
       - tools/setup_extensions.py
       - pyproject.toml
