@@ -33,7 +33,7 @@ namespace gp {
         if (m_RendererID == 0) {
             return;
         }
-        if (glfwGetCurrentContext()) {
+        if (hasActiveContext()) {
             GP_OPENGL("glDeleteBuffers(n=1, buffers={0})", m_RendererID);
             glDeleteBuffers(1, &m_RendererID);
         }
@@ -63,7 +63,7 @@ namespace gp {
     }
 
     void Buffer::unbind() const {
-        GP_CORE_WARN("gp::{0}::unbind({1})", _getClassString(), m_RendererID);
+        GP_CORE_INFO("gp::{0}::unbind({1})", _getClassString(), m_RendererID);
         GP_CHECK_ACTIVE_CONTEXT("gp::Buffer::unbind()");
 
         GP_OPENGL("glBindBuffer(target={0}, buffer=0)", GP_BUFFER_TARGET);

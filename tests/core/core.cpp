@@ -1,10 +1,12 @@
 #include "gtest/gtest.h"
-#include <src/goopylib.h>
+#include <goopylib.h>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
 
 TEST(CoreTests, InitAndTermination) {
+    EXPECT_FALSE(gp::hasActiveContext());
+
     gp::init();
     EXPECT_TRUE(gp::isInitialized());
     gp::init(); // test twice
@@ -47,6 +49,7 @@ TEST(CoreTests, Unintialised) {
     EXPECT_THROW(gp::update(), std::runtime_error);
     EXPECT_THROW(gp::updateTimeout(0), std::runtime_error);
     EXPECT_THROW(gp::updateOnEvent(), std::runtime_error);
+    EXPECT_THROW(gp::setBufferSwapInterval(0), std::runtime_error);
 }
 
 TEST(CoreTests, NoContext) {
@@ -58,6 +61,7 @@ TEST(CoreTests, NoContext) {
     EXPECT_NO_THROW(gp::update());
     EXPECT_NO_THROW(gp::updateTimeout(0));
     EXPECT_THROW(gp::updateOnEvent(), std::runtime_error);
+    EXPECT_THROW(gp::setBufferSwapInterval(0), std::runtime_error);
 }
 
 TEST(CoreTests, InvalidValueError) {

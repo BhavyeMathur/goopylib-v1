@@ -2,6 +2,7 @@
 #define GP_LOGGING_LEVEL 3
 
 #include "VertexArray.h"
+#include "core/Core.h"
 #include "debug/Error.h"
 
 #include <GLFW/glfw3.h>
@@ -17,9 +18,8 @@ namespace gp {
         : m_VertexBuffer{layout} {
         GP_CORE_INFO("gp::VertexArray::VertexArray()");
 
-        if (glfwGetCurrentContext()) {
+        if (hasActiveContext())
             init();
-        }
     }
 
     VertexArray::VertexArray(VertexArray &&other) noexcept
@@ -31,9 +31,8 @@ namespace gp {
 
     VertexArray::~VertexArray() {
         GP_CORE_INFO("gp::VertexArray::~VertexArray({0})", m_RendererID);
-        if (m_RendererID == 0) {
+        if (m_RendererID == 0)
             return;
-        }
 
         GP_OPENGL("glDeleteVertexArrays(n=1, arrays={0})", m_RendererID);
         glDeleteVertexArrays(1, &m_RendererID);
@@ -54,9 +53,8 @@ namespace gp {
 
             unbind();
         }
-        else {
+        else
             GP_CORE_DEBUG("gp::VertexArray::init({0}) already initialized", m_RendererID);
-        }
     }
 
     void VertexArray::bind() const {

@@ -2,6 +2,7 @@
 
 #include "TextureBuffer.h"
 #include "Bitmap.h"
+#include "core/Core.h"
 #include "debug/Error.h"
 
 #include <opengl.h>

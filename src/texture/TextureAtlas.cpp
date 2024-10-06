@@ -4,6 +4,7 @@
 #include "TextureCoords.h"
 #include "maths/packing/Item.h"
 
+#include "core/Core.h"
 #include "debug/Error.h"
 
 #include <opengl.h>

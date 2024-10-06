@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "color/Util.h"
-#include "../window/Window.h"
+#include "window/Window.h"
 #include "debug/Error.h"
 
 #include <opengl.h>
@@ -14,9 +14,7 @@
 
 namespace {
     bool is_initialized = false;
-}
 
-namespace {
     void onUpdate() {
         GP_CORE_TRACE_ALL("gp::onUpdate()");
         gp::Window::updateAll();
@@ -76,9 +74,8 @@ namespace {
         glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GL_FALSE);
         #endif
 
-        if (!glfwInit()) {
+        if (!glfwInit())
             GP_RUNTIME_ERROR("gp::init() failed to initialize GLFW");
-        }
         is_initialized = true;
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -94,9 +91,9 @@ namespace {
 namespace gp {
     void init() {
         GP_CORE_INFO("gp::init()");
-        if (is_initialized) {
+        if (is_initialized)
             return;
-        }
+
         initColorRNG();
         initGLFW();
     }
@@ -112,12 +109,12 @@ namespace gp {
         is_initialized = false;
     }
 
-    bool isInitialized() {
+    bool isInitialized() noexcept {
         return is_initialized;
     }
 
-    bool hasActiveContext() {
-        return glfwInit() and glfwGetCurrentContext();
+    bool hasActiveContext() noexcept {
+        return is_initialized and glfwGetCurrentContext();
     }
 
     void update() {
@@ -184,12 +181,12 @@ namespace gp {
         return glfwGetTime();
     }
 
-    std::string glfwCompiledVersion() {
+    std::string glfwCompiledVersion() noexcept {
         GP_CORE_TRACE("gp::glfwCompiledVersion()");
         return {glfwGetVersionString()};
     }
 
-    std::string glfwCurrentVersion() {
+    std::string glfwCurrentVersion() noexcept {
         GP_CORE_TRACE("gp::glfwCurrentVersion()");
 
         int major;

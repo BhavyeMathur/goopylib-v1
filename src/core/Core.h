@@ -22,7 +22,7 @@ namespace gp {
      *
      * @return whether goopylib has been initialized
      */
-    GPAPI bool isInitialized();
+    GPAPI bool isInitialized() noexcept;
 
     /**
      * Updates goopylib and its windows.
@@ -36,25 +36,35 @@ namespace gp {
      *          gp::update();
      *      }
      * @endcode
+     *
+     * @throws std::runtime_error: if goopylib has not been initialized
      */
     GPAPI void update();
 
     /**
      * Updates goopylib every time an event occurs.
+     *
+     * @throws std::runtime_error: goopylib must have an active window
      */
     GPAPI void updateOnEvent();
 
     /**
      * Updates goopylib after a duration has passed.
+     *
      * @param timeout the duration (seconds) to wait between updates. Defaults to 0.
+     *
      * @throws std::invalid_argument: if timeout is less than 0
+     * @throws std::runtime_error: if goopylib has not been initialized
      */
     GPAPI void updateTimeout(double timeout = 0);
 
     /**
      * Sets the rate of swapping window buffers.
+     *
      * @param interval the number of refreshes to wait before swapping buffers.
+     *
      * @throws std::invalid_argument: if interval is less than 0
+     * @throws std::runtime_error: goopylib must have an active window
      */
     GPAPI void setBufferSwapInterval(int32_t interval);
 
@@ -89,6 +99,7 @@ namespace gp {
     /**
      *
      * @return the number of seconds since goopylib was initialized
+     * @throws std::runtime_error: goopylib hasn't been initialised
      */
     [[nodiscard]] GPAPI double getTime();
 
@@ -96,23 +107,24 @@ namespace gp {
      *
      * @return whether a graphics context is currently active
      */
-    [[nodiscard]] GPAPI bool hasActiveContext();
+    [[nodiscard]] GPAPI bool hasActiveContext() noexcept;
 
     /**
      *
      * @return the version of GLFW that goopylib was compiled with.
      */
-    [[nodiscard]] GPAPI std::string glfwCompiledVersion();
+    [[nodiscard]] GPAPI std::string glfwCompiledVersion() noexcept;
 
     /**
      *
      * @return the version of GLFW that is currently running.
      */
-    [[nodiscard]] GPAPI std::string glfwCurrentVersion();
+    [[nodiscard]] GPAPI std::string glfwCurrentVersion() noexcept;
 
     /**
      *
      * @return the version of OpenGL being used.
+     * @throws std::runtime_error: goopylib must have an active window
      */
     [[nodiscard]] GPAPI std::string openglVersion();
 }

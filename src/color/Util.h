@@ -8,6 +8,11 @@
 #include "ColorHSV.h"
 
 namespace gp {
+    /**
+     * Initializes goopylib color's random number generator
+     *
+     * @throws std::runtime_error if initialization fails
+     */
     void initColorRNG();
 
     /**
