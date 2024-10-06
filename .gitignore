@@ -20,9 +20,10 @@ __pycache__/
 
 cmake-*/
 Release/
-/**/libglfw3.a
-/**/glfw3.a
-/**/glfw3.lib
+debug/*
+**/libglfw3.a
+**/glfw3.a
+**/glfw3.lib
 
 build/
 dist/
