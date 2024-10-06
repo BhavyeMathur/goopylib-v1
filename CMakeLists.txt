@@ -7,6 +7,10 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(__DEBUG__)
 endif ()
 
+if (UNIX AND NOT APPLE)
+    set(LINUX TRUE)
+endif ()
+
 if (APPLE)
     set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
     set(MACOSX_DEPLOYMENT_TARGET 10.9)
@@ -59,12 +63,16 @@ elseif (MSYS)
     set(GOOPYLIB_PLATFORM_NAME msys)
 elseif (APPLE)
     set(GOOPYLIB_PLATFORM_NAME macos)
-elseif (UNIX AND NOT APPLE)
+elseif (LINUX)
     set(GOOPYLIB_PLATFORM_NAME linux)
 endif ()
 
 if (WIN32)
     set(WINDOWS_SOURCES vendor/glad/glad.c)
+endif ()
+
+if (LINUX)
+    set(LINUX_SOURCES vendor/glad/glad.c)
 endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -77,7 +85,7 @@ else ()
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME})
 endif ()
 
-add_library(goopylib SHARED ${WINDOWS_SOURCES}
+add_library(goopylib SHARED ${WINDOWS_SOURCES} ${LINUX_SOURCES}
             src/core/Core.cpp
             src/core/Buffer.cpp
             src/core/VertexBuffer.cpp
