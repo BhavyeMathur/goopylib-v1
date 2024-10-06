@@ -6,16 +6,17 @@ run-name: ${{ github.actor }} running C++ GTests
 on:
   workflow_dispatch:
 
+  workflow_run:
+    workflows: [ Build Binary ]
+    types:
+      - completed
+
   push:
     paths:
-      - src/**
-      - CMakeLists.txt
       - .github/workflows/google-test.yml
 
   pull_request:
     paths:
-      - src/**
-      - CMakeLists.txt
       - .github/workflows/google-test.yml
 
 env:
@@ -33,6 +34,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
