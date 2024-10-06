@@ -1,0 +1,44 @@
+# This workflow runs goopylib's C++ GTests
+
+name: "Google Tests"
+run-name: ${{ github.actor }} running C++ GTests
+
+on:
+  workflow_dispatch:
+
+  push:
+    paths:
+      - src/**
+      - CMakeLists.txt
+      - .github/workflows/google-test.yml
+
+  pull_request:
+    paths:
+      - src/**
+      - CMakeLists.txt
+      - .github/workflows/google-test.yml
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-cmake:
+    name: Build with CMake on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-latest ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build goopylib tests
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -j 8 --target core_tests
+
+      - name: Run tests
+        run: tests/core/core_tests --gtest_filter=* --gtest_color=no
