@@ -14,10 +14,12 @@ on:
   push:
     paths:
       - .github/workflows/google-test.yml
+      - tests/**/CMakeLists.txt
 
   pull_request:
     paths:
       - .github/workflows/google-test.yml
+      - tests/**/CMakeLists.txt
 
 env:
   BUILD_TYPE: Release
@@ -56,4 +58,4 @@ jobs:
         run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -j 8 --target core_tests
 
       - name: Run tests
-        run: tests/core/core_tests.exe --gtest_filter=* --gtest_color=no
+        run: call "tests/core/core_tests.exe --gtest_filter=* --gtest_color=no"
