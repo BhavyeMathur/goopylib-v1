@@ -8,7 +8,7 @@ from random import randint as _randint
 from random import random as _random
 
 # pylint: disable-next=no-name-in-module
-from . import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
+from .color import ColorRGB, ColorHex, ColorCMYK, ColorHSV, ColorHSL
 
 
 # Random Colors
