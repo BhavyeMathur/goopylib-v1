@@ -43,5 +43,7 @@ jobs:
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Run tests
-        shell: cmd
-        run: D:/a/goopylib/goopylib/tests/core_tests.exe --gtest_filter=* --gtest_color=no
+        run: | 
+          cd tests
+          ls
+          core_tests.exe
