@@ -20,6 +20,7 @@ class Div:
     __slots__ = ["_width", "_height", "_min_width", "_min_height", "_max_width", "_max_height", "_margin", "_padding",
                  "_flex", "_children", "_parent", "_classes", "_layer", "_margin_box", "_padding_box", "_content_box"]
 
+    # pylint: disable-next=too-many-positional-arguments
     def __init__(self,
                  width: Union[int, str],
                  height: Union[int, str],
