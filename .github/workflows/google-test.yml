@@ -59,4 +59,5 @@ jobs:
 
       - name: Run tests
         shell: cmd
-        run: call "tests/core/core_tests.exe --gtest_filter=* --gtest_color=no"
+        run: call "core_tests.exe --gtest_filter=* --gtest_color=no"
+        working-directory: tests/
