@@ -21,7 +21,8 @@ disable=
     global-statement,
     duplicate-code,
     wildcard-import,
-    fixme
+    fixme,
+    bad-option-value
 
 [BASIC]
 good-names=
