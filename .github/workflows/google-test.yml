@@ -45,6 +45,9 @@ jobs:
       - name: Install 7zip
         run: choco install 7zip.install
 
+      - name: Build goopylib tests
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -j 8 --target core_tests
+
       - name: Install Mesa
         shell: cmd
         run: |
@@ -52,10 +55,8 @@ jobs:
           "C:\Program Files\7-Zip\7z.exe" x mesa.7z
           mklink opengl32.dll "x64\opengl32.dll"
           mklink libglapi.dll "x64\libglapi.dll"
-        working-directory: tests/
-
-      - name: Build goopylib tests
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -j 8 --target core_tests
+        working-directory: tests/Release
 
       - name: Run tests
-        run: "D:/a/goopylib/goopylib/tests/Release/core_tests.exe"
+        shell: cmd
+        run: call "D:/a/goopylib/goopylib/tests/Release/core_tests.exe" --gtest_filter=* --gtest_color=no
