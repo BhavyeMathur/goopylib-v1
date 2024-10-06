@@ -12,7 +12,7 @@ target_link_libraries(buffer_tests gtest gtest_main)
 target_link_libraries(core_tests gtest gtest_main)
 
 if(DEFINED ENV{GITHUB_ACTIONS})
-    target_link_libraries(core_tests ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022/Release/goopylib.dll)
+    target_link_libraries(core_tests ${CMAKE_SOURCE_DIR}/binaries/lib-vc2022/Release/goopylib.lib)
 else ()
     target_link_libraries(buffer_tests goopylib)
     target_link_libraries(core_tests goopylib)
