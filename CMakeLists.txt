@@ -71,10 +71,6 @@ if (WIN32)
     set(WINDOWS_SOURCES vendor/glad/glad.c)
 endif ()
 
-if (LINUX)
-    set(LINUX_SOURCES vendor/glad/glad.c)
-endif ()
-
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME}/debug)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/binaries/lib-${GOOPYLIB_PLATFORM_NAME}/debug)
