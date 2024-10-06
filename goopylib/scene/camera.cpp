@@ -1,7 +1,7 @@
 #include <map-macro/map.h>
 
 #include "goopylib/header.h"
-#include "scene/Camera.h"
+#include "window/Camera.h"
 
 namespace py = pybind11;
 using namespace pybind11::literals;

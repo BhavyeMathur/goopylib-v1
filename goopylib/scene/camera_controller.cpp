@@ -1,5 +1,5 @@
 #include "goopylib/header.h"
-#include "scene/CameraController.h"
+#include "window/CameraController.h"
 
 namespace py = pybind11;
 using namespace pybind11::literals;

@@ -25,6 +25,14 @@ public:
         );
     }
 
+    const void *vertexAttribData() const override {
+        PYBIND11_OVERRIDE_PURE_NAME(
+                const void *,                /* Return type */
+                gp::Renderable,      /* Parent class */
+                "_vertex_attrib_data", vertexAttribData,
+        );
+    }
+
 private:
     bool _contains(float x, float y) const override {
         PYBIND11_OVERRIDE_PURE_NAME(
@@ -44,15 +52,15 @@ private:
 };
 
 PYBIND11_MODULE(renderable, m) {
-    auto windowModule = py::module_::import("goopylib.core");
-    py::object Window = windowModule.attr("Window");
+//    auto windowModule = py::module_::import("goopylib.core");
+//    py::object Window = windowModule.attr("Window");
 
     py::class_<gp::Renderable, PyRenderable>(m, "Renderable")
             .def(py::init())
             .def("__repr__", &gp::Renderable::toString)
 
-            .def("draw", &gp::Renderable::draw)
-            .def("destroy", &gp::Renderable::destroy)
+//            .def("draw", &gp::Renderable::draw)
+//            .def("destroy", &gp::Renderable::destroy)
             .def("is_drawn", &gp::Renderable::isDrawn)
 
             .def("set_anchor", &gp::Renderable::setAnchor)
@@ -91,7 +99,7 @@ PYBIND11_MODULE(renderable, m) {
                 return self.getScale().yscale;
             }, &gp::Renderable::setScaleY)
             .def_property("width", &gp::Renderable::getWidth, &gp::Renderable::setWidth)
-            .def_property("height", &gp::Renderable::getHeight, &gp::Renderable::setHeight)
+            .def_property("height", &gp::Renderable::getHeight, &gp::Renderable::setHeight);
 
-            .def_property_readonly("window", &gp::Renderable::getWindow, py::return_value_policy::reference);
+//            .def_property_readonly("window", &gp::Renderable::getWindow, py::return_value_policy::reference);
 }
