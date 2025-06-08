@@ -1,0 +1,28 @@
+[FORMAT]
+max-line-length=120
+
+[MESSAGES CONTROL]
+disable=
+    pointless-string-statement,
+    protected-access,
+
+    too-many-lines,
+    too-many-public-methods,
+    too-few-public-methods,
+    too-many-branches,
+    too-many-arguments,
+    too-many-instance-attributes,
+    too-many-locals,
+    too-many-statements,
+
+    no-else-return,
+    c-extension-no-member,
+    unnecessary-lambda-assignment,
+    global-statement,
+    duplicate-code,
+    wildcard-import,
+    fixme,
+    bad-option-value
+
+[BASIC]
+good-names=

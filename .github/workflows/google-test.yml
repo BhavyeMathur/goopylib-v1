@@ -1,0 +1,56 @@
+# This workflow runs goopylib's C++ GTests
+
+name: "Google Tests"
+run-name: ${{ github.actor }} running C++ GTests
+
+on:
+  workflow_dispatch:
+
+  workflow_run:
+    workflows: [ Build Binary ]
+    types:
+      - completed
+
+  push:
+    paths:
+      - .github/workflows/google-test.yml
+      - tests/**/CMakeLists.txt
+
+  pull_request:
+    paths:
+      - .github/workflows/google-test.yml
+      - tests/**/CMakeLists.txt
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-cmake:
+    name: Build with CMake on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-bionic ]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - uses: openrndr/setup-opengl@v1.1
+
+      - name: Setup OpenGL
+        run: xvfb-run glxinfo
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build tests
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -j 8 --target core_tests
+
+      - name: Run tests
+        run: |
+          ls
+          tests/core_tests.exe --gtest_filter=* --gtest_color=no

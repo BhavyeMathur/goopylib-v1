@@ -1,0 +1,28 @@
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "vendor/GLFW"]
+	path = vendor/GLFW
+	url = https://github.com/glfw/glfw
+[submodule "vendor/glm"]
+	path = vendor/glm
+	url = https://github.com/icaven/glm
+[submodule "examples/SolarSystem"]
+	path = examples/SolarSystem
+	url = https://github.com/BhavyeMathur/goopylib-solar-system-simulation
+[submodule "examples/ConwaysGameOfLife"]
+	path = examples/ConwaysGameOfLife
+	url = https://github.com/BhavyeMathur/goopylib-conways-game-of-life
+[submodule "vendor/googletest"]
+	path = vendor/googletest
+	url = https://github.com/google/googletest
+[submodule "examples/BrickBreaker"]
+	path = examples/BrickBreaker
+	url = https://github.com/BhavyeMathur/goopylib-brick-breaker
+[submodule "vendor/pybind11"]
+	path = vendor/pybind11
+	url = https://github.com/pybind/pybind11
+	branch = stable
+[submodule "vendor/map-macro"]
+	path = vendor/map-macro
+	url = https://github.com/Erlkoenig90/map-macro

@@ -1,0 +1,38 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+### Above combination will ignore all files without extension ###
+
+# General things to ignore
+*.py[cod]
+__pycache__/
+
+*.pdb
+*.log
+*.egg
+*.so
+
+cmake-*/
+Release/
+**/debug/*
+**/libglfw3.a
+**/glfw3.a
+**/glfw3.lib
+
+build/
+dist/
+wheelhouse/
+*.egg-info/
+docs/_build/
+
+vs/*
+.idea/*
+
+main.py
+main.cpp

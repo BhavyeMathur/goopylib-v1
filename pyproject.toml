@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "goopylib"
+description = "A powerful game, graphics, and application development library for Python"
+version = "2.1.0"
+readme = "README.md"
+
+requires-python = ">=3.8"
+license = { file = "LICENSE.md" }
+
+authors = [
+    { name = "Bhavye Mathur", email = "bhavyemathur@gmail.com" },
+]
+
+keywords = [
+    "Python GUI",
+    "Graphics",
+    "2D Graphics",
+    "OpenGL",
+    "Game Development",
+    "Game Engine",
+    "Application Development",
+    "User Interfaces"
+]
+
+classifiers = [
+    "Intended Audience :: Developers",
+
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: User Interfaces",
+
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+
+    "Programming Language :: C",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/BhavyeMathur/goopylib"
+"Bug Tracker" = "https://github.com/BhavyeMathur/goopylib/issues"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.cibuildwheel]
+before-all = "git submodule update --init --recursive"
+build-frontend = "build"
+#build = "cp38-* cp39-* cp310-* cp311-*"
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+
+[tool.cibuildwheel.macos]
+repair-wheel-command = "DYLD_LIBRARY_PATH=binaries/lib-macos delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
+archs = ["arm64", "x86_64"]

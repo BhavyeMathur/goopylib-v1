@@ -1,0 +1,45 @@
+# This workflow analyzes the Python code in the repository for vulnerabilities
+
+name: "CodeQL Python"
+
+on:
+  workflow_dispatch:
+
+  push:
+    paths:
+      - goopylib/**
+      - .github/workflows/codeql-python.yml
+
+  pull_request:
+    paths:
+      - goopylib/**
+      - .github/workflows/codeql-python.yml
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ "python" ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"

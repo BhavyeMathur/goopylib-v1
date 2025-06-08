@@ -1,0 +1,5 @@
+graft goopylib
+graft src
+graft vendor
+
+include CMakeLists.txt

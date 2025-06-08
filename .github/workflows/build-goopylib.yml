@@ -1,0 +1,55 @@
+# This workflow builds a shared library for goopylib using CMake & Python wheels
+
+name: "Build Binary"
+run-name: ${{ github.actor }} building goopylib
+
+on:
+  workflow_dispatch:
+
+  push:
+    paths:
+      - src/**
+      - CMakeLists.txt
+      - .github/workflows/build-goopylib.yml
+
+  pull_request:
+    paths:
+      - src/**
+      - CMakeLists.txt
+      - .github/workflows/build-goopylib.yml
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-cmake:
+    name: Build with CMake on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - if: runner.os == 'Linux'
+        run: sudo apt-get install xorg-dev libgl1-mesa-dev
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build goopylib
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -j 8 --target goopylib
+
+      - name: Upload Binaries
+        uses: test-room-7/action-update-file@v1
+        with:
+          file-path: binaries/**/*.*
+          branch: ${{ github.ref_name }}
+          allow-dot: true
+          commit-msg: Uploaded auto-built binaries
+          github-token: ${{ secrets.GITHUB_TOKEN }}
